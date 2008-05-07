@@ -1,0 +1,36 @@
+
+
+#publishTagCloud ol li span
+{
+	position:absolute; 
+	left:-999px; 
+	width:990px;
+}
+
+ #publishTagCloud LI { display: inline; }
+
+/*Publish Tag Sizes*/
+.size1
+{
+	font-size:1em;
+}
+.size2
+{
+	font-size:1.3em;
+}
+.size3
+{
+	font-size:1.6em;
+}
+.size4
+{
+	font-size:1.9em;
+}
+.size5
+{
+	font-size:2.2em;
+}
+.size6
+{
+	font-size:2.5em;
+}

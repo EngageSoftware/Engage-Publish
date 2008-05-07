@@ -1,0 +1,18 @@
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwParentItems] as
+select
+	
+	r.childItemId, r.childItemVersionId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
+
+GO
+
+
+

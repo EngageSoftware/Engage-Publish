@@ -1,0 +1,167 @@
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article To Thumbnail Image')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article To Thumbnail Image')
+GO
+
+
+update  {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+set relationshipname = 'Article To Parent Article Category'
+where 
+relationshipname = 'Article To Article Category'
+GO
+
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article To Related Article Category')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article To Related Article Category')
+GO
+
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article To Parent Article')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article To Parent Article')
+GO
+
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article To Related Article')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article To Related Article')
+GO
+
+
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItem]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItemVersion]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItem]    Script Date: 11/23/2005 4:19:29 PM ******/
+	CREATE proc {databaseOwner}[{objectQualifier}engageams_insertItem]
+		@ItemTypeId int
+		, @PortalId int
+	as
+	insert into {databaseOwner}[{objectQualifier}EngageAMSItem]
+	(
+		itemTypeId
+		, portalId
+	)
+	values(
+		@ItemTypeId
+		, @PortalId
+	)
+--	declare @idReturn int
+--	set @idReturn = SCOPE_IDENTITY()
+--	select @idReturn 
+--	return @idReturn
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItemVersion]    Script Date: 11/23/2005 4:19:30 PM ******/
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertItemVersion]
+	(
+		@ItemId [int]
+		, @OriginalItemVersionID [int]
+		, @Name [varchar] (100)
+		, @Description [varchar] (4000)
+		, @ItemVersionDate [datetime]
+		, @StartDate [datetime]
+		, @EndDate [datetime]
+		, @LanugageId [int]
+		, @AuthorUserId [int]
+		, @MetaKeywords [varchar] (255)
+		, @MetaDescription [varchar] (255)
+		, @MetaTitle [varchar](100)
+		, @DisplayTabId [int]
+	)
+	AS 
+	           
+	declare @desc varchar(4000)
+	if (len(ltrim(rtrim(@Description))) > 0) set @desc = @Description
+	declare @keywords varchar(255)
+	if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+	declare @metaDesc varchar(255)
+	if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+	declare @title varchar(100)
+	if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSItemVersion] 
+	(
+		[ItemID]
+		, [OriginalItemVersionID]
+		, [Name]
+		, [Description]
+		, [ItemVersionDate]
+		, [StartDate]
+		, [Enddate]
+		, [LanguageId]
+		, [AuthorUserId]
+		, [MetaKeywords]
+		, [MetaDescription]
+		, [MetaTitle]
+		, [DisplayTabId]
+		, [LastUpdated]
+		)
+	 
+	VALUES 
+		( 
+		@ItemId 
+		, @OriginalItemVersionID
+		, @Name 
+		, @desc
+		, @ItemVersionDate
+		, @StartDate
+		, @EndDate
+		, @LanugageId
+		, @AuthorUserId
+		, @keywords
+		, @metaDesc
+		, @title
+		, @DisplayTabId
+		, GetDate()
+		)
+	 
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+alter table {databaseOwner}[{objectQualifier}engageamsitemversion] alter column [name] varchar(255) null
+GO
+
+alter table {databaseOwner}[{objectQualifier}engageamsitemversion] alter column [metatitle] varchar(255) null
+GO
+
+

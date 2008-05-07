@@ -1,0 +1,463 @@
+﻿
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersionTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionTags]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionTags]
+	(@ItemVersionId 	[int],
+	 @TagId 	[int])
+
+AS INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersionTags] 
+	 ( [ItemVersionId],
+	 [TagId]) 
+ 
+VALUES 
+	( @ItemVersionId,
+	 @TagId)
+
+GO
+	 
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertTag]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertTag]
+	(@Name 	[nvarchar](256),
+	 @Description 	[nvarchar](2000),
+	 @TotalItems 	[int],
+	 @LanguageId 	[int],
+	 @PortalId 	[int])
+
+AS INSERT INTO {databaseOwner}[{objectQualifier}Publish_Tags] 
+	 ( [Name],
+	 [Description],
+	 [TotalItems],
+	 [MostRecentDate],
+	 [LanguageId],
+	 [DateCreated],
+	 [PortalId]) 
+
+VALUES 
+	( @Name,
+	 @Description,
+	 @TotalItems,
+	 GetDate(),
+	 @LanguageId,
+	 GetDate(),
+	 @PortalId)
+
+
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+
+GO
+
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateTag]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateTag]
+	(@TagId 	[int],
+	 @Description 	[nvarchar](2000),
+	 @TotalItems 	[int])
+
+AS UPDATE {databaseOwner}[{objectQualifier}Publish_Tags] 
+
+SET  
+	 [Description]	 = @Description,
+	 [TotalItems]	 = @TotalItems,
+	 [MostRecentDate]	 = GetDate()
+
+WHERE 
+	( [TagId] = @TagId)
+	
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTags]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_GetPopularTags] 
+	@TagList nvarchar(4000) = null,
+	@SelectTop bit
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+if @TagList is null begin
+
+	if @SelectTop = 1 begin
+	
+		select distinct top 50 t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+		where vi.iscurrentversion=1
+		group by t.[TagId], t.[Name]
+		order by Count(*) desc, t.[Name]
+		
+	end else begin
+	
+		select distinct t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+		where vi.iscurrentversion=1
+		group by t.[TagId], t.[Name]
+		order by Count(*) desc, t.[Name]
+		
+	end
+
+
+end else begin
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+	if @SelectTop = 1 begin
+		select top 50 t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId, t.Name
+		having t.[TagId] not in (select [TagId] from #Tags)
+
+		order by count(*) desc, [Name]
+	end else begin
+	
+		select t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId, t.Name
+		having t.[TagId] not in (select [TagId] from #Tags)
+
+		order by [Name]
+
+	end
+	
+	
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+end
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_GetPopularTagsCount] 
+	@TagList nvarchar(4000) = null,
+	@SelectTop bit
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+if @TagList is null begin
+
+	if @SelectTop = 1 begin
+		select sum(tot.[TotalItems]) from (
+			select distinct top 50 t.[TagId], count(*) as 'TotalItems'
+			from {objectQualifier}publish_tags t
+			inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+			inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+			where vi.iscurrentversion=1
+			group by t.[TagId]
+			order by count(*) desc
+			) as tot
+	end else begin
+		select sum(tot.[TotalItems]) from (
+			select distinct t.[TagId], count(*) as 'TotalItems'
+			from {objectQualifier}publish_tags t
+			inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+			inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+			where vi.iscurrentversion=1
+			group by t.[TagId]
+			) as tot
+
+	end
+end else begin
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+
+	if @SelectTop = 1 begin
+		select sum(tot.[TotalItems]) from (select top 50 t.TagId, count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId
+		having t.[TagId] not in (select [TagId] from #Tags)
+		order by count(*) desc
+		) tot
+
+	end else begin
+	
+		select sum(tot.[TotalItems]) from (select t.TagId, count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId
+		having t.[TagId] not in (select [TagId] from #Tags)
+		) tot
+
+	end
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+end
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetItemsForTags]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_GetItemsForTags] 
+	@TagList nvarchar(4000) = null
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+
+	select  [name] as 'ChildName', Thumbnail, itemId as 'ChildItemId', description as 'ChildDescription', StartDate, CreatedDate, AuthorUserId, u.DisplayName, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName'
+	from {objectQualifier}publish_vwitems vi
+	join {objectQualifier}users u on (u.UserId = vi.AuthorUserId)
+	where vi.itemversionid in (
+		select distinct  ivt.itemversionid
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId, ivt.itemversionid
+		having t.[TagId] in (select [TagId] from #Tags))
+
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+
+GO
+
+if not exists (select * from dbo.syscolumns where name = 'URL' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]'))
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment ADD
+	URL nvarchar(255) NULL
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText text,
+	@approvalStatusId int,
+	@ratingId int,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@URL nvarchar(255)
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress, URL)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId, @firstName, @lastName, @emailAddress, @URL)
+
+	SELECT @@IDENTITY
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText text,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@approvalStatusId int,
+	@URL nvarchar(255)
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate(),
+		firstName = @firstName,
+		lastName = @lastName,
+		emailAddress = @emailAddress,
+		url = @URL
+	WHERE commentId = @commentId
+END
+GO
+
+
+
+if not exists (select * from dbo.syscolumns where name = 'SiteUrl' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemView]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemView] ADD
+	SiteUrl nvarchar(500) NULL
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItemView]    Script Date: 11/30/2006 19:34:48 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemView]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
+	(
+		@ItemId [int]
+		, @ItemVersionID [int]
+		, @UserId [int]
+		, @TabId [int]
+		, @IpAddress [varchar] (25)
+		, @UserAgent [varchar] (100)
+		, @HttpReferrer [varchar] (500)
+		, @SiteUrl [nvarchar] (500)
+
+	)
+	AS 
+	           
+	INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemView]
+	(
+		[ItemID]
+		, [ItemVersionID]
+		, [UserId]
+		, [TabId]
+		, [UserIpAddress]
+		, [UserAgent]
+		, [HttpReferrer]
+		, [ViewDate]
+		, [SiteUrl]
+		)
+	 
+	VALUES 
+		( 
+		@ItemID
+		, @ItemVersionID
+		, @UserId
+		, @TabId
+		, @IpAddress
+		, @UserAgent
+		, @HttpReferrer
+		, GetDate()
+		, @SiteUrl
+		)
+
+GO
+
+
+
+
+
+

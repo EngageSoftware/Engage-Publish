@@ -1,0 +1,322 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertProductVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertProductVersion]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertProductVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @ProductNumber [varchar](50)
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ProductText [varchar] (8000)
+	, @SearchBody [varchar](8000)
+	, @SortOrder [int]
+)
+AS 
+declare @prodNum varchar(10)
+if (len(ltrim(rtrim(@ProductNumber))) > 0) set @prodNum = @ProductNumber
+declare @verNum varchar(10)
+if (len(ltrim(rtrim(@VersionNumber))) > 0) set @verNum = @VersionNumber
+declare @verDesc varchar(255)
+if (len(ltrim(rtrim(@VersionDescription))) > 0) set @verDesc = @VersionDescription
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSProductVersion] 
+(		
+	[ItemVersionId]
+	, [ItemID]
+	, [ProductNumber]
+	, [VersionNumber]
+	, [VersionDescription]
+	, [SortOrder]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId
+	, @prodNum
+	, @verNum
+	, @verDesc
+	, @SortOrder
+	)
+declare @columnTypeId int
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ProductText'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ProductText
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'SearchBody'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @SearchBody
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	drop table {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] 
+(
+	[CategoryId] [int] NOT NULL ,
+	[RoleId] [int] NOT NULL ,
+	[PermissionId] [int] NOT NULL,
+	[RevisingUser] [int] not null,
+	[RevisionDate] [datetime] not null
+)
+ON [PRIMARY]
+GO
+
+ALTER TABLE [{objectQualifier}EngageAmsCategoryRolePermission] WITH NOCHECK ADD 
+	CONSTRAINT [{objectQualifier}PK_EngageAmsCategoryRolePermission] PRIMARY KEY  CLUSTERED 
+	(
+		[CategoryId],
+		[RoleId],
+		[PermissionId]
+	)  
+
+ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] ADD CONSTRAINT {objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem FOREIGN KEY
+	(CategoryId) REFERENCES {databaseOwner}{objectQualifier}EngageAMSItem(ItemId)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] ADD CONSTRAINT {objectQualifier}FK_EngageAmsCategoryRolePermission_Permission FOREIGN KEY
+	(PermissionId) REFERENCES {databaseOwner}{objectQualifier}Permission(PermissionID)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spDeleteItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spDeleteItem]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spDeleteItem](@id int) AS
+
+BEGIN
+
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}EngageAMSProductVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSItemText] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}EngageAMSItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}EngageAMSItem] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+
+end
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllChildrenByType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetAllChildrenByType]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spGetAllChildrenByType]
+@itemTypeId int, 
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+declare @onlyCurrentVersion bit
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	and child.ItemTypeId = @itemTypeId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and child.ItemTypeId = @itemTypeId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories](@portalId int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	declare @relationshipTypeId int 
+	declare @categoryItemTypeId int 
+	set @relationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}engageamsRelationshipType] where [relationshipName] = 'Category to Parent Category')
+
+	set @categoryItemTypeId = (select itemTypeId from {databaseOwner}[{objectQualifier}engageamsItemType] where [name]='Category')
+
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.RelationshipTypeId = @relationshipTypeId
+		and i.PortalId = @portalId
+
+	set @rowsAdded = @@rowcount
+
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	child.RelationshipTypeId = @relationshipTypeId
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]
+@portalId int
+AS
+declare @onlyCurrentVersion bit
+declare @relationshipTypeId int 
+set @relationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}engageamsRelationshipType] where [relationshipName] = 'Category to Parent Category')
+
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories](@portalId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories](@portalId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

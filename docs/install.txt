@@ -1,0 +1,28 @@
+Engage: Publish 4.0 for DotNetNuke 4
+
+Please review the Engage: Publish User's guide prior to installing.  
+
+INSTALLATION
+-----------------------
+1) Login with an account that has "Host" access
+2) Go to the "Host > Module Definitions"
+3) Select the "Upload New Module" link
+4) Click Browse to locate the EngagePublish04.00.05.zip Private Assembly package.
+5) Click the "Add" link next to the Browse button.
+6) Click "Upload New File"
+**If you encounter any errors during the install process please copy the messages to an email and send to support@engagemodules.com
+7) You are now ready to add the module to a page.
+
+UPDATE OR UPGRADE INSTALL
+-----------------------
+1) Backup the portal files and database ( IMPORTANT ! ) 
+2) Follow steps 1 - 6 as above for installing the upgrade Private Assembly
+
+
+Please visit our web site for support or questions.
+
+Thank you for choosing Engage: Publish!
+
+www.engagemodules.com
+
+

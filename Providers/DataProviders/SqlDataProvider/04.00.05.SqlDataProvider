@@ -1,0 +1,2001 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType]', '{objectQualifier}Publish_ApprovalStatusType'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSArticleVersion]', '{objectQualifier}Publish_ArticleVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]', '{objectQualifier}Publish_CategoryRolePermission'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSCategoryVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSCategoryVersion]', '{objectQualifier}Publish_CategoryVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSColumnType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSColumnType]', '{objectQualifier}Publish_ColumnType'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]', '{objectQualifier}Publish_DocumentVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSFlatParents]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSFlatParents]', '{objectQualifier}Publish_FlatParents'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItem]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItem]', '{objectQualifier}Publish_Item'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]', '{objectQualifier}Publish_ItemRelationship'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemText]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItemText]', '{objectQualifier}Publish_ItemText'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItemType]', '{objectQualifier}Publish_ItemType'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItemVersion]', '{objectQualifier}Publish_ItemVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemView]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSItemView]', '{objectQualifier}Publish_ItemView'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSMediaVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSMediaVersion]', '{objectQualifier}Publish_MediaVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSPortalSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSPortalSettings]', '{objectQualifier}Publish_PortalSettings'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSProductVersion]', '{objectQualifier}Publish_ProductVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionBak]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSProductVersionBak]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSRelationshipType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}EngageAMSRelationshipType]', '{objectQualifier}Publish_RelationshipType'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempprodcategories]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempprodcategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempfullproducthierarchy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempfullproducthierarchy]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempproducts]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempproducts]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempprodcategories]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempprodcategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vArticles]', '{objectQualifier}Publish_vwArticles'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vCategories]', '{objectQualifier}Publish_vwCategories'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vChildItems]', '{objectQualifier}Publish_vwChildItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vDocuments]', '{objectQualifier}Publish_vwDocuments'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vItemListing]', '{objectQualifier}Publish_vwItemListing'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vItems]', '{objectQualifier}Publish_vwItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemTypes]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vItemTypes]', '{objectQualifier}Publish_vwItemTypes'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vItemVersions]', '{objectQualifier}Publish_vwItemVersions'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vMedia]', '{objectQualifier}Publish_vwMedia'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vParentItems]', '{objectQualifier}Publish_vwParentItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vProducts]') and OBJECTPROPERTY(id, N'IsView') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_vProducts]', '{objectQualifier}Publish_vwProducts'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]', '{objectQualifier}Publish_spGetAdminItemListing'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getCategories]', '{objectQualifier}Publish_spGetCategories'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getCategory]', '{objectQualifier}Publish_spGetCategory'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategoryListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getCategoryListing]', '{objectQualifier}Publish_spGetCategoryListing'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getItemCategories]', '{objectQualifier}Publish_spGetItemCategories'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]', '{objectQualifier}Publish_spGetItemChildRelationships'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getItemRelationships]', '{objectQualifier}Publish_spGetItemRelationships'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_getItemTypes]', '{objectQualifier}Publish_spGetItemTypes'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertArticleVersion]', '{objectQualifier}Publish_spInsertArticleVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]', '{objectQualifier}Publish_spInsertCategoryVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]', '{objectQualifier}Publish_spInsertDocumentVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertItem]', '{objectQualifier}Publish_spInsertItem'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertItemRelationship]', '{objectQualifier}Publish_spInsertItemRelationship'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemText]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertItemText]', '{objectQualifier}Publish_spInsertItemText'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertItemVersion]', '{objectQualifier}Publish_spInsertItemVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemView]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertItemView]', '{objectQualifier}Publish_spInsertItemView'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertMediaVersion]', '{objectQualifier}Publish_spInsertMediaVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertProductVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_insertProductVersion]', '{objectQualifier}Publish_spInsertProductVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spDeleteItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spDeleteItem]', '{objectQualifier}Publish_spDeleteItem'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]', '{objectQualifier}Publish_spGetAllCategoriesHierachy'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllChildren]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetAllChildren]', '{objectQualifier}Publish_spGetAllChildren'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllChildrenByType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetAllChildrenByType]', '{objectQualifier}Publish_spGetAllChildrenByType'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]', '{objectQualifier}Publish_spGetDocumentSearchItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems]', '{objectQualifier}Publish_spGetImageSearchItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]', '{objectQualifier}Publish_spGetVideoSearchItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_updateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_updateItemVersion]', '{objectQualifier}Publish_spUpdateItemVersion'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]') and xtype in (N'FN', N'IF', N'TF'))
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]', '{objectQualifier}Publish_fnGetAllCategories'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItems]') and xtype in (N'FN', N'IF', N'TF'))
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_fnGetChildItems]', '{objectQualifier}Publish_fnGetChildItems'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]') and xtype in (N'FN', N'IF', N'TF'))
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]', '{objectQualifier}Publish_fnGetChildItemsAdminSearch'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel]') and xtype in (N'FN', N'IF', N'TF'))
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel]', '{objectQualifier}Publish_fnGetChildItemsLevel'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildProducts]') and xtype in (N'FN', N'IF', N'TF'))
+exec sp_Rename '{databaseOwner}[{objectQualifier}engageams_fnGetChildProducts]', '{objectQualifier}Publish_fnGetChildProducts'
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwArticles]
+GO
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwCategories]
+GO
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+GO
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwDocuments]
+GO
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItems]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemTypes]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemTypes]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemVersions]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwMedia]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwProducts]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwProducts]
+
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItems] as
+SELECT
+	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+	iv.ItemId, iv.OriginalItemVersionId, iv.ItemVersionDate, iv.StartDate, iv.EndDate, 
+	iv.LanguageId, iv.AuthorUserId, iv.ApprovalStatusId, iv.ApprovalDate, iv.ApprovalUserId, iv.ApprovalComments, 
+	iv.MetaKeywords, iv.MetaDescription, iv.MetaTitle, iv.DisplayTabId, iv.LastUpdated,
+	i.PortalID, i.ItemTypeID, iv.ItemVersionID, it.[Name] as ItemType,
+	iv.[Name], iv.[Description], iv.Disabled, i.CreatedDate
+	, 'Thumbnail' = case when fl.FileName is null then iv.Thumbnail else fl.Folder + fl.FileName end
+
+FROM
+	 {databaseOwner}[{objectQualifier}Publish_Item] i
+	join {databaseOwner}[{objectQualifier}Publish_ItemType] it on (i.ItemTypeID = it.ItemTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemID = iv.ItemID)
+	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union
+select
+	'productedit' as AdminType, 
+	pv.VersionNumber,i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ProductVersion] pv on (i.ItemVersionID = pv.ItemVersionID)
+union
+select
+	'documentedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_DocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+union
+select
+	'mediaedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_MediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+union
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ 	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwCategories] as
+select
+	 cv.SortOrder, cv.ChildDisplayTabId, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+--where
+--	iv.StartDate <= getdate()
+--and	(iv.EndDate > getdate() or iv.EndDate is null)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwChildItems] as
+select
+	r.ParentItemID, r.sortorder, child.*, rt.RelationshipName, rt.RelationshipTypeID
+from 
+	 {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems] child on (r.ChildItemVersionID = child.ItemVersionID)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwDocuments] as
+select
+--	iv.[Name], iv.[Description], 
+	'FileName' = case when fl.FileName is null then  dv.FileName else fl.Folder + fl.FileName end,
+	dv.FileSize, dv.MediaType, dv.FilePath,
+	i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_DocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+	left outer join {databaseOwner}[{objectQualifier}Files] fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+select
+	catDetail.ItemId, catDetail.[Name] CategoryName, 
+	child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+	child.ItemId ChildItemId, 
+	cat.PortalId, child.LastUpdated
+	, child.CreatedDate
+	, child.Thumbnail
+	--, u.DisplayName 
+	/*--REMOVE ABOVE LINE FOR Pre DisplayName DNN INSTALLS */
+from 
+	{databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]() cat
+	join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+	join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	join {databaseOwner}[{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+where
+cat.PortalId = 0
+and	catDetail.IsCurrentVersion = 1
+and 	child.IsCurrentVersion = 1
+and 	child.RelationshipTypeId = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where RelationshipName = 'Item To Parent Category')
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemTypes] as
+SELECT
+	ItemTypeId, [Name], [Description], TableName , IsTopLevel, IsActive
+FROM
+	 {databaseOwner}[{objectQualifier}Publish_ItemType]
+
+
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwMedia] as
+select
+
+	'FileName' = case when fl.FileName is null then mv.FileName else fl.Folder + fl.FileName end,
+	mv.FileSize, mv.MediaType, mv.FilePath,
+	i.*
+from 
+	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_MediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+	left outer join {databaseOwner}[{objectQualifier}Files] fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwParentItems] as
+select
+	r.childItemId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
+
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwProducts] as
+select
+	pv.ProductNumber, pv.VersionNumber, pv.VersionDescription, 
+	pt.ItemText as ProductText,  am.ItemText as ApplicationMethod, pc.ItemText as ProductCertification,
+	s.ItemText as Specifications, d.ItemText as Dimensions, w.ItemText as Warranty, ar.ItemText as ApplicationRate,
+	sb.ItemText as SearchBody, sw.ItemText as SearchWarranty, sc.ItemText as SearchCertification, pl.ItemText as ProductList, 
+	pv.SortOrder, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ProductVersion] pv on (i.ItemVersionID = pv.ItemVersionID)				--little better performance using ids
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] pc on (i.ItemVersionId = pc.ItemVersionId and pc.ColumnTypeID = 4)	--ProductCertification
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] am on (i.ItemVersionId = am.ItemVersionId and am.ColumnTypeID = 1)	--ApplicationMethod
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] s on (i.ItemVersionId = s.ItemVersionId and s.ColumnTypeID = 10)		--Specifications
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] d on (i.ItemVersionId = d.ItemVersionId and d.ColumnTypeID = 3)		--Dimensions
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] w on (i.ItemVersionId = w.ItemVersionId and w.ColumnTypeID = 11)		--Warranty
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] ar on (i.ItemVersionId = ar.ItemVersionId and ar.ColumnTypeID = 2)	--ApplicationRate
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] sb on (i.ItemVersionId = sb.ItemVersionId and sb.ColumnTypeID = 7)	--SearchBody
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] sw on (i.ItemVersionId = sw.ItemVersionId and sw.ColumnTypeID = 9)	--SearchWarranty
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] sc on (i.ItemVersionId = sc.ItemVersionId and sc.ColumnTypeID = 8)	--SearchCertification
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] pl on (i.ItemVersionId = pl.ItemVersionId and pl.ColumnTypeID = 5)	--ProductList
+	left join {databaseOwner}[{objectQualifier}Publish_ItemText] pt on (i.ItemVersionId = pt.ItemVersionId and pt.ColumnTypeID = 6)	--ProductText
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItems]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItems]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsAdminSearch]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsAdminSearch]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]()
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		PortalId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	declare @relationshipTypeId int 
+	declare @otherrelationshipTypeId int
+	declare @categoryItemTypeId int 
+	declare @itemTypeId int 
+
+	set @relationshipTypeId = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where RelationshipName = 'Category to Top Level Category')
+	set @otherrelationshipTypeId = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where RelationshipName = 'Item To Parent Category')
+	set @categoryItemTypeId = (select ItemTypeId from {databaseOwner}[{objectQualifier}Publish_ItemType] where [Name] = 'Category')
+
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID, PortalId)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID, i.PortalId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_Item] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		(parent.RelationshipTypeId = @relationshipTypeId or parent.RelationshipTypeId = @otherrelationshipTypeId )		
+		and i.ItemTypeId = (select ItemTypeId from {databaseOwner}[{objectQualifier}Publish_ItemType] where name = 'Category')
+
+	set @rowsAdded = @@rowcount
+
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, i.PortalId, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}Publish_Item] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	
+		--child.RelationshipTypeId = @relationshipTypeId
+		(child.RelationshipTypeId = @relationshipTypeId or child.RelationshipTypeId = @otherrelationshipTypeId )
+		and 	i.ItemTypeId = @categoryItemTypeId
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+
+		set @rowsAdded = @@rowcount
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+
+	return
+end
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentItemID int, @relationshipTypeId int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_Item] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+	and	parent.RelationshipTypeId = @relationshipTypeId
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}Publish_Item] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	child.RelationshipTypeId = @relationshipTypeId
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+GO
+
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsAdminSearch](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, ItemTypeId, RelationshipTypeID
+)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_Item] i on (parent.ChildItemID = i.ItemID) -- and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+--		and parent.relationshiptypeid in (1,2)
+/*	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}Publish_Item] i on (child.ChildItemID = i.ItemID) -- and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+--		and child.relationshiptypeid in (1,2)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+*/
+	return
+end
+
+GO
+
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		RelationshipTypeID int,
+		Processed int default 0,
+		Level int default 0
+	)
+as
+begin
+
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+	where 
+		parent.ParentItemID = @parentItemID
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.RelationshipTypeID, 0, Level
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+		where 
+			t.Processed = 1 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildProducts](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, ItemTypeId, RelationshipTypeID
+)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_Item] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+		and parent.relationshiptypeid in (1,2)
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}Publish_Item] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and child.relationshiptypeid in (1,2)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]    Script Date: 11/30/2006 19:34:44 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]    Script Date: 11/30/2006 19:34:44 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]    Script Date: 11/30/2006 19:34:45 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildren]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]    Script Date: 11/30/2006 19:34:45 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetCategories]    Script Date: 11/30/2006 19:34:45 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetCategories]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategories]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetCategory]    Script Date: 11/30/2006 19:34:45 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategory]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]    Script Date: 11/30/2006 19:34:45 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetItemCategories]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemCategories]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemCategories]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetItemTypes]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemTypes]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemTypes]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]    Script Date: 11/30/2006 19:34:46 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]    Script Date: 11/30/2006 19:34:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]    Script Date: 11/30/2006 19:34:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]    Script Date: 11/30/2006 19:34:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItem]    Script Date: 11/30/2006 19:34:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItem]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]    Script Date: 11/30/2006 19:34:47 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItemText]    Script Date: 11/30/2006 19:34:48 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemText]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemText]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]    Script Date: 11/30/2006 19:34:48 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertItemView]    Script Date: 11/30/2006 19:34:48 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemView]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]    Script Date: 11/30/2006 19:34:48 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]    Script Date: 11/30/2006 19:34:49 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]
+GO
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]    Script Date: 11/30/2006 19:34:49 ******/
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+
+BEGIN
+
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ProductVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_MediaVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_DocumentVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemText] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+
+end
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+@ParentItemId int, 
+@ItemTypeId int,
+@RelationshipTypeId int,
+@PortalId int
+AS
+
+set nocount on
+
+declare @TempTable table
+(	
+	ItemId int not null
+	, ItemVersionId int not null
+)
+
+insert into @TempTable
+select 
+	c.ItemId, c.itemVersionId
+from 
+	{databaseOwner}[{objectQualifier}Publish_vwChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 1
+	and c.RelationshipTypeId = @RelationshipTypeId 
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+
+insert into @TempTable
+
+select 
+	c.ItemId
+	, Max(c.ItemVersionId)
+
+from 
+	{databaseOwner}[{objectQualifier}Publish_vwChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 0
+	and c.RelationshipTypeId = @RelationshipTypeId  
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+	and not exists (Select * from @TempTable w where w.ItemId = c.itemId)
+group by c.ItemId
+
+set nocount off
+
+Select vi.[Name] 
+	, vi.[Description]
+	, t.ItemId
+	, t.ItemVersionId
+	, vi.IsCurrentVersion
+	, (select count(ParentItemId) from 
+	{databaseOwner}[{objectQualifier}Publish_vwChilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId = 
+	(select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_relationshiptype] where relationshipname = 'Item To Parent Category')
+	and ItemTypeId = 
+	(select  itemtypeid from {databaseOwner}[{objectQualifier}Publish_Itemtype] where name = 'Category')
+	) 'ChildCount'
+
+from @TempTable t
+join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (vi.ItemVersionId = t.ItemVersionId)
+where vi.IsCurrentVersion=1
+order by vi.[Name]
+
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+	@portalId int
+AS
+
+declare @onlyCurrentVersion bit
+declare @relationshipTypeId int 
+set @relationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]() parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	and 	parent.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]() parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+
+		child.PortalId = @portalId
+	and	parent.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+declare @onlyCurrentVersion bit
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]
+@itemTypeId int, 
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+declare @onlyCurrentVersion bit
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	and child.ItemTypeId = @itemTypeId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+		child.PortalId = @portalId
+	and child.ItemTypeId = @itemTypeId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetCategories]
+	@PortalId int
+	--@ItemTypeId
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}Publish_Item] i
+	, {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv
+	, {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}Publish_Itemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.sortOrder
+
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetCategory]
+	@ItemId int
+	, @PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	
+FROM
+	{databaseOwner}[{objectQualifier}Publish_Item] i
+	, {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv
+	, {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}Publish_Itemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+	and i.itemId = @ItemId
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]
+(
+	@ParentItemId [int]
+	, @PortalId [int]
+)
+AS 
+	if (@ParentItemId = -1)
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}Publish_vwCategories] cat
+			join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category')
+		order by
+			--cat.[Name], child.[Name]
+			cat.SortOrder ASC, child.ParentItemId, RelationshipName
+	end
+	else
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}Publish_vwCategories] cat
+			join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category')
+		and	child.ParentItemId = @ParentItemId
+		order by
+			--cat.[Name], child.[Name]
+			cat.SortOrder asc, child.ParentItemId, RelationshipName
+	end
+
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]
+(
+@relationshipTypeId int, 
+@parentItemId int, 
+@documentTypeId int, 
+@portalId int
+)
+as
+select 
+	*
+from 
+     {databaseOwner}[{objectQualifier}Publish_vwChildItems] vci
+where 
+      itemId in 
+
+            (
+
+                        select 
+
+                                    c.parentItemId
+
+                        from 
+
+                                   {databaseOwner}[{objectQualifier}Publish_vwChildItems] c
+
+                        where 
+
+                                    c.IsCurrentVersion = 1
+
+                        and       c.PortalId = @portalId
+
+                        and       c.RelationshipName like '%document%'
+
+                        and       c.ItemId in
+
+                        (
+
+                                    select 
+
+                                          ItemId 
+
+                                    from 
+
+                                                {databaseOwner}[{objectQualifier}Publish_vwChildItems] 
+
+                                    where 
+
+                                                PortalID =@portalId 
+
+                                    and RelationshipTypeId = @relationshipTypeId 
+
+                                    and IsCurrentVersion = 1  
+
+                                    and ParentItemId = @parentItemId 
+
+                        )
+
+            )
+
+and vci.parentItemId = @documentTypeId 
+
+and vci.IsCurrentVersion = 1
+
+and vci.PortalId = @portalId
+
+
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems](@relationshipTypeId int, @parentItemId int, @imageTypeId int, @portalId int)
+as
+select 
+            * 
+from 
+            {databaseOwner}[{objectQualifier}Publish_vwChildItems] vci
+where 
+            itemId in 
+            (
+                        select 
+                                    c.parentItemId
+                        from 
+                                    {databaseOwner}[{objectQualifier}Publish_vwChildItems] c
+                        where 
+                                    c.IsCurrentVersion = 1
+                        and       c.PortalId = @portalId
+                        and       c.RelationshipName like '%image%'
+                        and       c.ItemId in
+                        (
+                                    select 
+                                                ItemId 
+                                    from 
+                                                {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+                                    where 
+                                                PortalID =@portalId 
+                                    and RelationshipTypeId = @relationshipTypeId 
+                                    and IsCurrentVersion = 1  
+                                    and ParentItemId = @parentItemId 
+                        
+                        )
+            )
+and vci.parentItemId = @imageTypeId
+and vci.IsCurrentVersion = 1
+and vci.PortalId = @portalId
+
+
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetItemCategories]
+	@PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.DisplayTabId
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}Publish_Item] i
+	, {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv
+	, {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate < GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}Publish_Itemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.SortOrder
+
+GO
+
+
+CREATE proc {databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]
+	@ParentItemId int
+	, @RelationshipTypeId int
+AS
+SELECT
+	ir.ChildItemId
+	, ir.ChildItemVersionId
+	, ir.ParentItemId
+	, ir.RelationshipTypeId
+	, ir.StartDate
+	, ir.EndDate
+FROM
+	{databaseOwner}[{objectQualifier}Publish_ItemRelationship] ir, {databaseOwner}[{objectQualifier}Publish_vwItems] i
+WHERE
+	ir.ParentItemId = @ParentItemId
+	and ir.RelationshipTypeId = @RelationshipTypeId
+	and ir.StartDate <= GetDate()
+	and (ir.EndDate > GetDate() OR ir.EndDate IS NULL)
+	and i.ItemId = ir.ChildItemId
+	and i.ItemVersionId = ir.ChildItemVersionId
+	and i.IsCurrentVersion = 1
+ORDER BY
+	ir.SortOrder
+
+
+GO
+
+CREATE proc {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @RelationshipTypeId int
+AS
+SELECT
+	ChildItemId
+	, ChildItemVersionId
+	, ParentItemId
+	, RelationshipTypeId
+	, StartDate
+	, EndDate
+FROM
+	{databaseOwner}[{objectQualifier}Publish_ItemRelationship]
+WHERE
+	ChildItemId = @ChildItemId
+	and ChildItemVersionid = @ChildItemVersionId
+	and RelationshipTypeId = @RelationshipTypeId
+	and StartDate >= GetDate()
+	and EndDate < GetDate()
+
+
+
+GO
+
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetItemTypes]
+as
+SELECT
+	ItemTypeId
+	, [Name]
+	, [Description]
+	, TableName
+FROM
+	{databaseOwner}[{objectQualifier}Publish_ItemType]
+ORDER BY
+	[Name]
+
+
+
+GO
+
+
+CREATE procedure {databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]
+(
+@relationshipTypeId int, 
+@parentItemId int, 
+@videoTypeId int, 
+@portalId int
+)
+as
+select 
+            * 
+from 
+            {databaseOwner}[{objectQualifier}Publish_vwChildItems] vci
+where 
+            itemId in 
+            (
+                        select 
+                                    c.parentItemId
+                        from 
+                                    {databaseOwner}[{objectQualifier}Publish_vwChildItems] c
+                        where 
+                                    c.IsCurrentVersion = 1
+                        and       c.PortalId = @portalId
+                        and       c.RelationshipName like '%media%'
+                        and       c.ItemId in
+                        (
+                                    select 
+                                                ItemId 
+                                    from 
+                                                {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+                                    where 
+                                                PortalID =@portalId 
+                                    and RelationshipTypeId = @relationshipTypeId 
+                                    and IsCurrentVersion = 1  
+                                    and ParentItemId = @parentItemId 
+                        )
+            )
+and vci.parentItemId = @videoTypeId 
+and vci.IsCurrentVersion = 1
+and vci.PortalId = @portalId
+
+
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ArticleText [text]
+	, @ReferenceNumber [varchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @SortOrder [int]
+	, @ChildDisplayTabId [int]
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_CategoryVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [SortOrder]
+	, [ChildDisplayTabId]
+	)
+ VALUES 
+	( 
+	@ItemVersionId 
+	, @ItemId 
+	, @SortOrder
+	, @ChildDisplayTabId
+	)
+
+
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (500)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_DocumentVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+
+GO
+
+CREATE proc {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+		@ItemTypeId int
+		, @PortalId int
+	as
+	insert into {databaseOwner}[{objectQualifier}Publish_Item]
+	(
+		itemTypeId
+		, portalId
+	)
+	values(
+		@ItemTypeId
+		, @PortalId
+	)
+--	declare @idReturn int
+--	set @idReturn = SCOPE_IDENTITY()
+--	select @idReturn 
+--	return @idReturn
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+
+GO
+
+
+CREATE proc {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @ParentId int
+	, @RelationshipTypeId int
+	, @StartDate datetime
+	, @EndDate datetime
+	, @SortOrder int
+as
+insert into {databaseOwner}[{objectQualifier}Publish_ItemRelationship]
+(
+	ChildItemId
+	, ChildItemVersionId
+	, ParentItemId
+	, RelationshipTypeId
+	, StartDate
+	, EndDate
+	, SortOrder
+)
+values(
+	@ChildItemId
+	, @ChildItemVersionId
+	, @ParentId
+	, @RelationshipTypeId
+	, @StartDate
+	, @EndDate
+	, @SortOrder
+)
+
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemText]
+(
+	@ItemVersionId [int]
+	, @ColumnTypeId [int]
+	, @ItemText [varchar] (8000)
+)
+AS 
+if (len(rtrim(ltrim(@ItemText))) > 0)
+begin
+	INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemText] 
+	(
+		[ItemVersionId]
+		, [ColumnTypeID]
+		, [ItemText]
+		)
+	 VALUES 
+		( 
+		@ItemVersionId
+		, @ColumnTypeId 
+		, @ItemText
+	)
+end
+
+
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+(
+	@ItemId [int]
+	, @OriginalItemVersionID [int]
+	, @Name [varchar] (255)
+	, @Description [varchar] (4000)
+	, @ItemVersionDate [datetime]
+	, @StartDate [datetime]
+	, @EndDate [datetime]
+	, @LanguageId [int]
+	, @AuthorUserId [int]
+	, @MetaKeywords [varchar] (255)
+	, @MetaDescription [varchar] (400)
+	, @MetaTitle [varchar](255)
+	, @DisplayTabId [int]
+	, @Disabled [bit] = 0
+	, @Thumbnail [varchar] (100)
+)
+AS 
+
+declare @desc varchar(4000)
+if (len(ltrim(rtrim(@Description))) > 0) set @desc = @Description
+
+declare @keywords varchar(255)
+if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+
+declare @metaDesc varchar(400)
+if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+
+declare @title varchar(255)
+if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+
+declare @oivId int
+if (@OriginalItemVersionID <> -1) set @oivId = @OriginalItemVersionID
+
+declare @dtId int
+if (@DisplayTabId <> -1) set @dtId = @DisplayTabId
+
+declare @lId int
+if (@LanguageId = -1) 
+	set @lId = 1
+else
+	set @lId = @LanguageId
+
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+	[ItemID]
+	, [OriginalItemVersionID]
+	, [Name]
+	, [Description]
+	, [ItemVersionDate]
+	, [StartDate]
+	, [Enddate]
+	, [LanguageId]
+	, [AuthorUserId]
+	, [MetaKeywords]
+	, [MetaDescription]
+	, [MetaTitle]
+	, [DisplayTabId]
+	, [LastUpdated]
+	, [Disabled]
+	, [Thumbnail]
+	)
+ 
+VALUES 
+	( 
+	@ItemId 
+	, @oivId
+	, @Name 
+	, @desc
+	, @ItemVersionDate
+	, @StartDate
+	, @EndDate
+	, @lId
+	, @AuthorUserId
+	, @keywords
+	, @metaDesc
+	, @title
+	, @dtId
+	, GetDate()
+	, @disabled
+	, @Thumbnail
+	)
+ 
+select SCOPE_IDENTITY()
+return SCOPE_IDENTITY()
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
+	(
+		@ItemId [int]
+		, @ItemVersionID [int]
+		, @UserId [int]
+		, @TabId [int]
+		, @IpAddress [varchar] (25)
+		, @UserAgent [varchar] (100)
+		, @HttpReferrer [varchar] (500)
+
+	)
+	AS 
+	           
+	INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemView]
+	(
+		[ItemID]
+		, [ItemVersionID]
+		, [UserId]
+		, [TabId]
+		, [UserIpAddress]
+		, [UserAgent]
+		, [HttpReferrer]
+		, [ViewDate]
+		)
+	 
+	VALUES 
+		( 
+		@ItemID
+		, @ItemVersionID
+		, @UserId
+		, @TabId
+		, @IpAddress
+		, @UserAgent
+		, @HttpReferrer
+		, GetDate()
+		)
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (500)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_MediaVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @ProductNumber [varchar](50)
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ProductText [varchar] (8000)
+	, @SearchBody [varchar](8000)
+	, @SortOrder [int]
+)
+AS 
+declare @prodNum varchar(10)
+if (len(ltrim(rtrim(@ProductNumber))) > 0) set @prodNum = @ProductNumber
+declare @verNum varchar(10)
+if (len(ltrim(rtrim(@VersionNumber))) > 0) set @verNum = @VersionNumber
+declare @verDesc varchar(255)
+if (len(ltrim(rtrim(@VersionDescription))) > 0) set @verDesc = @VersionDescription
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ProductVersion] 
+(		
+	[ItemVersionId]
+	, [ItemID]
+	, [ProductNumber]
+	, [VersionNumber]
+	, [VersionDescription]
+	, [SortOrder]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId
+	, @prodNum
+	, @verNum
+	, @verDesc
+	, @SortOrder
+	)
+declare @columnTypeId int
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}Publish_ColumnType] where ColumnName = 'ProductText'
+exec {databaseOwner}[{objectQualifier}Publish_spInsertItemText] @itemVersionId, @columnTypeID, @ProductText
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}Publish_ColumnType] where ColumnName = 'SearchBody'
+exec {databaseOwner}[{objectQualifier}Publish_spInsertItemText] @itemVersionId, @columnTypeID, @SearchBody
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+(
+	@ItemId [int]
+	, @ItemVersionId [int]
+	, @ApprovalStatusId [int]
+	, @ApprovalUserId [int]
+	, @ApprovalComments [varchar] (255)
+)
+AS 
+           
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_ApprovalstatusType] where approvalstatusname = 'Approved'))
+Begin
+	-- archive existing versions 
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived') , LastUpdated = GetDate()
+	WHERE ItemVersionId = @ItemVersionId and ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Approved')
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate()
+	WHERE ItemId = @ItemId and ItemVersionId < @ItemVersionId
+	UPDATE {databaseOwner}[{objectQualifier}Publish_Item] set ApprovedItemVersionId = @ItemVersionId
+	WHERE ItemId = @ItemId
+		
+End
+Else
+Begin
+	-- get current approval status
+	declare @currentApprovalStatusId [int]
+	set @currentApprovalStatusId = (select approvalStatusId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where itemVersionId = @ItemVersionId)
+	if (@currentApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Approved'))
+	begin
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+	end
+End
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'))
+begin
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] SET ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate() WHERE ItemId = @ItemId and @ItemVersionId < @ItemVersionId 
+--and ApprovalStatusId != 3
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+end
+UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	
+	SET  
+		 [ApprovalStatusID]	 = @ApprovalStatusID,
+		 [ApprovalUserID]	 = @ApprovalUserID,
+		 [ApprovalComments ]	 = @ApprovalComments 
+	
+	WHERE 
+		( [ItemVersionId]	 = @ItemVersionId AND
+		 [ItemId]	 = @ItemId)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryMapping]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_CategoryMapping]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Publish_CategoryMapping]
+(
+	NewItemId int,
+	OldCategoryId int
+)
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ArticleMapping]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ArticleMapping]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Publish_ArticleMapping]
+(
+	NewItemId int,
+	OldArticleId int            
+)
+GO
+
+update {databaseOwner}[{objectQualifier}desktopmodules]
+set BusinessControllerClass = 'EngagePublish.Search.SearchProvider',
+FolderName ='EngagePublish',
+ModuleName = 'Engage: Publish'
+where FriendlyName = 'Engage: Publish'
+GO
+
+update {databaseOwner}[{objectQualifier}moduleControls]
+set controlsrc = Replace (controlsrc , 'Engage.Dnn.Ams', 'EngagePublish')
+where controlsrc like '%Engage.Dnn.Ams%'
+
+
+update {databaseOwner}[{objectQualifier}hostsettings]
+set SettingName = Replace (SettingName, 'Ams', 'Publish')
+where settingname like 'ams%'
+
+          
+update {databaseOwner}[{objectQualifier}modulecontrols]
+set ControlKey = 'AdminContainer'
+where ControlKey = 'AmsAdmin'
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ArticleVersion]') and name = '{objectQualifier}FK_Publish_ArticleVersion_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_ArticleVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ArticleVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ArticleVersion]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]') and name = '{objectQualifier}FK_Publish_CategoryRolePermission_CategoryId')
+CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_CategoryId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (CategoryId); dbcc dbreindex ([{objectQualifier}Publish_CategoryRolePermission]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]') and name = '{objectQualifier}FK_Publish_CategoryRolePermission_PermissionId')
+CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_PermissionId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (PermissionId); dbcc dbreindex ([{objectQualifier}Publish_CategoryRolePermission]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryVersion]') and name = '{objectQualifier}FK_Publish_CategoryVersion_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_CategoryVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_CategoryVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_CategoryVersion]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_DocumentVersion]') and name = '{objectQualifier}FK_Publish_DocumentVersion_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_DocumentVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_DocumentVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_DocumentVersion]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and name = '{objectQualifier}FK_Publish_ItemText_ColumnTypeId')
+CREATE INDEX {objectQualifier}FK_Publish_ItemText_ColumnTypeId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ColumnTypeId); dbcc dbreindex ([{objectQualifier}Publish_ItemText]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and name = '{objectQualifier}FK_Publish_ItemText_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_ItemText_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ItemText]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_MediaVersion]') and name = '{objectQualifier}FK_Publish_MediaVersion_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_MediaVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_MediaVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_MediaVersion]);
+GO
+
+if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ProductVersion]') and name = '{objectQualifier}FK_Publish_ProductVersion_ItemVersionId')
+CREATE INDEX {objectQualifier}FK_Publish_ProductVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ProductVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ProductVersion]);

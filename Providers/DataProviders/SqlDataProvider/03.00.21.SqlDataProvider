@@ -1,0 +1,167 @@
+﻿Begin Transaction
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion]
+	DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Tmp_EngageAMSArticleVersion]
+	(
+	ItemVersionId int NOT NULL,
+	ItemId int NOT NULL,
+	VersionNumber varchar(10) NULL,
+	VersionDescription varchar(255) NULL,
+	ArticleText text NOT NULL,
+	ThumbnailMediaItemId int NULL,
+	ReferenceNumber varchar(50) NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}EngageAMSArticleVersion])
+	 EXEC('INSERT INTO {databaseOwner}[{objectQualifier}Tmp_EngageAMSArticleVersion] (ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText, ThumbnailMediaItemId, ReferenceNumber)
+		SELECT ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText, ThumbnailMediaItemId, ReferenceNumber FROM {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] TABLOCKX')
+
+DROP TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion]
+
+EXECUTE sp_rename N'{databaseOwner}[{objectQualifier}Tmp_EngageAMSArticleVersion]', N'{objectQualifier}EngageAMSArticleVersion', 'OBJECT'
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] ADD CONSTRAINT
+	{objectQualifier}PK_ArticleVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) WITH FILLFACTOR = 90 ON [PRIMARY]
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_ArticleVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES [{objectQualifier}EngageAMSItemVersion]
+	(
+	ItemVersionId
+	)
+
+COMMIT
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ArticleText [text]
+	, @ReferenceNumber [varchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vArticles]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vItemVersions]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union
+select
+	'productedit' as AdminType, 
+	pv.VersionNumber,i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSProductVersion] pv on (i.ItemVersionID = pv.ItemVersionID)
+union
+select
+	'documentedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+union
+select
+	'mediaedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+union
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ 	{databaseOwner}[{objectQualifier}engageams_vitems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

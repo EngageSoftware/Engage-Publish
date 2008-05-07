@@ -1,0 +1,304 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]  
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @ParentId int
+	, @RelationshipTypeId int
+	, @StartDate datetime
+	, @EndDate datetime
+	, @SortOrder int
+as
+
+
+if not exists (select * From [{objectQualifier}Publish_ItemRelationship] 
+	where ParentItemId = @ParentId and ChildItemId = @ChildItemId and ChildItemVersionId = @ChildItemVersionId and RelationshipTypeId = @RelationshipTypeId)
+begin
+	insert into [{objectQualifier}Publish_ItemRelationship]
+	(
+		ChildItemId
+		, ChildItemVersionId
+		, ParentItemId
+		, RelationshipTypeId
+		, StartDate
+		, EndDate
+		, SortOrder
+	)
+	values(
+		@ChildItemId
+		, @ChildItemVersionId
+		, @ParentId
+		, @RelationshipTypeId
+		, @StartDate
+		, @EndDate
+		, @SortOrder
+	)
+end
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetPopularTags]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetPopularTags] 
+	@PortalId int,
+	@TagList nvarchar(4000) = null,
+	@SelectTop bit
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+if @TagList is null begin
+
+	if @SelectTop = 1 begin
+	
+		select distinct top 50 t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+		where vi.iscurrentversion=1
+		and vi.PortalId = @PortalId
+		group by t.[TagId], t.[Name]
+		order by Count(*) desc, t.[Name]
+		
+	end else begin
+	
+		select distinct t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+		where vi.iscurrentversion=1
+		and vi.PortalId = @PortalId
+		group by t.[TagId], t.[Name]
+		order by Count(*) desc, t.[Name]
+		
+	end
+
+
+end else begin
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+	if @SelectTop = 1 begin
+		select top 50 t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+			and t.PortalId = @PortalId
+		Group By t.TagId, t.Name
+		having t.[TagId] not in (select [TagId] from #Tags)
+
+		order by count(*) desc, [Name]
+	end else begin
+	
+		select t.[TagId], t.[Name], count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+			and t.PortalId = @PortalId
+		Group By t.TagId, t.Name
+		having t.[TagId] not in (select [TagId] from #Tags)
+
+		order by [Name]
+
+	end
+	
+	
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+end
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetPopularTagsCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetPopularTagsCount] 
+	@PortalId int,
+	@TagList nvarchar(4000) = null,
+	@SelectTop bit
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+if @TagList is null begin
+
+	if @SelectTop = 1 begin
+		select sum(tot.[TotalItems]) from (
+			select distinct top 50 t.[TagId], count(*) as 'TotalItems'
+			from {objectQualifier}publish_tags t
+			inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+			inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+			where vi.iscurrentversion=1
+			and t.PortalId = @PortalId
+			group by t.[TagId]
+			order by count(*) desc
+			) as tot
+	end else begin
+		select sum(tot.[TotalItems]) from (
+			select distinct t.[TagId], count(*) as 'TotalItems'
+			from {objectQualifier}publish_tags t
+			inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+			inner join {objectQualifier}publish_vwItems vi on vi.ItemVersionId = ivt.ItemVersionId
+			where vi.iscurrentversion=1
+			and t.PortalId = @PortalId
+			group by t.[TagId]
+			) as tot
+
+	end
+end else begin
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+
+	if @SelectTop = 1 begin
+		select sum(tot.[TotalItems]) from (select top 50 t.TagId, count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				and vi2.PortalId = @PortalId
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId
+		having t.[TagId] not in (select [TagId] from #Tags)
+		order by count(*) desc
+		) tot
+
+	end else begin
+	
+		select sum(tot.[TotalItems]) from (select t.TagId, count(*) as 'TotalItems'
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where 
+			ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				and vi2.PortalId = @PortalId
+				group by vi2.ItemVersionId
+				)
+		Group By t.TagId
+		having t.[TagId] not in (select [TagId] from #Tags)
+		) tot
+
+	end
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+end
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetItemsForTags]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetItemsForTags]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetItemsForTags] 
+	@PortalId int,
+	@TagList nvarchar(4000) = null
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+
+	select  [name] as 'ChildName', Thumbnail, itemId as 'ChildItemId', description as 'ChildDescription', StartDate, CreatedDate, AuthorUserId, u.DisplayName, vi.ItemTypeId as 'ChildItemTypeId', 	LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName'
+	from {objectQualifier}publish_vwitems vi
+	join {objectQualifier}users u on (u.UserId = vi.AuthorUserId)
+	where vi.itemversionid in (
+		select distinct  ivt.itemversionid
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				)
+		and vi.PortalId = @PortalId
+		Group By t.TagId, ivt.itemversionid
+		having t.[TagId] in (select [TagId] from #Tags))
+
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+
+GO
+

@@ -1,0 +1,27 @@
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]  
+@itemTypeId int,   
+@parentId int,   
+@relationshipTypeId int,   
+@otherParentId int,
+@otherRelationshipTypeId int,
+@portalId int  
+AS  
+ select   
+  parent1.ParentItemId, parent1.RelationshipTypeId, parent2.ParentItemId, parent2.RelationshipTypeId, child.*
+ from   
+  [{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent1
+  join [{objectQualifier}Publish_fnGetChildItems](@otherParentId, @otherRelationshipTypeId) parent2 on (parent1.childItemId = parent2.childItemId)
+  join [{objectQualifier}Publish_vwItemVersions] child on (parent1.ChildItemId = child.ItemId)  
+ where  
+  child.PortalId = @portalId  
+ and IsCurrentVersion = 1  
+ and child.ItemTypeId = @itemTypeId  
+ order by  
+  parent1.ParentItemId, parent2.ParentItemId, child.ItemId  
+GO
+
+		

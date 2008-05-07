@@ -1,0 +1,76 @@
+﻿IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+
+BEGIN
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Comment] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Rating] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersionTags] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+END
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @ParentId int
+	, @RelationshipTypeId int
+	, @StartDate datetime
+	, @EndDate datetime
+	, @OriginalItemVersionId int
+as
+
+DECLARE @SortOrder int
+SELECT @SortOrder = SortOrder FROM [{objectQualifier}Publish_ItemRelationship] WHERE ChildItemId = @ChildItemId AND ParentItemId = @ParentId AND RelationshipTypeId = @RelationshipTypeId AND ChildItemVersionId = @OriginalItemVersionId
+IF @SortOrder IS NULL BEGIN
+    SET @SortOrder = 0
+END
+
+if not exists (select * From [{objectQualifier}Publish_ItemRelationship] 
+	where ChildItemId = @ChildItemId and ChildItemVersionId = @ChildItemVersionId and RelationshipTypeId = @RelationshipTypeId)
+begin
+	insert into [{objectQualifier}Publish_ItemRelationship]
+	(
+		ChildItemId
+		, ChildItemVersionId
+		, ParentItemId
+		, RelationshipTypeId
+		, StartDate
+		, EndDate
+		, SortOrder
+	)
+	values(
+		@ChildItemId
+		, @ChildItemVersionId
+		, @ParentId
+		, @RelationshipTypeId
+		, @StartDate
+		, @EndDate
+		, @SortOrder
+	)
+end
+
+GO

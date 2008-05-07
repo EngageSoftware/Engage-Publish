@@ -1,0 +1,107 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, ItemTypeId, RelationshipTypeID
+)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}engageamsItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}engageamsItem] i on (parent.ChildItemID = i.ItemID) -- and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+--		and parent.relationshiptypeid in (1,2)
+/*	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}engageamsItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}engageamsItem] i on (child.ChildItemID = i.ItemID) -- and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+--		and child.relationshiptypeid in (1,2)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+*/
+	return
+end
+
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Document To Thumbnail Image')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Document To Thumbnail Image')
+GO
+
+
+
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article to Special Content Article')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article to Special Content Article')
+GO
+
+
+
+
+

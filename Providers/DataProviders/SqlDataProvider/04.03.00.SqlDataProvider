@@ -1,0 +1,277 @@
+﻿
+	if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Tags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Publish_Tags
+		(
+		TagId int NOT NULL IDENTITY (1, 1),
+		Name nvarchar(256) NOT NULL,
+		Description nvarchar(2000) NULL,
+		TotalItems int NOT NULL,
+		MostRecentDate datetime NULL,
+		LanguageId int NOT NULL,
+		DateCreated datetime NOT NULL
+		)  ON [PRIMARY]
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'DF_{objectQualifier}Publish_Tags_DateCreated'))
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tags ADD CONSTRAINT
+		DF_{objectQualifier}Publish_Tags_DateCreated DEFAULT GetDate() FOR DateCreated
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'PK_{objectQualifier}Publish_Tags'))
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tags ADD CONSTRAINT
+		PK_{objectQualifier}Publish_Tags PRIMARY KEY CLUSTERED 
+		(
+		TagId
+		) ON [PRIMARY]
+
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionTags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+
+	CREATE TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags
+		(
+		ItemVersionId int NOT NULL,
+		TagId int NOT NULL,
+		DateCreated datetime NOT NULL
+		)  ON [PRIMARY]
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'DF_{objectQualifier}Publish_ItemVersionTags_DateCreated'))
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags ADD CONSTRAINT
+		DF_{objectQualifier}Publish_ItemVersionTags_DateCreated DEFAULT GetDate() FOR DateCreated
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'PK_{objectQualifier}Publish_ItemVersionTags'))
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags ADD CONSTRAINT
+		PK_{objectQualifier}Publish_ItemVersionTags PRIMARY KEY CLUSTERED 
+		(
+		ItemVersionId,
+		TagId
+		) ON [PRIMARY]
+
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion'))
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags ADD CONSTRAINT
+		FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion FOREIGN KEY
+		(
+		ItemVersionId
+		) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+		(
+		ItemVersionId
+		)
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags'))
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags ADD CONSTRAINT
+		FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags FOREIGN KEY
+		(
+		TagId
+		) REFERENCES {databaseOwner}{objectQualifier}Publish_Tags
+		(
+		TagId
+		)
+	GO
+	
+
+	IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+	GO
+
+	create view {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+	select
+		catDetail.ItemId, catDetail.[Name] CategoryName, 
+		child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+		child.ItemId ChildItemId, 
+		cat.PortalId, child.LastUpdated
+		, child.CreatedDate
+		, child.Thumbnail
+		, catDetail.StartDate
+		--, u.DisplayName 
+		/*--REMOVE ABOVE LINE FOR Pre DisplayName DNN INSTALLS */
+	from 
+		{objectQualifier}Publish_fnGetAllCategories() cat
+		join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+		join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+		join [{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+	where 	catDetail.IsCurrentVersion = 1
+	and 	child.IsCurrentVersion = 1
+	and 	child.RelationshipTypeId in 
+		(
+			select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
+			where RelationshipName = 'Item To Parent Category' or RelationshipName = 'Item to Related Category'
+		)
+
+	GO
+
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	drop table {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]
+	GO
+
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Publish_ItemVersionSettings') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+
+	CREATE TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]
+		(
+		SettingsId  int NOT NULL IDENTITY (1, 1),
+		ItemVersionId int NOT NULL,
+		ControlName nvarchar(200) NOT NULL,
+		PropertyName nvarchar(200) NOT NULL,
+		PropertyValue nvarchar(200) NOT NULL
+		)  ON [PRIMARY]
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'PK_{objectQualifier}Publish_ItemVersionSettings'))
+
+	ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionSettings ADD CONSTRAINT
+		PK_{objectQualifier}Publish_ItemVersionSettings PRIMARY KEY CLUSTERED 
+		(
+		SettingsId
+		) ON [PRIMARY]
+
+	GO
+
+	if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion'))
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] ADD CONSTRAINT
+		FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion FOREIGN KEY
+		(
+		ItemVersionId
+		) REFERENCES {databaseOwner}[{objectQualifier}Publish_ItemVersion]
+		(
+		ItemVersionId
+		)
+	GO
+	
+	
+	
+	
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]
+	GO
+
+
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]
+		(@ItemVersionId 	[int],
+		 @ControlName 	[nvarchar](200),
+		 @PropertyName 	[nvarchar](200),
+		 @PropertyValue 	[nvarchar](200))
+
+	AS INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] 
+		 ( [ItemVersionId],
+		 [ControlName],
+		 [PropertyName],
+		 [PropertyValue]) 
+	 
+	VALUES 
+		( @ItemVersionId,
+		 @ControlName,
+		 @PropertyName,
+		 @PropertyValue)
+		 
+	GO
+
+alter table {databaseOwner}[{objectQualifier}Publish_ItemVersion] alter column Thumbnail varchar(500) NULL
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+(
+	@ItemId [int]
+	, @OriginalItemVersionID [int]
+	, @Name [varchar] (255)
+	, @Description [varchar] (4000)
+	, @ItemVersionDate [datetime]
+	, @StartDate [datetime]
+	, @EndDate [datetime]
+	, @LanguageId [int]
+	, @AuthorUserId [int]
+	, @MetaKeywords [varchar] (255)
+	, @MetaDescription [varchar] (400)
+	, @MetaTitle [varchar](255)
+	, @DisplayTabId [int]
+	, @Disabled [bit] = 0
+	, @Thumbnail [varchar] (500)
+)
+AS 
+
+declare @desc varchar(4000)
+if (len(ltrim(rtrim(@Description))) > 0) set @desc = @Description
+
+declare @keywords varchar(255)
+if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+
+declare @metaDesc varchar(400)
+if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+
+declare @title varchar(255)
+if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+
+declare @oivId int
+if (@OriginalItemVersionID <> -1) set @oivId = @OriginalItemVersionID
+
+declare @dtId int
+if (@DisplayTabId <> -1) set @dtId = @DisplayTabId
+
+declare @lId int
+if (@LanguageId = -1) 
+	set @lId = 1
+else
+	set @lId = @LanguageId
+
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+	[ItemID]
+	, [OriginalItemVersionID]
+	, [Name]
+	, [Description]
+	, [ItemVersionDate]
+	, [StartDate]
+	, [Enddate]
+	, [LanguageId]
+	, [AuthorUserId]
+	, [MetaKeywords]
+	, [MetaDescription]
+	, [MetaTitle]
+	, [DisplayTabId]
+	, [LastUpdated]
+	, [Disabled]
+	, [Thumbnail]
+	)
+ 
+VALUES 
+	( 
+	@ItemId 
+	, @oivId
+	, @Name 
+	, @desc
+	, @ItemVersionDate
+	, @StartDate
+	, @EndDate
+	, @lId
+	, @AuthorUserId
+	, @keywords
+	, @metaDesc
+	, @title
+	, @dtId
+	, GetDate()
+	, @disabled
+	, @Thumbnail
+	)
+ 
+select SCOPE_IDENTITY()
+return SCOPE_IDENTITY()
+GO
+
+
+
+/* start new script for 4.3.1, no more 4.3.0 SQL changes  */
+

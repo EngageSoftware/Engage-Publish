@@ -1,0 +1,14 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vParentItems]
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vParentItems] as
+select
+	r.childItemId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] r
+	join {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}engageams_vitems]parent on (r.parentItemId = parent.ItemId)
+
+
+GO

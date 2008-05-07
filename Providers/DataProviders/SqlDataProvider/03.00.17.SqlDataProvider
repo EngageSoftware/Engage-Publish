@@ -1,0 +1,35 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ArticleText [ntext]
+	, @ReferenceNumber [varchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+GO

@@ -1,0 +1,1306 @@
+/* form elements */
+.input_dropdown, .input_textbox
+{
+	font-size: 11px;
+}
+
+.rightAlign
+{
+    text-align: right;
+}
+
+/*nowrap only work when applied to a td directly (either as <td class="nowrap"> or <table class="nowrapTable">)*/
+.nowrap
+{
+    white-space: normal;
+}
+
+.nowrapTable td
+{
+    white-space: nowrap;
+}
+
+.Help
+{
+    white-space: normal;
+}
+
+/*Article Edit*/
+.editTableLabelColumn
+{
+    vertical-align: text-top;
+    text-align: right;
+    width:20%;
+}
+
+
+.fullWidth
+{
+    width:100%;
+}
+
+
+
+/* admin styles */
+.SettingsTable
+{
+	width:550px;
+}
+.SettingsTable td
+{
+	padding:3px;
+    width:50%;
+}
+.SettingsTable tr
+{
+	vertical-align:top;
+}
+.AdminSettingsTable
+{
+	width: 100%;
+}
+
+.articleListDropDown
+{
+    width: 200px;
+}
+
+.configureOverrideable .categoryOptionDropDown, .configureOverrideable .articleOptionDropDown
+{
+    display:none;
+}
+
+
+.admin_toolbar
+{
+	clear:both;
+}
+.admin_item
+{
+	width: 70px;
+	float: left;
+	text-align: center;
+}
+.admin_item_icon
+{
+	width: 70px;
+	
+}
+.admin_item_text
+{
+	width: 70px;
+	padding-top: 5px;
+	clear: both;
+}
+
+.admin_item_articles
+{
+	background:url(admin/images/articles.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_articles_sel
+{
+	background:url(admin/images/articles_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+.admin_item_categories
+{
+	background:url(admin/images/categories.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_categories_sel
+{
+	background:url(admin/images/categories_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+
+.admin_item_settings
+{
+	background:url(admin/images/settings.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_settings_sel
+{
+	background:url(admin/images/settings_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+
+.admin_item_comments
+{
+	background:url(admin/images/comments.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_comments_sel
+{
+	background:url(admin/images/comments_sel.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_help
+{
+	background:url(admin/images/help.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_help_sel
+{
+	background:url(admin/images/help_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+
+
+.admin_item_delete
+{
+	background:url(admin/images/delete.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_delete_sel
+{
+	background:url(admin/images/delete_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+
+.admin_item_syndication
+{
+	background:url(admin/images/syndication.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_syndication_sel
+{
+	background:url(admin/images/syndication_sel.gif);
+	background-repeat:no-repeat;	
+}
+
+
+.admin_item_admintools
+{
+	background:url(admin/images/admintools.gif);
+	background-repeat:no-repeat;
+}
+
+.admin_item_admintools_sel
+{
+	background:url(admin/images/admintools_sel.gif);
+	background-repeat:no-repeat;
+	
+}
+
+
+
+.divAdminItemSearch
+{
+	padding-left:5px;
+	padding-top:5px;
+	padding-right:5px;
+	padding-bottom:0px;
+	width:100%;
+	background-color:#ffffff;
+	border:solid 1px #000000;
+}
+
+.adminItemSearchDarkRow
+{
+	/*background-color:#FFCC66;
+	margin-bottom:5px;
+	padding:3px;*/
+	background-color: #f1f1f1;
+	width:100%;	
+}
+
+.adminItemSearchLightRow
+{
+	/*background-color:#FFF2D8;
+	margin-bottom:5px;
+	padding:3px;*/
+	background-color: #ffffff;
+	width:100%;
+}
+
+.adminSearchResultsLightRow
+{
+	background-color:#FFF2D8;
+	width:100%;
+}
+
+.adminSearchResultsLight2Row
+{
+	background-color:#FFFAF2;
+	padding:15px;
+	width:100%;
+}
+
+.adminSearchResultsLightRow td.adminSearchResultsThumbRow
+{
+	background-color:#DAF2DA;
+	width:85px;
+}
+
+.adminSearchResultsLight2Row td.adminSearchResultsThumbRow
+{
+	background-color:#C2EBC3;
+	width:85px;
+}
+
+
+.adminSearchResultstable,
+.adminSearchResultsTable td
+{
+	padding:3px;
+}
+.adminSearchResultsHeader
+{
+	background-color:#f56b0c;
+	border-left:solid 1px #000000;
+	border-top:solid 1px #000000;
+	border-right:solid 1px #000000;
+	border-bottom:solid 1px #000000;
+	color:#fcd1b3;
+	font-weight:bold;
+}
+
+.adminItemSearchDrop
+{
+	float:right;
+	display:inline;
+}
+
+.adminItemSearchLabel
+{
+	float:left;
+	padding-left:25px;
+}
+
+.error
+{
+	color:Red;
+	font-weight:bold;
+}
+
+
+/*articles for admin item search, not used anymore */
+#articleDiv .divAdminItemSearch
+{
+	padding-left:5px;
+	padding-top:5px;
+	padding-right:5px;
+	padding-bottom:0px;
+	width:100%;
+	background-color:#ffffff;
+	border:solid 1px #FFCC66;
+}
+
+#articleDiv .adminItemSearchDarkRow
+{
+	background-color:#FFCC66;
+	margin-bottom:5px;
+	padding:3px;
+	width:100%;	
+}
+
+#articleDiv .adminItemSearchLightRow
+{
+	background-color:#FFF2D8;
+	margin-bottom:5px;
+	padding:3px;
+	width:100%;
+}
+
+#articleDiv .adminSearchResultsLightRow
+{
+	background-color:#FFF2D8;
+	width:100%;
+}
+
+#articleDiv .adminSearchResultsLight2Row
+{
+	background-color:#FFFAF2;
+	padding:15px;
+	width:100%;
+}
+
+#articleDiv .adminSearchResultsLightRow td.adminSearchResultsThumbRow
+{
+	background-color:#DAF2DA;
+	width:85px;
+}
+
+#articleDiv .adminSearchResultsLight2Row td.adminSearchResultsThumbRow
+{
+	background-color:#C2EBC3;
+	width:85px;
+}
+
+
+#articleDiv .adminSearchResultstable,
+#articleDiv .adminSearchResultsTable td
+{
+	padding:3px;
+}
+#articleDiv .adminSearchResultsHeader
+{
+	background-color:#f56b0c;
+	color:#ffffff;
+}
+
+#articleDiv .adminItemSearchDrop
+{
+	float:right;
+	display:inline;
+}
+
+#articleDiv .adminItemSearchLabel
+{
+	float:left;
+	padding-left:25px;
+}
+
+
+
+/*
+**********************************************
+Module CSS
+**********************************************
+*/
+
+
+/*Related Item CSS*/
+.divRelatedItems
+{
+	background-color:#737D89;
+	width: 225px;
+	padding: 5px 5px 5px 5px;
+	color:White;
+	margin-bottom: 10px;
+}
+
+.divRelatedItems .title
+{
+	text-align: center;
+	width: 215px;
+}
+
+.divRelatedItems .image
+{
+	margin-top: 10px;
+	margin-right: 5px;
+	border: solid 1px #000000;
+}
+	
+.divRelatedItems .noimage
+{
+	margin-top: 10px;
+	margin-right: 5px;
+}
+	
+.divRelatedItems .text
+{
+	color: #FFFFFF;
+	font-size:12px;
+}
+
+.divRelatedItems a.text,
+.divRelatedItems a.text:hover,
+.divRelatedItems a.text:visited
+{
+	color: #FFFFFF;
+	font-weight:bold;
+	text-decoration:underline;
+}
+	
+
+.divNavigationMenu
+{
+	width:137px;
+}
+
+#divArticleContent
+{
+}
+
+#articleThumbnails
+{
+    float:right;   
+}
+
+#articleThumbnails img
+{
+    display: block;
+}
+
+.divNavigationMenu
+{
+}
+
+/*Breadcrumb*/
+.divBreadcrumb
+{
+	font-size: 10pt;
+	margin-bottom: 5px;
+}
+
+.divBreadcrumb .seperator
+{
+}
+
+.divBreadcrumb a.navlink,
+.divBreadcrumb a.navlink:link,
+.divBreadcrumb a.navlink:hover,
+.divBreadcrumb a.navlink:visited
+{
+	color: #90593A;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/*Quick Search*/
+.quickSearchDropDown
+{
+	width:145px;
+	overflow:hidden;
+}
+
+.qsHeader
+{
+	background:url(images/quicksearch/quick-search-head.gif);
+	height:47px;
+	background-repeat:no-repeat;
+}
+
+
+
+/* Search Results */
+.divSearchResults {}
+
+.divSearchResults .title 
+{
+	font-weight: bold;
+	font-size: 15pt;
+	color: #666666;
+}
+
+.divSearchResults .description 
+{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.divSearchResults .step {}
+
+.divSearchResults .results {}
+
+.divSearchResults .results .label
+{
+	font-weight: bold;
+}
+
+.divSearchResults .name {}
+
+.divSearchResults .downloadlink {}
+
+.divSearchResults .header 
+{ 
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+.divQuickSearch 
+{
+	FONT-SIZE: 8pt; 
+	COLOR: #000000; 
+}
+.divQuickSearch .DropDown { COLOR: #000000 }
+.divQuickSearch .RadioButtonList { FONT-SIZE: 8pt; COLOR: #000000 }
+.divQuickSearch .quickSearchDropDown { COLOR: #000000 }
+
+
+.divRelatedItemsText
+{
+	font-size:8pt;
+}
+
+#divArticleTitle
+{
+		
+}
+
+.txtName
+{
+	width:300px;
+}
+
+
+#divEmailAFriend
+{
+	float:left;
+}
+#divPrinterFriendly
+{
+	float:right;
+}
+	
+.divEmailAFriendForm
+{
+	float:left;	
+}
+
+#divControls
+{
+	width:100%;
+	clear:both;
+}
+
+
+
+
+.item_listing
+{
+	padding: 5px 5px 5px 5px;
+	margin-bottom: 11px;
+	clear:both;
+}
+.item_listing_thumbnail
+{
+	float: left;
+	margin-left: 5px;
+	margin-right: 10px;
+	width:85px;
+	height:85px;
+	background-image:url(../images/thumbnail.gif);
+	background-repeat:no-repeat;
+}
+.item_listing_nothumbnail
+{
+    display:none;
+}
+
+.item_listing_thumbnail_image
+{
+	width:85px;
+	height:85px;
+}
+
+.List .item_listing_thumbnail_image, .List .item_listing_thumbnail, .List .item_listing_abstract, .List .item_listing_readmore, .List .item_listing_category
+{
+	display: none;
+}
+
+.List .item_listing
+{
+	padding: 1px 2px 1px 2px;
+	margin-bottom: 2px;
+}
+
+.divItemApprovalSection
+{
+	width:100%;
+	padding-left:15px;
+}
+
+.divAdminMenuWrapper
+{
+	border:solid 1px gray;
+	background-color: #f1f1f1;
+	padding:15px;
+	height:100%;
+}
+
+.Publish_ApprovalComments
+{
+	height:75px;
+	width:300px;
+}
+
+.Publish_VersionComments
+{
+	padding:5px;
+	border:dashed 1px #000;
+	clear:right;
+	margin-top:5px;
+	margin-bottom:10px;
+	width:95%;
+}
+
+#divAdminLinks
+{
+	clear:both;
+	width:100%;
+	padding-bottom:15px;	
+}
+
+#divAdminLinks ul
+{
+	margin-left:0px;
+	text-indent:0px;	
+	display:inline;
+	
+}
+
+#divAdminLinks li
+{
+	list-style-type:none;
+	padding-right:5px;
+	float:left;
+}
+
+.lblApprovalResults
+{
+	float:left;
+}
+
+.divRelatedArticle
+{
+	width:300;
+	border:solid 1px #000000;
+	float:right;
+}
+
+/*these settings are for the Publish Settings table, loaded by the admin controls */
+
+#PublishSettingsTable
+{margin-top:15px;
+}
+#PublishSettingsTable tr
+{
+	vertical-align:top;
+	height:25px;
+}
+
+.listing_table_head_row
+{
+	 background-color: Gray;
+	 font-weight: bold;
+	 color: White;
+}
+
+.AdminContainerImagesHeight
+{
+	height:45;
+}
+
+/*Rating Control*/
+.ratingStar {
+    font-size: 0pt;
+    width: 13px;
+    height: 12px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.filledRatingStar {
+    background-image: url(Images/FilledStar.png);
+
+}
+
+.emptyRatingStar {
+    background-image: url(Images/EmptyStar.png);
+}
+
+.savedRatingStar {
+    background-image: url(Images/SavedStar.png);
+}
+
+.divRatingBefore
+{
+}
+.divRatingAfter
+{
+}
+
+/*Modal Popup*/
+.commentBackground 
+{
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+	height:100%;
+	width:100%;
+}
+
+.commentPopup {
+	background-color:#ffffdd;
+	border-width:3px;
+	border-style:solid;
+	border-color:Gray;
+	padding:3px;
+	width:300px;
+}
+.modalBackground 
+{
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+	height:100%;
+	width:100%;
+}
+
+.modalPopup {
+	background-color:#ffffdd;
+	border-width:3px;
+	border-style:solid;
+	border-color:Gray;
+	padding:3px;
+	width:550px;
+}
+
+
+
+#commentEntryWrapper
+{
+	
+}
+
+#commentInstructions
+{
+}
+
+#commentText
+{
+}
+
+#commentFirstName
+{
+}
+
+#commentLastName
+{
+}
+
+#commentEmail
+{
+}
+
+#commentSubmit
+{
+}
+#commentCancel
+{
+}
+#CommentValue
+{
+	margin:1px;
+	width:95%;
+}
+
+#CommentName
+{
+	float:left;
+}
+#CommentCreatedDate
+{
+	float:right;
+}
+#PublishComment
+{
+	background-color:#f0efef;
+	width:99%;
+	display:table;
+	padding:3px;
+	border-bottom:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
+	border-top:solid 1px #b0b0b0; /*adds a border to the top of each listing */
+	border-left:solid 1px #b0b0b0; /*adds a border to the left of each listing */
+	border-right:solid 1px #b0b0b0; /*adds a border to the right of each listing */
+}
+
+.PublishNoComments
+{
+	clear:both;
+}
+
+.PublishCommentAlternate #PublishComment
+{
+	background-color:#fcf7f7;
+}
+
+.commentTextbox
+{
+	height:100px;
+	width:250px;
+}
+
+/* this class controls the comment entry window */
+.commentEntry
+{
+	
+}
+
+/* this class controls the comment confirmation window */
+.commentConfirmation
+{
+}
+
+#divCommentsDisplay
+{
+	clear:both;
+}
+
+.progressUpdate
+{
+	position:fixed;
+	top:0px;
+	left:0px;
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+	height:100%;
+	width:100%;
+	z-index:11;
+}
+
+.progressWrap
+{
+	position:fixed;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+	z-index:14;
+}
+
+.progressUpdateMessage
+{
+	position:relative;
+	top:50%;
+	background-color:#ffffff;
+	width:300px;
+	height:100px;
+	border:solid 2px Gray;
+	filter:alpha(opacity=100);
+	opacity:1.0;
+	text-align:center;
+	z-index:15;
+	left:50%;
+	margin-left:-150px;
+}
+
+
+/* the following classes are used for the nLevels Category Display */
+.divNLevelsListing
+{
+	
+}
+
+/* this class controls how the items for nLevels are displayed */
+.divNLevelsListing li
+{
+}
+
+/* this class is used if you enable highlighting the current item in the module settings */
+.NLevelCurrentItem
+{
+	font-weight:bold;
+}
+
+
+/* END the following classes are used for the nLevels Category Display */
+
+
+.tbButton
+{
+	padding-left:5px;
+}
+
+.tbButtonHover
+{
+	padding-left:5px;
+	text-decoration:underline;
+	cursor:hand;
+}
+
+
+.toolbar
+{
+	position:absolute;
+	z-index:13;
+	background-color:#ffffff;
+	border:solid 1px #000;
+	width:400px;
+	top:-5px;
+	padding:5px;
+	
+}	
+
+
+.PublishAdminLink
+{
+	
+}
+
+.Publish_ReturnToList
+{	
+	
+}
+
+/**************************************/
+/*Gallery Intergration Thumbnail Popup*/
+/**************************************/
+
+.publishArticleThumbnail {
+    border:1px solid #000000;
+    margin: 5px;
+}
+
+a.mouseOverImage, a.mouseOverImage:visited
+{
+    display:block;
+    text-decoration:none;
+}
+
+a.mouseOverImage:hover
+{
+    color:#000000;
+    text-decoration:none;
+}
+
+.publishArticleThumbnailWrapper
+{
+    cursor: default;
+}
+
+
+.mouseOverPopup
+{   cursor: default;
+	top: -150px;
+}
+
+
+.categoryItemList .itemDate
+{
+	float:right;
+	padding-right:3px;
+	clear:right;
+}
+
+.categoryItemList .itemReadmore
+{
+	clear:both;
+	text-align:right;
+}
+
+.categoryItemList .itemTitle
+{
+	float:left;
+	width:100%;	
+}
+
+.categoryItemList .itemAuthor
+{
+	float:left;
+}
+
+.categoryItemList .itemAuthorDate
+{
+	width:100%;
+	clear:both;
+}
+
+.categoryItemList .itemEditLink
+{
+	float:right;
+}
+.categoryItemList .itemDescription
+{
+	float:left;
+	width:95%;
+}
+.categoryItemList .itemThumbnail
+{
+	float:left;
+	padding-right:5px;
+}
+
+.categoryItemList .divItemContent
+{
+	float:left;	
+}
+
+.categoryItemList .lnkTitle
+{
+	float:left;
+}
+
+.categoryItemList
+{
+	display:table;
+	width:99%;
+	clear:both;
+	background-color:#f0efef; /* the background color for the listing */
+	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */
+	padding:3px; /*this adds some spacing around the inside of the div */
+	display:inline-block; /*this enables the div to wrap around items in IE7 */
+	border-bottom:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
+	border-top:solid 1px #b0b0b0; /*adds a border to the top of each listing */
+	border-left:solid 1px #b0b0b0; /*adds a border to the left of each listing */
+	border-right:solid 1px #b0b0b0; /*adds a border to the right of each listing */
+}
+
+.altCategoryItemList
+{
+	background-color:#fcf7f7; /* the background color for the listing */
+}
+
+
+.categoryDisplayArticle .categoryItemList
+{
+	background:none;
+	border:0px solid #000;
+	padding:0px;
+	margin:0px;
+}
+
+.categoryDisplayCategory .categoryItemList
+{
+	background:none;
+	border:0px solid #000;
+	padding:0px;
+	margin:0px;
+
+}
+
+
+/* div used on the Article and Category Edit pages for providing instructions to the user */
+.instructions
+{
+	margin-left:50px;
+	margin-right:50px;
+	border:solid 1px black;
+	padding:5px;
+	background-color:#ccc;
+}
+
+
+.publishDescriptionEditor
+{
+	width:100%;
+	vertical-align:top;
+}
+
+.publishDescriptionTxt
+{
+	width:100%;
+	height:250px;
+	display:table;
+}
+
+.publishVersionDescription
+{
+	width:300px;
+	background:#f1f1f1;
+	border:solid 3px #ccc;
+	padding:3px 3px 3px 3px;
+}
+
+.Publish_CommentApproval
+{
+	width:300px;
+	background:#f1f1f1;
+	border:solid 3px #ccc;
+	padding:3px 3px 3px 3px;
+}
+
+.Publish_CommentApprovalComment
+{
+	float:left;
+	clear:left;
+}
+.Publish_CommentApprovalEmailAddress
+{
+	float:left;
+	clear:left;
+}
+.Publish_CommentApprovalName
+{
+	float:left;
+	clear:left;
+}
+
+.publishTextBoxWidth
+{
+	width:100%;
+}
+
+.publishTextBoxHeight
+{
+	width:250px;
+}
+
+
+#publishTagCloud ol li span
+{
+	position:absolute; 
+	left:-999px; 
+	width:990px;
+}
+
+ #publishTagCloud LI { display: inline; }
+
+/*Publish Tag Sizes*/
+.size1
+{
+	font-size:1em;
+}
+.size2
+{
+	font-size:1.3em;
+}
+.size3
+{
+	font-size:1.6em;
+}
+.size4
+{
+	font-size:1.9em;
+}
+.size5
+{
+	font-size:2.2em;
+}
+.size6
+{
+	font-size:2.5em;
+}
+
+#Publish_CategorySortSortedListDiv
+{
+	float:right;
+	padding-left:15px;
+	width:50%;
+}
+
+#Publish_CategorySortInitialListDiv
+{
+	float:left;	
+}
+
+.Publish_CategorySortDelete
+{
+	float:right;
+}
+
+.Publish_CategorySortUnsortedList
+{
+	height:150px;
+	width:300px;
+}
+
+#publishSortSave
+{
+	clear:both;
+	text-align:center;
+}
+
+.Publish_ArticleTags
+{
+	border:dashed 1px #000033;
+	margin:5px 0px 15px 0px;
+	padding:3px 3px 3px 3px;
+}
+
+
+.Publish_CategorySortedList
+{
+	border:solid 1px #000033;
+}
+
+.Publish_CategorySortedList li
+{
+	list-style-type:none;
+	margin-left:-30px;
+}
+
+.Publish_CategorySortedItem
+{
+	height:25px;
+	white-space:nowrap;
+}
+
+.Publish_SortItem
+{
+	white-space:nowrap;
+	color:#000033;
+}
+
+
+.Publish_CategorySortItemDrop
+{
+	height:25px;
+	border:dotted 2px #000033;
+}
+
+.Publish_ItemViewReport
+{
+	border:dashed 1px #000;
+	width:100%;
+	padding:3px;
+}
+
+.Publish_ItemViewReportOptionLabel
+{
+	float:left;
+}
+
+.Publish_ItemViewReportOption
+{
+	float:left;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+.Publish_ItemViewReportCalendar
+{
+	width:75px;
+}
+
+
+.Publish_CustomDisplayPaging
+{
+	clear:both;
+}
+
+.Publish_CheckBoxColumn
+{
+	width:25px;
+}
+
+.DataGrid_Header
+{}
+.DataGrid_Header th, .DataGrid_Header th a
+{
+	 background-color: Gray;
+	 font-weight: bold;
+	 color: White;
+}
+.DataGrid_Item
+{
+	width:100%;
+}
+.DataGrid_Item td
+{
+	background-color: #ffffff;
+}
+.DataGrid_AlternatingItem
+{
+	width:100%;	
+}
+.DataGrid_AlternatingItem td
+{
+	background-color: #f1f1f1;
+	color:#000;
+}
+.DataGrid_Item td, .DataGrid_AlternatingItem td
+{	
+	padding:3px;
+}

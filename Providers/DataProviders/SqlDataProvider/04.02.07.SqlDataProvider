@@ -1,0 +1,92 @@
+﻿IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel](@parentItemID int, @nLevels int, @mItems int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0,
+		Level int default 0
+	)
+as
+begin
+
+declare @topLevelRelationshipTypeId int 
+set @topLevelRelationshipTypeId  = (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+declare @itemToParentRelationshipTypeId int
+set @itemToParentRelationshipTypeId =  (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Parent Category')
+declare @itemToRelatedRelationshipTypeId int
+set @itemToRelatedRelationshipTypeId=  (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Related Category')
+
+
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionId, RelationshipTypeID, [Level])
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID, 0
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (parent.ChildItemId = vi.ItemId and parent.ChildItemVersionId = vi.ItemVersionId)
+	where 
+		parent.ParentItemID = @parentItemID
+		and parent.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+		and vi.IsCurrentVersion=1
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+
+	IF @nLevels > 0
+		/*if we're looking for NLevels */
+		BEGIN
+			insert @hierarchy
+			select 
+				t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1
+			from 
+				@hierarchy t
+				join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+				join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)
+			where 
+				t.Processed = 1 
+				and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+				and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID ) <1
+				and vi.IsCurrentVersion=1
+				and [level] < @nLevels
+
+		END
+
+	ELSE
+
+		BEGIN
+			insert @hierarchy
+			select 
+				t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1
+			from 
+				@hierarchy t
+				join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+				join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)
+			where 
+				t.Processed = 1 
+				and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+				and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID ) <1
+				and vi.IsCurrentVersion=1
+
+		END	
+
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+GO
+

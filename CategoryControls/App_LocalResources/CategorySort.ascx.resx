@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblItemType.Text" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="editLink.Text" xml:space="preserve">
+    <value>edit</value>
+  </data>
+  <data name="lblVersionsLink" xml:space="preserve">
+    <value>versions</value>
+  </data>
+  <data name="lnkAddNewCategory.Text" xml:space="preserve">
+    <value>Add Category</value>
+  </data>
+  <data name="ChooseOne.Text" xml:space="preserve">
+    <value>[Choose One]</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SubCategoriesFor.Text" xml:space="preserve">
+    <value>Subcategories for</value>
+  </data>
+  <data name="VersionId.Text" xml:space="preserve">
+    <value>VersionId</value>
+  </data>
+  <data name="Versions.Text" xml:space="preserve">
+    <value>Versions</value>
+  </data>
+  <data name="lblItemType.Help" xml:space="preserve">
+    <value>Choose a category to display it's subcategories</value>
+  </data>
+  <data name="SubCategories.Text" xml:space="preserve">
+    <value>Subcategories</value>
+  </data>
+  <data name="NoSubcategoriesFor.Text" xml:space="preserve">
+    <value>No subcategories found for</value>
+  </data>
+  <data name="lblWorkFlow.Help" xml:space="preserve">
+    <value>Select a workflow status to see a list of sub-categories with a corresponding status.</value>
+  </data>
+  <data name="lblWorkFlow.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="ID.Text" xml:space="preserve">
+    <value>Item ID</value>
+  </data>
+  <data name="CategorySort.Text" xml:space="preserve">
+    <value>Sort Items</value>
+  </data>
+  <data name="lbMoveToSort.Text" xml:space="preserve">
+    <value>Move to Sortable List</value>
+  </data>
+  <data name="lblCategoryItems.Text" xml:space="preserve">
+    <value>List of Items</value>
+  </data>
+  <data name="lblSortedItems.Text" xml:space="preserve">
+    <value>Sorted Items</value>
+  </data>
+  <data name="lbSaveSort.Text" xml:space="preserve">
+    <value>Save Sort Order</value>
+  </data>
+  <data name="SaveSuccess.Text" xml:space="preserve">
+    <value>Your save has been completed.</value>
+  </data>
+  <data name="lbCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblCategory.Text" xml:space="preserve">
+    <value>Sort items for {0}</value>
+  </data>
+  <data name="lblPublishInstructions.Text" xml:space="preserve">
+    <value>With this page you can sort the items in a particular category. You can choose an item from the list and click on "Move to sortable list", once there you can drag and drop items to control their order. When you are done sorting the list click on Save Sort Order at the bottom of the page.</value>
+  </data>
+  <data name="shPublishInstructions.Text" xml:space="preserve">
+    <value>Instructions</value>
+  </data>
+  <data name="lblEmptyList.Text" xml:space="preserve">
+    <value>No Items Sorted</value>
+  </data>
+</root>

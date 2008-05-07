@@ -1,0 +1,117 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]
+@ParentItemId int, 
+@ItemTypeId int,
+@RelationshipTypeId int,
+@PortalId int
+AS
+
+set nocount on
+
+declare @TempTable table
+(	
+	ItemId int not null
+	, ItemVersionId int not null
+)
+
+insert into @TempTable
+select 
+	c.ItemId, c.itemVersionId
+from 
+	{databaseOwner}[{objectQualifier}engageams_vChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 1
+	and c.RelationshipTypeId = @RelationshipTypeId 
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+
+insert into @TempTable
+
+select 
+	c.ItemId
+	, Max(c.ItemVersionId)
+
+from 
+	{databaseOwner}[{objectQualifier}engageams_vChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 0
+	and c.RelationshipTypeId = @RelationshipTypeId  
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+	and not exists (Select * from @TempTable w where w.ItemId = c.itemId)
+group by c.ItemId
+
+set nocount off
+
+Select vi.[Name] 
+	, vi.[Description]
+	, t.ItemId
+	, t.ItemVersionId
+	, vi.IsCurrentVersion
+	, (select count(ParentItemId) from 
+	{databaseOwner}[{objectQualifier}engageams_vchilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId = 
+	(select RelationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname = 'Item To Parent Category')
+	and ItemTypeId = 
+	(select  itemtypeid from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category')
+	) 'ChildCount'
+
+from @TempTable t
+join {databaseOwner}[{objectQualifier}engageams_vitems] vi on (vi.ItemVersionId = t.ItemVersionId)
+where vi.IsCurrentVersion=1
+order by vi.[Name]
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemType] ADD IsTopLevel bit DEFAULT 0
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemType] ADD IsActive bit DEFAULT 1
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemType] 
+SET IsTopLevel  = 1 
+WHERE Name = 'TopLevelCategory'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemType] 
+SET IsTopLevel  = 0 
+WHERE IsTopLevel is null
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemType] 
+SET IsActive = 0 
+WHERE Name in ('Product', 'Document', 'Media')
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemType] 
+SET IsActive = 1 
+WHERE IsActive is null
+GO
+
+ALTER view {databaseOwner}[{objectQualifier}engageams_vItemTypes] as
+SELECT
+	ItemTypeId, [Name], [Description], TableName , IsTopLevel, IsActive
+FROM
+	 {databaseOwner}[{objectQualifier}EngageAMSItemType]
+
+GO
+
+

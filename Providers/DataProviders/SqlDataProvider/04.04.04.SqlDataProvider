@@ -1,0 +1,203 @@
+﻿
+
+if exists (select * from dbo.sysobjects where id = object_id(N'DF_{objectQualifier}Publish_Tags_DateCreated'))
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tags
+	DROP CONSTRAINT DF_{objectQualifier}Publish_Tags_DateCreated
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_Tags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[Tmp_{objectQualifier}Publish_Tags]
+GO
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Publish_Tags
+	(
+	TagId int NOT NULL IDENTITY (1, 1),
+	Name nvarchar(256) NOT NULL,
+	Description nvarchar(2000) NULL,
+	TotalItems int NOT NULL,
+	MostRecentDate datetime NULL,
+	LanguageId int NOT NULL,
+	DateCreated datetime NOT NULL,
+	PortalId int NOT NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}Tmp_{objectQualifier}Publish_Tags ADD CONSTRAINT
+	DF_{objectQualifier}Publish_Tags_DateCreated DEFAULT (getdate()) FOR DateCreated
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_Tags ON
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Publish_Tags)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Publish_Tags (TagId, Name, Description, TotalItems, MostRecentDate, LanguageId, DateCreated)
+		SELECT TagId, Name, Description, TotalItems, MostRecentDate, LanguageId, DateCreated FROM {databaseOwner}{objectQualifier}Publish_Tags TABLOCKX')
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_Tags OFF
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags
+	DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Publish_Tags') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}Publish_Tags
+GO
+
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Publish_Tags', N'{objectQualifier}Publish_Tags', 'OBJECT'
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tags ADD CONSTRAINT
+	PK_{objectQualifier}Publish_Tags PRIMARY KEY CLUSTERED 
+	(
+	TagId
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags FOREIGN KEY
+	(
+	TagId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_Tags
+	(
+	TagId
+	)
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ArticleVersion_ItemVersion'))
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion
+	DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_ArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}[Tmp_{objectQualifier}Publish_ArticleVersion]
+GO
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion
+	(
+	ItemVersionId int NOT NULL,
+	ItemId int NOT NULL,
+	VersionNumber nvarchar(50) NULL,
+	VersionDescription ntext NULL,
+	ArticleText ntext NOT NULL,
+	ThumbnailMediaItemId int NULL,
+	ReferenceNumber nvarchar(50) NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Publish_ArticleVersion)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion (ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText, ThumbnailMediaItemId, ReferenceNumber)
+		SELECT ItemVersionId, ItemId, VersionNumber, CONVERT(ntext, VersionDescription), ArticleText, ThumbnailMediaItemId, ReferenceNumber FROM {databaseOwner}{objectQualifier}Publish_ArticleVersion TABLOCKX')
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Publish_ArticleVersion') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion
+GO
+
+
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion', N'{objectQualifier}Publish_ArticleVersion', 'OBJECT'
+GO
+
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion ADD CONSTRAINT
+	PK_{objectQualifier}ArticleVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) WITH FILLFACTOR = 90 ON [PRIMARY]
+
+GO
+
+
+CREATE NONCLUSTERED INDEX FK_{objectQualifier}Publish_ArticleVersion_ItemVersionId ON {databaseOwner}{objectQualifier}Publish_ArticleVersion
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}ArticleVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticles]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*, (select avg(convert(FLOAT, Rating)) from [{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from [{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
+from 
+	 [{objectQualifier}Publish_vwItems] i 
+	join [{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [nvarchar] (10)
+	, @VersionDescription [ntext]
+	, @ArticleText [ntext]
+	, @ReferenceNumber [nvarchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

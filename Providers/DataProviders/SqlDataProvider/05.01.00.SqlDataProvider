@@ -1,0 +1,17 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwRelationships]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwRelationships]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwRelationships] 
+as
+	select ir.ItemRelationshipId, ir.ChildItemId, child.ItemIdentifier as ChildItemIdentifier, 
+	ChildItemVersionId, child.ItemVersionIdentifier as ChildItemVersionIdentifier,
+	ParentItemId, parent.ItemIdentifier as ParentItemIdentifier, ir.RelationshipTypeId, rt.RelationshipName as RelationshipTypeName,
+	ir.StartDate, ir.EndDate, SortOrder, child.ModuleId, child.PortalId
+	From {databaseOwner}[{objectQualifier}Publish_ItemRelationship] ir
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (rt.RelationshipTypeid = ir.RelationshipTypeid)
+	join {databaseOwner}[{objectQualifier}Publish_Item] parent on (parent.ItemId = ir.ParentItemId)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems] child on (child.ItemVersionId = ir.ChildItemVersionId)
+
+GO
+

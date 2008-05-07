@@ -1,0 +1,243 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ProductVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ProductVersion] DROP CONSTRAINT {objectQualifier}FK_ProductVersion_ItemVersion
+GO
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildProducts    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertProductVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]
+GO
+
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertDocumentVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItemText    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemText]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemText]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertMediaVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]
+GO
+
+
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwArticleSearchIndexingUpdated    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]
+GO
+
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwDocuments    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwDocuments]
+GO
+
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwMedia    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwMedia]
+GO
+
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_DocumentVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_DocumentVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_DocumentVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemText]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemText]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_MediaVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_MediaVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_MediaVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ProductVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ProductVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ProductVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ColumnType]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ColumnType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ColumnType]
+GO
+
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_FlatParents]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_FlatParents]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_FlatParents]
+GO
+
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_PortalSettings]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_PortalSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_PortalSettings]
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+BEGIN
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump](@itemId int, @IndexTitle nvarchar(512), @IndexContent ntext, @IndexWashedContent ntext) AS
+BEGIN
+
+Update {databaseOwner}[{objectQualifier}Venexus_BrainDump]
+set  IndexTitle = @IndexTitle,
+	IndexContent = @IndexContent,
+	IndexWashedContent = @IndexWashedContent
+
+where indexurl like '%/desktopmodules/engagepublish/itemlink.aspx?itemid=' + CONVERT(varchar(10), @itemid)
+
+END
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemVersions]
+GO
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ 	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') and OBJECTPROPERTY(id, N'IsTableFunction') = 1)
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel](@parentItemID int, @nLevels int, @mItems int)  
+returns @hierarchy   
+ table   
+ (  
+	RowId int identity(1,1),
+  ParentItemID int,  
+  ChildItemID int,  
+  ChildItemVersionID int,  
+  RelationshipTypeID int,  
+  Processed int default 0,  
+  Level int default 0  
+ )  
+as  
+begin  
+  
+declare @topLevelRelationshipTypeId int   
+set @topLevelRelationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')  
+declare @itemToParentRelationshipTypeId int  
+set @itemToParentRelationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Parent Category')  
+declare @itemToRelatedRelationshipTypeId int  
+set @itemToRelatedRelationshipTypeId =  (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Related Category')  
+declare @rowsAdded int  
+  
+insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionId, RelationshipTypeID, [Level])  
+select
+ parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID, 0  
+from   
+ {databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent  
+ join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (parent.ChildItemId = vi.ItemId and parent.ChildItemVersionId = vi.ItemVersionId)  
+where   
+ parent.ParentItemID = @parentItemID  
+ and parent.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)  
+ and vi.IsCurrentVersion=1  
+   
+ set @rowsAdded = @@rowcount  
+   
+ while @rowsAdded > 0  
+ begin  
+  update @hierarchy set Processed = 1 where Processed = 0  
+  
+  IF @nLevels > -1  
+   /*if we're looking for NLevels */  
+   BEGIN  
+    insert @hierarchy  
+    select   
+     t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1  
+    from   
+     @hierarchy t  
+     join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)  
+     join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)  
+    where   
+     t.Processed = 1   
+     and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)  
+     and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID) < 1  
+     and vi.IsCurrentVersion=1  
+     and [level] < @nLevels  
+   END  
+  ELSE  
+   BEGIN  
+    insert @hierarchy  
+    select   
+     t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1  
+    from   
+     @hierarchy t  
+     join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)  
+     join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)  
+    where   
+     t.Processed = 1   
+     and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)  
+     and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID) < 1  
+     and vi.IsCurrentVersion=1 
+   END   
+
+  set @rowsAdded = @@rowcount  
+   
+  update @hierarchy set Processed = 2 where Processed = 1  
+ end  
+
+
+ delete from @hierarchy 
+ where
+rowid not in (select min(rowid) from @hierarchy group by childitemid)
+ return  
+end    
+GO
+

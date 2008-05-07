@@ -1,0 +1,29 @@
+﻿            
+            
+/* Publish_spGetTag */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetTag]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetTag]
+		(@PortalID 	[int],
+		 @TagName 	[nvarchar](256)
+		 )
+
+	AS 
+
+	Select tagId, 
+		name, 
+		description, 
+		totalItems, 
+		mostRecentDate, 
+		languageid, 
+		datecreated
+	From
+		{databaseOwner}[{objectQualifier}Publish_tags]
+	where 
+		PortalId = @PortalId
+		and name = @TagName
+	Order By Name asc
+
+GO

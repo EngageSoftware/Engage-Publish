@@ -1,0 +1,535 @@
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item to Parent Category')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item to Parent Category')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item to Related Category')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item to Related Category')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Article to Special Content Article')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Article to Special Content Article')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Thumbnail Image')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Thumbnail Image')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Related Category')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Related Category')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Related Article')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Related Article')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Related Document')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Related Document')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Related Product')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Related Product')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Related Media')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Related Media')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Video')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Item To Video')
+GO
+
+if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Category To Top Level Category')
+insert into {databaseOwner}[{objectQualifier}engageamsrelationshiptype]
+(relationshipname)
+values('Category To Top Level Category')
+GO
+
+
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Parent Category')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Article To Parent Article Category')
+GO
+
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Related Category')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Article To Related Article Category')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item to Special Content Article')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Article to Special Content Article')
+GO
+
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Related Article')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Article To Parent Article')
+GO
+
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Thumbnail Image')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Article To Thumbnail Image')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Parent Category')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Category To Parent Category')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Parent Category')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Document To Document Category')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Related Document')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Document To Related Document')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Item To Thumbnail Image')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Document To Thumbnail Image')
+GO
+
+update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipName = 'Media to Media Large Image')
+where relationshipTypeId = (select relationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname ='Image To Larger Image')
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategories]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getCategories]
+	@PortalId int
+	--@ItemTypeId
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.sortOrder
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategory]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getCategory]
+	@ItemId int
+	, @PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+	and i.itemId = @ItemId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategoryListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategoryListing]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_getCategoryListing]
+(
+	@ParentItemId [int]
+	, @PortalId [int]
+)
+AS 
+	if (@ParentItemId = -1)
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}engageams_vCategories] cat
+			join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category')
+		order by
+			--cat.[Name], child.[Name]
+			SortOrder ASC, child.ParentItemId, RelationshipName
+	end
+	else
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}engageams_vCategories] cat
+			join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category')
+		and	child.ParentItemId = @ParentItemId
+		order by
+			--cat.[Name], child.[Name]
+			SortOrder asc, child.ParentItemId, RelationshipName
+	end
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getItemCategories]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getItemCategories]
+	@PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.DisplayTabId
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate < GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = (select itemtypeId from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category') --3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.SortOrder
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_updateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_updateItemVersion]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_updateItemVersion]
+(
+	@ItemId [int]
+	, @ItemVersionId [int]
+	, @ApprovalStatusId [int]
+	, @ApprovalUserId [int]
+	, @ApprovalComments [varchar] (255)
+)
+AS 
+           
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Approved'))
+Begin
+	-- archive existing versions 
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Archived') , LastUpdated = GetDate()
+	WHERE ItemVersionId = @ItemVersionId and ApprovalStatusId = (select approvalstatusid from [{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Approved')
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate()
+	WHERE ItemId = @ItemId and ItemVersionId < @ItemVersionId
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItem] set ApprovedItemVersionId = @ItemVersionId
+	WHERE ItemId = @ItemId
+		
+End
+Else
+Begin
+	-- get current approval status
+	declare @currentApprovalStatusId [int]
+	set @currentApprovalStatusId = (select approvalStatusId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where itemVersionId = @ItemVersionId)
+	if (@currentApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Approved'))
+	begin
+		update {databaseOwner}[{objectQualifier}EngageAMSItem] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+	end
+End
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Archived'))
+begin
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] SET ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}engageamsapprovalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate() WHERE ItemId = @ItemId and @ItemVersionId < @ItemVersionId 
+--and ApprovalStatusId != 3
+		update {databaseOwner}[{objectQualifier}EngageAMSItem] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+end
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] 
+	
+	SET  
+		 [ApprovalStatusID]	 = @ApprovalStatusID,
+		 [ApprovalUserID]	 = @ApprovalUserID,
+		 [ApprovalComments ]	 = @ApprovalComments 
+	
+	WHERE 
+		( [ItemVersionId]	 = @ItemVersionId AND
+		 [ItemId]	 = @ItemId)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories](@portalId int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	declare @relationshipTypeId int 
+	declare @categoryItemTypeId int 
+	set @relationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}engageamsRelationshipType] where [relationshipName] = 'Category to Top Level Category')
+
+	set @categoryItemTypeId = (select itemTypeId from {databaseOwner}[{objectQualifier}engageamsItemType] where [name]='Category')
+
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.RelationshipTypeId = @relationshipTypeId
+		and i.PortalId = @portalId
+		and i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category')
+
+	set @rowsAdded = @@rowcount
+
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	child.RelationshipTypeId = @relationshipTypeId
+		and i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category')
+
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+		set @rowsAdded = @@rowcount
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+if not exists (select * from {databaseOwner}[{objectQualifier}engageams_vitems] where description = 'Category Top Level Category')
+BEGIN
+
+declare @retVal int
+declare @retValItemVersionId int
+declare @topLevelItemType int
+set @topLevelItemType = (select itemtypeid from {databaseOwner}[{objectQualifier}EngageAMSitemtype] where [name] = 'TopLevelCategory')
+exec {databaseOwner}[{objectQualifier}engageams_insertItem] @topLevelItemType, 0
+select @retVal = @@Identity
+
+declare @curDate datetime
+set @curDate = getDate()
+exec {databaseOwner}[{objectQualifier}engageams_insertItemVersion] @retVal, 0, 'Category', 'Category Top Level Category', @curDate, @curDate, null, 1, 1, '', '', '', -1
+select @retValItemVersionId = @@Identity
+exec {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion] @retValItemVersionId, @retVal, 1 
+declare @approvedStatusId int
+set @approvedStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype] where [approvalstatusname] = 'Approved')
+exec {databaseOwner}[{objectQualifier}engageams_updateItemVersion] @retVal, @retValItemVersionId, @approvedStatusId, 1, 'Initial Setup'
+
+END
+GO
+
+--Update the category to article top level category relationships
+Update {databaseOwner}[{objectQualifier}engageamsitemrelationship]
+set parentItemId = (select ItemId from {databaseOwner}[{objectQualifier}engageams_vitems] where description = 'Category Top Level Category')
+, relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname = 'Category To Top Level Category')
+where relationshiptypeid = (select relationshiptypeid from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname = 'Item To Parent Category')
+and parentItemId = (select itemId from {databaseOwner}[{objectQualifier}engageams_vitems] where description = 'Articles Top Level Category')
+
+GO
+
+
+

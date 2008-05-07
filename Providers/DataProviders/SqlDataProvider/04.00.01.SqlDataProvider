@@ -1,0 +1,18 @@
+﻿
+update {databaseOwner}[{objectQualifier}ModuleControls]
+set ControlSrc = 'DesktopModules/Engage.Dnn.Publish/ItemDisplay.ascx'
+where ControlSrc = 'DesktopModules/Engage.Dnn.Publish/Controls/ItemDisplay.ascx'
+
+GO
+
+update {databaseOwner}[{objectQualifier}ModuleControls]
+set ControlSrc = 'DesktopModules/Engage.Dnn.Publish/ItemDisplayOptions.ascx'
+where ControlSrc = 'DesktopModules/Engage.Dnn.Publish/Controls/ItemDisplayOptions.ascx'
+
+GO
+
+update {databaseOwner}[{objectQualifier}ModuleControls]
+set ControlSrc = 'DesktopModules/Engage.Dnn.Publish/AdminLoader.ascx'
+where ControlSrc = 'DesktopModules/Engage.Dnn.Publish/Admin/AdminLoader.ascx'
+
+GO

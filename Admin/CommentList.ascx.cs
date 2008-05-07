@@ -1,0 +1,265 @@
+//Engage: Publish - http://www.engagemodules.com
+//Copyright (c) 2004-2008
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
+using System;
+using System.Data;
+using System.Globalization;
+using System.Web.UI.WebControls;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Exceptions;
+using Engage.Dnn.Publish.Data;
+using Engage.Dnn.Publish.Util;
+
+namespace Engage.Dnn.Publish.Admin
+{
+	public partial class CommentList :  ModuleBase, IActionable
+	{
+		#region Event Handlers
+		override protected void OnInit(EventArgs e)
+		{
+		    this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
+		    this.Load += this.Page_Load;
+		    base.OnInit(e);
+		}
+
+	    private void Page_Load(object sender, EventArgs e)
+		{
+			try 
+			{
+				if (!Page.IsPostBack)
+				{
+                    Utility.LocalizeGridView(dgItems, LocalResourceFile);
+                    FillDropDown();
+                    BindData();
+				}	
+			} 
+			catch (Exception exc) 
+			{
+				Exceptions.ProcessModuleLoadException(this, exc);
+			}
+		}
+
+        private void cboCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindData();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(BuildLinkUrl(string.Empty), true);
+        }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdApprove_Click(object sender, EventArgs e)
+        {
+            //parse through the checked items in the list and approve them.
+            try
+            {
+                foreach (GridViewRow gvr in dgItems.Rows)
+                {
+                    Label commentId = (Label)gvr.FindControl("lblCommentId");
+                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    if (commentId != null && cb!=null && cb.Checked)
+                    {
+                        //approve
+                        Comment c = Comment.GetComment(Convert.ToInt32(commentId.Text, CultureInfo.CurrentCulture));
+                        c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+                        c.Save();
+                    }
+                }
+
+                Utility.ClearPublishCache(PortalId);
+                BindData();
+                
+                this.lblMessage.Text = Localization.GetString("CommentsApproved", LocalResourceFile);
+                
+                lblMessage.Visible = true;
+
+                
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (GridViewRow gvr in dgItems.Rows)
+                {
+                    Label lblCommentId = (Label)gvr.FindControl("lblCommentId");
+                    CheckBox chkSelect = (CheckBox)gvr.FindControl("chkSelect");
+                    if (lblCommentId != null && chkSelect != null && chkSelect.Checked)
+                    {
+                        //approve
+                        Comment c = Comment.GetComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.CurrentCulture));
+                        c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+                        c.Delete();
+                    }
+                }
+
+                BindData();
+                this.lblMessage.Text = Localization.GetString("CommentsDeleted", LocalResourceFile);
+
+                lblMessage.Visible = true;
+
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+
+        protected void dgItems_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            BindData();
+            dgItems.PageIndex = e.NewPageIndex;
+            dgItems.DataBind();
+        }
+
+		#endregion
+
+        #region Private Methods
+
+        private void FillDropDown()
+        {
+            ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
+
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            this.cboCategories.Items.Insert(0, li);
+
+            li = cboCategories.Items.FindByValue(CategoryId.ToString(CultureInfo.InvariantCulture));
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+
+            cboWorkflow.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId);
+            cboWorkflow.DataValueField = "ApprovalStatusID";
+            cboWorkflow.DataTextField = "ApprovalStatusName";
+            cboWorkflow.DataBind();
+            li = cboWorkflow.Items.FindByText(ApprovalStatus.Waiting.Name);
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+        }
+
+        private void BindData()
+		{
+            int categoryId = Convert.ToInt32(this.cboCategories.SelectedValue, CultureInfo.InvariantCulture);
+
+			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId);
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                this.lblMessage.Text = Localization.GetString("NoCommentsFound", LocalResourceFile) + " " + cboCategories.SelectedItem.ToString();
+                dgItems.Visible = false;
+                lblMessage.Visible = true;
+            }
+            else
+            {
+                dgItems.DataSource = ds;
+                dgItems.DataBind();
+
+                dgItems.Visible = true;
+                lblMessage.Visible = false;
+            }
+    	}
+
+        
+
+        private int CategoryId
+		{
+			get
+			{
+				string id = Request.QueryString["categoryid"];
+				return (id == null ? -1 : Convert.ToInt32(id, CultureInfo.InvariantCulture));
+			}
+		}
+
+        //private string CategoryName
+        //{
+        //    get	{return (Convert.ToString(Request.QueryString["category"]));}
+        //}
+
+        //private int TopLevelId
+        //{
+        //    get	
+        //    {
+        //        string s = Request.QueryString["topLevelId"];
+        //        return (s == null ? -1 : Convert.ToInt32(s));
+        //    }
+        //}
+
+        #endregion
+
+        #region Protected Methods
+
+        protected static string GetCommentText(object commentText)
+        {
+            return commentText != null ? HtmlUtils.StripTags(commentText.ToString(), true) : string.Empty;
+        }
+
+        protected static string GetShortCommentText(object commentText)
+        {
+            return commentText != null ? HtmlUtils.Shorten(HtmlUtils.StripTags(commentText.ToString(), true), 200, string.Empty) + "&nbsp" : string.Empty;
+        }
+
+        protected string GetCommentEditUrl(object commentId)
+        {
+            return commentId != null ? 
+                BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=commentEdit&commentid=" + commentId.ToString()) : 
+                string.Empty;
+        }
+
+	    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Does not return class state information")]
+        protected string GetLocalizedEditText()
+        {
+            return Localization.GetString("Edit", LocalResourceFile);
+        }
+
+        protected string BuildName(object firstName, object lastName)
+        {
+            return String.Format(CultureInfo.CurrentCulture, Localization.GetString("NameFormat", LocalResourceFile), firstName.ToString(), lastName.ToString());
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cboWorkflow_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindData();
+        }
+
+        #endregion
+
+        #region Optional Interfaces
+
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                ModuleActionCollection actions = new ModuleActionCollection();
+                actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+                return actions;
+            }
+        }
+
+       
+        #endregion
+    }
+}

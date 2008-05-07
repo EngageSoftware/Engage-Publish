@@ -1,0 +1,5 @@
+﻿if not exists  (select * from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where RelationshipName = 'Item To Article Links')
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Item To Article Links')
+GO

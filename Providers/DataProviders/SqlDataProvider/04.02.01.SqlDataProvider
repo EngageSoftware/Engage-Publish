@@ -1,0 +1,264 @@
+﻿if not exists (select * from sysindexes where name = '{objectQualifier}Publish_ItemVersion_ItemId_Thumbnail')
+CREATE NONCLUSTERED INDEX [{objectQualifier}Publish_ItemVersion_ItemId_Thumbnail] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+[ItemId] ASC,
+[Thumbnail] ASC
+)
+GO
+
+if not exists (select * from sysindexes where name = '{objectQualifier}Publish_ItemVersion_ItemVersionId_Thumbnail')
+CREATE NONCLUSTERED INDEX [{objectQualifier}Publish_ItemVersion_ItemVersionId_Thumbnail] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+[ItemVersionId] ASC,
+[ItemId] ASC,
+[Thumbnail] ASC
+)
+GO
+
+if not exists (select * from sysindexes where name = '{objectQualifier}Publish_ItemVersion_Item_ItemVersion_Thumbnail')
+CREATE NONCLUSTERED INDEX [{objectQualifier}Publish_ItemVersion_Item_ItemVersion_Thumbnail] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+[ItemId] ASC,
+[ItemVersionId] ASC,
+[Thumbnail] ASC
+)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+	@portalId int
+AS
+
+declare @relationshipTypeId int 
+set @relationshipTypeId = (select relationshiptypeId from [{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+select 
+	parent.ParentItemId,child.ItemId,child.Name, parent.RelationshipTypeId
+from 
+	[{objectQualifier}Publish_fnGetAllCategories]() parent
+	join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+where
+--	r.RelationshipTypeId = @relationshipTypeId
+	child.PortalId = @portalId
+and	IsCurrentVersion = 1
+and parent.PortalId = @portalId
+and StartDate <= getdate() 
+and (EndDate > getdate() or EndDate is null)
+
+order by
+	parent.ParentItemId, child.ItemId
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildren]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+select 
+	parent.ParentItemId, child.ItemId, child.name, parent.RelationshipTypeId
+from 
+	{databaseOwner}[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+	join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+where
+	child.PortalId = @portalId
+and	IsCurrentVersion = 1
+order by
+	parent.ParentItemId, child.ItemId
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]
+@itemTypeId int, 
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+select 
+	parent.ParentItemId, child.itemId, child.name, parent.RelationshipTypeId
+from 
+	[{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent
+	join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+where
+	child.PortalId = @portalId
+and	IsCurrentVersion = 1
+and child.ItemTypeId = @itemTypeId
+order by
+	parent.ParentItemId, child.ItemId
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]  
+@itemTypeId int,   
+@parentId int,   
+@relationshipTypeId int,   
+@otherRelationshipTypeId int,
+@portalId int  
+AS  
+ select   
+  parent.ParentItemId, child.itemId, parent.RelationshipTypeId  
+ from   
+  [{objectQualifier}Publish_fnGetChildItemsWithTwoTypes](@parentId, @relationshipTypeId, @otherRelationshipTypeId) parent  
+  join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)  
+ where  
+  child.PortalId = @portalId  
+ and IsCurrentVersion = 1  
+ and child.ItemTypeId = @itemTypeId  
+ order by  
+  parent.ParentItemId, child.ItemId  
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]  
+@itemTypeId int,   
+@parentId int,   
+@relationshipTypeId int,   
+@otherParentId int,
+@otherRelationshipTypeId int,
+@portalId int  
+AS  
+ select   
+  parent1.ParentItemId, parent1.RelationshipTypeId, parent2.ParentItemId, parent2.RelationshipTypeId, child.itemId
+ from   
+  [{objectQualifier}Publish_fnGetChildItems](@parentId, @relationshipTypeId) parent1
+  join [{objectQualifier}Publish_fnGetChildItems](@otherParentId, @otherRelationshipTypeId) parent2 on (parent1.childItemId = parent2.childItemId)
+  join [{objectQualifier}Publish_vwItemVersions] child on (parent1.ChildItemId = child.ItemId)  
+ where  
+  child.PortalId = @portalId  
+ and IsCurrentVersion = 1  
+ and child.ItemTypeId = @itemTypeId  
+ order by  
+  parent1.ParentItemId, parent2.ParentItemId, child.ItemId  
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetDocumentSearchItems]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetImageSearchItems]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetVideoSearchItems]
+GO
+
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel](@parentItemID int, @nLevels int, @mItems int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0,
+		Level int default 0
+	)
+as
+begin
+
+declare @topLevelRelationshipTypeId int 
+set @topLevelRelationshipTypeId  = (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+declare @itemToParentRelationshipTypeId int
+set @itemToParentRelationshipTypeId =  (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Parent Category')
+declare @itemToRelatedRelationshipTypeId int
+set @itemToRelatedRelationshipTypeId=  (select relationshiptypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Item To Related Category')
+
+
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionId, RelationshipTypeID, [Level])
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID, 0
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (parent.ChildItemId = vi.ItemId and parent.ChildItemVersionId = vi.ItemVersionId)
+	where 
+		parent.ParentItemID = @parentItemID
+		and parent.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+		and vi.IsCurrentVersion=1
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+
+	IF @nLevels > 0
+		/*if we're looking for NLevels */
+		BEGIN
+			insert @hierarchy
+			select 
+				t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1
+			from 
+				@hierarchy t
+				join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+				join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)
+			where 
+				t.Processed = 1 
+				and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+				and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID ) <1
+				and vi.IsCurrentVersion=1
+				and [level] < @nLevels
+
+		END
+
+	ELSE
+
+		BEGIN
+			insert @hierarchy
+			select 
+				t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, t.[Level]+1
+			from 
+				@hierarchy t
+				join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+				join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)
+			where 
+				t.Processed = 1 
+				and child.RelationshipTypeId in (@topLevelRelationshipTypeId, @itemToParentRelationshipTypeId, @itemToRelatedRelationshipTypeId)
+				and (select count(*) from @hierarchy tl where tl.parentItemId = t.ChildItemID and tl.ChildItemId = child.ChildItemID and tl.RelationshipTypeID= child.RelationshipTypeID ) <1
+				and vi.IsCurrentVersion=1
+
+		END	
+
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+GO
+
+
+
+if not exists (select * from sysindexes where name = '{objectQualifier}Publish_ItemViewIndex')
+CREATE NONCLUSTERED INDEX [{objectQualifier}Publish_ItemViewIndex] ON {databaseOwner}[{objectQualifier}Publish_ItemView] 
+(
+	[ItemId] ASC
+)
+GO
+

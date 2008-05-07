@@ -1,0 +1,392 @@
+//Engage: Publish - http://www.engagemodules.com
+//Copyright (c) 2004-2008
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
+using System;
+using System.Collections;
+using System.Data;
+using System.Globalization;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using DotNetNuke;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Exceptions;
+using Engage.Dnn.Publish.Data;
+using Engage.Dnn.Publish.Util;
+
+namespace Engage.Dnn.Publish.CategoryControls
+{
+    public partial class CategoryList : ModuleBase, IActionable
+    {
+        #region Web Form Designer generated code
+
+        override protected void OnInit(EventArgs e)
+        {
+            InitializeComponent();
+            base.OnInit(e);
+        }
+
+        /// <summary>
+        ///		Required method for Designer support - do not modify
+        ///		the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.cboItemType.SelectedIndexChanged += new System.EventHandler(this.cboItemType_SelectedIndexChanged);
+            this.cboWorkflow.SelectedIndexChanged += new EventHandler(cboWorkFlow_SelectedIndexChanged);
+            this.Load += new System.EventHandler(this.Page_Load);
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void Page_Load(object sender, System.EventArgs e)
+        {
+            try
+            {
+                if (!Page.IsPostBack)
+                {
+                    ConfigureAddLink();
+                    FillDropDowns();
+                    BindData();
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        #endregion
+
+
+        #region Optional Interfaces
+
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                ModuleActionCollection actions = new ModuleActionCollection();
+                actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+                return actions;
+            }
+        }
+
+      
+        #endregion
+
+        private void cboItemType_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            BindData();
+        }
+
+        private void cboWorkFlow_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            BindData();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.ITextControl.set_Text(System.String)", Justification = "Literal is HTML"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.WebControls.TableCell.set_Text(System.String)", Justification = "Literal is HTML")]
+        private void BindData()
+        {
+            int itemId = Convert.ToInt32(this.cboItemType.SelectedValue, CultureInfo.InvariantCulture);
+            if (CategoryId > -1)
+            {
+                //user clicked on a subcategory.
+                itemId = CategoryId;
+            }
+            //set the approval status ID to approved by default, if we're using approvals look for the selected value
+            int approvalStatusId = ApprovalStatus.Approved.GetId();
+            
+            if (UseApprovals)
+            {
+                approvalStatusId = Convert.ToInt32(this.cboWorkflow.SelectedValue, CultureInfo.InvariantCulture);
+            }
+
+            QueryStringParameters qsp = new QueryStringParameters();
+            DataTable dt;
+            if (itemId == -1)
+            {
+                DataSet ds = DataProvider.Instance().GetAdminItemListing(Util.TopLevelCategoryItemType.Category.GetId(), Util.ItemType.Category.GetId(), Util.RelationshipType.CategoryToTopLevelCategory.GetId(), approvalStatusId, PortalId);
+                dt = ds.Tables[0];
+            }
+            else
+            {
+                DataSet ds = DataProvider.Instance().GetAdminItemListing(itemId, Util.ItemType.Category.GetId(), Util.RelationshipType.ItemToParentCategory.GetId(), Util.RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, PortalId);
+                dt = ds.Tables[0];
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+
+                Table t = new Table();
+                t.Width = Unit.Percentage(100);
+                t.CssClass = "Normal";
+                t.CellPadding = 4;
+                t.CellSpacing = 0;
+                t.GridLines = GridLines.Horizontal;
+                t.BorderColor = System.Drawing.Color.Gray;
+                t.BorderStyle = BorderStyle.Solid;
+                t.BorderWidth = Unit.Pixel(1);
+
+                TableRow row = new TableRow();
+                row.CssClass = "listing_table_head_row";
+                t.Rows.Add(row);
+                TableCell cell = new TableCell();
+
+                row.Cells.Add(cell);
+                cell.Text = Localization.GetString("ID", LocalResourceFile);
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = Localization.GetString("Name", LocalResourceFile);
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = Localization.GetString("Description", LocalResourceFile);
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = "&nbsp;";
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = "&nbsp;";
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = "&nbsp;";
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = "&nbsp;";
+
+                cell = new TableCell();
+                row.Cells.Add(cell);
+                cell.Text = "&nbsp;";
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    DataRow r = dt.Rows[i];
+
+                    row = new TableRow();
+
+                    if (i % 2 == 0)
+                    {
+                        row.CssClass = "adminItemSearchDarkRow";
+                    }
+                    else row.CssClass = "adminItemSearchLightRow";
+
+                    row.VerticalAlign = VerticalAlign.Top;
+                    t.Rows.Add(row);
+                    cell = new TableCell();
+
+
+                    row.Cells.Add(cell);
+                    cell.Text = r["ItemID"].ToString();
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+                    cell.Text = r["Name"].ToString();
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+                    cell.Text = HtmlUtils.Shorten(HtmlUtils.Clean(r["Description"].ToString(), true), 200, string.Empty) + "&nbsp;";
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+
+                    //check if the category has any sub categories, if not don't display link
+                    HyperLink hl = new HyperLink();
+
+                    if (Convert.ToInt32(r["ChildCount"], CultureInfo.InvariantCulture) > 0)
+                    {
+                        cell.Controls.Add(hl);
+
+                        qsp.ClearKeys();
+                        qsp.Add("ctl", Utility.AdminContainer);
+                        qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
+                        qsp.Add("adminType", "categorylist");
+                        qsp.Add("itemId", r["ItemId"]);
+                        //qsp.Add("category", r["Name"]);
+                        qsp.Add("parentId", itemId);
+                        if (TopLevelId == -1)
+                        {
+                            qsp.Add("topLevelId", this.cboItemType.SelectedValue);
+                        }
+                        else
+                        {
+                            qsp.Add("topLevelId", TopLevelId);
+                        }
+
+
+                        hl.NavigateUrl = BuildLinkUrl(qsp.ToString());
+
+                        hl.Text = Localization.GetString("SubCategories", LocalResourceFile);
+
+                    }
+                    else
+                    {
+                        Label l1 = new Label();
+                        l1.Text = " <br /> ";
+                        cell.Controls.Add(l1);
+                    }
+                    //Add the CategorySort link
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+                    hl = new HyperLink();
+                    cell.Controls.Add(hl);
+                    qsp.ClearKeys();
+                    qsp.Add("ctl", Utility.AdminContainer);
+                    qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
+                    qsp.Add("adminType", "categorysort");
+                    qsp.Add("itemid", r["ItemId"]);
+
+                    hl.NavigateUrl = BuildLinkUrl(qsp.ToString());
+
+                    hl.Text = Localization.GetString("CategorySort", LocalResourceFile);
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+
+
+
+
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+                    hl = new HyperLink();
+                    cell.Controls.Add(hl);
+                    qsp.ClearKeys();
+                    qsp.Add("ctl", Utility.AdminContainer);
+                    qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
+                    qsp.Add("adminType", "versionslist");
+                    qsp.Add("itemid", r["ItemId"]);
+
+                    hl.NavigateUrl = BuildLinkUrl(qsp.ToString());
+
+                    hl.Text = Localization.GetString("Versions", LocalResourceFile);
+
+                    cell = new TableCell();
+                    row.Cells.Add(cell);
+                    hl = new HyperLink();
+                    cell.Controls.Add(hl);
+                    qsp.ClearKeys();
+                    qsp.Add("ctl", Utility.AdminContainer);
+                    qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
+                    qsp.Add("adminType", "categoryEdit");
+                    qsp.Add("versionid", r["ItemVersionId"]);
+                    qsp.Add("parentId", itemId);
+                    if (TopLevelId == -1)
+                    {
+                        qsp.Add("topLevelId", this.cboItemType.SelectedValue);
+                    }
+                    else
+                    {
+                        qsp.Add("topLevelId", TopLevelId);
+                    }
+
+                    hl.NavigateUrl = BuildLinkUrl(qsp.ToString());
+                    hl.Text = Localization.GetString("Edit", LocalResourceFile);
+                }
+
+                this.phList.Controls.Add(t);
+
+                if (!cboItemType.SelectedValue.Equals("-1"))
+                {
+                    this.lblMessage.Text = Localization.GetString("SubCategoriesFor", LocalResourceFile) + " " + cboItemType.SelectedItem.ToString();
+                }
+            }
+
+            else
+            {
+                if (!cboItemType.SelectedValue.Equals("-1"))
+                {
+                    this.lblMessage.Text = Localization.GetString("NoSubcategoriesFor", LocalResourceFile) + " " + cboItemType.SelectedItem.ToString();
+                }
+            }
+
+        }
+
+        private int CategoryId
+        {
+            get
+            {
+                string s = Request.QueryString["itemid"];
+                return (s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture));
+            }
+        }
+
+        private int TopLevelId
+        {
+            get
+            {
+                string s = Request.QueryString["topLevelId"];
+                return (s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture));
+            }
+        }
+
+        //private string CategoryName
+        //{
+        //    get
+        //    {
+        //        Category c = Category.GetCategory(ItemId, PortalId);
+        //        return c.Name;
+        //    }
+        //}
+
+        private void FillDropDowns()
+        {
+            ItemRelationship.DisplayCategoryHierarchy(cboItemType, CategoryId, PortalId, false);
+
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            this.cboItemType.Items.Insert(0, li);
+
+            cboWorkflow.Visible = UseApprovals;
+            lblWorkflow.Visible = UseApprovals;
+            if (UseApprovals)
+            {
+                cboWorkflow.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId);
+                cboWorkflow.DataValueField = "ApprovalStatusID";
+                cboWorkflow.DataTextField = "ApprovalStatusName";
+                cboWorkflow.DataBind();
+                li = cboWorkflow.Items.FindByText(ApprovalStatus.Approved.Name);
+                if (li != null) li.Selected = true;
+            }
+
+        }
+
+        private void ConfigureAddLink()
+        {
+            //has a top level been selected?
+            if (TopLevelId == -1)
+            {
+                string s = this.cboItemType.SelectedValue;
+                int id = (Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1);
+                if (id == -1)
+                {
+                    this.lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit");
+                }
+                else
+                {
+                    this.lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + id.ToString(CultureInfo.InvariantCulture) + "&parentId=" + id.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            else
+            {
+                this.lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + TopLevelId.ToString(CultureInfo.InvariantCulture) + "&parentId=" + CategoryId.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+    }
+}

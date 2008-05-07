@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblStartDate.Text" xml:space="preserve">
+    <value>Start:</value>
+  </data>
+  <data name="lblEndDate.Text" xml:space="preserve">
+    <value>End: (leave blank to keep article indefinitely)</value>
+  </data>
+  <data name="lblMetaKeywords.Text" xml:space="preserve">
+    <value>SEO Keywords:</value>
+  </data>
+  <data name="lblMetaDescription.Text" xml:space="preserve">
+    <value>SEO Description:</value>
+  </data>
+  <data name="lblMetaTitle.Text" xml:space="preserve">
+    <value>Browser Window Title:</value>
+  </data>
+  <data name="ItemEdit.Text" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="ApprovalStatus.Text" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="lblDisplayTabId.Text" xml:space="preserve">
+    <value>Display Page:</value>
+  </data>
+  <data name="lblDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="lblName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="lblDisplayTabId.Help" xml:space="preserve">
+    <value>Choose which page this item should be displayed on.</value>
+  </data>
+  <data name="lblDisplayAsHyperlink.Text" xml:space="preserve">
+    <value>Display name as a hyperlink</value>
+  </data>
+  <data name="lblDisplayAsHyperlink.Help" xml:space="preserve">
+    <value>You can choose to display the name of an item in lists as just text instead of as a hyperlink.  This is used for items that you don't want to link to, for example, categories whose only content is subcategories.</value>
+  </data>
+  <data name="lblMetaTitle.Help" xml:space="preserve">
+    <value>Enter a title for the browser to display, this is useful for search engine optimization.</value>
+  </data>
+  <data name="lblMetaDescription.Help" xml:space="preserve">
+    <value>This description will be displayed in the Meta tags of the page this item shows up on. This is useful for focusing information for search engine optimization.</value>
+  </data>
+  <data name="lblMetaKeywords.Help" xml:space="preserve">
+    <value>These keywords are used as the meta keywords for the html page, these are useful for focusing keywords for search engine optimization.</value>
+  </data>
+  <data name="lblStartDate.Help" xml:space="preserve">
+    <value>Start date is used if you would like to limit the availability of an item by a date range.</value>
+  </data>
+  <data name="lblEndDate.Help" xml:space="preserve">
+    <value>End date is used if you would like to limit the availability of an item by a date range.</value>
+  </data>
+  <data name="lblName.Help" xml:space="preserve">
+    <value>Name of the item you are creating.</value>
+  </data>
+  <data name="lblDescription.Help" xml:space="preserve">
+    <value>Description (Abstract) of the item you are creating.</value>
+  </data>
+  <data name="lblUploadFile.Text" xml:space="preserve">
+    <value>Thumbnail Image:</value>
+  </data>
+  <data name="lblUploadFile.Help" xml:space="preserve">
+    <value>You can choose another file, or upload a new file.</value>
+  </data>
+  <data name="SearchEngine.Text" xml:space="preserve">
+    <value>Search Engine Optimization Settings</value>
+  </data>
+  <data name="Thumbnail.Text" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="btnChangeDescriptionEditorMode_True.Text" xml:space="preserve">
+    <value>Use Rich Formatting</value>
+  </data>
+  <data name="btnChangeDescriptionEditorMode_False.Text" xml:space="preserve">
+    <value>Use Basic Formatting</value>
+  </data>
+  <data name="lblSearchEngine.Text" xml:space="preserve">
+    <value>Optimize for Search Engines: </value>
+  </data>
+  <data name="lblPostingDates.Text" xml:space="preserve">
+    <value>Posting Date(s): </value>
+  </data>
+  <data name="cvDateComp.Text" xml:space="preserve">
+    <value>End Date must be greater than the Start Date</value>
+  </data>
+  <data name="cvEndDate.Text" xml:space="preserve">
+    <value>Please enter a valid end date</value>
+  </data>
+  <data name="cvStartDate.Text" xml:space="preserve">
+    <value>Please enter a valid start date.</value>
+  </data>
+  <data name="DateError.Text" xml:space="preserve">
+    <value>There was a problem with the formatting of your start and end dates</value>
+  </data>
+  <data name="lblChooseUrl.Help" xml:space="preserve">
+    <value>If you would like to point this entry directly to a URL, File, or Page within this website you may do so with this section.</value>
+  </data>
+  <data name="lblChooseUrl.Text" xml:space="preserve">
+    <value>URL Selection</value>
+  </data>
+</root>

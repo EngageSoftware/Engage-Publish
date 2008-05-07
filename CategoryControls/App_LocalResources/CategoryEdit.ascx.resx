@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblSortOrder.Text" xml:space="preserve">
+    <value>Sort Order:</value>
+  </data>
+  <data name="submitbutton.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="cmdDelete.Text" xml:space="preserve">
+    <value>Delete this Category</value>
+  </data>
+  <data name="cmdCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="lblItemType.Text" xml:space="preserve">
+    <value>Choose an item type:</value>
+  </data>
+  <data name="rfvCboItemType.Text" xml:space="preserve">
+    <value>Choose an item type</value>
+  </data>
+  <data name="lblCategoryId.Text" xml:space="preserve">
+    <value>Category Id:</value>
+  </data>
+  <data name="lblDisplayTabId.Help" xml:space="preserve">
+    <value>Choose which page this item should be displayed on.</value>
+  </data>
+  <data name="lblDisplayTabId.Text" xml:space="preserve">
+    <value>Display Page:</value>
+  </data>
+  <data name="lblChildDisplayTabId.Text" xml:space="preserve">
+    <value>Child Display Page:</value>
+  </data>
+  <data name="lblChildDisplayTabId.Help" xml:space="preserve">
+    <value>Children of this Category should by default be displayed on this page.</value>
+  </data>
+  <data name="lblCategoryId.Help" xml:space="preserve">
+    <value>The ID of the item you're editing.</value>
+  </data>
+  <data name="lblSortOrder.Help" xml:space="preserve">
+    <value>If you would like to have your categories sorted. The sorting mechanism uses 1-10, 1 being sorted highest, 10 being sorted lowest.</value>
+  </data>
+  <data name="ChooseAPage.Text" xml:space="preserve">
+    <value>You must choose a page for this category to display on.
+</value>
+  </data>
+  <data name="ChooseApprovalStatus.Text" xml:space="preserve">
+    <value>You must choose set the approval status for this item.
+</value>
+  </data>
+  <data name="ChooseChildPage.Text" xml:space="preserve">
+    <value>You must choose a page for items in this category to display on.
+</value>
+  </data>
+  <data name="ChooseFeatured.Help" xml:space="preserve">
+    <value>Featured articles are for a category feature display, you can select which items should be feature, and how long they should be featured for.</value>
+  </data>
+  <data name="ChooseFeatured.Text" xml:space="preserve">
+    <value>Featured Articles</value>
+  </data>
+  <data name="ChooseOne.Text" xml:space="preserve">
+    <value>[Choose One]</value>
+  </data>
+  <data name="ChooseRoles.Help" xml:space="preserve">
+    <value>If you have security enabled in the Engage: Publish Setting here is how you would define which roles have rights to which categories.</value>
+  </data>
+  <data name="ChooseRoles.Text" xml:space="preserve">
+    <value>Choose the roles that will be able to view items within this category.</value>
+  </data>
+  <data name="DeleteFailure.Text" xml:space="preserve">
+    <value>This item could not be deleted.</value>
+  </data>
+  <data name="DeleteSuccess.Text" xml:space="preserve">
+    <value>This item was successfully deleted.</value>
+  </data>
+  <data name="DeleteConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this category?</value>
+  </data>
+  <data name="DeleteFailureHasChildren.Text" xml:space="preserve">
+    <value>This category cannot be deleted because it has children.  Please remove the following children:</value>
+  </data>
+  <data name="ParentCategory.Text" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
+  <data name="EMAIL_APPROVAL_BODY.Text" xml:space="preserve">
+    <value>&lt;html&gt;&lt;body&gt;A new category has been marked for approval. The category named : [ENGAGEITEMNAME] &lt;br&gt;&lt;br&gt;To view this updated version please &lt;a href=[ENGAGEITEMLINK]&gt; click here&lt;/a&gt; &lt;br&gt;[ENGAGEITEMLINK]&lt;br&gt;&lt;br&gt;To view all versions of this category please &lt;a href=[ENGAGEITEMSLINK]&gt; click here&lt;/a&gt;&lt;br&gt; [ENGAGEITEMSLINK]&lt;/body&gt;&lt;/html&gt;</value>
+  </data>
+  <data name="EMAIL_APPROVAL_SUBJECT.Text" xml:space="preserve">
+    <value>Category waiting for approval</value>
+  </data>
+  <data name="lblProgressUpdate.Text" xml:space="preserve">
+    <value>Loading&lt;Br&gt;</value>
+  </data>
+  <data name="ApprovalStatus.Text" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="chkUseApprovals.Text" xml:space="preserve">
+    <value>Use Approvals for this Category &lt;br/&gt;</value>
+  </data>
+  <data name="lblNotUsingApprovals.Text" xml:space="preserve">
+    <value>Approvals are turned off.  Any changes you make will appear immediately on your website.</value>
+  </data>
+  <data name="CurrentPage.Text" xml:space="preserve">
+    <value>Current Page</value>
+  </data>
+  <data name="lblDisplayOnCurrentPage.Help" xml:space="preserve">
+    <value>Display this item on the page that the link comes from, not the "display tab id"</value>
+  </data>
+  <data name="lblDisplayOnCurrentPage.Text" xml:space="preserve">
+    <value>Display On Current Page:</value>
+  </data>
+  <data name="lblForceDisplayTab.Help" xml:space="preserve">
+    <value>If checked, all requests for this article will redirect to the chosen display page.  Otherwise, only requests through itemlink.aspx will redirect to the chosen page.</value>
+  </data>
+  <data name="lblForceDisplayTab.Text" xml:space="preserve">
+    <value>Force to display on selected page</value>
+  </data>
+  <data name="SpecificPage.Text" xml:space="preserve">
+    <value>A Specific Page: </value>
+  </data>
+  <data name="lblPublishInstructions.Text" xml:space="preserve">
+    <value>Basic Engage: Publish Instructions</value>
+  </data>
+  <data name="shCategoryEdit.Text" xml:space="preserve">
+    <value>Category Edit</value>
+  </data>
+  <data name="shPublishInstructions.Text" xml:space="preserve">
+    <value>Category Edit Instructions</value>
+  </data>
+  <data name="EMAIL_STATUSCHANGE_BODY.Text" xml:space="preserve">
+    <value>&lt;html&gt;
+	&lt;body&gt;
+		A version of a category you've authored has had a status change to: [ENGAGESTATUS]
+		&lt;br /&gt;
+		&lt;br /&gt;
+		Change made by: [ADMINNAME]
+		&lt;br /&gt;
+		&lt;br /&gt;
+
+		The article named : [ENGAGEITEMNAME]
+		&lt;br /&gt;
+		Comments: [ENGAGEITEMCOMMENTS]
+		&lt;br /&gt;
+		To view this updated version please &lt;a href=[ENGAGEITEMLINK]&gt; click here&lt;/a&gt; 
+		&lt;br/ &gt;
+		[ENGAGEITEMLINK]
+		&lt;br /&gt;
+		&lt;br /&gt;
+		To view all versions of this article please &lt;a href=[ENGAGEITEMSLINK]&gt; click here&lt;/a&gt;
+		&lt;br /&gt;[ENGAGEITEMSLINK] 
+	&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="EMAIL_STATUSCHANGE_SUBJECT.Text" xml:space="preserve">
+    <value>Category Status Changed</value>
+  </data>
+  <data name="lblCommentForum.Help" xml:space="preserve">
+    <value>Select the forum in which to create new threads of comments for articles</value>
+  </data>
+  <data name="lblCommentForum.Text" xml:space="preserve">
+    <value>Comments Forum:</value>
+  </data>
+  <data name="NoForum.Text" xml:space="preserve">
+    <value>None Selected</value>
+  </data>
+</root>

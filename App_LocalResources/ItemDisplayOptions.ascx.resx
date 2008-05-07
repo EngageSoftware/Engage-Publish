@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ddlCategory.Text" xml:space="preserve">
+    <value>Select the Category (only for Most Recent):</value>
+  </data>
+  <data name="ddlCategory.Help" xml:space="preserve">
+    <value>This allows you to filter the listing by a specific category.</value>
+  </data>
+  <data name="lblOverrideable.Text" xml:space="preserve">
+    <value>Allow items from other lists to display here (aka:overrideable):</value>
+  </data>
+  <data name="lblOverrideable.Help" xml:space="preserve">
+    <value>Overrideable from the querystring. This will cause the control to load an item based on a querystring parameter. You would only set this value on one control per page.</value>
+  </data>
+  <data name="lblAllowTitleUpdate.Text" xml:space="preserve">
+    <value>Allow Browser Title Change:</value>
+  </data>
+  <data name="lblAllowTitleUpdate.Help" xml:space="preserve">
+    <value>If you allow this the title in the browser will change based on this article.</value>
+  </data>
+  <data name="lblChooseDisplayType.Text" xml:space="preserve">
+    <value>Type of display :</value>
+  </data>
+  <data name="lblArticleList.Help" xml:space="preserve">
+    <value>You can select a default article for display with this dropdown list.</value>
+  </data>
+  <data name="lblArticleList.Text" xml:space="preserve">
+    <value>Choose Article:</value>
+  </data>
+  <data name="lblChooseCategory.Help" xml:space="preserve">
+    <value>Choose a default category to display.</value>
+  </data>
+  <data name="lblChooseCategory.Text" xml:space="preserve">
+    <value>Choose a Category:</value>
+  </data>
+  <data name="lblChooseChildDisplay.Help" xml:space="preserve">
+    <value>Choose how you want to display child items. First level children and their children only, or show all levels of children.</value>
+  </data>
+  <data name="lblChooseChildDisplay.Text" xml:space="preserve">
+    <value>Format child items:</value>
+  </data>
+  <data name="lblChooseDisplayType.Help" xml:space="preserve">
+    <value>This dropdown box tells the ItemDisplay control which type of display it will be defaulting to.</value>
+  </data>
+  <data name="lblChooseDisplayType.Text1" xml:space="preserve">
+    <value>Choose a Display Option:</value>
+  </data>
+  <data name="lblChooseItemType.Help" xml:space="preserve">
+    <value>You can filter the category to only show items of a certain type.</value>
+  </data>
+  <data name="lblChooseItemType.Text" xml:space="preserve">
+    <value>Choose Item Type:</value>
+  </data>
+  <data name="lblLogBreadCrumb.Help" xml:space="preserve">
+    <value>If you are using the Engage: Publish Breadcrumb Skinobject you can choose whether this control should insert itself into the breadcrumb log.</value>
+  </data>
+  <data name="lblLogBreadCrumb.Text" xml:space="preserve">
+    <value>Log breadcrumb:</value>
+  </data>
+  <data name="lblSortOption.Help" xml:space="preserve">
+    <value>How do you want the category sorted.</value>
+  </data>
+  <data name="lblSortOption.Text" xml:space="preserve">
+    <value>Choose a Sort Order:</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Engage: Publish Settings</value>
+  </data>
+  <data name="ArticleDisplay.Text" xml:space="preserve">
+    <value>Article Display</value>
+  </data>
+  <data name="CustomDisplay.Text" xml:space="preserve">
+    <value>Custom Display</value>
+  </data>
+  <data name="ArticleDisplayOptions.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CategoryDisplay.Text" xml:space="preserve">
+    <value>Category Display</value>
+  </data>
+  <data name="CategoryDisplayOptions.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CategoryFeatureDisplay.Text" xml:space="preserve">
+    <value>Category Feature Display</value>
+  </data>
+  <data name="CategorySearch.Text" xml:space="preserve">
+    <value>Category Search</value>
+  </data>
+  <data name="ChooseOne.Text" xml:space="preserve">
+    <value>[Choose One]</value>
+  </data>
+  <data name="ItemListing.Text" xml:space="preserve">
+    <value>Item Listing</value>
+  </data>
+  <data name="CategoryFeatureOptions.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="CategorySearchOptions.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="ItemListingOptions.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="lblInstructions.Text" xml:space="preserve">
+    <value>Select the type of display to see the available options.</value>
+  </data>
+  <data name="CategoryNLevels.Text" xml:space="preserve">
+    <value>Category Relationships</value>
+  </data>
+  <data name="lblChooseCategory.Help1" xml:space="preserve">
+    <value>This is the level in the tree you want to start from.</value>
+  </data>
+  <data name="lblChooseCategory.Text1" xml:space="preserve">
+    <value>Choose a Category</value>
+  </data>
+  <data name="lblChooseNLevels.Help" xml:space="preserve">
+    <value>How many levels down the tree do you want to pull back.</value>
+  </data>
+  <data name="lblChooseNLevels.Text" xml:space="preserve">
+    <value>How many levels deep? (-1 for all)</value>
+  </data>
+  <data name="TopLevel.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="dshArticleDisplay.Text" xml:space="preserve">
+    <value>Article Display Settings</value>
+  </data>
+  <data name="dshCategoryDisplay.Text" xml:space="preserve">
+    <value>Category Display Settings</value>
+  </data>
+  <data name="dshCategoryFeature.Text" xml:space="preserve">
+    <value>Category Feature Display Settings</value>
+  </data>
+  <data name="dshCategoryNLevels.Text" xml:space="preserve">
+    <value>Category NLevels Settings</value>
+  </data>
+  <data name="dshCategorySearch.Text" xml:space="preserve">
+    <value>Category Search Settings</value>
+  </data>
+  <data name="dshItemListing.Text" xml:space="preserve">
+    <value>Item Listing Settings</value>
+  </data>
+  <data name="shAdvanced.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="shCurrentDisplay.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnConfigure.Text" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="btnSubmit.Text" xml:space="preserve">
+    <value>Submit Changes</value>
+  </data>
+  <data name="shArticleDisplay.Text" xml:space="preserve">
+    <value>Article Display Settings &lt;hr/&gt;</value>
+  </data>
+  <data name="shCategoryDisplay.Text" xml:space="preserve">
+    <value>Category Display Settings &lt;hr/&gt;</value>
+  </data>
+  <data name="lblCacheTime.Help" xml:space="preserve">
+    <value>Set a time limit for Publish to Cache items, caching improves performance for the Publish module. This is not the same module caching that the core DNN code uses.</value>
+  </data>
+  <data name="lblCacheTime.Text" xml:space="preserve">
+    <value>Cache Time (minutes)</value>
+  </data>
+  <data name="rvCacheTime.Text" xml:space="preserve">
+    <value>Please enter a number between 0-1000.</value>
+  </data>
+</root>

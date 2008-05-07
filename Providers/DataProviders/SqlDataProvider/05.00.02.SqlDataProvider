@@ -1,0 +1,235 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_Users]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
+	DROP CONSTRAINT {objectQualifier}FK_Comment_Users
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
+	DROP CONSTRAINT {objectQualifier}FK_Comment_ApprovalStatusType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
+	DROP CONSTRAINT {objectQualifier}FK_Comment_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_Comment]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}Tmp_{objectQualifier}Publish_Comment
+GO
+
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Publish_Comment
+	(
+	CommentId int NOT NULL IDENTITY (1, 1),
+	ItemVersionId int NOT NULL,
+	UserId int NULL,
+	RatingId int NULL,
+	CommentText ntext NOT NULL,
+	CreatedDate datetime NOT NULL,
+	LastUpdated datetime NOT NULL,
+	ApprovalStatusId int NOT NULL,
+	FirstName nvarchar(50) NULL,
+	LastName nvarchar(50) NULL,
+	EmailAddress nvarchar(256) NULL,
+	URL nvarchar(255) NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_Comment ON
+
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Publish_Comment)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Publish_Comment (CommentId, ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress, URL)
+		SELECT CommentId, ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress, URL FROM {databaseOwner}{objectQualifier}Publish_Comment TABLOCKX')
+
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_Comment OFF
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}Publish_Comment
+GO
+
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Publish_Comment', N'{objectQualifier}Publish_Comment', 'OBJECT'
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment ADD CONSTRAINT
+	{objectQualifier}PK_Comment PRIMARY KEY CLUSTERED 
+	(
+	CommentId
+	) ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}IX_Comment_ApprovalStatusId ON {databaseOwner}{objectQualifier}Publish_Comment
+	(
+	ApprovalStatusId
+	) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}IX_Comment_ItemVersionId ON {databaseOwner}{objectQualifier}Publish_Comment
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}IX_Comment_CreatedDate ON {databaseOwner}{objectQualifier}Publish_Comment
+	(
+	CreatedDate
+	) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Comment_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Comment_ApprovalStatusType FOREIGN KEY
+	(
+	ApprovalStatusId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ApprovalStatusType
+	(
+	ApprovalStatusID
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_Users]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Comment_Users FOREIGN KEY
+	(
+	UserId
+	) REFERENCES {databaseOwner}{objectQualifier}Users
+	(
+	UserID
+	)
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText ntext,
+	@approvalStatusId int,
+	@ratingId int,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@URL nvarchar(255)
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress, URL)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId, @firstName, @lastName, @emailAddress, @URL)
+
+	SELECT @@IDENTITY
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText ntext,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@approvalStatusId int,
+	@URL nvarchar(255)
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate(),
+		firstName = @firstName,
+		lastName = @lastName,
+		emailAddress = @emailAddress,
+		url = @URL
+	WHERE commentId = @commentId
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]    
+@ParentItemId int,     
+@ItemTypeId int,    
+@RelationshipTypeId int,
+@otherRelationshipTypeId int,
+@ApprovalStatusId int,    
+@PortalId int,
+@OrderBy nvarchar (100)
+AS    
+BEGIN
+set nocount on    
+    
+create table #TempTable
+(     
+ ItemId int not null    
+ , ItemVersionId int not null    
+)    
+    
+insert into #TempTable    
+select     
+ c.ItemId    
+ , Max(c.ItemVersionId)
+    
+from     
+ [{objectQualifier}Publish_vwChildItems] c     
+where     
+ c.ApprovalStatusId = @ApprovalStatusId    
+ and (c.RelationshipTypeId = @RelationshipTypeId or c.relationshiptypeId = @otherRelationshipTypeId)  
+ and c.PortalID = @PortalId    
+ and (c.ParentItemID = @ParentItemId OR @ParentItemId = -1)
+ and c.ItemTypeId = @ItemTypeId    
+ and not exists (Select * from #TempTable w where w.ItemId = c.itemId)    
+group by c.ItemId    
+    
+set nocount off    
+DECLARE @SQLStatement nvarchar(4000)
+SELECT @SQLStatement = 'SELECT vi.[Name]     
+				 , vi.[Description]    
+				 , t.ItemId    
+				 , t.ItemVersionId    
+				 , vi.IsCurrentVersion
+				 , vi.CreatedDate
+				 , vi.LastUpdated
+				 , (select count(ParentItemId) from     
+				 [{objectQualifier}Publish_vwChilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId =     
+				 (select RelationshipTypeId from [{objectQualifier}Publish_relationshiptype] where relationshipname = ''Item To Parent Category'')    
+				 and ItemTypeId =     
+				 (select  itemtypeid from [{objectQualifier}Publish_Itemtype] where name = ''Category'')
+				 and vci.IsCurrentVersion = 1
+				 ) ''ChildCount''    
+				    
+				from #TempTable t    
+				join [{objectQualifier}Publish_vwItems] vi on (vi.ItemVersionId = t.ItemVersionId)    
+				where vi.ApprovalStatusId = ' + Convert(varchar(5),@ApprovalStatusId)  + ' order by ' + @OrderBy
+				-- vi.[Name] 
+				
+exec(@SQLStatement)
+drop table #TempTable
+END
+GO
+

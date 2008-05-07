@@ -1,0 +1,292 @@
+﻿SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]
+	DROP CONSTRAINT {objectQualifier}FK_DocumentVersion_ItemVersion
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Tmp_EngageAMSDocumentVersion]
+	(
+	ItemVersionId int NOT NULL,
+	ItemId int NULL,
+	FileName varchar(500) NOT NULL,
+	FileSize int NULL,
+	MediaType varchar(50) NULL,
+	FilePath varchar(255) NULL
+	)  ON [PRIMARY]
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion])
+	 EXEC('INSERT INTO {databaseOwner}[{objectQualifier}Tmp_EngageAMSDocumentVersion] (ItemVersionId, ItemId, FileName, FileSize, MediaType, FilePath)
+		SELECT ItemVersionId, ItemId, FileName, FileSize, MediaType, FilePath FROM {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] TABLOCKX')
+
+DROP TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]
+
+EXECUTE sp_rename N'{databaseOwner}[{objectQualifier}Tmp_EngageAMSDocumentVersion]', N'{objectQualifier}EngageAMSDocumentVersion', 'OBJECT'
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] ADD CONSTRAINT
+	{objectQualifier}PK_DocumentVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_DocumentVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion]
+	(
+	ItemVersionId
+	)
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion]
+	DROP CONSTRAINT {objectQualifier}FK_MediaVersion_ItemVersion
+GO
+
+
+CREATE TABLE {databaseOwner}[{objectQualifier}Tmp_EngageAMSMediaVersion]
+	(
+	ItemVersionId int NOT NULL,
+	ItemId int NULL,
+	FileName varchar(500) NOT NULL,
+	FileSize int NULL,
+	MediaType varchar(50) NULL,
+	FilePath varchar(255) NULL
+	)  ON [PRIMARY]
+
+IF EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}EngageAMSMediaVersion])
+	 EXEC('INSERT INTO {databaseOwner}[{objectQualifier}Tmp_EngageAMSMediaVersion] (ItemVersionId, ItemId, FileName, FileSize, MediaType, FilePath)
+		SELECT ItemVersionId, ItemId, FileName, FileSize, MediaType, FilePath FROM {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] TABLOCKX')
+
+DROP TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion]
+
+EXECUTE sp_rename N'{databaseOwner}[{objectQualifier}Tmp_EngageAMSMediaVersion]', N'{objectQualifier}EngageAMSMediaVersion', 'OBJECT'
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] ADD CONSTRAINT
+	{objectQualifier}PK_MediaVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_MediaVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES [{objectQualifier}EngageAMSItemVersion]
+	(
+	ItemVersionId
+	)
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]
+GO
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (500)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (500)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemView]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItemView]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+	CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertItemView]
+	(
+		@ItemId [int]
+		, @ItemVersionID [int]
+		, @UserId [int]
+		, @TabId [int]
+		, @IpAddress [varchar] (25)
+		, @UserAgent [varchar] (100)
+		, @HttpReferrer [varchar] (500)
+
+	)
+	AS 
+	           
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSItemView]
+	(
+		[ItemID]
+		, [ItemVersionID]
+		, [UserId]
+		, [TabId]
+		, [UserIpAddress]
+		, [UserAgent]
+		, [HttpReferrer]
+		, [ViewDate]
+		)
+	 
+	VALUES 
+		( 
+		@ItemID
+		, @ItemVersionID
+		, @UserId
+		, @TabId
+		, @IpAddress
+		, @UserAgent
+		, @HttpReferrer
+		, GetDate()
+		)
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vDocuments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vMedia]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vDocuments] as
+select
+
+	'FileName' = case when fl.FileName is null then  dv.FileName else fl.Folder + fl.FileName end,
+	dv.FileSize, dv.MediaType, dv.FilePath,
+	i.*
+from 
+	 [{objectQualifier}engageams_vItems] i 
+	join [{objectQualifier}EngageAMSDocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+	join [{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+	left outer join {objectQualifier}Files fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vMedia] as
+select
+
+	'FileName' = case when fl.FileName is null then mv.FileName else fl.Folder + fl.FileName end,
+	mv.FileSize, mv.MediaType, mv.FilePath,
+	i.*
+from 
+	[{objectQualifier}engageams_vitems] i 
+	join [{objectQualifier}EngageAMSMediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+	join [{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+	left outer join {objectQualifier}Files fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

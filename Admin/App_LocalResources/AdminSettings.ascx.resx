@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plEmailNotification.Help" xml:space="preserve">
+    <value>Check to send email notifications to the users in the Content Approvers role when content needs approval.</value>
+  </data>
+  <data name="plAdministratorRole.Text" xml:space="preserve">
+    <value>Administrator Role:</value>
+  </data>
+  <data name="plAdministratorRole.Help" xml:space="preserve">
+    <value>Choose a role for the Engage Publish administrator. Administrators can create and approve content.</value>
+  </data>
+  <data name="plAuthorRole.Text" xml:space="preserve">
+    <value>Authors Role:</value>
+  </data>
+  <data name="plAuthorRole.Help" xml:space="preserve">
+    <value>Choose a role for the Engage Publish authors. Authors can create content, but not approve.</value>
+  </data>
+  <data name="plSecurity.Text" xml:space="preserve">
+    <value>Enable Security:</value>
+  </data>
+  <data name="plSecurity.Help" xml:space="preserve">
+    <value>Turn on role authorization so that categories can be restricted by registered user roles. If you've already setup categories and then enable security you will have to add role information to EACH category you've already added.</value>
+  </data>
+  <data name="plEmailNotificationRole.Text" xml:space="preserve">
+    <value>Approval Notification Role:</value>
+  </data>
+  <data name="plEmailNotificationRole.Help" xml:space="preserve">
+    <value>The role that will be emailed when a request for approval is made. This can be different than the Administrators Role, or can be set to the same role as admin.</value>
+  </data>
+  <data name="FirstTime.Text" xml:space="preserve">
+    <value>You'll need to configure some of the Engage: Publish options below in order to proceed &lt;br /&gt; For more information about Engage: Publish visit &lt;a href="http://www.engagemodules.com" target=_blank&gt;EngageModules.com&lt;/a&gt;.&lt;br /&gt;</value>
+  </data>
+  <data name="lnkUpdate.Text" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
+  <data name="lblMailNotConfigured.Text" xml:space="preserve">
+    <value>SMTP does not appear to be configured. You must configure your SMTP settings in order to enable Email a Friend and Approval Notification functionality. &lt;a href="http://www.engagesoftware.com/Blog/tabid/297/EntryID/119/Default.aspx" target=_blank&gt;For help with this click here&lt;/a&gt;</value>
+  </data>
+  <data name="cvEmailNotification.Text" xml:space="preserve">
+    <value>You cannot enable email notifications if SMTP settings are not configured.</value>
+  </data>
+  <data name="cvMaximumRating.Text" xml:space="preserve">
+    <value>Value must be an integer</value>
+  </data>
+  <data name="plCommentAnonymous.Help" xml:space="preserve">
+    <value>Check to allow all users to post comments about articles.  If unchecked, only authenticated users can post comments.</value>
+  </data>
+  <data name="plCommentAnonymous.Text" xml:space="preserve">
+    <value>Allow comments from unauthenticated users:</value>
+  </data>
+  <data name="plCommentApproval.Help" xml:space="preserve">
+    <value>If checked, all comments must be moderated under the Moderation menu.  Otherwise, all comments will appear on the site immediately after they have been submitted.  Comment moderation can only be done by users in the Publish Administrator role.</value>
+  </data>
+  <data name="plCommentApproval.Text" xml:space="preserve">
+    <value>Require comments to be approved: </value>
+  </data>
+  <data name="plCommentAutoApprove.Help" xml:space="preserve">
+    <value>Check if you only want to moderate comments from unauthenticated users.</value>
+  </data>
+  <data name="plCommentAutoApprove.Text" xml:space="preserve">
+    <value>Automatically approve comments from authenticated users: </value>
+  </data>
+  <data name="plEnableComments.Help" xml:space="preserve">
+    <value>Check to allow users to comment on articles.  If checked, you can turn comments off for specific Article Display modules, if necessary.</value>
+  </data>
+  <data name="plEnableComments.Text" xml:space="preserve">
+    <value>Enable comments: </value>
+  </data>
+  <data name="plEnableRatings.Help" xml:space="preserve">
+    <value>Check to allow articles to be rated.  You can turn off ratings on specific Article Display modules, if necessary.</value>
+  </data>
+  <data name="plEnableRatings.Text" xml:space="preserve">
+    <value>Enable ratings: </value>
+  </data>
+  <data name="plMaximumRating.Help" xml:space="preserve">
+    <value>This is an integer value indicating the highest rating that an article can receive, defining the rating scale.  This value should not be changed after initial setup, as all previous ratings will no longer be represented correctly. </value>
+  </data>
+  <data name="plMaximumRating.Text" xml:space="preserve">
+    <value>Maximum rating: </value>
+  </data>
+  <data name="plAnonymousRatings.Help" xml:space="preserve">
+    <value>Check to allow all users to rate articles.  If unchecked, only authenticated users can rate articles.</value>
+  </data>
+  <data name="plAnonymousRatings.Text" xml:space="preserve">
+    <value>Allow ratings from unauthenticated users:</value>
+  </data>
+  <data name="lblAuthorCategoryEdit.Help" xml:space="preserve">
+    <value>If you would like the abillity for Authors to edit Categories uncheck this box.</value>
+  </data>
+  <data name="lblAuthorCategoryEdit.Text" xml:space="preserve">
+    <value>Allow Author Category Edit</value>
+  </data>
+  <data name="plEnableVenexus.Help" xml:space="preserve">
+    <value>Checking this will allow your Publish content to be populated into the Venexus Search tables properly. This happens during the standard DNN search indexing process. </value>
+  </data>
+  <data name="plEnableVenexus.Text" xml:space="preserve">
+    <value>Enable Venexus Search Integration:</value>
+  </data>
+  <data name="plEnableViewTracking.Help" xml:space="preserve">
+    <value>If you would like to track the number of times articles and categories are viewed check this box.</value>
+  </data>
+  <data name="plEnableViewTracking.Text" xml:space="preserve">
+    <value>Track Article/Category Views:</value>
+  </data>
+  <data name="plEnablePublishFriendlyUrls.Help" xml:space="preserve">
+    <value>If checked, links using ItemLink.aspx will resolve to a url like http://hostname/tabid/##/itemid/##/Title-Of-Article.aspx.  Otherwise, standard DNN urls will be used.</value>
+  </data>
+  <data name="plEnablePublishFriendlyUrls.Text" xml:space="preserve">
+    <value>Enable Publish Friendly Urls:</value>
+  </data>
+  <data name="lblFriendlyUrlsNotOn.Text" xml:space="preserve">
+    <value>The Publish Friendly Url feature requires DotNetNuke Friendly Urls to be turned on.  Your hosting provider may do so in the Host Settings menu, under Advanced Settings.</value>
+  </data>
+  <data name="plEnableDisplayNameAsHyperlink.Text" xml:space="preserve">
+    <value>Display option of whether to show an item title as a hyperlink in lists:</value>
+  </data>
+  <data name="plEnableDisplayNameAsHyperlink.Help" xml:space="preserve">
+    <value>When checked, a new option appears when editting items.  This option, Display Name as Hyperlink, allows authors to decide whether they want articles or categories to be links or not when displayed in lists.</value>
+  </data>
+  <data name="plAllowRichTextDescriptions.Help" xml:space="preserve">
+    <value>If checked, users can choose to use a Rich-Text editor when editing item descriptions.</value>
+  </data>
+  <data name="plAllowRichTextDescriptions.Text" xml:space="preserve">
+    <value>Allow Rich-Text Descriptions for Items:</value>
+  </data>
+  <data name="plUseApprovals.Help" xml:space="preserve">
+    <value>If checked, items submitted by Authors have to be approved by Administrators.  This also enabled the Edit status, for Administrators to save changes without automatically pushing the changes live.  If unchecked, all changes will always be pushed live immediately.</value>
+  </data>
+  <data name="plUseApprovals.Text" xml:space="preserve">
+    <value>Use Approvals: </value>
+  </data>
+  <data name="plShowItemId.Help" xml:space="preserve">
+    <value>When checked, an item's ID will be displayed when editing the item, otherwise it will be hidden.</value>
+  </data>
+  <data name="plShowItemId.Text" xml:space="preserve">
+    <value>Show Item ID When Editing an Item:</value>
+  </data>
+  <data name="plUseEmbeddedArticles.Help" xml:space="preserve">
+    <value>When checked, there will be an option when editing an article to embed another article within the article's display.  If unchecked, this option is not available.</value>
+  </data>
+  <data name="plUseEmbeddedArticles.Text" xml:space="preserve">
+    <value>Use Embedded Articles: </value>
+  </data>
+  <data name="plThumbnailSubdirectory.Help" xml:space="preserve">
+    <value>This is the name of the subdirectory in your portal that you want uploaded Publish Thumbnails to be saved in.</value>
+  </data>
+  <data name="plThumbnailSubdirectory.Text" xml:space="preserve">
+    <value>Thumbnail Subdirectory Name (only used with the PublishSelection option above): </value>
+  </data>
+  <data name="ChooseOne.Text" xml:space="preserve">
+    <value>Choose One</value>
+  </data>
+  <data name="plDefaultDisplayPage.Help" xml:space="preserve">
+    <value>The page to display articles who are orphaned and don't have their display pages setup properly.</value>
+  </data>
+  <data name="plDefaultDisplayPage.Text" xml:space="preserve">
+    <value>Default Display Page:</value>
+  </data>
+  <data name="plEmailNotification.Text" xml:space="preserve">
+    <value>Send Email Notification: </value>
+  </data>
+  <data name="plArticleComments.Help" xml:space="preserve">
+    <value>Each article can be configured individually to display or not display the Comments functionality, this is the default setting.</value>
+  </data>
+  <data name="plArticleComments.Text" xml:space="preserve">
+    <value>Comments Displayed By Default: </value>
+  </data>
+  <data name="plArticleRatings.Help" xml:space="preserve">
+    <value>Each article can be configured individually to display or not display the Ratings functionality, this is the default setting.</value>
+  </data>
+  <data name="plArticleRatings.Text" xml:space="preserve">
+    <value>Ratings Displayed By Default: </value>
+  </data>
+  <data name="plEnableEmailAFriend.Help" xml:space="preserve">
+    <value>Each article can be configured individually to display or not display the Email A Friend link, this is the default setting.</value>
+  </data>
+  <data name="plEnableEmailAFriend.Text" xml:space="preserve">
+    <value>Email A Friend Displayed By Default:</value>
+  </data>
+  <data name="plPrinterFriendly.Help" xml:space="preserve">
+    <value>Each article can be configured individually to display or not display the Printer Friendly link, this is the default setting.</value>
+  </data>
+  <data name="plPrinterFriendly.Text" xml:space="preserve">
+    <value>Printer Friendly Displayed By Default:</value>
+  </data>
+  <data name="plReturnToList.Help" xml:space="preserve">
+    <value>Each article can display a "Return to List" link that will take the reader back to the category list for this item.</value>
+  </data>
+  <data name="plReturnToList.Text" xml:space="preserve">
+    <value>Return to List Displayed By Default: </value>
+  </data>
+  <data name="plReturnToListSession.Help" xml:space="preserve">
+    <value>Use of session is not recommended, but if you do enable this users who click on an article from a list, and then navigate to other articles will always link back to the last list they viewed with the "Return To List" functionality</value>
+  </data>
+  <data name="plReturnToListSession.Text" xml:space="preserve">
+    <value>Enable Session storage for the Return To List Link</value>
+  </data>
+  <data name="lblAdminEdit.Text" xml:space="preserve">
+    <value>Admin Edit Settings</value>
+  </data>
+  <data name="lblArticleEditDefaults.Text" xml:space="preserve">
+    <value>Article Edit Defaults</value>
+  </data>
+  <data name="lblDefaultSettings.Text" xml:space="preserve">
+    <value>Default Settings</value>
+  </data>
+  <data name="lblDisplayFunctionality.Text" xml:space="preserve">
+    <value>Display Functionality</value>
+  </data>
+  <data name="lblRolesAndPermissions.Text" xml:space="preserve">
+    <value>Roles and Permissions</value>
+  </data>
+  <data name="plEnablePaging.Help" xml:space="preserve">
+    <value>If enabled you can insert [PAGE] in your article text and Publish will treat these as page breaks.</value>
+  </data>
+  <data name="plEnablePaging.Text" xml:space="preserve">
+    <value>Enable Article Paging Functionality:</value>
+  </data>
+  <data name="plEnableSimpleGallery.Help" xml:space="preserve">
+    <value>If you have the Ventrian SimpleGallery module installed, this option is available to link your articles to a SimpleGallery album, and have thumbnails from that album display when the article is displayed.</value>
+  </data>
+  <data name="plEnableSimpleGallery.Text" xml:space="preserve">
+    <value>Enable SimpleGallery Integration:</value>
+  </data>
+  <data name="plEnableUltraMediaGallery.Help" xml:space="preserve">
+    <value>If you have the BizModules Ultra Media Gallery installed, this option is available to link your articles to an Ultra Media Gallery album, and have thumbnails from that album display when the article is displayed.</value>
+  </data>
+  <data name="plEnableUltraMediaGallery.Text" xml:space="preserve">
+    <value>Enable Ultra Media Gallery Integration:</value>
+  </data>
+  <data name="DotNetNuke.Text" xml:space="preserve">
+    <value>DotNetNuke File Selection</value>
+  </data>
+  <data name="EngagePublish.Text" xml:space="preserve">
+    <value>Engage: Publish File Selection</value>
+  </data>
+  <data name="plThumbnailSelection.Help" xml:space="preserve">
+    <value>When choosing thumbnails while editing an article or categor you can choose which interface your would like to use. The default is the DNN File Selection interface.</value>
+  </data>
+  <data name="plThumbnailSelection.Text" xml:space="preserve">
+    <value>Thumbnail Selection Option:</value>
+  </data>
+  <data name="plDefaultCacheTime.Help" xml:space="preserve">
+    <value>The default cache time Publish modules will use for displaying information. You can override this setting at the module level.</value>
+  </data>
+  <data name="plDefaultCacheTime.Text" xml:space="preserve">
+    <value>Default Publish Cache Time</value>
+  </data>
+  <data name="rvDefaultCacheTime.Text" xml:space="preserve">
+    <value>Please enter a valid Integer from 0 to 1000</value>
+  </data>
+  <data name="plItemDescriptionHeight.Help" xml:space="preserve">
+    <value>You can control the height of the description field on the item edit screens. Please choose a height in Pixels here.</value>
+  </data>
+  <data name="plItemDescriptionHeight.Text" xml:space="preserve">
+    <value>Item Description Height:</value>
+  </data>
+  <data name="plItemDescriptionWidth.Help" xml:space="preserve">
+    <value>You can control the width of the description field on the item edit screens. Please choose a width in Pixels here.</value>
+  </data>
+  <data name="plItemDescriptionWidth.Text" xml:space="preserve">
+    <value>Item Description Width:</value>
+  </data>
+  <data name="plArticleTextHeight.Help" xml:space="preserve">
+    <value>You can control the height of the article text field on the article edit screen. Please choose a height in Pixels here.</value>
+  </data>
+  <data name="plArticleTextHeight.Text" xml:space="preserve">
+    <value>Article Text Editor Height:</value>
+  </data>
+  <data name="plArticleTextWidth.Help" xml:space="preserve">
+    <value>You can control the width of the article text field on the article edit screen. Please choose a width in Pixels here.</value>
+  </data>
+  <data name="plArticleTextWidth.Text" xml:space="preserve">
+    <value>Article Text Editor Width:</value>
+  </data>
+  <data name="rvArticleTextHeight.Text" xml:space="preserve">
+    <value>Please enter a valid Integer from 50 to 10000</value>
+  </data>
+  <data name="rvArticleTextWidth.Text" xml:space="preserve">
+    <value>Please enter a valid Integer from 50 to 10000</value>
+  </data>
+  <data name="rvItemDescriptionHeight.Text" xml:space="preserve">
+    <value>Please enter a valid Integer from 50 to 10000</value>
+  </data>
+  <data name="rvItemDescriptionWidth.Text" xml:space="preserve">
+    <value>Please enter a valid Integer from 50 to 10000</value>
+  </data>
+  <data name="rfvDefaultDisplayPage.Text" xml:space="preserve">
+    <value>Please choose a default display page.</value>
+  </data>
+  <data name="lblServiceUrlHelp.Help" xml:space="preserve">
+    <value>The Web Service URL to get specific content from this Portal. The above key will be required to access the service.</value>
+  </data>
+  <data name="lblAuthorizationKeyHelp.Help" xml:space="preserve">
+    <value>Auto-generated authorization key for this instance of Publish.</value>
+  </data>
+  <data name="lblSyndicationSettings.Text" xml:space="preserve">
+    <value>Syndication Settings</value>
+  </data>
+  <data name="lblPublisherSyndicationSettings.Text" xml:space="preserve">
+    <value>Content Server Information</value>
+  </data>
+  <data name="lblPublisherSyndication.Text" xml:space="preserve">
+    <value>Displayed here is the Authorization Key and URL for subscriber instances of Publish. This information will be required for configuration of subscribers.</value>
+  </data>
+  <data name="lblAuthorizationKeyHelp.Text" xml:space="preserve">
+    <value>Authorization Key</value>
+  </data>
+  <data name="lblServiceUrlHelp.Text" xml:space="preserve">
+    <value>Web Service URL</value>
+  </data>
+  <data name="lblSubscriberSyndicationSettings.Text" xml:space="preserve">
+    <value>Subscriber Configuration</value>
+  </data>
+  <data name="lblSubscriberSyndication.Text" xml:space="preserve">
+    <value>To configure this module as a Subscriber to Publish content enter the Authorization Key and URL.</value>
+  </data>
+  <data name="lblSubscriberServiceUrl.Help" xml:space="preserve">
+    <value>Contact the Site Administrator for the correct URL to receive content.</value>
+  </data>
+  <data name="lblSubscriberAuthorizationKey.Help" xml:space="preserve">
+    <value>Contact the Site Administrator for the Authorization Key and URL for the portal in which you want to subscribe to content.</value>
+  </data>
+  <data name="lblArchiveContent.Help" xml:space="preserve">
+    <value>In cases where content is archived on the publishing site, you can decide to archive your copy of the content.</value>
+  </data>
+  <data name="lblArchiveContent.Text" xml:space="preserve">
+    <value>Archive my content locally if not found on publishing site.</value>
+  </data>
+  <data name="lblApproveContent.Help" xml:space="preserve">
+    <value>By default all content you recieve is Pending Approval and emails are automatically generated. Check to automatically approve all content.</value>
+  </data>
+  <data name="lblApproveContent.Text" xml:space="preserve">
+    <value>Automatically approve content.</value>
+  </data>
+  <data name="plShowAuthor.Text" xml:space="preserve">
+    <value>Author Displayed by Default:</value>
+  </data>
+  <data name="plEnableTags.Help" xml:space="preserve">
+    <value>If enabled tagging functionality will be used within Publish. Tags allow you to assign keywords to specific articles in Publish, used for organization purposes, in addition to or instead of Categories. &lt;b&gt;Currently tagging is only implemented in the admin view so that you can start tagging items now. In a future release we will have the front end support for tagging implemented&lt;/b&gt;</value>
+  </data>
+  <data name="plEnableTags.Text" xml:space="preserve">
+    <value>Enable Tagging:</value>
+  </data>
+  <data name="plTagList.Help" xml:space="preserve">
+    <value>Choose the page that should be the default page for Tag Links</value>
+  </data>
+  <data name="plTagList.Text" xml:space="preserve">
+    <value>Default page for the Tag Cloud</value>
+  </data>
+  <data name="plShowTags.Text" xml:space="preserve">
+    <value>Show Tags by Default:</value>
+  </data>
+  <data name="plShowAuthor.Help" xml:space="preserve">
+    <value>Check the show Author option by default when editing an article.</value>
+  </data>
+  <data name="plShowTags.Help" xml:space="preserve">
+    <value>Check the show Tags option by default when editing an article.</value>
+  </data>
+  <data name="lblPingServices.Text" xml:space="preserve">
+    <value>Ping Settings</value>
+  </data>
+  <data name="lblEnablePing.Help" xml:space="preserve">
+    <value>Pinging services use XML-RPC calls to services like Technorati and Blogsearch.google.com to tell them when a website has changed.</value>
+  </data>
+  <data name="lblEnablePing.Text" xml:space="preserve">
+    <value>Enable Ping Services:</value>
+  </data>
+  <data name="lblPingServers.Help" xml:space="preserve">
+    <value>List of Ping Servers to use when enabled. Put each Server on a new line by pressing Shift-Enter</value>
+  </data>
+  <data name="lblPingServers.Text" xml:space="preserve">
+    <value>Ping Servers:</value>
+  </data>
+  <data name="lblChangedPage.Help" xml:space="preserve">
+    <value>Ping Servers take a parameter for the page that has changed when a new article is posted. If you have a main articles page that lists off all recent posts use that URL here. If not Publish will just default to the TabID you are currently editing.</value>
+  </data>
+  <data name="lblChangedPage.Text" xml:space="preserve">
+    <value>Changed URL:</value>
+  </data>
+  <data name="DefaultPingServers.Text" xml:space="preserve">
+    <value>http://rpc.technorati.com/rpc/ping
+http://rpc.pingomatic.com
+http://blogsearch.google.com/ping/RPC2</value>
+  </data>
+  <data name="ActiveForumsCommentType.Text" xml:space="preserve">
+    <value>Active Forums Comments</value>
+  </data>
+  <data name="lblCommentsType.Help" xml:space="preserve">
+    <value>Choose whether you would like to use the standard Publish method of entering and displaying comments, or whether you would like to integrate with a forum module for article comments.</value>
+  </data>
+  <data name="lblCommentsType.Text" xml:space="preserve">
+    <value>Comments Type:</value>
+  </data>
+  <data name="PublishCommentType.Text" xml:space="preserve">
+    <value>Publish Comments</value>
+  </data>
+</root>

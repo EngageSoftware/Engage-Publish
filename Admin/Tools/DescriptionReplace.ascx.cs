@@ -1,0 +1,97 @@
+//Engage: Publish - http://www.engagemodules.com
+//Copyright (c) 2004-2008
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
+
+using System;
+using System.Globalization;
+using DotNetNuke.Services.Localization;
+using System.Data;
+using Engage.Dnn.Publish.Util;
+
+
+namespace Engage.Dnn.Publish.Admin.Tools
+{
+    public partial class DescriptionReplace : ModuleBase
+    {
+        //#region Event Handlers
+
+        //override protected void OnInit(EventArgs e)
+        //{
+        //    this.Load += this.Page_Load;
+        //    base.OnInit(e);
+        //}
+
+        //private void Page_Load(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        Exceptions.ProcessModuleLoadException(this, exc);
+        //    }
+        //}
+
+        //#endregion
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "lb")]
+        protected void lbReplace_Click(object sender, EventArgs e)
+        {
+            //TODO: build the DescriptionReplace functionality
+            int articleCount = 0;
+            int articleUpdate = 0;
+            DataTable allArticles = Article.GetArticles(PortalId);
+            foreach (DataRow dr in allArticles.Rows)
+            {
+                articleCount++;
+                Article a = Article.GetArticle(Convert.ToInt32(dr["itemId"], CultureInfo.InvariantCulture));
+                if (a != null)
+                {
+                    //if our article is over 8k characters be sure to trim it
+                    if (!Utility.HasValue(a.Description) || !Utility.HasValue(a.MetaDescription))
+                    {
+                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(a.ArticleText, false);
+
+                        if (!Utility.HasValue(a.MetaDescription))
+                        a.MetaDescription = TrimDescription(399, description);
+
+                        if (!Utility.HasValue(a.Description))
+                        a.Description = TrimDescription(3997, description) + "...";// description + "...";
+                        
+                        a.UpdateDescription();
+                        articleUpdate++;
+                    }
+                }
+            }
+
+
+            //X articles updated out of Y
+            lblOutput.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("ArticleUpdate", LocalResourceFile).ToString(), articleUpdate, articleCount);
+
+        }
+
+        public static string TrimDescription(int length, string description)
+        {
+            if (description.Length > length)
+            {
+                description = description.Substring(0, length);
+            }
+            if (description.Length > 0)
+            {
+                int lastSpace = description.LastIndexOf(' ');
+
+                if (lastSpace != description.Length - 1 && lastSpace > 0)
+                    description = description.Substring(0, lastSpace);
+            }
+            return description;
+        }
+    }
+}
+

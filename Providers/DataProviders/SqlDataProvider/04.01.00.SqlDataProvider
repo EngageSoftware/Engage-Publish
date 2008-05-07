@@ -1,0 +1,402 @@
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Rating]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Publish_Rating](
+	[RatingId] [int] IDENTITY(1,1) NOT NULL,
+	[ItemVersionId] [int] NOT NULL,
+	[UserId] [int] NULL,
+	[Rating] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[LastUpdated] [datetime] NOT NULL,
+ CONSTRAINT [{objectQualifier}PK_Rating] PRIMARY KEY CLUSTERED 
+(
+	[RatingId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Rating]') AND name = N'{objectQualifier}IX_Publish_Rating_CreatedDate')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Publish_Rating_CreatedDate] ON {databaseOwner}[{objectQualifier}Publish_Rating] 
+(
+	[CreatedDate] ASC
+) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Rating]') AND name = N'{objectQualifier}IX_Publish_Rating_ItemVersionId')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Publish_Rating_ItemVersionId] ON {databaseOwner}[{objectQualifier}Publish_Rating] 
+(
+	[ItemVersionId] ASC
+) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE name = '{objectQualifier}FK_Rating_ItemVersion' AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}FK_Rating_ItemVersion] FOREIGN KEY([ItemVersionId])
+REFERENCES {databaseOwner}[{objectQualifier}Publish_ItemVersion] ([ItemVersionId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating] CHECK CONSTRAINT [{objectQualifier}FK_Rating_ItemVersion]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Rating_Users]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}FK_Rating_Users] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating] CHECK CONSTRAINT [{objectQualifier}FK_Rating_Users]
+GO
+
+
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}Publish_Comment](
+	[CommentId] [int] IDENTITY(1,1) NOT NULL,
+	[ItemVersionId] [int] NOT NULL,
+	[UserId] [int] NULL,
+	[RatingId] [int] NULL,
+	[CommentText] [text] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[LastUpdated] [datetime] NOT NULL,
+	[ApprovalStatusId] [int] NOT NULL,
+ CONSTRAINT [{objectQualifier}PK_Comment] PRIMARY KEY CLUSTERED 
+(
+	[CommentId] ASC
+) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]') AND name = N'{objectQualifier}IX_Comment_ApprovalStatusId')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Comment_ApprovalStatusId] ON {databaseOwner}[{objectQualifier}Publish_Comment] 
+(
+	[ApprovalStatusId] ASC
+) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]') AND name = N'{objectQualifier}IX_Comment_ItemVersionId')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Comment_ItemVersionId] ON {databaseOwner}[{objectQualifier}Publish_Comment] 
+(
+	[ItemVersionId] ASC
+) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]') AND name = N'{objectQualifier}IX_Comment_CreatedDate')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Comment_CreatedDate] ON {databaseOwner}[{objectQualifier}Publish_Comment] 
+(
+	[CreatedDate] ASC
+) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}FK_Comment_ApprovalStatusType] FOREIGN KEY([ApprovalStatusId])
+REFERENCES {databaseOwner}[{objectQualifier}Publish_ApprovalStatusType] ([ApprovalStatusID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] CHECK CONSTRAINT [{objectQualifier}FK_Comment_ApprovalStatusType]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}FK_Comment_ItemVersion] FOREIGN KEY([ItemVersionId])
+REFERENCES {databaseOwner}[{objectQualifier}Publish_ItemVersion] ([ItemVersionId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] CHECK CONSTRAINT [{objectQualifier}FK_Comment_ItemVersion]
+GO
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_Users]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment]  WITH CHECK ADD  CONSTRAINT [{objectQualifier}FK_Comment_Users] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] CHECK CONSTRAINT [{objectQualifier}FK_Comment_Users]
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+BEGIN
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ProductVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_MediaVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_DocumentVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemText] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwArticles]
+GO
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*, (select avg(convert(FLOAT, Rating)) from [{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from [{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
+from 
+	 [{objectQualifier}Publish_vwItems] i 
+	join [{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddRating]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddRating]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddRating]
+	@itemVersionId int, 
+	@userId int, 
+	@rating int = 0
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Rating] (ItemVersionId, UserId, Rating, CreatedDate, LastUpdated)
+	VALUES (@itemVersionId, @userId, @rating, getdate(), getdate())
+
+	SELECT @@IDENTITY
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetRatingByUser]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetRatingByUser]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetRatingByUser]
+	@itemId int, 
+	@userId int
+AS
+BEGIN
+	SELECT r.RatingId, r.Rating, r.UserId, i.ItemId, r.ItemVersionId, r.LastUpdated, r.CreatedDate
+	FROM [{objectQualifier}Publish_Rating] r
+	 JOIN [{objectQualifier}Publish_vwItems] i on (r.ItemVersionId = i.ItemVersionId)
+	WHERE r.userId = @userId
+	 AND i.ItemId = @itemId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUser]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUser]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUser]
+	@itemId int, 
+	@userId int,
+	@rating int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Rating]
+	SET Rating = @rating,
+		LastUpdated = getdate()
+	WHERE RatingId = (SELECT top 1 RatingId 
+						from [{objectQualifier}Publish_Rating] r 
+						join [{objectQualifier}Publish_vwItems] i on (r.ItemVersionId = i.ItemVersionId)
+						where r.UserId = @userId
+						and i.ItemId = @itemId)
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateRating]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRating]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRating]
+	@ratingId int, 
+	@rating int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Rating]
+	SET Rating = @rating,
+		LastUpdated = getdate()
+	WHERE RatingId = @ratingId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteRatings]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteRatings]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteRatings]
+	@itemVersionId int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET RatingId = null
+	WHERE itemVersionId = @itemVersionId
+
+	DELETE [{objectQualifier}Publish_Rating]
+	WHERE itemVersionId = @itemVersionId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
+select
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId, c.itemVersionId, c.createdDate, c.lastUpdated, c.ratingId, r.rating
+from
+	[{objectQualifier}Publish_Comment] c
+	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
+	LEFT JOIN [{objectQualifier}Publish_Rating] r on (c.ratingId = r.ratingId)
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText text,
+	@approvalStatusId int,
+	@ratingId int
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId)
+
+	SELECT @@IDENTITY
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+	@itemId int,
+	@approvalStatusId int
+AS
+BEGIN
+	SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId
+	FROM [{objectQualifier}Publish_vwComments] c
+	WHERE c.ItemId = @itemId
+	 AND c.approvalStatusId = @approvalStatusId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteComment]
+	@commentId int
+AS
+BEGIN
+	DELETE {objectQualifier}Publish_Rating
+	WHERE ratingId = (SELECT ratingId FROM {objectQualifier}Publish_Comment WHERE commentId = @commentId)
+
+	DELETE {objectQualifier}Publish_Comment
+	WHERE commentId = @commentId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText text,
+	@approvalStatusId int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate()
+	WHERE commentId = @commentId
+END
+GO
+
+
+if not exists (select * from syscolumns where name = 'FirstName' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]'))
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment ADD
+	FirstName nvarchar(50) NULL,
+	LastName nvarchar(50) NULL
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText text,
+	@approvalStatusId int,
+	@ratingId int,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50)
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId, @firstName, @lastName)
+
+	SELECT @@IDENTITY
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
+select
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.ratingId, r.rating
+from
+	[{objectQualifier}Publish_Comment] c
+	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
+	LEFT JOIN [{objectQualifier}Publish_Rating] r on (c.ratingId = r.ratingId)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText text,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@approvalStatusId int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate(),
+		firstName = @firstName,
+		lastName = @lastName
+	WHERE commentId = @commentId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+	@itemId int,
+	@approvalStatusId int
+AS
+BEGIN
+	SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName
+	FROM [{objectQualifier}Publish_vwComments] c
+	WHERE c.ItemId = @itemId
+	 AND c.approvalStatusId = @approvalStatusId
+END
+GO
+
+if exists (select * from dbo.sysobjects where id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}[{objectQualifier}Publish_spGetComment]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComment]
+	@commentId int
+AS
+BEGIN
+	SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName
+	FROM [{objectQualifier}Publish_vwComments] c
+	WHERE c.commentId = @commentId
+END
+GO
+

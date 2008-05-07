@@ -1,0 +1,596 @@
+﻿/* update module settings */
+
+/* Handle Item Display Controls using CategoryDisplay */
+
+UPDATE tms
+SET SettingName = 'cdCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'CategoryId')
+and (select settingValue from {databaseOwner}[{objectQualifier}tabmodulesettings] where SettingName ='DisplayType' and TabModuleId = tms.TabModuleId) = 'CategoryDisplay'
+
+UPDATE tms
+SET SettingName = 'cdDisplayOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'DisplayOption')
+and (select settingValue from {databaseOwner}[{objectQualifier}tabmodulesettings] where SettingName ='DisplayType' and TabModuleId = tms.TabModuleId) = 'CategoryDisplay'
+
+UPDATE tms
+SET SettingName = 'cdItemTypeId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'ItemTypeId')
+and (select settingValue from {databaseOwner}[{objectQualifier}tabmodulesettings] where SettingName ='DisplayType' and TabModuleId = tms.TabModuleId) = 'CategoryDisplay'
+
+
+
+
+
+
+UPDATE tms
+SET SettingName = 'cdCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'CategoryId')
+
+
+UPDATE tms
+SET SettingName = 'cdDisplayOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'DisplayOption')
+
+
+
+UPDATE tms
+SET SettingName = 'adArticleId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Display'
+AND (tms.SettingName = 'ArticleId')
+
+
+
+
+/* Begin update old settings to new settings */
+
+UPDATE tms
+SET SettingName = 'ilItemTypeId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'ItemTypeId')
+
+GO
+
+UPDATE tms
+SET SettingName = 'ilCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'CategoryId')
+
+GO
+
+UPDATE tms
+SET SettingName = 'ilEnableRss'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'EnableRss')
+
+GO
+
+
+
+UPDATE tms
+SET SettingName = 'ilShowParent'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'ShowParent')
+
+GO
+
+
+
+UPDATE tms
+SET SettingName = 'ilMaxDisplayItems'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'MaxDisplayItems')
+
+GO
+
+UPDATE tms
+SET SettingName = 'ilMaxDisplaySubItems'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'MaxDisplaySubItems')
+
+GO
+
+UPDATE tms
+SET SettingName = 'ilDataDisplayFormat'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'DataDisplayFormat')
+
+GO
+
+UPDATE tms
+SET SettingName = 'ilDataType'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Item Listing'
+AND (tms.SettingName = 'DataType')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'adArticleId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Article Display'
+AND (tms.SettingName = 'ArticleId')
+
+GO
+
+
+
+UPDATE tms
+SET SettingName = 'cdItemTypeId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Display'
+AND (tms.SettingName = 'ItemTypeId')
+
+GO
+
+UPDATE tms
+SET SettingName = 'cdCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Display'
+AND (tms.SettingName = 'CategoryId')
+
+GO
+
+UPDATE tms
+SET SettingName = 'cdDisplayOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Display'
+AND (tms.SettingName = 'DisplayOption')
+
+GO
+
+UPDATE tms
+SET SettingName = 'cdChildDisplayOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Display'
+AND (tms.SettingName = 'ChildDisplayOption')
+
+GO
+
+UPDATE tms
+SET SettingName = 'cdSortOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Display'
+AND (tms.SettingName = 'SortOption')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'cfCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Feature'
+AND (tms.SettingName = 'CategoryId')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'cfDisplayOption'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Feature'
+AND (tms.SettingName = 'DisplayOption')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'cfEnableRss'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Feature'
+AND (tms.SettingName = 'EnableRss')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'cfRandomize'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Feature'
+AND (tms.SettingName = 'Randomize')
+
+GO
+
+UPDATE tms
+SET SettingName = 'csMaxResults'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'MaxResults')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csPerPage'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'PerPage')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csTitleLength'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'TitleLength')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csDescriptionLength'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'DescriptionLength')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csSearchEmptyRedirectUrl'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'SearchEmptyRedirectUrl')
+
+GO
+
+UPDATE tms
+SET SettingName = 'csShowDescription'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'ShowDescription')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csAllowCategorySelection'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'AllowCategorySelection')
+
+GO
+
+
+UPDATE tms
+SET SettingName = 'csCategoryId'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'AMS Category Search'
+AND (tms.SettingName = 'CategorySelection')
+
+GO
+
+
+/* End update old settings to new settings */
+
+
+/*
+Modify the module definitions of each module to be the Item Display module definition
+Also set the Display Type for the old module to be the new type
+*/
+
+if not exists (select distinct tabmoduleId from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Item Listing'
+					)
+					and SettingName = 'DisplayType'
+					and SettingValue = 'ItemListing')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'DisplayType', 'ItemListing'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Item Listing'
+	)
+END
+GO
+
+
+if not exists (select distinct TabModuleId from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Category Display'
+					)
+					and SettingName = 'DisplayType'
+					and SettingValue = 'CategoryDisplay')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'DisplayType', 'CategoryDisplay'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Category Display'
+	)
+END
+GO
+
+if not exists (select distinct tabmoduleid from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Article Display'
+					AND (tms.SettingName = 'ItemTypeId'))
+					and SettingName = 'DisplayType'
+					and SettingValue = 'ArticleDisplay')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'DisplayType', 'ArticleDisplay'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Article Display'
+	)
+END
+GO
+
+
+if not exists (select distinct tabmoduleid from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Category Feature'
+					AND (tms.SettingName = 'ItemTypeId'))
+					and SettingName = 'DisplayType'
+					and SettingValue = 'CategoryFeatureDisplay')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'DisplayType', 'CategoryFeatureDisplay'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Category Feature'
+	)
+END
+GO
+
+
+if not exists (select distinct tabmoduleid from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Category Search'
+					AND (tms.SettingName = 'ItemTypeId'))
+					and SettingName = 'DisplayType'
+					and SettingValue = 'CategorySearch')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'DisplayType', 'CategorySearch'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Category Search'
+	)
+END
+
+GO
+
+
+if not exists (select distinct tabmoduleid from {databaseOwner}[{objectQualifier}tabModuleSettings] 
+				where tabmoduleid in (select distinct tms.TabModuleId
+					FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+					JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+					JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+					JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+					WHERE md.FriendlyName = 'AMS Category Search'
+					AND (tms.SettingName = 'ItemTypeId'))
+					and SettingName = 'Overrideable'
+					and SettingValue = 'false')
+
+BEGIN
+	insert into {databaseOwner}[{objectQualifier}tabModuleSettings]
+	(TabModuleId, SettingName, SettingValue)
+	(select distinct tms.TabModuleId, 'Overrideable', 'false'
+	FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+	JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+	JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+	JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+	WHERE md.FriendlyName = 'AMS Category Search'
+	)
+
+
+
+END
+
+GO
+
+
+
+
+/*End Module Settings */
+
+
+
+
+update {databaseOwner}[{objectQualifier}moduledefinitions]
+set Friendlyname = 'Engage: Publish'
+where FriendlyName = 'AMS Item Display'
+
+GO
+
+
+
+update {databaseOwner}[{objectQualifier}moduledefinitions]
+set Friendlyname = 'Engage: Publish'
+where FriendlyName = 'Engage AMS'
+
+GO
+
+update {databaseOwner}[{objectQualifier}desktopmodules]
+set FriendlyName = 'Engage: Publish'
+, ModuleName = 'Engage: Publish'
+, Description = 'The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)'
+where FriendlyName = 'AMS Item Display'
+
+
+GO
+
+update {databaseOwner}[{objectQualifier}desktopmodules]
+set FriendlyName = 'Engage: Publish'
+, ModuleName = 'Engage: Publish'
+, Description = 'The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)'
+where FriendlyName = 'Engage AMS'
+GO
+
+
+update m
+set m.moduledefid = (select moduledefid from  {databaseOwner}[{objectQualifier}moduledefinitions] where FriendlyName = 'Engage: Publish')
+FROM  {databaseOwner}[{objectQualifier}modules] m 
+join  {databaseOwner}[{objectQualifier}moduledefinitions] md on (md.moduledefid = m.moduledefid)
+where
+friendlyname like 'AMS %'
+GO
+
+/* Remove the old ItemDisplay reference, it's not located here anymore */
+if exists (select ModuleControlId from {databaseOwner}[{objectQualifier}modulecontrols] where controlsrc = 'DesktopModules/EngagePublish/Controls/ItemDisplay.ascx')
+
+BEGIN
+delete from {databaseOwner}[{objectQualifier}modulecontrols] where controlsrc = 'DesktopModules/EngagePublish/Controls/ItemDisplay.ascx'
+END
+
+GO
+
+

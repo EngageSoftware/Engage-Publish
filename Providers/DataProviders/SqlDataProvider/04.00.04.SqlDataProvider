@@ -1,0 +1,23 @@
+﻿delete {databaseOwner}[{objectQualifier}tabModuleSettings] where SettingName = 'cfItemTypeId'
+GO
+
+UPDATE tms
+SET SettingValue = 'Thumbnail'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'Engage: Publish'
+AND (tms.SettingName = 'cdDisplayOption' OR tms.SettingName = 'cfDisplayOption')
+AND tms.SettingValue = 'Abstract'
+GO
+
+UPDATE tms
+SET SettingValue = 'Title'
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] tms
+JOIN {databaseOwner}[{objectQualifier}TabModules] tm on (tms.TabModuleId = tm.TabModuleId)
+JOIN {databaseOwner}[{objectQualifier}Modules] m on (tm.ModuleId = m.ModuleId)
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md on (m.ModuleDefId = md.ModuleDefId)
+WHERE md.FriendlyName = 'Engage: Publish'
+AND tms.SettingName = 'ilDataDisplayFormat'
+AND tms.SettingValue = 'List'

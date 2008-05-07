@@ -1,0 +1,58 @@
+﻿if exists (select * from  {databaseOwner}[{objectQualifier}ModuleControls] where ControlKey = 'InvalidLink')
+BEGIN
+update {databaseOwner}[{objectQualifier}ModuleControls]
+set ControlKey = 'ItemPreview', 
+ControlSrc = 'DesktopModules/EngagePublish/ItemPreview.ascx',
+ControlTitle = 'Item Preview'
+where ControlKey = 'InvalidLink'
+END
+GO
+
+IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+	@portalId int
+AS
+
+declare @onlyCurrentVersion bit
+declare @relationshipTypeId int 
+set @relationshipTypeId = (select relationshiptypeId from [{objectQualifier}Publish_RelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		[{objectQualifier}Publish_fnGetAllCategories]() parent
+		join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	and 	parent.PortalId = @portalId
+	and StartDate <= getdate() 
+	and (EndDate > getdate() or EndDate is null)
+
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		[{objectQualifier}Publish_fnGetAllCategories]() parent
+		join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+
+		child.PortalId = @portalId
+	and	parent.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+GO
+
+

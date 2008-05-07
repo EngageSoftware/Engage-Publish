@@ -1,0 +1,26 @@
+﻿IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+
+create view {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+select
+	catDetail.ItemId, catDetail.[Name] CategoryName, 
+	child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+	child.ItemId ChildItemId, 
+	cat.PortalId, child.LastUpdated
+	, child.CreatedDate
+	, child.Thumbnail
+	--, u.DisplayName 
+	/*--REMOVE ABOVE LINE FOR Pre DisplayName DNN INSTALLS */
+from 
+	{objectQualifier}Publish_fnGetAllCategories() cat
+	join [{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+	join [{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	join [{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+where 	catDetail.IsCurrentVersion = 1
+and 	child.IsCurrentVersion = 1
+and 	child.RelationshipTypeId = (select RelationshipTypeId from [{objectQualifier}Publish_RelationshipType] where RelationshipName = 'Item To Parent Category')
+
+
+GO
+

@@ -1,0 +1,104 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vItemListing]
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItemListing] as
+
+	select
+		catDetail.ItemId, catDetail.[Name] CategoryName, 
+		child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+		child.ItemId ChildItemId, cat.PortalId, child.LastUpdated
+	from 
+		{databaseOwner}[{objectQualifier}EngageAms_fnGetAllCategories]() cat
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+		join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	where
+		catDetail.IsCurrentVersion = 1
+	and 	child.IsCurrentVersion = 1
+	and 	child.RelationshipTypeId = (select RelationshipTypeId from {objectQualifier}EngageAmsRelationshipType where RelationshipName = 'Item To Parent Category')
+
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_GetAdminItemListing]
+@ParentItemId int, 
+@ItemTypeId int,
+@RelationshipTypeId int,
+@PortalId int
+AS
+
+set nocount on
+
+declare @TempTable table
+(	
+	ItemId int not null
+	, ItemVersionId int not null
+)
+
+insert into @TempTable
+select 
+	c.ItemId, c.itemVersionId
+from 
+	{databaseOwner}[{objectQualifier}engageams_vChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 1
+	and c.RelationshipTypeId = @RelationshipTypeId 
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+
+insert into @TempTable
+
+select 
+	c.ItemId
+	, Max(c.ItemVersionId)
+
+from 
+	{databaseOwner}[{objectQualifier}engageams_vChildItems] c 
+where 
+--	c.StartDate <= getdate() 
+--	and (c.EndDate > getdate() or c.EndDate is null) 
+	c.IsCurrentVersion = 0
+	and c.RelationshipTypeId = @RelationshipTypeId  
+	and c.PortalID = @PortalId
+	and c.ParentItemID = @ParentItemId
+	and c.ItemTypeId = @ItemTypeId
+	and not exists (Select * from @TempTable w where w.ItemId = c.itemId)
+group by c.ItemId
+
+set nocount off
+
+Select vi.[Name] 
+	, vi.[Description]
+	, t.ItemId
+	, t.ItemVersionId
+	, vi.IsCurrentVersion
+	, (select count(ParentItemId) from 
+	{databaseOwner}[{objectQualifier}engageams_vchilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId = 
+	(select RelationshipTypeId from {databaseOwner}[{objectQualifier}engageamsrelationshiptype] where relationshipname like 'Item To Parent Category')
+	and ItemTypeId = 
+	(select  itemtypeid from {databaseOwner}[{objectQualifier}engageamsitemtype] where name = 'Category')
+	) 'ChildCount'
+
+from @TempTable t
+join {databaseOwner}[{objectQualifier}engageams_vitems] vi on (vi.ItemVersionId = t.ItemVersionId)
+order by vi.[Name]
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,113 @@
+﻿
+
+/* Publish_spInsertItemVersionSettings */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]
+		(@ItemVersionId 	[int],
+		 @ControlName 	[nvarchar](200),
+		 @PropertyName 	[nvarchar](200),
+		 @PropertyValue 	[nvarchar](200))
+
+	AS 
+
+if not exists (select * from {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] where ItemversionId = @ItemVersionId and ControlName = @ControlName and PropertyName = @PropertyName)
+begin
+	INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] 
+		 ( [ItemVersionId],
+		 [ControlName],
+		 [PropertyName],
+		 [PropertyValue]) 
+	 
+	VALUES 
+		( @ItemVersionId,
+		 @ControlName,
+		 @PropertyName,
+		 @PropertyValue)
+end
+
+
+GO
+
+
+/* Publish_spGetItemViewReport */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemViewReport]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemViewReport]
+GO
+
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemViewReport]
+(@itemTypeId int,
+@categoryId int,   
+@index int,
+@pagesize int,
+@startDate nvarchar(30),
+@endDate nvarchar(30),
+@sortParameters nvarchar(400),
+@portalId int
+)
+as 
+
+	declare @sql varchar(8000)
+
+
+	Create table #tmpResults 
+	(
+		Id int not null IDENTITY(1,1),
+		ItemId int, 
+		Name nvarchar(255),
+		Count int,
+		TotalRows int
+	)
+
+
+	set @sql =  'insert into #tmpResults (ItemId, Name, Count)'
+		
+	set @sql = @sql + ' select vi.ItemID, vi.Name, count(iv.itemId) '
+	set @sql = @sql + ' from {databaseOwner}{objectQualifier}publish_itemview iv join {databaseOwner}{objectQualifier}publish_vwItems vi on (vi.ItemId = iv.ItemId) '
+	set @sql = @sql + ' where vi.IsCurrentVersion=1 '
+	set @sql = @sql + ' and vi.PortalId = ' + Convert(varchar(20), @PortalId)
+	
+	if (@itemTypeId >-1)
+	begin
+		set @sql = @sql + ' and vi.ItemTypeId = ' + Convert(varchar(20),@itemTypeId)
+	end 
+
+--	if (@categoryId >-1)
+--	begin
+--		set @sql = @sql + ' and vi.ItemTypeId = ' + Convert(varchar(20),@categoryId)
+--	end 
+
+
+	set @sql = @sql + ' and iv.ViewDate >= '''  + Convert(varchar(30),@startDate)
+	set @sql = @sql + ''' and iv.ViewDate < '''  + Convert(varchar(30),@endDate )
+	set @sql = @sql + ''' group by vi.ItemId, vi.Name '
+	set @sql = @sql + ' order by ' + @sortParameters
+
+	print (@sql)
+
+	exec (@sql)
+
+
+	DECLARE @rows int
+
+	select @rows = count(*) from #tmpResults
+
+	update #tmpResults set TotalRows = @rows
+
+	if (@PageSize <1)
+	 	BEGIN
+	 		select * from #tmpResults
+	 	END
+	ELSE
+	 	BEGIN
+	 		select * from #tmpResults
+	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
+	 	END
+
+GO
+

@@ -1,0 +1,808 @@
+﻿
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemVersion_Item]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion
+	DROP CONSTRAINT {objectQualifier}FK_ItemVersion_Item
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion
+	DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DF_ItemVersion_VersionDate]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersion] DROP CONSTRAINT [{objectQualifier}DF_ItemVersion_VersionDate]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DF_Publish_ItemVersion_ApprovalStatusId]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersion] DROP CONSTRAINT [{objectQualifier}DF_Publish_ItemVersion_ApprovalStatusId]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DF_EngageAMSItemVersion_ApprovalStatusId]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion
+	DROP CONSTRAINT {objectQualifier}DF_EngageAMSItemVersion_ApprovalStatusId
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ArticleVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ArticleVersion] DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_CategoryVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_CategoryVersion] DROP CONSTRAINT {objectQualifier}FK_CategoryVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT {objectQualifier}FK_Comment_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionTags] DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Rating_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating] DROP CONSTRAINT {objectQualifier}FK_Rating_ItemVersion
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion
+GO
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId int NOT NULL IDENTITY (1, 1),
+	ItemId int NOT NULL,
+	OriginalItemVersionId int NULL,
+	Name nvarchar(255) NULL,
+	Description ntext NULL,
+	ItemVersionDate datetime NOT NULL,
+	StartDate datetime NOT NULL,
+	EndDate datetime NULL,
+	LanguageId int NOT NULL,
+	AuthorUserId int NOT NULL,
+	ApprovalStatusId int NOT NULL,
+	ApprovalDate datetime NULL,
+	ApprovalUserId int NULL,
+	ApprovalComments nvarchar(255) NULL,
+	MetaKeywords nvarchar(255) NULL,
+	MetaDescription nvarchar(400) NULL,
+	MetaTitle nvarchar(255) NULL,
+	DisplayTabId int NULL,
+	LastUpdated datetime NULL,
+	Disabled bit NOT NULL,
+	Thumbnail varchar(300) NULL
+	)  ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion ADD CONSTRAINT
+	{objectQualifier}DF_ItemVersion_VersionDate DEFAULT (getdate()) FOR ItemVersionDate
+GO
+
+ALTER TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion ADD CONSTRAINT
+	{objectQualifier}DF_Publish_ItemVersion_ApprovalStatusId DEFAULT (1) FOR ApprovalStatusId
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion ON
+
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Publish_ItemVersion)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion (ItemVersionId, ItemId, OriginalItemVersionId, Name, Description, ItemVersionDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, Disabled, Thumbnail)
+		SELECT ItemVersionId, ItemId, OriginalItemVersionId, Name, Description, ItemVersionDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, Disabled, Thumbnail FROM {databaseOwner}{objectQualifier}Publish_ItemVersion TABLOCKX')
+GO
+
+SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion OFF
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_CategoryVersion_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_CategoryVersion
+	DROP CONSTRAINT {objectQualifier}FK_CategoryVersion_ItemVersion
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionSettings
+	DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags
+	DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Rating_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Rating
+	DROP CONSTRAINT {objectQualifier}FK_Rating_ItemVersion
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
+	DROP CONSTRAINT {objectQualifier}FK_Comment_ItemVersion
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ArticleVersion_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion
+	DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion
+GO
+
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Publish_ItemVersion', N'{objectQualifier}Publish_ItemVersion', 'OBJECT'
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion ADD CONSTRAINT
+	{objectQualifier}PK_ItemVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}Publish_ItemVersion_ItemId_Thumbnail ON {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemId,
+	Thumbnail
+	) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}Publish_ItemVersion_ItemVersionId_Thumbnail ON {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId,
+	ItemId,
+	Thumbnail
+	) ON [PRIMARY]
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}Publish_ItemVersion_Item_ItemVersion_Thumbnail ON {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemId,
+	ItemVersionId,
+	Thumbnail
+	) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Publish_ItemVersion_Publish_ApprovalStatusType]') AND type = 'F')
+
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Publish_ItemVersion_Publish_ApprovalStatusType FOREIGN KEY
+	(
+	ApprovalStatusId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ApprovalStatusType
+	(
+	ApprovalStatusID
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemVersion_Item]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_ItemVersion_Item FOREIGN KEY
+	(
+	ItemId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_Item
+	(
+	ItemId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Comment_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Rating_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Rating WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_Rating_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionSettings WITH NOCHECK ADD CONSTRAINT
+	FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_CategoryVersion_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_CategoryVersion WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_CategoryVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_ArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion
+GO
+
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion
+	(
+	ItemVersionId int NOT NULL,
+	ItemId int NOT NULL,
+	VersionNumber nvarchar(50) NULL,
+	VersionDescription nvarchar(255) NULL,
+	ArticleText ntext NOT NULL,
+	ThumbnailMediaItemId int NULL,
+	ReferenceNumber nvarchar(50) NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Publish_ArticleVersion)
+	 EXEC('INSERT INTO {databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion (ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText, ThumbnailMediaItemId, ReferenceNumber)
+		SELECT ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText, ThumbnailMediaItemId, ReferenceNumber FROM {databaseOwner}{objectQualifier}Publish_ArticleVersion TABLOCKX')
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_ArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_ArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}Publish_ArticleVersion', N'{objectQualifier}Publish_ArticleVersion', 'OBJECT'
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PK_ArticleVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion ADD CONSTRAINT
+	{objectQualifier}PK_ArticleVersion PRIMARY KEY CLUSTERED 
+	(
+	ItemVersionId
+	) WITH FILLFACTOR = 90 ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX {objectQualifier}FK_Publish_ArticleVersion_ItemVersionId ON {databaseOwner}{objectQualifier}Publish_ArticleVersion
+	(
+	ItemVersionId
+	) ON [PRIMARY]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ArticleVersion_ItemVersion]') AND type = 'F')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion WITH NOCHECK ADD CONSTRAINT
+	{objectQualifier}FK_ArticleVersion_ItemVersion FOREIGN KEY
+	(
+	ItemVersionId
+	) REFERENCES {databaseOwner}{objectQualifier}Publish_ItemVersion
+	(
+	ItemVersionId
+	)
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [nvarchar] (10)
+	, @VersionDescription [nvarchar] (255)
+	, @ArticleText [ntext]
+	, @ReferenceNumber [nvarchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+(
+	@ItemId [int]
+	, @OriginalItemVersionID [int]
+	, @Name [nvarchar] (255)
+	, @Description ntext
+	, @ItemVersionDate [datetime]
+	, @StartDate [datetime]
+	, @EndDate [datetime]
+	, @LanguageId [int]
+	, @AuthorUserId [int]
+	, @MetaKeywords [nvarchar] (255)
+	, @MetaDescription [nvarchar] (400)
+	, @MetaTitle [nvarchar](255)
+	, @DisplayTabId [int]
+	, @Disabled [bit] = 0
+	, @Thumbnail [varchar] (300)
+)
+AS 
+
+declare @keywords nvarchar(255)
+if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+
+declare @metaDesc nvarchar(400)
+if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+
+declare @title nvarchar(255)
+if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+
+declare @oivId int
+if (@OriginalItemVersionID <> -1) set @oivId = @OriginalItemVersionID
+
+declare @dtId int
+if (@DisplayTabId <> -1) set @dtId = @DisplayTabId
+
+declare @lId int
+if (@LanguageId = -1) 
+	set @lId = 1
+else
+	set @lId = @LanguageId
+
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+	[ItemID]
+	, [OriginalItemVersionID]
+	, [Name]
+	, [Description]
+	, [ItemVersionDate]
+	, [StartDate]
+	, [Enddate]
+	, [LanguageId]
+	, [AuthorUserId]
+	, [MetaKeywords]
+	, [MetaDescription]
+	, [MetaTitle]
+	, [DisplayTabId]
+	, [LastUpdated]
+	, [Disabled]
+	, [Thumbnail]
+	)
+ 
+VALUES 
+	( 
+	@ItemId 
+	, @oivId
+	, @Name 
+	, @Description
+	, @ItemVersionDate
+	, @StartDate
+	, @EndDate
+	, @lId
+	, @AuthorUserId
+	, @keywords
+	, @metaDesc
+	, @title
+	, @dtId
+	, GetDate()
+	, @disabled
+	, @Thumbnail
+	)
+ 
+select SCOPE_IDENTITY()
+return SCOPE_IDENTITY()
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText text,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@approvalStatusId int
+AS
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate(),
+		firstName = @firstName,
+		lastName = @lastName,
+		emailAddress = @emailAddress
+	WHERE commentId = @commentId
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+(
+	@ItemId [int]
+	, @ItemVersionId [int]
+	, @ApprovalStatusId [int]
+	, @ApprovalUserId [int]
+	, @ApprovalComments [nvarchar] (255)
+)
+AS 
+           
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_ApprovalstatusType] where approvalstatusname = 'Approved'))
+Begin
+	-- archive existing versions 
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived') , LastUpdated = GetDate()
+	WHERE ItemVersionId = @ItemVersionId and ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Approved')
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate()
+	WHERE ItemId = @ItemId and ItemVersionId < @ItemVersionId
+	UPDATE {databaseOwner}[{objectQualifier}Publish_Item] set ApprovedItemVersionId = @ItemVersionId
+	WHERE ItemId = @ItemId
+		
+End
+Else
+Begin
+	-- get current approval status
+	declare @currentApprovalStatusId [int]
+	set @currentApprovalStatusId = (select approvalStatusId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where itemVersionId = @ItemVersionId)
+	if (@currentApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Approved'))
+	begin
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+	end
+End
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'))
+begin
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] SET ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate() WHERE ItemId = @ItemId and @ItemVersionId < @ItemVersionId 
+--and ApprovalStatusId != 3
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+end
+UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	
+	SET  
+		 [ApprovalStatusID]	 = @ApprovalStatusID,
+		 [ApprovalUserID]	 = @ApprovalUserID,
+		 [ApprovalComments ]	 = @ApprovalComments 
+	
+	WHERE 
+		( [ItemVersionId]	 = @ItemVersionId AND
+		 [ItemId]	 = @ItemId)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemVersions]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union all
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ 	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticles]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwCategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemTypes]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemTypes]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemTypes] as
+SELECT
+	ItemTypeId, [Name], [Description], TableName , IsTopLevel, IsActive
+FROM
+	 {databaseOwner}[{objectQualifier}Publish_ItemType]
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItems] as
+SELECT
+	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+	iv.ItemId, iv.OriginalItemVersionId, iv.ItemVersionDate, iv.StartDate, iv.EndDate, 
+	iv.LanguageId, iv.AuthorUserId, iv.ApprovalStatusId, iv.ApprovalDate, iv.ApprovalUserId, iv.ApprovalComments, 
+	iv.MetaKeywords, iv.MetaDescription, iv.MetaTitle, iv.DisplayTabId, iv.LastUpdated,
+	i.PortalID, i.ItemTypeID, iv.ItemVersionID, it.[Name] as ItemType,
+	iv.[Name], iv.[Description], iv.Disabled, i.CreatedDate
+	, 'Thumbnail' = case when fl.FileName is null then iv.Thumbnail else fl.Folder + fl.FileName end
+
+FROM
+	 {databaseOwner}[{objectQualifier}Publish_Item] i
+	join {databaseOwner}[{objectQualifier}Publish_ItemType] it on (i.ItemTypeID = it.ItemTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemID = iv.ItemID)
+	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*, (select avg(convert(FLOAT, Rating)) from [{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from [{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
+from 
+	 [{objectQualifier}Publish_vwItems] i 
+	join [{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwCategories] as
+select
+	 cv.SortOrder, cv.ChildDisplayTabId, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+--where
+--	iv.StartDate <= getdate()
+--and	(iv.EndDate > getdate() or iv.EndDate is null)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwChildItems] as
+select
+	r.ParentItemID, r.sortorder, child.*, rt.RelationshipName, rt.RelationshipTypeID
+from 
+	 {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems] child on (r.ChildItemVersionID = child.ItemVersionID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
+select
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.emailAddress, c.ratingId, r.rating
+from
+	[{objectQualifier}Publish_Comment] c
+	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
+	LEFT JOIN [{objectQualifier}Publish_Rating] r on (c.ratingId = r.ratingId)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwParentItems] as
+select
+	
+	r.childItemId, r.childItemVersionId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+create view {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+select
+	catDetail.ItemId, catDetail.[Name] CategoryName, 
+	child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+	child.ItemId ChildItemId, 
+	cat.PortalId, child.LastUpdated
+	, child.CreatedDate
+	, child.Thumbnail
+	, catDetail.StartDate
+	--, u.DisplayName 
+	/*--REMOVE ABOVE LINE FOR Pre DisplayName DNN INSTALLS */
+from 
+	{objectQualifier}Publish_fnGetAllCategories() cat
+	join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+	join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	--join [{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+where 	catDetail.IsCurrentVersion = 1
+and 	child.IsCurrentVersion = 1
+and 	child.RelationshipTypeId in 
+	(
+		select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
+		where RelationshipName = 'Item To Parent Category' or RelationshipName = 'Item to Related Category'
+	)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

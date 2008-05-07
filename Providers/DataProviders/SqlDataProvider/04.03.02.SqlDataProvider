@@ -1,0 +1,28 @@
+﻿IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+
+BEGIN
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Comment] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Rating] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+END
+
+GO
+

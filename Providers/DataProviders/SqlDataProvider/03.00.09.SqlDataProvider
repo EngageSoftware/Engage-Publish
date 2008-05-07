@@ -1,0 +1,148 @@
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]
+GO
+
+create function {databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]()
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		PortalId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	declare @relationshipTypeId int 
+	declare @categoryItemTypeId int 
+	declare @itemTypeId int 
+
+	set @relationshipTypeId = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}EngageAmsRelationshipType] where RelationshipName = 'Category to Top Level Category')
+	set @categoryItemTypeId = (select ItemTypeId from {databaseOwner}[{objectQualifier}EngageAmsItemType] where [Name] = 'Category')
+
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID, PortalId)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID, i.PortalId
+	from 
+		{databaseOwner}[{objectQualifier}EngageAmsItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAmsItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.RelationshipTypeId = @relationshipTypeId
+		and i.ItemTypeId = @categoryItemTypeId
+
+	set @rowsAdded = @@rowcount
+
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, i.PortalId, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAmsItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAmsItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	child.RelationshipTypeId = @relationshipTypeId
+		and 	i.ItemTypeId = @categoryItemTypeId
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+
+		set @rowsAdded = @@rowcount
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+
+	return
+end
+GO
+
+----------------------------------------------
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+	drop view {databaseOwner}[{objectQualifier}engageams_vItemListing]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItemListing] as
+
+	select
+		catDetail.ItemId, catDetail.[Name] CategoryName, 
+		child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+		child.ItemId ChildItemId, thumbnail.ThumbnailId, thumbnail.FileName ThumbnailUrl,
+		cat.PortalId, child.LastUpdated
+	from 
+		{databaseOwner}[{objectQualifier}EngageAms_fnGetAllCategories]() cat
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+		join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (catDetail.ItemId = child.ParentItemId)
+		left join
+		(
+			select
+				c.ItemId, mv.ItemId ThumbnailId,  mv.FileName
+			from 
+				{databaseOwner}[{objectQualifier}engageams_vChildItems] c
+				join {databaseOwner}[{objectQualifier}engageams_vMedia] mv on (c.ParentItemId = mv.ItemId)
+			where
+				c.RelationshipName = 'Item To Thumbnail Image'
+			and	c.IsCurrentVersion = 1
+			and	mv.IsCurrentVersion = 1
+
+		) thumbnail on (child.ItemId = thumbnail.ItemId)
+	where
+		catDetail.IsCurrentVersion = 1
+	and 	child.IsCurrentVersion = 1
+	and 	child.RelationshipTypeId = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}EngageAmsRelationshipType] where RelationshipName = 'Item To Parent Category')
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spGetAllCategoriesHierachy]
+	@portalId int
+AS
+
+declare @onlyCurrentVersion bit
+declare @relationshipTypeId int 
+set @relationshipTypeId = (select relationshiptypeId from {databaseOwner}[{objectQualifier}engageamsRelationshipType] where [relationshipName] = 'Category To Top Level Category')
+
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]() parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	and 	parent.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetAllCategories]() parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+	where
+
+		child.PortalId = @portalId
+	and	parent.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+GO

@@ -1,0 +1,48 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @ParentId int
+	, @RelationshipTypeId int
+	, @StartDate datetime
+	, @EndDate datetime
+	, @OriginalItemVersionId int
+as
+
+DECLARE @SortOrder int
+SELECT @SortOrder = SortOrder FROM [{objectQualifier}Publish_ItemRelationship] WHERE ChildItemId = @ChildItemId AND ParentItemId = @ParentId AND RelationshipTypeId = @RelationshipTypeId AND ChildItemVersionId = @OriginalItemVersionId
+IF @SortOrder IS NULL BEGIN
+    SET @SortOrder = 0
+END
+
+if not exists (select * From [{objectQualifier}Publish_ItemRelationship] 
+	where ParentItemId = @ParentId and ChildItemVersionId = @ChildItemVersionId and RelationshipTypeId = @RelationshipTypeId)
+begin
+	insert into [{objectQualifier}Publish_ItemRelationship]
+	(
+		ChildItemId
+		, ChildItemVersionId
+		, ParentItemId
+		, RelationshipTypeId
+		, StartDate
+		, EndDate
+		, SortOrder
+	)
+	values(
+		@ChildItemId
+		, @ChildItemVersionId
+		, @ParentId
+		, @RelationshipTypeId
+		, @StartDate
+		, @EndDate
+		, @SortOrder
+	)
+end
+
+GO
+
+
+

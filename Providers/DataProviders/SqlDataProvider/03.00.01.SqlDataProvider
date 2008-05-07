@@ -1,0 +1,2814 @@
+/************************************************************/
+/*****              For a clean DB install with Query Analyzer                *****/
+/************************************************************/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}DF_EngageAMSItem_CreatedDate') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}DF_EngageAMSItem_CreatedDate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_Item_ItemType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}FK_Item_ItemType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ProductVersionPlant_Plant') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT {objectQualifier}FK_ProductVersionPlant_Plant
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemRelationship_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemRelationship_Item1') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item1
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemVersion_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT {objectQualifier}FK_ItemVersion_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemView_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] DROP CONSTRAINT {objectQualifier}FK_ItemView_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ArticleVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_CategoryVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] DROP CONSTRAINT {objectQualifier}FK_CategoryVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_DocumentVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] DROP CONSTRAINT {objectQualifier}FK_DocumentVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_MediaVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] DROP CONSTRAINT {objectQualifier}FK_MediaVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ProductVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] DROP CONSTRAINT {objectQualifier}FK_ProductVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT {objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItems]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildProducts]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}engageams_fnGetChildProducts]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategoryListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategoryListing]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertPlantVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertPlantVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spDeleteItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spDeleteItem]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getCategory]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getItemCategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemText]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItemText]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertProductVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertProductVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getItemRelationships]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItemRelationship]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItemVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_updateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_updateItemVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_insertItem]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_getItemTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_getItemTypes]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_spGetAllChildren]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}engageams_spGetAllChildren]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vArticles]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vCategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vChildItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vDocuments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vItemVersions]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vMedia]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vParentItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vProducts]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vProducts]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vItems]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_vItemTypes]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}engageams_vItemTypes]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSArticleVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSCategoryVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemText]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemText]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSMediaVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSMediaVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSProductVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemRelationship]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemVersion]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemView]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemView]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}DF_EngageAMSItem_CreatedDate') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}DF_EngageAMSItem_CreatedDate
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] DROP CONSTRAINT [{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItem]') AND name = N'{objectQualifier}PK_Item')
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT [{objectQualifier}PK_Item]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItem]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItem]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItem]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItem]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSColumnType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSColumnType]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSFlatParents]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSFlatParents]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemTextBackup20051001_1242]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemTextBackup20051001_1242]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSItemType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSItemType]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSPlant]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSPlant]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSPortalSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSPortalSettings]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionBak]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSProductVersionBak]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMSRelationshipType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMSRelationshipType]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempfullproducthierarchy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempfullproducthierarchy]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempprodcategories]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempprodcategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}EngageAMStempproducts]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}EngageAMStempproducts]
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildItems]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildItems](@parentItemID int, @relationshipTypeId int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+	and	parent.RelationshipTypeId = @relationshipTypeId
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	child.RelationshipTypeId = @relationshipTypeId
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, ItemTypeId, RelationshipTypeID
+)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+--		and parent.relationshiptypeid in (1,2)
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+--		and child.relationshiptypeid in (1,2)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsAdminSearch2](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID,  ItemTypeId, RelationshipTypeID)
+	select 
+		distinct parent.ParentItemID, parent.ChildItemID, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID)-- and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			distinct t.ChildItemID, child.ChildItemID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID) -- and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel]    Script Date: 11/23/2005 4:19:30 PM ******/
+--select * from {databaseOwner}[{objectQualifier}EngageAMSItem]
+--select * from {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel](15)
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildItemsLevel](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		RelationshipTypeID int,
+		Processed int default 0,
+		Level int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.RelationshipTypeID
+	from 
+		{databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+	where 
+		parent.ParentItemID = @parentItemID
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.RelationshipTypeID, 0, Level+1
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+		where 
+			t.Processed = 1 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  User Defined Function {databaseOwner}[{objectQualifier}engageams_fnGetChildProducts]    Script Date: 11/23/2005 4:19:30 PM ******/
+
+--	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+
+--	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+CREATE function {databaseOwner}[{objectQualifier}engageams_fnGetChildProducts](@parentItemID int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		ItemTypeId int,
+		RelationshipTypeId int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, ItemTypeId, RelationshipTypeID
+)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, i.ItemTypeId, parent.RelationshipTypeID
+	from 
+		 {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent
+		join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+		and parent.relationshiptypeid in (1,2)
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, i.ItemTypeId, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join {databaseOwner}[{objectQualifier}EngageAMSItem] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and child.relationshiptypeid in (1,2)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType] (
+	[ApprovalStatusID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ApprovalStatusName] [varchar] (255)   NOT NULL ,
+	[ResourceKey] [varchar] (50)   NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSColumnType] (
+	[ColumnTypeId] [int] IDENTITY (1, 1) NOT NULL ,
+	[ColumnName] [varchar] (128)   NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSFlatParents] (
+	[ParentItemId] [int] NOT NULL ,
+	[ChildItemId] [int] NOT NULL ,
+	[ChildItemVersionId] [int] NOT NULL ,
+	[RootId] [int] NOT NULL ,
+	[ItemTypeId] [int] NOT NULL ,
+	[RelationshipTypeId] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItemType] (
+	[ItemTypeId] [int] IDENTITY (1, 1) NOT NULL ,
+	[Name] [varchar] (50)   NOT NULL ,
+	[Description] [varchar] (255)   NULL ,
+	[TableName] [varchar] (255)   NULL ,
+	[ClassName] [varchar] (255)   NULL ,
+	[AssemblyName] [varchar] (255)   NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSPortalSettings] (
+	[SettingID] [int] IDENTITY (1, 1) NOT NULL ,
+	[SettingName] [varchar] (100)   NOT NULL ,
+	[SettingValue] [varchar] (100)   NOT NULL ,
+	[PortalId] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionBak] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[ProductNumber] [varchar] (50)   NULL ,
+	[VersionNumber] [varchar] (10)   NULL ,
+	[VersionDescription] [varchar] (255)   NULL ,
+	[ThumbnailItemId] [int] NULL ,
+	[ImageItemId] [int] NULL ,
+	[SortOrder] [int] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] (
+	[relationshipTypeId] [int] IDENTITY (1, 1) NOT NULL ,
+	[relationshipName] [varchar] (50)   NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMStempfullproducthierarchy] (
+	[paritem] [int] NOT NULL ,
+	[parversion] [int] NULL ,
+	[parname] [varchar] (100)   NULL ,
+	[CategoryHierarchyLevel] [float] NULL ,
+	[childitem] [int] NOT NULL ,
+	[childversion] [int] NOT NULL ,
+	[childname] [varchar] (100)   NULL ,
+	[ProductHierarchyLevel] [int] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMStempprodcategories] (
+	[paritem] [int] NOT NULL ,
+	[parversion] [int] NULL ,
+	[parname] [varchar] (100)   NULL ,
+	[childitem] [int] NOT NULL ,
+	[childversion] [int] NOT NULL ,
+	[childname] [varchar] (100)   NULL ,
+	[itemtypeid] [int] NULL ,
+	[HierarchyLevel] [float] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMStempproducts] (
+	[paritem] [int] NOT NULL ,
+	[parversion] [int] NULL ,
+	[parname] [varchar] (100)   NULL ,
+	[childitem] [int] NOT NULL ,
+	[childversion] [int] NOT NULL ,
+	[childname] [varchar] (100)   NULL ,
+	[itemtypeid] [int] NULL ,
+	[HierarchyLevel] [int] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[ItemTypeId] [int] NOT NULL ,
+	[ApprovedItemVersionId] [int] NULL ,
+	[PortalId] [char] (10)   NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] (
+	[ItemRelationshipId] [int] IDENTITY (1, 1) NOT NULL ,
+	[ChildItemId] [int] NOT NULL ,
+	[ChildItemVersionId] [int] NOT NULL ,
+	[ParentItemId] [int] NOT NULL ,
+	[RelationshipTypeId] [int] NOT NULL ,
+	[StartDate] [datetime] NOT NULL ,
+	[EndDate] [datetime] NULL ,
+	[SortOrder] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+	[ItemVersionId] [int] IDENTITY (1, 1) NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[OriginalItemVersionId] [int] NULL ,
+	[Name] [varchar] (100)   NULL ,
+	[Description] [varchar] (4000)   NULL ,
+	[ItemVersionDate] [datetime] NOT NULL ,
+	[StartDate] [datetime] NOT NULL ,
+	[EndDate] [datetime] NULL ,
+	[LanguageId] [int] NOT NULL ,
+	[AuthorUserId] [int] NOT NULL ,
+	[ApprovalStatusId] [int] NOT NULL ,
+	[ApprovalDate] [datetime] NULL ,
+	[ApprovalUserId] [int] NULL ,
+	[ApprovalComments] [varchar] (255)   NULL ,
+	[MetaKeywords] [varchar] (255)   NULL ,
+	[MetaDescription] [varchar] (400)   NULL ,
+	[MetaTitle] [varchar] (100)   NULL ,
+	[DisplayTabId] [int] NULL ,
+	[LastUpdated] [datetime] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] (
+	[ItemViewId] [int] IDENTITY (1, 1) NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[UserId] [int] NOT NULL ,
+	[ItemVersionId] [int] NOT NULL ,
+	[ViewDate] [datetime] NOT NULL ,
+	[TabId] [int] NOT NULL ,
+	[UserIpAddress] [varchar] (25)   NULL ,
+	[UserAgent] [varchar] (100)   NULL ,
+	[HttpReferrer] [varchar] (500)   NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[VersionNumber] [varchar] (10)   NULL ,
+	[VersionDescription] [varchar] (255)   NULL ,
+	[ArticleText] [ntext]   NOT NULL ,
+	[ThumbnailMediaItemId] [int] NULL ,
+	[ReferenceNumber] [varchar] (50)   NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[SortOrder] [int] NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NULL ,
+	[FileName] [varchar] (100)   NOT NULL ,
+	[FileSize] [int] NULL ,
+	[MediaType] [varchar] (50)   NULL ,
+	[FilePath] [varchar] (255)   NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ColumnTypeId] [int] NOT NULL ,
+	[ItemText] [varchar] (8000)   NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[FileName] [varchar] (100)   NOT NULL ,
+	[FileSize] [int] NULL ,
+	[MediaType] [varchar] (50)   NULL ,
+	[FilePath] [varchar] (255)   NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] (
+	[ItemVersionId] [int] NOT NULL ,
+	[ItemId] [int] NOT NULL ,
+	[ProductNumber] [varchar] (50)   NULL ,
+	[VersionNumber] [varchar] (10)   NULL ,
+	[VersionDescription] [varchar] (255)   NULL ,
+	[ThumbnailItemId] [int] NULL ,
+	[ImageItemId] [int] NULL ,
+	[SortOrder] [int] NULL 
+) ON [PRIMARY]
+GO
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType] ADD 
+	CONSTRAINT [{objectQualifier}PK_EngageAMSApprovalStatusType] PRIMARY KEY  CLUSTERED 
+	(
+		[ApprovalStatusID]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}IX_EngageAMSApprovalStatusType] UNIQUE  NONCLUSTERED 
+	(
+		[ApprovalStatusName]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSColumnType] ADD 
+	CONSTRAINT [{objectQualifier}PK_ColumnType] PRIMARY KEY  CLUSTERED 
+	(
+		[ColumnTypeId]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}IX_EngageAMSColumnType] UNIQUE  NONCLUSTERED 
+	(
+		[ColumnName]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemType] ADD 
+	CONSTRAINT [{objectQualifier}PK_ItemType] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemTypeId]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}IX_EngageAMSItemType] UNIQUE  NONCLUSTERED 
+	(
+		[Name]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSPortalSettings] ADD 
+	CONSTRAINT [{objectQualifier}PK_IVPortalSettings] PRIMARY KEY  CLUSTERED 
+	(
+		[SettingID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] ADD 
+	CONSTRAINT [{objectQualifier}PK_EngageAMSRelationshipType] PRIMARY KEY  CLUSTERED 
+	(
+		[relationshipTypeId]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}IX_EngageAMSRelationshipType] UNIQUE  NONCLUSTERED 
+	(
+		[relationshipName]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] ADD 
+	CONSTRAINT [{objectQualifier}PK_Item] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] ADD 
+	CONSTRAINT [{objectQualifier}DF_EngageAMSItemRelationship_SortOrder] DEFAULT (0) FOR [SortOrder],
+	CONSTRAINT [{objectQualifier}PK_ItemRelationship] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemRelationshipId]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}IX_EngageAMSItemRelationship] UNIQUE  NONCLUSTERED 
+	(
+		[ChildItemId],
+		[ParentItemId],
+		[RelationshipTypeId],
+		[ChildItemVersionId]
+	)  ON [PRIMARY] ,
+	CONSTRAINT [{objectQualifier}CK_EngageAMSItemRelationship] CHECK ([ChildItemId] <> [ParentItemId])
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] ADD 
+	CONSTRAINT [{objectQualifier}DF_ItemVersion_VersionDate] DEFAULT (getdate()) FOR [ItemVersionDate],
+	CONSTRAINT [{objectQualifier}DF_EngageAMSItemVersion_ApprovalStatusId] DEFAULT (1) FOR [ApprovalStatusId],
+	CONSTRAINT [{objectQualifier}PK_ItemVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] ADD 
+	CONSTRAINT [{objectQualifier}PK_ItemView] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemViewId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] ADD 
+	CONSTRAINT [{objectQualifier}PK_ArticleVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] ADD 
+	CONSTRAINT [{objectQualifier}DF_EngageAMSCategoryVersion_SortOrder] DEFAULT (5) FOR [SortOrder],
+	CONSTRAINT [{objectQualifier}PK_CategoryVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] ADD 
+	CONSTRAINT [{objectQualifier}PK_DocumentVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] ADD 
+	CONSTRAINT [{objectQualifier}PK_ItemText] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId],
+		[ColumnTypeId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] ADD 
+	CONSTRAINT [{objectQualifier}PK_MediaVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] ADD 
+	CONSTRAINT [{objectQualifier}DF_EngageAMSProductVersion_SortOrder] DEFAULT (5) FOR [SortOrder],
+	CONSTRAINT [{objectQualifier}PK_ProductVersion] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemVersionId]
+	)  ON [PRIMARY] 
+GO
+
+
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] ADD 
+	CONSTRAINT [{objectQualifier}FK_Item_ItemType] FOREIGN KEY 
+	(
+		[ItemTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemType] (
+		[ItemTypeId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] ADD 
+	CONSTRAINT [{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType] FOREIGN KEY 
+	(
+		[RelationshipTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] (
+		[relationshipTypeId]
+	),
+	CONSTRAINT [{objectQualifier}FK_ItemRelationship_Item] FOREIGN KEY 
+	(
+		[ChildItemId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItem] (
+		[ItemId]
+	),
+	CONSTRAINT [{objectQualifier}FK_ItemRelationship_Item1] FOREIGN KEY 
+	(
+		[ParentItemId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItem] (
+		[ItemId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType] FOREIGN KEY 
+	(
+		[ApprovalStatusId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSApprovalStatusType] (
+		[ApprovalStatusID]
+	),
+	CONSTRAINT [{objectQualifier}FK_ItemVersion_Item] FOREIGN KEY 
+	(
+		[ItemId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItem] (
+		[ItemId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] ADD 
+	CONSTRAINT [{objectQualifier}FK_ItemView_Item] FOREIGN KEY 
+	(
+		[ItemId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItem] (
+		[ItemId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_ArticleVersion_ItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_CategoryVersion_ItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_DocumentVersion_ItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] ADD 
+	CONSTRAINT [{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType] FOREIGN KEY 
+	(
+		[ColumnTypeId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSColumnType] (
+		[ColumnTypeId]
+	),
+	CONSTRAINT [{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_MediaVersion_ItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] ADD 
+	CONSTRAINT [{objectQualifier}FK_ProductVersion_ItemVersion] FOREIGN KEY 
+	(
+		[ItemVersionId]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion] (
+		[ItemVersionId]
+	)
+GO
+
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vItemTypes]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItemTypes] as
+SELECT
+	ItemTypeId, [Name], [Description], TableName 
+FROM
+	 {databaseOwner}[{objectQualifier}EngageAMSItemType]
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vitems]   Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItems] as
+SELECT
+	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+	iv.ItemId, iv.OriginalItemVersionId, iv.ItemVersionDate, iv.StartDate, iv.EndDate, 
+	iv.LanguageId, iv.AuthorUserId, iv.ApprovalStatusId, iv.ApprovalDate, iv.ApprovalUserId, iv.ApprovalComments, 
+	iv.MetaKeywords, iv.MetaDescription, iv.MetaTitle, iv.DisplayTabId, iv.LastUpdated,
+	i.PortalID, i.ItemTypeID, iv.ItemVersionID, it.[Name] as ItemType,
+	iv.[Name], iv.[Description]
+	--parent.ParentItemID
+FROM
+	 {databaseOwner}[{objectQualifier}EngageAMSItem] i
+	join {databaseOwner}[{objectQualifier}EngageAMSItemType] it on (i.ItemTypeID = it.ItemTypeID)
+	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemID = iv.ItemID)
+	--left join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] parent on (iv.ItemVersionID = parent.ChildItemVersionID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vArticles]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vArticles] as
+select
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vCategories]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vCategories] as
+select
+	 cv.SortOrder, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+--where
+--	iv.StartDate <= getdate()
+--and	(iv.EndDate > getdate() or iv.EndDate is null)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vChildItems]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vChildItems] as
+select
+	r.ParentItemID, child.*, rt.RelationshipName, rt.RelationshipTypeID
+from 
+	 {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] r
+	join {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}engageams_vItems] child on (r.ChildItemVersionID = child.ItemVersionID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vDocuments]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vDocuments] as
+select
+--	iv.[Name], iv.[Description], 
+	dv.FileName, 
+	dv.FileSize, dv.MediaType, dv.FilePath,
+	i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+--where
+--	iv.StartDate <= getdate()
+--and	(iv.EndDate > getdate() or iv.EndDate is null)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vItemVersions]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union
+select
+	'productedit' as AdminType, 
+	pv.VersionNumber,i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSProductVersion] pv on (i.ItemVersionID = pv.ItemVersionID)
+union
+select
+	'documentedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
+union
+select
+	'mediaedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+union
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ {databaseOwner}[{objectQualifier}engageams_vitems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vMedia]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vMedia] as
+select
+	mv.[FileName], 
+	mv.FileSize, mv.MediaType, mv.FilePath,
+	i.*
+from 
+ {databaseOwner}[{objectQualifier}engageams_vitems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
+	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
+--where
+--	iv.StartDate <= getdate()
+--and	(iv.EndDate > getdate() or iv.EndDate is null)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vParentItems]    Script Date: 11/23/2005 4:19:29 PM ******/
+
+
+
+CREATE view {databaseOwner}[{objectQualifier}engageams_vParentItems] as
+
+select
+            r.childItemId, parent.*
+from 
+            {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] r
+            join {databaseOwner}[{objectQualifier}EngageAMSRelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+            join {databaseOwner}[{objectQualifier}engageams_vitems]parent on (r.parentItemId = parent.ItemId)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+/****** Object:  View {databaseOwner}[{objectQualifier}engageams_vProducts]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE view {databaseOwner}[{objectQualifier}engageams_vProducts] as
+select
+	pv.ProductNumber, pv.VersionNumber, pv.VersionDescription, 
+	pt.ItemText as ProductText,  am.ItemText as ApplicationMethod, pc.ItemText as ProductCertification,
+	s.ItemText as Specifications, d.ItemText as Dimensions, w.ItemText as Warranty, ar.ItemText as ApplicationRate,
+	sb.ItemText as SearchBody, sw.ItemText as SearchWarranty, sc.ItemText as SearchCertification, pl.ItemText as ProductList, 
+	pv.SortOrder, i.*
+from 
+	 {databaseOwner}[{objectQualifier}engageams_vitems] i 
+	join {databaseOwner}[{objectQualifier}EngageAMSProductVersion] pv on (i.ItemVersionID = pv.ItemVersionID)				--little better performance using ids
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] pc on (i.ItemVersionId = pc.ItemVersionId and pc.ColumnTypeID = 4)	--ProductCertification
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] am on (i.ItemVersionId = am.ItemVersionId and am.ColumnTypeID = 1)	--ApplicationMethod
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] s on (i.ItemVersionId = s.ItemVersionId and s.ColumnTypeID = 10)		--Specifications
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] d on (i.ItemVersionId = d.ItemVersionId and d.ColumnTypeID = 3)		--Dimensions
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] w on (i.ItemVersionId = w.ItemVersionId and w.ColumnTypeID = 11)		--Warranty
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] ar on (i.ItemVersionId = ar.ItemVersionId and ar.ColumnTypeID = 2)	--ApplicationRate
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] sb on (i.ItemVersionId = sb.ItemVersionId and sb.ColumnTypeID = 7)	--SearchBody
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] sw on (i.ItemVersionId = sw.ItemVersionId and sw.ColumnTypeID = 9)	--SearchWarranty
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] sc on (i.ItemVersionId = sc.ItemVersionId and sc.ColumnTypeID = 8)	--SearchCertification
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] pl on (i.ItemVersionId = pl.ItemVersionId and pl.ColumnTypeID = 5)	--ProductList
+	left join {databaseOwner}[{objectQualifier}EngageAMSItemText] pt on (i.ItemVersionId = pt.ItemVersionId and pt.ColumnTypeID = 6)	--ProductText
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_spGetAllChildren]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spGetAllChildren]
+@parentId int, 
+@relationshipTypeId int, 
+@portalId int
+AS
+declare @onlyCurrentVersion bit
+set @onlyCurrentVersion =1
+if (@onlyCurrentVersion = 1)
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+		--join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] r on (parent.ParentItemID = r.ParentItemId and child.ItemVersionId = r.ChildItemVersionId)
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	and	IsCurrentVersion = 1
+	order by
+		parent.ParentItemId, child.ItemId
+end
+else
+begin
+	select 
+		parent.ParentItemId,child.*, parent.RelationshipTypeId
+	from 
+		{databaseOwner}[{objectQualifier}engageams_fnGetChildItems](@parentId, @relationshipTypeId) parent
+		join {databaseOwner}[{objectQualifier}engageams_vItemVersions] child on (parent.ChildItemId = child.ItemId)
+		--join {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] r on (parent.ParentItemID = r.ParentItemId and child.ItemVersionId = r.ChildItemVersionId)
+	where
+--		r.RelationshipTypeId = @relationshipTypeId
+		child.PortalId = @portalId
+	order by
+		parent.ParentItemId, child.ItemId
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getItemTypes]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getItemTypes]
+as
+SELECT
+	ItemTypeId
+	, [Name]
+	, [Description]
+	, TableName
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItemType]
+ORDER BY
+	[Name]
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItem]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE proc {databaseOwner}[{objectQualifier}engageams_insertItem]
+	@ItemTypeId int
+	, @PortalId int
+as
+insert into {databaseOwner}[{objectQualifier}EngageAMSItem]
+(
+	itemTypeId
+	, portalId
+)
+values(
+	@ItemTypeId
+	, @PortalId
+)
+select SCOPE_IDENTITY()
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getItemRelationships]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE proc {databaseOwner}[{objectQualifier}engageams_getItemRelationships]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @RelationshipTypeId int
+AS
+SELECT
+	ChildItemId
+	, ChildItemVersionId
+	, ParentItemId
+	, RelationshipTypeId
+	, StartDate
+	, EndDate
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]
+WHERE
+	ChildItemId = @ChildItemId
+	and ChildItemVersionid = @ChildItemVersionId
+	and RelationshipTypeId = @RelationshipTypeId
+	and StartDate >= GetDate()
+	and EndDate < GetDate()
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItemRelationship]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE proc {databaseOwner}[{objectQualifier}engageams_insertItemRelationship]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @ParentId int
+	, @RelationshipTypeId int
+	, @StartDate datetime
+	, @EndDate datetime
+	, @SortOrder int
+as
+insert into {databaseOwner}[{objectQualifier}EngageAMSItemRelationship]
+(
+	ChildItemId
+	, ChildItemVersionId
+	, ParentItemId
+	, RelationshipTypeId
+	, StartDate
+	, EndDate
+	, SortOrder
+)
+values(
+	@ChildItemId
+	, @ChildItemVersionId
+	, @ParentId
+	, @RelationshipTypeId
+	, @StartDate
+	, @EndDate
+	, @SortOrder
+)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItemVersion]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertItemVersion]
+(
+	@ItemId [int]
+	, @OriginalItemVersionID [int]
+	, @Name [varchar] (100)
+	, @Description [varchar] (4000)
+	, @ItemVersionDate [datetime]
+	, @StartDate [datetime]
+	, @EndDate [datetime]
+	, @LanugageId [int]
+	, @AuthorUserId [int]
+	, @MetaKeywords [varchar] (255)
+	, @MetaDescription [varchar] (255)
+	, @MetaTitle [varchar](100)
+	, @DisplayTabId [int]
+)
+AS 
+           
+declare @desc varchar(4000)
+if (len(ltrim(rtrim(@Description))) > 0) set @desc = @Description
+declare @keywords varchar(255)
+if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+declare @metaDesc varchar(255)
+if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+declare @title varchar(100)
+if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSItemVersion] 
+(
+	[ItemID]
+	, [OriginalItemVersionID]
+	, [Name]
+	, [Description]
+	, [ItemVersionDate]
+	, [StartDate]
+	, [Enddate]
+	, [LanguageId]
+	, [AuthorUserId]
+	, [MetaKeywords]
+	, [MetaDescription]
+	, [MetaTitle]
+	, [DisplayTabId]
+	, [LastUpdated]
+	)
+ 
+VALUES 
+	( 
+	@ItemId 
+	, @OriginalItemVersionID
+	, @Name 
+	, @desc
+	, @ItemVersionDate
+	, @StartDate
+	, @EndDate
+	, @LanugageId
+	, @AuthorUserId
+	, @keywords
+	, @metaDesc
+	, @title
+	, @DisplayTabId
+	, GetDate()
+	)
+ 
+select SCOPE_IDENTITY()
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_updateItemVersion]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_updateItemVersion]
+(
+	@ItemId [int]
+	, @ItemVersionId [int]
+	, @ApprovalStatusId [int]
+	, @ApprovalUserId [int]
+	, @ApprovalComments [varchar] (255)
+)
+AS 
+           
+if (@ApprovalStatusId = 3)
+Begin
+	-- archive existing versions 
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] set ApprovalStatusId = 4, LastUpdated = GetDate()
+	WHERE ItemVersionId = @ItemVersionId and ApprovalStatusId = 3
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] set ApprovalStatusId = 4, LastUpdated = GetDate()
+	WHERE ItemId = @ItemId and ItemVersionId < @ItemVersionId
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItem] set ApprovedItemVersionId = @ItemVersionId
+	WHERE ItemId = @ItemId
+		
+End
+Else
+Begin
+	-- get current approval status
+	declare @currentApprovalStatusId [int]
+	set @currentApprovalStatusId = (select approvalStatusId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where itemVersionId = @ItemVersionId)
+	if (@currentApprovalStatusId = 3)
+	begin
+		update {databaseOwner}[{objectQualifier}EngageAMSItem] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+	end
+End
+if (@ApprovalStatusId = 4)
+begin
+	UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] SET ApprovalStatusId = 4, LastUpdated = GetDate() WHERE ItemId = @ItemId and @ItemVersionId < @ItemVersionId 
+--and ApprovalStatusId != 3
+		update {databaseOwner}[{objectQualifier}EngageAMSItem] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+end
+UPDATE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] 
+	
+	SET  
+		 [ApprovalStatusID]	 = @ApprovalStatusID,
+		 [ApprovalUserID]	 = @ApprovalUserID,
+		 [ApprovalComments ]	 = @ApprovalComments 
+	
+	WHERE 
+		( [ItemVersionId]	 = @ItemVersionId AND
+		 [ItemId]	 = @ItemId)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getCategories]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getCategories]
+	@PortalId int
+	--@ItemTypeId
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = 3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.sortOrder
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getCategory]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getCategory]
+	@ItemId int
+	, @PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.DisplayTabId
+	, iv.LastUpdated
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate > GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = 3 --category ItemTypeId
+	and i.portalId = @PortalId
+	and i.itemId = @ItemId
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getItemCategories]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_getItemCategories]
+	@PortalId int
+as
+SELECT
+	iv.[Name]
+	, iv.[Description]
+	, iv.DisplayTabId
+	, iv.ItemId
+	, iv.OriginalItemVersionId
+	, iv.ItemVersionDate
+	, iv.StartDate
+	, iv.EndDate
+	, iv.LanguageId
+	, iv.AuthorUserId
+	, iv.ApprovalStatusId
+	, iv.ApprovalDate
+	, iv.ApprovalUserId
+	, iv.ApprovalComments
+	, iv.MetaKeywords
+	, iv.MetaDescription
+	, iv.MetaTitle
+	, iv.LastUpdated
+	, cv.SortOrder
+	
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItem] i
+	, {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv
+	, {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] cv
+WHERE
+	iv.StartDate <= GetDate()
+	and (iv.EndDate < GetDate() or iv.EndDate is null)
+	and i.itemId = cv.itemId
+	and i.itemId = iv.itemId
+	and i.ApprovedItemVersionId = iv.ItemVersionId
+	and iv.ItemVersionId = cv.ItemVersionId
+	and i.itemTypeId = 3 --category ItemTypeId
+	and i.portalId = @PortalId
+ORDER BY
+	cv.SortOrder
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE proc {databaseOwner}[{objectQualifier}engageams_getItemChildRelationships]
+	@ParentItemId int
+	, @RelationshipTypeId int
+AS
+SELECT
+	ir.ChildItemId
+	, ir.ChildItemVersionId
+	, ir.ParentItemId
+	, ir.RelationshipTypeId
+	, ir.StartDate
+	, ir.EndDate
+FROM
+	{databaseOwner}[{objectQualifier}EngageAMSItemRelationship] ir, {databaseOwner}[{objectQualifier}engageams_vitems] i
+WHERE
+	ir.ParentItemId = @ParentItemId
+	and ir.RelationshipTypeId = @RelationshipTypeId
+	and ir.StartDate <= GetDate()
+	and (ir.EndDate > GetDate() OR ir.EndDate IS NULL)
+	and i.ItemId = ir.ChildItemId
+	and i.ItemVersionId = ir.ChildItemVersionId
+	and i.IsCurrentVersion = 1
+ORDER BY
+	ir.SortOrder
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertArticleVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ArticleText [varchar] (8000)
+	, @ReferenceNumber [varchar] (50)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [VersionNumber]
+	, [VersionDescription] 
+	, [ArticleText]
+	, [ReferenceNumber]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @VersionNumber
+	, @VersionDescription
+	, @ArticleText
+	, @ReferenceNumber
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @SortOrder [int]
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [SortOrder]
+	)
+ VALUES 
+	( 
+	@ItemVersionId 
+	, @ItemId 
+	, @SortOrder
+	)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (100)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertItemText]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertItemText]
+(
+	@ItemVersionId [int]
+	, @ColumnTypeId [int]
+	, @ItemText [varchar] (8000)
+)
+AS 
+if (len(rtrim(ltrim(@ItemText))) > 0)
+begin
+	INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSItemText] 
+	(
+		[ItemVersionId]
+		, [ColumnTypeID]
+		, [ItemText]
+		)
+	 VALUES 
+		( 
+		@ItemVersionId
+		, @ColumnTypeId 
+		, @ItemText
+	)
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @FileName [varchar] (100)
+	, @FileSize [int]
+	, @MediaType [varchar] (50)
+	, @FilePath [varchar] (255)
+)
+AS 
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [FileName]
+	, [FileSize] 
+	, [MediaType]
+	, [FilePath]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId 
+	, @FileName
+	, @FileSize
+	, @MediaType
+	, @FilePath 
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_insertProductVersion]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_insertProductVersion]
+(
+	@ItemVersionId [int]
+	, @ItemId [int]
+	, @ProductNumber [varchar](50)
+	, @VersionNumber [varchar] (10)
+	, @VersionDescription [varchar] (255)
+	, @ProductText [varchar] (8000)
+	, @ApplicationMethod [varchar](8000)
+	, @ProductCertification [varchar](8000)
+	, @Specifications [varchar](8000)
+	, @Dimensions [varchar](8000)
+	, @Warranty [varchar](8000)
+	, @ApplicationRate [varchar](8000)
+	, @SearchBody [varchar](8000)
+	, @SearchWarranty [varchar](8000)
+	, @SearchCertification [varchar](8000)
+	, @ProductList [varchar](8000)
+	, @SortOrder [int]
+)
+AS 
+declare @prodNum varchar(10)
+if (len(ltrim(rtrim(@ProductNumber))) > 0) set @prodNum = @ProductNumber
+declare @verNum varchar(10)
+if (len(ltrim(rtrim(@VersionNumber))) > 0) set @verNum = @VersionNumber
+declare @verDesc varchar(255)
+if (len(ltrim(rtrim(@VersionDescription))) > 0) set @verDesc = @VersionDescription
+INSERT INTO {databaseOwner}[{objectQualifier}EngageAMSProductVersion] 
+(
+	[ItemVersionId]
+	, [ItemID]
+	, [ProductNumber]
+	, [VersionNumber]
+	, [VersionDescription]
+	, [SortOrder]
+	)
+ VALUES 
+	( 
+	@ItemVersionId
+	, @ItemId
+	, @prodNum
+	, @verNum
+	, @verDesc
+	, @SortOrder
+	)
+declare @columnTypeId int
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ProductText'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ProductText
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ApplicationMethod'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ApplicationMethod
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ProductCertification'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ProductCertification
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'Specifications'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @Specifications
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'Dimensions'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @Dimensions
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'Warranty'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @Warranty
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ApplicationRate'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ApplicationRate
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'SearchBody'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @SearchBody
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'SearchWarranty'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @SearchWarranty
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'SearchCertification'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @SearchCertification
+select @columnTypeId = columnTypeId from {databaseOwner}[{objectQualifier}EngageAMSColumnType] where ColumnName = 'ProductList'
+exec {databaseOwner}[{objectQualifier}engageams_insertItemText] @itemVersionId, @columnTypeID, @ProductList
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_getCategoryListing]    Script Date: 11/23/2005 4:19:30 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_getCategoryListing]
+(
+	@ParentItemId [int]
+	, @PortalId [int]
+)
+AS 
+	if (@ParentItemId = -1)
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}engageams_vCategories] cat
+			join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Category To Parent Category', 'Product To Product Category')
+		order by
+			--cat.[Name], child.[Name]
+			SortOrder ASC, child.ParentItemId, RelationshipName
+	end
+	else
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			{databaseOwner}[{objectQualifier}engageams_vCategories] cat
+			join {databaseOwner}[{objectQualifier}engageams_vChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Category To Parent Category', 'Product To Product Category')
+		and	child.ParentItemId = @ParentItemId
+		order by
+			--cat.[Name], child.[Name]
+			SortOrder asc, child.ParentItemId, RelationshipName
+	end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_spDeleteItem]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}engageams_spDeleteItem](@id int) AS
+BEGIN
+begin transaction
+delete {databaseOwner}[{objectQualifier}EngageAMSProductVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSItemText] where ItemVersionId in (select ItemVersionId from {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id)
+delete {databaseOwner}[{objectQualifier}EngageAMSItemView] where ItemId = @id
+delete {databaseOwner}[{objectQualifier}EngageAMSItemVersion] where ItemId = @id
+delete {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] where ChildItemId = @id or ParentItemId = @id
+delete {databaseOwner}[{objectQualifier}EngageAMSItem] where ItemId = @id
+if (@@error > 0)
+	rollback transaction
+else
+	commit transaction
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_spGetDocumentSearchItems]
+
+(
+
+@relationshipTypeId int, 
+@parentItemId int, 
+@documentTypeId int, 
+@portalId int
+)
+as
+select 
+	*
+from 
+     {databaseOwner}[{objectQualifier}engageams_vChildItems] vci
+where 
+      itemId in 
+
+            (
+
+                        select 
+
+                                    c.parentItemId
+
+                        from 
+
+                                   {databaseOwner}[{objectQualifier}engageams_vChildItems] c
+
+                        where 
+
+                                    c.IsCurrentVersion = 1
+
+                        and       c.PortalId = @portalId
+
+                        and       c.RelationshipName like '%document%'
+
+                        and       c.ItemId in
+
+                        (
+
+                                    select 
+
+                                          ItemId 
+
+                                    from 
+
+                                                {databaseOwner}[{objectQualifier}engageams_vChildItems] 
+
+                                    where 
+
+                                                PortalID =@portalId 
+
+                                    and RelationshipTypeId = @relationshipTypeId 
+
+                                    and IsCurrentVersion = 1  
+
+                                    and ParentItemId = @parentItemId 
+
+                        )
+
+            )
+
+and vci.parentItemId = @documentTypeId 
+
+and vci.IsCurrentVersion = 1
+
+and vci.PortalId = @portalId
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems]    Script Date: 11/23/2005 4:19:29 PM ******/
+
+
+
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_spGetImageSearchItems](@relationshipTypeId int, @parentItemId int, @imageTypeId int, @portalId int)
+as
+select 
+
+            * 
+
+from 
+
+            {databaseOwner}[{objectQualifier}engageams_vChildItems] vci
+
+where 
+
+            itemId in 
+
+            (
+
+                        select 
+
+                                    c.parentItemId
+
+                        from 
+
+                                    {databaseOwner}[{objectQualifier}engageams_vChildItems] c
+
+                        where 
+
+                                    c.IsCurrentVersion = 1
+
+                        and       c.PortalId = @portalId
+
+                        and       c.RelationshipName like '%image%'
+
+                        and       c.ItemId in
+
+                        (
+
+                                    select 
+
+                                                ItemId 
+
+                                    from 
+
+                                                {databaseOwner}[{objectQualifier}engageams_vChildItems] 
+
+                                    where 
+
+                                                PortalID =@portalId 
+
+                                    and RelationshipTypeId = @relationshipTypeId 
+
+                                    and IsCurrentVersion = 1  
+
+                                    and ParentItemId = @parentItemId 
+
+                        
+
+                        )
+
+            )
+
+and vci.parentItemId = @imageTypeId
+
+and vci.IsCurrentVersion = 1
+
+and vci.PortalId = @portalId
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+
+/****** Object:  Stored Procedure {databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]    Script Date: 11/23/2005 4:19:29 PM ******/
+CREATE procedure {databaseOwner}[{objectQualifier}engageams_spGetVideoSearchItems]
+(
+@relationshipTypeId int, 
+@parentItemId int, 
+@videoTypeId int, 
+@portalId int
+)
+as
+select 
+            * 
+from 
+            {databaseOwner}[{objectQualifier}engageams_vChildItems] vci
+where 
+            itemId in 
+            (
+                        select 
+                                    c.parentItemId
+                        from 
+                                    {databaseOwner}[{objectQualifier}engageams_vChildItems] c
+                        where 
+                                    c.IsCurrentVersion = 1
+                        and       c.PortalId = @portalId
+                        and       c.RelationshipName like '%media%'
+                        and       c.ItemId in
+                        (
+                                    select 
+                                                ItemId 
+                                    from 
+                                                {databaseOwner}[{objectQualifier}engageams_vChildItems] 
+                                    where 
+                                                PortalID =@portalId 
+                                    and RelationshipTypeId = @relationshipTypeId 
+                                    and IsCurrentVersion = 1  
+                                    and ParentItemId = @parentItemId 
+                        )
+            )
+and vci.parentItemId = @videoTypeId 
+and vci.IsCurrentVersion = 1
+and vci.PortalId = @portalId
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+/* Insert Seed Data */
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'Article', 'Articles and text content for the web site', 'EngageAMSArticleVersion'
+)
+GO
+
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'Product', 'Product Catalog', 'EngageAMSProductVersion'
+)
+GO
+
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'Category', 'Used for article categories, product categories, brands, media categories, document categories', 'EngageAMSCategoryVersion'
+)
+GO
+
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'Document', 'Used for the document Library', 'EngageAMSDocumentVersion'
+)
+GO
+
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'Media', 'Used for the media gallery functionality', 'EngageAMSMediaVersion'
+)
+GO
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSitemtype]
+([name]
+, [description]
+, [tablename])
+values (
+	'TopLevelCategory', 'Top Level Category used for all Category Designations', 'EngageAMSCategoryVersion'
+)
+GO
+
+
+
+
+/* approval statuses */
+
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype]
+([approvalstatusname]
+, [resourcekey]
+)
+values (
+	'Edit', 'editText'
+)
+GO
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype]
+([approvalstatusname]
+, [resourcekey]
+)
+values (
+	'Waiting for Approval', 'waitText'
+)
+GO
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype]
+([approvalstatusname]
+, [resourcekey]
+)
+values (
+	'Approved', 'approvedtext'
+)
+GO
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype]
+([approvalstatusname]
+, [resourcekey]
+)
+values (
+	'Archived', 'archivedText'
+)
+GO
+
+
+
+declare @retVal int
+declare @retValItemVersionId int
+declare @topLevelItemType int
+set @topLevelItemType = (select itemtypeid from {databaseOwner}[{objectQualifier}EngageAMSitemtype] where [name] = 'TopLevelCategory')
+exec {databaseOwner}[{objectQualifier}engageams_insertItem] @topLevelItemType, 0
+select @retVal = @@Identity
+
+declare @curDate datetime
+set @curDate = getDate()
+exec {databaseOwner}[{objectQualifier}engageams_insertItemVersion] @retVal, 0, 'Products', 'Product Top Level Category', @curDate, @curDate, null, 1, 1, '', '', '', -1
+select @retValItemVersionId = @@Identity
+exec {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion] @retValItemVersionId, @retVal, 1 
+declare @approvedStatusId int
+set @approvedStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype] where [approvalstatusname] = 'Approved')
+
+exec {databaseOwner}[{objectQualifier}engageams_updateItemVersion] @retVal, @retValItemVersionId, @approvedStatusId, 1, 'Initial Setup'
+
+
+GO
+declare @retVal int
+declare @retValItemVersionId int
+declare @topLevelItemType int
+set @topLevelItemType = (select itemtypeid from {databaseOwner}[{objectQualifier}EngageAMSitemtype] where [name] = 'TopLevelCategory')
+exec {databaseOwner}[{objectQualifier}engageams_insertItem] @topLevelItemType, 0
+select @retVal = @@Identity
+
+declare @curDate datetime
+set @curDate = getDate()
+exec {databaseOwner}[{objectQualifier}engageams_insertItemVersion] @retVal, 0, 'Articles', 'Articles Top Level Category', @curDate, @curDate, null, 1, 1, '', '', '', -1
+select @retValItemVersionId = @@Identity
+exec {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion] @retValItemVersionId, @retVal, 1 
+declare @approvedStatusId int
+set @approvedStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype] where [approvalstatusname] = 'Approved')
+
+exec {databaseOwner}[{objectQualifier}engageams_updateItemVersion] @retVal, @retValItemVersionId, @approvedStatusId, 1, 'Initial Setup'
+
+
+GO
+declare @retVal int
+declare @retValItemVersionId int
+declare @topLevelItemType int
+set @topLevelItemType = (select itemtypeid from {databaseOwner}[{objectQualifier}EngageAMSitemtype] where [name] = 'TopLevelCategory')
+exec {databaseOwner}[{objectQualifier}engageams_insertItem] @topLevelItemType, 0
+select @retVal = @@Identity
+
+declare @curDate datetime
+set @curDate = getDate()
+exec {databaseOwner}[{objectQualifier}engageams_insertItemVersion] @retVal, 0, 'Documents', 'Documents Top Level Category', @curDate, @curDate, null, 1, 1, '', '', '', -1
+select @retValItemVersionId = @@Identity
+exec {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion] @retValItemVersionId, @retVal, 1 
+declare @approvedStatusId int
+set @approvedStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype] where [approvalstatusname] = 'Approved')
+
+exec {databaseOwner}[{objectQualifier}engageams_updateItemVersion] @retVal, @retValItemVersionId, @approvedStatusId, 1, 'Initial Setup'
+
+
+GO
+declare @retVal int
+declare @retValItemVersionId int
+declare @topLevelItemType int
+set @topLevelItemType = (select itemtypeid from {databaseOwner}[{objectQualifier}EngageAMSitemtype] where [name] = 'TopLevelCategory')
+exec {databaseOwner}[{objectQualifier}engageams_insertItem] @topLevelItemType, 0
+select @retVal = @@Identity
+
+declare @curDate datetime
+set @curDate = getDate()
+exec {databaseOwner}[{objectQualifier}engageams_insertItemVersion] @retVal, 0, 'Media', 'Media Top Level Category', @curDate, @curDate, null, 1, 1, '', '', '', -1
+select @retValItemVersionId = @@Identity
+exec {databaseOwner}[{objectQualifier}engageams_insertCategoryVersion] @retValItemVersionId, @retVal, 1 
+declare @approvedStatusId int
+set @approvedStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}EngageAMSapprovalstatustype] where [approvalstatusname] = 'Approved')
+
+exec {databaseOwner}[{objectQualifier}engageams_updateItemVersion] @retVal, @retValItemVersionId, @approvedStatusId, 1, 'Initial Setup'
+
+GO
+
+
+/* Item relationship types */
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Category To Parent Category')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Document To Document Category')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Article To Article Category')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Product Category')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Slideshow Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Product Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Other Product Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Other Document')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Thumbnail Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Document')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Image To Larger Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Image To Thumbnail Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Image To Medium Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Document To Related Document')
+GO
+
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Related Product')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Product To Video')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Category To Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Media To Media Category')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Media To Related Media')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Media to Media Large Image')
+GO
+insert into {databaseOwner}[{objectQualifier}EngageAMSrelationshiptype]
+(relationshipname)
+values ('Media to Media Thumbnail')
+GO

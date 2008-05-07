@@ -1,0 +1,47 @@
+﻿
+IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump](@itemId int, @IndexTitle nvarchar(512), @IndexContent ntext, @IndexWashedContent ntext, @PortalId int, @IndexUrl varchar(1024)) AS
+BEGIN
+	if exists (select * from {databaseOwner}[{objectQualifier}Venexus_BrainDump] where indexurl = @IndexUrl)
+	BEGIN
+		Update {databaseOwner}[{objectQualifier}Venexus_BrainDump]
+		set  IndexTitle = @IndexTitle,
+			IndexContent = @IndexContent,
+			IndexWashedContent = @IndexWashedContent,
+			IndexUpdated = GetDate()
+		where indexurl = @IndexUrl 
+	END	
+
+	else
+	BEGIN
+		--insert code, insert into the Venexus_BrainDump table
+		
+		Insert into {databaseOwner}[{objectQualifier}Venexus_BrainDump]
+		(indexurl,
+		indextitle,
+		indexcontent,
+		indexwashedcontent,
+		indexdate,
+		indexupdated,
+		indexcrawled,
+		indexlastcrawled,
+		portalid,
+		isapproved)
+		values(
+			@IndexUrl
+			,@IndexTitle
+			,@IndexContent
+			,@IndexWashedContent
+			,GetDate()
+			,GetDate()
+			,1
+			,GetDate()
+			,0
+			,1	
+		)
+	END
+END
+GO
+

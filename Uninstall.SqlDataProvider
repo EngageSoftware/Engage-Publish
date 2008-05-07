@@ -1,0 +1,637 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionSettings]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionTags] DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemVersionTags]    Script Date: 9/20/2007 10:39:03 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionTags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemVersionTags]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Tags]    Script Date: 9/20/2007 10:39:03 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Tags]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_Tags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT [FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Tags]    Script Date: 9/20/2007 10:39:03 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT {objectQualifier}FK_Comment_ApprovalStatusType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersion] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Item_ItemType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Item] DROP CONSTRAINT {objectQualifier}FK_Item_ItemType
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemRelationship] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAmsCategoryRolePermission_Permission]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] DROP CONSTRAINT {objectQualifier}FK_EngageAmsCategoryRolePermission_Permission
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] DROP CONSTRAINT {objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ItemRelationship_Item]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ItemRelationship_Item1]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item1
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ItemVersion_Item]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersion] DROP CONSTRAINT {objectQualifier}FK_ItemVersion_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ItemView_Item]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemView] DROP CONSTRAINT {objectQualifier}FK_ItemView_Item
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ArticleVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ArticleVersion] DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_CategoryVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_CategoryVersion] DROP CONSTRAINT {objectQualifier}FK_CategoryVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT {objectQualifier}FK_Comment_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_DocumentVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_DocumentVersion] DROP CONSTRAINT {objectQualifier}FK_DocumentVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_MediaVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_MediaVersion] DROP CONSTRAINT {objectQualifier}FK_MediaVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ProductVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ProductVersion] DROP CONSTRAINT {objectQualifier}FK_ProductVersion_ItemVersion
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Rating_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Rating] DROP CONSTRAINT {objectQualifier}FK_Rating_ItemVersion
+GO
+
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildItemsLevel    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetAllCategories    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetAllCategories]
+GO
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildItems    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItems]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItems]
+GO
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildItemsAdminSearch    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsAdminSearch]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsAdminSearch]
+GO
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildItemsWithTwoTypes    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsWithTwoTypes]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsWithTwoTypes]
+GO
+
+/****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildProducts    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]
+GO
+
+/****** Object:  User Defined Function dbo.Publish_fnGetChildItemsLevel    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]') and xtype in (N'FN', N'IF', N'TF'))
+drop function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsLevel]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAdminItemListing    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAllCategoriesHierachy    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllCategoriesHierachy]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAllChildren    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildren]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildren]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAllChildrenByType    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByType]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetAllChildrenFromTwoParents    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenFromTwoParents]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetCategoryListing    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetComment    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetComment]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetComments    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertProductVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertProductVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spAddComment    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spAddRating    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spAddRating]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spAddRating]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spDeleteComment    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spDeleteComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spDeleteComment]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spDeleteItem    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spDeleteRatings    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spDeleteRatings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spDeleteRatings]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetCategories    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetCategories]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetCategory    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetCategory]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetItemCategories    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemCategories]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetItemChildRelationships    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemChildRelationships]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetRatingByUser    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetRatingByUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetRatingByUser]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertArticleVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertArticleVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertCategoryVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertCategoryVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertDocumentVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertDocumentVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItemText    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemText]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemText]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertMediaVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertMediaVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spUpdateComment    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spUpdateRating    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateRating]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateRating]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spUpdateRatingByUser    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUser]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetItemRelationships    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItemRelationship    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationship]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItemVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItemView    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemView]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spUpdateItemVersion    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spInsertItem    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+GO
+
+/****** Object:  Stored Procedure dbo.{objectQualifier}Publish_spGetItemTypes    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemTypes]
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_UpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_UpdateVenexusBrainDump]
+GO
+
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwArticleSearchIndexingUpdated    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwItemListing    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwArticles    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticles]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwCategories    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwCategories]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwChildItems    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwComments    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwDocuments    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwDocuments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwDocuments]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwItemVersions    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemVersions]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwMedia    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwMedia]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwMedia]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwParentItems    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwItems    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItems]
+GO
+
+/****** Object:  View dbo.{objectQualifier}Publish_vwItemTypes    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemTypes]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemTypes]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ArticleVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ArticleVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ArticleVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_CategoryVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_CategoryVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Comment]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Comment]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_Comment]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_DocumentVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_DocumentVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_DocumentVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemText]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemText]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_MediaVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_MediaVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_MediaVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ProductVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ProductVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ProductVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Rating]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Rating]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_Rating]
+GO
+
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemRelationship]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemRelationship]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemRelationship]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemVersion]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemVersion]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemVersion]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemView]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemView]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemView]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Item]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Item]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_Item]
+GO
+
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ApprovalStatusType]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ApprovalStatusType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ApprovalStatusType]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ArticleMapping]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ArticleMapping]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ArticleMapping]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_CategoryMapping]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryMapping]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_CategoryMapping]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ColumnType]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ColumnType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ColumnType]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_FlatParents]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_FlatParents]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_FlatParents]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_ItemType]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_ItemType]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_PortalSettings]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_PortalSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_PortalSettings]	
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}Publish_RelationshipType]    Script Date: 4/18/2007 11:13:45 AM ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_RelationshipType]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}Publish_RelationshipType]
+GO
+
+
+IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]
+GO
+
+
+IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertTag]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemVersionTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersionTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateTag]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTags]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetItemsForTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetPopularTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}_publish_spGetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}_publish_spGetPopularTagsCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetItemsForTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemDescription]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemDescription]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemRelationship]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwModuleInfo]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo]
+GO
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwRelationships]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwRelationships]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemRelationship]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+GO
+
+/* Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetPopularTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetPopularTags]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetPopularTagsCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetPopularTagsCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetPopularTagsCount]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_GetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_GetItemsForTags]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetItemsForTags]
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwModuleInfo]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo]
+GO
+
+
+/* Publish_spUpdateItemRelationship */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemRelationship]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemRelationship]
+GO
+
+
+/*remove Publish host settings on uninstall */
+delete from {databaseOwner}[{objectQualifier}hostsettings
+where settingname like 'Publish%'
+GO
+
+/* Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemRelationshipWithPreviousSortOrder]
+GO
+
+
+/* Publish_spGetTag */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetTag]
+GO
+
+/* Publish_spGetItemViewReport */
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetItemViewReport]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spGetItemViewReport]
+GO

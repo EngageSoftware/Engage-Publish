@@ -1,0 +1,71 @@
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]    
+@ParentItemId int,     
+@ItemTypeId int,    
+@RelationshipTypeId int,
+@otherRelationshipTypeId int,
+@ApprovalStatusId int,    
+@PortalId int    
+AS    
+BEGIN
+set nocount on    
+    
+declare @TempTable table    
+(     
+ ItemId int not null    
+ , ItemVersionId int not null    
+)    
+    
+--insert into @TempTable    
+--select     
+-- c.ItemId, c.itemVersionId    
+--from     
+-- Publish_vwChildItems c     
+--where     
+-- c.ApprovalStatusId = @ApprovalStatusId    
+-- and c.RelationshipTypeId = @RelationshipTypeId     
+-- and c.PortalID = @PortalId    
+-- and c.ParentItemID = @ParentItemId    
+-- and c.ItemTypeId = @ItemTypeId    
+    
+insert into @TempTable    
+select     
+ c.ItemId    
+ , Max(c.ItemVersionId)    
+    
+from     
+ [{objectQualifier}Publish_vwChildItems] c     
+where     
+ c.ApprovalStatusId = @ApprovalStatusId    
+ and (c.RelationshipTypeId = @RelationshipTypeId or c.relationshiptypeId = @otherRelationshipTypeId)  
+ and c.PortalID = @PortalId    
+ and (c.ParentItemID = @ParentItemId OR @ParentItemId = -1)
+ and c.ItemTypeId = @ItemTypeId    
+ and not exists (Select * from @TempTable w where w.ItemId = c.itemId)    
+group by c.ItemId    
+    
+set nocount off    
+    
+Select vi.[Name]     
+ , vi.[Description]    
+ , t.ItemId    
+ , t.ItemVersionId    
+ , vi.IsCurrentVersion    
+ , (select count(ParentItemId) from     
+ [{objectQualifier}Publish_vwChilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId =     
+ (select RelationshipTypeId from [{objectQualifier}Publish_relationshiptype] where relationshipname = 'Item To Parent Category')    
+ and ItemTypeId =     
+ (select  itemtypeid from [{objectQualifier}Publish_Itemtype] where name = 'Category')    
+ ) 'ChildCount'    
+    
+from @TempTable t    
+join [{objectQualifier}Publish_vwItems] vi on (vi.ItemVersionId = t.ItemVersionId)    
+where vi.ApprovalStatusId = @ApprovalStatusId    
+order by vi.[Name] 
+END
+GO
+

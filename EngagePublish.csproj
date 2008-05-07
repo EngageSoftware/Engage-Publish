@@ -1,0 +1,945 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7FCB9E3-4554-4B99-8E5B-15209F53151F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Engage.Dnn.Publish</RootNamespace>
+    <AssemblyName>EngagePublish</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1031;-Microsoft.Design#CA1057;-Microsoft.Design#CA1054;-Microsoft.Design#CA1056;-Microsoft.Design#CA1055</CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=1.0.10920.32880, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke, Version=4.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls, Version=1.5.3.20116, Culture=neutral">
+      <Private>False</Private>
+      <HintPath>..\..\..\bin\DotNetNuke.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>..\..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
+      <Private>True</Private>
+      <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminLoader.ascx.cs">
+      <DependentUpon>AdminLoader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLoader.ascx.designer.cs">
+      <DependentUpon>AdminLoader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminInstructions.ascx.cs">
+      <DependentUpon>AdminInstructions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminInstructions.ascx.designer.cs">
+      <DependentUpon>AdminInstructions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminMain.ascx.cs">
+      <DependentUpon>AdminMain.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminMain.ascx.designer.cs">
+      <DependentUpon>AdminMain.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminMenu.ascx.cs">
+      <DependentUpon>AdminMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminMenu.ascx.designer.cs">
+      <DependentUpon>AdminMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminSettings.ascx.cs">
+      <DependentUpon>AdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminSettings.ascx.designer.cs">
+      <DependentUpon>AdminSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminTools.ascx.cs">
+      <DependentUpon>AdminTools.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminTools.ascx.designer.cs">
+      <DependentUpon>AdminTools.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\CommentEdit.ascx.cs">
+      <DependentUpon>CommentEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CommentEdit.ascx.designer.cs">
+      <DependentUpon>CommentEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\CommentList.ascx.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CommentList.ascx.designer.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DeleteItem.ascx.cs">
+      <DependentUpon>DeleteItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DeleteItem.ascx.designer.cs">
+      <DependentUpon>DeleteItem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ItemCreated.ascx.cs">
+      <DependentUpon>ItemCreated.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ItemCreated.ascx.designer.cs">
+      <DependentUpon>ItemCreated.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Syndication.ascx.cs">
+      <DependentUpon>Syndication.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Syndication.ascx.designer.cs">
+      <DependentUpon>Syndication.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Tools\Dashboard.ascx.cs">
+      <DependentUpon>Dashboard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools\Dashboard.ascx.designer.cs">
+      <DependentUpon>Dashboard.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Tools\DescriptionReplace.ascx.cs">
+      <DependentUpon>DescriptionReplace.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools\DescriptionReplace.ascx.designer.cs">
+      <DependentUpon>DescriptionReplace.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Tools\ItemViewReport.ascx.cs">
+      <DependentUpon>ItemViewReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools\ItemViewReport.ascx.designer.cs">
+      <DependentUpon>ItemViewReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Article.cs" />
+    <Compile Include="ArticleControls\ArticleCategoryListing.ascx.cs">
+      <DependentUpon>ArticleCategoryListing.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleCategoryListing.ascx.designer.cs">
+      <DependentUpon>ArticleCategoryListing.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleDisplay.ascx.cs">
+      <DependentUpon>ArticleDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleDisplay.ascx.designer.cs">
+      <DependentUpon>ArticleDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleDisplayOptions.ascx.cs">
+      <DependentUpon>ArticleDisplayOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleDisplayOptions.ascx.designer.cs">
+      <DependentUpon>ArticleDisplayOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleEdit.ascx.cs">
+      <DependentUpon>ArticleEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleEdit.ascx.designer.cs">
+      <DependentUpon>ArticleEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleList.ascx.cs">
+      <DependentUpon>ArticleList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\ArticleList.ascx.designer.cs">
+      <DependentUpon>ArticleList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Category.cs" />
+    <Compile Include="CategoryControls\CategoryDisplay.ascx.cs">
+      <DependentUpon>CategoryDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryDisplay.ascx.designer.cs">
+      <DependentUpon>CategoryDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryDisplayOptions.ascx.cs">
+      <DependentUpon>CategoryDisplayOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryDisplayOptions.ascx.designer.cs">
+      <DependentUpon>CategoryDisplayOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryEdit.ascx.cs">
+      <DependentUpon>CategoryEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryEdit.ascx.designer.cs">
+      <DependentUpon>CategoryEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryFeature.ascx.cs">
+      <DependentUpon>CategoryFeature.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryFeature.ascx.designer.cs">
+      <DependentUpon>CategoryFeature.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryFeatureOptions.ascx.cs">
+      <DependentUpon>CategoryFeatureOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryFeatureOptions.ascx.designer.cs">
+      <DependentUpon>CategoryFeatureOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryList.ascx.cs">
+      <DependentUpon>CategoryList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryList.ascx.designer.cs">
+      <DependentUpon>CategoryList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryNLevels.ascx.cs">
+      <DependentUpon>CategoryNLevels.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryNLevels.ascx.designer.cs">
+      <DependentUpon>CategoryNLevels.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryNLevelsOptions.ascx.cs">
+      <DependentUpon>CategoryNLevelsOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryNLevelsOptions.ascx.designer.cs">
+      <DependentUpon>CategoryNLevelsOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryPermissions.ascx.cs">
+      <DependentUpon>CategoryPermissions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategoryPermissions.ascx.designer.cs">
+      <DependentUpon>CategoryPermissions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySearch.ascx.cs">
+      <DependentUpon>CategorySearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySearch.ascx.designer.cs">
+      <DependentUpon>CategorySearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySearchOptions.ascx.cs">
+      <DependentUpon>CategorySearchOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySearchOptions.ascx.designer.cs">
+      <DependentUpon>CategorySearchOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySort.ascx.cs">
+      <DependentUpon>CategorySort.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryControls\CategorySort.ascx.designer.cs">
+      <DependentUpon>CategorySort.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Comment.cs" />
+    <Compile Include="Controls\AdminItemSearch.ascx.cs">
+      <DependentUpon>AdminItemSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AdminItemSearch.ascx.designer.cs">
+      <DependentUpon>AdminItemSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Breadcrumb.ascx.cs">
+      <DependentUpon>Breadcrumb.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Breadcrumb.ascx.designer.cs">
+      <DependentUpon>Breadcrumb.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CommentDisplay.ascx.cs">
+      <DependentUpon>CommentDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\CommentDisplay.ascx.designer.cs">
+      <DependentUpon>CommentDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CommentDisplayBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomDisplay.ascx.cs">
+      <DependentUpon>CustomDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomDisplay.ascx.designer.cs">
+      <DependentUpon>CustomDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomDisplayOptions.ascx.cs">
+      <DependentUpon>CustomDisplayOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomDisplayOptions.ascx.designer.cs">
+      <DependentUpon>CustomDisplayOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomDisplaySettings.cs" />
+    <Compile Include="Controls\EmailAFriend.ascx.cs">
+      <DependentUpon>EmailAFriend.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\EmailAFriend.ascx.designer.cs">
+      <DependentUpon>EmailAFriend.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemApproval.ascx.cs">
+      <DependentUpon>ItemApproval.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemApproval.ascx.designer.cs">
+      <DependentUpon>ItemApproval.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemEdit.ascx.cs">
+      <DependentUpon>ItemEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemEdit.ascx.designer.cs">
+      <DependentUpon>ItemEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemListing.ascx.cs">
+      <DependentUpon>ItemListing.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemListing.ascx.designer.cs">
+      <DependentUpon>ItemListing.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemListingOptions.ascx.cs">
+      <DependentUpon>ItemListingOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemListingOptions.ascx.designer.cs">
+      <DependentUpon>ItemListingOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemRelationships.ascx.cs">
+      <DependentUpon>ItemRelationships.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemRelationships.ascx.designer.cs">
+      <DependentUpon>ItemRelationships.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemSearch.ascx.cs">
+      <DependentUpon>ItemSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemSearch.ascx.designer.cs">
+      <DependentUpon>ItemSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemVersions.ascx.cs">
+      <DependentUpon>ItemVersions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemVersions.ascx.designer.cs">
+      <DependentUpon>ItemVersions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PrinterFriendlyButton.ascx.cs">
+      <DependentUpon>PrinterFriendlyButton.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\PrinterFriendlyButton.ascx.designer.cs">
+      <DependentUpon>PrinterFriendlyButton.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RelatedArticleLinks.ascx.cs">
+      <DependentUpon>RelatedArticleLinks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\RelatedArticleLinks.ascx.designer.cs">
+      <DependentUpon>RelatedArticleLinks.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RelatedArticleLinksBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\SearchRedirector.ascx.cs">
+      <DependentUpon>SearchRedirector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\SearchRedirector.ascx.designer.cs">
+      <DependentUpon>SearchRedirector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ThumbnailSelector.ascx.cs">
+      <DependentUpon>ThumbnailSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ThumbnailSelector.ascx.designer.cs">
+      <DependentUpon>ThumbnailSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="EPRss.aspx.cs">
+      <DependentUpon>EPRss.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EPRss.aspx.designer.cs">
+      <DependentUpon>EPRss.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="ItemDisplay.ascx.cs">
+      <DependentUpon>ItemDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemDisplay.ascx.designer.cs">
+      <DependentUpon>ItemDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemDisplayOptions.ascx.cs">
+      <DependentUpon>ItemDisplayOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemDisplayOptions.ascx.designer.cs">
+      <DependentUpon>ItemDisplayOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemLink.aspx.cs">
+      <DependentUpon>ItemLink.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemLink.aspx.designer.cs">
+      <DependentUpon>ItemLink.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemManager.cs" />
+    <Compile Include="ItemNameComparer.cs" />
+    <Compile Include="ItemPreview.ascx.cs">
+      <DependentUpon>ItemPreview.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemPreview.ascx.designer.cs">
+      <DependentUpon>ItemPreview.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemRelationship.cs" />
+    <Compile Include="ItemRelationshipCollection.cs" />
+    <Compile Include="ItemTag.cs" />
+    <Compile Include="ItemTagCollection.cs" />
+    <Compile Include="ItemVersionSetting.cs" />
+    <Compile Include="ItemVersionSettingCollection.cs" />
+    <Compile Include="ModuleBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Portability\TransportableElement.cs" />
+    <Compile Include="Portability\TransportableXmlValidator.cs" />
+    <Compile Include="Portability\XmlDirector.cs" />
+    <Compile Include="Portability\XmlTransporter.cs" />
+    <Compile Include="PrinterFriendly.aspx.cs">
+      <DependentUpon>PrinterFriendly.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrinterFriendly.aspx.designer.cs">
+      <DependentUpon>PrinterFriendly.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
+    <Compile Include="Providers\ForumProvider\ActiveForumsProvider\ActiveForumsProvider.cs" />
+    <Compile Include="Providers\ForumProvider\ForumProvider.cs" />
+    <Compile Include="Rating.cs" />
+    <Compile Include="Search\SearchProvider.cs" />
+    <Compile Include="Security\NullSecurityFilter.cs" />
+    <Compile Include="Security\PermissionType.cs" />
+    <Compile Include="Security\RoleBasedSecurityFilter.cs" />
+    <Compile Include="Security\SecureSearchDataStore.cs" />
+    <Compile Include="Security\SecurityFilter.cs" />
+    <Compile Include="Services\MetaWeblog.asmx.cs">
+      <DependentUpon>MetaWeblog.asmx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PublishServices.asmx.cs">
+      <DependentUpon>PublishServices.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Setting.cs" />
+    <Compile Include="Tag.cs" />
+    <Compile Include="Tags\TagCloud.ascx.cs">
+      <DependentUpon>TagCloud.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tags\TagCloud.ascx.designer.cs">
+      <DependentUpon>TagCloud.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Tags\TagCloudOptions.ascx.cs">
+      <DependentUpon>TagCloudOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tags\TagCloudOptions.ascx.designer.cs">
+      <DependentUpon>TagCloudOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Tags\TagEntry.ascx.cs">
+      <DependentUpon>TagEntry.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tags\TagEntry.ascx.designer.cs">
+      <DependentUpon>TagEntry.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="util\ApprovalStatus.cs" />
+    <Compile Include="util\Breadcrumb.cs" />
+    <Compile Include="util\PublishToken.cs" />
+    <Compile Include="util\Ping.cs" />
+    <Compile Include="util\FeaturesController.cs" />
+    <Compile Include="util\ItemType.cs" />
+    <Compile Include="util\QueryStringParameters.cs" />
+    <Compile Include="util\RelationshipType.cs" />
+    <Compile Include="util\TabInfoNameComparer.cs" />
+    <Compile Include="util\TopLevelCategoryItemType.cs" />
+    <Compile Include="util\Utility.cs" />
+    <Compile Include="util\Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="04.02.07.txt" />
+    <Content Include="AdminLoader.ascx" />
+    <Content Include="Admin\AdminInstructions.ascx" />
+    <Content Include="Admin\AdminMain.ascx" />
+    <Content Include="Admin\AdminMenu.ascx" />
+    <Content Include="Admin\AdminSettings.ascx" />
+    <Content Include="Admin\AdminTools.ascx" />
+    <Content Include="Admin\CommentEdit.ascx" />
+    <Content Include="Admin\CommentList.ascx" />
+    <Content Include="Admin\DeleteItem.ascx" />
+    <Content Include="Admin\Images\admintools.gif" />
+    <Content Include="Admin\Images\admintools_sel.gif" />
+    <Content Include="Admin\Images\articles.gif" />
+    <Content Include="Admin\Images\articles_sel.gif" />
+    <Content Include="Admin\Images\categories.gif" />
+    <Content Include="Admin\Images\categories_sel.gif" />
+    <Content Include="Admin\Images\comments.gif" />
+    <Content Include="Admin\Images\comments_sel.gif" />
+    <Content Include="Admin\Images\delete.gif" />
+    <Content Include="Admin\Images\delete_sel.gif" />
+    <Content Include="Admin\Images\directory_sel.gif" />
+    <Content Include="Admin\Images\documents_sel.gif" />
+    <Content Include="Admin\Images\help.gif" />
+    <Content Include="Admin\Images\help_sel.gif" />
+    <Content Include="Admin\Images\images_sel.gif" />
+    <Content Include="Admin\Images\settings.gif" />
+    <Content Include="Admin\Images\settings_sel.gif" />
+    <Content Include="Admin\Images\syndication.gif" />
+    <Content Include="Admin\Images\syndication_sel.gif" />
+    <Content Include="Admin\ItemCreated.ascx" />
+    <Content Include="Admin\Syndication.ascx" />
+    <Content Include="Admin\Tools\Dashboard.ascx" />
+    <Content Include="Admin\Tools\DescriptionReplace.ascx" />
+    <Content Include="Admin\Tools\ItemViewReport.ascx" />
+    <Content Include="ArticleControls\ArticleCategoryListing.ascx" />
+    <Content Include="ArticleControls\ArticleDisplay.ascx" />
+    <Content Include="ArticleControls\ArticleDisplayOptions.ascx" />
+    <Content Include="ArticleControls\ArticleEdit.ascx" />
+    <Content Include="ArticleControls\ArticleList.ascx" />
+    <Content Include="CategoryControls\CategoryDisplay.ascx" />
+    <Content Include="CategoryControls\CategoryDisplayOptions.ascx" />
+    <Content Include="CategoryControls\CategoryEdit.ascx" />
+    <Content Include="CategoryControls\CategoryFeature.ascx" />
+    <Content Include="CategoryControls\CategoryFeatureOptions.ascx" />
+    <Content Include="CategoryControls\CategoryList.ascx" />
+    <Content Include="CategoryControls\CategoryNLevels.ascx" />
+    <Content Include="CategoryControls\CategoryNLevelsOptions.ascx" />
+    <Content Include="CategoryControls\CategoryPermissions.ascx" />
+    <Content Include="CategoryControls\CategorySearch.ascx" />
+    <Content Include="CategoryControls\CategorySearchOptions.ascx" />
+    <Content Include="CategoryControls\CategorySort.ascx" />
+    <Content Include="CategoryControls\main.js" />
+    <Content Include="Content.Publish.xml" />
+    <Content Include="Controls\AdminItemSearch.ascx" />
+    <Content Include="Controls\Breadcrumb.ascx" />
+    <Content Include="Controls\CommentDisplay.ascx" />
+    <Content Include="Controls\CustomDisplay.ascx" />
+    <Content Include="Controls\CustomDisplayOptions.ascx" />
+    <Content Include="Controls\EmailAFriend.ascx" />
+    <Content Include="Controls\ItemApproval.ascx" />
+    <Content Include="Controls\ItemEdit.ascx" />
+    <Content Include="Controls\ItemListing.ascx" />
+    <Content Include="Controls\ItemListingOptions.ascx" />
+    <Content Include="Controls\ItemRelationships.ascx" />
+    <Content Include="Controls\ItemSearch.ascx" />
+    <Content Include="Controls\ItemVersions.ascx" />
+    <Content Include="Controls\PrinterFriendlyButton.ascx" />
+    <Content Include="Controls\RelatedArticleLinks.ascx" />
+    <Content Include="Controls\SearchRedirector.ascx" />
+    <Content Include="Controls\ThumbnailSelector.ascx" />
+    <Content Include="docs\images\article-general.gif" />
+    <Content Include="docs\images\article-name-desc.gif" />
+    <Content Include="docs\images\category-settings.gif" />
+    <Content Include="docs\images\categoryfeature-settings.gif" />
+    <Content Include="docs\images\categorylist.gif" />
+    <Content Include="docs\images\childdisplaypage.gif" />
+    <Content Include="docs\images\displaypage.gif" />
+    <Content Include="docs\images\itemlisting-settings.gif" />
+    <Content Include="docs\images\logo_ref_bl.jpg" />
+    <Content Include="docs\images\logo_ref_w.jpg" />
+    <Content Include="docs\images\publish_bn.jpg" />
+    <Content Include="docs\images\publish_logo_small.jpg" />
+    <Content Include="docs\images\toolbar.gif" />
+    <Content Include="docs\install.txt" />
+    <Content Include="docs\license.txt" />
+    <Content Include="EPRss.aspx" />
+    <Content Include="Images\calendar.png" />
+    <Content Include="Images\dn.gif" />
+    <Content Include="Images\EmptyStar.png" />
+    <Content Include="Images\FilledStar.png" />
+    <Content Include="Images\lt.gif" />
+    <Content Include="Images\progressbar_green.gif" />
+    <Content Include="Images\rt.gif" />
+    <Content Include="Images\s.gif" />
+    <Content Include="Images\SavedStar.png" />
+    <Content Include="Images\thumbnail.gif" />
+    <Content Include="Images\trash.gif" />
+    <Content Include="Images\up.gif" />
+    <Content Include="ItemDisplay.ascx" />
+    <Content Include="ItemDisplayOptions.ascx" />
+    <Content Include="ItemLink.aspx" />
+    <Content Include="ItemPreview.ascx" />
+    <Content Include="Licenses\EULA-Enterprise.txt" />
+    <Content Include="Licenses\EULA-Professional.txt" />
+    <Content Include="Licenses\EULA-Standard.txt" />
+    <Content Include="Module.css" />
+    <Content Include="PrinterFriendly.aspx" />
+    <Content Include="ReadMe.txt" />
+    <Content Include="Rss.aspx" />
+    <Content Include="Services\PublishServices.asmx" />
+    <Content Include="Tags\Module.css" />
+    <Content Include="Tags\TagCloud.ascx" />
+    <Content Include="Tags\TagCloudOptions.ascx" />
+    <Content Include="Tags\TagEntry.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin\App_LocalResources\AdminInstructions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminItemList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminItemSearch.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminItemSearchOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminMain.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminMenu.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminSettings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\AdminTools.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\CommentEdit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\CommentList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\DeleteItem.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\ItemCreated.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\App_LocalResources\Syndication.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\Tools\App_LocalResources\Dashboard.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\Tools\App_LocalResources\DescriptionReplace.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\Tools\App_LocalResources\ItemViewReport.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\AdminLoader.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ItemDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ItemDisplayOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ItemLink.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ItemPreview.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\PrinterFriendly.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ArticleCategoryListing.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ArticleDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ArticleDisplayOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ArticleEdit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ArticleList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ArticleControls\App_LocalResources\ItemApproval.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryDisplayOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryEdit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryFeature.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryFeatureOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryNLevels.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryNLevelsOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategoryPermissions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategorySearch.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategorySearchOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\CategorySort.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\DocumentCategoryDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CategoryControls\App_LocalResources\ItemCategoryDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\CommentDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\CustomDisplay.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\CustomDisplayOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\EmailAFriend.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemApproval.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemEdit.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemListing.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemListingOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemRelationships.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ItemVersions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\PrinterFriendlyButton.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ThumbnailSelector.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Resources\default.css" />
+    <Content Include="Tags\App_LocalResources\TagCloud.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Tags\App_LocalResources\TagCloudOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="util\App_LocalResources\BreadCrumb.cs.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content.Publish.xsd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="Content.Publish.xsx">
+      <DependentUpon>Content.Publish.xsd</DependentUpon>
+    </None>
+    <None Include="docs\Engage Publish Users Guide.doc" />
+    <None Include="docs\Engage Publish Users Guide.pdf" />
+    <None Include="EngagePublish.Build" />
+    <None Include="EngagePublish.dnn" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.06.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.07.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.08.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.09.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.10.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.12.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.13.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.14.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.15.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.16.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.17.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.19.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.21.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.23.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.24.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.00.SqlDataProvider.Upgrade" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.06.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.07.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.08.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.00.09.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.01.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.01.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.06.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.07.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.02.09.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.08.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.09.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.04.04.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.04.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.04.06.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.00.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.00.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.01.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.01.02.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.01.04.SqlDataProvider" />
+    <None Include="Uninstall.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Providers\ForumProvider\ActiveForumsProvider\App_LocalResources\ActiveForumsProvider.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\CookComputing.XmlRpcV2.dll" />
+    <Content Include="Services\App_LocalResources\MetaWeblog.asmx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Services\MetaWeblog.asmx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '9.0'" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>55832</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/DotNetNuke_2/desktopmodules/engagepublish</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/DotNetNuke_2</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

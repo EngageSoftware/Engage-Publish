@@ -1,0 +1,399 @@
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem](@id int) AS
+BEGIN
+	begin transaction
+	
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] where CategoryId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ProductVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_MediaVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ArticleVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_CategoryVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_DocumentVersion] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemText] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Comment] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_Rating] where ItemVersionId in (select ItemVersionId from [{objectQualifier}Publish_ItemVersion] where ItemId = @id)
+	delete {databaseOwner}[{objectQualifier}Publish_ItemView] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemVersion] where ItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_ItemRelationship] where ChildItemId = @id or ParentItemId = @id
+	delete {databaseOwner}[{objectQualifier}Publish_Item] where ItemId = @id
+	if (@@error > 0)
+		rollback transaction
+	else
+		commit transaction
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') AND OBJECTPROPERTY(id,N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+select
+	catDetail.ItemId, catDetail.[Name] CategoryName, 
+	child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+	child.ItemId ChildItemId, 
+	cat.PortalId, child.LastUpdated
+	, child.CreatedDate
+	, child.Thumbnail
+	--, u.DisplayName 
+	/*--REMOVE ABOVE LINE FOR Pre DisplayName DNN INSTALLS */
+from 
+	{objectQualifier}Publish_fnGetAllCategories() cat
+	join [{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+	join [{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	join [{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+where 	catDetail.IsCurrentVersion = 1
+and 	child.IsCurrentVersion = 1
+and 	child.RelationshipTypeId in (select RelationshipTypeId from {objectQualifier}Publish_RelationshipType where RelationshipName = 'Item To Parent Category' or RelationshipName = 'Item to Related Category')
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationships]
+	@ChildItemId int
+	, @ChildItemVersionId int
+	, @RelationshipTypeId int
+AS
+SELECT
+	ChildItemId
+	, ChildItemVersionId
+	, ParentItemId
+	, RelationshipTypeId
+	, StartDate
+	, EndDate
+FROM
+	[{objectQualifier}Publish_ItemRelationship]
+WHERE
+	ChildItemId = @ChildItemId
+	and ChildItemVersionid = @ChildItemVersionId
+	and RelationshipTypeId = @RelationshipTypeId
+	and StartDate <= GetDate()
+	and (EndDate > GetDate() or EndDate is null)
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetCategoryListing]
+	@ParentItemId [int]
+	, @PortalId [int]
+AS 
+	if (@ParentItemId = -1)
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			[{objectQualifier}Publish_vwCategories] cat
+			join [{objectQualifier}Publish_vwChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category', 'Item to Related Category')
+		order by
+			--cat.[Name], child.[Name]
+			cat.SortOrder ASC, child.ParentItemId, RelationshipName
+	end
+	else
+	begin
+		select 
+			child.ParentItemId, child.ItemId as ChildItemId,
+			child.ItemType, child.RelationshipName,
+			cat.[Name] as ParentCategoryName, child.[Name] as CategoryName
+			, cat.SortOrder
+		from 
+			[{objectQualifier}Publish_vwCategories] cat
+			join [{objectQualifier}Publish_vwChildItems] child on (cat.ItemId = child.ParentItemId)
+		where
+			child.IsCurrentVersion = 1
+		and	cat.IsCurrentVersion = 1
+		and	child.RelationshipName in ('Item To Parent Category', 'Item to Related Category')
+		and	child.ParentItemId = @ParentItemId
+		order by
+			--cat.[Name], child.[Name]
+			cat.SortOrder asc, child.ParentItemId, RelationshipName
+	end
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]  
+@ParentItemId int,   
+@ItemTypeId int,  
+@RelationshipTypeId int,  
+@otherRelationshipTypeId int,
+@ApprovalStatusId int,  
+@PortalId int  
+AS  
+  
+set nocount on  
+  
+declare @TempTable table  
+(   
+ ItemId int not null  
+ , ItemVersionId int not null  
+)  
+  
+--insert into @TempTable  
+--select   
+-- c.ItemId, c.itemVersionId  
+--from   
+-- Publish_vwChildItems c   
+--where   
+-- c.ApprovalStatusId = @ApprovalStatusId  
+-- and c.RelationshipTypeId = @RelationshipTypeId   
+-- and c.PortalID = @PortalId  
+-- and c.ParentItemID = @ParentItemId  
+-- and c.ItemTypeId = @ItemTypeId  
+  
+insert into @TempTable  
+select   
+ c.ItemId  
+ , Max(c.ItemVersionId)  
+  
+from   
+ [{objectQualifier}Publish_vwChildItems] c   
+where   
+ c.ApprovalStatusId = @ApprovalStatusId  
+ and (c.RelationshipTypeId = @RelationshipTypeId or c.relationshiptypeId = @otherRelationshipTypeId)
+ and c.PortalID = @PortalId  
+ and c.ParentItemID = @ParentItemId  
+ and c.ItemTypeId = @ItemTypeId  
+ and not exists (Select * from @TempTable w where w.ItemId = c.itemId)  
+group by c.ItemId  
+  
+set nocount off  
+  
+Select vi.[Name]   
+ , vi.[Description]  
+ , t.ItemId  
+ , t.ItemVersionId  
+ , vi.IsCurrentVersion  
+ , (select count(ParentItemId) from   
+ [{objectQualifier}Publish_vwChilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId =   
+ (select RelationshipTypeId from [{objectQualifier}Publish_relationshiptype] where relationshipname = 'Item To Parent Category')  
+ and ItemTypeId =   
+ (select  itemtypeid from [{objectQualifier}Publish_Itemtype] where name = 'Category')  
+ ) 'ChildCount'  
+  
+from @TempTable t  
+join [{objectQualifier}Publish_vwItems] vi on (vi.ItemVersionId = t.ItemVersionId)  
+where vi.ApprovalStatusId = @ApprovalStatusId  
+order by vi.[Name]  
+GO
+  
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildItemsWithTwoTypes]') AND OBJECTPROPERTY(id,N'IsTableFunction') = 1)
+DROP FUNCTION {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsWithTwoTypes]
+GO
+CREATE function {databaseOwner}[{objectQualifier}Publish_fnGetChildItemsWithTwoTypes](@parentItemID int, @relationshipTypeId int, @otherRelationshipTypeId int)
+returns @hierarchy 
+	table 
+	(
+		ParentItemID int,
+		ChildItemID int,
+		ChildItemVersionID int,
+		RelationshipTypeID int,
+		Processed int default 0
+	)
+as
+begin
+	declare @rowsAdded int
+	insert @hierarchy (ParentItemID, ChildItemID, ChildItemVersionID, RelationshipTypeID)
+	select 
+		parent.ParentItemID, parent.ChildItemID, parent.ChildItemVersionId, parent.RelationshipTypeID
+	from 
+		 [{objectQualifier}Publish_ItemRelationship] parent
+		join [{objectQualifier}Publish_Item] i on (parent.ChildItemID = i.ItemID and parent.ChildItemVersionID = i.ApprovedItemVersionID) 
+	where 
+		parent.ParentItemID = @parentItemID
+	and	(parent.RelationshipTypeId = @relationshipTypeId or parent.RelationshipTypeId = @otherRelationshipTypeId)
+	
+	set @rowsAdded = @@rowcount
+	
+	while @rowsAdded > 0
+	begin
+		update @hierarchy set Processed = 1 where Processed = 0
+	
+		insert @hierarchy
+		select 
+			t.ChildItemID, child.ChildItemID, child.ChildItemVersionID, child.RelationshipTypeID, 0
+		from 
+			@hierarchy t
+			join [{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)
+			join [{objectQualifier}Publish_Item] i on (child.ChildItemID = i.ItemID and child.ChildItemVersionID = i.ApprovedItemVersionID)
+		where 
+			t.Processed = 1 
+		and	(child.RelationshipTypeId = @relationshipTypeId or child.RelationshipTypeId = @otherRelationshipTypeId)
+		and not exists
+		(
+			select * from @hierarchy a
+			where a.ParentItemId = child.ParentItemId 
+			and a.ChildItemId = child.ChildItemId
+		) 
+	
+		set @rowsAdded = @@rowcount
+	
+		update @hierarchy set Processed = 2 where Processed = 1
+	end
+	return
+end
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAllChildrenByTypeWithTwoRelationshipTypes]  
+@itemTypeId int,   
+@parentId int,   
+@relationshipTypeId int,   
+@otherRelationshipTypeId int,
+@portalId int  
+AS  
+declare @onlyCurrentVersion bit  
+set @onlyCurrentVersion =1  
+if (@onlyCurrentVersion = 1)  
+begin  
+ select   
+  parent.ParentItemId,child.*, parent.RelationshipTypeId  
+ from   
+  [{objectQualifier}Publish_fnGetChildItemsWithTwoTypes](@parentId, @relationshipTypeId, @otherRelationshipTypeId) parent  
+  join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)  
+ where  
+  child.PortalId = @portalId  
+ and IsCurrentVersion = 1  
+ and child.ItemTypeId = @itemTypeId  
+ order by  
+  parent.ParentItemId, child.ItemId  
+end  
+else  
+begin  
+ select   
+  parent.ParentItemId,child.*, parent.RelationshipTypeId  
+ from   
+  [{objectQualifier}Publish_fnGetChildItemsWithTwoTypes](@parentId, @relationshipTypeId, @otherRelationshipTypeId) parent  
+  join [{objectQualifier}Publish_vwItemVersions] child on (parent.ChildItemId = child.ItemId)  
+ where  
+  child.PortalId = @portalId  
+ and child.ItemTypeId = @itemTypeId  
+ order by  
+  parent.ParentItemId, child.ItemId  
+end  
+  GO
+  
+  
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]  
+ @itemId int,  
+ @approvalStatusId int  
+AS  
+BEGIN  
+ SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName  
+ FROM [{objectQualifier}Publish_vwComments] c  
+ WHERE c.ItemId = @itemId  
+  AND c.approvalStatusId = @approvalStatusId  
+ ORDER BY c.lastUpdated
+END  
+GO
+
+if not exists (select * from dbo.syscolumns where name = 'EmailAddress' and id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]'))
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment ADD
+	EmailAddress nvarchar(256) NULL
+GO
+
+if exists(select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') and OBJECTPROPERTY(id,N'IsView') = 1)
+	DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
+select
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.emailAddress, c.ratingId, r.rating
+from
+	[{objectQualifier}Publish_Comment] c
+	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
+	LEFT JOIN [{objectQualifier}Publish_Rating] r on (c.ratingId = r.ratingId)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]  
+ @itemId int,  
+ @approvalStatusId int  
+AS  
+BEGIN  
+ SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName, c.emailAddress  
+ FROM [{objectQualifier}Publish_vwComments] c  
+ WHERE c.ItemId = @itemId  
+  AND c.approvalStatusId = @approvalStatusId  
+ ORDER BY c.lastUpdated
+END  
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComment]
+	@commentId int
+AS
+BEGIN
+	SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName, c.emailAddress
+	FROM [{objectQualifier}Publish_vwComments] c
+	WHERE c.commentId = @commentId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText text,
+	@approvalStatusId int,
+	@ratingId int,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256)
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId, @firstName, @lastName, @emailAddress)
+
+	SELECT @@IDENTITY
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateComment]
+	@commentId int,
+	@commentText text,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@approvalStatusId int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Comment]
+	SET commentText = @commentText,
+		approvalStatusId = @approvalStatusId,
+		lastUpdated = getdate(),
+		firstName = @firstName,
+		lastName = @lastName,
+		emailAddress = @emailAddress
+	WHERE commentId = @commentId
+END
+GO
+
+
+

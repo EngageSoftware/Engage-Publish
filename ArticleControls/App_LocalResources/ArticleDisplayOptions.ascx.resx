@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblArticleList.Help" xml:space="preserve">
+    <value>You can select a default article for display with this dropdown list.</value>
+  </data>
+  <data name="lblArticleList.Text" xml:space="preserve">
+    <value>Choose Article:</value>
+  </data>
+  <data name="ChooseAnArticle.Text" xml:space="preserve">
+    <value>[Choose an article]</value>
+  </data>
+  <data name="lblDisplayRatings.Text" xml:space="preserve">
+    <value>Rating display mode: </value>
+  </data>
+  <data name="lblCommentSubmit.Text" xml:space="preserve">
+    <value>Allow readers to submit comments: </value>
+  </data>
+  <data name="lblDisplayRatings.Help" xml:space="preserve">
+    <value>Choose whether to completely disable ratings for this module, to show the current average rating for the selected article, or to display the average and also allow users to submit their own ratings.</value>
+  </data>
+  <data name="lblCommentSubmit.Help" xml:space="preserve">
+    <value>If checked, users will no longer be able to submit comments through this display.</value>
+  </data>
+  <data name="lblCommentDisplay.Help" xml:space="preserve">
+    <value>If checked, comments will no longer display alongside the article.</value>
+  </data>
+  <data name="lblCommentDisplay.Text" xml:space="preserve">
+    <value>Display reader comments: </value>
+  </data>
+  <data name="lblDisplayComments.Help" xml:space="preserve">
+    <value>Choose whether to display only a certain number of comments at a time, or all comments.</value>
+  </data>
+  <data name="lblDisplayComments.Text" xml:space="preserve">
+    <value>Comment display mode:</value>
+  </data>
+  <data name="cvCommentPaging.Text" xml:space="preserve">
+    <value>Value must be an Integer</value>
+  </data>
+  <data name="lblCommentPaging.Text" xml:space="preserve">
+    <value>Comments per page</value>
+  </data>
+  <data name="lblCommentPaging.Help" xml:space="preserve">
+    <value>The number of comments to be displayed per page.</value>
+  </data>
+  <data name="Disable.Text" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Enable.Text" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Paging.Text" xml:space="preserve">
+    <value>One At A Time</value>
+  </data>
+  <data name="ReadOnly.Text" xml:space="preserve">
+    <value>Read Only</value>
+  </data>
+  <data name="ShowAll.Text" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="lblEnableComments.Text" xml:space="preserve">
+    <value>Comments are currently disabled on this site. Please adjust the site settings if you would like to allow users to submit and view comments in this module.</value>
+  </data>
+  <data name="lblEnableRatings.Text" xml:space="preserve">
+    <value>Ratings are currently disabled on this site.  Please adjust the site settings if you would like to allow users to submit and view ratings in this module.</value>
+  </data>
+  <data name="cvCommentPaging_Range.Text" xml:space="preserve">
+    <value>Value must be greater than zero</value>
+  </data>
+  <data name="lblCommentRandom.Help" xml:space="preserve">
+    <value>If checked, comments will be displayed one-at-a-time, in random order.  Choose "Paging" for the comment display mode if you would like users to be able to view other comments without reloading the whole page.</value>
+  </data>
+  <data name="lblCommentRandom.Text" xml:space="preserve">
+    <value>Randomly Display a Comment:</value>
+  </data>
+  <data name="Full.Text" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="Initial.Text" xml:space="preserve">
+    <value>Initial</value>
+  </data>
+  <data name="lblEmailAddressCollect.Help" xml:space="preserve">
+    <value>If checked, the comment submission box will include a place for the commenter to include their email address; otherwise the commenter will not be able to submit their email address with the comment.</value>
+  </data>
+  <data name="lblEmailAddressCollect.Text" xml:space="preserve">
+    <value>Collect Email Address: </value>
+  </data>
+  <data name="lblFirstNameCollect.Help" xml:space="preserve">
+    <value>Choose whether to ask for the full first name, only the first initial, or not to ask for the first name at all when a user submits a comment.</value>
+  </data>
+  <data name="lblFirstNameCollect.Text" xml:space="preserve">
+    <value>First Name Collection Option:</value>
+  </data>
+  <data name="lblLastNameCollect.Help" xml:space="preserve">
+    <value>Choose whether to ask for the full last name, only the last initial, or not to ask for the last name at all when a user submits a comment.</value>
+  </data>
+  <data name="lblLastNameCollect.Text" xml:space="preserve">
+    <value>Last Name Collection Option:</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="lblLastUpdatedFormat.Help" xml:space="preserve">
+    <value>Example: To display Jun 2007 enter MMM yyyy</value>
+  </data>
+  <data name="lblLastUpdatedFormat.Text" xml:space="preserve">
+    <value>Last Updated Formatting (ex:MMM yyyy)</value>
+  </data>
+  <data name="cvPhotoGalleryMaxCount.Text" xml:space="preserve">
+    <value>Maximum Number of Thumbnails must be a positive, integer value.  If you do not want to show thumbnails, uncheck the Display Thumbnails from Photo Gallery check box.  If you want to display all thumbnails, check the option to show all.</value>
+  </data>
+  <data name="lblDisplayPhotoGallery.Help" xml:space="preserve">
+    <value>You have the option to link a photo gallery to your article if it is installed on your site and allowed in Publish's site settings.  If a gallery is linked to the displayed article, thumbnails from that gallery will display beside the article.</value>
+  </data>
+  <data name="lblDisplayPhotoGallery.Text" xml:space="preserve">
+    <value>Display Thumbnails from Photo Gallery: </value>
+  </data>
+  <data name="lblEnablePhotoGallery.Text" xml:space="preserve">
+    <value>Photo Gallery Integration is currently disabled on this site.  Please adjust the site settings if you would like to allow thumbnails from photo galleries to be displayed alongside articles.</value>
+  </data>
+  <data name="lblPhotoGalleryMaxCount.Help" xml:space="preserve">
+    <value>If you are displaying thumbnails, you can choose how many of the thumbnails from the gallery to display.</value>
+  </data>
+  <data name="lblPhotoGalleryMaxCount.Text" xml:space="preserve">
+    <value>Maximum Number of Thumbnails to Display: </value>
+  </data>
+  <data name="MaxCount.Text" xml:space="preserve">
+    <value>Set a maximum number of thumbnails:</value>
+  </data>
+  <data name="rfvPhotoGalleryMaxCount.Text" xml:space="preserve">
+    <value>You must supply a maximum number of thumbnails, or check the option to show all.</value>
+  </data>
+  <data name="cvPhotoGalleryHoverThumbnailHeight.Text" xml:space="preserve">
+    <value>The Height of the Popup Thumbnail must be an integer value, or blank.</value>
+  </data>
+  <data name="cvPhotoGalleryHoverThumbnailWidth.Text" xml:space="preserve">
+    <value>The Width of the Popup Thumbnail must be an integer value, or blank.</value>
+  </data>
+  <data name="lblPhotoGalleryHoverThumbnailHeight.Help" xml:space="preserve">
+    <value>Set a height in pixels to force the popup thumbnails to conform to, if you want the popup to be smaller than the images in the gallery itself.  Leave this blank if you do not want to constrain the thumbnails' height.  We recommend leaving either the height or width blank so that images aren't distorted if they aren't the correct ratio.</value>
+  </data>
+  <data name="lblPhotoGalleryHoverThumbnailHeight.Text" xml:space="preserve">
+    <value>Height of Popup Thumbnails: </value>
+  </data>
+  <data name="lblPhotoGalleryHoverThumbnailWidth.Help" xml:space="preserve">
+    <value>Set a width in pixels to force the popup thumbnails to conform to, if you want the popup to be smaller than the images in the gallery itself.  Leave this blank if you do not want to constrain the thumbnails' width.  We recommend leaving either the height or width blank so that images aren't distorted if they aren't the correct ratio.</value>
+  </data>
+  <data name="lblPhotoGalleryHoverThumbnailWidth.Text" xml:space="preserve">
+    <value>Width of Popup Thumbnails: </value>
+  </data>
+  <data name="cvPhotoGalleryThumbnailHeight.Text" xml:space="preserve">
+    <value>The Height of the Gallery Thumbnail must be an integer value, or blank.</value>
+  </data>
+  <data name="cvPhotoGalleryThumbnailWidth.Text" xml:space="preserve">
+    <value>The Width of the Gallery Thumbnail must be an integer value, or blank.</value>
+  </data>
+  <data name="lblPhotoGalleryThumbnailHeight.Help" xml:space="preserve">
+    <value>Set a height in pixels for the thumbnails from the photo gallery associated with an article.  Leave this blank if you fo not want to constrain the thumbnails' height.  We recommend leaving either the height or width blank so that images aren't distorted.</value>
+  </data>
+  <data name="lblPhotoGalleryThumbnailHeight.Text" xml:space="preserve">
+    <value>Height of Gallery Thumbnails: </value>
+  </data>
+  <data name="lblPhotoGalleryThumbnailWidth.Help" xml:space="preserve">
+    <value>Set a width in pixels for the thumbnails from the photo gallery associated with an article.  Leave this blank if you do not want to constrain the thumbnails' width. We recommend leaving either the height or width blank so that images aren't distorted.</value>
+  </data>
+  <data name="lblPhotoGalleryThumbnailWidth.Text" xml:space="preserve">
+    <value>Width of Gallery Thumbnails: </value>
+  </data>
+  <data name="lblUrlCollect.Help" xml:space="preserve">
+    <value>If checked, the comment submission box will include a place for the commenter to include their URL; otherwise the commenter will not be able to submit their URL with the comment.</value>
+  </data>
+  <data name="lblUrlCollect.Text" xml:space="preserve">
+    <value>Collect URL:</value>
+  </data>
+</root>
