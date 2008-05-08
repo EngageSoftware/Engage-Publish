@@ -678,7 +678,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, ModuleId   ");
+            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, ModuleId   ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwCategories ");
@@ -1036,7 +1036,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, ModuleId  ");
+            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, ModuleId  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwArticles ");
@@ -2588,7 +2588,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("And PortalId = @PortalId");
             
             return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql.ToString(),
-                Utility.CreateGuidParam("@ItemVersionIDentifier", guid),
+                Utility.CreateGuidParam("@ItemVersionIdentifier", guid),
                 Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
