@@ -79,19 +79,19 @@ namespace Engage.Dnn.Publish
             this.tags = new ItemTagCollection();
 		}
 
-       
 
-		internal ItemRelationshipCollection Relationships
+
+        public ItemRelationshipCollection Relationships
 		{
 			get {return this.relationships;}
 		}
 
-        internal ItemTagCollection Tags
+        public ItemTagCollection Tags
         {
             get { return this.tags; }
         }
 
-        internal ItemVersionSettingCollection VersionSettings
+        public ItemVersionSettingCollection VersionSettings
         {
             get { return this.versionSettings; }
         }
@@ -265,9 +265,11 @@ namespace Engage.Dnn.Publish
 					}
 				}
 			}
-
-            //TODO: this problem should be moved into the check for emails being enabled
-            SendStatusUpdateEmail();
+            if (ModuleBase.ApprovalEmailsEnabled(PortalId))
+            {
+                //TODO: this probably should be moved into the check for emails being enabled
+                SendStatusUpdateEmail();
+            }
 			UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.authorUserId, this.approvalComments);
 		}
 

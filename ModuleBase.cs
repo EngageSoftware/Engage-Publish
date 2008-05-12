@@ -119,7 +119,9 @@ namespace Engage.Dnn.Publish
         public static bool ApprovalEmailsEnabled(int portalId)
         {
             string s = HostSettings.GetHostSetting(Utility.PublishEmail + portalId);
-            return Utility.HasValue(s);
+            if(Utility.HasValue(s))
+                return Convert.ToBoolean(s);
+            return false;
         }
 
 

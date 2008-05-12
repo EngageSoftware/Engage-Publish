@@ -176,7 +176,7 @@ namespace Engage.Dnn.Publish.Util
     /// <summary>
     /// Summary description for Utility.
     /// </summary>
-    internal static class Utility
+    public static class Utility
     {
         public const string MediaFileTypes = "jpg,jpeg,jpe,gif,bmp,png,swf";
         public const string DnnFriendlyModuleName = "Engage: Publish";

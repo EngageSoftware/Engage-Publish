@@ -17,7 +17,7 @@ namespace Engage.Dnn.Publish
 	/// <summary>
 	/// Summary description for ItemRelationshipCollection.
 	/// </summary>
-	internal class ItemRelationshipCollection : CollectionBase
+	public class ItemRelationshipCollection : CollectionBase
 	{
 		public void Add(ItemRelationship r)
 		{

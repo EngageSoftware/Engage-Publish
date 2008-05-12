@@ -16,7 +16,7 @@ namespace Engage.Dnn.Publish
 	/// <summary>
     /// Summary description for ItemTagCollection.
 	/// </summary>
-	internal class ItemTagCollection : CollectionBase
+    public class ItemTagCollection : CollectionBase
 	{
 		public void Add(ItemTag r)
 		{
