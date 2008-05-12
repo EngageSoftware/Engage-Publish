@@ -177,7 +177,9 @@ GO
 
 CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
 select
-	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.emailAddress, c.ratingId, r.rating
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId
+	, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.emailAddress, c.ratingId, r.rating
+	, c.url
 from
 	[{objectQualifier}Publish_Comment] c
 	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
@@ -380,3 +382,5 @@ as
 	join {databaseOwner}[{objectQualifier}Publish_vwItems] child on (child.ItemVersionId = ir.ChildItemVersionId)
 
 GO
+
+
