@@ -1,3 +1,8 @@
+.Publish_ItemDisplay
+{
+	clear:both;
+}
+
 /* form elements */
 .input_dropdown, .input_textbox
 {
@@ -1304,3 +1309,4 @@ a.mouseOverImage:hover
 {	
 	padding:3px;
 }
+

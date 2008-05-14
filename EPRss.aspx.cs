@@ -221,7 +221,9 @@ namespace Engage.Dnn.Publish
                     ,description = String.Empty
                     ,childItemId = String.Empty
                     ,thumbnail = String.Empty
-                    ,itemVersionId = String.Empty;
+                    ,itemVersionId = String.Empty
+                    , guid = String.Empty;
+
                 DateTime lastUpdated = DateTime.MinValue;
     
                 if (DisplayType == null || string.Equals(DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase))
@@ -230,6 +232,7 @@ namespace Engage.Dnn.Publish
                     description = r["ChildDescription"].ToString();
                     childItemId = r["ChilditemId"].ToString();
                     itemVersionId = r["itemVersionID"].ToString();
+                    guid = r["itemVersionIdentifier"].ToString();
                     lastUpdated = (DateTime)r["LastUpdated"];
                     thumbnail = r["Thumbnail"].ToString();
                 }
@@ -239,6 +242,7 @@ namespace Engage.Dnn.Publish
                     description = r["Description"].ToString();
                     childItemId = r["itemId"].ToString();
                     itemVersionId = r["itemVersionID"].ToString();
+                    guid = r["itemVersionIdentifier"].ToString();
                     lastUpdated = (DateTime)r["LastUpdated"];
                     thumbnail = r["Thumbnail"].ToString();
                 }
@@ -263,10 +267,11 @@ namespace Engage.Dnn.Publish
 				//TODO: get creator
 				//wr.WriteElementString("dc:creator", r["DisplayName"].ToString());
 
-				wr.WriteElementString("pubDate", lastUpdated.ToString("r", CultureInfo.InvariantCulture));
+                    wr.WriteElementString("pubDate", lastUpdated.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
                 wr.WriteStartElement("guid");
                 wr.WriteAttributeString("isPermaLink", "false");
-                wr.WriteString(itemVersionId);
+                wr.WriteString(guid);
+                //wr.WriteString(itemVersionId);
                 wr.WriteEndElement();
 
                 wr.WriteEndElement();		

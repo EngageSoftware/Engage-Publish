@@ -2034,7 +2034,7 @@ namespace Engage.Dnn.Publish.Data
             {
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
-            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, il.Thumbnail, il.CategoryName, child.itemVersionId ");
+            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "from {0}vwItemListing il ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems child on (il.ChilditemId = child.itemId) ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems parent on (il.itemId = parent.itemId) ", NamePrefix);
