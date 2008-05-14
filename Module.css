@@ -1044,7 +1044,7 @@ a.mouseOverImage:hover
 	clear:both;
 	background-color:#f0efef; /* the background color for the listing */
 	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */
-	padding:3px; /*this adds some spacing around the inside of the div */
+	padding:0px; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
 	display:inline-block; /*this enables the div to wrap around items in IE7 */
 	border-bottom:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
 	border-top:solid 1px #b0b0b0; /*adds a border to the top of each listing */
