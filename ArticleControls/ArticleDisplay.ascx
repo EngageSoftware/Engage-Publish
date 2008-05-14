@@ -2,6 +2,12 @@
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
 <div id="articleDisplay" class="Normal">
+
+	<div id="divArticleTitle" class="Head" runat="server" visible="false">
+		<div id="publishTitle"><asp:label ID="lblArticleTitle" Runat="server"></asp:label></div>
+	</div>
+
+
     <div id="divLastUpdated" class="divLastUpdated" runat="server" visible="false" align="right">
 		<asp:label ID="lblLastUpdated" Runat="server"></asp:label>
 	</div>
@@ -49,9 +55,6 @@
         </asp:Repeater>
     </div>
 	
-	<div id="divArticleTitle" class="Head" runat="server" visible="false">
-		<div id="publishTitle"><asp:label ID="lblArticleTitle" Runat="server"></asp:label></div>
-	</div>
 	<div id="divRelatedArticle" runat="server" class="divRelatedArticle" visible="false">
 	    <div id="divRelatedArticleHeader"></div>
 	    <asp:PlaceHolder ID="phRelatedArticle" Runat="server"></asp:PlaceHolder>
