@@ -177,4 +177,7 @@
   <data name="Versions.Text" xml:space="preserve">
     <value>versions</value>
   </data>
+  <data name="TopLevelCategory.Text" xml:space="preserve">
+    <value>top level category</value>
+  </data>
 </root>

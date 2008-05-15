@@ -258,4 +258,7 @@
   <data name="lblSortHeading.Text" xml:space="preserve">
     <value>Sort Options</value>
   </data>
+  <data name="StartDateSort.Text" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
 </root>

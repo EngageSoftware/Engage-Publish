@@ -420,6 +420,10 @@ namespace Engage.Dnn.Publish.Controls
                 case (CustomDisplaySettings.LastUpdatedSort):
                     column = "LastUpdated";
                     break;
+                case (CustomDisplaySettings.StartDateSort):
+                    column = "StartDate";
+                    break;
+
                 case (CustomDisplaySettings.MostPopularSort):
                     column = "TimesViewed";
                     break;
@@ -452,6 +456,9 @@ namespace Engage.Dnn.Publish.Controls
                     break;
                 case (CustomDisplaySettings.MostPopularSort):
                     column = "TimesViewed";
+                    break;
+                case (CustomDisplaySettings.StartDateSort):
+                    column = "StartDate";
                     break;
                 //case (CustomDisplaySettings.TitleSort):
                 default:

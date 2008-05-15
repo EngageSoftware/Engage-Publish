@@ -103,6 +103,7 @@ namespace Engage.Dnn.Publish.Controls
                 ddlSortOption.Items.Add(new ListItem(Localization.GetString("TitleSort", LocalResourceFile), CustomDisplaySettings.TitleSort));
                 ddlSortOption.Items.Add(new ListItem(Localization.GetString("DateSort", LocalResourceFile), CustomDisplaySettings.DateSort));
                 ddlSortOption.Items.Add(new ListItem(Localization.GetString("LastUpdatedSort", LocalResourceFile), CustomDisplaySettings.LastUpdatedSort));
+                ddlSortOption.Items.Add(new ListItem(Localization.GetString("StartDateSort", LocalResourceFile), CustomDisplaySettings.StartDateSort));
                 if (ModuleBase.IsViewTrackingEnabledForPortal(PortalId) && ddlItemTypeList.SelectedValue == ItemType.Article.GetId().ToString(CultureInfo.InvariantCulture))
                 {
                     //only show this if the Portal is configured to track views and the item type is Article. hk

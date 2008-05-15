@@ -16,6 +16,7 @@ namespace Engage.Dnn.Publish.Controls
         public const string TitleSort = "Title";
         public const string DateSort = "Date Created";
         public const string LastUpdatedSort = "Last Updated";
+        public const string StartDateSort = "Start Date Created";
         public const string MostPopularSort = "Most Popular";
 
         readonly IDictionary settings;
