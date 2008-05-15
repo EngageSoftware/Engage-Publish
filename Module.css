@@ -1040,7 +1040,7 @@ a.mouseOverImage:hover
 .categoryItemList
 {
 	display:table;
-	width:99%;
+	width:100%;
 	clear:both;
 	background-color:#f0efef; /* the background color for the listing */
 	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */
