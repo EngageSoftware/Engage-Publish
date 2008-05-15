@@ -50,7 +50,7 @@
     <Reference Include="DotNetNuke, Version=4.5.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
