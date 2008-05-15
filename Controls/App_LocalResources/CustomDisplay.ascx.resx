@@ -136,6 +136,6 @@
     <value>Please select an Item Type for this module to display</value>
   </data>
   <data name="rssImage.Text" xml:space="preserve">
-    <value>/images/xml.gif</value>
+    <value>/images/rss.gif</value>
   </data>
 </root>

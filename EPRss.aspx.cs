@@ -18,6 +18,9 @@ using System.Web;
 using System.Xml;
 using DotNetNuke.Framework;
 using Engage.Dnn.Publish.Data;
+using System.Collections;
+using DotNetNuke.UI.Utilities;
+using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
@@ -32,6 +35,25 @@ namespace Engage.Dnn.Publish
 			//
 			InitializeComponent();
 			base.OnInit(e);
+
+            
+            //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
+            if (AllowTags)
+            {
+                object t = Request.QueryString["Tags"];
+                if (t != null)
+                {
+                    qsTags = HttpUtility.UrlDecode(t.ToString());
+                    char[] seperator = { '-' };
+                    tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
+                    foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))
+                    {
+                        //create a list of tagids to query the database
+                        tagQuery.Add(tg.TagId);
+                    }
+                }
+            }
+
 		}
 		
 		/// <summary>
@@ -46,6 +68,15 @@ namespace Engage.Dnn.Publish
 		
 		#endregion
 
+        public bool AllowTags
+        {
+            get
+            {
+                return ModuleBase.AllowTagsForPortal(PortalId);
+            }
+        }
+
+
 		public static string ApplicationUrl
 		{
 			get
@@ -53,6 +84,10 @@ namespace Engage.Dnn.Publish
 				return HttpContext.Current.Request.ApplicationPath.ToString() == "/" ? "" : HttpContext.Current.Request.ApplicationPath.ToString();  
 			}		
 		}
+
+        private string qsTags;
+        private ArrayList tagQuery;
+
 
 		public int ItemId
 		{
@@ -186,6 +221,7 @@ namespace Engage.Dnn.Publish
 			wr.WriteElementString("description", "RSS Feed for " + ps.PortalName);
 			wr.WriteElementString("ttl","120");
 
+            //TODO: look into options for how to display the "Title" of the RSS feed
 			DataTable dt = new DataTable();
             dt.Locale = CultureInfo.InvariantCulture;
             if (DisplayType == "ItemListing" || DisplayType == null)
@@ -198,60 +234,79 @@ namespace Engage.Dnn.Publish
                 {
                     dt = DataProvider.Instance().GetMostRecentByCategoryId(ItemId, ItemTypeId, NumberOfItems, PortalId);
                 }
+
+
+
             }
             else if (DisplayType == "CategoryFeature")
             {
                 DataSet ds = DataProvider.Instance().GetParentItems(ItemId, PortalId, RelationshipTypeId);
                 dt = ds.Tables[0];
             }
-
-			DataView dv = dt.DefaultView;
-
-			for (int i = 0; i < dv.Count; i++)
-			{
-				//DataRow r = dt.Rows[i];
-				DataRow r = dv[i].Row;
-				wr.WriteStartElement("item");
-
-//				wr.WriteElementString("slash:comments", objArticle.CommentCount.ToString());
-//                wr.WriteElementString("wfw:commentRss", "http://" & Request.Url.Host & Me.ResolveUrl("RssComments.aspx?TabID=" & m_tabID & "&ModuleID=" & m_moduleID & "&ArticleID=" & objArticle.ArticleID.ToString()).Replace(" ", "%20"));
-//                wr.WriteElementString("trackback:ping", "http://" & Request.Url.Host & Me.ResolveUrl("Tracking/Trackback.aspx?ArticleID=" & objArticle.ArticleID.ToString() & "&PortalID=" & _portalSettings.PortalId.ToString() & "&TabID=" & _portalSettings.ActiveTab.TabID.ToString()).Replace(" ", "%20"));
-
-                string title = String.Empty
-                    ,description = String.Empty
-                    ,childItemId = String.Empty
-                    ,thumbnail = String.Empty
-                    ,itemVersionId = String.Empty
-                    , guid = String.Empty;
-
-                DateTime lastUpdated = DateTime.MinValue;
-    
-                if (DisplayType == null || string.Equals(DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase))
+            else if (DisplayType == "TagFeed")
+            {
+                if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
-                    title = r["ChildName"].ToString();
-                    description = r["ChildDescription"].ToString();
-                    childItemId = r["ChilditemId"].ToString();
-                    itemVersionId = r["itemVersionID"].ToString();
-                    guid = r["itemVersionIdentifier"].ToString();
-                    lastUpdated = (DateTime)r["LastUpdated"];
-                    thumbnail = r["Thumbnail"].ToString();
+                    string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString() + ItemTypeId.ToString(CultureInfo.InvariantCulture) + qsTags; // +"PageId";
+                    dt = DataCache.GetCache(tagCacheKey) as DataTable;
+                    if (dt == null)
+                    {
+                        dt = Tag.GetItemsFromTags(PortalId, tagQuery);
+                        //TODO: should we set a 5 minute cache on RSS? 
+                        DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(5));
+                        Utility.AddCacheKey(tagCacheKey, PortalId);
+                    }
                 }
-                else if (string.Equals(DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
-                {
-                    title = r["Name"].ToString();
-                    description = r["Description"].ToString();
-                    childItemId = r["itemId"].ToString();
-                    itemVersionId = r["itemVersionID"].ToString();
-                    guid = r["itemVersionIdentifier"].ToString();
-                    lastUpdated = (DateTime)r["LastUpdated"];
-                    thumbnail = r["Thumbnail"].ToString();
-                }
+            }
+            if (dt != null)
+            {
+                DataView dv = dt.DefaultView;
 
-                if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute))
+                for (int i = 0; i < dv.Count; i++)
                 {
-                    Uri thumnailLink = new Uri(Request.Url, ps.HomeDirectory + thumbnail);
-                    thumbnail = thumnailLink.ToString();
-                }
+                    //DataRow r = dt.Rows[i];
+                    DataRow r = dv[i].Row;
+                    wr.WriteStartElement("item");
+
+                    //				wr.WriteElementString("slash:comments", objArticle.CommentCount.ToString());
+                    //                wr.WriteElementString("wfw:commentRss", "http://" & Request.Url.Host & Me.ResolveUrl("RssComments.aspx?TabID=" & m_tabID & "&ModuleID=" & m_moduleID & "&ArticleID=" & objArticle.ArticleID.ToString()).Replace(" ", "%20"));
+                    //                wr.WriteElementString("trackback:ping", "http://" & Request.Url.Host & Me.ResolveUrl("Tracking/Trackback.aspx?ArticleID=" & objArticle.ArticleID.ToString() & "&PortalID=" & _portalSettings.PortalId.ToString() & "&TabID=" & _portalSettings.ActiveTab.TabID.ToString()).Replace(" ", "%20"));
+
+                    string title = String.Empty
+                        , description = String.Empty
+                        , childItemId = String.Empty
+                        , thumbnail = String.Empty
+                        , itemVersionId = String.Empty
+                        , guid = String.Empty;
+
+                    DateTime lastUpdated = DateTime.MinValue;
+
+                    if (DisplayType == null || string.Equals(DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase) || string.Equals(DisplayType, "TagFeed", StringComparison.OrdinalIgnoreCase))
+                    {
+                        title = r["ChildName"].ToString();
+                        description = r["ChildDescription"].ToString();
+                        childItemId = r["ChilditemId"].ToString();
+                        itemVersionId = r["itemVersionID"].ToString();
+                        guid = r["itemVersionIdentifier"].ToString();
+                        lastUpdated = (DateTime)r["LastUpdated"];
+                        thumbnail = r["Thumbnail"].ToString();
+                    }
+                    else if (string.Equals(DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
+                    {
+                        title = r["Name"].ToString();
+                        description = r["Description"].ToString();
+                        childItemId = r["itemId"].ToString();
+                        itemVersionId = r["itemVersionID"].ToString();
+                        guid = r["itemVersionIdentifier"].ToString();
+                        lastUpdated = (DateTime)r["LastUpdated"];
+                        thumbnail = r["Thumbnail"].ToString();
+                    }
+
+                    if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute))
+                    {
+                        Uri thumnailLink = new Uri(Request.Url, ps.HomeDirectory + thumbnail);
+                        thumbnail = thumnailLink.ToString();
+                    }
 
                     wr.WriteElementString("title", title);
 
@@ -264,19 +319,20 @@ namespace Engage.Dnn.Publish
                     wr.WriteElementString("description", Util.Utility.StripTags(Server.HtmlDecode(description)));
                     wr.WriteElementString("thumbnail", thumbnail);
 
-				//TODO: get creator
-				//wr.WriteElementString("dc:creator", r["DisplayName"].ToString());
+                    //TODO: get creator
+                    //wr.WriteElementString("dc:creator", r["DisplayName"].ToString());
 
                     wr.WriteElementString("pubDate", lastUpdated.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
-                wr.WriteStartElement("guid");
-                wr.WriteAttributeString("isPermaLink", "false");
-                wr.WriteString(guid);
-                //wr.WriteString(itemVersionId);
-                wr.WriteEndElement();
+                    wr.WriteStartElement("guid");
+                    wr.WriteAttributeString("isPermaLink", "false");
+                    wr.WriteString(guid);
+                    //wr.WriteString(itemVersionId);
+                    wr.WriteEndElement();
 
-                wr.WriteEndElement();		
-				
-			}
+                    wr.WriteEndElement();
+
+                }
+            }
 
 	        wr.WriteEndElement();
             wr.WriteEndElement();

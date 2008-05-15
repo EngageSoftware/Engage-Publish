@@ -133,9 +133,17 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.Attributes.Add("type", "application/rss+xml");
                 lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
 
-                //TODO: configure the # of items for an RSS feed
-                lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
 
+
+                if (AllowTags && tagQuery != null && tagQuery.Count > 0)
+                {
+                    lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
+                }
+                else
+                {
+                    //TODO: configure the # of items for an RSS feed
+                    lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
+                }
                 SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
 
             }

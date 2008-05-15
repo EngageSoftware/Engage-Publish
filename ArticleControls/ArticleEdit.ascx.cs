@@ -685,6 +685,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         Item.DeleteItem(ItemId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
+
+                        Util.Utility.ClearPublishCache(PortalId);
                     }
                     else
                     {

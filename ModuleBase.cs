@@ -1236,6 +1236,23 @@ namespace Engage.Dnn.Publish
             return url.ToString();
         }
 
+        public static string GetRssLinkUrl(int portalId, string displayType, string tags)
+        {
+            StringBuilder url = new StringBuilder(128);
+
+            url.Append(ApplicationUrl);
+            url.Append(DesktopModuleFolderName);
+            url.Append("eprss.aspx?");
+            url.Append("portalid=");
+            url.Append(portalId);
+            url.Append("&DisplayType=");
+            url.Append(displayType);
+            url.Append("&Tags=");
+            url.Append(tags);
+
+            return url.ToString();
+        }
+
         protected string GetEditUrl(string itemId)
         {
             return EditUrl("itemId", itemId, "Edit");

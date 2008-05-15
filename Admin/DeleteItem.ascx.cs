@@ -115,6 +115,7 @@ namespace Engage.Dnn.Publish.Admin
             if (success)
             {
                 lblResults.Text = Localization.GetString("Success", LocalResourceFile);
+                Util.Utility.ClearPublishCache(PortalId);
             }
             else
             {
