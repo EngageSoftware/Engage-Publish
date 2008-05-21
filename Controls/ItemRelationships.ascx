@@ -19,7 +19,7 @@
         <tr valign="top">
             <td width="204" align="center">
                 <dnn:label class="title" ID="lblAvailableCategories" ResourceKey="lblAvailableCategories" runat="server"/>
-                <asp:ListBox ID="lstItems" Width="250px" Rows="6" runat="server" SelectionMode="Multiple" />
+                <asp:ListBox ID="lstItems" CssClass="Publish_ListItems Available" Rows="6" runat="server" SelectionMode="Multiple" />
             </td>
             <td width="19" colspan="1">
                 <table cellspacing="1" cellpadding="1" width="24" align="right" border="0" style="margin-top:12px">
@@ -32,7 +32,7 @@
             </td>
             <td align="center" width="212">
                 <dnn:label class="title" ID="lblSelectedCategories" runat="server" Width="146px"/>
-                <asp:ListBox ID="lstSelectedItems" Width="250px" Rows="6" runat="server" SelectionMode="Multiple"/>
+                <asp:ListBox ID="lstSelectedItems" CssClass="Publish_ListItems Selected" Rows="6" runat="server" SelectionMode="Multiple"/>
             </td>
             <td >
                 <table cellspacing="1" cellpadding="1" width="24" align="right" border="0" style="margin-top:12px">
