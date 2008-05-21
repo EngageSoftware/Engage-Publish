@@ -236,6 +236,7 @@ namespace Engage.Dnn.Publish.Controls
 					if (this.AvailableSelectionMode == ListSelectionMode.Single)
 					{
 						lstSelectedItems.Rows = 1;
+                        lstSelectedItems.CssClass += " Publish_ParentCategory";
 					}
 				}
 			} 
