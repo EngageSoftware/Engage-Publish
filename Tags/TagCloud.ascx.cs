@@ -66,7 +66,7 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (popularTagsTotal > 0)
             {
-                string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString() + qsTags.ToString() + popularTagCount.ToString(); // +"PageId";
+                string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
                 DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
 
                 phTagCloud.Controls.Clear();

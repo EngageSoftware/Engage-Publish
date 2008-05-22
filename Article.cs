@@ -204,7 +204,7 @@ namespace Engage.Dnn.Publish
        
         public void AddRating(int rating, int? userId)
         {
-            Rating.AddRating(this.ItemVersionId, userId, rating);
+            UserFeedback.Rating.AddRating(this.ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
         }
 
         public string GetPage(int pageId)

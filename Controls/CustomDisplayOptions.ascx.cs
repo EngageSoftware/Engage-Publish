@@ -71,7 +71,7 @@ namespace Engage.Dnn.Publish.Controls
                 ItemRelationship.DisplayCategoryHierarchy(ddlCategory, -1, PortalId, false);
                 if (ddlItemTypeList.SelectedValue != ItemType.Article.GetId().ToString(CultureInfo.InvariantCulture) && ddlCategory.Items.FindByValue("-1") == null)
                 {
-                    ddlCategory.Items.Insert(0, new ListItem(Localization.GetString("NoCategory", LocalResourceFile), TopLevelCategoryItemType.Category.GetId().ToString()));
+                    ddlCategory.Items.Insert(0, new ListItem(Localization.GetString("NoCategory", LocalResourceFile), TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
                     //ddlItemTypeList.Items.Insert(1, new ListItem(Localization.GetString("CategoriesAndArticles", LocalResourceFile), "-1"));
                 }
 
@@ -84,7 +84,7 @@ namespace Engage.Dnn.Publish.Controls
                     }
                 }
 
-                if (ddlCategory.SelectedValue == "-1" || ddlCategory.SelectedValue == TopLevelCategoryItemType.Category.GetId().ToString())
+                if (ddlCategory.SelectedValue == "-1" || ddlCategory.SelectedValue == TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture))
                 {
                     lblShowParent.Visible = false;
                     chkShowParent.Visible = false;

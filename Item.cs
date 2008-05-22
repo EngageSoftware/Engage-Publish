@@ -772,7 +772,7 @@ namespace Engage.Dnn.Publish
                         strUrl = Globals.NavigateURL(this.displayTabId);
                         break;
                     case TabType.Tab:
-                        strUrl = Globals.NavigateURL(Convert.ToInt32(url));
+                        strUrl = Globals.NavigateURL(Convert.ToInt32(url, CultureInfo.InvariantCulture));
                         break;
                     case TabType.File:
                         strUrl = Globals.LinkClick(url, this.displayTabId, Null.NullInteger);

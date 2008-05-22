@@ -9,23 +9,15 @@
 //DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections;
-using System.Data;
 using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.UserControls;
 using Engage.Dnn.Publish;
+using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 using Engage.Dnn.Publish.Controls;
 
@@ -34,7 +26,7 @@ namespace Engage.Dnn.Publish.Admin
 {
 	public partial class CommentEdit :  ModuleBase, IActionable
 	{
-        private Comment thisComment;
+        private UserFeedback.Comment thisComment;
         protected ItemApproval ias;
     	protected TextEditor teArticleText;
 		private const string approvalControlToLoad = "../controls/ItemApproval.ascx";
@@ -52,19 +44,18 @@ namespace Engage.Dnn.Publish.Admin
 		
         private void InitializeComponent()
 		{
-			this.cmdUpdate.Click += new System.EventHandler(this.cmdUpdate_Click);
-			this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
-			this.Load += new System.EventHandler(this.Page_Load);
+			this.cmdUpdate.Click += this.cmdUpdate_Click;
+			this.cmdCancel.Click += this.cmdCancel_Click;
+			this.Load += this.Page_Load;
 		}
 
 		private void LoadControls()
 		{
-            thisComment = Comment.GetComment(CommentId);	
+            thisComment = Comment.GetComment(CommentId, Data.DataProvider.ModuleQualifier);	
             this.cmdDelete.Visible = IsAdmin;
 
 			//load text editor entries
-            DotNetNuke.UI.UserControls.LabelControl l1;
-            l1 = (DotNetNuke.UI.UserControls.LabelControl)LoadControl("~/controls/LabelControl.ascx");
+		    LabelControl l1 = (DotNetNuke.UI.UserControls.LabelControl)LoadControl("~/controls/LabelControl.ascx");
             l1.ResourceKey = "CommentText";
 			this.phCommentText.Controls.Add(l1);
 			teArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
@@ -100,9 +91,9 @@ namespace Engage.Dnn.Publish.Admin
 					this.teArticleText.Text = thisComment.CommentText;
                     this.ias.ApprovalStatusId = thisComment.ApprovalStatusId;
 
-                    this.txtFirstName.MaxLength = Comment.NameSizeLimit;
-                    this.txtLastName.MaxLength = Comment.NameSizeLimit;
-                    this.txtEmailAddress.MaxLength = Comment.EmailAddressSizeLimit;
+                    this.txtFirstName.MaxLength = UserFeedback.Comment.NameSizeLimit;
+                    this.txtLastName.MaxLength = UserFeedback.Comment.NameSizeLimit;
+                    this.txtEmailAddress.MaxLength = UserFeedback.Comment.EmailAddressSizeLimit;
 				}
 			}
 			catch (Exception exc) 
@@ -135,7 +126,7 @@ namespace Engage.Dnn.Publish.Admin
                 thisComment.EmailAddress = txtEmailAddress.Text;
                 thisComment.ApprovalStatusId = ias.ApprovalStatusId;
 
-                thisComment.Save();
+                thisComment.Save(DataProvider.ModuleQualifier);
                 Utility.ClearPublishCache(PortalId);
                 this.txtMessage.Text = Localization.GetString("CommentEditted", LocalResourceFile);
                 ShowOnlyMessage();
@@ -150,7 +141,7 @@ namespace Engage.Dnn.Publish.Admin
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
-            thisComment.Delete();
+            thisComment.Delete(DataProvider.ModuleQualifier);
             this.txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
             this.txtMessage.Visible = true;
 
@@ -175,13 +166,11 @@ namespace Engage.Dnn.Publish.Admin
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return Actions;
+				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+				return actions;
 			}
 		}
-
-		
 
 		#endregion
 	}

@@ -1,8 +1,5 @@
 using System;
-using System.Data;
 using System.Globalization;
-using System.Web.Services;
-using System.Web.Script.Services;
 using CookComputing.XmlRpc;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
@@ -24,7 +21,7 @@ namespace Engage.Dnn.Publish.Services
 
     public class blogger : XmlRpcService
     {
-        private static int portalId = 0;
+        private static int portalId;// = 0;
         //TODO: fix portal id
         public static int PortalId
         {
@@ -58,10 +55,7 @@ namespace Engage.Dnn.Publish.Services
 
         public string LocalResourceFile
         {
-            get{
-                string fileRoot = "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.asmx";
-                return fileRoot;
-            }
+            get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.asmx"; }
         }
 
         [XmlRpcMethod("metaWeblog.newPost")]
@@ -90,7 +84,7 @@ namespace Engage.Dnn.Publish.Services
                     a.Relationships.Add(irel);
                     a.DisplayTabId = c.ChildDisplayTabId;
 
-                    SaveItemVersionSettings(a, c);
+                    SaveItemVersionSettings(a);
 
                     a.ApprovalStatusId = Util.ApprovalStatus.Approved.GetId();
 
@@ -102,25 +96,25 @@ namespace Engage.Dnn.Publish.Services
                         string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
                         string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(c.ChildDisplayTabId);
 
-                        Hashtable ht = PortalSettings.GetSiteSettings(PortalId); ;
+                        Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
 
                         //ping
                         Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
                     }
 
-                    return a.ItemId.ToString();
+                    return a.ItemId.ToString(CultureInfo.InvariantCulture);
 
                 }
                 return "-1";
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 //TODO: handle exception
                 return "-1";
             }
         }
 
-        private void SaveItemVersionSettings(Article av, Category c)
+        private static void SaveItemVersionSettings(Item av)
         {
 
             //Printer Friendly

@@ -19,6 +19,8 @@ namespace Engage.Dnn.Publish.Data
 {
     public abstract class DataProvider
     {
+        public const string ModuleQualifier = "Publish_";
+
         #region Shared/Static Methods
         // singleton reference to the instantiated object 
         //private static DataProvider provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
@@ -249,16 +251,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataTable GetMostRecent(int childTypeId, int maxItems, int portalId);
         public abstract DataTable GetMostRecentByCategoryId(int categoryId, int childTypeId, int maxItems, int portalId);
 
-        public abstract int AddRating(int itemVersionId, int? userId, int rating);
-        public abstract void DeleteRatings(int itemVersionId);
-        public abstract IDataReader GetRating(int itemId, int userId);
-        public abstract void UpdateRating(int itemId, int userId, int rating);
-        public abstract void UpdateRating(int ratingId, int rating);
-        public abstract int AddComment(int itemVersionId, int? userId, string commentText, int approvalStatusId, int? ratingId, string firstName, string lastName, string emailAddress, string url);
         public abstract IDataReader GetComments(int itemId, int approvalStatusId);
-        public abstract IDataReader GetComment(int commentId);
-        public abstract void UpdateComment(int commentId, string commentText, int approvalStatusId, string firstName, string lastName, string emailAddress, string url);
-        public abstract bool DeleteComment(int commentId);
 
         public abstract IDataReader GetSimpleGalleryAlbums(int moduleId);
         public abstract DataTable GetSimpleGalleryPhotos(int albumId, int? maxCount);
@@ -272,8 +265,6 @@ namespace Engage.Dnn.Publish.Data
         #region Publish Reports
         public abstract DataTable GetItemViewPaging(int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId);
         #endregion
-
-
 
         #region tags
 

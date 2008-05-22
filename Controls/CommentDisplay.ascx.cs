@@ -10,12 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI;
 using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Util;
 using DotNetNuke.UI.Utilities;
-using System.Globalization;
+using Engage.Dnn.Publish.Data;
+using Engage.Dnn.Publish.Util;
+using Engage.Dnn.UserFeedback;
 
 //TODO: add last updated date
 
@@ -178,13 +179,12 @@ namespace Engage.Dnn.Publish.Controls
 
         private void DisplayComment()
         {
-            List<Comment> comments;
             //get cache
             string cacheKey = Utility.CacheKeyPublishArticleComments + ItemId.ToString(CultureInfo.InvariantCulture);
-            comments = DataCache.GetCache(cacheKey) as List<Comment>;
+            List<UserFeedback.Comment> comments = DataCache.GetCache(cacheKey) as List<UserFeedback.Comment>;
             if (comments == null)
             {
-                comments = Comment.GetComments(ArticleId, ApprovalStatus.Approved.GetId());
+                comments = Comment.GetCommentsByItemId(ArticleId, ApprovalStatus.Approved.GetId());
                 if (comments != null)
                 {
                     DataCache.SetCache(cacheKey, comments, DateTime.Now.AddMinutes(CacheTime));
@@ -192,7 +192,7 @@ namespace Engage.Dnn.Publish.Controls
                 }
             }
             
-            if (comments.Count > 0)
+            if (comments != null && comments.Count > 0)
             {
                 lblNoComments.Visible = false;
                 divPager.Visible = CommentDisplayOption == CommentDisplayOption.Paging;
@@ -241,7 +241,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (DisplayRandomComment)
             {
-                dlCommentText.DataSource = Utility.GetRandomItem(Comment.GetComments(ArticleId, ApprovalStatus.Approved.GetId()));
+                dlCommentText.DataSource = Utility.GetRandomItem(Comment.GetCommentsByItemId(ArticleId, ApprovalStatus.Approved.GetId()));
             }
             else
             {

@@ -39,7 +39,6 @@ namespace Engage.Dnn.Publish.Data
         private readonly string providerPath;
         private readonly string objectQualifier;
         private readonly string databaseOwner;
-        private const string moduleQualifier = "Publish_";
 
         #endregion
 
@@ -99,7 +98,6 @@ namespace Engage.Dnn.Publish.Data
             get { return this.objectQualifier; }
         }
 
-
         public string DatabaseOwner
         {
             get { return this.databaseOwner; }
@@ -107,7 +105,7 @@ namespace Engage.Dnn.Publish.Data
 
         public string NamePrefix
         {
-            get { return this.databaseOwner + this.objectQualifier + moduleQualifier; }
+            get { return this.databaseOwner + this.objectQualifier + ModuleQualifier; }
         }
 
 
@@ -705,7 +703,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and Name = '");
             sql.Append(categoryName);
             sql.Append("'");
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString()));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
         }
 
 
@@ -809,7 +807,6 @@ namespace Engage.Dnn.Publish.Data
         {
             return SqlHelper.ExecuteDataset(ConnectionString, NamePrefix + "spGetAdminItemListing", Utility.CreateIntegerParam("@ParentItemId", parentItemId), Utility.CreateIntegerParam("@ItemTypeId", itemTypeId), Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId), Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId), Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId), Utility.CreateIntegerParam("@PortalId", portalId), Utility.CreateNvarcharParam("@OrderBy", orderBy, 100));
         }
-
 
         public override DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId)
         {
@@ -2060,45 +2057,9 @@ namespace Engage.Dnn.Publish.Data
             return dt;
         }
 
-        public override int AddRating(int itemVersionId, int? userId, int rating)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spAddRating", itemVersionId, userId, rating), CultureInfo.InvariantCulture);
-        }
-        public override void DeleteRatings(int itemVersionId)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spDeleteRatings", itemVersionId);
-        }
-        public override IDataReader GetRating(int itemId, int userId)
-        {
-            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetRatingByUser", itemId, userId);
-        }
-        public override void UpdateRating(int itemId, int userId, int rating)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spUpdateRatingByUser", itemId, userId, rating);
-        }
-        public override void UpdateRating(int ratingId, int rating)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spUpdateRating", ratingId, rating);
-        }
-        public override int AddComment(int itemVersionId, int? userId, string commentText, int approvalStatusId, int? ratingId, string firstName, string lastName, string emailAddress, string url)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spAddComment", itemVersionId, userId, commentText, approvalStatusId, ratingId, firstName, lastName, emailAddress, url), CultureInfo.InvariantCulture);
-        }
         public override IDataReader GetComments(int itemId, int approvalStatusId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetComments", itemId, approvalStatusId);
-        }
-        public override IDataReader GetComment(int commentId)
-        {
-            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetComment", commentId);
-        }
-        public override void UpdateComment(int commentId, string commentText, int approvalStatusId, string firstName, string lastName, string emailAddress, string url)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spUpdateComment", commentId, commentText, firstName, lastName, emailAddress, approvalStatusId, url);
-        }
-        public override bool DeleteComment(int commentId)
-        {
-            return SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spDeleteComment", commentId) > 0;
         }
 
         public override IDataReader GetSimpleGalleryAlbums(int moduleId)

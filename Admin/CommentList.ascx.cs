@@ -74,9 +74,9 @@ namespace Engage.Dnn.Publish.Admin
                     if (commentId != null && cb!=null && cb.Checked)
                     {
                         //approve
-                        Comment c = Comment.GetComment(Convert.ToInt32(commentId.Text, CultureInfo.CurrentCulture));
+                        UserFeedback.Comment c = UserFeedback.Comment.GetComment(Convert.ToInt32(commentId.Text, CultureInfo.CurrentCulture), DataProvider.ModuleQualifier);
                         c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
-                        c.Save();
+                        c.Save(DataProvider.ModuleQualifier);
                     }
                 }
 
@@ -107,9 +107,9 @@ namespace Engage.Dnn.Publish.Admin
                     if (lblCommentId != null && chkSelect != null && chkSelect.Checked)
                     {
                         //approve
-                        Comment c = Comment.GetComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.CurrentCulture));
+                        UserFeedback.Comment c = UserFeedback.Comment.GetComment(Convert.ToInt32(lblCommentId.Text, CultureInfo.CurrentCulture), DataProvider.ModuleQualifier);
                         c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
-                        c.Delete();
+                        c.Delete(DataProvider.ModuleQualifier);
                     }
                 }
 

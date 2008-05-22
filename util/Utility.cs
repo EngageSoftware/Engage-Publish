@@ -302,9 +302,8 @@ namespace Engage.Dnn.Publish.Util
 
         public static void AddCacheKey(string KeyName, int portalId)
         {
-            string cacheKey = Utility.PublishCacheKeys + portalId.ToString();
-            ArrayList al;
-            al = DataCache.GetCache(cacheKey) as ArrayList;
+            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+            ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
             if (al == null)
             {
                 al = new ArrayList();
@@ -316,15 +315,13 @@ namespace Engage.Dnn.Publish.Util
 
         public static void ClearPublishCache(int portalId)
         {
-            string cacheKey = Utility.PublishCacheKeys + portalId.ToString();
-            ArrayList al;
-            al = DataCache.GetCache(cacheKey) as ArrayList;
+            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+            ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
             if (al != null)
             {
                 foreach (string s in al)
                 {
                     DataCache.RemoveCache(s);
-
                 }
             }
             DataCache.RemoveCache(cacheKey);

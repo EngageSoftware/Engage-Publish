@@ -88,7 +88,7 @@
 	<asp:UpdatePanel ID="upnlRating" runat="server" UpdateMode="conditional" Visible="false">
 	    <ContentTemplate>
             <div id="divRating" class="divRatingBefore">
-                <asp:Label ID="lblRatingMessage" runat="server" resourcekey="lblRatingMessage" Visible="false"></asp:Label>
+                <asp:Label ID="lblRatingMessage" runat="server" resourcekey="lblRatingMessage"></asp:Label>
                 <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true"/>
             </div>
         </ContentTemplate>

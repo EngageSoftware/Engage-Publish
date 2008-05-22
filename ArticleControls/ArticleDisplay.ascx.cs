@@ -257,7 +257,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                             return false;
                         }
                     }
-                    else { o = true; }
+                    //else { o = true; }
 
                     ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked");
                     if (forumCommentSetting == null)
@@ -268,7 +268,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         forumCommentSetting.PropertyValue = false.ToString();
                     }                    
 
-                    return (IsPublishCommentType || (forumCommentSetting != null && !Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture)));
+                    return IsPublishCommentType || !Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
                 return false;
             }
@@ -399,7 +399,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (categoryForumSetting == null)
                 return null;
             Int32.TryParse(categoryForumSetting.PropertyValue, out categoryForumId);
-            return categoryForumSetting != null ? (int?)categoryForumId : null;
+            return categoryForumId;
         }
 
         private void LoadArticle()
@@ -485,12 +485,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    Comment.AddComment(VersionInfoObject.ItemVersionId, (UserId == -1 ? null : (int?)UserId),
+                    UserFeedback.Comment.AddComment(VersionInfoObject.ItemVersionId, (UserId == -1 ? null : (int?)UserId),
                         objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), ApprovalStatus.Waiting.GetId(),
                         null, objSecurity.InputFilter(txtFirstNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtLastNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtEmailAddressComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
-                        objSecurity.InputFilter(txtUrlComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting));
+                        objSecurity.InputFilter(txtUrlComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
+                        DataProvider.ModuleQualifier);
 
                     //TODO: see if comment notification is turned on. Notify the ItemVersion.Author?
                 }

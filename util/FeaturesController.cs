@@ -2,11 +2,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Xml;
 using System.Xml.XPath;
-
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Exceptions;
 using Engage.Dnn.Publish.Portability;
 
 namespace Engage.Dnn.Publish.Util
@@ -92,7 +90,5 @@ namespace Engage.Dnn.Publish.Util
         }
 
         #endregion
-
-     
     }
 }

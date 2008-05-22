@@ -12,12 +12,12 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Web;
+using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using Engage.Dnn.Publish.Util;
-using System.Web.UI;
 
 namespace Engage.Dnn.Publish
 {
@@ -584,7 +584,7 @@ namespace Engage.Dnn.Publish
             {
                 return int.Parse(s, CultureInfo.InvariantCulture);
             }
-            return Rating.DefaultMaximumRating;
+            return UserFeedback.Rating.DefaultMaximumRating;
         }
 
         public bool IsAdmin
