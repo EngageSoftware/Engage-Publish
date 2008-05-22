@@ -1,0 +1,36 @@
+﻿IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetRatingByUserForItemVersion]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetRatingByUserForItemVersion]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetRatingByUserForItemVersion]
+	@itemVersionId int, 
+	@userId int
+AS
+BEGIN
+	SELECT r.RatingId, r.Rating, r.UserId, i.ItemId, r.ItemVersionId, r.LastUpdated, r.CreatedDate
+	FROM [{objectQualifier}Publish_Rating] r
+	WHERE r.userId = @userId
+	 AND r.ItemVersionId = @itemVersionId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUserForItemVersion]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUserForItemVersion]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateRatingByUserForItemVersion]
+	@itemVersionId int, 
+	@userId int,
+	@rating int
+AS
+BEGIN
+	UPDATE [{objectQualifier}Publish_Rating]
+	SET Rating = @rating,
+		LastUpdated = getdate()
+	WHERE RatingId = (SELECT top 1 RatingId 
+						from [{objectQualifier}Publish_Rating] r 
+						where r.UserId = @userId
+						and r.ItemVersionId = @itemVersionId)
+END
+GO
+
+
+
