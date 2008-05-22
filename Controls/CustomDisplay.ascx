@@ -71,8 +71,8 @@
         </asp:repeater>
     </div>
     <asp:Panel ID="pnlPaging" runat="server" CssClass="Publish_CustomDisplayPaging">
-        <asp:HyperLink ID="lnkPrevious" runat="server" resourcekey="lnkPrevious" Visible="false"></asp:HyperLink>
-        <asp:HyperLink ID="lnkNext" runat="server" resourcekey="lnkNext" Visible="false"></asp:HyperLink>
+        <asp:HyperLink ID="lnkPrevious" runat="server" resourcekey="lnkPrevious" Visible="false"  CssClass="Publish_lnkPrevious"></asp:HyperLink>
+        <asp:HyperLink ID="lnkNext" runat="server" resourcekey="lnkNext" Visible="false" CssClass="Publish_lnkNext"></asp:HyperLink>
         
     </asp:Panel>
         
