@@ -216,6 +216,13 @@
     <Compile Include="ArticleControls\ArticleList.ascx.designer.cs">
       <DependentUpon>ArticleList.ascx</DependentUpon>
     </Compile>
+    <Compile Include="ArticleControls\AuthorToken.ascx.cs">
+      <DependentUpon>AuthorToken.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArticleControls\AuthorToken.ascx.designer.cs">
+      <DependentUpon>AuthorToken.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs" />
     <Compile Include="CategoryControls\CategoryDisplay.ascx.cs">
       <DependentUpon>CategoryDisplay.ascx</DependentUpon>
@@ -911,6 +918,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ArticleControls\AuthorToken.ascx" />
     <Content Include="bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Services\App_LocalResources\MetaWeblog.asmx.resx">
       <SubType>Designer</SubType>
