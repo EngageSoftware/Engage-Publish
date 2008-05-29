@@ -195,6 +195,7 @@
         <include name="**/licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/Engage.Dnn.UserFeedback.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -225,6 +226,7 @@
         <include name="**/licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/Engage.Dnn.UserFeedback.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -255,6 +257,7 @@
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/Engage.Dnn.UserFeedback.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -287,6 +290,7 @@
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/Engage.Dnn.UserFeedback.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>

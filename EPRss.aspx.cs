@@ -280,6 +280,7 @@ namespace Engage.Dnn.Publish
                         , guid = String.Empty;
 
                     DateTime lastUpdated = DateTime.MinValue;
+                    DateTime startDate = DateTime.MinValue;
 
                     if (DisplayType == null || string.Equals(DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase) || string.Equals(DisplayType, "TagFeed", StringComparison.OrdinalIgnoreCase))
                     {
@@ -289,6 +290,7 @@ namespace Engage.Dnn.Publish
                         itemVersionId = r["itemVersionID"].ToString();
                         guid = r["itemVersionIdentifier"].ToString();
                         lastUpdated = (DateTime)r["LastUpdated"];
+                        startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
                     }
                     else if (string.Equals(DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
@@ -299,6 +301,7 @@ namespace Engage.Dnn.Publish
                         itemVersionId = r["itemVersionID"].ToString();
                         guid = r["itemVersionIdentifier"].ToString();
                         lastUpdated = (DateTime)r["LastUpdated"];
+                        startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
                     }
 
@@ -322,7 +325,7 @@ namespace Engage.Dnn.Publish
                     //TODO: get creator
                     //wr.WriteElementString("dc:creator", r["DisplayName"].ToString());
 
-                    wr.WriteElementString("pubDate", lastUpdated.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
+                    wr.WriteElementString("pubDate", startDate.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
                     wr.WriteStartElement("guid");
                     wr.WriteAttributeString("isPermaLink", "false");
                     wr.WriteString(guid);

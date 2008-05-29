@@ -289,6 +289,12 @@
         <file>
           <name>CookComputing.XmlRpcV2.dll</name>
         </file>
+
+        <file>
+          <name>Engage.Dnn.UserFeedback.dll</name>
+        </file>
+
+        
       </files>
     </folder>
     <folder>
@@ -297,7 +303,7 @@
       <foldername>EngagePublish</foldername>
       <modulename>Engage: Publish Search Indexer</modulename>
       <description>The Search Indexer for the Engage: Publish module by Engage Software (www.engagesoftware.com). To use this module you should create a page that is visible to all users, but not shown in the menu. Install the Search Indexer as the ONLY module on this page. DNN will use this module in order to index your content, and search results will link through this page, though users will never land and stay on the page as they will be redirected to the appropriate page for an article or category.</description>
-      <version>05.01.04</version>
+      <version>05.01.05</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Search.SearchProvider</businesscontrollerclass>
       <dependencies>AjaxControlToolkit.PopupControlExtender</dependencies>
       <modules>

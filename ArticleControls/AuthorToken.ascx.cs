@@ -34,7 +34,8 @@ namespace Engage.Dnn.Publish.ArticleControls
 #endregion
         private void LoadAuthorInfo()
         {
-            UserInfo ui = UserController.GetUser(PortalId, VersionInfoObject.AuthorUserId);
+            UserController uc = new UserController();
+            UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
 
             //configure author link
             lblAuthorLink.NavigateUrl = ui.Profile.Website;
