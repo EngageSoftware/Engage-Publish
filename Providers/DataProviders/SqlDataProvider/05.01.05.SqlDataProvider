@@ -8,6 +8,8 @@ AS
 BEGIN
 	SELECT r.RatingId, r.Rating, r.UserId, i.ItemId, r.ItemVersionId, r.LastUpdated, r.CreatedDate
 	FROM [{objectQualifier}Publish_Rating] r
+	JOIN [{objectQualifier}Publish_vwItems] i on (i.itemVersionid = r.ItemVersionId)
+	
 	WHERE r.userId = @userId
 	 AND r.ItemVersionId = @itemVersionId
 END
