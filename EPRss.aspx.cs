@@ -258,6 +258,14 @@ namespace Engage.Dnn.Publish
             if (dt != null)
             {
                 DataView dv = dt.DefaultView;
+                dv.Table.Columns.Add("dateColumn", typeof(DateTime));
+                foreach (DataRowView dr in dv)
+                {
+                    dr["dateColumn"] = Convert.ToDateTime(dr["pubdate"]);
+                }
+
+                dv.Sort = " dateColumn desc ";
+
 
                 for (int i = 0; i < dv.Count; i++)
                 {
