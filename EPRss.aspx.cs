@@ -234,9 +234,6 @@ namespace Engage.Dnn.Publish
                 {
                     dt = DataProvider.Instance().GetMostRecentByCategoryId(ItemId, ItemTypeId, NumberOfItems, PortalId);
                 }
-
-
-
             }
             else if (DisplayType == "CategoryFeature")
             {

@@ -294,7 +294,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId ");
+            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate ");
             sql.Append("from  ");
             sql.Append(NamePrefix);
             sql.Append("vwItems i ");
@@ -1985,6 +1985,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("ci.ItemVersionID, ");
             sql.Append("ci.LastUpdated, ");
             sql.Append("ci.CreatedDate, ");
+            sql.Append("ci.StartDate, ");
             sql.Append("i.name as CategoryName ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -2031,7 +2032,7 @@ namespace Engage.Dnn.Publish.Data
             {
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
-            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier ");
+            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "from {0}vwItemListing il ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems child on (il.ChilditemId = child.itemId) ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems parent on (il.itemId = parent.itemId) ", NamePrefix);
