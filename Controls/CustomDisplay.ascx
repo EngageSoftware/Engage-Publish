@@ -20,7 +20,9 @@
 		                <asp:Panel ID="pnlEditLink" runat="server" cssclass="itemEditLink">
 		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
 		                </asp:Panel>
-		                <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                <h2>
+		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">
@@ -49,7 +51,9 @@
 		                <asp:Panel ID="pnlEditLink" runat="server" cssclass="itemEditLink">
 		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
 		                </asp:Panel>
-		                <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                <h2>
+		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">

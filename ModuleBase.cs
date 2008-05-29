@@ -1260,6 +1260,8 @@ namespace Engage.Dnn.Publish
 
         public void SetPageTitle()
         {
+
+            //TODO: should we also allow for setting the module title here?
             if (AllowTitleUpdate)
             {
                 DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;
