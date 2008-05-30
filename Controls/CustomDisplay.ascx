@@ -60,7 +60,7 @@
 		                    <asp:Label id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>'></asp:Label>
 		                </asp:Panel>
 		                <asp:Panel ID="pnlDate" runat="server" CssClass="itemDate">
-			                <asp:Label id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "CreatedDate")) %>'></asp:Label>
+			                <asp:Label id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Label>
 		                </asp:Panel>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlDescription" runat="server" cssclass="itemDescription">

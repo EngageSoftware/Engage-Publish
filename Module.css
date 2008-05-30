@@ -1,3 +1,4 @@
+
 .Publish_ItemDisplay
 {
 	clear:both;
@@ -1319,4 +1320,10 @@ a.mouseOverImage:hover
 .Publish_ParentCategory
 {
 	height:30px;
+}
+
+.divItemsListing h1, .divItemsListing h2
+{
+	margin-top:0px;
+	margin-bottom:0px;
 }

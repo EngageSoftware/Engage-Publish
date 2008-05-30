@@ -196,6 +196,7 @@
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
+        <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -227,6 +228,7 @@
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
+        <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -258,6 +260,7 @@
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
+        <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>
@@ -291,6 +294,7 @@
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
+        <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/BuildSupport/**/*" />
       </fileset>

@@ -348,7 +348,7 @@ namespace Engage.Dnn.Publish
             UserInfo ui = UserController.GetCurrentUserInfo();
             if (ui.Username != null)
             {
-                UserInfo versionAuthor = UserController.GetUser(ui.PortalID, this.authorUserId, false);
+                UserInfo versionAuthor = UserController.GetUser(PortalId, this.authorUserId, false);
 
                 //if this is the same user, don't email them notification.
                 if (versionAuthor != null && versionAuthor.Email != ui.Email)
