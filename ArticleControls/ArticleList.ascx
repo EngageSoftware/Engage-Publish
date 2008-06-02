@@ -47,6 +47,13 @@
                 
                 >
                 <Columns>
+                
+                    <asp:TemplateField ShowHeader="true"  HeaderText="SelectText" ItemStyle-CssClass="Publish_CheckBoxColumn">
+                        <ItemTemplate>
+                               <asp:CheckBox ID="chkSelect" runat="server" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
                      <asp:TemplateField ShowHeader="true"  HeaderText="ID" SortExpression="ItemId">
                         <ItemTemplate>
                             <asp:HyperLink ID="hlId" runat="server" CssClass="Normal" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem,"ItemId")) %>'
@@ -86,7 +93,10 @@
         <br />
         <asp:hyperlink id="lnkAddNewArticle" Runat="server" ResourceKey="lnkAddNewArticle" CssClass="CommandButton"></asp:hyperlink>
         <div style="text-align:center;">
-            <asp:linkbutton class="CommandButton" id="cmdBack" resourcekey="cmdBack" runat="server" text="Back" causesvalidation="False" OnClick="cmdBack_Click"></asp:linkbutton>
+        
+            <asp:linkbutton cssclass="CommandButton" id="cmdApprove" resourcekey="cmdApprove" runat="server" text="Approve Articles" causesvalidation="False" OnClick="cmdApprove_Click"></asp:linkbutton>
+            <asp:linkbutton cssclass="CommandButton" id="cmdDelete" resourcekey="cmdDelete" runat="server" text="Delete Articles" causesvalidation="False" OnClick="cmdDelete_Click"></asp:linkbutton>
+            <asp:linkbutton cssclass="CommandButton" id="cmdBack" resourcekey="cmdBack" runat="server" text="Back" causesvalidation="False" OnClick="cmdBack_Click"></asp:linkbutton>
         </div>
     </ContentTemplate>
 </asp:UpdatePanel>

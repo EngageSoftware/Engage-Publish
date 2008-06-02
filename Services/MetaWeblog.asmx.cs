@@ -91,7 +91,7 @@ namespace Engage.Dnn.Publish.Services
 
                     a.Save(ui.UserID);
                     //TODO: check if ping enabled
-                    if (ModuleBase.IsPingEnabledForPortal(PortalId))
+                    if (Utility.IsPingEnabledForPortal(PortalId))
                     {
                         string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
                         string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(c.ChildDisplayTabId);

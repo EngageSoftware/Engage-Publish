@@ -631,15 +631,11 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                return IsPingEnabledForPortal(PortalId);
+                return Utility.IsPingEnabledForPortal(PortalId);
             }
         }
 
-        public static bool IsPingEnabledForPortal(int portalId)
-        {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
-            return Utility.HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
-        }
+       
 
         public bool IsPublishCommentType
         {

@@ -22,7 +22,7 @@ using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
-    public partial class ArticleList : ModuleBase, IActionable
+    public partial class ArticleList : ModuleBase
     {
 
         #region Event Handlers
@@ -37,6 +37,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
             this.cboWorkflow.SelectedIndexChanged += this.cboWorkflow_SelectedIndexChanged;
+            
             this.Load += this.Page_Load;
 
         }
@@ -45,6 +46,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             try
             {
+                DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
                 if (!Page.IsPostBack)
                 {
                     Utility.LocalizeGridView(dgItems, LocalResourceFile);
@@ -68,7 +70,6 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void cboWorkflow_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindData();
-
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
@@ -318,23 +319,68 @@ namespace Engage.Dnn.Publish.ArticleControls
             return Localization.GetString("Versions", LocalResourceFile);
         }
 
-        #endregion
 
-        #region Optional Interfaces
-
-        public ModuleActionCollection ModuleActions
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdApprove_Click(object sender, EventArgs e)
         {
-            get
+            //parse through the checked items in the list and approve them.
+            try
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
+                foreach (GridViewRow gvr in dgItems.Rows)
+                {
+                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
+                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    if (hlId != null && cb != null && cb.Checked)
+                    {
+                        //approve
+                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);                        
+                        a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+                        a.UpdateApprovalStatus();
+
+                    }
+                }
+
+                Utility.ClearPublishCache(PortalId);
+                BindData();
+                this.lblMessage.Text = Localization.GetString("ArticlesApproved", LocalResourceFile);
+                lblMessage.Visible = true;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (GridViewRow gvr in dgItems.Rows)
+                {
+                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
+                    CheckBox chkSelect = (CheckBox)gvr.FindControl("chkSelect");
+                    if (hlId != null && chkSelect != null && chkSelect.Checked)
+                    {
+                        Item.DeleteItem(Convert.ToInt32(hlId.Text, CultureInfo.CurrentCulture));
+                    }
+                }
 
+                Utility.ClearPublishCache(PortalId);
+                BindData();
+                this.lblMessage.Text = Localization.GetString("ArticlesDeleted", LocalResourceFile);
+                lblMessage.Visible = true;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
         #endregion
+
+
+
     }
 }
 

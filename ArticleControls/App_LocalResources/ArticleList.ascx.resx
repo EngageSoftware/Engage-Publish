@@ -192,4 +192,19 @@
   <data name="CreatedDate.Header" xml:space="preserve">
     <value>Date Created</value>
   </data>
+  <data name="ArticlesApproved.Text" xml:space="preserve">
+    <value>Article(s) Approved</value>
+  </data>
+  <data name="ArticlesDeleted.Text" xml:space="preserve">
+    <value>Article(s) Deleted</value>
+  </data>
+  <data name="cmdApprove.Text" xml:space="preserve">
+    <value>Approve Articles</value>
+  </data>
+  <data name="DeleteConfirm.Text" xml:space="preserve">
+    <value>Are you sure? This delete is permanent.</value>
+  </data>
+  <data name="SelectText.Header" xml:space="preserve">
+    <value>Select</value>
+  </data>
 </root>

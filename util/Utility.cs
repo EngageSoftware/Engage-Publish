@@ -1209,6 +1209,15 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
+
+
+        public static bool IsPingEnabledForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
+            return Utility.HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
+        }
+
+
         #endregion
 
         #region SQL Parameters

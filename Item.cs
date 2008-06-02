@@ -27,64 +27,64 @@ using DotNetNuke.Entities.Tabs;
 
 namespace Engage.Dnn.Publish
 {
-	/// <summary>
-	/// Summary description for ItemInfo.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ItemInfo.
+    /// </summary>
     public abstract class Item : TransportableElement
     {
-		#region "Private Properties"
+        #region "Private Properties"
 
         private Guid itemIdentifier;
         private Guid itemVersionIdentifier;
         private int moduleId = -1;
         private int itemId = -1;
         private int approvedItemVersionId = -1;
-		private int itemVersionId = -1;
-		private int originalItemVersionId = -1;
-		private string name = string.Empty;
+        private int itemVersionId = -1;
+        private int originalItemVersionId = -1;
+        private string name = string.Empty;
         private string url = string.Empty;
-		private string description = string.Empty;
-		private string itemVersionDate = string.Empty;
-		private string startDate = string.Empty;
+        private string description = string.Empty;
+        private string itemVersionDate = string.Empty;
+        private string startDate = string.Empty;
         private string endDate;
-		private int languageId=-1;
-		private int authorUserId=-1;
-		private int approvalStatusId=-1;
-		private string approvalDate = string.Empty;
-		private int approvalUserId=-1;
-		private string approvalComments = string.Empty;
-		private string metaKeywords = string.Empty;
-		private string metaDescription = string.Empty;
-		private string metaTitle = string.Empty;
-		private int displayTabId=-1;
-		private string lastUpdated = string.Empty;
-		private int itemTypeId=-1;
-		private int portalId = -1;
-		private bool disabled;
-		private string thumbnail = string.Empty;
-		private readonly ItemRelationshipCollection relationships;
+        private int languageId = -1;
+        private int authorUserId = -1;
+        private int approvalStatusId = -1;
+        private string approvalDate = string.Empty;
+        private int approvalUserId = -1;
+        private string approvalComments = string.Empty;
+        private string metaKeywords = string.Empty;
+        private string metaDescription = string.Empty;
+        private string metaTitle = string.Empty;
+        private int displayTabId = -1;
+        private string lastUpdated = string.Empty;
+        private int itemTypeId = -1;
+        private int portalId = -1;
+        private bool disabled;
+        private string thumbnail = string.Empty;
+        private readonly ItemRelationshipCollection relationships;
         private readonly ItemTagCollection tags;
         private readonly ItemVersionSettingCollection versionSettings;
-		private string createdDate = string.Empty;
+        private string createdDate = string.Empty;
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
-		protected Item()
-		{
-			this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-			this.relationships = new ItemRelationshipCollection();
+        protected Item()
+        {
+            this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            this.relationships = new ItemRelationshipCollection();
             this.versionSettings = new ItemVersionSettingCollection();
             this.tags = new ItemTagCollection();
-		}
+        }
 
 
 
         public ItemRelationshipCollection Relationships
-		{
-			get {return this.relationships;}
-		}
+        {
+            get { return this.relationships; }
+        }
 
         public ItemTagCollection Tags
         {
@@ -95,15 +95,15 @@ namespace Engage.Dnn.Publish
         {
             get { return this.versionSettings; }
         }
-		
-		public abstract void Save(int authorId);
-		public abstract void UpdateApprovalStatus();
-        public abstract string EmailApprovalBody { get;}
-        
-        public abstract string EmailApprovalSubject { get;}
 
-        public abstract string EmailStatusChangeBody { get;}
-        public abstract string EmailStatusChangeSubject { get;}
+        public abstract void Save(int authorId);
+        public abstract void UpdateApprovalStatus();
+        public abstract string EmailApprovalBody { get; }
+
+        public abstract string EmailApprovalSubject { get; }
+
+        public abstract string EmailStatusChangeBody { get; }
+        public abstract string EmailStatusChangeSubject { get; }
 
 
         public void UpdateDescription()
@@ -116,7 +116,7 @@ namespace Engage.Dnn.Publish
             //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
 
             ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-                        
+
             ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage");
             if (cpSetting != null)
             {
@@ -131,7 +131,7 @@ namespace Engage.Dnn.Publish
         public bool ForceDisplayOnPage()
         {
             ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-                        
+
             ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage");
             if (fpSetting != null)
             {
@@ -160,36 +160,36 @@ namespace Engage.Dnn.Publish
         }
 
         protected void SaveInfo(IDbTransaction trans, int authorId)
-		{
-			//insert new version or not
+        {
+            //insert new version or not
             AuthorUserId = authorId;
 
-			if (this.IsNew)
-			{
+            if (this.IsNew)
+            {
                 if (itemIdentifier == Guid.Empty) itemIdentifier = Guid.NewGuid();
-				this.itemId = AddItem(trans, this.itemTypeId, this.portalId, this.moduleId, itemIdentifier);
-			}
-			//save generic information	
+                this.itemId = AddItem(trans, this.itemTypeId, this.portalId, this.moduleId, itemIdentifier);
+            }
+            //save generic information	
             if (itemVersionIdentifier == Guid.Empty) itemVersionIdentifier = Guid.NewGuid();
-			int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId, 
-                this.Name, this.Description, this.startDate, this.endDate, this.languageId, 
-                this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle, 
+            int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
+                this.Name, this.Description, this.startDate, this.endDate, this.languageId,
+                this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
                 this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url);
-			this.originalItemVersionId = this.ItemVersionId;
-			this.itemVersionId = ivd;
-		}
+            this.originalItemVersionId = this.ItemVersionId;
+            this.itemVersionId = ivd;
+        }
 
-		protected void SaveRelationships(IDbTransaction trans)
-		{
-			for (int i = 0; i < Relationships.Count; i++)
-			{
-				ItemRelationship ir = Relationships[i];
-				ir.ChildItemId = this.ItemId;
-				ir.ChildItemVersionId = this.ItemVersionId;
-				if (ir.StartDate == null)
-				{
+        protected void SaveRelationships(IDbTransaction trans)
+        {
+            for (int i = 0; i < Relationships.Count; i++)
+            {
+                ItemRelationship ir = Relationships[i];
+                ir.ChildItemId = this.ItemId;
+                ir.ChildItemVersionId = this.ItemVersionId;
+                if (ir.StartDate == null)
+                {
                     ir.StartDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-				}
+                }
 
                 if (ir.HasSortOrderBeenSet)
                 {
@@ -201,8 +201,8 @@ namespace Engage.Dnn.Publish
                     ItemRelationship.AddItemRelationshipWithOriginalSortOrder(trans, ir.ChildItemId, ir.ChildItemVersionId, ir.ParentItemId,
                         ir.RelationshipTypeId, ir.StartDate, ir.EndDate, this.OriginalItemVersionId);
                 }
-			}
-		}
+            }
+        }
 
         //TODO: if we remove a tag from a version we should decrement the TotalItems for a tag.
         protected void SaveTags(IDbTransaction trans)
@@ -213,12 +213,12 @@ namespace Engage.Dnn.Publish
 
                 //if this item tag relationship already existed for another versionID don't increment the count;
                 if (!ItemTag.CheckItemTag(trans, this.ItemId, it.TagId))
-                {                    
+                {
                     Tag t = Tag.GetTag(it.TagId);
                     t.TotalItems++;
                     t.Save();
                 }
-                
+
                 it.ItemVersionId = this.ItemVersionId;
                 //ad the itemtag relationship
                 ItemTag.AddItemTag(trans, it.ItemVersionId, it.TagId);
@@ -230,9 +230,9 @@ namespace Engage.Dnn.Publish
             for (int i = 0; i < VersionSettings.Count; i++)
             {
                 ItemVersionSetting ir = VersionSettings[i];
-                
+
                 ir.ItemVersionId = this.ItemVersionId;
-                   
+
                 ItemVersionSetting.AddItemVersionSetting(trans, ir.ItemVersionId, ir.ControlName, ir.PropertyName, ir.PropertyValue);
             }
         }
@@ -247,31 +247,31 @@ namespace Engage.Dnn.Publish
         }
 
 
-		public static void UpdateItemVersion(IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
-		{DataProvider.Instance().UpdateItemVersion(trans, itemId, itemVersionId, approvalStatusId, userId, approvalComments);}
-
-       
+        public static void UpdateItemVersion(IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
+        { DataProvider.Instance().UpdateItemVersion(trans, itemId, itemVersionId, approvalStatusId, userId, approvalComments); }
 
 
-		protected void UpdateApprovalStatus(IDbTransaction trans)
-		{
-			if(this.ApprovalStatusId == ApprovalStatus.Waiting.GetId())
-			{
+
+
+        protected void UpdateApprovalStatus(IDbTransaction trans)
+        {
+            if (this.ApprovalStatusId == ApprovalStatus.Waiting.GetId())
+            {
                 if (ModuleBase.ApprovalEmailsEnabled(PortalId))
-				{
-					if(!ModuleBase.IsUserAdmin(PortalId))
-					{
+                {
+                    if (!ModuleBase.IsUserAdmin(PortalId))
+                    {
                         SendApprovalEmail();
-					}
-				}
-			}
+                    }
+                }
+            }
             if (ModuleBase.ApprovalEmailsEnabled(PortalId))
             {
                 //TODO: this probably should be moved into the check for emails being enabled
                 SendStatusUpdateEmail();
             }
-			UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.authorUserId, this.approvalComments);
-		}
+            UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.authorUserId, this.approvalComments);
+        }
 
         private void SendApprovalEmail()
         {
@@ -298,25 +298,28 @@ namespace Engage.Dnn.Publish
             }
 
             UserInfo ui = UserController.GetCurrentUserInfo();
-            RoleController rc = new RoleController();
-
-            ArrayList users = rc.GetUsersByRoleName(ui.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + PortalId));
-
-            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-            string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
-            string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
-
-            //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
-            string body  = EmailApprovalBody;
-            body = body.Replace("[ENGAGEITEMNAME]", this.name);
-            body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
-            body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
-
-            string subject = EmailApprovalSubject;
-
-            foreach (UserInfo u in users)
+            if (ui.Username != null)
             {
-                Mail.SendMail(ps.Email, u.Membership.Email, "", subject, body, "", "HTML", "", "", "", "");
+                RoleController rc = new RoleController();
+
+                ArrayList users = rc.GetUsersByRoleName(ui.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + PortalId));
+
+                DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
+                string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
+                string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
+
+                //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
+                string body = EmailApprovalBody;
+                body = body.Replace("[ENGAGEITEMNAME]", this.name);
+                body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
+                body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
+
+                string subject = EmailApprovalSubject;
+
+                foreach (UserInfo u in users)
+                {
+                    Mail.SendMail(ps.Email, u.Membership.Email, "", subject, body, "", "HTML", "", "", "", "");
+                }
             }
         }
 
@@ -374,9 +377,9 @@ namespace Engage.Dnn.Publish
                 }
             }
         }
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
 
 
@@ -390,7 +393,7 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 2)]
         public string ModuleTitle
         {
-            get 
+            get
             {
                 string moduleTitle = string.Empty;
                 using (IDataReader dr = DataProvider.Instance().GetModuleInfo(moduleId))
@@ -402,7 +405,7 @@ namespace Engage.Dnn.Publish
                 }
                 return moduleTitle;
             }
-            set {; }
+            set { ; }
         }
 
         [XmlIgnore]
@@ -435,15 +438,15 @@ namespace Engage.Dnn.Publish
 
         [XmlElement(Order = 6)]
         public int ApprovedItemVersionId
-		{
+        {
             get { return approvedItemVersionId; }
             set { approvedItemVersionId = value; }
-		}
+        }
 
         [XmlElement(Order = 7)]
         public string ApprovedItemVersionIdentifier
-		{
-            get 
+        {
+            get
             {
                 if (this.approvedItemVersionId == 0)
                 {
@@ -464,8 +467,8 @@ namespace Engage.Dnn.Publish
                 }
 
             }
-            set {; }
-		}
+            set { ; }
+        }
 
         [XmlElement(Order = 8)]
         public string CreatedDate
@@ -475,11 +478,11 @@ namespace Engage.Dnn.Publish
         }
 
         [XmlElement(Order = 9)]
-		public int ItemVersionId 
-		{
-			get { return itemVersionId;}
-			set { itemVersionId = value; }
-		}
+        public int ItemVersionId
+        {
+            get { return itemVersionId; }
+            set { itemVersionId = value; }
+        }
 
         [XmlElement(Order = 10)]
         public int ItemId
@@ -489,16 +492,16 @@ namespace Engage.Dnn.Publish
         }
 
         [XmlElement(Order = 11)]
-		public int OriginalItemVersionId 
-		{
-			get { return originalItemVersionId;}
+        public int OriginalItemVersionId
+        {
+            get { return originalItemVersionId; }
             set { originalItemVersionId = value; }
-		}
+        }
 
         [XmlElement(Order = 12)]
-        public string OriginalItemVersionIdentifier 
-		{
-			get 
+        public string OriginalItemVersionIdentifier
+        {
+            get
             {
                 if (originalItemVersionId <= 0)
                 {
@@ -518,36 +521,36 @@ namespace Engage.Dnn.Publish
                     return originalItemVersionIdentifier;
                 }
             }
-			set {; }
-		}
+            set { ; }
+        }
 
         [XmlElement(Order = 13)]
-		public string Name 
-		{
-			get { return name;}
-			set { name = value;}
-		}
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
 
         [XmlElement(Order = 14)]
-		public string Description 
-		{
-			get { return description;}
-			set { description = value;}
-		}
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
 
         [XmlElement(Order = 15)]
-		public string ItemVersionDate 
-		{
-			get { return itemVersionDate;}
-			set { itemVersionDate = value;}
-		}
+        public string ItemVersionDate
+        {
+            get { return itemVersionDate; }
+            set { itemVersionDate = value; }
+        }
 
         [XmlElement(Order = 16)]
-		public string StartDate
-		{
-			get { return startDate;}
-			set 
-			{
+        public string StartDate
+        {
+            get { return startDate; }
+            set
+            {
                 if (Utility.HasValue(value))
                 {
                     //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
@@ -558,36 +561,36 @@ namespace Engage.Dnn.Publish
                 {
                     startDate = null;
                 }
-			}
-		}
+            }
+        }
 
         [XmlElement(Order = 17)]
-		public string EndDate
-		{
-			get { return endDate;}
-			set 
-			{
+        public string EndDate
+        {
+            get { return endDate; }
+            set
+            {
                 if (Utility.HasValue(value))
                 {
                     //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
                     //endDate = Convert.ToDateTime(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                     //value.ToString(CultureInfo.InvariantCulture);
                     endDate = value;
-                    
+
                 }
                 else
                 {
                     endDate = null;
                 }
-			}
-		}
+            }
+        }
 
         [XmlElement(Order = 18)]
-		public int LanguageId 
-		{
-			get { return languageId;}
-			set { languageId = value;}
-		}
+        public int LanguageId
+        {
+            get { return languageId; }
+            set { languageId = value; }
+        }
 
         //public int CurrentAuthor
         //{
@@ -603,17 +606,17 @@ namespace Engage.Dnn.Publish
         //}
 
         [XmlElement(Order = 19)]
-		public int AuthorUserId 
-		{
-			set {this.authorUserId = value;}
-			get {return this.authorUserId;}
-		}
+        public int AuthorUserId
+        {
+            set { this.authorUserId = value; }
+            get { return this.authorUserId; }
+        }
 
         private string originalAuthor = string.Empty;
         [XmlElement(Order = 20)]
         public string Author
         {
-            get 
+            get
             {
                 //UserController controller = new UserController();
                 ////verify that the user is a user in this system. 
@@ -632,41 +635,41 @@ namespace Engage.Dnn.Publish
         }
 
         [XmlElement(Order = 21)]
-		public int ApprovalStatusId 
-		{
-			get { return approvalStatusId;}
-			set { approvalStatusId = value;}
-		}
+        public int ApprovalStatusId
+        {
+            get { return approvalStatusId; }
+            set { approvalStatusId = value; }
+        }
 
         [XmlElement(Order = 22)]
         public string ApprovalStatusName
         {
-            get 
+            get
             {
-                return ApprovalStatus.GetFromId(approvalStatusId, typeof(ApprovalStatus)).Name; 
+                return ApprovalStatus.GetFromId(approvalStatusId, typeof(ApprovalStatus)).Name;
             }
-            set {; }
+            set { ; }
         }
 
         [XmlElement(Order = 23)]
-		public string ApprovalDate 
-		{
-			get { return approvalDate;}
-			set { approvalDate = value;}
-		}
+        public string ApprovalDate
+        {
+            get { return approvalDate; }
+            set { approvalDate = value; }
+        }
 
         [XmlElement(Order = 24)]
-		public int ApprovalUserId 
-		{
-			get { return approvalUserId;}
-			set { approvalUserId = value;}
-		}
+        public int ApprovalUserId
+        {
+            get { return approvalUserId; }
+            set { approvalUserId = value; }
+        }
 
         private string originalApprovalUser = string.Empty;
         [XmlElement(Order = 25)]
         public string ApprovalUser
         {
-            get 
+            get
             {
                 //UserController controller = new UserController();
                 //UserInfo user = controller.GetUser(portalId, approvalUserId);
@@ -677,45 +680,45 @@ namespace Engage.Dnn.Publish
         }
 
         [XmlElement(Order = 26)]
-		public string ApprovalComments 
-		{
-			get { return approvalComments;}
-			set { approvalComments = value;}
-		}
+        public string ApprovalComments
+        {
+            get { return approvalComments; }
+            set { approvalComments = value; }
+        }
 
         [XmlElement(Order = 27)]
-		public string MetaKeywords
-		{
-			get	{ return metaKeywords;}
-			set	{ metaKeywords = value;}
-		}
+        public string MetaKeywords
+        {
+            get { return metaKeywords; }
+            set { metaKeywords = value; }
+        }
 
         [XmlElement(Order = 28)]
-		public string MetaDescription
-		{
-			get	{ return metaDescription;}
-			set { metaDescription = value;}
-		}
+        public string MetaDescription
+        {
+            get { return metaDescription; }
+            set { metaDescription = value; }
+        }
 
         [XmlElement(Order = 29)]
-		public string MetaTitle
-		{
-			get	{ return metaTitle;}
-			set { metaTitle = value;}
-		}
+        public string MetaTitle
+        {
+            get { return metaTitle; }
+            set { metaTitle = value; }
+        }
 
         [XmlElement(Order = 30)]
-		public int DisplayTabId 
-		{
-			get	{ return displayTabId ; }
-			set  { displayTabId  = value; }
-		}
+        public int DisplayTabId
+        {
+            get { return displayTabId; }
+            set { displayTabId = value; }
+        }
 
         private string displayTabName = string.Empty;
         [XmlElement(Order = 31)]
         public string DisplayTabName
-		{
-			get 
+        {
+            get
             {
                 if (displayTabName.Length == 0)
                 {
@@ -727,31 +730,31 @@ namespace Engage.Dnn.Publish
                         }
                     }
                 }
-                return displayTabName; 
+                return displayTabName;
             }
             set { displayTabName = value; }
-		}
+        }
 
         [XmlElement(Order = 32)]
-		public string LastUpdated
-		{
-			get { return lastUpdated;}
-			set { lastUpdated = value;}
-		}
+        public string LastUpdated
+        {
+            get { return lastUpdated; }
+            set { lastUpdated = value; }
+        }
 
         [XmlElement(Order = 33)]
-		public bool Disabled
-		{
-			get {return this.disabled;}
-			set {this.disabled = value;}
-		}
+        public bool Disabled
+        {
+            get { return this.disabled; }
+            set { this.disabled = value; }
+        }
 
         [XmlElement(Order = 34)]
-		public string Thumbnail 
-		{
-			get {return this.thumbnail;}
-			set {this.thumbnail = value;}
-		}
+        public string Thumbnail
+        {
+            get { return this.thumbnail; }
+            set { this.thumbnail = value; }
+        }
 
         [XmlElement(Order = 35)]
         public string Url
@@ -763,7 +766,8 @@ namespace Engage.Dnn.Publish
         [XmlIgnore]
         public string GetItemExternalUrl
         {
-            get{
+            get
+            {
                 string strUrl = string.Empty;
 
                 switch (Globals.GetURLType(this.url))
@@ -793,49 +797,49 @@ namespace Engage.Dnn.Publish
             get { return this.itemId == -1; }
         }
 
-		#endregion
+        #endregion
 
-		public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
-		{
-			IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
-			ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
-			Item a = (Item)CBO.FillObject(dr, it.GetItemType);
+        public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
+        {
+            IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
+            ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
+            Item a = (Item)CBO.FillObject(dr, it.GetItemType);
             a.CorrectDates();
-			return a;
-		}
+            return a;
+        }
 
-		public void AddView(int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
-		{
+        public void AddView(int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
+        {
             if (ModuleBase.IsViewTrackingEnabledForPortal(this.PortalId))
             {
                 DataProvider.Instance().AddItemView(this.itemId, this.itemVersionId, userId, tabId, ipAddress, userAgent, httpReferrer, siteUrl);
             }
-		}
+        }
 
-		public static DataSet GetItemVersions(int itemId, int portalId)
-		{
-		    return DataProvider.Instance().GetItemVersions(itemId, portalId);
-		}
+        public static DataSet GetItemVersions(int itemId, int portalId)
+        {
+            return DataProvider.Instance().GetItemVersions(itemId, portalId);
+        }
 
-		public static int GetItemIdFromVersion(int itemVersionId, int portalId)
-		{
-			return DataProvider.Instance().GetItemIdFromVersion(itemVersionId, portalId);
-		}
+        public static int GetItemIdFromVersion(int itemVersionId, int portalId)
+        {
+            return DataProvider.Instance().GetItemIdFromVersion(itemVersionId, portalId);
+        }
 
         public static int GetItemIdFromVersion(int itemVersionId)
         {
             return DataProvider.Instance().GetItemIdFromVersion(itemVersionId);
         }
-		
-		public static DataSet GetAllChildren(int parentItemId, int relationshipTypeId, int portalId)
-		{
-			return DataProvider.Instance().GetAllChildren(parentItemId, relationshipTypeId, portalId);
-		}
 
-		public static DataSet GetAllChildren(int itemTypeId, int parentItemId, int relationshipTypeId, int portalId)
-		{
-			return DataProvider.Instance().GetAllChildren(itemTypeId, parentItemId, relationshipTypeId, portalId);
-		}
+        public static DataSet GetAllChildren(int parentItemId, int relationshipTypeId, int portalId)
+        {
+            return DataProvider.Instance().GetAllChildren(parentItemId, relationshipTypeId, portalId);
+        }
+
+        public static DataSet GetAllChildren(int itemTypeId, int parentItemId, int relationshipTypeId, int portalId)
+        {
+            return DataProvider.Instance().GetAllChildren(itemTypeId, parentItemId, relationshipTypeId, portalId);
+        }
 
         public static DataSet GetAllChildren(int itemTypeId, int parentItemId, int relationshipTypeId, int otherRelationshipTypeId, int portalId)
         {
@@ -848,33 +852,33 @@ namespace Engage.Dnn.Publish
         }
 
         [Obsolete("This method is not used.")]
-		public static DataSet GetChildren(int parentItemId, int relationshipTypeId, int portalId)
-		{
-			return DataProvider.Instance().GetChildren(parentItemId, relationshipTypeId, portalId);
-		}
+        public static DataSet GetChildren(int parentItemId, int relationshipTypeId, int portalId)
+        {
+            return DataProvider.Instance().GetChildren(parentItemId, relationshipTypeId, portalId);
+        }
 
         public static int AddItem(IDbTransaction trans, int itemTypeId, int portalId, int moduleId, Guid itemIdentifier)
-		{
+        {
             return DataProvider.Instance().AddItem(trans, itemTypeId, portalId, moduleId, itemIdentifier);
-		}
+        }
 
         public static int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
-		{
+        {
             return DataProvider.Instance().AddItemVersion(itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url);
-		}
+        }
 
         public static int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
-		{
+        {
             return DataProvider.Instance().AddItemVersion(trans, itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url);
-		}
+        }
 
-		public static IDataReader GetItems(int itemTypeId, int portalId)
-		{
-			return DataProvider.Instance().GetItems(itemTypeId, portalId);
-		}
+        public static IDataReader GetItems(int itemTypeId, int portalId)
+        {
+            return DataProvider.Instance().GetItems(itemTypeId, portalId);
+        }
 
-		public static DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId)
-		{
+        public static DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId)
+        {
             return DataProvider.Instance().GetItems(parentItemId, portalId, relationshipTypeId);
         }
 
@@ -883,48 +887,48 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetItems(parentItemId, portalId, relationshipTypeId, itemTypeId);
         }
 
-        public static DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId,  int itemTypeId)
+        public static DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId)
         {
             return DataProvider.Instance().GetItems(parentItemId, portalId, relationshipTypeId, otherRelationshipTypeId, itemTypeId);
         }
 
-		public static DataSet GetParentItems(int itemId, int portalId, int relationshipTypeId)
-		{
+        public static DataSet GetParentItems(int itemId, int portalId, int relationshipTypeId)
+        {
             return DataProvider.Instance().GetParentItems(itemId, portalId, relationshipTypeId);
         }
 
-		public static string GetItemType(int itemId)
-		{
-			return DataProvider.Instance().GetItemType(itemId);
-		}
+        public static string GetItemType(int itemId)
+        {
+            return DataProvider.Instance().GetItemType(itemId);
+        }
 
         public static int GetItemTypeId(int itemId)
         {
             return DataProvider.Instance().GetItemTypeId(itemId);
         }
 
-		public static string GetItemTypeFromVersion(int itemVersionId)
-		{
-			return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
-		}
+        public static string GetItemTypeFromVersion(int itemVersionId)
+        {
+            return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not displaying properties of this class.")]
         public static DataTable GetItemTypes()
-		{
-			return DataProvider.Instance().GetItemTypes();
-		}
+        {
+            return DataProvider.Instance().GetItemTypes();
+        }
 
-		public static void DeleteItem(int itemId)
-		{
-			DataProvider.Instance().DeleteItem(itemId);
-		}
+        public static void DeleteItem(int itemId)
+        {
+            DataProvider.Instance().DeleteItem(itemId);
+        }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
         public string GetApprovalStatusTypeName()
-		{
-			return DataProvider.Instance().GetApprovalStatusTypeName(this.ApprovalStatusId);
-		}
+        {
+            return DataProvider.Instance().GetApprovalStatusTypeName(this.ApprovalStatusId);
+        }
 
         /// <summary>
         /// Gets all articles related to this article
@@ -932,22 +936,22 @@ namespace Engage.Dnn.Publish
         /// <param name="articlePortalId">The Portal in which the related articles live</param>
         /// <returns></returns>
         public Article[] GetRelatedArticles(int articlePortalId)
-		{
-			ArrayList al = ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, RelationshipType.ItemToRelatedArticle.GetId(), true);
+        {
+            ArrayList al = ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, RelationshipType.ItemToRelatedArticle.GetId(), true);
 
-			ArrayList m = new ArrayList();
-			foreach(ItemRelationship ir in al)
-			{
+            ArrayList m = new ArrayList();
+            foreach (ItemRelationship ir in al)
+            {
                 m.Add(Article.GetArticle(ir.ParentItemId, articlePortalId));
-			}
-			return (Article[]) m.ToArray(typeof(Article));
-		}
+            }
+            return (Article[])m.ToArray(typeof(Article));
+        }
 
-		/// <summary>
-		/// this is a single article to be displayed as a sub section of a page.
-		/// </summary>
-		/// <param name="articlePortalId">Portal in which the related article lives</param>
-		/// <returns></returns>
+        /// <summary>
+        /// this is a single article to be displayed as a sub section of a page.
+        /// </summary>
+        /// <param name="articlePortalId">Portal in which the related article lives</param>
+        /// <returns></returns>
         public Article GetRelatedArticle(int articlePortalId)
         {
             ArrayList al = ItemRelationship.GetItemRelationships(this.itemId, this.itemVersionId, RelationshipType.ItemToArticleLinks.GetId(), true);
@@ -975,7 +979,7 @@ namespace Engage.Dnn.Publish
             //If the XML doesn't specify a start date we'll default to Today.
             if (string.IsNullOrEmpty(StartDate)) StartDate = DateTime.Now.ToString();
 
-            
+
             UserInfo user = UserController.GetUserByName(portalId, Author);
             if (user != null)
             {
