@@ -97,7 +97,7 @@ namespace Engage.Dnn.Publish
                 {
                     //catch the ping exception but let everything else proceed.
                     //TODO: localize this error
-                    Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
+                    //Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
                     //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
 
                 }
