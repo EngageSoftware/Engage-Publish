@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Entities.Host;
 using System.Collections;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Exceptions;
 
 
 namespace Engage.Dnn.Publish
@@ -77,17 +78,28 @@ namespace Engage.Dnn.Publish
                 }
 				trans.Commit();
 
-                if (Utility.IsPingEnabledForPortal(this.PortalId))
+                try
                 {
-                    if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
+                    if (Utility.IsPingEnabledForPortal(this.PortalId))
                     {
-                        string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                        string changedUrl = Utility.HasValue(surl) ? s.ToString() : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
-                        Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
+                        if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
+                        {
+                            string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
+                            string changedUrl = Utility.HasValue(surl) ? s.ToString() : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
+                            Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
 
-                        //ping
-                        Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                            //ping
+                            Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                        }
                     }
+                }
+                catch (Exception exc)
+                {
+                    //catch the ping exception but let everything else proceed.
+                    //TODO: localize this error
+                    Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
+                    //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
+
                 }
 
 			}

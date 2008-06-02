@@ -606,20 +606,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                 VersionInfoObject.Save(UserId);
 
 
-                
-                if (IsPingEnabled)
-                {
-                    if (av.ApprovalStatusId == ApprovalStatus.Approved.GetId())
-                    {
-                        string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                        string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(TabId);
-
-                        //ping
-                        Ping.SendPing(PortalSettings.PortalName, PortalSettings.PortalAlias.HTTPAlias.ToString(), changedUrl, PortalId);
-
-                    }
-                }
-
                 //remove all the cache items for this publish item
                 //DataCache.RemoveCache(Utility.CacheKeyPublishArticle + VersionInfoObject.ItemId.ToString(CultureInfo.InvariantCulture));
                 Util.Utility.ClearPublishCache(PortalId);
