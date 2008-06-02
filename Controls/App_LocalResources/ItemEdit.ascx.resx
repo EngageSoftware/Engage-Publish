@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblStartDate.Text" xml:space="preserve">
-    <value>Start:</value>
+    <value>Publish On:</value>
   </data>
   <data name="lblEndDate.Text" xml:space="preserve">
     <value>End: (leave blank to keep article indefinitely)</value>
@@ -166,7 +166,7 @@
     <value>These keywords are used as the meta keywords for the html page, these are useful for focusing keywords for search engine optimization.</value>
   </data>
   <data name="lblStartDate.Help" xml:space="preserve">
-    <value>Start date is used if you would like to limit the availability of an item by a date range.</value>
+    <value>The Publish date is used if you would like to have an item start in the future, or in the past.</value>
   </data>
   <data name="lblEndDate.Help" xml:space="preserve">
     <value>End date is used if you would like to limit the availability of an item by a date range.</value>
@@ -208,7 +208,7 @@
     <value>Please enter a valid end date</value>
   </data>
   <data name="cvStartDate.Text" xml:space="preserve">
-    <value>Please enter a valid start date.</value>
+    <value>Please enter a valid publish date.</value>
   </data>
   <data name="DateError.Text" xml:space="preserve">
     <value>There was a problem with the formatting of your start and end dates</value>

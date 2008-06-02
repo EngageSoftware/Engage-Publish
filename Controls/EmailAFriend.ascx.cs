@@ -69,6 +69,7 @@ namespace Engage.Dnn.Publish.Controls
             txtFrom.Text = string.Empty;
             txtMessage.Text = string.Empty;
             txtTo.Text = string.Empty;
+            txtFrom.Text = UserInfo != null ? UserInfo.Email : string.Empty;
         }
 	}
 }
