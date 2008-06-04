@@ -16,6 +16,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using Engage.Dnn.Publish.Util;
+using System.Web.UI.WebControls;
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -38,6 +39,18 @@ namespace Engage.Dnn.Publish.Controls
 
             teDescription.Width = ItemEditDescriptionWidth;
             teDescription.Height = ItemEditDescriptionHeight;
+
+            if (Utility.HasValue(VersionInfoObject.Url))
+            {
+                this.ctlUrlSelection.Url = VersionInfoObject.Url;
+
+                CheckBox  cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
+                if (cb!=null)
+                cb.Checked = VersionInfoObject.NewWindow;
+                chkUrlSelection.Checked = true;
+                pnlUrlSelection.Visible = true;
+                UseUrls = true;
+            }
 		}
 
         private void InitializeComponent()
@@ -96,14 +109,14 @@ namespace Engage.Dnn.Publish.Controls
                     }
 					txtName.Text = VersionInfoObject.Name.ToString();
 
-
-                    //TODO: check why this isn't working.
-                    if (Utility.HasValue(VersionInfoObject.Url))
-                    {
-                        this.ctlUrlSelection.Url = VersionInfoObject.Url;
-                        chkUrlSelection.Checked = true;
-                        pnlUrlSelection.Visible = true;
-                    }
+                    ////TODO: check why this isn't working.
+                    //if (Utility.HasValue(VersionInfoObject.Url))
+                    //{
+                    //    this.ctlUrlSelection.Url = VersionInfoObject.Url;
+                    //    chkUrlSelection.Checked = true;
+                    //    pnlUrlSelection.Visible = true;
+                    //    UseUrls = true;
+                    //}
                     
                     thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
 				}
@@ -114,9 +127,8 @@ namespace Engage.Dnn.Publish.Controls
 					VersionInfoObject.MetaTitle = txtMetaTitle.Text;
 					VersionInfoObject.Disabled = !chkDisplayAsHyperlink.Checked;
 
-                    
                     VersionInfoObject.Url = ctlUrlSelection.Url;
-
+                    VersionInfoObject.NewWindow = ctlUrlSelection.NewWindow;
                     DateTime dt;
                     if (Utility.HasValue(txtStartDate.Text) && DateTime.TryParse(txtStartDate.Text, out dt))
                     {
@@ -181,15 +193,22 @@ namespace Engage.Dnn.Publish.Controls
         protected void chkUrlSelection_CheckedChanged(object sender, EventArgs e)
         {
             pnlUrlSelection.Visible = chkUrlSelection.Checked;
-
-            if (!chkUrlSelection.Checked)
-            {
-                //TODO: should we do something here if no URL is checked
-                
-            }
+            changeParentPage();
         }
 
-
+        protected void changeParentPage()
+        {
+            //TODO: what should we do here?
+            //switch(typeof(this.Page))
+            //{
+            //    case ArticleControls.ArticleEdit:
+            //        ((ArticleControls.ArticleEdit)this.Page).UseUrls = chkUrlSelection.Checked;
+            //        break;
+            //    case CategoryControls.CategoryEdit:
+            //        ((CategoryControls.CategoryEdit)this.Page).UseUrls = chkUrlSelection.Checked;
+            //        break;
+            //}
+        }
         
 		#endregion
 
@@ -231,6 +250,7 @@ namespace Engage.Dnn.Publish.Controls
                 return txtDescription.Visible ? txtDescription.Text : teDescription.Text;
             }
         }
+
         #endregion
 
         #region Optional Interfaces

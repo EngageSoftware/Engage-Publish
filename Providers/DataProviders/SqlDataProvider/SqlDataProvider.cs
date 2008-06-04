@@ -676,7 +676,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, ModuleId   ");
+            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId   ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwCategories ");
@@ -711,7 +711,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, ModuleId  ");
+            sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwCategories ");
@@ -728,7 +728,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select  SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url ");
+            sql.Append("select  SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwCategories ");
@@ -1033,7 +1033,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, ModuleId  ");
+            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwArticles ");
@@ -1172,7 +1172,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url ");
+            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwArticles ");
@@ -1189,7 +1189,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url  ");
+            sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwArticles ");
@@ -1415,16 +1415,16 @@ namespace Engage.Dnn.Publish.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar((SqlTransaction)trans, NamePrefix + "spInsertItem", itemTypeId, portalId, moduleId, itemIdentifier), CultureInfo.InvariantCulture);
         }
 
-        public override int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
+        public override int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
         {
             //return the new versionId
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spInsertItemVersion", Utility.CreateIntegerParam("@ItemId", itemId), Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), Utility.CreateNvarcharParam("@Name", name, 255), description, Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), Utility.CreateDateTimeParam("@StartDate", startDate), Utility.CreateDateTimeParam("@EndDate", endDate), Utility.CreateIntegerParam("@LanguageId", languageId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId), Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), Utility.CreateIntegerParam("@DisplayTabId", displayTabId), Utility.CreateBitParam("@Disabled", disabled), Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), Utility.CreateNvarcharParam("@url", url, 255)), CultureInfo.InvariantCulture);
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spInsertItemVersion", Utility.CreateIntegerParam("@ItemId", itemId), Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), Utility.CreateNvarcharParam("@Name", name, 255), description, Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), Utility.CreateDateTimeParam("@StartDate", startDate), Utility.CreateDateTimeParam("@EndDate", endDate), Utility.CreateIntegerParam("@LanguageId", languageId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId), Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), Utility.CreateIntegerParam("@DisplayTabId", displayTabId), Utility.CreateBitParam("@Disabled", disabled), Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), Utility.CreateNvarcharParam("@url", url, 255), Utility.CreateBitParam("@newWindow", newWindow)), CultureInfo.InvariantCulture);
         }
 
-        public override int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
+        public override int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
         {
             //return the new versionId			
-            return Convert.ToInt32(SqlHelper.ExecuteScalar((SqlTransaction)trans, NamePrefix + "spInsertItemVersion", Utility.CreateIntegerParam("@ItemId", itemId), Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), Utility.CreateNvarcharParam("@Name", name, 255), Utility.CreateNtextParam("@Description", description), Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), Utility.CreateDateTimeParam("@StartDate", startDate), Utility.CreateDateTimeParam("@EndDate", endDate), Utility.CreateIntegerParam("@LanguageId", languageId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId), Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), Utility.CreateIntegerParam("@DisplayTabId", displayTabId), Utility.CreateBitParam("@Disabled", disabled), Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), Utility.CreateNvarcharParam("@url", url, 255)), CultureInfo.InvariantCulture);
+            return Convert.ToInt32(SqlHelper.ExecuteScalar((SqlTransaction)trans, NamePrefix + "spInsertItemVersion", Utility.CreateIntegerParam("@ItemId", itemId), Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), Utility.CreateNvarcharParam("@Name", name, 255), Utility.CreateNtextParam("@Description", description), Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), Utility.CreateDateTimeParam("@StartDate", startDate), Utility.CreateDateTimeParam("@EndDate", endDate), Utility.CreateIntegerParam("@LanguageId", languageId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId), Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), Utility.CreateIntegerParam("@DisplayTabId", displayTabId), Utility.CreateBitParam("@Disabled", disabled), Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), Utility.CreateNvarcharParam("@url", url, 255), Utility.CreateBitParam("@newWindow", newWindow)), CultureInfo.InvariantCulture);
         }
 
         public override void AddItemVersionSetting(int itemVersionId, string controlName, string propertyName, string propertyValue)

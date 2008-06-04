@@ -35,6 +35,20 @@ namespace Engage.Dnn.Publish
         private int pageId;
         private bool useCache = true;
 
+        private bool useUrls = false;
+        public bool UseUrls
+        {
+            get
+            {
+                return useUrls;
+            }
+            set
+            {
+                useUrls = value;
+            }
+        }
+
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -931,12 +945,9 @@ namespace Engage.Dnn.Publish
             versionInfoObject = i;
         }
 
-        private void BindCurrentItem()
+        protected Item BindItemData(int itemId)
         {
             Item i = null;
-            //check for version id
-            int itemId = ItemId;
-
             string currentItemType = Item.GetItemType(itemId);
             bool getitem = true;
             if (itemId > 0)
@@ -954,15 +965,14 @@ namespace Engage.Dnn.Publish
                     }
 
                     //TODO: bind the tags to this version
-
-                   
+                    
                     if (getitem || !UseCache)
                     {
                         i = Article.GetArticle(itemId, PortalId);
                         if (ItemVersionId > 0)
                         {
                             i = Article.GetArticleVersion(ItemVersionId, PortalId);
-                           
+
                         }
 
                         if (i != null)
@@ -1088,8 +1098,18 @@ namespace Engage.Dnn.Publish
 
                     }
                 }
-                versionInfoObject = i;
+                
             }
+            return i;
+        }
+
+        private void BindCurrentItem()
+        {
+            Item i = null;
+            //check for version id
+            int itemId = ItemId;
+            versionInfoObject = BindItemData(itemId);
+
         }
 
         protected void BindItemData(bool createNew)
@@ -1181,6 +1201,23 @@ namespace Engage.Dnn.Publish
             //}
             #endregion
         }
+
+        public string GetItemLinkTarget(object itemId)
+        {
+            int curItemId;
+            Int32.TryParse(itemId.ToString(), out curItemId);
+            if (curItemId > 0)
+            {
+                Item i = BindItemData(curItemId);
+                if (i.NewWindow)
+                {
+                    return "_blank";
+                }
+            }
+            return "";
+        }
+
+
 
         protected string BuildOtherParameters()
         {

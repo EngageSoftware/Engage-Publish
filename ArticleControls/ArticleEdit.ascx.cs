@@ -210,15 +210,18 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         }
 
+       
+
         private void Page_Load(object sender, EventArgs e)
         {
             try
             {
+            
+
                 DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
                 Article av = (Article)VersionInfoObject;
                 if (!Page.IsPostBack)
                 {
-
                     //check to see if we're dealing with a new Item, if so set the parentid based on the querystring
                     if (av.IsNew)
                     {
@@ -421,6 +424,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void Page_PreRender(object sender, EventArgs e)
         {
+            
             //the ItemRelationships control doesn't bind until after this Page_Load,
             //so we need to use the PreRender to see whether there are articles
             bool thereAreRelatedArticles = relatedArticlesRelationships.GetSelectedItemIds().Length > 0;

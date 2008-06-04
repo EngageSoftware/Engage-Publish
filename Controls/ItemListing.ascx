@@ -10,10 +10,10 @@
 				    <asp:Panel ID="pnlThumbnail" runat="server" cssclass="item_listing_thumbnail"><asp:Image runat="server" ID="imgThumbnail" ImageUrl='<%# GetThumbnailUrl(DataBinder.Eval(Container.DataItem, "Thumbnail")) %>' CssClass="item_listing_thumbnail_image" AlternateText='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'></asp:Image></asp:Panel>
 				    <asp:Panel ID="pnlCategory" runat="server" cssclass="item_listing_category"><asp:Label runat="server" ID="lblCategory" Text='<%# DataBinder.Eval(Container.DataItem, "CategoryName") %>'></asp:Label></asp:Panel>
 				    <asp:Panel ID="pnlTitle" runat="server" cssclass="item_listing_title">
-				        <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'></asp:HyperLink>
+				        <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'></asp:HyperLink>
 				    </asp:Panel>
 				    <asp:Panel ID="pnlDescription" runat="server" cssclass="item_listing_abstract"><asp:Label runat="server" ID="lblDescription" Text='<%# DataBinder.Eval(Container.DataItem, "ChildDescription") %>'></asp:Label></asp:Panel>
-				    <asp:Panel ID="pnlReadMore" runat="server" cssclass="item_listing_readmore"><asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore"></asp:HyperLink></asp:Panel>
+				    <asp:Panel ID="pnlReadMore" runat="server" cssclass="item_listing_readmore"><asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'></asp:HyperLink></asp:Panel>
 			    </div>
 		    </itemtemplate>
 		    <footertemplate>

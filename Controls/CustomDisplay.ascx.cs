@@ -98,8 +98,6 @@ namespace Engage.Dnn.Publish.Controls
             RecordView();
 
             //SetPageTitle();
-
-
             categoryId = ItemId;
             customDisplaySettings = new CustomDisplaySettings(Settings, TabModuleId);
 
@@ -133,8 +131,6 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.Attributes.Add("type", "application/rss+xml");
                 lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
 
-
-
                 if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
                     lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
@@ -145,9 +141,7 @@ namespace Engage.Dnn.Publish.Controls
                     lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
                 }
                 SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
-
             }
-
 
             //store the URL into session for the return to list options
             if (UseSessionForReturnToList(PortalId))
@@ -155,9 +149,8 @@ namespace Engage.Dnn.Publish.Controls
                 Session["PublishListLink"] = Request.Url.PathAndQuery.ToString();
             }
 
-
             //check if admin, enable edit links
-            if (IsAdmin || IsAuthor || UserInfo.IsSuperUser)
+            if ((IsAdmin || IsAuthor || UserInfo.IsSuperUser) && IsEditable)
             {
                 visibility = true;
                 editText = Localization.GetString("EditText", LocalResourceFile);
@@ -204,6 +197,7 @@ namespace Engage.Dnn.Publish.Controls
                 //Panel pnlCategory = (Panel)e.Item.FindControl("pnlCategory");
                 Panel pnlTitle = (Panel)e.Item.FindControl("pnlTitle");
                 Panel pnlDate = (Panel)e.Item.FindControl("pnlDate");
+                
                 Panel pnlAuthor = (Panel)e.Item.FindControl("pnlAuthor");
                 Panel pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
                 Panel pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");

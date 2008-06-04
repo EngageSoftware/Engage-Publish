@@ -56,7 +56,8 @@
                      ShowTabs="true" 
                      ShowLog="false" 
                      ShowTrack="false" 
-                     Required="False"/>
+                     Required="False" 
+                     ShowNewWindow="true"/>
                 </div>
             </asp:Panel>
         </ContentTemplate></asp:UpdatePanel>

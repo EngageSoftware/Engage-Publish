@@ -167,7 +167,9 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     if (!Utility.IsDisabled(itemId, PortalId))
                     {
+                        Item curItem = this.BindItemData(itemId);
                         hl.NavigateUrl = GetItemLinkUrl(itemId);
+                        if (curItem.NewWindow) hl.Target = "_blank";
                     }
                     hl.Text = child.Text;
 

@@ -134,6 +134,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     if (!c.Disabled)
                     {
                         lnkName.NavigateUrl = GetItemLinkUrl(c.ItemId);
+                        if (c.NewWindow) lnkName.Target = "_blank";
                     }
                  }
 
@@ -149,6 +150,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     if (!c.Disabled)
                     {
                         lnkThumbnail.NavigateUrl = GetItemLinkUrl(c.ItemId);
+                        if (c.NewWindow) lnkThumbnail.Target = "_blank";
                     }
                 }
 

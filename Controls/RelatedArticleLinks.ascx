@@ -9,7 +9,7 @@
 					<headertemplate>
 					</headertemplate>
 					<itemtemplate>
-						<div class="relatedArticle"><asp:HyperLink ID="lnkRelatedArticle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ItemId"), PortalId) %>' Text='<%# DataBinder.Eval(Container.DataItem, "Name") %>' runat="server"></asp:HyperLink></div>
+						<div class="relatedArticle"><asp:HyperLink ID="lnkRelatedArticle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ItemId"), PortalId) %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "Name") %>' runat="server"></asp:HyperLink></div>
 					</itemtemplate>
 					<footertemplate>
 					</footertemplate>

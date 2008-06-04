@@ -43,6 +43,9 @@ namespace Engage.Dnn.Publish
         private int originalItemVersionId = -1;
         private string name = string.Empty;
         private string url = string.Empty;
+
+        private bool newWindow = false;
+
         private string description = string.Empty;
         private string itemVersionDate = string.Empty;
         private string startDate = string.Empty;
@@ -174,7 +177,7 @@ namespace Engage.Dnn.Publish
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
                 this.Name, this.Description, this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
-                this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url);
+                this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url, newWindow);
             this.originalItemVersionId = this.ItemVersionId;
             this.itemVersionId = ivd;
         }
@@ -763,6 +766,14 @@ namespace Engage.Dnn.Publish
             set { url = value; }
         }
 
+        [XmlElement(Order = 36)]
+        public bool NewWindow
+        {
+            get { return newWindow; }
+            set { newWindow = value; }
+        }
+
+
         [XmlIgnore]
         public string GetItemExternalUrl
         {
@@ -862,14 +873,14 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().AddItem(trans, itemTypeId, portalId, moduleId, itemIdentifier);
         }
 
-        public static int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
+        public static int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
         {
-            return DataProvider.Instance().AddItemVersion(itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url);
+            return DataProvider.Instance().AddItemVersion(itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow);
         }
 
-        public static int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url)
+        public static int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
         {
-            return DataProvider.Instance().AddItemVersion(trans, itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url);
+            return DataProvider.Instance().AddItemVersion(trans, itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow);
         }
 
         public static IDataReader GetItems(int itemTypeId, int portalId)

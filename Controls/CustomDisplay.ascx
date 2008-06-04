@@ -12,7 +12,7 @@
             
             <div class='categoryItemList altCategoryItemList <%# GetItemTypeCssClass(Container.DataItem) %>'>
 		            <asp:Panel ID="pnlThumbnail" runat="server" cssclass='itemThumbnail'>
-		                <a href='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'>
+		                <a href='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'>
 		                    <asp:Image runat="server" ID="imgThumbnail" ImageUrl='<%# GetThumbnailUrl(DataBinder.Eval(Container.DataItem, "Thumbnail")) %>' CssClass="thumbnailImage" AlternateText='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
 		                </a>
 		            </asp:Panel>
@@ -21,7 +21,7 @@
 		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
 		                </asp:Panel>
 		                <h2>
-		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
@@ -36,14 +36,14 @@
 		                <asp:Label runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
-		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore"/>
+		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		            </asp:Panel>
 	            </div>
             </AlternatingItemTemplate>
             <itemtemplate>
 	            <div class='categoryItemList <%# GetItemTypeCssClass(Container.DataItem) %>'>
 		            <asp:Panel ID="pnlThumbnail" runat="server" cssclass='itemThumbnail'>
-		                <a href='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'>
+		                <a href='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'>
 		                    <asp:Image runat="server" ID="imgThumbnail" ImageUrl='<%# GetThumbnailUrl(DataBinder.Eval(Container.DataItem, "Thumbnail")) %>' CssClass="thumbnailImage" AlternateText='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
 		                </a>
 		            </asp:Panel>
@@ -52,7 +52,7 @@
 		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
 		                </asp:Panel>
 		                <h2>
-		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
+		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'  target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
@@ -67,7 +67,7 @@
 		                <asp:Label runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
-		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore"/>
+		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		            </asp:Panel>
 	            </div>
             </itemtemplate>

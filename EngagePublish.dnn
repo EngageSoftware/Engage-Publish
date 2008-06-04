@@ -6,7 +6,7 @@
       <foldername>EngagePublish</foldername>
       <modulename>Engage: Publish</modulename>
       <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
-      <version>05.01.05</version>
+      <version>05.01.06</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <resourcefile>Resources.zip</resourcefile>
@@ -274,6 +274,11 @@
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>05.01.05.SqlDataProvider</name>
         </file>
+
+        <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>05.01.06.SqlDataProvider</name>
+        </file>
         <file>
           <name>ReadMe.txt</name>
         </file>
@@ -305,7 +310,7 @@
       <foldername>EngagePublish</foldername>
       <modulename>Engage: Publish Search Indexer</modulename>
       <description>The Search Indexer for the Engage: Publish module by Engage Software (www.engagesoftware.com). To use this module you should create a page that is visible to all users, but not shown in the menu. Install the Search Indexer as the ONLY module on this page. DNN will use this module in order to index your content, and search results will link through this page, though users will never land and stay on the page as they will be redirected to the appropriate page for an article or category.</description>
-      <version>05.01.05</version>
+      <version>05.01.06</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Search.SearchProvider</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>
@@ -333,7 +338,7 @@
       <foldername>EngagePublish\Tags</foldername>
       <modulename>Engage: Publish Tag Cloud</modulename>
       <description>The tag cloud for the Engage: Publish module.</description>
-      <version>05.01.05</version>
+      <version>05.01.06</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>
