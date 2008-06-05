@@ -2194,6 +2194,30 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@moduleId", moduleId));
         }
 
+        #region "find items"
+        public override int FindItemId(string name, int authorUserId)
+        {
+
+            StringBuilder sql = new StringBuilder(741);
+            sql.Append("select itemId ");
+            sql.Append(" from ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " {0}vwItems il ", NamePrefix);
+            sql.Append(" where name like @Name");
+            sql.Append(" and authoruserid = @AuthorUserId");
+            SqlParameter sqlName = new SqlParameter("@Name", name);
+            SqlParameter sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
+            
+            object o = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString(), sqlName, sqlAuthorUserId);
+            if (o != null)
+            {
+                return Convert.ToInt32(o.ToString());
+            }
+            return -1;
+            
+        }
+        #endregion
+
+
         #region tags
 
         public override DataTable GetTags(int portalId)

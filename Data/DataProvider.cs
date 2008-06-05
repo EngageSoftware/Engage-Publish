@@ -262,6 +262,12 @@ namespace Engage.Dnn.Publish.Data
 
         internal abstract IDataReader GetModuleByModuleId(int moduleId);
 
+#region "Find Items"
+        public abstract int FindItemId(string name, int authorUserId);
+#endregion
+
+
+
         #region Publish Reports
         public abstract DataTable GetItemViewPaging(int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId);
         #endregion

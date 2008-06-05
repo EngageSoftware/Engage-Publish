@@ -253,9 +253,6 @@ namespace Engage.Dnn.Publish
         public static void UpdateItemVersion(IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
         { DataProvider.Instance().UpdateItemVersion(trans, itemId, itemVersionId, approvalStatusId, userId, approvalComments); }
 
-
-
-
         protected void UpdateApprovalStatus(IDbTransaction trans)
         {
             if (this.ApprovalStatusId == ApprovalStatus.Waiting.GetId())
@@ -810,6 +807,13 @@ namespace Engage.Dnn.Publish
 
         #endregion
 
+        public static bool DoesItemExist(string name, int authorUserId)
+        {
+            //try loading the item, if we get an ItemID back we know this already exists.
+            if (DataProvider.Instance().FindItemId(name, authorUserId) > 0) return true;
+            return false;
+        }
+
         public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
         {
             IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
@@ -990,7 +994,6 @@ namespace Engage.Dnn.Publish
             //If the XML doesn't specify a start date we'll default to Today.
             if (string.IsNullOrEmpty(StartDate)) StartDate = DateTime.Now.ToString();
 
-
             UserInfo user = UserController.GetUserByName(portalId, Author);
             if (user != null)
             {
@@ -1059,9 +1062,7 @@ namespace Engage.Dnn.Publish
             //Approval Status
             ApprovalStatus status = ApprovalStatus.GetFromName(ApprovalStatusName, typeof(ApprovalStatus));
             approvalStatusId = status.GetId();
-
         }
-
 
         #endregion
     }
