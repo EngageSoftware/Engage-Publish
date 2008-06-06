@@ -12,12 +12,11 @@ using System.Collections;
 
 namespace Engage.Dnn.Publish.Services
 {
-
     [XmlRpcService(
     Name = "blogger",
     Description = "This is a sample XML-RPC service illustrating method calls with simple parameters and return type.",
     AutoDocumentation = true)]
-    [XmlRpcUrl("http://www.gtrifonov.com/MetaBlogApi.ashx")]
+    [XmlRpcUrl("http://localhost/dotnetnuke_2/desktopmodules/engagepublish/services/MetaWeblog.asmx")]
 
     public class blogger : XmlRpcService
     {
@@ -257,5 +256,62 @@ namespace Engage.Dnn.Publish.Services
 
             return rstruct;
         }
+
+
+        /// <summary>
+        /// Returns user's blogs
+        /// </summary>
+        /// <param name="appKey">Application Key</param>
+        /// <param name="username">UserName</param>
+        /// <param name="password">Password</param>
+        /// <returns></returns>
+        [XmlRpcMethod("blogger.getUsersBlogs")]
+        public XmlRpcStruct[] getUsersBlogs(string appKey, string username, string password)
+        {
+            Authenticate(username, password);
+
+            //Create structure for blog list
+            XmlRpcStruct rpcstruct = new XmlRpcStruct();
+            rpcstruct.Add("blogid", "123"); // Blog Id
+            rpcstruct.Add("blogName", "main"); // Blog Name
+            rpcstruct.Add("url", BaseUrl); // Blog URL
+            XmlRpcStruct[] datarpcstruct = new XmlRpcStruct[] { rpcstruct };
+            return datarpcstruct;
+        }
+
+        /// <summary>
+        /// Set blog post template
+        /// </summary>
+        /// <param name="appKey">Application Key</param>
+        /// <param name="blogid">Blog Identificator</param>
+        /// <param name="username">UserName</param>
+        /// <param name="password">Password</param>
+        /// <param name="template">Template content</param>
+        /// <param name="templateType">Template Type</param>
+        /// <returns></returns>
+        [XmlRpcMethod("metaWeblog.setTemplate")]
+        public bool setTemplate(string appKey, string blogid, string username, string password, string template, string templateType)
+        {
+            Authenticate(username, password);
+            /*
+                TODO: Add implementation
+            */
+            throw new System.NotImplementedException("SetTemplate is not implemented");
+        }
+
+        /// <summary>
+        /// Returns rss web host
+        /// </summary>
+        private static string BaseUrl
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["RSSWebHost"];
+            }
+
+        }
+   
+            
+
     }
 }
