@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Engage.Dnn.Publish.Services
 {
-    
+
     [XmlRpcService(
     Name = "blogger",
     Description = "This is a sample XML-RPC service illustrating method calls with simple parameters and return type.",
@@ -25,10 +25,11 @@ namespace Engage.Dnn.Publish.Services
         //TODO: fix portal id
         public static int PortalId
         {
-            get{
+            get
+            {
                 return portalId;
             }
-            set{portalId = value;}
+            set { portalId = value; }
         }
 
         /// <summary>
@@ -39,18 +40,17 @@ namespace Engage.Dnn.Publish.Services
         private static UserInfo Authenticate(string username, string password)
         {
             //Check user credentials using form authentication
-            
-            
+
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            UserInfo objUser = UserController.ValidateUser(portalId, username, password,"","","",ref loginStatus);
-                
-            if (loginStatus == UserLoginStatus.LOGIN_FAILURE|| loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
+            UserInfo objUser = UserController.ValidateUser(portalId, username, password, "", "", "", ref loginStatus);
+
+            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
             {
                 throw new System.Security.Authentication.InvalidCredentialException("Invalid credential.Access denied");
             }
 
             return objUser;
-            
+
         }
 
         public string LocalResourceFile
@@ -126,7 +126,7 @@ namespace Engage.Dnn.Publish.Services
 
             //Email A Friend
             string hostEmailFriendSetting = HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture));
-            
+
             setting = Setting.EmailAFriend;
             setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
@@ -147,14 +147,14 @@ namespace Engage.Dnn.Publish.Services
             av.VersionSettings.Add(itemVersionSetting);
 
             if (ModuleBase.IsPublishCommentTypeForPortal(portalId))
-            {                    
+            {
                 //forum comments
                 setting = Setting.ForumComments;
                 setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
                 itemVersionSetting = new ItemVersionSetting(setting);
                 av.VersionSettings.Add(itemVersionSetting);
             }
-            
+
             //include all articles from the parent category
             setting = Setting.ArticleSettingIncludeCategories;
             setting.PropertyValue = false.ToString();
@@ -201,6 +201,61 @@ namespace Engage.Dnn.Publish.Services
             itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
 
+        }
+
+
+        [XmlRpcMethod("metaWeblog.getCategories")]
+        public XmlRpcStruct[] getCategories(string blogid, string username, string password)
+        {
+            XmlRpcStruct rpcstruct = new XmlRpcStruct();
+
+            rpcstruct.Add("description", "description");
+            rpcstruct.Add("categoryid", "123");
+            rpcstruct.Add("title", "title");
+
+            return new XmlRpcStruct[] { rpcstruct };
+        }
+
+        [XmlRpcMethod("metaWeblog.getRecentPosts")]
+        public XmlRpcStruct[] getRecentPosts(string blogid, string username, string password, int numberOfPosts)
+        {
+            XmlRpcStruct[] posts = new XmlRpcStruct[5];
+
+            return posts;
+        }
+        [XmlRpcMethod("metaWeblog.getTemplate")]
+        public string getTemplate(string appKey, string blogid, string username, string password, string templateType)
+        {
+            string id = string.Empty;
+            return id;
+        }
+        [XmlRpcMethod("metaWeblog.editPost")]
+        public bool editPost(string postid, string username, string password, XmlRpcStruct rpcstruct, bool publish)
+        {
+
+            return true;
+        }
+        [XmlRpcMethod("metaWeblog.getPost")]
+        public XmlRpcStruct getPost(string postid, string username, string password)
+        {
+
+            XmlRpcStruct rpcstruct = null;
+            return rpcstruct;
+        }
+
+        [XmlRpcMethod("metaWeblog.deletePost")]
+        public bool deletePost(string appKey, string postid, string username, string password, bool publish)
+        {
+            return false;
+
+        }
+        [XmlRpcMethod("metaWeblog.newMediaObject")]
+        public XmlRpcStruct newMediaObject(string blogid, string username, string password, XmlRpcStruct rpcstruct)
+        {
+            XmlRpcStruct rstruct = null;
+            bool allowed = System.Web.Security.FormsAuthentication.Authenticate(username, password);
+
+            return rstruct;
         }
     }
 }
