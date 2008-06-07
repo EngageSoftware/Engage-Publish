@@ -24,6 +24,10 @@ using System.Globalization;
 
 namespace Engage.Dnn.Publish.Services
 {
+    //Most of this code is from
+
+    //http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
+
 
     //TODO: none of this is localized;
 
