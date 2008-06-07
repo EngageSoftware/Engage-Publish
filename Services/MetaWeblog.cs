@@ -24,6 +24,14 @@ using System.Globalization;
 
 namespace Engage.Dnn.Publish.Services
 {
+
+    //TODO: none of this is localized;
+
+    //TODO: Thoughts on MetaBlogAPI
+    //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.
+    //Right now Publish works well as a single blog, not multiple blogs for different users
+    //Need to figure out how we're going to do our parsing
+
     public class MetaWeblog : XmlRpcService, IMetaWeblog
     {
         #region Public Constructors
@@ -39,6 +47,7 @@ namespace Engage.Dnn.Publish.Services
         string IMetaWeblog.AddPost(string blogid, string username, string password,
             Post post, bool publish)
         {
+            //TODO: something fails in here
 
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
@@ -106,20 +115,23 @@ namespace Engage.Dnn.Publish.Services
         bool IMetaWeblog.UpdatePost(string postid, string username, string password,
             Post post, bool publish)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
+
                 bool result = false;
 
                 // TODO: Implement your own logic to add the post and set the result
 
                 return result;
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Update post");
         }
 
         Post IMetaWeblog.GetPost(string postid, string username, string password)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
                 Post post = new Post();
 
@@ -127,7 +139,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return post;
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Get Post");
         }
 
         CategoryInfo[] IMetaWeblog.GetCategories(string blogid, string username, string password)
@@ -140,13 +152,14 @@ namespace Engage.Dnn.Publish.Services
 
                 return categoryInfos.ToArray();
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Get Categories");
         }
 
         Post[] IMetaWeblog.GetRecentPosts(string blogid, string username, string password,
             int numberOfPosts)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
                 List<Post> posts = new List<Post>();
 
@@ -154,7 +167,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return posts.ToArray();
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Get Recent Posts");
         }
 
         MediaObjectInfo IMetaWeblog.NewMediaObject(string blogid, string username, string password,
@@ -168,12 +181,13 @@ namespace Engage.Dnn.Publish.Services
 
                 return objectInfo;
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! New Media Object");
         }
 
         bool IMetaWeblog.DeletePost(string key, string postid, string username, string password, bool publish)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
                 bool result = false;
 
@@ -181,33 +195,49 @@ namespace Engage.Dnn.Publish.Services
 
                 return result;
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Delete Post");
         }
 
         BlogInfo[] IMetaWeblog.GetUsersBlogs(string key, string username, string password)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+
+
+            if (ui.UserID > 0)
             {
+                //todo: configure blog info for users
                 List<BlogInfo> infoList = new List<BlogInfo>();
+                BlogInfo bi = new BlogInfo();
+                bi.blogid = "1";
+                bi.blogName = ui.Username;
+
+                bi.url = "http://localhost/dotnetnuke_2/";
+                infoList.Add(bi);
 
                 // TODO: Implement your own logic to get blog info objects and set the infoList
 
                 return infoList.ToArray();
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Failed getting a list of blogs for a user");
         }
 
         UserInfo IMetaWeblog.GetUserInfo(string key, string username, string password)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
                 UserInfo info = new UserInfo();
+                info.email = ui.Email;
+                info.firstname = ui.FirstName;
+                info.lastname = ui.LastName;
+                info.nickname = ui.DisplayName;
+                info.userid = ui.UserID;
 
                 // TODO: Implement your own logic to get user info objects and set the info
 
                 return info;
             }
-            throw new XmlRpcFaultException(0, "User is not valid!");
+            throw new XmlRpcFaultException(0, "User is not valid! Failed at GetUserInfo");
         }
 
         #endregion
@@ -258,13 +288,11 @@ namespace Engage.Dnn.Publish.Services
                 set { portalId = value; }
             }
 
-            public string LocalResourceFile
-            {
-                get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.asmx"; }
-            }
 
             private static void SaveItemVersionSettings(Item av)
             {
+                //TODO: we need item version settings for users, where?
+
 
                 //Printer Friendly
                 string hostPrinterFriendlySetting = HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + PortalId.ToString(CultureInfo.InvariantCulture));
@@ -353,6 +381,10 @@ namespace Engage.Dnn.Publish.Services
             }
 
 
+            public string LocalResourceFile
+            {
+                get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx"; }
+            }
 
     }
 
