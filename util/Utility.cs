@@ -315,6 +315,8 @@ namespace Engage.Dnn.Publish.Util
 
         public static void ClearPublishCache(int portalId)
         {
+
+            //TODO: error handling for this? What happens if the cache has already been cleared in the middle of this?
             string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
             ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
             if (al != null)
