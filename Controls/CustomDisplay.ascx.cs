@@ -197,7 +197,7 @@ namespace Engage.Dnn.Publish.Controls
                 //Panel pnlCategory = (Panel)e.Item.FindControl("pnlCategory");
                 Panel pnlTitle = (Panel)e.Item.FindControl("pnlTitle");
                 Panel pnlDate = (Panel)e.Item.FindControl("pnlDate");
-                
+
                 Panel pnlAuthor = (Panel)e.Item.FindControl("pnlAuthor");
                 Panel pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
                 Panel pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
@@ -301,9 +301,9 @@ namespace Engage.Dnn.Publish.Controls
             SetPagingLink(queryString, lnkPrevious, PageId - 1 > 0, PageId - 1, TabId);
         }
 
-// ReSharper disable SuggestBaseTypeForParameter
+        // ReSharper disable SuggestBaseTypeForParameter
         private static void SetPagingLink(NameValueCollection queryString, HyperLink link, bool showLink, int linkedPageId, int tabId)
-// ReSharper restore SuggestBaseTypeForParameter
+        // ReSharper restore SuggestBaseTypeForParameter
         {
             if (showLink)
             {
@@ -342,9 +342,9 @@ namespace Engage.Dnn.Publish.Controls
         {
             //setup the caching for CustomDisplay
 
-            string cacheKey = Utility.CacheKeyPublishCustomDisplay + 
-                    customDisplaySettings.SortOption.Replace(" ", "").ToString(CultureInfo.InvariantCulture) + 
-                        categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) + 
+            string cacheKey = Utility.CacheKeyPublishCustomDisplay +
+                    customDisplaySettings.SortOption.Replace(" ", "").ToString(CultureInfo.InvariantCulture) +
+                        categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) +
                             "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
             DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
             //check for tags
@@ -462,43 +462,43 @@ namespace Engage.Dnn.Publish.Controls
 
             return column + " " + sortDirection;
         }
-/*
-        private static DataTable FormatDataTable(DataTable dt)
-        {
-            //This method renames the columns of the datatable so that the databinding will work correctly for some of the methods which return columns that are not named the same.  BD
-            DataTable newDataTable = new DataTable(dt.TableName, dt.Namespace);
-            newDataTable.Locale = CultureInfo.InvariantCulture;
-            newDataTable.Columns.Add("CategoryName", typeof(string), "");
-            newDataTable.Columns.Add("Thumbnail");
-            newDataTable.Columns.Add("ChildName");
-            newDataTable.Columns.Add("ChildItemId", typeof(int));
-            newDataTable.Columns.Add("ChildDescription");
-            newDataTable.Columns.Add("LastUpdated");
-            newDataTable.Columns.Add("StartDate");
-            newDataTable.Columns.Add("CreatedDate", typeof(DateTime));
-            newDataTable.Columns.Add("DisplayName");
-            newDataTable.Columns.Add("ChildItemTypeId", typeof(int));
+        /*
+                private static DataTable FormatDataTable(DataTable dt)
+                {
+                    //This method renames the columns of the datatable so that the databinding will work correctly for some of the methods which return columns that are not named the same.  BD
+                    DataTable newDataTable = new DataTable(dt.TableName, dt.Namespace);
+                    newDataTable.Locale = CultureInfo.InvariantCulture;
+                    newDataTable.Columns.Add("CategoryName", typeof(string), "");
+                    newDataTable.Columns.Add("Thumbnail");
+                    newDataTable.Columns.Add("ChildName");
+                    newDataTable.Columns.Add("ChildItemId", typeof(int));
+                    newDataTable.Columns.Add("ChildDescription");
+                    newDataTable.Columns.Add("LastUpdated");
+                    newDataTable.Columns.Add("StartDate");
+                    newDataTable.Columns.Add("CreatedDate", typeof(DateTime));
+                    newDataTable.Columns.Add("DisplayName");
+                    newDataTable.Columns.Add("ChildItemTypeId", typeof(int));
 
-            foreach (DataRow row in dt.Rows)
-            {
-                DataRow newRow = newDataTable.NewRow();
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        DataRow newRow = newDataTable.NewRow();
 
-                newRow["Thumbnail"] = row["Thumbnail"];
-                newRow["ChildName"] = row["Name"];
-                newRow["ChildItemId"] = Convert.ToInt32(row["ItemId"], CultureInfo.InvariantCulture);
-                newRow["ChildDescription"] = row["Description"];
-                newRow["LastUpdated"] = row["LastUpdated"];
-                newRow["StartDate"] = row["StartDate"];
-                newRow["CreatedDate"] = row["CreatedDate"];
-                newRow["DisplayName"] = row["DisplayName"];
-                newRow["ChildItemTypeId"] = row["ItemTypeId"];
+                        newRow["Thumbnail"] = row["Thumbnail"];
+                        newRow["ChildName"] = row["Name"];
+                        newRow["ChildItemId"] = Convert.ToInt32(row["ItemId"], CultureInfo.InvariantCulture);
+                        newRow["ChildDescription"] = row["Description"];
+                        newRow["LastUpdated"] = row["LastUpdated"];
+                        newRow["StartDate"] = row["StartDate"];
+                        newRow["CreatedDate"] = row["CreatedDate"];
+                        newRow["DisplayName"] = row["DisplayName"];
+                        newRow["ChildItemTypeId"] = row["ItemTypeId"];
 
-                newDataTable.Rows.Add(newRow);
-            }
+                        newDataTable.Rows.Add(newRow);
+                    }
 
-            return newDataTable;
-        }
-*/
+                    return newDataTable;
+                }
+        */
         protected string FormatDate(object date)
         {
             if (date != null)
@@ -547,8 +547,7 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     url = HttpContext.Current.Request.RawUrl.ToString();
                 }
-
-
+                
                 this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
             }
         }
