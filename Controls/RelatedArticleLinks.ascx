@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.RelatedArticleLinks" Codebehind="RelatedArticleLinks.ascx.cs" %>
-<div id="divRelatedArticles">
-	<asp:LinkButton ID="btnShowRelatedItem" Runat="server"> Show Related Articles</asp:LinkButton>
+<div id="divRelatedArticles" class="Normal">
+	<asp:LinkButton ID="btnShowRelatedItem" Runat="server" resourcekey="btnShowRelatedItem"></asp:LinkButton>
 	<div id="divRelatedLinks" runat="server" visible="False">
 		<div id="ra_top"></div>
 			<div id="ra_back">
