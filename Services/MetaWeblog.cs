@@ -235,7 +235,7 @@ namespace Engage.Dnn.Publish.Services
                 info.firstname = ui.FirstName;
                 info.lastname = ui.LastName;
                 info.nickname = ui.DisplayName;
-                info.userid = ui.UserID;
+                info.userid = ui.UserID.ToString();
 
                 // TODO: Implement your own logic to get user info objects and set the info
 
