@@ -43,6 +43,7 @@
     <Reference Include="AjaxControlToolkit, Version=1.0.10920.32880, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="CommunityCredit, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
@@ -540,6 +541,7 @@
     </Compile>
     <Compile Include="util\ApprovalStatus.cs" />
     <Compile Include="util\Breadcrumb.cs" />
+    <Compile Include="util\CommunityController.cs" />
     <Compile Include="util\PublishToken.cs" />
     <Compile Include="util\Ping.cs" />
     <Compile Include="util\FeaturesController.cs" />
@@ -931,6 +933,7 @@
     <Content Include="Services\MetaWeblogOld.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\CommunityCredit.dll" />
     <Content Include="Controls\App_LocalResources\RelatedArticleLinks.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

@@ -151,6 +151,7 @@
         <include name="**/*.csproj" />
         <include name="**/*.build" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/CommunityCredit.dll" />
         <exclude name="**/DNNDebug.aspx" />
         <exclude name="**/Install/**/*" />
         <exclude name="**/_sgbak/*" />
@@ -195,6 +196,7 @@
         <include name="**/licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/CommunityCredit.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
         <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
@@ -227,6 +229,7 @@
         <include name="**/licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/CommunityCredit.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
         <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
@@ -259,6 +262,7 @@
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/CommunityCredit.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
         <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />
@@ -293,6 +297,7 @@
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
         <include name="**/CookComputing.XmlRpcV2.dll" />
+        <include name="**/CommunityCredit.dll" />
         <include name="**/Engage.Dnn.UserFeedback.dll" />
         <include name="**/AjaxControlToolkit.dll" />
         <exclude name="**/DNNDebug.aspx" />

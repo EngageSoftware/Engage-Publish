@@ -385,11 +385,19 @@
 				<asp:RangeValidator ID="rvArticleTextHeight" resourcekey="rvArticleTextHeight" runat="server" ControlToValidate="txtArticleTextHeight" Type="integer" MaximumValue="10000" MinimumValue="50"></asp:RangeValidator>
 			</td>
 		</tr>
-		
+        <tr>
+		    <td colspan="2" class="Head"><asp:label ID="lblCommunityServices" resourcekey="lblCommunityServices" runat="server" />
+		    </td>
+		</tr>
+<% 
+/*
         <tr>
 		    <td colspan="2" class="Head"><asp:label ID="lblPingServices" resourcekey="lblPingServices" runat="server" />
 		    </td>
 		</tr>
+		*/
+		
+ %>		
 		<tr>
 			<td>
 				<dnn:label id="lblEnablePing" runat="server" controlname="chkEnablePing" text="Enable Pinging Services:"></dnn:label>
@@ -413,6 +421,16 @@
 			<td>
 				<asp:TextBox ID="txtPingChangedUrl" runat="server" TextMode="SingleLine" Columns="50"></asp:TextBox>
 			</td>
+		</tr>
+		
+		<tr>
+		    <td>
+		        <dnn:label id="lblCommunityCredit" runat="server" controlname="chkEnableCommunityCredit"></dnn:label>
+		    </td>
+		
+		    <td>
+		        <asp:CheckBox ID="chkEnableCommunityCredit" runat="server" />
+		    </td>
 		</tr>
     </table>
 </ContentTemplate>

@@ -262,6 +262,9 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishPingServers = "PublishPingServers";
         public const string PublishPingChangedUrl = "PublishPingChangedUrl";
 
+        //Community Settings
+        public const string PublishEnableCommunityCredit = "PublishEnableCommunityCredit";
+
         //Forum settings
         public const string PublishForumProviderType = "PublishForumProviderType";
         
