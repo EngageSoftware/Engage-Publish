@@ -31,7 +31,7 @@
     <property name="config" value="debug" if="${debug}" />
     <property name="config" value="release" unless="${debug}" />
 
-    <sysinfo />
+    <sysinfo failonerror="false" />
 
     <if test="${verbose}">
       <echo message="solutionName: ${subproject.name}" />
