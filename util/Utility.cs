@@ -231,7 +231,7 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
 
         public const string PublishDefaultTagPage = "PublishDefaultTagPage";
-        
+
         public const string PublishRatingMaximum = "PublishRatingMaximum";
         public const string PublishRatingAnonymous = "PublishRatingAnonymous";
         public const string PublishComment = "PublishComment";
@@ -249,7 +249,7 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishAutoApproveContent = "PublishAutoApproveContent";
         public const string PublishSubscriberKey = "PublishSubscriberKey";
         public const string PublishSubscriberUrl = "PublishSubscriberUrl";
-        
+
         public const string PublishCommentApproval = "PublishCommentApproval";
         public const string PublishCommentAnonymous = "PublishCommentAnonymous";
         public const string PublishCommentAutoApprove = "PublishCommentAutoApprove";
@@ -267,7 +267,7 @@ namespace Engage.Dnn.Publish.Util
 
         //Forum settings
         public const string PublishForumProviderType = "PublishForumProviderType";
-        
+
         /*******************Cache Key Constants********************/
         public const string CacheKeyPublishCategory = "PublishCacheKey_";
 
@@ -318,18 +318,21 @@ namespace Engage.Dnn.Publish.Util
 
         public static void ClearPublishCache(int portalId)
         {
-
-            //TODO: error handling for this? What happens if the cache has already been cleared in the middle of this?
-            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
-            ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
-            if (al != null)
-            {
-                foreach (string s in al)
+            //TODO: should we lock this?
+            //lock (cacheLock)
+            //{
+                //TODO: error handling for this? What happens if the cache has already been cleared in the middle of this?
+                string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+                ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
+                if (al != null)
                 {
-                    DataCache.RemoveCache(s);
+                    foreach (string s in al)
+                    {
+                        DataCache.RemoveCache(s);
+                    }
                 }
-            }
-            DataCache.RemoveCache(cacheKey);
+                DataCache.RemoveCache(cacheKey);
+            //}
         }
 
         public static string DesktopModuleFolderName
@@ -674,7 +677,7 @@ namespace Engage.Dnn.Publish.Util
             return dt;
         }
 
-        public static string BuildEditUrl(int itemId, int tabId, int moduleId )
+        public static string BuildEditUrl(int itemId, int tabId, int moduleId)
         {
             int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
             int typeId = Item.GetItemTypeId(id);
@@ -737,7 +740,7 @@ namespace Engage.Dnn.Publish.Util
             }
             catch (Exception)
             {
-                
+
                 //if we get an error here then return false as it's not linkable
                 return false;
             }
@@ -822,7 +825,7 @@ namespace Engage.Dnn.Publish.Util
         {
             if (pageid > 1 && ModuleBase.AllowArticlePagingForPortal(portalid))
             {
-                    return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
+                return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
             }
             else return string.Empty;
         }
