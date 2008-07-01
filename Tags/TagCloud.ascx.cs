@@ -71,11 +71,18 @@ namespace Engage.Dnn.Publish.Tags
 
                 phTagCloud.Controls.Clear();
                 if (dt != null)
-                {                   
+                {
+                    Utility.SortDataTableSingleParam(dt, "TotalItems desc");
+                    //Get the most popular and lease popular tag totals
+                    mostPopularTagCount = Convert.ToInt32(dt.Rows[0]["TotalItems"].ToString());
+                    leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count-1]["TotalItems"].ToString());
+                
                     Utility.SortDataTableSingleParam(dt, "name asc");
 
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
                     Utility.AddCacheKey(tagCacheKey, PortalId);
+
+                    
 
                     foreach (DataRow dr in dt.DefaultView.Table.Rows)
                     {
@@ -103,33 +110,39 @@ namespace Engage.Dnn.Publish.Tags
 
         private string tagSizeClass(int itemCount)
         {
-            double result = Convert.ToDouble(itemCount) / Convert.ToDouble(popularTagsTotal);
+            //mostPopularTagCount
+            //leastPopularTagCount
+
+            int tagCountSpread = mostPopularTagCount - leastPopularTagCount;
+            
+
+            double result = Convert.ToDouble(itemCount) / Convert.ToDouble(tagCountSpread);
             string resultString = "size3";
-            if ((0 <= result) &&  (result <=.0833))
+            if ((0 <= result) &&  (result <=1666))
             {
                 resultString = "size1";     
             }
-            if ((.0833 < result) && (result <= .1666))
+            if ((.1667 < result) && (result <= .3333))
             {
                 resultString = "size2";
             }
 
-            if ((.1666 < result) && (result <= .25))
+            if ((.3334 < result) && (result <= .4999))
             {
                 resultString = "size3";
             }
 
-            if ((.25 < result) && (result <= .3333))
+            if ((.5 < result) && (result <= .6666))
             {
                 resultString = "size4";
             }
 
-            if ((.3333 < result) && (result <= .4166))
+            if ((.6667 < result) && (result <= .8333))
             {
                 resultString = "size5";
             }
 
-            if ((.4166 < result))
+            if ((.8334 < result))
             {
                 resultString = "size6";
             }
@@ -147,6 +160,8 @@ namespace Engage.Dnn.Publish.Tags
         }
 
         private int popularTagsTotal;
+        private int mostPopularTagCount;
+        private int leastPopularTagCount;
 
 
         private string BuildTagLink(string name)
@@ -180,6 +195,7 @@ namespace Engage.Dnn.Publish.Tags
                     }
                 }
                 popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
+
                 //if (popularTagsTotal == null) popularTagsTotal = 0;
             }
 
