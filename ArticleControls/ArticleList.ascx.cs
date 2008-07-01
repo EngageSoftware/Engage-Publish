@@ -19,6 +19,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Exceptions;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
+using CommunityCredit;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
@@ -37,7 +38,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
             this.cboWorkflow.SelectedIndexChanged += this.cboWorkflow_SelectedIndexChanged;
-            
+
             this.Load += this.Page_Load;
 
         }
@@ -153,7 +154,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             DataSet ds = DataProvider.Instance().GetAdminItemListing(categoryId, ItemType.Article.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", PortalId);
             return ds.Tables[0];
         }
-                
+
         private void BindData()
         {
 
@@ -165,7 +166,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             dgItems.Visible = true;
             lblMessage.Visible = false;
 
-            if (dgItems.Rows.Count<1)
+            if (dgItems.Rows.Count < 1)
             {
                 if (UseApprovals)
                 {
@@ -333,7 +334,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     if (hlId != null && cb != null && cb.Checked)
                     {
                         //approve
-                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);                        
+                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);
                         a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         a.UpdateApprovalStatus();
 
@@ -376,6 +377,45 @@ namespace Engage.Dnn.Publish.ArticleControls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void cmdCredit_Click(object sender, EventArgs e)
+        {
+            //parse through the checked items in the list and approve them.
+            try
+            {
+                foreach (GridViewRow gvr in dgItems.Rows)
+                {
+                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
+                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    if (hlId != null && cb != null && cb.Checked)
+                    {
+                        //approve
+                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);
+                        
+                        CommunityCreditService cs = new CommunityCreditService("CH$(&0958", "christoc");
+                       
+                        CommunityCredit.Components.Blog b = new CommunityCredit.Components.Blog();
+                        
+                        b.Date = Convert.ToDateTime(a.StartDate);
+                        b.FeedUrl = "http://feeds.feedburner.com/ChrisHammond";
+                        b.Title = a.Name;
+                        b.Url = GetItemLinkUrl(a.ItemId);
+                        cs.AutoSubmitBlog(b);
+
+                    }
+                }
+
+                this.lblMessage.Text = "Submitted";
+                lblMessage.Visible = true;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+
 
         #endregion
 

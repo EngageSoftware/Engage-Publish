@@ -135,9 +135,6 @@ namespace Engage.Dnn.Publish.Admin
                 objHostSettings.UpdateHostSetting(Utility.PublishPingServers + PortalId.ToString(CultureInfo.InvariantCulture), txtPingServers.Text.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture), txtPingChangedUrl.Text.ToString(CultureInfo.InvariantCulture));
 
-                /*Community Settings*/
-                objHostSettings.UpdateHostSetting(Utility.PublishEnableCommunityCredit + PortalId.ToString(CultureInfo.InvariantCulture), chkEnableCommunityCredit.Checked.ToString(CultureInfo.InvariantCulture));
-
                 objHostSettings.UpdateHostSetting(Utility.PublishForumProviderType + PortalId.ToString(CultureInfo.InvariantCulture), ddlCommentsType.SelectedValue);
     
                 //objHostSettings.UpdateHostSetting(Utility.PublishCommentApproval + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentApproval.Checked.ToString(CultureInfo.InvariantCulture));
@@ -250,8 +247,6 @@ namespace Engage.Dnn.Publish.Admin
             chkDefaultShowAuthor.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowAuthor, PortalId, false);
             chkDefaultShowTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowTags, PortalId, false);
             chkEnablePing.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePing, PortalId, false);
-
-            chkEnableCommunityCredit.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableCommunityCredit, PortalId, false);
 
             chkDefaultEmailAFriend.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultEmailAFriend, PortalId, true);
             chkDefaultPrinterFriendly.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultPrinterFriendly, PortalId, true);

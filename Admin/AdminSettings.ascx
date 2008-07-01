@@ -422,17 +422,7 @@
 				<asp:TextBox ID="txtPingChangedUrl" runat="server" TextMode="SingleLine" Columns="50"></asp:TextBox>
 			</td>
 		</tr>
-		
-		<tr>
-		    <td>
-		        <dnn:label id="lblCommunityCredit" runat="server" controlname="chkEnableCommunityCredit"></dnn:label>
-		    </td>
-		
-		    <td>
-		        <asp:CheckBox ID="chkEnableCommunityCredit" runat="server" />
-		    </td>
-		</tr>
-    </table>
+	</table>
 </ContentTemplate>
 </asp:UpdatePanel>
     <br />

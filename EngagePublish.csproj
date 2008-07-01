@@ -43,7 +43,10 @@
     <Reference Include="AjaxControlToolkit, Version=1.0.10920.32880, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="CommunityCredit, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="CommunityCredit, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CommunityCredit.dll</HintPath>
+    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
@@ -539,10 +542,11 @@
     <Compile Include="Tags\TagEntry.ascx.designer.cs">
       <DependentUpon>TagEntry.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Tokens\TokenParameters.cs" />
     <Compile Include="util\ApprovalStatus.cs" />
     <Compile Include="util\Breadcrumb.cs" />
     <Compile Include="util\CommunityController.cs" />
-    <Compile Include="util\PublishToken.cs" />
+    <Compile Include="Tokens\Token.cs" />
     <Compile Include="util\Ping.cs" />
     <Compile Include="util\FeaturesController.cs" />
     <Compile Include="util\ItemType.cs" />
@@ -606,7 +610,6 @@
     <Content Include="CategoryControls\CategorySearchOptions.ascx" />
     <Content Include="CategoryControls\CategorySort.ascx" />
     <Content Include="CategoryControls\main.js" />
-    <Content Include="Content.Publish.xml" />
     <Content Include="Controls\AdminItemSearch.ascx" />
     <Content Include="Controls\Breadcrumb.ascx" />
     <Content Include="Controls\CommentDisplay.ascx" />
@@ -917,6 +920,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.01.05.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.01.06.SqlDataProvider" />
     <Content Include="Services\MetaWeblog.ashx" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.01.07.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -937,6 +941,9 @@
     <Content Include="Controls\App_LocalResources\RelatedArticleLinks.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tokens\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
