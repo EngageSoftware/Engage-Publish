@@ -44,6 +44,20 @@ namespace Engage.Dnn.Publish.Controls
 			this.Load += new System.EventHandler(this.Page_Load);
 		}
 
+        private bool linksPopulated;
+        public bool LinksPopulated
+        {
+            get
+            {
+                return linksPopulated;
+            }
+            set
+            {
+                linksPopulated = value;
+            }
+        }
+
+
 		private void Page_Load(object sender, System.EventArgs e)
 		{
 			try 
@@ -73,12 +87,14 @@ namespace Engage.Dnn.Publish.Controls
 				{
 					btnShowRelatedItem.Visible = false;	
 					divRelatedLinks.Visible = false;
+                    LinksPopulated = false;
 				} 
 				else
 				{
                     lstItems.DataSource = related;
                     lstItems.DataBind();
                     divRelatedLinks.Visible = true;
+                    LinksPopulated = true;
 				}
 			} 
 			catch (Exception exc) 
