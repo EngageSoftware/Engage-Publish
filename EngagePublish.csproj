@@ -322,6 +322,7 @@
     <Compile Include="Comment.cs" />
     <Compile Include="Controls\AdminItemSearch.ascx.cs">
       <DependentUpon>AdminItemSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\AdminItemSearch.ascx.designer.cs">
       <DependentUpon>AdminItemSearch.ascx</DependentUpon>
@@ -954,6 +955,7 @@
     <Content Include="Admin\App_LocalResources\QuickStats.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="05.01.07.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tokens\App_LocalResources\" />

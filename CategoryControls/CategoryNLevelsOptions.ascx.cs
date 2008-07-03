@@ -79,37 +79,37 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                 }
 
-                if (String.IsNullOrEmpty(OrderString))
-                {
-                    o = Settings["nSortOrder"];
-                    if (o != null)
-                    {
-                        OrderString = Settings["nSortOrder"].ToString();
-                    }
-                }
-                else
-                {
-                    o = OrderString;
-                }
+                //if (String.IsNullOrEmpty(OrderString))
+                //{
+                //    o = Settings["nSortOrder"];
+                //    if (o != null)
+                //    {
+                //        OrderString = Settings["nSortOrder"].ToString();
+                //    }
+                //}
+                //else
+                //{
+                //    o = OrderString;
+                //}
 
-                if (o != null && !string.IsNullOrEmpty(o.ToString()) )
-                {
-                    DataTable dt = GetAllChildrenDataTable();
-                    if (dt != null)
-                    {
-                        lstItems.DataSource = Utility.SortDataTable(dt, o.ToString());
-                        lstItems.DataBind();
-                    }
-                }
-                else 
-                {
-                    DataTable dt = GetAllChildrenDataTable();
-                    if (dt != null)
-                    {
-                        lstItems.DataSource = dt;
-                        lstItems.DataBind();
-                    }
-                }
+                //if (o != null && !string.IsNullOrEmpty(o.ToString()) )
+                //{
+                //    DataTable dt = GetAllChildrenDataTable();
+                //    if (dt != null)
+                //    {
+                //        lstItems.DataSource = Utility.SortDataTable(dt, o.ToString());
+                //        lstItems.DataBind();
+                //    }
+                //}
+                //else 
+                //{
+                //    DataTable dt = GetAllChildrenDataTable();
+                //    if (dt != null)
+                //    {
+                //        lstItems.DataSource = dt;
+                //        lstItems.DataBind();
+                //    }
+                //}
             }
             catch (Exception exc)
             {
@@ -119,20 +119,6 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #endregion
 
-        #region Optional Interfaces
-
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return Actions;
-            }
-        }
-
-
-        #endregion
 
         public override void UpdateSettings()
         {
@@ -144,88 +130,88 @@ namespace Engage.Dnn.Publish.CategoryControls
             modules.UpdateTabModuleSetting(this.TabModuleId, "ShowParentItem", this.chkShowParentItem.Checked.ToString());
 
             //create a sorted list of items in the listbox for use when displaying.
-            OrderString = BuildOrderList();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "nSortOrder", OrderString);
+            //OrderString = BuildOrderList();
+            //modules.UpdateTabModuleSetting(this.TabModuleId, "nSortOrder", OrderString);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void ddlCategoryList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataTable dt = GetAllChildrenDataTable();
-            if (dt != null)
-            {
-                lstItems.DataSource = Utility.SortDataTable(dt, BuildOrderList());
-                lstItems.DataBind();
-            }
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        //protected void ddlCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    DataTable dt = GetAllChildrenDataTable();
+        //    if (dt != null)
+        //    {
+        //        lstItems.DataSource = Utility.SortDataTable(dt, BuildOrderList());
+        //        lstItems.DataBind();
+        //    }
+        //}
 
-        private DataTable GetAllChildrenDataTable()
-        {
-            if (ddlCategoryList.SelectedValue != "-1")
-            {
-                DataTable dt = ItemRelationship.GetAllChildrenNLevelsInDataTable(Convert.ToInt32(ddlCategoryList.SelectedValue, CultureInfo.InvariantCulture), -1, -1, PortalId);
-                return dt;
-            }
-            else
-            {
-                return null;    
-            }
-        }
+        //private DataTable GetAllChildrenDataTable()
+        //{
+        //    if (ddlCategoryList.SelectedValue != "-1")
+        //    {
+        //        DataTable dt = ItemRelationship.GetAllChildrenNLevelsInDataTable(Convert.ToInt32(ddlCategoryList.SelectedValue, CultureInfo.InvariantCulture), -1, -1, PortalId);
+        //        return dt;
+        //    }
+        //    else
+        //    {
+        //        return null;    
+        //    }
+        //}
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void imgUp_Click(object sender, ImageClickEventArgs e)
-        {
-            int index = this.lstItems.SelectedIndex;
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        //protected void imgUp_Click(object sender, ImageClickEventArgs e)
+        //{
+        //    int index = this.lstItems.SelectedIndex;
 
-            if (index < 1) { return; }
+        //    if (index < 1) { return; }
 
-            ListItem li = this.lstItems.SelectedItem;
-            this.lstItems.Items.Remove(li);
-            this.lstItems.Items.Insert(index - 1, li);
-            OrderString = BuildOrderList();
-        }
+        //    ListItem li = this.lstItems.SelectedItem;
+        //    this.lstItems.Items.Remove(li);
+        //    this.lstItems.Items.Insert(index - 1, li);
+        //    OrderString = BuildOrderList();
+        //}
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void imgDown_Click(object sender, ImageClickEventArgs e)
-        {
-            int index = this.lstItems.SelectedIndex;
-            if (index == this.lstItems.Items.Count - 1) { return; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        //protected void imgDown_Click(object sender, ImageClickEventArgs e)
+        //{
+        //    int index = this.lstItems.SelectedIndex;
+        //    if (index == this.lstItems.Items.Count - 1) { return; }
 
-            ListItem li = this.lstItems.SelectedItem;
-            this.lstItems.Items.Remove(li);
-            this.lstItems.Items.Insert(index + 1, li);
-            OrderString = BuildOrderList();
-        }
+        //    ListItem li = this.lstItems.SelectedItem;
+        //    this.lstItems.Items.Remove(li);
+        //    this.lstItems.Items.Insert(index + 1, li);
+        //    OrderString = BuildOrderList();
+        //}
 
-        private string BuildOrderList()
-        {
-            StringBuilder sb = new StringBuilder(400);
-            foreach (ListItem li in lstItems.Items)
-            {
-                sb.Append(li.Value);
-                sb.Append(",");
-            }
-            return sb.ToString();
-        }
+        //private string BuildOrderList()
+        //{
+        //    StringBuilder sb = new StringBuilder(400);
+        //    foreach (ListItem li in lstItems.Items)
+        //    {
+        //        sb.Append(li.Value);
+        //        sb.Append(",");
+        //    }
+        //    return sb.ToString();
+        //}
 
-        private string OrderString
-        {
-            set
-            {
-                Session["orderString" + TabModuleId.ToString(CultureInfo.InvariantCulture)] = value;
-            }
-            get
-            {
-                object o = Session["orderString" + TabModuleId.ToString(CultureInfo.InvariantCulture)];
+        //private string OrderString
+        //{
+        //    set
+        //    {
+        //        Session["orderString" + TabModuleId.ToString(CultureInfo.InvariantCulture)] = value;
+        //    }
+        //    get
+        //    {
+        //        object o = Session["orderString" + TabModuleId.ToString(CultureInfo.InvariantCulture)];
 
-                if (o != null)
-                {
-                    return o.ToString();
-                }
+        //        if (o != null)
+        //        {
+        //            return o.ToString();
+        //        }
 
-                return string.Empty;
-            }
-        }
+        //        return string.Empty;
+        //    }
+        //}
     }
 }
 

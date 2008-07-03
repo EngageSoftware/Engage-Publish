@@ -223,7 +223,7 @@
     <value>Select the type of display to see the available options.</value>
   </data>
   <data name="CategoryNLevels.Text" xml:space="preserve">
-    <value>Category Relationships</value>
+    <value>Category Navigation (nested list)</value>
   </data>
   <data name="lblChooseCategory.Help1" xml:space="preserve">
     <value>This is the level in the tree you want to start from.</value>

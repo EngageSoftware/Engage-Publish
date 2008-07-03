@@ -84,24 +84,24 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (root == null)
             {
-                if (Settings.Contains("nSortOrder"))
-                {
-                    if (!String.IsNullOrEmpty(Settings["nSortOrder"].ToString()))
-                    {
-                        DataTable dtchildren = ItemRelationship.GetAllChildrenNLevelsInDataTable(ItemId, nLevels, -1, PortalId);
-                        DataTable dt = Utility.SortDataTable(dtchildren, Settings["nSortOrder"].ToString());
-                        root = ItemRelationship.BuildHierarchy(dt);
-                    }
-                    else
-                    {
-                        root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
-                    }
-                }
-                else
-                {
+                //if (Settings.Contains("nSortOrder"))
+                //{
+                //    if (!String.IsNullOrEmpty(Settings["nSortOrder"].ToString()))
+                //    {
+                //        DataTable dtchildren = ItemRelationship.GetAllChildrenNLevelsInDataTable(ItemId, nLevels, -1, PortalId);
+                //        DataTable dt = Utility.SortDataTable(dtchildren, Settings["nSortOrder"].ToString());
+                //        root = ItemRelationship.BuildHierarchy(dt);
+                //    }
+                //    else
+                //    {
+                //        root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
+                //    }
+                //}
+                //else
+                //{
 
                     root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
-                }
+                //}
 
                 if (root != null)
                 {
@@ -143,6 +143,8 @@ namespace Engage.Dnn.Publish.CategoryControls
                             }
                         }
                     }
+
+                    
                     phNLevels.Controls.Add(hlParent);
                     phNLevels.Controls.Add(new LiteralControl("</li>"));
                 }
@@ -200,8 +202,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                 
             }
 
-            
-            
         }
 
         #region Interface Members

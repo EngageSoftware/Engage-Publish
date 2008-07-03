@@ -10,7 +10,9 @@
                     <dnn:label ID="lblChooseCategory" runat="server" ResourceKey="lblChooseCategory"></dnn:label>
                 </td>
                 <td class="NormalTextBox">
-                    <asp:DropDownList ID="ddlCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCategoryList_SelectedIndexChanged">
+                    <asp:DropDownList ID="ddlCategoryList" runat="server" >
+                   <%-- AutoPostBack="true"  OnSelectedIndexChanged="ddlCategoryList_SelectedIndexChanged"--%>
+                    
                     </asp:DropDownList></td>
             </tr>
             <tr>
@@ -20,12 +22,12 @@
                 <td class="NormalTextBox">
                     <asp:TextBox ID="txtNLevels" runat="server"></asp:TextBox></td>
             </tr>
-            <!--
+<%--
     <tr>
         <td class="SubHead"><dnn:label id="lblChooseMItems" Runat="server" ResourceKey="lblChooseMItems"></dnn:label></td>
         <td class="NormalTextBox"><asp:TextBox id="txtMItems" Runat="server"></asp:TextBox></td>
     </tr>
--->
+--%>
             <tr>
                 <td class="SubHead">
                     <dnn:label ID="lblHighlightCurrentItem" runat="server" ResourceKey="lblHighlightCurrentItem" />
@@ -40,6 +42,7 @@
                 <td class="NormalTextBox">
                     <asp:CheckBox runat="server" ID="chkShowParentItem" Checked="true" /></td>
             </tr>
+<%--
             <tr>
                 <td class="SubHead">
                     <dnn:label ID="lblSortItems" runat="server" ResourceKey="lblSortItems" EnableViewState="true"></dnn:label>
@@ -52,4 +55,5 @@
                     <asp:ImageButton ID="imgDown" runat="server" ImageUrl="~/desktopmodules/EngagePublish/images/dn.gif"
                         AlternateText="Down" OnClick="imgDown_Click"></asp:ImageButton></td>
             </tr>
+--%>
         </table>
