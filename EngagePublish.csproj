@@ -142,6 +142,13 @@
     <Compile Include="Admin\CommentList.ascx.designer.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\QuickStats.ascx.cs">
+      <DependentUpon>QuickStats.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\QuickStats.ascx.designer.cs">
+      <DependentUpon>QuickStats.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\DeleteItem.ascx.cs">
       <DependentUpon>DeleteItem.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -937,8 +944,14 @@
     <Content Include="Services\MetaWeblogOld.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\QuickStats.ascx" />
     <Content Include="bin\CommunityCredit.dll" />
     <Content Include="Controls\App_LocalResources\RelatedArticleLinks.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin\App_LocalResources\QuickStats.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

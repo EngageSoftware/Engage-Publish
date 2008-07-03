@@ -2012,7 +2012,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and ci.itemTypeID = ");
             sql.Append(childTypeId);
             sql.Append(" order by ");
-            sql.Append("ci.CreatedDate desc");
+            sql.Append("ci.StartDate desc");
 
             DataTable dt = Instance().GetDataTable(sql.ToString(), portalId);
 
@@ -2046,7 +2046,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and parent.StartDate < GetDate() ");
             sql.Append(" and (parent.EndDate > GetDate() OR parent.EndDate is null) ");
             sql.Append(" and il.StartDate < GetDate() ");
-            sql.Append("order by il.CreatedDate desc ");
+            sql.Append("order by child.StartDate desc ");
 
             DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateIntegerParam("@portalId", portalId), Utility.CreateIntegerParam("@categoryId", categoryId), Utility.CreateIntegerParam("@itemTypeId", childTypeId)).Tables[0];
 
@@ -2217,6 +2217,17 @@ namespace Engage.Dnn.Publish.Data
         }
         #endregion
 
+
+        #region stats
+        //statistics
+        //Get number of items waiting for approval
+        public override int WaitingForApprovalCount(int portalId)
+        {
+            string sql = String.Format(CultureInfo.InvariantCulture, "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", ObjectQualifier+ModuleQualifier, Util.ApprovalStatus.Waiting.GetId().ToString());
+
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
+        }
+        #endregion
 
         #region tags
 

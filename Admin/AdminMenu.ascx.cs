@@ -286,6 +286,15 @@ namespace Engage.Dnn.Publish.Admin
             else
             {
                 lnkUpdateStatus.Visible = true;
+
+                //Load stats
+                //TODO: hide this if necessary
+                phStats.Visible = true;
+                string statControlToLoad = "QuickStats.ascx";
+                ModuleBase mbl = (ModuleBase)LoadControl(statControlToLoad);
+                mbl.ModuleConfiguration = ModuleConfiguration;
+                mbl.ID = System.IO.Path.GetFileNameWithoutExtension(statControlToLoad);
+                phStats.Controls.Add(mbl);
             }
 
             phLink.Visible = true;

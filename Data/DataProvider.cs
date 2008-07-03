@@ -267,6 +267,9 @@ namespace Engage.Dnn.Publish.Data
 #endregion
 
 
+        #region stats
+        public abstract int WaitingForApprovalCount(int portalId);
+        #endregion
 
         #region Publish Reports
         public abstract DataTable GetItemViewPaging(int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId);

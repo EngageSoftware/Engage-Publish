@@ -641,7 +641,7 @@ Module CSS
 {
 	clear:both;
 	width:100%;
-	padding-bottom:15px;	
+	padding-bottom:9px;	
 }
 
 #divAdminLinks ul
@@ -657,6 +657,20 @@ Module CSS
 	list-style-type:none;
 	padding-right:5px;
 	float:left;
+}
+
+#PublishStatsContent
+{
+	text-indent:15px;
+}
+
+#PublishStatsContent a
+{
+	text-decoration:underline;
+}
+#PublishStatsLabel
+{
+	font-weight:bold;
 }
 
 .lblApprovalResults
