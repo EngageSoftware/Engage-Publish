@@ -111,6 +111,7 @@ where
      t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, child.SortOrder, t.[Level]+1  
     from   
      @hierarchy t  
+     /* WE NEED TO GET THE SORT ORDER FOR THE CHILD NOT THE PARENT */
      join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)  
      join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)  
     where   
@@ -127,6 +128,7 @@ where
      t.ChildItemID, child.ChildItemID, child.ChildItemVersionId, child.RelationshipTypeID, 0, child.SortOrder, t.[Level]+1  
     from   
      @hierarchy t  
+     /* WE NEED TO GET THE SORT ORDER FOR THE CHILD NOT THE PARENT */
      join {databaseOwner}[{objectQualifier}Publish_ItemRelationship] child on (t.ChildItemID = child.ParentItemID)  
      join {databaseOwner}[{objectQualifier}Publish_vwItems] vi on (child.ChildItemId = vi.ItemId and child.ChildItemVersionId = vi.ItemVersionId)  
     where   
