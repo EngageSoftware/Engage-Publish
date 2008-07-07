@@ -449,12 +449,17 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" join ");
             sql.Append(NamePrefix);
             sql.Append("vwitems vpar on (vpar.ItemId = gcil.ParentItemId) ");
+
+            sql.Append(" join ");
+            sql.Append(NamePrefix);
+            sql.Append("vwrelationships vr on (vi.itemVersionId = vr.ChildItemVersionId and vr.ParentItemId = vpar.ItemId  and vr.relationshiptypeid=gcil.RelationshipTypeId)");
+
             sql.Append(" where vpar.IsCurrentVersion = 1 AND vi.PortalId = ");  
             sql.Append(portalId);
             sql.Append(" AND vi.StartDate < GetDate() AND (vi.EndDate > GetDate() OR vi.EndDate is null) ");
 
             //TODO: mItems isn't being used in fnGetChildItemsLevel 
-            sql.Append(" order by  gcil.[Level], gcil.SortOrder asc, vi.ItemTypeId desc, vpar.[Name], vi.[Name] ");
+            sql.Append(" order by  gcil.[Level], vr.SortOrder asc, vi.ItemTypeId desc, vpar.[Name], vi.[Name] ");
 
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
             DataTable dt = ds.Tables[0];

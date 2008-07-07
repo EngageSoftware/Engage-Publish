@@ -280,10 +280,6 @@
           <name>05.01.06.SqlDataProvider</name>
         </file>
         <file>
-          <path>Providers\DataProviders\SqlDataProvider</path>
-          <name>05.01.07.SqlDataProvider</name>
-        </file>
-        <file>
           <name>ReadMe.txt</name>
         </file>
         <file>
