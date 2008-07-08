@@ -111,15 +111,18 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             }
 
-           phNLevels.Controls.Add(new LiteralControl("<ul>"));
+           
 
            //add the parent category to the list first.
            if (showParentItem)
            {
+               
                //TODO: get the category from cache
                 Category parentItem = Category.GetCategory(ItemId);
+                #region showparent
                 if (parentItem != null)
                 {
+                    phNLevels.Controls.Add(new LiteralControl("<ul>"));
                     phNLevels.Controls.Add(new LiteralControl("<li>"));
 
                     HyperLink hlParent = new HyperLink();
@@ -143,15 +146,25 @@ namespace Engage.Dnn.Publish.CategoryControls
                             }
                         }
                     }
-
-                    
                     phNLevels.Controls.Add(hlParent);
                     phNLevels.Controls.Add(new LiteralControl("</li>"));
-                }
-            }
 
-            FillNLevelList(root, phNLevels);
-            phNLevels.Controls.Add(new LiteralControl("</ul>"));
+                    FillNLevelList(root, phNLevels);
+                    phNLevels.Controls.Add(new LiteralControl("</ul>"));
+                }
+                else
+                {
+                    FillNLevelList(root, phNLevels);
+                }
+               #endregion
+
+           }
+           else
+           {
+               FillNLevelList(root, phNLevels);
+           }
+
+            
         }
 
 
