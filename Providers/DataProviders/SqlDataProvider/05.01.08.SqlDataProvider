@@ -1,58 +1,274 @@
-﻿if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Tokens] DROP CONSTRAINT FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens
+﻿/* add new column to Publish_Item called RevisingUserId this will become the "editor" of a version, leaving AuthorUserId to be a selectable list of authors */
+
+if not exists(select * from sysobjects so join syscolumns sc on (so.id = sc.id) where so.[Name] = '{objectQualifier}Publish_ItemVersion' and sc.[Name] = 'RevisingUserId')
+ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion ADD
+	RevisingUserId int NULL
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Tokens]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table {databaseOwner}[{objectQualifier}Publish_Tokens]
+/* Set the default authorId to be the authorId of the current itemversionid */
+
+
+UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	set RevisingUserId = (select authoruserid 
+				from {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv1
+				where iv1.ItemVersionId = iv.ItemVersionId)
+	from 
+		{databaseOwner}[{objectQualifier}Publish_ItemVersion] iv
+
+
 GO
 
-CREATE TABLE {databaseOwner}{objectQualifier}Publish_Tokens
+/*Update Stored Procedures */
+
+drop procedure {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
+(
+	@ItemId [int]
+	, @OriginalItemVersionID [int]
+	, @Name [nvarchar] (255)
+	, @Description ntext
+	, @ItemVersionDate [datetime]
+	, @StartDate [datetime]
+	, @EndDate [datetime]
+	, @LanguageId [int]
+	, @AuthorUserId [int]
+	, @RevisingUserId [int]
+	, @MetaKeywords [nvarchar] (255)
+	, @MetaDescription [nvarchar] (400)
+	, @MetaTitle [nvarchar](255)
+	, @DisplayTabId [int]
+	, @Disabled [bit] = 0
+	, @Thumbnail [varchar] (300)
+	, @ItemVersionIdentifier Uniqueidentifier
+	, @Url [nvarchar] (255)
+	, @NewWindow [bit] = 0
+)
+AS 
+
+declare @keywords nvarchar(255)
+if (len(ltrim(rtrim(@MetaKeywords))) > 0) set @keywords = @MetaKeywords
+
+declare @metaDesc nvarchar(400)
+if (len(ltrim(rtrim(@MetaDescription))) > 0) set @metaDesc = @MetaDescription
+
+declare @title nvarchar(255)
+if (len(ltrim(rtrim(@MetaTitle))) > 0) set @title = @MetaTitle
+
+declare @oivId int
+if (@OriginalItemVersionID <> -1) set @oivId = @OriginalItemVersionID
+
+declare @dtId int
+if (@DisplayTabId <> -1) set @dtId = @DisplayTabId
+
+declare @lId int
+if (@LanguageId = -1) 
+	set @lId = 1
+else
+	set @lId = @LanguageId
+
+INSERT INTO {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+(
+	[ItemID]
+	, [OriginalItemVersionID]
+	, [Name]
+	, [Description]
+	, [ItemVersionDate]
+	, [StartDate]
+	, [Enddate]
+	, [LanguageId]
+	, [AuthorUserId]
+	, [RevisingUserId]
+	, [MetaKeywords]
+	, [MetaDescription]
+	, [MetaTitle]
+	, [DisplayTabId]
+	, [LastUpdated]
+	, [Disabled]
+	, [Thumbnail]
+	, [ItemVersionIdentifier]
+	, [Url]
+	, [NewWindow]
+	)
+ 
+VALUES 
+	( 
+	@ItemId 
+	, @oivId
+	, @Name 
+	, @Description
+	, @ItemVersionDate
+	, @StartDate
+	, @EndDate
+	, @lId
+	, @AuthorUserId
+	, @RevisingUserId
+	, @keywords
+	, @metaDesc
+	, @title
+	, @dtId
+	, GetDate()
+	, @disabled
+	, @Thumbnail
+	, @ItemVersionIdentifier
+	, @Url
+	, @NewWindow
+	)
+ 
+select SCOPE_IDENTITY()
+return SCOPE_IDENTITY()
+
+GO
+
+
+
+/*Update views */
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItems]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItems] as
+SELECT
+	cast(case i.ApprovedItemVersionID when iv.ItemVersionID then 1 else 0 end as bit) as IsCurrentVersion,
+	iv.ItemId, iv.OriginalItemVersionId, iv.ItemVersionDate, iv.StartDate, iv.EndDate, 
+	iv.LanguageId, iv.AuthorUserId, iv.ApprovalStatusId, iv.ApprovalDate, iv.ApprovalUserId, iv.ApprovalComments, 
+	iv.MetaKeywords, iv.MetaDescription, iv.MetaTitle, iv.DisplayTabId, iv.LastUpdated,
+	i.PortalID, i.ItemTypeID, iv.ItemVersionID, it.[Name] as ItemType,
+	iv.[Name], iv.[Description], iv.Disabled, i.CreatedDate, i.ApprovedItemVersionID
+	, 'Thumbnail' = case when fl.FileName is null then iv.Thumbnail else fl.Folder + fl.FileName end,
+	ModuleId, i.ItemIdentifier, iv.ItemVersionIdentifier, iv.Url, iv.NewWindow, iv.RevisingUserId
+
+FROM
+	 {databaseOwner}[{objectQualifier}Publish_Item] i
+	join {databaseOwner}[{objectQualifier}Publish_ItemType] it on (i.ItemTypeID = it.ItemTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemID = iv.ItemID)
+	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwParentItems] as
+select
+	
+	r.childItemId, r.childItemVersionId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
+
+
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwCategories]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwCategories]
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwCategories] as
+select
+	 cv.SortOrder, cv.ChildDisplayTabId, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwChildItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwChildItems]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwChildItems] as
+select
+	r.ParentItemID, r.sortorder, child.*, rt.RelationshipName, rt.RelationshipTypeID
+from 
+	 {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems] child on (r.ChildItemVersionID = child.ItemVersionID)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwComments]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwComments]
+GO
+
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwComments] as
+select
+	c.commentId, c.commentText, c.approvalStatusId, c.userId, i.itemId
+	, c.itemVersionId, c.createdDate, c.lastUpdated, c.firstName, c.lastName, c.emailAddress, c.ratingId, r.rating
+	, c.url
+from
+	[{objectQualifier}Publish_Comment] c
+	JOIN [{objectQualifier}Publish_vwItems] i on (c.itemVersionId = i.ItemVersionId)
+	LEFT JOIN [{objectQualifier}Publish_Rating] r on (c.ratingId = r.ratingId)
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwParentItems]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwParentItems]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwParentItems] as
+select
+	
+	r.childItemId, r.childItemVersionId, r.relationshiptypeid, parent.*
+from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
+	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
+	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemListing]
+GO
+
+create view {databaseOwner}[{objectQualifier}Publish_vwItemListing] as
+select
+	catDetail.ItemId, catDetail.[Name] CategoryName, 
+	child.[Name] ChildName, child.[Description] ChildDescription, child.ItemTypeId ChildItemTypeId,
+	child.ItemId ChildItemId, 
+	cat.PortalId, child.LastUpdated, child.AuthorUserId
+	, child.CreatedDate
+	, child.Thumbnail
+	, catDetail.StartDate
+	, child.Url
+	, child.NewWindow
+	, child.RevisingUserId
+from 
+	{objectQualifier}Publish_fnGetAllCategories() cat
+	join {databaseOwner}[{objectQualifier}Publish_vwItemVersions] catDetail on (cat.ChildItemId = catDetail.ItemId)
+	join {databaseOwner}[{objectQualifier}Publish_vwChildItems] child on (catDetail.ItemId = child.ParentItemId)
+	--join [{objectQualifier}users] u on (u.userId = child.[AuthorUserId])
+where 	catDetail.IsCurrentVersion = 1
+and 	child.IsCurrentVersion = 1
+and 	child.RelationshipTypeId in 
 	(
-	TokenId int NOT NULL IDENTITY (1, 1),
-	TokenTypeId int NOT NULL,
-	TokenName nvarchar(255) NOT NULL,
-	TokenControl nvarchar(255) NULL
-	)  ON [PRIMARY]
+		select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
+		where RelationshipName = 'Item To Parent Category' or RelationshipName = 'Item to Related Category'
+	)
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tokens ADD CONSTRAINT
-	PK_{objectQualifier}Publish_Tokens PRIMARY KEY CLUSTERED 
-	(
-	TokenId
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_TokenParameters]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table {databaseOwner}[{objectQualifier}Publish_TokenParameters]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticles]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwArticles]
 GO
 
 
-
-CREATE TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters
-	(
-	TokenParameterId int NOT NULL IDENTITY (1, 1),
-	TokenId int NOT NULL,
-	TokenParameterName nvarchar(255) NOT NULL,
-	TokenParameterTypeId int NOT NULL
-	)  ON [PRIMARY]
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters ADD CONSTRAINT
-	PK_{objectQualifier}Publish_TokenParameters PRIMARY KEY CLUSTERED 
-	(
-	TokenParameterId
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
+select
+	 av.ArticleText, av.VersionNumber
+	 , av.VersionDescription
+	 , av.ReferenceNumber
+	 , i.*
+	 , (select avg(convert(FLOAT, Rating)) from [{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from [{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
+from 
+	 [{objectQualifier}Publish_vwItems] i 
+	join [{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
 
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters ADD CONSTRAINT
-	FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens FOREIGN KEY
-	(
-	TokenId
-	) REFERENCES {databaseOwner}{objectQualifier}Publish_Tokens
-	(
-	TokenId
-	) ON UPDATE  NO ACTION 
-	 ON DELETE  NO ACTION 	
-GO
+
+

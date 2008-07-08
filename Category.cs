@@ -35,14 +35,14 @@ namespace Engage.Dnn.Publish
 		private int childDisplayTabId = -1;
 		#endregion
 
-        [XmlElement(Order = 35)]
+        [XmlElement(Order = 39)]
 		public int SortOrder
 		{
 			get { return sortOrder;}
 			set { sortOrder = value;}
 		}
 
-        [XmlElement(Order = 36)]
+        [XmlElement(Order = 40)]
 		public int ChildDisplayTabId
 		{
 			get { return childDisplayTabId;}
@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish
 
 
         private string childDisplayTabName = string.Empty;
-        [XmlElement(Order = 37)]
+        [XmlElement(Order = 41)]
         public string ChildDisplayTabName
         {
             get 
@@ -387,7 +387,7 @@ namespace Engage.Dnn.Publish
                     ItemId = -1;
                     ItemVersionId = -1;
                     ModuleId = currentModuleId;
-                    Save(this.AuthorUserId);
+                    Save(this.RevisingUserId);
                 }
             }
         }

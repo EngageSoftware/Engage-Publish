@@ -48,14 +48,14 @@ namespace Engage.Dnn.Publish
 
 		#region Item method implementation
 
-        public override void Save(int authorId)
+        public override void Save(int revisingUserId)
 		{
             IDbConnection newConnection = DataProvider.GetConnection();
 			IDbTransaction trans = newConnection.BeginTransaction();
 
 			try
 			{
-				base.SaveInfo(trans, authorId);
+				base.SaveInfo(trans, revisingUserId);
 				base.UpdateApprovalStatus(trans);
 
 				//update category version now
@@ -180,28 +180,28 @@ namespace Engage.Dnn.Publish
 
 		#endregion
 
-        [XmlElement(Order = 30)]
+        [XmlElement(Order = 39)]
 		public string ArticleText 
 		{
 			get {return this.articleText;}
 			set {this.articleText = value;}
 		}
 
-        [XmlElement(Order = 31)]
+        [XmlElement(Order = 40)]
 		public string VersionNumber 
 		{
 			get {return this.versionNumber;}
 			set {this.versionNumber = value;}
 		}
 
-        [XmlElement(Order = 32)]
+        [XmlElement(Order = 41)]
 		public string VersionDescription 
 		{
 			get {return this.versionDescription;}
 			set {this.versionDescription = value;}
 		}
 
-        [XmlElement(Order = 33)]
+        [XmlElement(Order = 42)]
 		public string ReferenceNumber 
 		{
 			get {return this.referenceNumber;}
@@ -390,7 +390,7 @@ namespace Engage.Dnn.Publish
                     ItemId = -1;
                     ItemVersionId = -1;
                     ModuleId = currentModuleId;
-                    Save(this.AuthorUserId);
+                    Save(this.RevisingUserId);
                 }
             }
         }

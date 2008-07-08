@@ -150,6 +150,10 @@ namespace Engage.Dnn.Publish.Controls
                     VersionInfoObject.Name = txtName.Text;
                     VersionInfoObject.Description = DescriptionText;
                     VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
+
+                    //TODO: check why saving a new item fails
+                    VersionInfoObject.AuthorUserId = UserId;
+                    VersionInfoObject.RevisingUserId = UserId;
 				}
 			} 
 			catch (Exception exc) 

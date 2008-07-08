@@ -52,6 +52,7 @@ namespace Engage.Dnn.Publish
         private string endDate;
         private int languageId = -1;
         private int authorUserId = -1;
+        private int revisingUserId = -1;
         private int approvalStatusId = -1;
         private string approvalDate = string.Empty;
         private int approvalUserId = -1;
@@ -99,7 +100,7 @@ namespace Engage.Dnn.Publish
             get { return this.versionSettings; }
         }
 
-        public abstract void Save(int authorId);
+        public abstract void Save(int revisingUserId);
         public abstract void UpdateApprovalStatus();
         public abstract string EmailApprovalBody { get; }
 
@@ -162,10 +163,11 @@ namespace Engage.Dnn.Publish
             return isValid;
         }
 
-        protected void SaveInfo(IDbTransaction trans, int authorId)
+        protected void SaveInfo(IDbTransaction trans, int revisingId)
         {
             //insert new version or not
-            AuthorUserId = authorId;
+            //AuthorUserId = authorId;
+            RevisingUserId = revisingId;
 
             if (this.IsNew)
             {
@@ -177,7 +179,7 @@ namespace Engage.Dnn.Publish
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
                 this.Name, this.Description, this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
-                this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url, newWindow);
+                this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url, newWindow, this.revisingUserId);
             this.originalItemVersionId = this.ItemVersionId;
             this.itemVersionId = ivd;
         }
@@ -270,7 +272,7 @@ namespace Engage.Dnn.Publish
                 //TODO: this probably should be moved into the check for emails being enabled
                 SendStatusUpdateEmail();
             }
-            UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.authorUserId, this.approvalComments);
+            UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.revisingUserId, this.approvalComments);
         }
 
         private void SendApprovalEmail()
@@ -770,6 +772,35 @@ namespace Engage.Dnn.Publish
             set { newWindow = value; }
         }
 
+        [XmlElement(Order = 37)]
+        public int RevisingUserId
+        {
+            set { this.revisingUserId = value; }
+            get { return this.revisingUserId; }
+        }
+
+        private string originalRevisingUser = string.Empty;
+        [XmlElement(Order = 38)]
+        public string RevisingUser
+        {
+            get
+            {
+                //UserController controller = new UserController();
+                ////verify that the user is a user in this system. 
+                //UserInfo user = controller.GetUserByUsername(portalId, originalAuthor);
+                //if (user != null)
+                //{
+                //    return user.Username;
+                //}
+                //else
+                //{
+                //    return string.Empty;
+                //}
+                return originalRevisingUser;
+            }
+            set { originalRevisingUser = value; }
+        }
+
 
         [XmlIgnore]
         public string GetItemExternalUrl
@@ -877,14 +908,14 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().AddItem(trans, itemTypeId, portalId, moduleId, itemIdentifier);
         }
 
-        public static int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
+        public static int AddItemVersion(int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow, int revisingUserId)
         {
-            return DataProvider.Instance().AddItemVersion(itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow);
+            return DataProvider.Instance().AddItemVersion(itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow, revisingUserId);
         }
 
-        public static int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow)
+        public static int AddItemVersion(IDbTransaction trans, int itemId, int originalItemVersionId, string name, string description, string startDate, string endDate, int languageId, int authorUserId, string metaKeywords, string metaDescription, string metaTitle, int displayTabId, bool disabled, string thumbnail, Guid itemVersionIdentifier, string url, bool newWindow, int revisingUserId)
         {
-            return DataProvider.Instance().AddItemVersion(trans, itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow);
+            return DataProvider.Instance().AddItemVersion(trans, itemId, originalItemVersionId, name, description, startDate, endDate, languageId, authorUserId, metaKeywords, metaDescription, metaTitle, displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow, revisingUserId);
         }
 
         public static IDataReader GetItems(int itemTypeId, int portalId)
@@ -998,11 +1029,25 @@ namespace Engage.Dnn.Publish
             if (user != null)
             {
                 authorUserId = user.UserID;
+                
             }
             else
             {
                 //default to the current user
                 authorUserId = UserController.GetCurrentUserInfo().UserID;
+                
+            }
+
+            //Revising user.
+            user = UserController.GetUserByName(portalId, RevisingUser);
+            if (user != null)
+            {
+                revisingUserId = user.UserID;
+            }
+            else
+            {
+                //default to the current user
+                revisingUserId = UserController.GetCurrentUserInfo().UserID;
             }
 
             //Approving user.
@@ -1014,7 +1059,7 @@ namespace Engage.Dnn.Publish
             else
             {
                 //default to the current user
-                authorUserId = UserController.GetCurrentUserInfo().UserID;
+                approvalUserId = UserController.GetCurrentUserInfo().UserID;
             }
 
             bool found = false;

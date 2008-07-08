@@ -98,6 +98,10 @@
                     <xs:element name="LastUpdated" type="xs:string" />
                     <xs:element name="Disabled" type="xs:boolean" default="0" />
                     <xs:element name="Thumbnail" type="xs:string" />
+                    <xs:element name="Url" type="xs:string" />
+                    <xs:element name="NewWindow" type="xs:string" />
+                    <xs:element name="RevisingUser" type="xs:string" />
+                    <xs:element name="RevisingUserId" type="xs:int" />
                     <xs:element name="SortOrder" type="xs:int" />
                     <xs:element name="ChildDisplayTabId" type="xs:int" />
                     <xs:element name="ChildDisplayTabName" type="xs:string" />
@@ -150,10 +154,16 @@
                     <xs:element name="LastUpdated" type="xs:string"/>
                     <xs:element name="Disabled" type="xs:boolean" default="0"/>
                     <xs:element name="Thumbnail" type="xs:string" />
+                    <xs:element name="Url" type="xs:string" />
+                    <xs:element name="NewWindow" type="xs:string" />
+                    <xs:element name="RevisingUser" type="xs:string" />
+                    <xs:element name="RevisingUserId" type="xs:int" />
                     <xs:element name="ArticleText" type="xs:string" />
                     <xs:element name="VersionNumber" type="xs:string" />
                     <xs:element name="VersionDescription" type="xs:string" />
                     <xs:element name="ReferenceNumber" type="xs:string" />
+
+
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
