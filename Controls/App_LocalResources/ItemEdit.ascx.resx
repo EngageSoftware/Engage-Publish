@@ -219,4 +219,13 @@
   <data name="lblChooseUrl.Text" xml:space="preserve">
     <value>URL Selection</value>
   </data>
+  <data name="clpAdvanced.CollapsedText" xml:space="preserve">
+    <value>Advanced Properties (click to expand)</value>
+  </data>
+  <data name="clpAdvanced.ExpandedText" xml:space="preserve">
+    <value>Advanced Properties (click to collapse)</value>
+  </data>
+  <data name="lblItemEditAdvancedHeader.Text" xml:space="preserve">
+    <value>Click For Advanced Properties</value>
+  </data>
 </root>

@@ -17,7 +17,7 @@
 <asp:UpdatePanel ID="upnlArticleList" runat="server" UpdateMode="Conditional">
     <ContentTemplate>
 
-        <table border="0" class="normal">
+        <table border="0" class="Normal">
             <tr valign="top">
                 <td><dnn:Label ID="lblItemType" ResourceKey="lblItemType" Runat="server" CssClass="Normal" ControlName="cboCategories"></dnn:Label></td>
                 <td><asp:DropDownList ID="cboCategories" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>

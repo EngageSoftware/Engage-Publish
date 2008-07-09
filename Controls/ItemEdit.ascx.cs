@@ -57,11 +57,20 @@ namespace Engage.Dnn.Publish.Controls
 		{
 			this.Load += this.Page_Load;
 		}
+
+        private void LocalizeCollapsePanels()
+        {
+            clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", LocalResourceFile);
+            clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", LocalResourceFile);
+        }
  
 		private void Page_Load(object sender, EventArgs e)
 		{
  			try 
 			{
+
+                LocalizeCollapsePanels();
+
 				//check VI for null then set information
 				if (!Page.IsPostBack)
 				{

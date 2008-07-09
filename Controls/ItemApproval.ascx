@@ -2,8 +2,8 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <div>
     <%--<dnn:sectionhead id="dshApprovalStatus" cssclass="Head" runat="server" text="Approval Status" section="divApprovalStatus" resourcekey="ApprovalStatus" isexpanded="True" />--%>
-    <div id="divApprovalStatus" runat="server" class="normal" visible="false">
-	    <asp:RadioButtonList Runat="server" ID="radApprovalStatus" RepeatDirection="Vertical" CssClass="normal"/>
+    <div id="divApprovalStatus" runat="server" class="Normal" visible="false">
+	    <asp:RadioButtonList Runat="server" ID="radApprovalStatus" RepeatDirection="Vertical" CssClass="Normal"/>
     </div>
     <div id="divSubmitForApproval" runat="server" visible="false">
 	    <asp:CheckBox ID="chkSubmitForApproval" resourcekey="chkSubmitForApproval" Runat="server"/>

@@ -36,7 +36,7 @@
         
         <asp:Label ID="lblApprovalResults" runat="server" Visible="false" CssClass="lblApprovalResults"></asp:Label>
         
-        <div id="divAdminMenu" runat="server" class="normal">
+        <div id="divAdminMenu" runat="server" class="Normal">
             
         </div>
         

@@ -426,4 +426,13 @@
   <data name="chkForumComments.Text" xml:space="preserve">
     <value>Forum Comments</value>
   </data>
+  <data name="clpExtended.CollapsedText" xml:space="preserve">
+    <value>Extended Properties (click to expand)</value>
+  </data>
+  <data name="clpExtended.ExpandedText" xml:space="preserve">
+    <value>Extended Properties (click to collapse)</value>
+  </data>
+  <data name="lblArticleEditExtendedHeader.Text" xml:space="preserve">
+    <value>Extended Properties</value>
+  </data>
 </root>

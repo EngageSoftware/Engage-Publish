@@ -1341,3 +1341,13 @@ a.mouseOverImage:hover
 	margin-top:0px;
 	margin-bottom:0px;
 }
+
+/*Publish Admin edit styles */
+.PublishEditTable
+{
+	width:100%;
+}
+.PublishEditTable td
+{
+	padding:3px;
+}

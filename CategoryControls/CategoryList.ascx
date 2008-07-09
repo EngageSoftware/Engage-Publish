@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryList" Codebehind="CategoryList.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 
-<table border="0" class="normal">
+<table border="0" class="Normal">
     <tr valign="top">
         <td><dnn:Label ID="Label1" ResourceKey="lblItemType" Runat="server" CssClass="Normal" ControlName="cboItemType"></dnn:Label></td>
         <td><asp:DropDownList ID="cboItemType" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>

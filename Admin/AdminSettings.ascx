@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.AdminSettings" Codebehind="AdminSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 
-<div class="normal">
+<div class="Normal">
 <asp:UpdatePanel ID="pnlSyndication" runat="server" UpdateMode="conditional">
 <ContentTemplate>
 	<asp:Label ID="lblMessage" CssClass="error" Runat="server"></asp:Label>

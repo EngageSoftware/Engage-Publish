@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
-<div class="normal">
+<div class="Normal">
 	<dnn:Label ID="lblControlTitle" ResourceKey="lblControlTitle" Runat="server" cssclass="Head"></dnn:Label>
 	<hr />
 	<asp:Label ID="lblMessage" runat="server" resourcekey="lblMessage"></asp:Label><br />

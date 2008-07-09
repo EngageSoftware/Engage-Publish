@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.CommentList" Codebehind="CommentList.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
-<table border="0" class="normal">
+<table border="0" class="Normal">
     <tr valign="top">
         <td><dnn:Label ID="lblItemType" ResourceKey="lblItemType" Runat="server" cssClass="Normal" ControlName="cboCategories"></dnn:Label></td>
         <td><asp:DropDownList ID="cboCategories" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>

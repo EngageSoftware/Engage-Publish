@@ -240,7 +240,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             try
             {
-                //this will apply the normal security search, 
+                //this will apply thenormal security search, 
                 //filtering out anything that shouldn't be displayed based on permissions
                 results = SearchDataStoreProvider.Instance().GetSearchResults(PortalId, criteria);
 

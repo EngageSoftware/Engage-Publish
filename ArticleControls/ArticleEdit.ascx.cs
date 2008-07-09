@@ -216,7 +216,8 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             try
             {
-            
+
+                LocalizeCollapsePanels();
 
                 DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
                 Article av = (Article)VersionInfoObject;
@@ -1025,6 +1026,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
 
+        }
+
+        private void LocalizeCollapsePanels()
+        {
+            clpExtended.CollapsedText = Localization.GetString("clpExtended.CollapsedText", LocalResourceFile);
+            clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
         }
 
         #region Optional Interfaces

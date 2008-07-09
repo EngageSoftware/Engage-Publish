@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.Syndication"
     Codebehind="Syndication.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
-<table border="0" class="normal">
+<table border="0" class="Normal">
     <tr>
         <td colspan="2" class="Head">
             <asp:Label ID="lblSyndicationSettings" resourcekey="lblSyndicationSettings" Text="Syndication Configuration"

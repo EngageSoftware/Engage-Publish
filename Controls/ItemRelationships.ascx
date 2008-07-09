@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.ItemRelationships" Codebehind="ItemRelationships.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <div id="divItemRelationships" runat="server">
-    <table id="Table1" height="94" cellspacing="1" cellpadding="1" width="480" border="0" class="normal">
+    <table id="Table1" height="94" cellspacing="1" cellpadding="1" width="480" border="0" class="Normal">
         <tr>
             <td colspan="4">
                 <asp:Label ID="lblMessage" runat="server" EnableViewState="False" ForeColor="Red"/>
@@ -9,7 +9,7 @@
         </tr>
         <tr valign="bottom">
             <td align="left" colspan="4">
-                <asp:Panel id="pnlItemSearch" runat="server" Visible="false" CssClass="normal" DefaultButton="btnItemSearch">
+                <asp:Panel id="pnlItemSearch" runat="server" Visible="false" CssClass="Normal" DefaultButton="btnItemSearch">
                     <dnn:label ID="lblItemSearch" ResourceKey="lblItemSearch" runat="server"/>
                     <asp:TextBox ID="txtItemSearch" runat="server"/>
                     <asp:LinkButton ID="btnItemSearch" resourcekey="btnItemSearch" runat="server"/>
@@ -55,7 +55,7 @@
             </td>
             <td>
                 <div id="divDateControls" runat="server" visible="false">
-                    <table cellpadding="0" border="0" cellspacing="0" class="normal">
+                    <table cellpadding="0" border="0" cellspacing="0" class="Normal">
                         <tr>
                             <td class="nowrap">
                                 <dnn:label ID="lblStartDate" runat="server"/>

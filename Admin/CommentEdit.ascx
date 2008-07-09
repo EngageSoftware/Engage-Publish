@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.CommentEdit" Codebehind="CommentEdit.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
-<div id="CommentEdit" class="normal">
+<div id="CommentEdit" class="Normal">
 	<div id="divCommentId" runat="server">
 		<dnn:label id="lblCommentId" resourcekey="lblCommentId" Runat="server"></dnn:label>
 		<asp:label id="txtCommentId" Runat="server"></asp:label>

@@ -4,12 +4,12 @@
 
 <dnn:sectionhead id="shPublishInstructions" cssclass="Head" runat="server" text="Basic Options" section="publishInstructions" resourcekey="shPublishInstructions" isexpanded="False" /><hr />
 <div id="publishInstructions" runat="server" class="instructions">
-    <asp:Label ID="lblPublishInstructions" runat="server" resourcekey="lblPublishInstructions" CssClass="normal"></asp:Label>
+    <asp:Label ID="lblPublishInstructions" runat="server" resourcekey="lblPublishInstructions" CssClass="Normal"></asp:Label>
 </div>
 <br />
 <dnn:sectionhead id="shCategoryEdit" cssclass="Head" runat="server" text="Basic Options" section="CategoryEdit" resourcekey="shCategoryEdit" isexpanded="True" /><hr />
-<div id="categoryEdit" class="normal" runat="server">
-    <table class="normal">
+<div id="categoryEdit" class="Normal" runat="server">
+    <table class="Normal">
         <tr id="trCategoryId" runat="server">
             <td class="editTableLabelColumn nowrap">
                 <dnn:label id="lblCategoryId" resourcekey="lblCategoryId" Runat="server" />
