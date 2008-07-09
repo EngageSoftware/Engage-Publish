@@ -34,7 +34,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
 	, @EndDate [datetime]
 	, @LanguageId [int]
 	, @AuthorUserId [int]
-	, @RevisingUserId [int]
 	, @MetaKeywords [nvarchar] (255)
 	, @MetaDescription [nvarchar] (400)
 	, @MetaTitle [nvarchar](255)
@@ -44,6 +43,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemVersion]
 	, @ItemVersionIdentifier Uniqueidentifier
 	, @Url [nvarchar] (255)
 	, @NewWindow [bit] = 0
+	, @RevisingUserId [int]
 )
 AS 
 
@@ -221,6 +221,31 @@ from {databaseOwner}[{objectQualifier}Publish_ItemRelationship] r
 	join {databaseOwner}[{objectQualifier}Publish_RelationshipType] rt on (r.RelationshipTypeID = rt.RelationshipTypeID)
 	join {databaseOwner}[{objectQualifier}Publish_vwItems]parent on (r.parentItemId = parent.ItemId)
 GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemVersions]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwItemVersions]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwItemVersions] as
+select
+	'categoryedit' as AdminType, 
+	null as VersionNumber, i.*
+from 
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_CategoryVersion] cv on (i.ItemVersionID = cv.ItemVersionID)
+union all
+select
+	'articleedit' as AdminType, 
+	av.VersionNumber,i.*
+from 
+ 	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+
+
+
+GO
+
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwItemListing]') and OBJECTPROPERTY(id, N'IsView') = 1)
 drop view {databaseOwner}[{objectQualifier}Publish_vwItemListing]

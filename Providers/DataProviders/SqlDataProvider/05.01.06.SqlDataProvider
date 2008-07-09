@@ -1,11 +1,8 @@
 ﻿if not exists(select * from sysobjects so join syscolumns sc on (so.id = sc.id) where so.[Name] = '{objectQualifier}Publish_ItemVersion' and sc.[Name] = 'NewWindow')
 ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion ADD
-	NewWindow bit NULL
+	NewWindow bit NULL  default 0
 
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersion ADD CONSTRAINT
-	DF_{objectQualifier}Publish_ItemVersion_NewWindow DEFAULT 0 FOR NewWindow
 GO
-
 
 
 
