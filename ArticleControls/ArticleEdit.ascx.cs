@@ -32,7 +32,7 @@ using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
-    public partial class ArticleEdit : ModuleBase, IActionable
+    public partial class ArticleEdit : ModuleBase
     {
         //the relationship controls don't have ID's set in the code below because they will fail if you set them all to the same id.
         //The local resource file for each of the relationship controls is set in the code below.
@@ -1034,21 +1034,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
         }
 
-        #region Optional Interfaces
-
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, SecurityAccessLevel.Edit, true, false);
-                return actions;
-            }
-        }
-
-        
-
-        #endregion
+     
     }
 }
 

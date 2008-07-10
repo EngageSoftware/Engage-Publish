@@ -17,6 +17,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using Engage.Dnn.Publish.Util;
 using System.Web.UI.WebControls;
+using System.Collections;
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -74,6 +75,10 @@ namespace Engage.Dnn.Publish.Controls
 				//check VI for null then set information
 				if (!Page.IsPostBack)
 				{
+
+                    LoadAuthorsList();
+                    //set author
+
                     if (AllowRichTextDescriptions)
                     {
                         //if their profile is set to basic text mode, we need to show the radio buttons so they can get to rich text mode.
@@ -224,6 +229,20 @@ namespace Engage.Dnn.Publish.Controls
         }
         
 		#endregion
+
+        private void LoadAuthorsList()
+        {
+            //load authors role
+            //load admins role
+            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+            ArrayList al = rc.GetUserRolesByRoleName(PortalId, Utility.PublishAuthorRole.ToString());
+            ArrayList alAdmin = rc.GetUsersInRole(PortalId, Utility.PublishAdminRole.ToString());
+
+            al.AddRange(alAdmin);
+
+
+
+        }
 
         #region Public Properties
         public bool IsValid

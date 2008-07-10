@@ -176,6 +176,51 @@ namespace Engage.Dnn.Publish.CategoryControls {
         protected global::System.Web.UI.WebControls.PlaceHolder phParentCategory;
         
         /// <summary>
+        /// clpExtended control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CollapsiblePanelExtender clpExtended;
+        
+        /// <summary>
+        /// TitlePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel TitlePanel;
+        
+        /// <summary>
+        /// lblCategoryEditExtendedHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCategoryEditExtendedHeader;
+        
+        /// <summary>
+        /// imgCategoryEditExtendedHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgCategoryEditExtendedHeader;
+        
+        /// <summary>
+        /// pnlCategoryEditExtended control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCategoryEditExtended;
+        
+        /// <summary>
         /// lblFeaturedArticles control.
         /// </summary>
         /// <remarks>

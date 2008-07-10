@@ -228,4 +228,10 @@
   <data name="lblItemEditAdvancedHeader.Text" xml:space="preserve">
     <value>Click For Advanced Properties</value>
   </data>
+  <data name="lblAuthor.Help" xml:space="preserve">
+    <value>If you would like to choose a different author for this item do so here.</value>
+  </data>
+  <data name="lblAuthor.Text" xml:space="preserve">
+    <value>Author:</value>
+  </data>
 </root>

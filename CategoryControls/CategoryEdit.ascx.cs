@@ -28,7 +28,7 @@ using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
-    public partial class CategoryEdit : ModuleBase, IActionable
+    public partial class CategoryEdit : ModuleBase
     {
         #region Controls
         private ItemRelationships parentCategoryRelationships;
@@ -164,6 +164,9 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             try
             {
+
+                LocalizeCollapsePanels();
+
                 //because we're in the Edit options turn off caching
                 DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
                 Category cv = (Category)VersionInfoObject;
@@ -661,21 +664,13 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
         }
 
-        #region Optional Interfaces
-
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        private void LocalizeCollapsePanels()
         {
-            get
-            {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
-            }
+            clpExtended.CollapsedText = Localization.GetString("clpExtended.CollapsedText", LocalResourceFile);
+            clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
         }
 
-        
-
-        #endregion
+      
     }
 }
 

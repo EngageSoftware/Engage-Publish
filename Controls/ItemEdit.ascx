@@ -67,6 +67,17 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
+                <dnn:label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" />
+            </td><td class="fullWidth">
+                <asp:DropDownList ID="ddlAuthor" runat="server" />
+                <hr />
+            </td>
+        </tr>
+    </table>
+
+    <table class="PublishEditTable Normal">
+        <tr>
+            <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblUploadFile" runat="server" ResourceKey="lblUploadFile"/>
             </td><td class="fullWidth">
                 <engage:Thumbnail ID="thumbnailSelector" runat="server" />

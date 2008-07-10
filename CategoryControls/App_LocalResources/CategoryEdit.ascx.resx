@@ -285,4 +285,13 @@
   <data name="NoForum.Text" xml:space="preserve">
     <value>None Selected</value>
   </data>
+  <data name="clpExtended.CollapsedText" xml:space="preserve">
+    <value>Extended Properties (click to expand)</value>
+  </data>
+  <data name="clpExtended.ExpandedText" xml:space="preserve">
+    <value>Extended Properties (click to collapse)</value>
+  </data>
+  <data name="lblCategoryEditExtendedHeader.Text" xml:space="preserve">
+    <value>Extended Properties</value>
+  </data>
 </root>

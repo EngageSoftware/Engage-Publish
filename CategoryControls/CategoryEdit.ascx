@@ -1,6 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryEdit" CodeBehind="CategoryEdit.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
+<%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
 <dnn:sectionhead id="shPublishInstructions" cssclass="Head" runat="server" text="Basic Options" section="publishInstructions" resourcekey="shPublishInstructions" isexpanded="False" /><hr />
 <div id="publishInstructions" runat="server" class="instructions">
@@ -9,7 +10,7 @@
 <br />
 <dnn:sectionhead id="shCategoryEdit" cssclass="Head" runat="server" text="Basic Options" section="CategoryEdit" resourcekey="shCategoryEdit" isexpanded="True" /><hr />
 <div id="categoryEdit" class="Normal" runat="server">
-    <table class="Normal">
+    <table class="PublishEditTable Normal">
         <tr id="trCategoryId" runat="server">
             <td class="editTableLabelColumn nowrap">
                 <dnn:label id="lblCategoryId" resourcekey="lblCategoryId" Runat="server" />
@@ -26,7 +27,11 @@
                 <asp:TextBox ID="txtSortOrder" resourcekey="txtSortOrder" runat="server" />
             </td>
         </tr>
-        <asp:PlaceHolder ID="phItemEdit" runat="Server" />
+    </table>
+
+    <asp:PlaceHolder ID="phItemEdit" runat="Server" />
+    
+    <table class="PublishEditTable Normal">
         <tr id="trCategoryPermissions" runat="server" visible="false">
             <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblChooseRoles" runat="server" ResourceKey="ChooseRoles" />
@@ -39,6 +44,8 @@
                 </asp:UpdatePanel>
             </td>
         </tr>
+    </table>
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblParentCategory" runat="server" ResourceKey="ParentCategory" />
@@ -51,6 +58,39 @@
                 </asp:UpdatePanel>
             </td>
         </tr>
+    </table>
+        
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlCategoryEditExtended" 
+     ExpandControlID="TitlePanel" 
+     CollapseControlID="TitlePanel" 
+     Collapsed="true" 
+     CollapsedImage="~/images/dbldn.gif"
+     ExpandedImage="~/images/dblup.gif"
+     ImageControlID="imgCategoryEditExtendedHeader"
+     TextLabelID="lblCategoryEditExtendedHeader"
+     ID="clpExtended" 
+     runat="server" 
+     SuppressPostBack="true"
+     
+     />
+    <asp:Panel ID="TitlePanel" runat="server" CssClass="collapsePanelHeader"> 
+           <table class="PublishEditTable Normal">
+        <tr>
+            <td class="editTableLabelColumn nowrap">
+                <asp:Label ID="lblCategoryEditExtendedHeader" CssClass="SubHead" resourcekey="lblCategoryEditExtendedHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgCategoryEditExtendedHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>          
+           
+    </asp:Panel>
+    
+<asp:Panel ID="pnlCategoryEditExtended" runat="server">
+
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblFeaturedArticles" runat="server" ResourceKey="ChooseFeatured" />
@@ -63,6 +103,8 @@
                 </asp:UpdatePanel>
             </td>
         </tr>
+    </table>
+    <table class="PublishEditTable Normal">
         <tr id="rowCommentForum" runat="server">
             <td class="editTableLabelColumn nowrap">
                 <dnn:Label ID="lblCommentForum" Runat="server" class="title" />
@@ -72,6 +114,9 @@
                 <hr />
             </td>
         </tr>
+    </table>
+</asp:Panel>
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <dnn:Label ID="lblDisplayOnCurrentPage" ResourceKey="lblDisplayOnCurrentPage" Runat="server" class="title" />
@@ -85,6 +130,8 @@
                 </asp:UpdatePanel>
             </td>
         </tr>
+    </table>
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <asp:UpdatePanel ID="upnlForceDisplayTabLabel" runat="server" RenderMode="Inline" UpdateMode="Conditional" ChildrenAsTriggers="false">
@@ -108,14 +155,20 @@
                 <hr />
             </td>
         </tr>
+    </table>
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <dnn:Label ID="lblChildDisplayTabId" ResourceKey="lblChildDisplayTabId" Runat="server" class="title" />
             </td>
             <td class="fullWidth">
                 <asp:DropDownList ID="ddlChildDisplayTabId" BorderWidth="0" DataValueField='TabID' DataTextField="TabName" runat="server" />
+                <hr />
             </td>
         </tr>
+    </table>
+    
+    <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
