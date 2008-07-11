@@ -78,6 +78,15 @@ namespace Engage.Dnn.Publish.Controls
 
                     LoadAuthorsList();
                     //set author
+                    if (VersionInfoObject.AuthorUserId > 0)
+                    {
+                        ddlAuthor.SelectedValue = VersionInfoObject.AuthorUserId.ToString();
+                    }
+                    else
+                    {
+                        ddlAuthor.SelectedValue = UserId.ToString();
+                    }
+                    
 
                     if (AllowRichTextDescriptions)
                     {
@@ -166,7 +175,7 @@ namespace Engage.Dnn.Publish.Controls
                     VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
 
                     //TODO: check why saving a new item fails
-                    VersionInfoObject.AuthorUserId = UserId;
+                    VersionInfoObject.AuthorUserId = Convert.ToInt32(ddlAuthor.SelectedValue);
                     VersionInfoObject.RevisingUserId = UserId;
 				}
 			} 
@@ -235,12 +244,14 @@ namespace Engage.Dnn.Publish.Controls
             //load authors role
             //load admins role
             DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-            ArrayList al = rc.GetUserRolesByRoleName(PortalId, Utility.PublishAuthorRole.ToString());
-            ArrayList alAdmin = rc.GetUsersInRole(PortalId, Utility.PublishAdminRole.ToString());
+            ArrayList al = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId));
+            ArrayList alAdmin = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId));
 
             al.AddRange(alAdmin);
-
-
+            ddlAuthor.DataTextField = "FullName";
+            ddlAuthor.DataValueField = "UserId";
+            ddlAuthor.DataSource = al;
+            ddlAuthor.DataBind();
 
         }
 
