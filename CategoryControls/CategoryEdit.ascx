@@ -65,8 +65,6 @@
      ExpandControlID="TitlePanel" 
      CollapseControlID="TitlePanel" 
      Collapsed="true" 
-     CollapsedImage="~/images/dbldn.gif"
-     ExpandedImage="~/images/dblup.gif"
      ImageControlID="imgCategoryEditExtendedHeader"
      TextLabelID="lblCategoryEditExtendedHeader"
      ID="clpExtended" 

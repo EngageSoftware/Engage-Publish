@@ -959,6 +959,11 @@
     <Content Include="05.01.07.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\GlobalResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Tokens\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

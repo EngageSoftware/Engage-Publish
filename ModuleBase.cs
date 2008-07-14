@@ -26,6 +26,9 @@ namespace Engage.Dnn.Publish
     /// </summary>
     public class ModuleBase : PortalModuleBase
     {
+
+        public string GlobalResourceFile = "~/DesktopModules/EngagePublish/App_GlobalResources/globalresources.resx";
+
         private int externallySetItemId = -1;
         //private Breadcrumb breadCrumb;
         private bool allowTitleUpdate = true;

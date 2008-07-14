@@ -946,11 +946,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                 fullArticleText += youTubeEmbed;
                 fullArticleText += a.ArticleText.Substring(youTubeLocation + youTubeId.Length + youTubeFinishLocation-1);
                 a.ArticleText = fullArticleText;
+                ReplaceTokens(a);
             }
             //flickr
             int flickrLocation = a.ArticleText.ToUpperInvariant().IndexOf("[FLICKR|", StringComparison.Ordinal);
             if (flickrLocation >= 0)
             {
+
                 string afterToken = a.ArticleText.Substring(flickrLocation + 8);
                 int flickrFinishLocation = afterToken.IndexOf("]", StringComparison.Ordinal);
                 string flickrId = afterToken.Substring(0, flickrFinishLocation);
@@ -960,6 +962,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 fullArticleText += flickrEmbed;
                 fullArticleText += a.ArticleText.Substring(flickrLocation + flickrId.Length + flickrFinishLocation - 1);
                 a.ArticleText = fullArticleText;
+                ReplaceTokens(a);
             }
         }
 

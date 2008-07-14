@@ -18,6 +18,7 @@ using DotNetNuke.Services.Personalization;
 using Engage.Dnn.Publish.Util;
 using System.Web.UI.WebControls;
 using System.Collections;
+using DotNetNuke.Entities.Users;
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -63,6 +64,8 @@ namespace Engage.Dnn.Publish.Controls
         {
             clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", LocalResourceFile);
             clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", LocalResourceFile);
+            clpAdvanced.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", GlobalResourceFile).Replace("[L]", "");
+            clpAdvanced.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", GlobalResourceFile).Replace("[L]", "");
         }
  
 		private void Page_Load(object sender, EventArgs e)
@@ -247,7 +250,22 @@ namespace Engage.Dnn.Publish.Controls
             ArrayList al = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId));
             ArrayList alAdmin = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId));
 
-            al.AddRange(alAdmin);
+            //check to make sure we only add authors who aren't already in the list.
+            foreach (UserRoleInfo uri in alAdmin)
+            {
+                bool located = false;
+                foreach (UserRoleInfo ur in al)
+                {
+                    if (uri.UserRoleID == ur.UserRoleID)
+                        located = true;
+                        break;
+                }
+                if (!located)
+                {
+                    al.Add(uri);
+                }
+            }
+            
             ddlAuthor.DataTextField = "FullName";
             ddlAuthor.DataValueField = "UserId";
             ddlAuthor.DataSource = al;
