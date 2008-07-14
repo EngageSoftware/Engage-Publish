@@ -24,6 +24,7 @@ using Engage.Dnn.Publish.Controls;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Forum;
 using Engage.Dnn.Publish.Util;
+using DotNetNuke.Services.Mail;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
@@ -494,6 +495,22 @@ namespace Engage.Dnn.Publish.ArticleControls
                         DataProvider.ModuleQualifier);
 
                     //TODO: see if comment notification is turned on. Notify the ItemVersion.Author?
+
+                    UserController uc = new UserController();
+                    
+                    UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
+
+                    if (ui != null)
+                    {
+                        string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
+                        emailBody = String.Format(emailBody, VersionInfoObject.Name, this.GetItemLinkUrl(VersionInfoObject.ItemId));
+
+                        string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
+                        emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
+
+                        Mail.SendMail(PortalSettings.Email, ui.Email, "", emailSubject, emailBody, "", "HTML", "", "", "", "");
+                    }
+                    
                 }
                 ConfigureComments();
 

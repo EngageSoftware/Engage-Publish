@@ -289,50 +289,48 @@ namespace Engage.Dnn.Publish.Util
         public static bool HasValue(string value)
         {
             return !String.IsNullOrEmpty(value) && value.Trim().Length > 0;
-            //if (value == null)
-            //{
-            //    return false;	
-            //}
-            //else if (value.Trim().Length == 0)
-            //{
-            //    return false;	
-            //}
-            //else
-            //{
-            //    return true;
-            //}
         }
+
+        private static object cacheLock = new object();
 
         public static void AddCacheKey(string KeyName, int portalId)
         {
             string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
-            ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
-            if (al == null)
-            {
-                al = new ArrayList();
-            }
-            al.Add(KeyName);
-            DataCache.SetCache(cacheKey, al);
 
+            lock (cacheLock)
+            {
+                List<string> cacheList = DataCache.GetCache(cacheKey) as List<string>;
+                //ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
+                if (cacheList == null)
+                {
+                    cacheList = new List<string>();
+                }
+                if (!cacheList.Contains(KeyName))
+                {
+                    cacheList.Add(KeyName);
+                    DataCache.SetCache(cacheKey, cacheList);
+                }
+            }
         }
 
         public static void ClearPublishCache(int portalId)
         {
-            //TODO: should we lock this?
-            //lock (cacheLock)
-            //{
-                //TODO: error handling for this? What happens if the cache has already been cleared in the middle of this?
-                string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
-                ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
-                if (al != null)
+
+            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+            
+            lock (cacheLock)
+            {   
+                //ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
+                List<string> cacheList = DataCache.GetCache(cacheKey) as List<string>;
+                if (cacheList != null)
                 {
-                    foreach (string s in al)
+                    foreach (string s in cacheList)
                     {
                         DataCache.RemoveCache(s);
                     }
                 }
                 DataCache.RemoveCache(cacheKey);
-            //}
+            }
         }
 
         public static string DesktopModuleFolderName

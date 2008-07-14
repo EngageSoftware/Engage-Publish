@@ -270,7 +270,6 @@ namespace Engage.Dnn.Publish.Controls
             ddlAuthor.DataValueField = "UserId";
             ddlAuthor.DataSource = al;
             ddlAuthor.DataBind();
-
         }
 
         #region Public Properties
