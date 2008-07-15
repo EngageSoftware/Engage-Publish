@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="plEmailNotification.Help" xml:space="preserve">
-    <value>Check to send email notifications to the users in the Content Approvers role when content needs approval.</value>
+    <value>Check to send email notifications to the users in the Content Approvers role when there is content waiting for approval.</value>
   </data>
   <data name="plAdministratorRole.Text" xml:space="preserve">
     <value>Administrator Role:</value>
@@ -268,13 +268,13 @@
     <value>Choose One</value>
   </data>
   <data name="plDefaultDisplayPage.Help" xml:space="preserve">
-    <value>The page to display articles who are orphaned and don't have their display pages setup properly.</value>
+    <value>This is a DNN page with Engage: Publish on the page, the module must be marked as overrideable. It will be the page to display articles who are orphaned, those that don't have display pages setup properly.</value>
   </data>
   <data name="plDefaultDisplayPage.Text" xml:space="preserve">
     <value>Default Display Page:</value>
   </data>
   <data name="plEmailNotification.Text" xml:space="preserve">
-    <value>Send Email Notification: </value>
+    <value>Send Email Notifications: </value>
   </data>
   <data name="plArticleComments.Help" xml:space="preserve">
     <value>Each article can be configured individually to display or not display the Comments functionality, this is the default setting.</value>
@@ -514,5 +514,29 @@ http://blogsearch.google.com/ping/RPC2</value>
   </data>
   <data name="lblCommunityServices.Text" xml:space="preserve">
     <value>Community Services</value>
+  </data>
+  <data name="clpArticleEditDefaults.CollapsedText" xml:space="preserve">
+    <value>Article Edit Default Settings (click to expand)</value>
+  </data>
+  <data name="clpArticleEditDefaults.ExpandedText" xml:space="preserve">
+    <value>Article Edit Default Settings (click to collapse)</value>
+  </data>
+  <data name="clpCommunity.CollapsedText" xml:space="preserve">
+    <value>Community Settings (click to expand)</value>
+  </data>
+  <data name="clpCommunity.ExpandedText" xml:space="preserve">
+    <value>Community Settings (click to collapse)</value>
+  </data>
+  <data name="clpTagSettings.CollapsedText" xml:space="preserve">
+    <value>Tag Settings (click to expand)</value>
+  </data>
+  <data name="clpTagSettings.ExpandedText" xml:space="preserve">
+    <value>Tag Settings (click to collapse)</value>
+  </data>
+  <data name="cplAdminEdit.CollapsedText" xml:space="preserve">
+    <value>Admin Edit Settings (click to expand)</value>
+  </data>
+  <data name="cplAdminEdit.ExpandedText" xml:space="preserve">
+    <value>Admin Edit Settings (click to collapse)</value>
   </data>
 </root>

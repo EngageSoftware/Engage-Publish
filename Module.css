@@ -1347,7 +1347,19 @@ a.mouseOverImage:hover
 {
 	width:100%;
 }
+
+
 .PublishEditTable td
 {
 	padding:3px;
+}
+
+.PublishSettingsTable
+{
+	width:100%;
+}
+
+.PublishSettingsTableLabelColumn
+{
+	width:40%;
 }

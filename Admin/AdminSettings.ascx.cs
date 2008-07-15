@@ -45,6 +45,8 @@ namespace Engage.Dnn.Publish.Admin
         {
             try
             {
+                LocalizeCollapsePanels();
+
                 if (!IsSetup)
                 {
                     //if not setup already display a message notifying they must setup the admin side of things before they can procede.
@@ -230,21 +232,21 @@ namespace Engage.Dnn.Publish.Admin
             txtPingServers.Text = Utility.GetStringPortalSetting(Utility.PublishPingServers, PortalId, Localization.GetString("DefaultPingServers", LocalResourceFile));
             txtPingChangedUrl.Text = Utility.GetStringPortalSetting(Utility.PublishPingChangedUrl, PortalId);
 
-            chkEmailNotification.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEmail, PortalId, false);
+            chkEmailNotification.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEmail, PortalId, true);
             chkAuthorCategoryEdit.Checked = Utility.GetBooleanPortalSetting(Utility.PublishAuthorCategoryEdit, PortalId, false);
             chkEnableRatings.Checked = Utility.GetBooleanPortalSetting(Utility.PublishRating, PortalId, false);
-            chkEnablePaging.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableArticlePaging, PortalId, false);
+            chkEnablePaging.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableArticlePaging, PortalId, true);
             chkEnableTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableTags, PortalId, false);
             chkEnableVenexus.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableVenexusSearch, PortalId, false);
             chkEnableViewTracking.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableViewTracking, PortalId, false);
-            chkEnableDisplayNameAsHyperlink.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableDisplayNameAsHyperlink, PortalId, true);
+            chkEnableDisplayNameAsHyperlink.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableDisplayNameAsHyperlink, PortalId, false);
             chkAllowRichTextDescriptions.Checked = Utility.GetBooleanPortalSetting(Utility.PublishAllowRichTextDescriptions, PortalId, true);
             chkUseApprovals.Checked = Utility.GetBooleanPortalSetting(Utility.PublishUseApprovals, PortalId, true);
             chkUseEmbeddedArticles.Checked = Utility.GetBooleanPortalSetting(Utility.PublishUseEmbeddedArticles, PortalId, false);
             chkShowItemId.Checked = Utility.GetBooleanPortalSetting(Utility.PublishShowItemId, PortalId, true);
             chkEnableComments.Checked = Utility.GetBooleanPortalSetting(Utility.PublishComment, PortalId, false);
             chkReturnToListSession.Checked = Utility.GetBooleanPortalSetting(Utility.PublishSessionReturnToList, PortalId, false);
-            chkDefaultShowAuthor.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowAuthor, PortalId, false);
+            chkDefaultShowAuthor.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowAuthor, PortalId, true);
             chkDefaultShowTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowTags, PortalId, false);
             chkEnablePing.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePing, PortalId, false);
 
@@ -275,7 +277,7 @@ namespace Engage.Dnn.Publish.Admin
             //default to using Publish URLs, unless FriendlyUrls aren't on, then disable the option and show a message.
             if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y")
             {
-                chkEnablePublishFriendlyUrls.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePublishFriendlyUrls, PortalId, false);
+                chkEnablePublishFriendlyUrls.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePublishFriendlyUrls, PortalId, true);
             }
             else
             {
@@ -330,6 +332,8 @@ namespace Engage.Dnn.Publish.Admin
             //Load thumbnail options
             radThumbnailSelection.Items.Add(new ListItem(Localization.GetString(ThumbnailDisplayOption.DotNetNuke.ToString(), LocalResourceFile), ThumbnailDisplayOption.DotNetNuke.ToString()));
             radThumbnailSelection.Items.Add(new ListItem(Localization.GetString(ThumbnailDisplayOption.EngagePublish.ToString(), LocalResourceFile), ThumbnailDisplayOption.EngagePublish.ToString()));
+            //default the setting to DNN
+            radThumbnailSelection.SelectedIndex = 0;
         }
 
         private void FillListControls()
@@ -406,6 +410,39 @@ namespace Engage.Dnn.Publish.Admin
                 this.ddlTagList.Items.Add(li);
             }
         }
+
+        private void LocalizeCollapsePanels()
+        {
+
+            string expandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", GlobalResourceFile).Replace("[L]", "");
+            string collapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", GlobalResourceFile).Replace("[L]", "");
+
+            clpTagSettings.CollapsedText = Localization.GetString("clpTagSettings.CollapsedText", LocalResourceFile);
+            clpTagSettings.ExpandedText = Localization.GetString("clpTagSettings.ExpandedText", LocalResourceFile);
+            clpTagSettings.ExpandedImage = expandedImage;
+            clpTagSettings.CollapsedImage=collapsedImage;
+
+            clpCommunity.CollapsedText = Localization.GetString("clpCommunity.CollapsedText", LocalResourceFile);
+            clpCommunity.ExpandedText = Localization.GetString("clpCommunity.ExpandedText", LocalResourceFile);
+            clpCommunity.ExpandedImage = expandedImage;
+            clpCommunity.CollapsedImage=collapsedImage;
+
+
+            clpArticleEditDefaults.CollapsedText = Localization.GetString("clpArticleEditDefaults.CollapsedText", LocalResourceFile);
+            clpArticleEditDefaults.ExpandedText = Localization.GetString("clpArticleEditDefaults.ExpandedText", LocalResourceFile);
+            clpArticleEditDefaults.ExpandedImage = expandedImage;
+            clpArticleEditDefaults.CollapsedImage = collapsedImage;
+
+            cplAdminEdit.CollapsedText = Localization.GetString("cplAdminEdit.CollapsedText", LocalResourceFile);
+            cplAdminEdit.ExpandedText = Localization.GetString("cplAdminEdit.ExpandedText", LocalResourceFile);
+            cplAdminEdit.ExpandedImage = expandedImage;
+            cplAdminEdit.CollapsedImage = collapsedImage;
+
+            
+
+
+        }
+
     }
 }
 

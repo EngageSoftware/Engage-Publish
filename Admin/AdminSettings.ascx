@@ -1,5 +1,8 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.AdminSettings" Codebehind="AdminSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
+
+
 
 <div class="Normal">
 <asp:UpdatePanel ID="pnlSyndication" runat="server" UpdateMode="conditional">
@@ -107,22 +110,7 @@
 				<asp:TextBox ID="txtDefaultCacheTime" runat="server" /> <asp:RangeValidator ID="rvDefaultCacheTime" resourcekey="rvDefaultCacheTime" runat="server" ControlToValidate="txtDefaultCacheTime" Type="integer" MaximumValue="1000" MinimumValue="0"></asp:RangeValidator>
 			</td>
 		</tr>
-        <tr>
-			<td>
-				<dnn:label id="plEnableTags" runat="server" controlname="chkEnableTags" text="Enable Tagging:"></dnn:label>
-			</td>
-			<td>
-				<asp:CheckBox ID="chkEnableTags" runat="server" />
-			</td>
-		</tr>		
-        <tr>
-			<td>
-				<dnn:label id="plTagList" runat="server" controlname="ddlTagList" text="Default Tag Cloud:"></dnn:label>
-			</td>
-			<td>
-                <asp:DropDownList ID="ddlTagList" runat="server"></asp:DropDownList>
-			</td>
-		</tr>		
+		
 
         <tr>
 			<td>
@@ -236,11 +224,37 @@
                 <asp:CheckBox ID="chkCommentAutoApprove" runat="server" />
             </td>
 	    </tr>--%>
+		
+		</table>
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlAdminEdit" 
+     ExpandControlID="AdminEditHeader" 
+     CollapseControlID="AdminEditHeader" 
+     Collapsed="false" 
+     ImageControlID="imgAdminEditHeader"
+     TextLabelID="lblAdminEditHeader"
+     ID="cplAdminEdit" 
+     runat="server" 
+     SuppressPostBack="true"
+     
+     />
+    <asp:Panel ID="AdminEditHeader" runat="server" CssClass="collapsePanelHeader"> 
+    <table class="PublishSettingsTable Normal">
+        <tr>
+            <td class="PublishSettingsTableLabelColumn nowrap">
+                <asp:Label ID="lblAdminEditHeader" CssClass="Head" resourcekey="lblArticleEditHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgAdminEditHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>          
+           
+    </asp:Panel>
+    
+<asp:Panel ID="pnlAdminEdit" runat="server">
+    <table id="tblAdminEdit" border="0" class="Normal AdminSettingsTable SettingsTable">
 
-		<tr>
-		    <td colspan="2" class="Head"><asp:label ID="lblAdminEdit" resourcekey="lblAdminEdit" runat="server" />
-		    </td>
-		</tr>
 		<tr>
 			<td>
 				<dnn:label id="plUseApprovals" runat="server" controlname="chkUseApprovals" text="Use Approvals:"></dnn:label>
@@ -292,11 +306,36 @@
 				<asp:RangeValidator ID="rvItemDescriptionHeight" resourcekey="rvItemDescriptionHeight" runat="server" ControlToValidate="txtItemDescriptionHeight" Type="integer" MaximumValue="10000" MinimumValue="50"></asp:RangeValidator>
 			</td>
 		</tr>
-
-		<tr>
-		    <td colspan="2" class="Head"><asp:label ID="lblArticleEditDefaults" resourcekey="lblArticleEditDefaults" runat="server" />
-		    </td>
-		</tr>
+		</table>
+	</asp:Panel>
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlArticleEditDefaults" 
+     ExpandControlID="ArticleEditHeader" 
+     CollapseControlID="ArticleEditHeader" 
+     Collapsed="false" 
+     ImageControlID="imgArticleEditHeader"
+     TextLabelID="lblArticleEditHeader"
+     ID="clpArticleEditDefaults" 
+     runat="server" 
+     SuppressPostBack="true"
+     
+     />
+    <asp:Panel ID="ArticleEditHeader" runat="server" CssClass="collapsePanelHeader"> 
+    <table class="PublishSettingsTable Normal">
+        <tr>
+            <td class="PublishSettingsTableLabelColumn nowrap">
+                <asp:Label ID="lblArticleEditHeader" CssClass="Head" resourcekey="lblArticleEditHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgArticleEditHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>          
+           
+    </asp:Panel>
+    
+<asp:Panel ID="pnlArticleEditDefaults" runat="server">
+    <table id="tblArticleEditDefaults" border="0" class="Normal AdminSettingsTable SettingsTable">
 		<tr>
 			<td>
 				<dnn:label id="plUseEmbeddedArticles" runat="server" controlname="chkUseEmbeddedArticles" text="Use Embedded Articles:"></dnn:label>
@@ -338,7 +377,6 @@
 				<asp:CheckBox ID="chkDefaultArticleComments" runat="server" Checked="true" />
 			</td>
 		</tr>
-		
         <tr>
 			<td>
 				<dnn:label id="plReturnToList" runat="server" controlname="chkDefaultReturnToList" text="Default Setting for Return to List"></dnn:label>
@@ -347,7 +385,6 @@
 				<asp:CheckBox ID="chkDefaultReturnToList" runat="server" />
 			</td>
 		</tr>
-
         <tr>
 			<td>
 				<dnn:label id="plShowAuthor" runat="server" controlname="chkDefaultShowAuthor" text="Default Setting for Show Author"></dnn:label>
@@ -385,19 +422,37 @@
 				<asp:RangeValidator ID="rvArticleTextHeight" resourcekey="rvArticleTextHeight" runat="server" ControlToValidate="txtArticleTextHeight" Type="integer" MaximumValue="10000" MinimumValue="50"></asp:RangeValidator>
 			</td>
 		</tr>
-        <tr>
-		    <td colspan="2" class="Head"><asp:label ID="lblCommunityServices" resourcekey="lblCommunityServices" runat="server" />
-		    </td>
-		</tr>
-<% 
-/*
-        <tr>
-		    <td colspan="2" class="Head"><asp:label ID="lblPingServices" resourcekey="lblPingServices" runat="server" />
-		    </td>
-		</tr>
-		*/
+		</table>
+</asp:Panel>
 		
- %>		
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlCommunitySettings" 
+     ExpandControlID="CommunityTitlePanel" 
+     CollapseControlID="CommunityTitlePanel" 
+     Collapsed="true" 
+     ImageControlID="imgCommunityHeader"
+     TextLabelID="lblCommunityHeader"
+     ID="clpCommunity" 
+     runat="server" 
+     SuppressPostBack="true"
+     
+     />
+    <asp:Panel ID="CommunityTitlePanel" runat="server" CssClass="collapsePanelHeader"> 
+    <table class="PublishSettingsTable Normal">
+        <tr>
+            <td class="PublishSettingsTableLabelColumn nowrap">
+                <asp:Label ID="lblCommunityHeader" CssClass="Head" resourcekey="lblCommunityHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgCommunityHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>          
+           
+    </asp:Panel>
+    
+<asp:Panel ID="pnlCommunitySettings" runat="server">
+    <table id="tblCommunity" border="0" class="Normal AdminSettingsTable SettingsTable">
 		<tr>
 			<td>
 				<dnn:label id="lblEnablePing" runat="server" controlname="chkEnablePing" text="Enable Pinging Services:"></dnn:label>
@@ -423,6 +478,55 @@
 			</td>
 		</tr>
 	</table>
+</asp:Panel>
+	
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlTagSettings" 
+     ExpandControlID="TagTitlePanel" 
+     CollapseControlID="TagTitlePanel" 
+     Collapsed="true" 
+     ImageControlID="imgTagHeader"
+     TextLabelID="lblTagHeader"
+     ID="clpTagSettings" 
+     runat="server" 
+     SuppressPostBack="true"
+     
+     />
+    <asp:Panel ID="TagTitlePanel" runat="server" CssClass="collapsePanelHeader"> 
+    <table class="PublishSettingsTable Normal">
+        <tr>
+            <td class="PublishSettingsTableLabelColumn nowrap">
+                <asp:Label ID="lblTagHeader" CssClass="Head" resourcekey="lblTagHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgTagHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>          
+           
+    </asp:Panel>
+    
+<asp:Panel ID="pnlTagSettings" runat="server">
+
+    <table id="tblTags" border="0" class="Normal AdminSettingsTable SettingsTable">
+        <tr>
+			<td>
+				<dnn:label id="plEnableTags" runat="server" controlname="chkEnableTags" text="Enable Tagging:"></dnn:label>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkEnableTags" runat="server" />
+			</td>
+		</tr>		
+        <tr>
+			<td>
+				<dnn:label id="plTagList" runat="server" controlname="ddlTagList" text="Default Tag Cloud:"></dnn:label>
+			</td>
+			<td>
+                <asp:DropDownList ID="ddlTagList" runat="server"></asp:DropDownList>
+			</td>
+		</tr>		
+    </table>
+</asp:Panel>
 </ContentTemplate>
 </asp:UpdatePanel>
     <br />

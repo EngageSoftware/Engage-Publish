@@ -293,42 +293,6 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.RangeValidator rvDefaultCacheTime;
         
         /// <summary>
-        /// plEnableTags control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plEnableTags;
-        
-        /// <summary>
-        /// chkEnableTags control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkEnableTags;
-        
-        /// <summary>
-        /// plTagList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTagList;
-        
-        /// <summary>
-        /// ddlTagList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTagList;
-        
-        /// <summary>
         /// plEnableSimpleGallery control.
         /// </summary>
         /// <remarks>
@@ -527,13 +491,49 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.CheckBox chkReturnToListSession;
         
         /// <summary>
-        /// lblAdminEdit control.
+        /// cplAdminEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAdminEdit;
+        protected global::AjaxControlToolkit.CollapsiblePanelExtender cplAdminEdit;
+        
+        /// <summary>
+        /// AdminEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel AdminEditHeader;
+        
+        /// <summary>
+        /// lblAdminEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAdminEditHeader;
+        
+        /// <summary>
+        /// imgAdminEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgAdminEditHeader;
+        
+        /// <summary>
+        /// pnlAdminEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlAdminEdit;
         
         /// <summary>
         /// plUseApprovals control.
@@ -662,13 +662,49 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.RangeValidator rvItemDescriptionHeight;
         
         /// <summary>
-        /// lblArticleEditDefaults control.
+        /// clpArticleEditDefaults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblArticleEditDefaults;
+        protected global::AjaxControlToolkit.CollapsiblePanelExtender clpArticleEditDefaults;
+        
+        /// <summary>
+        /// ArticleEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel ArticleEditHeader;
+        
+        /// <summary>
+        /// lblArticleEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblArticleEditHeader;
+        
+        /// <summary>
+        /// imgArticleEditHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgArticleEditHeader;
+        
+        /// <summary>
+        /// pnlArticleEditDefaults control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlArticleEditDefaults;
         
         /// <summary>
         /// plUseEmbeddedArticles control.
@@ -869,13 +905,49 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.RangeValidator rvArticleTextHeight;
         
         /// <summary>
-        /// lblCommunityServices control.
+        /// clpCommunity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCommunityServices;
+        protected global::AjaxControlToolkit.CollapsiblePanelExtender clpCommunity;
+        
+        /// <summary>
+        /// CommunityTitlePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel CommunityTitlePanel;
+        
+        /// <summary>
+        /// lblCommunityHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCommunityHeader;
+        
+        /// <summary>
+        /// imgCommunityHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgCommunityHeader;
+        
+        /// <summary>
+        /// pnlCommunitySettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCommunitySettings;
         
         /// <summary>
         /// lblEnablePing control.
@@ -930,6 +1002,87 @@ namespace Engage.Dnn.Publish.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPingChangedUrl;
+        
+        /// <summary>
+        /// clpTagSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CollapsiblePanelExtender clpTagSettings;
+        
+        /// <summary>
+        /// TagTitlePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel TagTitlePanel;
+        
+        /// <summary>
+        /// lblTagHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTagHeader;
+        
+        /// <summary>
+        /// imgTagHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgTagHeader;
+        
+        /// <summary>
+        /// pnlTagSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlTagSettings;
+        
+        /// <summary>
+        /// plEnableTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plEnableTags;
+        
+        /// <summary>
+        /// chkEnableTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableTags;
+        
+        /// <summary>
+        /// plTagList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plTagList;
+        
+        /// <summary>
+        /// ddlTagList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTagList;
         
         /// <summary>
         /// vsSummary control.
