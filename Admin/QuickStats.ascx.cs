@@ -49,6 +49,16 @@ namespace Engage.Dnn.Publish.Admin
                         {
                             lnkWaitingForApproval.Visible = false;
                         }
+                        if (IsCommentsEnabled)
+                        {
+                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), DataProvider.Instance().CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
+                            lnkCommentsForApproval.Visible = true;
+                            lnkCommentsForApproval.NavigateUrl = EditUrl("","",Utility.AdminContainer, "&adminType=commentList");
+                        }
+                        else
+                        {
+                            lnkCommentsForApproval.Visible = false;
+                        }
                     }
 					else
 					{

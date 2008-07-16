@@ -164,8 +164,12 @@ namespace Engage.Dnn.Publish.Admin
         private void BindData()
 		{
             int categoryId = Convert.ToInt32(this.cboCategories.SelectedValue, CultureInfo.InvariantCulture);
+            int authorUserId = -1;
+            if (!IsAdmin && !UserInfo.IsSuperUser)
+                authorUserId = UserId;
+                
 
-			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId);
+			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId, authorUserId);
             if (ds.Tables[0].Rows.Count == 0)
             {
                 this.lblMessage.Text = Localization.GetString("NoCommentsFound", LocalResourceFile) + " " + cboCategories.SelectedItem.ToString();

@@ -96,7 +96,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId);
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId);
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, string orderBy, int portalId);
-        public abstract DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId);
+        public abstract DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId, int authorUserId);
 
         public abstract int GetParentCategory(int childItemId, int portalId);
         public abstract DataTable GetParentCategories(int articleId, int portalId);
@@ -269,6 +269,7 @@ namespace Engage.Dnn.Publish.Data
 
         #region stats
         public abstract int WaitingForApprovalCount(int portalId);
+        public abstract int CommentsWaitingForApprovalCount(int portalId, int authorUserId);
         #endregion
 
         #region Publish Reports
