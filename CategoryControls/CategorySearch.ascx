@@ -30,8 +30,8 @@
 					    <asp:HyperLink id="lnkTitle" runat="server" CssClass="SubHead" NavigateUrl='<%# FormatUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem,"TabId")),DataBinder.Eval(Container.DataItem,"Guid").ToString()) %>' Text='<%# DataBinder.Eval(Container.DataItem, "Title").ToString() %>'>
 					    </asp:HyperLink>&nbsp;
 					    <asp:Label id="lblRelevance" runat="server" CssClass="Normal" Text='<%# FormatRelevance(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Relevance"))) %>' >
-					    </asp:Label><BR>
-					    <asp:Label id="lblSummary" runat="server" CssClass="Normal" Text='<%# DataBinder.Eval(Container.DataItem, "Description").ToString() + "<br>" %>' Visible="<%# ShowDescription() %>">
+					    </asp:Label><br />
+					    <asp:Label id="lblSummary" runat="server" CssClass="Normal" Text='<%# DataBinder.Eval(Container.DataItem, "Description").ToString() + "<br />" %>' Visible="<%# ShowDescription() %>">
 					    </asp:Label>
 					    <!--					<asp:HyperLink id="lnkLink" runat="server" CssClass="CommandButton" NavigateUrl='<%# FormatUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem,"TabId")),DataBinder.Eval(Container.DataItem,"Guid").ToString()) %>' Text='<%# FormatUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem,"TabId")),DataBinder.Eval(Container.DataItem,"Guid").ToString()) %>'>
 					    </asp:HyperLink>&nbsp;- -->

@@ -468,11 +468,11 @@ namespace Engage.Dnn.Publish.Services
                               </BlogDateHeader>
                             
                               <a name='<$BlogItemNumber$>'><$BlogItemBody$></a>
-                              <br>
+                              <br />
                               <small><$BlogItemAuthor$> 
-                              <br>
+                              <br />
                               <center>______________________</center>
-                              <br>
+                              <br />
                               </p>
                               </BLOGGER>
                            '

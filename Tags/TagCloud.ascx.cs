@@ -40,11 +40,11 @@ namespace Engage.Dnn.Publish.Tags
 			try 
 			{
 				//check VI for null then set information
-				if (!Page.IsPostBack)
-				{
+				//if (!Page.IsPostBack)
+				//{
                     SetTagPageTitle();
                     LoadTagList();
-				}
+				//}
 			} 
 			catch (Exception exc) 
 			{

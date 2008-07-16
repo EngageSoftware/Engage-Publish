@@ -3,8 +3,9 @@
 
 <div id="articleDisplay" class="Normal">
 
-	<div id="divArticleTitle" class="Head" runat="server" visible="false"><h1>
-		<div id="publishTitle"><asp:label ID="lblArticleTitle" Runat="server"></asp:label></div>
+	<div id="divArticleTitle" runat="server" visible="false">
+	    <h1 class="Head" id="publishTitle">
+		<asp:label ID="lblArticleTitle" Runat="server"></asp:label>
 		</h1>
 	</div>
 
