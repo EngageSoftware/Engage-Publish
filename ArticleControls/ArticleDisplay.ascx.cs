@@ -438,11 +438,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             try
             {
-                if (DisplayPublishComments)
-                {
-                    //TODO: this is a bad place for this, the exception loops over and over if thrown
-                    ConfigureComments();
-                }
+                ConfigureComments();
             }
             catch (Exception exc)
             {
@@ -463,13 +459,15 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             if (Page.IsValid)
             {
+                //TODO: we're allowing anonymous comments, we should have a setting for this.
                 DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
                 if (UseForumComments)
                 {
+                    
                     int? categoryForumId = GetCategoryForumId();
                     if (categoryForumId.HasValue)
                     {
-                        //TODO: Use article author over version author.
+                        
                         int threadId = ForumProvider.GetInstance(PortalId).AddComment(categoryForumId.Value, VersionInfoObject.AuthorUserId,
                             VersionInfoObject.Name, VersionInfoObject.Description, GetItemLinkUrl(VersionInfoObject.ItemId, PortalId),
                             objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), UserId,

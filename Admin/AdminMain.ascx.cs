@@ -65,11 +65,6 @@ namespace Engage.Dnn.Publish.Admin
 						divSettings.Visible=true;
 						divDelete.Visible=true;
 
-                        if (IsCommentsEnabled)
-                        {
-                            divComments.Visible = true;
-                        }
-
                         //TODO: if we enable syndication turn on
                         divSyndication.Visible = false;
                         divAdminTools.Visible = true;
@@ -81,6 +76,12 @@ namespace Engage.Dnn.Publish.Admin
                         divComments.Visible = false;
                         divSyndication.Visible = false;
                         divAdminTools.Visible = false;
+                        if (IsCommentsEnabled)
+                        {
+                            divComments.Visible = true;
+                        }
+
+
     				}
 				}
 			} 
