@@ -323,7 +323,14 @@ namespace Engage.Dnn.Publish
                     //if the item isn't disabled add the link
                     if (!Engage.Dnn.Publish.Util.Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), PortalId))
                     {
-                        wr.WriteElementString("link", "http://" + Request.Url.Authority + ApplicationUrl + ModuleBase.DesktopModuleFolderName + "itemlink.aspx?itemId=" + childItemId);
+                        if (ModuleBase.IsShortLinkEnabledForPortal(PortalId))
+                        {
+                            wr.WriteElementString("link", "http://" + Request.Url.Authority + ApplicationUrl + "itemlink.aspx?itemId=" + childItemId);
+                        }
+                        else
+                        {
+                            wr.WriteElementString("link", "http://" + Request.Url.Authority + ApplicationUrl + ModuleBase.DesktopModuleFolderName + "itemlink.aspx?itemId=" + childItemId);
+                        }
                     }
 
                     wr.WriteElementString("description", Util.Utility.StripTags(Server.HtmlDecode(description)));

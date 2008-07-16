@@ -293,7 +293,10 @@ namespace Engage.Dnn.Publish.Controls
         {
             float numberOfPages = totalItems / (float)customDisplaySettings.MaxDisplayItems;
             int intNumberOfPages = Convert.ToInt32(numberOfPages);
-
+            if (numberOfPages > intNumberOfPages)
+            {
+                intNumberOfPages++;
+            }
             //intNumberOfPages++;
 
             NameValueCollection queryString = Request.QueryString;

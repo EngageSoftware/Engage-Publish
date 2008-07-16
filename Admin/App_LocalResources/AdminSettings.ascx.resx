@@ -545,4 +545,10 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="plCommentNotification.Text" xml:space="preserve">
     <value>Comment Notification:</value>
   </data>
+  <data name="plUseShortPublishLinks.Help" xml:space="preserve">
+    <value>Enabling Publish shortened links will link articles and categories through a link like http://www.mydomainname.com/itemlink.aspx?itemid=## instead of http://www.mydomain.com/desktopmodules/engagepublish/itemlink.aspx?itemid=## &lt;br /&gt;&lt;strong&gt;&lt;A target=_blank href="http://www.engagemodules.com/Support/Forums/tabid/57/forumid/2/postid/17/scope/posts/Default.aspx"&gt;To do this you must make changes to your siteurls.config file&lt;/a&gt;&lt;/strong&gt;.</value>
+  </data>
+  <data name="plUseShortPublishLinks.Text" xml:space="preserve">
+    <value>Enable Publish shortened links (see help):</value>
+  </data>
 </root>

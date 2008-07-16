@@ -179,6 +179,23 @@ namespace Engage.Dnn.Publish
         }
 
 
+        public bool IsShortLinkEnabled
+        {
+            get
+            {
+                return IsShortLinkEnabledForPortal(PortalId);
+            }
+        }
+
+
+        public static bool IsShortLinkEnabledForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishShortItemLink + portalId);
+            if (Utility.HasValue(s))
+                return Convert.ToBoolean(s);
+            return false;
+        }
+
 
         public static bool UseSessionForReturnToList(int portalId)
         {
@@ -1269,7 +1286,15 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrlExternal(object itemId)
         {
-            return "http://" + PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
+            if (IsShortLinkEnabled)
+            {
+                return "http://" + PortalAlias.HTTPAlias  + "/itemlink.aspx?itemId=" + itemId;
+            }
+            else
+            {
+                return "http://" + PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
+            }
+
         }
 
         public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)

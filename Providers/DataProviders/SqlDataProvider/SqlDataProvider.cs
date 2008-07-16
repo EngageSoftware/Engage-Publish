@@ -2376,11 +2376,11 @@ namespace Engage.Dnn.Publish.Data
             StringBuilder sql = new StringBuilder(128);
             sql.Append("insert into ");
             sql.Append(NamePrefix);
-            sql.Append("itemversiontags {ItemVersionId, TagId} Values{");
+            sql.Append("itemversiontags (ItemVersionId, TagId) Values(");
             sql.Append(itemVersionId);
             sql.Append(", ");
             sql.Append(tagId);
-            sql.Append("}");
+            sql.Append(")");
             SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql.ToString());
 
         }

@@ -503,7 +503,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         if (ui != null)
                         {
                             string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
-                            emailBody = String.Format(emailBody, VersionInfoObject.Name, this.GetItemLinkUrl(VersionInfoObject.ItemId));
+                            emailBody = String.Format(emailBody, VersionInfoObject.Name, ApplicationUrl + this.GetItemLinkUrl(VersionInfoObject.ItemId));
 
                             string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
                             emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
