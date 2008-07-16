@@ -174,22 +174,6 @@
                 <asp:CheckBox ID="chkAnonymousRatings" runat="server" />
             </td>
 	    </tr>--%>
-	    <tr>
-			<td>
-				<dnn:label id="plEnableComments" runat="server" controlname="chkEnableComments" text="Enable Comments: "></dnn:label>
-			</td>
-			<td>
-				<asp:CheckBox ID="chkEnableComments" runat="server" /> <%--OnCheckedChanged="chkEnableComments_CheckedChanged" AutoPostBack="true" />--%>
-			</td>
-		</tr>
-	    <tr id="rowCommentsType" runat="server">
-			<td>
-				<dnn:label id="lblCommentsType" runat="server" controlname="ddlCommentsType" text="Type of Comments: "></dnn:label>
-			</td>
-			<td>
-				<asp:DropDownList ID="ddlCommentsType" runat="server" />
-			</td>
-		</tr>
         <tr>
 			<td>
 				<dnn:label id="plReturnToListSession" runat="server" controlname="chkReturnToListSession" text="Enable Session storage for the Return To List Link"></dnn:label>
@@ -453,6 +437,33 @@
     
 <asp:Panel ID="pnlCommunitySettings" runat="server">
     <table id="tblCommunity" border="0" class="Normal AdminSettingsTable SettingsTable">
+	    <tr>
+			<td>
+				<dnn:label id="plEnableComments" runat="server" controlname="chkEnableComments" text="Enable Comments: "></dnn:label>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkEnableComments" runat="server" /> <%--OnCheckedChanged="chkEnableComments_CheckedChanged" AutoPostBack="true" />--%>
+			</td>
+		</tr>
+	    <tr id="rowCommentsType" runat="server">
+			<td>
+				<dnn:label id="lblCommentsType" runat="server" controlname="ddlCommentsType" text="Type of Comments: "></dnn:label>
+			</td>
+			<td>
+				<asp:DropDownList ID="ddlCommentsType" runat="server" />
+			</td>
+		</tr>
+ <tr>
+			<td>
+				<dnn:label id="plCommentNotification" runat="server" controlname="chkCommentNotification" text="Comment Notification: "></dnn:label>
+				<asp:Label ID="lblMailNotConfiguredComment" runat="server" Visible="false" ResourceKey="lblMailNotConfigured" CssClass="error"></asp:Label>	
+				
+			</td>
+			<td>
+				<asp:CheckBox ID="chkCommentNotification" runat="server" /> <%--OnCheckedChanged="chkEnableComments_CheckedChanged" AutoPostBack="true" />--%>
+				<asp:CustomValidator Text="You cannot enable email notifications if SMTP settings are not configured." resourcekey="cvEmailNotification" ID="cvCommentNotification" runat="server" OnServerValidate="cvEmailNotification_ServerValidate"></asp:CustomValidator>
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<dnn:label id="lblEnablePing" runat="server" controlname="chkEnablePing" text="Enable Pinging Services:"></dnn:label>
@@ -466,7 +477,7 @@
 				<dnn:label id="lblPingServers" runat="server" controlname="txtPingServers" text="Ping Servers"></dnn:label>
 			</td>
 			<td>
-				<asp:TextBox ID="txtPingServers" runat="server" TextMode="MultiLine" Columns="50" Rows="10"></asp:TextBox>
+				<asp:TextBox ID="txtPingServers" runat="server" TextMode="MultiLine" Columns="40" Rows="10"></asp:TextBox>
 			</td>
 		</tr>
 		<tr>

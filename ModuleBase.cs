@@ -160,6 +160,26 @@ namespace Engage.Dnn.Publish
             return false;
         }
 
+
+        public bool IsCommentAuthorNotificationEnabled
+        {
+            get
+                {
+                    return IsCommentAuthorNotificationEnabledForPortal(PortalId);
+                }
+        }
+
+
+        public static bool IsCommentAuthorNotificationEnabledForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishCommentEmailAuthor + portalId);
+            if (Utility.HasValue(s))
+                return Convert.ToBoolean(s);
+            return false;
+        }
+
+
+
         public static bool UseSessionForReturnToList(int portalId)
         {
             string s = HostSettings.GetHostSetting(Utility.PublishSessionReturnToList + portalId.ToString(CultureInfo.InvariantCulture));

@@ -60,6 +60,7 @@ namespace Engage.Dnn.Publish.Admin
                 if (IsHostMailConfigured == false)
                 {
                     lblMailNotConfigured.Visible = true;
+                    lblMailNotConfiguredComment.Visible = true;
                 }
 
             }
@@ -117,6 +118,7 @@ namespace Engage.Dnn.Publish.Admin
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultReturnToList + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultReturnToList.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultRatings + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultArticleRatings.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultComments + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultArticleComments.Checked.ToString(CultureInfo.InvariantCulture));
+                objHostSettings.UpdateHostSetting(Utility.PublishCommentEmailAuthor + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentNotification.Checked.ToString(CultureInfo.InvariantCulture));
 
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultEmailAFriend.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultPrinterFriendly+ PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture));
@@ -254,6 +256,8 @@ namespace Engage.Dnn.Publish.Admin
             chkDefaultPrinterFriendly.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultPrinterFriendly, PortalId, true);
             chkDefaultArticleRatings.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultRatings, PortalId, true);
             chkDefaultArticleComments.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultComments, PortalId, true);
+            chkCommentNotification.Checked = Utility.GetBooleanPortalSetting(Utility.PublishCommentEmailAuthor, PortalId, true);
+
             chkDefaultReturnToList.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultReturnToList, PortalId, false);
 
             if (Utility.IsSimpleGalleryInstalled)

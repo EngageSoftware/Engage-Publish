@@ -460,7 +460,7 @@
     <value>Enable Tagging:</value>
   </data>
   <data name="plTagList.Help" xml:space="preserve">
-    <value>Choose the page that should be the default page for Tag Links</value>
+    <value>Choose the page that should be the default page for Tag Links. The page needs to have a Tag Cloud module setup on it before it will show up in this list.</value>
   </data>
   <data name="plTagList.Text" xml:space="preserve">
     <value>Default page for the Tag Cloud</value>
@@ -538,5 +538,11 @@ http://blogsearch.google.com/ping/RPC2</value>
   </data>
   <data name="cplAdminEdit.ExpandedText" xml:space="preserve">
     <value>Admin Edit Settings (click to collapse)</value>
+  </data>
+  <data name="plCommentNotification.Help" xml:space="preserve">
+    <value>If enabled, article authors will receive an email notification when a new comment is posted to an article.</value>
+  </data>
+  <data name="plCommentNotification.Text" xml:space="preserve">
+    <value>Comment Notification:</value>
   </data>
 </root>

@@ -254,6 +254,8 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishCommentAnonymous = "PublishCommentAnonymous";
         public const string PublishCommentAutoApprove = "PublishCommentAutoApprove";
 
+        public const string PublishCommentEmailAuthor = "PublishCommentEmailAuthor";
+
         public const string PublishAuthorCategoryEdit = "PublishAuthorCategoryEdit";
         public const string PublishPopularTagCount = "PublishPopularTagCount";
 

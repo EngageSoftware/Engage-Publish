@@ -496,19 +496,22 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     //TODO: see if comment notification is turned on. Notify the ItemVersion.Author?
 
-                    UserController uc = new UserController();
-                    
-                    UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
-
-                    if (ui != null)
+                    if (IsCommentAuthorNotificationEnabled)
                     {
-                        string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
-                        emailBody = String.Format(emailBody, VersionInfoObject.Name, this.GetItemLinkUrl(VersionInfoObject.ItemId));
+                        UserController uc = new UserController();
 
-                        string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
-                        emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
+                        UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
 
-                        Mail.SendMail(PortalSettings.Email, ui.Email, "", emailSubject, emailBody, "", "HTML", "", "", "", "");
+                        if (ui != null)
+                        {
+                            string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
+                            emailBody = String.Format(emailBody, VersionInfoObject.Name, this.GetItemLinkUrl(VersionInfoObject.ItemId));
+
+                            string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
+                            emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
+
+                            Mail.SendMail(PortalSettings.Email, ui.Email, "", emailSubject, emailBody, "", "HTML", "", "", "", "");
+                        }
                     }
                     
                 }
