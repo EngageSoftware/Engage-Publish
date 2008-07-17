@@ -325,7 +325,7 @@ namespace Engage.Dnn.Publish
                     {
                         if (ModuleBase.IsShortLinkEnabledForPortal(PortalId))
                         {
-                            wr.WriteElementString("link", "http://" + Request.Url.Authority + ApplicationUrl + "itemlink.aspx?itemId=" + childItemId);
+                            wr.WriteElementString("link", "http://" + Request.Url.Authority + ApplicationUrl + "/itemlink.aspx?itemId=" + childItemId);
                         }
                         else
                         {
