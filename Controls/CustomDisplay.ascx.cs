@@ -127,9 +127,10 @@ namespace Engage.Dnn.Publish.Controls
 #endif
 
                 lnkRss.ImageUrl = ApplicationUrl + rssImage; //"/images/xml.gif";
-
+                
                 lnkRss.Attributes.Add("type", "application/rss+xml");
                 lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
+               
 
                 if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
