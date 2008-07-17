@@ -75,7 +75,9 @@ namespace Engage.Dnn.Publish.Controls
                 object t = Request.QueryString["Tags"];
                 if (t != null)
                 {
-                    qsTags = HttpUtility.UrlDecode(t.ToString());
+                    DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+
+                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(t.ToString()), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
                     char[] seperator = { '-' };
                     tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
                     foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))

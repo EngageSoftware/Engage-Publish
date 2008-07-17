@@ -185,7 +185,11 @@ namespace Engage.Dnn.Publish.Tags
                 object t = Request.QueryString["Tags"];
                 if (t != null)
                 {
-                    qsTags = HttpUtility.UrlDecode(t.ToString());
+                    DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+
+                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(t.ToString()), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
+                    //qsTags = HttpUtility.UrlDecode(t.ToString());
+
                     char[] seperator = { '-' };
                     tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
                     foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))

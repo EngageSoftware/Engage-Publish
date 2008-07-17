@@ -2306,20 +2306,20 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetpopulartags", portalId, ConvertTagsToXml(tagList), selectTop);
+            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetpopulartags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
             return ds.Tables[0];
         }
 
         public override int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
-            object count = SqlHelper.ExecuteScalar(connectionString, NamePrefix + "spgetpopulartagscount", portalId, ConvertTagsToXml(tagList), selectTop);
+            object count = SqlHelper.ExecuteScalar(connectionString, NamePrefix + "spgetpopulartagscount", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
             return !string.IsNullOrEmpty(count.ToString()) ? Convert.ToInt32(count, CultureInfo.InvariantCulture) : 0;
         }
 
         //TODO: implement paging for GetItemsFromTags
         public override DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTags", portalId, ConvertTagsToXml(tagList));
+            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)));
             return ds.Tables[0];
         }
 
