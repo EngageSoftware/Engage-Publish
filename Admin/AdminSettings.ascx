@@ -51,6 +51,15 @@
 		</tr>
 		<tr>
 			<td>
+				<dnn:label id="plUseApprovals" runat="server" controlname="chkUseApprovals" text="Use Approvals:"></dnn:label>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkUseApprovals" runat="server" Checked="true" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>
 				<dnn:label id="plEmailNotification" runat="server" controlname="chkEmailNotification" text="Email Notification:"></dnn:label>
 				<asp:Label ID="lblMailNotConfigured" runat="server" Visible="false" ResourceKey="lblMailNotConfigured" CssClass="error"></asp:Label>	
 			</td>
@@ -60,6 +69,7 @@
 				    
 			</td>
 		</tr>
+
 		<tr>
 			<td>
 				<dnn:label id="plDefaultDisplayPage" runat="server" controlname="ddlDefaultDisplay" text="Default Display Page:"></dnn:label>
@@ -120,33 +130,17 @@
 				<asp:TextBox ID="txtDefaultCacheTime" runat="server" /> <asp:RangeValidator ID="rvDefaultCacheTime" resourcekey="rvDefaultCacheTime" runat="server" ControlToValidate="txtDefaultCacheTime" Type="integer" MaximumValue="1000" MinimumValue="0"></asp:RangeValidator>
 			</td>
 		</tr>
-		
-
-        <tr>
+ <tr>
 			<td>
-				<dnn:label id="plEnableSimpleGallery" runat="server" controlname="chkEnableSimpleGallery"/>
+				<dnn:label id="plAdminPagingSize" runat="server" controlname="txtAdminPagingSize" text="Admin Paging Size:"></dnn:label>
 			</td>
 			<td>
-				<asp:CheckBox ID="chkEnableSimpleGallery" runat="server" />
+				<asp:TextBox ID="txtAdminPagingSize" runat="server" /> <asp:RangeValidator ID="rvAdminPagingSize" resourcekey="rvAdminPagingSize" runat="server" ControlToValidate="txtAdminPagingSize" Type="integer" MaximumValue="1000" MinimumValue="1"></asp:RangeValidator>
 			</td>
-		</tr>		
-        <tr>
-			<td>
-				<dnn:label id="plEnableUltraMediaGallery" runat="server" controlname="chkEnableUltraMediaGallery"/>
-			</td>
-			<td>
-				<asp:CheckBox ID="chkEnableUltraMediaGallery" runat="server" />
-			</td>
-		</tr>		
-        <tr>
-			<td>
-				<dnn:label id="plEnableVenexus" runat="server" controlname="chkEnableVenexus" text="Enable Venexus Search Integration:"></dnn:label>
-			</td>
-			<td>
-				<asp:CheckBox ID="chkEnableVenexus" runat="server" />
-			</td>
-		</tr>		
-		
+		</tr>
+		</table>
+    
+    <table id="tblDisplayFunctionality" border="0" class="Normal AdminSettingsTable SettingsTable">
 		<tr>
 		    <td colspan="2" class="Head"><asp:label ID="lblDisplayFunctionality" resourcekey="lblDisplayFunctionality" runat="server" />
 		    </td>
@@ -227,7 +221,7 @@
      Collapsed="false" 
      ImageControlID="imgAdminEditHeader"
      TextLabelID="lblAdminEditHeader"
-     ID="cplAdminEdit" 
+     ID="clpAdminEdit" 
      runat="server" 
      SuppressPostBack="true"
      
@@ -249,14 +243,6 @@
 <asp:Panel ID="pnlAdminEdit" runat="server">
     <table id="tblAdminEdit" border="0" class="Normal AdminSettingsTable SettingsTable">
 
-		<tr>
-			<td>
-				<dnn:label id="plUseApprovals" runat="server" controlname="chkUseApprovals" text="Use Approvals:"></dnn:label>
-			</td>
-			<td>
-				<asp:CheckBox ID="chkUseApprovals" runat="server" Checked="true" />
-			</td>
-		</tr>		
 		<tr>
 			<td>
 				<dnn:label id="plShowItemId" runat="server" controlname="chkShowItemId" text="Show Item Id When Editing an Item:"></dnn:label>
@@ -548,6 +534,61 @@
 		</tr>		
     </table>
 </asp:Panel>
+
+    <ajaxToolkit:CollapsiblePanelExtender
+     TargetControlID="pnlAddOns" 
+     ExpandControlID="AddonsHeader" 
+     CollapseControlID="AddonsHeader" 
+     Collapsed="true" 
+     ImageControlID="imgAddOnsHeader"
+     TextLabelID="lblAddOnsHeader"
+     ID="clpAddOns" 
+     runat="server" 
+     SuppressPostBack="true"
+     />
+    <asp:Panel ID="AddonsHeader" runat="server" CssClass="collapsePanelHeader"> 
+    <table class="PublishSettingsTable Normal">
+        <tr>
+            <td class="PublishSettingsTableLabelColumn nowrap">
+                <asp:Label ID="lblAddOnsHeader" CssClass="Head" resourcekey="lblAddOnsHeader" runat="server" />
+            </td><td class="fullWidth">
+                <asp:image id="imgAddOnsHeader" runat="server" />
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    </asp:Panel>
+    
+<asp:Panel ID="pnlAddOns" runat="server">
+    <table id="tblAddOns" border="0" class="Normal AdminSettingsTable SettingsTable">
+        <tr>
+			<td>
+				<dnn:label id="plEnableSimpleGallery" runat="server" controlname="chkEnableSimpleGallery"/>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkEnableSimpleGallery" runat="server" />
+			</td>
+		</tr>		
+        <tr>
+			<td>
+				<dnn:label id="plEnableUltraMediaGallery" runat="server" controlname="chkEnableUltraMediaGallery"/>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkEnableUltraMediaGallery" runat="server" />
+			</td>
+		</tr>		
+        <tr>
+			<td>
+				<dnn:label id="plEnableVenexus" runat="server" controlname="chkEnableVenexus" text="Enable Venexus Search Integration:"></dnn:label>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkEnableVenexus" runat="server" />
+			</td>
+		</tr>		
+		</table>
+    </asp:Panel>
+
+
 </ContentTemplate>
 </asp:UpdatePanel>
     <br />

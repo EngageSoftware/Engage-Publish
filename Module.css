@@ -1363,3 +1363,10 @@ a.mouseOverImage:hover
 {
 	width:40%;
 }
+
+
+/*Publish Comment List*/
+.Publish_AdminCommentText
+{
+	width:60%;
+}

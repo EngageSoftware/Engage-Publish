@@ -22,7 +22,7 @@
         AllowPaging="true" 
         PagerSettings-Mode="Numeric" 
         PagerSettings-Visible="true" 
-        PageSize="10" 
+        PageSize='<%# DefaultAdminPagingSize %>'
         OnPageIndexChanging="dgItems_PageIndexChanging"
         >
         <Columns>
@@ -37,7 +37,7 @@
                     <asp:Label ID="lblItemName" runat="server" CssClass="Normal" Text='<%# DataBinder.Eval(Container.DataItem,"Name") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField ShowHeader="true"  HeaderText="CommentText">
+            <asp:TemplateField ShowHeader="true"  HeaderText="CommentText" HeaderStyle-CssClass="Publish_AdminCommentText">
                 <ItemTemplate>
                     <asp:Label ID="lblCommentText" runat="server" CssClass="Normal" Text='<%# GetShortCommentText(DataBinder.Eval(Container.DataItem,"CommentText")) %>'></asp:Label>
                     

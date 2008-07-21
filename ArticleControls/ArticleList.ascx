@@ -39,7 +39,7 @@
                 width="100%"
                 AllowPaging="true"
                 PagerSettings-Visible="true" 
-                PageSize="50" 
+                PageSize='<%# DefaultAdminPagingSize %>'
                 OnPageIndexChanging="dgItems_PageIndexChanging"
                 AllowSorting="true"
                 OnSorting="dgItems_Sorting"

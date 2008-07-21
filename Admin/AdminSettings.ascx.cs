@@ -104,6 +104,7 @@ namespace Engage.Dnn.Publish.Admin
                 objHostSettings.UpdateHostSetting(Utility.PublishShowItemId + PortalId.ToString(CultureInfo.InvariantCulture), chkShowItemId.Checked.ToString(CultureInfo.InvariantCulture));
 
                 objHostSettings.UpdateHostSetting(Utility.PublishCacheTime + PortalId.ToString(CultureInfo.InvariantCulture), txtDefaultCacheTime.Text.ToString(CultureInfo.InvariantCulture));
+                objHostSettings.UpdateHostSetting(Utility.PublishDefaultAdminPagingSize + PortalId.ToString(CultureInfo.InvariantCulture), txtAdminPagingSize.Text.ToString(CultureInfo.InvariantCulture));
 
                 objHostSettings.UpdateHostSetting(Utility.PublishDescriptionEditHeight + PortalId.ToString(CultureInfo.InvariantCulture), txtItemDescriptionHeight.Text.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishArticleEditHeight + PortalId.ToString(CultureInfo.InvariantCulture), txtArticleTextHeight.Text.ToString(CultureInfo.InvariantCulture));
@@ -228,7 +229,9 @@ namespace Engage.Dnn.Publish.Admin
             Utility.SetSettingListValue(Utility.PublishDefaultDisplayPage, PortalId, ddlDefaultDisplay);
             Utility.SetSettingListValue(Utility.PublishForumProviderType, PortalId, ddlCommentsType);
 
-            txtDefaultCacheTime.Text = Utility.GetStringPortalSetting(Utility.PublishCacheTime, PortalId);
+            txtDefaultCacheTime.Text = Utility.GetStringPortalSetting(Utility.PublishCacheTime, PortalId, "5");
+            txtAdminPagingSize.Text = Utility.GetStringPortalSetting(Utility.PublishDefaultAdminPagingSize, PortalId, "25");
+
             txtArticleTextHeight.Text = Utility.GetStringPortalSetting(Utility.PublishArticleEditHeight, PortalId, "500");
             txtArticleTextWidth.Text = Utility.GetStringPortalSetting(Utility.PublishArticleEditWidth, PortalId, "500");
             txtItemDescriptionHeight.Text = Utility.GetStringPortalSetting(Utility.PublishDescriptionEditHeight, PortalId, "300");
@@ -449,12 +452,15 @@ namespace Engage.Dnn.Publish.Admin
             clpArticleEditDefaults.ExpandedImage = expandedImage;
             clpArticleEditDefaults.CollapsedImage = collapsedImage;
 
-            cplAdminEdit.CollapsedText = Localization.GetString("cplAdminEdit.CollapsedText", LocalResourceFile);
-            cplAdminEdit.ExpandedText = Localization.GetString("cplAdminEdit.ExpandedText", LocalResourceFile);
-            cplAdminEdit.ExpandedImage = expandedImage;
-            cplAdminEdit.CollapsedImage = collapsedImage;
+            clpAdminEdit.CollapsedText = Localization.GetString("clpAdminEdit.CollapsedText", LocalResourceFile);
+            clpAdminEdit.ExpandedText = Localization.GetString("clpAdminEdit.ExpandedText", LocalResourceFile);
+            clpAdminEdit.ExpandedImage = expandedImage;
+            clpAdminEdit.CollapsedImage = collapsedImage;
 
-            
+            clpAddOns.CollapsedText = Localization.GetString("clpAddOns.CollapsedText", LocalResourceFile);
+            clpAddOns.ExpandedText = Localization.GetString("clpAddOns.ExpandedText", LocalResourceFile);
+            clpAddOns.ExpandedImage = expandedImage;
+            clpAddOns.CollapsedImage = collapsedImage;
 
 
         }

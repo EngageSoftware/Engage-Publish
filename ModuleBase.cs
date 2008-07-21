@@ -893,6 +893,28 @@ namespace Engage.Dnn.Publish
             }
         }
 
+        public int DefaultAdminPagingSize
+        {
+            get
+            {
+                return GetAdminDefaultPagingSize(PortalId);
+            }
+        }
+
+
+        public static int GetAdminDefaultPagingSize(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishDefaultAdminPagingSize + portalId);
+            if (Utility.HasValue(s))
+            {
+                return Convert.ToInt32(s, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return 25;
+            }
+        }
+
 
         public int SetItemId
         {
