@@ -153,7 +153,7 @@ namespace Engage.Dnn.Publish.Controls
             }
 
             //check if admin, enable edit links
-            if ((IsAdmin || IsAuthor || UserInfo.IsSuperUser) && IsEditable)
+            if ((IsAdmin || IsAuthor) && IsEditable)
             {
                 visibility = true;
                 editText = Localization.GetString("EditText", LocalResourceFile);

@@ -213,6 +213,8 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishCacheTime = "PublishCacheTime";
 
+        public const string PublishDefaultAdminPagingSize = "PublishDefaultAdminPagingSize";
+        
         public const string PublishThumbnailDisplayOption = "PublishThumbnailDisplayOption";
 
         public const string PublishEnableArticlePaging = "PublishEnableArticlePaging";
@@ -233,6 +235,8 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishShowItemId = "PublishShowItemId";
         public const string PublishThumbnailSubdirectory = "PublishThumbnailSubdirectory";
         public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
+
+
 
         public const string PublishDefaultTagPage = "PublishDefaultTagPage";
 

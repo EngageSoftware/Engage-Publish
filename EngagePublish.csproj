@@ -930,6 +930,7 @@
     <Content Include="Services\MetaWeblog.ashx" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.01.09.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.01.08.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.02.00.SqlDataProvider.config" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>

@@ -177,4 +177,7 @@
   <data name="NameFormat.Text" xml:space="preserve">
     <value>{0} {1}</value>
   </data>
+  <data name="Name.Header" xml:space="preserve">
+    <value>Comment From</value>
+  </data>
 </root>

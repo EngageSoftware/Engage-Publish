@@ -207,4 +207,7 @@
   <data name="SelectText.Header" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="DisplayName.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
 </root>

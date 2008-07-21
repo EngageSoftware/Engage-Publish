@@ -49,6 +49,7 @@ namespace Engage.Dnn.Publish.Admin
                         {
                             lnkWaitingForApproval.Visible = false;
                         }
+                        //Comments always require approval
                         if (IsCommentsEnabled)
                         {
                             lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), DataProvider.Instance().CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
@@ -63,7 +64,8 @@ namespace Engage.Dnn.Publish.Admin
 					else
 					{
                         //Generate author stats
-
+                        lnkWaitingForApproval.Visible = false;
+                        lnkCommentsForApproval.Visible = false;
     				}
 				}
 			} 

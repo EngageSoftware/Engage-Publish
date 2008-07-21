@@ -279,7 +279,7 @@ namespace Engage.Dnn.Publish.Admin
 
             divAdminMenu.Visible = true;
 
-            if (((IsAuthor && !IsAdmin) && !UserInfo.IsSuperUser) || !UseApprovals)
+            if ((IsAuthor && !IsAdmin) || !UseApprovals)
             {
                 lnkUpdateStatus.Visible = false;
             }
@@ -287,15 +287,16 @@ namespace Engage.Dnn.Publish.Admin
             {
                 lnkUpdateStatus.Visible = true;
 
-                //Load stats
-                //TODO: hide this if necessary
-                phStats.Visible = true;
-                string statControlToLoad = "QuickStats.ascx";
-                ModuleBase mbl = (ModuleBase)LoadControl(statControlToLoad);
-                mbl.ModuleConfiguration = ModuleConfiguration;
-                mbl.ID = System.IO.Path.GetFileNameWithoutExtension(statControlToLoad);
-                phStats.Controls.Add(mbl);
             }
+
+            //Load stats
+            //TODO: hide this if necessary
+            phStats.Visible = true;
+            string statControlToLoad = "QuickStats.ascx";
+            ModuleBase mbl = (ModuleBase)LoadControl(statControlToLoad);
+            mbl.ModuleConfiguration = ModuleConfiguration;
+            mbl.ID = System.IO.Path.GetFileNameWithoutExtension(statControlToLoad);
+            phStats.Controls.Add(mbl);
 
             phLink.Visible = true;
 
@@ -332,7 +333,7 @@ namespace Engage.Dnn.Publish.Admin
                 if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
                     lnkUpdateStatus.Visible = false;
-                    if ((IsAuthor && !IsAdmin) && !AllowAuthorEditCategory(PortalId) && !UserInfo.IsSuperUser)
+                    if ((IsAuthor && !IsAdmin) && !AllowAuthorEditCategory(PortalId))
                     {
 
 

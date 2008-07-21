@@ -139,6 +139,7 @@ namespace Engage.Dnn.Publish.Admin
 
         private void FillDropDown()
         {
+
             ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
 
             ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
@@ -165,7 +166,7 @@ namespace Engage.Dnn.Publish.Admin
 		{
             int categoryId = Convert.ToInt32(this.cboCategories.SelectedValue, CultureInfo.InvariantCulture);
             int authorUserId = -1;
-            if (!IsAdmin && !UserInfo.IsSuperUser)
+            if (!IsAdmin)
                 authorUserId = UserId;
                 
 

@@ -651,7 +651,7 @@ namespace Engage.Dnn.Publish
                 }
                 else
                 {
-                    return PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId));
+                    return (PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId))|| UserInfo.IsSuperUser);
                 }
             }
         }

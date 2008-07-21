@@ -180,7 +180,4 @@
   <data name="TopLevelCategory.Text" xml:space="preserve">
     <value>top level category</value>
   </data>
-  <data name="lblStats.Text" xml:space="preserve">
-    <value>statistics</value>
-  </data>
 </root>

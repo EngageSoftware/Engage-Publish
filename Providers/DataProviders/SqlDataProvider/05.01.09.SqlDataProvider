@@ -1,58 +1,71 @@
-﻿if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Tokens] DROP CONSTRAINT FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_Tokens]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table {databaseOwner}[{objectQualifier}Publish_Tokens]
-GO
-
-CREATE TABLE {databaseOwner}{objectQualifier}Publish_Tokens
-	(
-	TokenId int NOT NULL IDENTITY (1, 1),
-	TokenTypeId int NOT NULL,
-	TokenName nvarchar(255) NOT NULL,
-	TokenControl nvarchar(255) NULL
-	)  ON [PRIMARY]
-GO
-
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tokens ADD CONSTRAINT
-	PK_{objectQualifier}Publish_Tokens PRIMARY KEY CLUSTERED 
-	(
-	TokenId
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
-GO
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_TokenParameters]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table {databaseOwner}[{objectQualifier}Publish_TokenParameters]
+﻿IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
 GO
 
 
-
-CREATE TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters
-	(
-	TokenParameterId int NOT NULL IDENTITY (1, 1),
-	TokenId int NOT NULL,
-	TokenParameterName nvarchar(255) NOT NULL,
-	TokenParameterTypeId int NOT NULL
-	)  ON [PRIMARY]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]    
+@ParentItemId int,     
+@ItemTypeId int,    
+@RelationshipTypeId int,
+@otherRelationshipTypeId int,
+@ApprovalStatusId int,    
+@PortalId int,
+@OrderBy nvarchar (100)
+AS    
+BEGIN
+set nocount on    
+    
+create table #TempTable
+(     
+ ItemId int not null    
+ , ItemVersionId int not null    
+)    
+    
+insert into #TempTable    
+select     
+ c.ItemId    
+ , Max(c.ItemVersionId)
+    
+from     
+ [{objectQualifier}Publish_vwChildItems] c     
+where     
+ c.ApprovalStatusId = @ApprovalStatusId    
+ and (c.RelationshipTypeId = @RelationshipTypeId or c.relationshiptypeId = @otherRelationshipTypeId)  
+ and c.PortalID = @PortalId    
+ and (c.ParentItemID = @ParentItemId OR @ParentItemId = -1)
+ and c.ItemTypeId = @ItemTypeId    
+ and not exists (Select * from #TempTable w where w.ItemId = c.itemId)    
+group by c.ItemId    
+    
+set nocount off    
+DECLARE @SQLStatement nvarchar(4000)
+SELECT @SQLStatement = 'SELECT vi.[Name]     
+				 , vi.[Description]    
+				 , t.ItemId    
+				 , t.ItemVersionId    
+				 , vi.IsCurrentVersion
+				 , vi.CreatedDate
+				 , vi.LastUpdated
+				 , u.DisplayName
+				 , (select count(ParentItemId) from     
+				 [{objectQualifier}Publish_vwChilditems] vci where ParentItemId = t.ItemId and RelationShipTypeId =     
+				 (select RelationshipTypeId from [{objectQualifier}Publish_relationshiptype] where relationshipname = ''Item To Parent Category'')    
+				 and ItemTypeId =     
+				 (select  itemtypeid from [{objectQualifier}Publish_Itemtype] where name = ''Category'')
+				 and vci.IsCurrentVersion = 1
+				 ) ''ChildCount''
+				 
+				    
+				from #TempTable t 
+				join [{objectQualifier}Publish_vwItems] vi on (vi.ItemVersionId = t.ItemVersionId)    
+				join [{objectQualifier}Users]  u on (vi.AuthorUserId = u.UserId)
+				where vi.ApprovalStatusId = ' + Convert(varchar(5),@ApprovalStatusId)  + ' order by ' + @OrderBy
+				-- vi.[Name] 
+				
+exec(@SQLStatement)
+drop table #TempTable
+END
 GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters ADD CONSTRAINT
-	PK_{objectQualifier}Publish_TokenParameters PRIMARY KEY CLUSTERED 
-	(
-	TokenParameterId
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
-GO
 
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_TokenParameters ADD CONSTRAINT
-	FK_{objectQualifier}Publish_TokenParameters_{objectQualifier}Publish_Tokens FOREIGN KEY
-	(
-	TokenId
-	) REFERENCES {databaseOwner}{objectQualifier}Publish_Tokens
-	(
-	TokenId
-	) ON UPDATE  NO ACTION 
-	 ON DELETE  NO ACTION 	
-GO

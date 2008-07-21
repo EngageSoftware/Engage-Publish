@@ -30,10 +30,9 @@
                 Visible="false" 
                 runat="server" 
                 EnableViewState="true" 
-                AlternatingRowStyle-CssClass="DataGrid_AlternatingItem"
-                
+                AlternatingRowStyle-CssClass="DataGrid_AlternatingItem Normal"
                 HeaderStyle-CssClass="DataGrid_Header"
-                RowStyle-CssClass="DataGrid_Item"
+                RowStyle-CssClass="DataGrid_Item Normal"
                 PagerStyle-CssClass="Normal"
                 CssClass="Normal" 
                 AutoGenerateColumns="false" 
@@ -44,7 +43,6 @@
                 OnPageIndexChanging="dgItems_PageIndexChanging"
                 AllowSorting="true"
                 OnSorting="dgItems_Sorting"
-                
                 >
                 <Columns>
                 
@@ -67,11 +65,13 @@
                                 Text='<%# DataBinder.Eval(Container.DataItem,"Name") %>'></asp:HyperLink>
                         </ItemTemplate>
                     </asp:TemplateField>
+
                      <asp:TemplateField ShowHeader="true"  HeaderText="Description" SortExpression="Name">
                         <ItemTemplate>
                             <asp:Label ID="lblDescription" runat="server" CssClass="Normal" Text='<%# GetDescription(DataBinder.Eval(Container.DataItem,"Description")) %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
+                    <asp:BoundField DataField="DisplayName" HeaderText="DisplayName" SortExpression="DisplayName" ItemStyle-CssClass="Normal" />
                     <asp:BoundField DataField="CreatedDate" HeaderText="CreatedDate" SortExpression="CreatedDate" ItemStyle-CssClass="Normal" />
                     <asp:BoundField DataField="LastUpdated" HeaderText="LastUpdated" SortExpression="LastUpdated" ItemStyle-CssClass="Normal" />
                      <asp:TemplateField ShowHeader="true"  HeaderText="">

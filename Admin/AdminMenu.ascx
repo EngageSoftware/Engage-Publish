@@ -12,12 +12,10 @@
             </ul>
         </div>
         <div id="PublishAdminStats">
-            <div id="PublishStatsLabel"><asp:Label ID="lblStats" runat="server" resourcekey="lblStats"></asp:Label></div>
                 <div id="PublishStatsContent">
                     <asp:PlaceHolder ID="phStats" runat="server" Visible="false"></asp:PlaceHolder>
                 </div>
         </div>
-        
         
         <div id="divApprovalStatus" runat="server" visible="false" class="divItemApprovalSection">
             

@@ -13,9 +13,9 @@
     <asp:GridView ID="dgItems" Visible="false" runat="server" 
         EnableViewState="true" 
         AutoGenerateColumns="false" width="100%"
-        AlternatingRowStyle-CssClass="DataGrid_AlternatingItem" 
+        AlternatingRowStyle-CssClass="DataGrid_AlternatingItem Normal" 
         HeaderStyle-CssClass="DataGrid_Header"
-        RowStyle-CssClass="DataGrid_Item"
+        RowStyle-CssClass="DataGrid_Item Normal"
         PagerStyle-CssClass="Normal"
         CssClass="Normal" 
 

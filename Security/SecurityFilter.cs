@@ -34,7 +34,7 @@ namespace Engage.Dnn.Publish.Security
 		public abstract void FilterCategories(DataTable data);
 		public abstract void FilterArticles(SearchResultsInfoCollection data);
 
-
+        //TODO: should this still exist?
 		private static bool IsAdmin
 		{
 			get 

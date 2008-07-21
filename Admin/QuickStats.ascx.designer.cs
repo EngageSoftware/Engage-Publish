@@ -14,6 +14,15 @@ namespace Engage.Dnn.Publish.Admin {
     public partial class QuickStats {
         
         /// <summary>
+        /// lblStats control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStats;
+        
+        /// <summary>
         /// lnkWaitingForApproval control.
         /// </summary>
         /// <remarks>
