@@ -141,9 +141,7 @@ SET Transaction Isolation Level Read UNCOMMITTED
 				where vi2.IsCurrentVersion = 1
 				group by vi2.ItemVersionId
 				)
-		and vi.PortalId = @PortalId
-		Group By t.TagId, ivt.itemversionid
-		having t.[TagId] in (select [TagId] from #Tags))'
+		and vi.PortalId = ' + @PortalId + ' Group By t.TagId, ivt.itemversionid having t.[TagId] in (select [TagId] from #Tags))'
 
 	exec (@sql)
 
