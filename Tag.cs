@@ -310,7 +310,14 @@ namespace Engage.Dnn.Publish
         {
             return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
         }
-       
+
+        public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
+        {
+            return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+        }
+
+
+
         #endregion
 
         public void Save()

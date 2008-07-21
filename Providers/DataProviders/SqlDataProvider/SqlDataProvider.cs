@@ -2316,12 +2316,20 @@ namespace Engage.Dnn.Publish.Data
             return !string.IsNullOrEmpty(count.ToString()) ? Convert.ToInt32(count, CultureInfo.InvariantCulture) : 0;
         }
 
-        //TODO: implement paging for GetItemsFromTags
+        
         public override DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {
             DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)));
             return ds.Tables[0];
         }
+        //TODO: implement paging for GetItemsFromTags
+        public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageSize", maxItems), Utility.CreateIntegerParam("@PageIndex",pageId));
+            return ds.Tables[0];
+
+        }
+
 
         //private string GetMultiTagItems(int portalId, ArrayList tagId, int itemTypeId)
         //{

@@ -360,7 +360,9 @@ namespace Engage.Dnn.Publish.Controls
                 dt = DataCache.GetCache(tagCacheKey) as DataTable;
                 if (dt == null)
                 {
-                    dt = Tag.GetItemsFromTags(PortalId, tagQuery);
+                    dt = Tag.GetItemsFromTagsPaging(PortalId, tagQuery, customDisplaySettings.MaxDisplayItems, PageId - 1);
+                    //dt = Tag.GetItemsFromTags(PortalId, tagQuery);
+
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
                     Utility.AddCacheKey(tagCacheKey, PortalId);
                 }
