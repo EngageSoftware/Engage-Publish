@@ -68,8 +68,7 @@ namespace Engage.Dnn.Publish.Tags
             {
                 string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
                 DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
-
-                phTagCloud.Controls.Clear();
+                
                 if (dt != null)
                 {
                     Utility.SortDataTableSingleParam(dt, "TotalItems desc");
@@ -81,9 +80,8 @@ namespace Engage.Dnn.Publish.Tags
 
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
                     Utility.AddCacheKey(tagCacheKey, PortalId);
-
-                    
-
+                    phTagCloud.Controls.Clear();
+                    string itemsWithTag = Localization.GetString("ItemsWithTag", LocalResourceFile);
                     foreach (DataRow dr in dt.DefaultView.Table.Rows)
                     {
                         int totalItems = (int)dr["TotalItems"];
@@ -94,7 +92,7 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append(tagSizeClass(totalItems));
                         sb.Append("\"><span>");
                         sb.Append(totalItems.ToString(CultureInfo.CurrentCulture));
-                        sb.Append(Localization.GetString("ItemsWithTag", LocalResourceFile));
+                        sb.Append(itemsWithTag);
                         sb.Append("</span>");
                         sb.Append("<a href=\"");
                         sb.Append(BuildTagLink(tagName));
