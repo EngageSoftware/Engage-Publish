@@ -275,7 +275,7 @@ namespace Engage.Dnn.Publish.Controls
                     dt = GetDataTable();
                 }
             }
-            if ((UseCustomSort || UsePaging) && tagQuery == null)
+            if (UseCustomSort || UsePaging)// && tagQuery == null)
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -356,7 +356,11 @@ namespace Engage.Dnn.Publish.Controls
             //check for tags
             if (AllowTags && tagQuery != null && tagQuery.Count > 0)
             {
-                string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture) + qsTags; // +"PageId";
+                string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) 
+                    + customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture)
+                    + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) 
+                    + "PageId" + PageId.ToString(CultureInfo.InvariantCulture)
+                    + qsTags; // +"PageId";
                 dt = DataCache.GetCache(tagCacheKey) as DataTable;
                 if (dt == null)
                 {

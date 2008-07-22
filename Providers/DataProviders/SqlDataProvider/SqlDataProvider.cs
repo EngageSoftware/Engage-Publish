@@ -2325,7 +2325,7 @@ namespace Engage.Dnn.Publish.Data
         //TODO: implement paging for GetItemsFromTags
         public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageSize", maxItems), Utility.CreateIntegerParam("@PageIndex",pageId));
+            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageIndex", pageId), Utility.CreateIntegerParam("@PageSize", maxItems));
             return ds.Tables[0];
 
         }
