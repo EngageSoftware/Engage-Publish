@@ -68,14 +68,14 @@ namespace Engage.Dnn.Publish.Tags
             {
                 string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
                 DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
-                
-                if (dt != null)
+
+                if (dt != null && dt.Rows.Count > 0)
                 {
                     Utility.SortDataTableSingleParam(dt, "TotalItems desc");
                     //Get the most popular and lease popular tag totals
                     mostPopularTagCount = Convert.ToInt32(dt.Rows[0]["TotalItems"].ToString());
-                    leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count-1]["TotalItems"].ToString());
-                
+                    leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1]["TotalItems"].ToString());
+
                     Utility.SortDataTableSingleParam(dt, "name asc");
 
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
@@ -102,6 +102,10 @@ namespace Engage.Dnn.Publish.Tags
                         lnkTag.Text = sb.ToString();
                         phTagCloud.Controls.Add(lnkTag);
                     }
+                }
+                else
+                {
+                    //ToDo: display a message about tags not found
                 }
             }
         }
