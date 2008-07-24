@@ -120,4 +120,10 @@
   <data name="ItemsWithTag.Text" xml:space="preserve">
     <value> items are tagged with </value>
   </data>
+  <data name="lnkTagFilters.Text" xml:space="preserve">
+    <value>All Tags</value>
+  </data>
+  <data name="TagSeperator.Text" xml:space="preserve">
+    <value>&gt;&gt;&amp;nbsp;</value>
+  </data>
 </root>

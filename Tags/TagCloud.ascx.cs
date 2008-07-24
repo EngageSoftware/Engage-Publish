@@ -42,8 +42,9 @@ namespace Engage.Dnn.Publish.Tags
 				//check VI for null then set information
 				//if (!Page.IsPostBack)
 				//{
-                    SetTagPageTitle();
-                    LoadTagList();
+                lnkTagFilters.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(ModuleBase.DefaultTagDisplayTabIdForPortal(PortalId));
+                SetTagPageTitle();
+                LoadTagList();
 				//}
 			} 
 			catch (Exception exc) 
@@ -95,12 +96,13 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append(itemsWithTag);
                         sb.Append("</span>");
                         sb.Append("<a href=\"");
-                        sb.Append(BuildTagLink(tagName));
+                        sb.Append(BuildTagLink(tagName, true, string.Empty));
                         sb.Append("\" class=\"tag\">");
                         sb.Append(tagName);
                         sb.Append("</a> ");
                         lnkTag.Text = sb.ToString();
                         phTagCloud.Controls.Add(lnkTag);
+
                     }
                 }
                 else
@@ -166,13 +168,17 @@ namespace Engage.Dnn.Publish.Tags
         private int leastPopularTagCount;
 
 
-        private string BuildTagLink(string name)
+        private string BuildTagLink(string name, bool useExisting, string useOthers)
         {
             object o = Request.QueryString["tags"];
             string existingTags = string.Empty;
-            if (o != null)
+            if (o != null && useExisting)
             {
                 existingTags = o.ToString() + "-";
+            }
+            else
+            {
+                existingTags = useOthers;
             }
             
             return DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, "", "&tags=" + existingTags + name);
@@ -194,11 +200,39 @@ namespace Engage.Dnn.Publish.Tags
 
                     char[] seperator = { '-' };
                     tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
+                    string useOthers = string.Empty;
                     foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))
                     {
                         //create a list of tagids to query the database
                         tagQuery.Add(tg.TagId);
+                        //Add the tag to the filtered list
+
+                        //add the seperator in first
+                        Literal tagSeperator = new Literal();
+                        tagSeperator.Text = Localization.GetString("TagSeperator.Text", LocalResourceFile);
+
+                        phTagFilters.Controls.Add(tagSeperator);
+
+                        Literal lnkTag = new Literal();
+                        StringBuilder sb = new StringBuilder(255);
+
+                        sb.Append("<li class=\"PublishFilterList");
+                        
+                        sb.Append("\">");
+                        
+                        sb.Append("<a href=\"");
+                        sb.Append(BuildTagLink(tg.Name, false, useOthers));
+                        sb.Append("\" class=\"tag\">");
+                        sb.Append(tg.Name);
+                        sb.Append("</a> "); 
+
+                        lnkTag.Text = sb.ToString();
+                        phTagFilters.Controls.Add(lnkTag);
+
+                        useOthers += tg.Name + "-";
+
                     }
+
                 }
                 popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
 
@@ -206,8 +240,6 @@ namespace Engage.Dnn.Publish.Tags
             }
 
         }
-
-
 
 	}
 }
