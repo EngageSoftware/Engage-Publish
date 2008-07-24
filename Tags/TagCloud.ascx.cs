@@ -22,37 +22,37 @@ using System.Globalization;
 
 namespace Engage.Dnn.Publish.Tags
 {
-	public partial class TagCloud :  ModuleBase
-	{
+    public partial class TagCloud : ModuleBase
+    {
         private ArrayList tagQuery;
         private string qsTags = string.Empty;
 
-		#region Event Handlers
-		override protected void OnInit(EventArgs e)
-		{
-		    this.Load += this.Page_Load;
-		    base.OnInit(e);
+        #region Event Handlers
+        override protected void OnInit(EventArgs e)
+        {
+            this.Load += this.Page_Load;
+            base.OnInit(e);
             LoadTagInfo();
-		}
+        }
 
-	    private void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-				//check VI for null then set information
-				//if (!Page.IsPostBack)
-				//{
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                //check VI for null then set information
+                //if (!Page.IsPostBack)
+                //{
                 lnkTagFilters.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(ModuleBase.DefaultTagDisplayTabIdForPortal(PortalId));
                 SetTagPageTitle();
                 LoadTagList();
-				//}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-		#endregion
+                //}
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+        #endregion
 
         private void SetTagPageTitle()
         {
@@ -102,13 +102,22 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append("</a> ");
                         lnkTag.Text = sb.ToString();
                         phTagCloud.Controls.Add(lnkTag);
-
                     }
                 }
                 else
                 {
-                    //ToDo: display a message about tags not found
+                    //display a message about tags not found
+                    Literal txtNoTags = new Literal();
+                    txtNoTags.Text = Localization.GetString("NoTags.Text", LocalResourceFile);
+                    phTagCloud.Controls.Add(txtNoTags);
                 }
+            }
+            else
+            {
+                //display a message about tags not found
+                Literal txtNoTags = new Literal();
+                txtNoTags.Text = Localization.GetString("NoTags.Text", LocalResourceFile);
+                phTagCloud.Controls.Add(txtNoTags);
             }
         }
 
@@ -118,13 +127,11 @@ namespace Engage.Dnn.Publish.Tags
             //leastPopularTagCount
 
             int tagCountSpread = mostPopularTagCount - leastPopularTagCount;
-            
-
             double result = Convert.ToDouble(itemCount) / Convert.ToDouble(tagCountSpread);
             string resultString = "size3";
-            if ((0 <= result) &&  (result <=1666))
+            if ((0 <= result) && (result <= 1666))
             {
-                resultString = "size1";     
+                resultString = "size1";
             }
             if ((.1667 < result) && (result <= .3333))
             {
@@ -180,9 +187,8 @@ namespace Engage.Dnn.Publish.Tags
             {
                 existingTags = useOthers;
             }
-            
+
             return DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, "", "&tags=" + existingTags + name);
-            //return DotNetNuke.Common.Globals.NavigateURL(TabId, "", "&tags=" + existingTags + name);
         }
 
 
@@ -217,30 +223,24 @@ namespace Engage.Dnn.Publish.Tags
                         StringBuilder sb = new StringBuilder(255);
 
                         sb.Append("<li class=\"PublishFilterList");
-                        
+
                         sb.Append("\">");
-                        
+
                         sb.Append("<a href=\"");
                         sb.Append(BuildTagLink(tg.Name, false, useOthers));
                         sb.Append("\" class=\"tag\">");
                         sb.Append(tg.Name);
-                        sb.Append("</a> "); 
+                        sb.Append("</a> ");
 
                         lnkTag.Text = sb.ToString();
                         phTagFilters.Controls.Add(lnkTag);
 
                         useOthers += tg.Name + "-";
-
                     }
-
                 }
                 popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
-
-                //if (popularTagsTotal == null) popularTagsTotal = 0;
             }
-
         }
-
-	}
+    }
 }
 

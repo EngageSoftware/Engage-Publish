@@ -126,4 +126,7 @@
   <data name="TagSeperator.Text" xml:space="preserve">
     <value>&gt;&gt;&amp;nbsp;</value>
   </data>
+  <data name="NoTags.Text" xml:space="preserve">
+    <value>There are no more tags available to filter with.</value>
+  </data>
 </root>
