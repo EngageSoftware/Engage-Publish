@@ -46,8 +46,129 @@ namespace Engage.Dnn.Publish
 			ItemTypeId = ItemType.Article.GetId();
 		}
 
-		#region Item method implementation
+        public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
+        {
+            Article a = new Article();
+            a.Name = name;
+            a.Description = description;
+            a.articleText = articleText;
+            a.AuthorUserId = authorUserId;
 
+            ItemRelationship irel = new ItemRelationship();
+            irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            irel.ParentItemId = parentCategoryId;
+            a.Relationships.Add(irel);
+            a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.UtcNow.ToString();
+            a.PortalId = portalId;
+            a.ModuleId = moduleId;
+
+            string s = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + portalId.ToString(CultureInfo.InvariantCulture));
+            if (Utility.HasValue(s))
+            {
+                a.DisplayTabId = Convert.ToInt32(s, CultureInfo.InvariantCulture);
+            }
+
+            a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+            a.NewWindow = false;
+
+            a.SetDefaultItemVersionSettings();
+
+            return a;
+
+        }
+
+        private void SetDefaultItemVersionSettings()
+        {
+            //Printer Friendly
+            string hostPrinterFriendlySetting = HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + PortalId.ToString(CultureInfo.InvariantCulture));
+            Setting setting = Setting.PrinterFriendly;
+            setting.PropertyValue = Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture).ToString();
+            ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //Email A Friend
+            string hostEmailFriendSetting = HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture));
+
+            setting = Setting.EmailAFriend;
+            setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //ratings
+            string hostRatingSetting = HostSettings.GetHostSetting(Utility.PublishDefaultRatings + PortalId.ToString(CultureInfo.InvariantCulture));
+            setting = Setting.Rating;
+            setting.PropertyValue = Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //comments
+            string hostCommentSetting = HostSettings.GetHostSetting(Utility.PublishDefaultComments + PortalId.ToString(CultureInfo.InvariantCulture));
+            setting = Setting.Comments;
+            setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            if (ModuleBase.IsPublishCommentTypeForPortal(PortalId))
+            {
+                //forum comments
+                setting = Setting.ForumComments;
+                setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
+                itemVersionSetting = new ItemVersionSetting(setting);
+                this.VersionSettings.Add(itemVersionSetting);
+            }
+
+            //include all articles from the parent category
+            setting = Setting.ArticleSettingIncludeCategories;
+            setting.PropertyValue = false.ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //display on current page option
+            setting = Setting.ArticleSettingCurrentDisplay;
+            setting.PropertyValue = false.ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //force display on specific page
+            setting = Setting.ArticleSettingForceDisplay;
+            setting.PropertyValue = false.ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //display return to list
+            setting = Setting.ArticleSettingReturnToList;
+            setting.PropertyValue = false.ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //show author
+            string hostAuthorSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + PortalId.ToString(CultureInfo.InvariantCulture));
+            setting = Setting.Author;
+            setting.PropertyValue = Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+            //show tags
+            string hostTagsSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowTags + PortalId.ToString(CultureInfo.InvariantCulture));
+            setting = Setting.ShowTags;
+            setting.PropertyValue = Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+
+            //use approvals
+            string hostUseApprovalsSetting = HostSettings.GetHostSetting(Utility.PublishUseApprovals + PortalId.ToString(CultureInfo.InvariantCulture));
+            setting = Setting.UseApprovals;
+            setting.PropertyValue = Convert.ToBoolean(hostUseApprovalsSetting, CultureInfo.InvariantCulture).ToString();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionSettings.Add(itemVersionSetting);
+
+        }
+
+
+
+		#region Item method implementation
+        
         public override void Save(int revisingUserId)
 		{
             IDbConnection newConnection = DataProvider.GetConnection();
@@ -118,8 +239,6 @@ namespace Engage.Dnn.Publish
 
 		}
 
-
-
         public override void UpdateApprovalStatus()
         {
             IDbConnection newConnection = DataProvider.GetConnection();
@@ -176,9 +295,9 @@ namespace Engage.Dnn.Publish
             }
         }
 
-
-
 		#endregion
+
+
 
         [XmlElement(Order = 39)]
 		public string ArticleText 

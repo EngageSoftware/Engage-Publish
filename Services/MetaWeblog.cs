@@ -56,32 +56,12 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
-                Article a = new Article();
-                a.StartDate = post.dateCreated.ToString();
-                a.Name = post.title.ToString();
-                a.ArticleText = post.description.ToString();
-                a.AuthorUserId = ui.UserID;
-                a.VersionNumber = "";
-                a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
-
+               
                 Engage.Dnn.Publish.Category c = Engage.Dnn.Publish.Category.GetCategory(post.categories.ToString(), PortalId);
 
-                a.ModuleId = c.ModuleId;
+                Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), post.description.ToString(), ui.UserID, c.ItemId, c.ModuleId, c.PortalId);
 
-                ItemRelationship irel = new ItemRelationship();
-                irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-
-
-
-                a.Relationships.Add(irel);
-                a.DisplayTabId = c.ChildDisplayTabId;
-
-                a.NewWindow = false;
-
-                SaveItemVersionSettings(a);
-
-                a.ApprovalStatusId = Util.ApprovalStatus.Approved.GetId();
-
+                a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
 
                 a.Save(ui.UserID);
                 //TODO: check if ping enabled
@@ -95,9 +75,7 @@ namespace Engage.Dnn.Publish.Services
                     //ping
                     Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
                 }
-
                 return a.ItemId.ToString(CultureInfo.InvariantCulture);
-
             }
 
             throw new XmlRpcFaultException(0, "User Did Not Authenticate!");
@@ -293,97 +271,7 @@ namespace Engage.Dnn.Publish.Services
             }
 
 
-            private static void SaveItemVersionSettings(Item av)
-            {
-                //TODO: we need item version settings for users, where?
-
-
-                //Printer Friendly
-                string hostPrinterFriendlySetting = HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + PortalId.ToString(CultureInfo.InvariantCulture));
-                Setting setting = Setting.PrinterFriendly;
-                setting.PropertyValue = Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture).ToString();
-                ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //Email A Friend
-                string hostEmailFriendSetting = HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture));
-
-                setting = Setting.EmailAFriend;
-                setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //ratings
-                string hostRatingSetting = HostSettings.GetHostSetting(Utility.PublishDefaultRatings + PortalId.ToString(CultureInfo.InvariantCulture));
-                setting = Setting.Rating;
-                setting.PropertyValue = Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //comments
-                string hostCommentSetting = HostSettings.GetHostSetting(Utility.PublishDefaultComments + PortalId.ToString(CultureInfo.InvariantCulture));
-                setting = Setting.Comments;
-                setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                if (ModuleBase.IsPublishCommentTypeForPortal(portalId))
-                {
-                    //forum comments
-                    setting = Setting.ForumComments;
-                    setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
-                    itemVersionSetting = new ItemVersionSetting(setting);
-                    av.VersionSettings.Add(itemVersionSetting);
-                }
-
-                //include all articles from the parent category
-                setting = Setting.ArticleSettingIncludeCategories;
-                setting.PropertyValue = false.ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //display on current page option
-                setting = Setting.ArticleSettingCurrentDisplay;
-                setting.PropertyValue = false.ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //force display on specific page
-                setting = Setting.ArticleSettingForceDisplay;
-                setting.PropertyValue = false.ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //display return to list
-                setting = Setting.ArticleSettingReturnToList;
-                setting.PropertyValue = false.ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //show author
-                string hostAuthorSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + PortalId.ToString(CultureInfo.InvariantCulture));
-                setting = Setting.Author;
-                setting.PropertyValue = Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-                //show tags
-                string hostTagsSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowTags + PortalId.ToString(CultureInfo.InvariantCulture));
-                setting = Setting.ShowTags;
-                setting.PropertyValue = Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-
-                //use approvals
-                string hostUseApprovalsSetting = HostSettings.GetHostSetting(Utility.PublishUseApprovals + PortalId.ToString(CultureInfo.InvariantCulture));
-                setting = Setting.UseApprovals;
-                setting.PropertyValue = Convert.ToBoolean(hostUseApprovalsSetting, CultureInfo.InvariantCulture).ToString();
-                itemVersionSetting = new ItemVersionSetting(setting);
-                av.VersionSettings.Add(itemVersionSetting);
-
-            }
-
+          
 
             public string LocalResourceFile
             {
