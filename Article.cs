@@ -57,16 +57,14 @@ namespace Engage.Dnn.Publish
             ItemRelationship irel = new ItemRelationship();
             irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
             irel.ParentItemId = parentCategoryId;
+
             a.Relationships.Add(irel);
-            a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.UtcNow.ToString();
+            a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.Now.ToString();
             a.PortalId = portalId;
             a.ModuleId = moduleId;
 
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + portalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
-            {
-                a.DisplayTabId = Convert.ToInt32(s, CultureInfo.InvariantCulture);
-            }
+            Category c = Category.GetCategory(parentCategoryId);
+            a.DisplayTabId = c.ChildDisplayTabId;
 
             a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
             a.NewWindow = false;

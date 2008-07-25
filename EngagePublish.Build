@@ -96,9 +96,11 @@
         <include name="**/${globalresource.dir}/*.resx" />
         <include name="**/${globalresource.dir}/*.xml" />
         <include name="**/*.ascx" />
+        <include name="**/*.ashx" />
         <include name="**/*.js" />
         <include name="**/*.css" />
         <include name="**/*.aspx" />
+        <include name="**/*.ashx" />
         <include name="**/*.asmx" />
         <include name="**/*.xsd" />
         <exclude name="**/DNNDebug.aspx" />
@@ -142,6 +144,7 @@
         <include name="**/${globalresource.dir}/*.xml" />
         <include name="**/*.ascx" />
         <include name="**/*.aspx" />
+        <include name="**/*.ashx" />
         <include name="**/*.asmx" />
         <include name="**/*.xsd" />
         <include name="**/*.css" />

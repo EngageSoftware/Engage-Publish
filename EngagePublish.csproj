@@ -941,7 +941,7 @@
   <ItemGroup>
     <Content Include="ArticleControls\AuthorToken.ascx" />
     <Content Include="bin\CookComputing.XmlRpcV2.dll" />
-    <Content Include="Services\App_LocalResources\MetaWeblog.asmx.resx">
+    <Content Include="Services\App_LocalResources\MetaWeblog.ashx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Services\MetaWeblogOld.asmx" />

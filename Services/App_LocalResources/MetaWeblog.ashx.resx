@@ -120,4 +120,10 @@
   <data name="MetaBlogApi.Text" xml:space="preserve">
     <value>Added via the MetaBlogApi</value>
   </data>
+  <data name="PostCategoryFailed.Text" xml:space="preserve">
+    <value>You need to choose a Category for this post.</value>
+  </data>
+  <data name="PostFailed.Text" xml:space="preserve">
+    <value>Post Failed</value>
+  </data>
 </root>

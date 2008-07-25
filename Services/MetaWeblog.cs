@@ -56,42 +56,43 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
-               
-                Engage.Dnn.Publish.Category c = Engage.Dnn.Publish.Category.GetCategory(post.categories.ToString(), PortalId);
-
-                Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), post.description.ToString(), ui.UserID, c.ItemId, c.ModuleId, c.PortalId);
-
-                a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
-
-                a.Save(ui.UserID);
-                //TODO: check if ping enabled
-                if (Utility.IsPingEnabledForPortal(PortalId))
+                List<Publish.Category> pc = new List<Engage.Dnn.Publish.Category>();
+                foreach (string s in post.categories)
                 {
-                    string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                    string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(c.ChildDisplayTabId);
-
-                    Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
-
-                    //ping
-                    Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                    Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
+                    pc.Add(c);
                 }
-                return a.ItemId.ToString(CultureInfo.InvariantCulture);
+                if (pc.Count>0)
+                {
+                    Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), 
+                        post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
+
+                    a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
+
+                    //TODO: look to see if there are other categories
+
+                    a.Save(ui.UserID);
+                    //check if ping enabled
+                    //if (Utility.IsPingEnabledForPortal(PortalId))
+                    //{
+                    //    string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
+                    //    string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(pc[0].ChildDisplayTabId);
+
+                    //    Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
+
+                    //    //ping
+                    //    Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                    //}
+                    Utility.ClearPublishCache(PortalId);
+                    return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");    
+                    
+                }
+
+                throw new XmlRpcFaultException(0, Localization.GetString("PostCategoryFailed.Text", LocalResourceFile));
+
+                
             }
-
             throw new XmlRpcFaultException(0, "User Did Not Authenticate!");
-
-            //throw new XmlRpcFaultException(0, "User is not valid!");
-        
-
-            //if (ValidateUser(username, password))
-            //{
-            //    string id = string.Empty;
-
-            //    // TODO: Implement your own logic to add the post and set the id
-
-            //    return id;
-            //}
-            //throw new XmlRpcFaultException(0, "User is not valid!");
         }
 
         bool IMetaWeblog.UpdatePost(string postid, string username, string password,
@@ -126,11 +127,22 @@ namespace Engage.Dnn.Publish.Services
 
         CategoryInfo[] IMetaWeblog.GetCategories(string blogid, string username, string password)
         {
-            if (ValidateUser(username, password))
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui != null)
             {
                 List<CategoryInfo> categoryInfos = new List<CategoryInfo>();
 
-                // TODO: Implement your own logic to get category info and set the categoryInfos
+                DataTable dt = Publish.Category.GetCategoriesByPortalId(PortalId);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    CategoryInfo ci = new CategoryInfo();
+                    ci.title = dr["Name"].ToString();
+                    ci.categoryid = dr["ItemId"].ToString();
+                    ci.description = dr["Description"].ToString();
+                    ci.htmlUrl = Utility.GetItemLinkUrl(dr["ItemId"].ToString(), PortalId, Convert.ToInt32(dr["DisplayTabId"].ToString()), Convert.ToInt32(dr["ModuleId"].ToString()), 0, "");
+                    ci.rssUrl = ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(), PortalId, "");
+                    categoryInfos.Add(ci);
+                }
 
                 return categoryInfos.ToArray();
             }
@@ -190,16 +202,24 @@ namespace Engage.Dnn.Publish.Services
                 //todo: configure blog info for users
                 List<BlogInfo> infoList = new List<BlogInfo>();
                 BlogInfo bi = new BlogInfo();
-                bi.blogid = "1";
+                bi.blogid = "0";
+                PortalAliasController pac = new PortalAliasController();
+                foreach (PortalAliasInfo api in pac.GetPortalAliasArrayByPortalID(PortalId))
+                {
+                    bi.url = "http://" + api.HTTPAlias.ToString();
+                    break;
+                }
+
                 bi.blogName = ui.Username;
 
-                bi.url = "http://localhost/dotnetnuke_2/";
+                //bi.url = pacc[0].HTTPAlias.ToString();
                 infoList.Add(bi);
 
                 // TODO: Implement your own logic to get blog info objects and set the infoList
 
                 return infoList.ToArray();
             }
+            //TODO: localize this 
             throw new XmlRpcFaultException(0, "User is not valid! Failed getting a list of blogs for a user");
         }
 
@@ -235,48 +255,45 @@ namespace Engage.Dnn.Publish.Services
             return result;
         }
 
-            ///<summary>
-            /// Authenticate user
-            /// </summary>
-            /// <param name="username">UserName</param>
-            /// <param name="password">Password</param>
-            private static DotNetNuke.Entities.Users.UserInfo Authenticate(string username, string password)
+        ///<summary>
+        /// Authenticate user
+        /// </summary>
+        /// <param name="username">UserName</param>
+        /// <param name="password">Password</param>
+        private static DotNetNuke.Entities.Users.UserInfo Authenticate(string username, string password)
+        {
+            //Check user credentials using form authentication
+
+            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+            DotNetNuke.Entities.Users.UserInfo objUser = UserController.ValidateUser(PortalId, username, password, "", "", "", ref loginStatus);
+
+            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
             {
-                //Check user credentials using form authentication
-
-                UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                DotNetNuke.Entities.Users.UserInfo objUser = UserController.ValidateUser(portalId, username, password, "", "", "", ref loginStatus);
-
-                if (loginStatus == UserLoginStatus.LOGIN_FAILURE || loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
-                {
-                    throw new System.Security.Authentication.InvalidCredentialException("Invalid credential.Access denied");
-                }
-
-                return objUser;
-
+                throw new System.Security.Authentication.InvalidCredentialException("Invalid credential.Access denied");
             }
+
+            return objUser;
+
+        }
 
         #endregion
 
 
-            private static int portalId;// = 0;
-            //TODO: fix portal id
-            public static int PortalId
+        private static int portalId;// = 0;
+        //TODO: fix portal id
+        public static int PortalId
+        {
+            get
             {
-                get
-                {
-                    return portalId;
-                }
-                set { portalId = value; }
+                return portalId;
             }
-
-
-          
-
-            public string LocalResourceFile
-            {
-                get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx"; }
-            }
+            set { portalId = value; }
+        }
+        
+        public string LocalResourceFile
+        {
+            get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx.resx"; }
+        }
 
     }
 
