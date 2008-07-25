@@ -92,7 +92,7 @@ namespace Engage.Dnn.Publish.Services
 
                 
             }
-            throw new XmlRpcFaultException(0, "User Did Not Authenticate!");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         bool IMetaWeblog.UpdatePost(string postid, string username, string password,
@@ -108,7 +108,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return result;
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Update post");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         Post IMetaWeblog.GetPost(string postid, string username, string password)
@@ -122,7 +122,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return post;
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Get Post");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         CategoryInfo[] IMetaWeblog.GetCategories(string blogid, string username, string password)
@@ -146,7 +146,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return categoryInfos.ToArray();
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Get Categories");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         Post[] IMetaWeblog.GetRecentPosts(string blogid, string username, string password,
@@ -161,7 +161,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return posts.ToArray();
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Get Recent Posts");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         MediaObjectInfo IMetaWeblog.NewMediaObject(string blogid, string username, string password,
@@ -175,7 +175,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return objectInfo;
             }
-            throw new XmlRpcFaultException(0, "User is not valid! New Media Object");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         bool IMetaWeblog.DeletePost(string key, string postid, string username, string password, bool publish)
@@ -189,14 +189,13 @@ namespace Engage.Dnn.Publish.Services
 
                 return result;
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Delete Post");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         BlogInfo[] IMetaWeblog.GetUsersBlogs(string key, string username, string password)
         {
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
-
-
+            
             if (ui.UserID > 0)
             {
                 //todo: configure blog info for users
@@ -220,7 +219,7 @@ namespace Engage.Dnn.Publish.Services
                 return infoList.ToArray();
             }
             //TODO: localize this 
-            throw new XmlRpcFaultException(0, "User is not valid! Failed getting a list of blogs for a user");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         UserInfo IMetaWeblog.GetUserInfo(string key, string username, string password)
@@ -239,7 +238,7 @@ namespace Engage.Dnn.Publish.Services
 
                 return info;
             }
-            throw new XmlRpcFaultException(0, "User is not valid! Failed at GetUserInfo");
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
         #endregion
