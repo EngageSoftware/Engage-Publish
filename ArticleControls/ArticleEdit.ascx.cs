@@ -602,6 +602,24 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                 }
 
+                //TODO: add a checkbox to enable this functionality
+                //check to see if av.Description == string.empty
+                if (av.Description == string.Empty)
+                {
+                    //trim article text to populate description
+                    //if our article is over 8k characters be sure to trim it
+                    if (!Utility.HasValue(av.Description) || !Utility.HasValue(av.MetaDescription))
+                    {
+                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.ArticleText, false);
+
+                        if (!Utility.HasValue(av.MetaDescription))
+                            av.MetaDescription = Utility.TrimDescription(399, description);
+
+                        if (!Utility.HasValue(av.Description))
+                            av.Description = Utility.TrimDescription(3997, description) + "...";// description + "...";
+                    }
+                }
+
                 //Save the ItemVersionSettings
                 SaveSettings();
 

@@ -1205,6 +1205,22 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
+        public static string TrimDescription(int length, string description)
+        {
+            if (description.Length > length)
+            {
+                description = description.Substring(0, length);
+            }
+            if (description.Length > 0)
+            {
+                int lastSpace = description.LastIndexOf(' ');
+
+                if (lastSpace != description.Length - 1 && lastSpace > 0)
+                    description = description.Substring(0, lastSpace);
+            }
+            return description;
+        }
+
         #region Portal Settings
 
         //public static bool? GetBooleanPortalSetting(string settingName, int portalId)

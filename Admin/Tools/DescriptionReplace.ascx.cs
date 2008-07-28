@@ -60,10 +60,10 @@ namespace Engage.Dnn.Publish.Admin.Tools
                         string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(a.ArticleText, false);
 
                         if (!Utility.HasValue(a.MetaDescription))
-                        a.MetaDescription = TrimDescription(399, description);
+                        a.MetaDescription = Utility.TrimDescription(399, description);
 
                         if (!Utility.HasValue(a.Description))
-                        a.Description = TrimDescription(3997, description) + "...";// description + "...";
+                            a.Description = Utility.TrimDescription(3997, description) + "...";// description + "...";
                         
                         a.UpdateDescription();
                         articleUpdate++;
@@ -77,21 +77,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
 
         }
 
-        public static string TrimDescription(int length, string description)
-        {
-            if (description.Length > length)
-            {
-                description = description.Substring(0, length);
-            }
-            if (description.Length > 0)
-            {
-                int lastSpace = description.LastIndexOf(' ');
-
-                if (lastSpace != description.Length - 1 && lastSpace > 0)
-                    description = description.Substring(0, lastSpace);
-            }
-            return description;
-        }
+       
     }
 }
 

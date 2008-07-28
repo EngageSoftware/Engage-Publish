@@ -263,6 +263,8 @@ namespace Engage.Dnn.Publish.Services
         {
             //Check user credentials using form authentication
 
+            //Check the portal alias to verify where the request is coming from and set portalid
+
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
             DotNetNuke.Entities.Users.UserInfo objUser = UserController.ValidateUser(PortalId, username, password, "", "", "", ref loginStatus);
 
