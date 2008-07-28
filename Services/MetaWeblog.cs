@@ -46,11 +46,13 @@ namespace Engage.Dnn.Publish.Services
 
         #endregion
 
+
         #region IMetaWeblog Members
 
         string IMetaWeblog.AddPost(string blogid, string username, string password,
             Post post, bool publish)
         {
+            LocatePortal(Context.Request);
             //TODO: something fails in here
 
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
@@ -113,6 +115,7 @@ namespace Engage.Dnn.Publish.Services
 
         Post IMetaWeblog.GetPost(string postid, string username, string password)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -127,6 +130,7 @@ namespace Engage.Dnn.Publish.Services
 
         CategoryInfo[] IMetaWeblog.GetCategories(string blogid, string username, string password)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
@@ -152,6 +156,7 @@ namespace Engage.Dnn.Publish.Services
         Post[] IMetaWeblog.GetRecentPosts(string blogid, string username, string password,
             int numberOfPosts)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -167,6 +172,7 @@ namespace Engage.Dnn.Publish.Services
         MediaObjectInfo IMetaWeblog.NewMediaObject(string blogid, string username, string password,
             MediaObject mediaObject)
         {
+            LocatePortal(Context.Request);
             if (ValidateUser(username, password))
             {
                 MediaObjectInfo objectInfo = new MediaObjectInfo();
@@ -180,6 +186,7 @@ namespace Engage.Dnn.Publish.Services
 
         bool IMetaWeblog.DeletePost(string key, string postid, string username, string password, bool publish)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -194,6 +201,7 @@ namespace Engage.Dnn.Publish.Services
 
         BlogInfo[] IMetaWeblog.GetUsersBlogs(string key, string username, string password)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             
             if (ui.UserID > 0)
@@ -224,6 +232,7 @@ namespace Engage.Dnn.Publish.Services
 
         UserInfo IMetaWeblog.GetUserInfo(string key, string username, string password)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -247,6 +256,7 @@ namespace Engage.Dnn.Publish.Services
 
         private bool ValidateUser(string username, string password)
         {
+            LocatePortal(Context.Request);
             bool result = false;
 
             // TODO: Implement the logic to validate the user
@@ -274,10 +284,27 @@ namespace Engage.Dnn.Publish.Services
             }
 
             return objUser;
-
         }
 
         #endregion
+
+        private void LocatePortal(HttpRequest request)
+        {
+            
+            string requestedPath = request.Url.AbsoluteUri;
+            string domainName = string.Empty;
+            string portalAlias = string.Empty;
+
+            domainName = DotNetNuke.Common.Globals.GetDomainName(request, true);
+
+            portalAlias = domainName;
+            PortalAliasInfo pai = new PortalAliasInfo();
+            pai = PortalSettings.GetPortalAliasInfo(portalAlias);
+            if (pai != null)
+            {
+                PortalId = pai.PortalID;
+            }
+        }
 
 
         private static int portalId;// = 0;
@@ -295,6 +322,7 @@ namespace Engage.Dnn.Publish.Services
         {
             get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx.resx"; }
         }
+
 
     }
 
