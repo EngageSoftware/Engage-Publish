@@ -49,6 +49,15 @@ namespace Engage.Dnn.Publish.Services
 
         #region IMetaWeblog Members
 
+        ///<summary>
+        /// Add a new blog post
+        /// </summary>
+        /// <param name="blogid">blogid</param>
+        /// <param name="username">username</param>
+        /// <param name="password">password</param>
+        /// <param name="post">post</param>
+        /// <param name="publish">publish</param>
+
         string IMetaWeblog.AddPost(string blogid, string username, string password,
             Post post, bool publish)
         {
@@ -64,14 +73,26 @@ namespace Engage.Dnn.Publish.Services
                     Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
                     pc.Add(c);
                 }
+                //This only works for the first category, how should we handle other categories?
                 if (pc.Count>0)
                 {
                     Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), 
                         post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
-
+                    a.StartDate = post.dateCreated.ToString();
                     a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
 
                     //TODO: look to see if there are other categories
+
+                    if (pc.Count > 1)
+                    {
+                        for (int i =1; i<pc.Count; i++)
+                        {
+                            ItemRelationship irel = new ItemRelationship();
+                            irel.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
+                            irel.ParentItemId = pc[i].ItemId;
+                            a.Relationships.Add(irel);
+                        }
+                    }
 
                     a.Save(ui.UserID);
                     //check if ping enabled
@@ -100,6 +121,7 @@ namespace Engage.Dnn.Publish.Services
         bool IMetaWeblog.UpdatePost(string postid, string username, string password,
             Post post, bool publish)
         {
+            LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -269,7 +291,7 @@ namespace Engage.Dnn.Publish.Services
         /// </summary>
         /// <param name="username">UserName</param>
         /// <param name="password">Password</param>
-        private static DotNetNuke.Entities.Users.UserInfo Authenticate(string username, string password)
+        private DotNetNuke.Entities.Users.UserInfo Authenticate(string username, string password)
         {
             //Check user credentials using form authentication
 
@@ -280,17 +302,21 @@ namespace Engage.Dnn.Publish.Services
 
             if (loginStatus == UserLoginStatus.LOGIN_FAILURE || loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
             {
-                throw new System.Security.Authentication.InvalidCredentialException("Invalid credential.Access denied");
+                throw new System.Security.Authentication.InvalidCredentialException(Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
             }
 
+            //Check for the author/admin roles in Publish
+            if (!objUser.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId)) && !objUser.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId)))
+            {
+                throw new System.Security.Authentication.InvalidCredentialException(Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
+            }
             return objUser;
         }
 
         #endregion
 
         private void LocatePortal(HttpRequest request)
-        {
-            
+        {            
             string requestedPath = request.Url.AbsoluteUri;
             string domainName = string.Empty;
             string portalAlias = string.Empty;
