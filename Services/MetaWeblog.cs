@@ -81,7 +81,8 @@ namespace Engage.Dnn.Publish.Services
                     a.StartDate = post.dateCreated.ToString();
                     a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
 
-                    //TODO: look to see if there are other categories
+                    //look to see if there are other categories
+                    //currently we're taking the "first" category as the parent, this might not be correct but as of know we don't have another solution
 
                     if (pc.Count > 1)
                     {
