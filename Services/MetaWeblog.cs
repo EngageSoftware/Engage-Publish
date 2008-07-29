@@ -128,7 +128,8 @@ namespace Engage.Dnn.Publish.Services
 
                 bool result = false;
 
-                // TODO: Implement your own logic to add the post and set the result
+                //TODO: should we add a new version of a post?
+                
 
                 return result;
             }
@@ -265,8 +266,6 @@ namespace Engage.Dnn.Publish.Services
                 info.nickname = ui.DisplayName;
                 info.userid = ui.UserID.ToString();
 
-                // TODO: Implement your own logic to get user info objects and set the info
-
                 return info;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
@@ -334,7 +333,6 @@ namespace Engage.Dnn.Publish.Services
 
 
         private static int portalId;// = 0;
-        //TODO: fix portal id
         public static int PortalId
         {
             get
