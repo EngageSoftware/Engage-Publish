@@ -99,7 +99,7 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append(BuildTagLink(tagName, true, string.Empty));
                         sb.Append("\" class=\"tag\">");
                         sb.Append(tagName);
-                        sb.Append("</a> ");
+                        sb.Append("</a> </li>");
                         lnkTag.Text = sb.ToString();
                         phTagCloud.Controls.Add(lnkTag);
                     }

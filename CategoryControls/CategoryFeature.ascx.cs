@@ -164,7 +164,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     rssUrl.Append(DesktopModuleFolderName);
                     rssUrl.Append("epRss.aspx?");
                     rssUrl.AppendFormat("ItemId={0}", VersionInfoObject.ItemId);
-                    rssUrl.AppendFormat("&RelationshipTypeId={0}&PortalId={1}&DisplayType=CategoryFeature", relationshipTypeId, PortalId);
+                    rssUrl.AppendFormat("&amp;RelationshipTypeId={0}&amp;PortalId={1}&amp;DisplayType=CategoryFeature", relationshipTypeId, PortalId);
                     lnkRss.NavigateUrl = rssUrl.ToString();
 
                     SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssText", LocalResourceFile));

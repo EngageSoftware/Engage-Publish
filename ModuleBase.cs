@@ -1398,10 +1398,10 @@ namespace Engage.Dnn.Publish
                 LiteralControl lc = new LiteralControl();
                 StringBuilder sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
-                sb.Append(rssUrl.ToString());
+                sb.Append(HttpUtility.UrlEncode(rssUrl.ToString()));
                 sb.Append("\" title=\"");
                 sb.Append(rssTitle.ToString());
-                sb.Append("\">");
+                sb.Append("\" />");
                 lc.Text = sb.ToString();
 
                 DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;

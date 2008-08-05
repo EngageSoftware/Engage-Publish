@@ -1238,12 +1238,12 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 if (albumId.HasValue) //ultra media
                 {
-                    string popupUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + "/DesktopModules/BizModules - UltraPhotoGallery/Popup.aspx?ModuleId=" + moduleId.ToString(CultureInfo.InvariantCulture) + "&portalId=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&AlbumId=" + albumId.Value.ToString(CultureInfo.InvariantCulture);
+                    string popupUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + "/DesktopModules/BizModules - UltraPhotoGallery/Popup.aspx?ModuleId=" + moduleId.ToString(CultureInfo.InvariantCulture) + "&amp;portalId=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&amp;AlbumId=" + albumId.Value.ToString(CultureInfo.InvariantCulture);
                     return "window.open('" + popupUrl + "','UPG_POPUP','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width=" + GetPopupWidth(moduleId).ToString(CultureInfo.InvariantCulture) + ",height=" + GetPopupHeight(moduleId).ToString(CultureInfo.InvariantCulture) + "')";
                 }
                 else //simple gallery
                 {
-                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&ItemID=" + row["PhotoID"].ToString() + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId));
+                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&amp;ItemID=" + row["PhotoID"].ToString() + "&amp;Border=" + GetBorderStyle(moduleId) + "&amp;sb=" + GetSortBy(moduleId) + "&amp;sd=" + GetSortDirection(moduleId));
                     return "window.open('" + popupUrl + "','smallscreen','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width=" + GetPopupWidth(moduleId).ToString(CultureInfo.InvariantCulture) + ",height=" + GetPopupHeight(moduleId).ToString(CultureInfo.InvariantCulture) + "')";
                 }
             }
