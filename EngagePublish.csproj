@@ -43,10 +43,6 @@
     <Reference Include="AjaxControlToolkit, Version=1.0.10920.32880, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="CommunityCredit, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Bin\CommunityCredit.dll</HintPath>
-    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
@@ -82,7 +78,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
