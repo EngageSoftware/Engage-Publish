@@ -180,4 +180,13 @@
   <data name="Name.Header" xml:space="preserve">
     <value>Comment From</value>
   </data>
+  <data name="btnFilter.Text" xml:space="preserve">
+    <value>filter</value>
+  </data>
+  <data name="lblArticleSearch.Help" xml:space="preserve">
+    <value>You can search for comments on specific articles by filtering your search with a string found in an article title.</value>
+  </data>
+  <data name="lblArticleSearch.Text" xml:space="preserve">
+    <value>Article Title Search</value>
+  </data>
 </root>

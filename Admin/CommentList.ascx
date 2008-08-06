@@ -1,13 +1,19 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.CommentList" Codebehind="CommentList.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
-<table border="0" class="Normal">
-    <tr valign="top">
+<table border="0">
+    <tr>
         <td><dnn:Label ID="lblItemType" ResourceKey="lblItemType" Runat="server" cssClass="Normal" ControlName="cboCategories"></dnn:Label></td>
         <td><asp:DropDownList ID="cboCategories" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>
         <td><dnn:Label ID="lblWorkflow" ResourceKey="lblWorkFlow" Runat="server" CssClass="Normal" ControlName="cboWorkFlow"></dnn:Label></td>
         <td><asp:DropDownList ID="cboWorkflow" Runat="server" AutoPostBack="True" CssClass="Normal" OnSelectedIndexChanged="cboWorkflow_SelectedIndexChanged"></asp:DropDownList></td>
+        <td><dnn:Label ID="lblArticleSearch" ResourceKey="lblArticleSearch" Runat="server" cssClass="Normal" ControlName="txtArticleSearch"></dnn:Label></td>   
+        <td><asp:TextBox ID="txtArticleSearch" runat="server" CssClass="Normal"></asp:TextBox></td>
+        <td><asp:LinkButton ID="btnFilter" runat="server" resourcekey="btnFilter" 
+                onclick="btnFilter_Click"  CssClass="Normal" /></td>
+
     </tr>
+
 </table>
 <div id="divArticleRepeater">
     <asp:GridView ID="dgItems" Visible="false" runat="server" 

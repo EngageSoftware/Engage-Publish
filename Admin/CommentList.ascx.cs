@@ -168,9 +168,15 @@ namespace Engage.Dnn.Publish.Admin
             int authorUserId = -1;
             if (!IsAdmin)
                 authorUserId = UserId;
-                
 
-			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId, authorUserId);
+            string articleSearch = string.Empty;
+
+            if (txtArticleSearch.Text.Trim() != string.Empty)
+            {
+                articleSearch = txtArticleSearch.Text.Trim();
+            }
+
+			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId, authorUserId, articleSearch);
             if (ds.Tables[0].Rows.Count == 0)
             {
                 this.lblMessage.Text = Localization.GetString("NoCommentsFound", LocalResourceFile) + " " + cboCategories.SelectedItem.ToString();
@@ -266,5 +272,10 @@ namespace Engage.Dnn.Publish.Admin
 
        
         #endregion
+
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            BindData();
+        }
     }
 }

@@ -50,6 +50,33 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.DropDownList cboWorkflow;
         
         /// <summary>
+        /// lblArticleSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblArticleSearch;
+        
+        /// <summary>
+        /// txtArticleSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtArticleSearch;
+        
+        /// <summary>
+        /// btnFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnFilter;
+        
+        /// <summary>
         /// dgItems control.
         /// </summary>
         /// <remarks>

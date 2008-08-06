@@ -813,7 +813,7 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteDataset(ConnectionString, NamePrefix + "spGetAdminItemListing", Utility.CreateIntegerParam("@ParentItemId", parentItemId), Utility.CreateIntegerParam("@ItemTypeId", itemTypeId), Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId), Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId), Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId), Utility.CreateIntegerParam("@PortalId", portalId), Utility.CreateNvarcharParam("@OrderBy", orderBy, 100));
         }
 
-        public override DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId, int authorUserId)
+        public override DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId, int authorUserId, string articleSearch)
         {
             StringBuilder sql = new StringBuilder(723);
             sql.Append("select comment.commentId,  ");
@@ -842,6 +842,12 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" (RelationshipName = 'Item To Parent Category' or RelationshipName = 'Item to Related Category'))  ");
                 sql.Append(" and article.parentItemId = @categoryId ");
             }
+
+            //search article titles
+
+            if(articleSearch != string.Empty)
+                sql.AppendFormat(" and vi.Name like '%{0}%' ", articleSearch);
+
             if (authorUserId != -1)
             {
                 sql.Append(" and vi.authorUserId = ");
