@@ -145,7 +145,7 @@
     <value>Description:</value>
   </data>
   <data name="lblName.Text" xml:space="preserve">
-    <value>Name:</value>
+    <value>Name/Title:</value>
   </data>
   <data name="lblDisplayTabId.Help" xml:space="preserve">
     <value>Choose which page this item should be displayed on.</value>
@@ -172,7 +172,7 @@
     <value>End date is used if you would like to limit the availability of an item by a date range.</value>
   </data>
   <data name="lblName.Help" xml:space="preserve">
-    <value>Name of the item you are creating.</value>
+    <value>Name/Title of the item you are creating/editing.</value>
   </data>
   <data name="lblDescription.Help" xml:space="preserve">
     <value>Description (Abstract) of the item you are creating.</value>

@@ -96,6 +96,8 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId);
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId);
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, string orderBy, int portalId);
+        public abstract DataSet GetAdminItemListingSearchKey(int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, string orderBy, string searchKey, int portalId);
+
         public abstract DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId, int authorUserId, string articleSearch);
 
         public abstract int GetParentCategory(int childItemId, int portalId);

@@ -170,10 +170,11 @@ namespace Engage.Dnn.Publish.Admin
                 authorUserId = UserId;
 
             string articleSearch = string.Empty;
-
+            
             if (txtArticleSearch.Text.Trim() != string.Empty)
             {
-                articleSearch = txtArticleSearch.Text.Trim();
+                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                articleSearch = objSecurity.InputFilter(txtArticleSearch.Text.Trim(),DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
             }
 
 			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId, authorUserId, articleSearch);

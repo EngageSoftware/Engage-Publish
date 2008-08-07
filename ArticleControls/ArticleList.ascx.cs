@@ -151,13 +151,27 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             dgItems.DataSourceID = string.Empty;
-            DataSet ds = DataProvider.Instance().GetAdminItemListing(categoryId, ItemType.Article.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", PortalId);
+            DataSet ds = new DataSet();
+            if (txtArticleSearch.Text.Trim() != string.Empty)
+            {
+                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                string searchKey = objSecurity.InputFilter(txtArticleSearch.Text.Trim(), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
+                //
+                ds = DataProvider.Instance().GetAdminItemListingSearchKey(categoryId, ItemType.Article.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId);
+            }
+            else
+            {
+                ds = DataProvider.Instance().GetAdminItemListing(categoryId, ItemType.Article.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", PortalId);
+
+            }
+
+            //
+
             return ds.Tables[0];
         }
 
         private void BindData()
         {
-
             dgItems.DataSource = GetGridData();
             dgItems.DataBind();
 
@@ -382,6 +396,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         #endregion
 
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            BindData();
+        }
 
 
     }

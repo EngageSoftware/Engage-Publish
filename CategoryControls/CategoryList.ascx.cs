@@ -84,7 +84,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
         }
 
-      
+
         #endregion
 
         private void cboItemType_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -108,7 +108,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
             //set the approval status ID to approved by default, if we're using approvals look for the selected value
             int approvalStatusId = ApprovalStatus.Approved.GetId();
-            
+
             if (UseApprovals)
             {
                 approvalStatusId = Convert.ToInt32(this.cboWorkflow.SelectedValue, CultureInfo.InvariantCulture);
@@ -116,17 +116,34 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             QueryStringParameters qsp = new QueryStringParameters();
             DataTable dt;
-            if (itemId == -1)
+            DataSet ds = new DataSet();
+
+            if (txtArticleSearch.Text.Trim() != string.Empty)
             {
-                DataSet ds = DataProvider.Instance().GetAdminItemListing(Util.TopLevelCategoryItemType.Category.GetId(), Util.ItemType.Category.GetId(), Util.RelationshipType.CategoryToTopLevelCategory.GetId(), approvalStatusId, PortalId);
-                dt = ds.Tables[0];
+                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                string searchKey = objSecurity.InputFilter(txtArticleSearch.Text.Trim(), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
+                //
+                if (itemId == -1)
+                {
+                    ds = DataProvider.Instance().GetAdminItemListingSearchKey(Util.TopLevelCategoryItemType.Category.GetId(), ItemType.Category.GetId(), RelationshipType.CategoryToTopLevelCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId);
+                }
+                else
+                {ds = DataProvider.Instance().GetAdminItemListingSearchKey(itemId, ItemType.Category.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId);
+                }
             }
             else
             {
-                DataSet ds = DataProvider.Instance().GetAdminItemListing(itemId, Util.ItemType.Category.GetId(), Util.RelationshipType.ItemToParentCategory.GetId(), Util.RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, PortalId);
-                dt = ds.Tables[0];
-            }
+                if (itemId == -1)
+                {
+                    ds = DataProvider.Instance().GetAdminItemListing(Util.TopLevelCategoryItemType.Category.GetId(), Util.ItemType.Category.GetId(), Util.RelationshipType.CategoryToTopLevelCategory.GetId(), approvalStatusId, PortalId);
 
+                }
+                else
+                {
+                    ds = DataProvider.Instance().GetAdminItemListing(itemId, Util.ItemType.Category.GetId(), Util.RelationshipType.ItemToParentCategory.GetId(), Util.RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, PortalId);
+                }
+            }
+            dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
             {
 
@@ -388,5 +405,11 @@ namespace Engage.Dnn.Publish.CategoryControls
                 this.lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + TopLevelId.ToString(CultureInfo.InvariantCulture) + "&parentId=" + CategoryId.ToString(CultureInfo.InvariantCulture));
             }
         }
+
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            BindData();
+        }
+
     }
 }

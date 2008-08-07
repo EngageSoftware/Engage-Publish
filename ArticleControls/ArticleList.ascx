@@ -23,6 +23,11 @@
                 <td><asp:DropDownList ID="cboCategories" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>
                 <td><dnn:Label ID="lblWorkflow" ResourceKey="lblWorkFlow" Runat="server" CssClass="Normal" ControlName="cboWorkFlow"></dnn:Label></td>
                 <td><asp:DropDownList ID="cboWorkflow" Runat="server" AutoPostBack="True" CssClass="Normal"></asp:DropDownList></td>
+                <td><dnn:Label ID="lblArticleSearch" ResourceKey="lblArticleSearch" Runat="server" cssClass="Normal" ControlName="txtArticleSearch"></dnn:Label></td>   
+                <td><asp:TextBox ID="txtArticleSearch" runat="server" CssClass="Normal"></asp:TextBox></td>
+                <td><asp:LinkButton ID="btnFilter" runat="server" resourcekey="btnFilter" 
+                        onclick="btnFilter_Click"  CssClass="Normal" /></td>
+
             </tr>
         </table>
         <div id="divArticleRepeater">
