@@ -1060,7 +1060,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         lnkReturnToList.NavigateUrl = GetItemLinkUrl(parentItemId);
 
                         //check of the parent category is set to not display on current page, if it isn't, we need to force it to be so here.
-                        Category cparent = Category.GetCategory(parentItemId);
+                        Category cparent = Category.GetCategory(parentItemId, PortalId);
 
 
                         lnkReturnToList.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lnkReturnToList", LocalResourceFile), cparent.Name);

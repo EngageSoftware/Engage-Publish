@@ -118,7 +118,7 @@ namespace Engage.Dnn.Publish.CategoryControls
            {
                
                //TODO: get the category from cache
-                Category parentItem = Category.GetCategory(ItemId);
+                Category parentItem = Category.GetCategory(ItemId, PortalId);
                 #region showparent
                 if (parentItem != null)
                 {

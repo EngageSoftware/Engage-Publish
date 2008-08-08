@@ -138,11 +138,14 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName)
         {
+
+            //TODO: cache this 
             return CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettings(itemVersionId, controlName)); 
         }
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByPortalId(int portalId)
         {
+            //TODO: cache this 
             List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
 
             return settings;
@@ -150,6 +153,7 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByModuleId(int moduleId)
         {
+            //TODO: cache this 
             List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
 
             return settings;

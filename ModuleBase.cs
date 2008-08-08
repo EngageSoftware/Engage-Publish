@@ -726,7 +726,8 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                int typeId = Item.GetItemTypeId(ItemId);
+                int typeId = Item.GetItemTypeId(ItemId, PortalId);
+
                 return ItemType.GetFromId(typeId, typeof(ItemType));
             }
         }
@@ -842,6 +843,23 @@ namespace Engage.Dnn.Publish
                 return this.useCache && CacheTime>0;
             }
             set { this.useCache = value; }
+        }
+
+        public static bool UseCachePortal(int portalId)
+        {
+            if (CacheTimePortal(portalId) > 0)
+
+                return true;
+            else return false;
+        }
+
+        public static int CacheTimePortal(int portalId)
+        {
+            if (GetDefaultCacheSetting(portalId) > 0)
+            {
+                return GetDefaultCacheSetting(portalId);
+            }
+            return 0;
         }
 
         public bool AllowTitleUpdate

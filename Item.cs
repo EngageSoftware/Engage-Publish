@@ -847,11 +847,46 @@ namespace Engage.Dnn.Publish
 
         public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
         {
-            IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
-            ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
-            Item a = (Item)CBO.FillObject(dr, it.GetItemType);
-            a.CorrectDates();
-            return a;
+            //TODO: cache this 
+
+            string cacheKey = Utility.CacheKeyPublishItem + itemId.ToString(CultureInfo.InvariantCulture);
+            Item i = null;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    i = (Item)o;
+                }
+                else
+                {
+                    IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
+                    ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
+
+                    i= (Item)CBO.FillObject(dr, it.GetItemType);
+                    i.CorrectDates();
+                }
+                DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
+                ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
+
+                i = (Item)CBO.FillObject(dr, it.GetItemType);
+                i.CorrectDates();
+            }
+            return i;
+
+
+            //IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
+            
+            //ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
+
+            //Item a = (Item)CBO.FillObject(dr, it.GetItemType);
+            //a.CorrectDates();
+            //return a;
         }
 
         public void AddView(int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
@@ -953,15 +988,99 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetItemTypeId(itemId);
         }
 
-        public static string GetItemTypeFromVersion(int itemVersionId)
+        public static int GetItemTypeId(int itemId, int portalId)
         {
-            return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
+            int itemType;
+            string cacheKey = Utility.CacheKeyPublishItemTypeIntForItemId + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    itemType = Convert.ToInt32(o.ToString());
+                }
+                else
+                {
+                    itemType = Item.GetItemTypeId(itemId);
+                }
+                DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                itemType = Item.GetItemTypeId(itemId);
+            }
+            return itemType;
         }
+
+        //public static string GetItemTypeFromVersion(int itemVersionId)
+        //{
+        //    return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
+        //}
+
+
+        //public static string GetItemTypeFromVersion(int itemVersionId, int portalId)
+        //{
+        //    string typeId;
+        //    string cacheKey = Utility.CacheKeyPublishItemTypeStringForItemVersionId + itemVersionId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+        //    if (ModuleBase.UseCachePortal(portalId))
+        //    {
+        //        object o = DataCache.GetCache(cacheKey) as object;
+        //        if (o != null)
+        //        {
+        //            typeId = o.ToString();
+        //        }
+        //        else
+        //        {
+        //            typeId = Item.GetItemTypeFromVersion(itemVersionId);
+        //        }
+
+        //        DataCache.SetCache(cacheKey, typeId, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+        //        Utility.AddCacheKey(cacheKey, portalId);
+        //    }
+        //    else
+        //    {
+        //        typeId = Item.GetItemTypeFromVersion(itemVersionId);
+        //    }
+        //    return typeId;
+
+        //    //return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
+        //}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not displaying properties of this class.")]
         public static DataTable GetItemTypes()
         {
+            //cached version below
             return DataProvider.Instance().GetItemTypes();
+        }
+
+        public static DataTable GetItemTypes(int portalId)
+        {
+            DataTable dt;
+            string cacheKey = Utility.CacheKeyPublishItemTypesDT + portalId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    dt = (DataTable)o;
+                }
+                else
+                {
+                    dt= Item.GetItemTypes();
+                }
+
+                DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                dt = Item.GetItemTypes();
+            }
+            return dt;
+
+            //cache this?
+            //return DataProvider.Instance().GetItemTypes();
         }
 
         public static void DeleteItem(int itemId)

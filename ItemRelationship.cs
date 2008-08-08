@@ -296,7 +296,7 @@ namespace Engage.Dnn.Publish
 
                 if (includeParentCategory)
                 {
-                    Category parentCategory = Category.GetCategory(categoryId);
+                    Category parentCategory = Category.GetCategory(categoryId, portalId);
                     if (parentCategory != null)
                     {
                         DataRow parentRow = dt.NewRow();

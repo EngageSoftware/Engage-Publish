@@ -325,6 +325,7 @@ namespace Engage.Dnn.Publish
                 {
                     if (itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
                     {
+                        //TODO: where can we get portalid from?
                         Category category = Category.GetCategory(itemId);
                         DisplayItem(category);
                     }

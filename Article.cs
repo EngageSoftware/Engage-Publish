@@ -63,7 +63,7 @@ namespace Engage.Dnn.Publish
             a.PortalId = portalId;
             a.ModuleId = moduleId;
 
-            Category c = Category.GetCategory(parentCategoryId);
+            Category c = Category.GetCategory(parentCategoryId, portalId);
             a.DisplayTabId = c.ChildDisplayTabId;
 
             a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
@@ -446,13 +446,43 @@ namespace Engage.Dnn.Publish
 
 		public static Article GetArticle(int itemId, int portalId)
 		{
-			IDataReader dr = DataProvider.Instance().GetArticle(itemId, portalId);
-			Article a = (Article) CBO.FillObject(dr, typeof(Article));
-            if (a != null)
+            string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
+            Article a = new Article();
+            if (ModuleBase.UseCachePortal(portalId))
             {
-                a.CorrectDates();
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    a = (Article)o;
+                }
+                else
+                {
+                    a = Article.GetArticle(itemId);
+                    if (a != null)
+                    {
+                        a.CorrectDates();
+                    }
+                }
+                DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                a = Article.GetArticle(itemId);
+                if (a != null)
+                {
+                    a.CorrectDates();
+                }
             }
             return a;
+
+            //IDataReader dr = DataProvider.Instance().GetArticle(itemId, portalId);
+            //Article a = (Article) CBO.FillObject(dr, typeof(Article));
+            //if (a != null)
+            //{
+            //    a.CorrectDates();
+            //}
+            //return a;
 		}
 
         public static int GetOldArticleId(int itemId)

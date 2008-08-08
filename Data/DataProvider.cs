@@ -104,7 +104,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataTable GetParentCategories(int articleId, int portalId);
 
         public abstract IDataReader GetCategory(int itemId);
-        public abstract int GetCategory(string categoryName, int portalId);
+        public abstract int GetCategoryItemId(string categoryName, int portalId);
         public abstract IDataReader GetCategory(int itemId, int portalId);
         public abstract IDataReader GetCategoryVersion(int itemVersionId, int portalId);
 

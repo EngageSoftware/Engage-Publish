@@ -94,7 +94,7 @@ namespace Engage.Dnn.Publish
             if (TypeOfItem == ItemType.Article)
             {
                 string articleControlToLoad = "~" + DesktopModuleFolderName + "ArticleControls/articleDisplay.ascx";
-                Article a = Article.GetArticle(base.ItemId);
+                Article a = Article.GetArticle(base.ItemId, PortalId);
                 if (a == null)
                 {
                     throw new InvalidOperationException("Article not found");
@@ -113,7 +113,7 @@ namespace Engage.Dnn.Publish
             else if (TypeOfItem == ItemType.Category)
             {
                 string categoryControlToLoad = "~" + DesktopModuleFolderName + "CategoryControls/CategoryDisplay.ascx";
-                Category category = Category.GetCategory(base.ItemId);
+                Category category = Category.GetCategory(base.ItemId, PortalId);
                 if (category == null)
                 {
                     throw new InvalidOperationException("Category not found");

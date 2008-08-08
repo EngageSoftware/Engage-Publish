@@ -13,6 +13,7 @@ using System.Data;
 using System.Globalization;
 using System.Reflection;
 using Engage.Dnn.Publish.Data;
+using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish.Util
 {
@@ -57,6 +58,8 @@ namespace Engage.Dnn.Publish.Util
 
         public static ItemType GetFromId(int id, Type ct)
         {
+
+            //TODO: can we cache this?
             if (ct == null)
                 throw new ArgumentNullException("ct");
             if (id < 1)
@@ -99,7 +102,38 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemTypeName(int itemTypeId)
         {
+            //cache this
             return DataProvider.Instance().GetItemTypeName(itemTypeId);
+        }
+
+        public static string GetItemTypeName(int itemTypeId, bool UseCache, int PortalId, int CacheTime)
+        {
+            //cache this
+            string typeName = string.Empty;
+
+
+            string cacheKey = Utility.CacheKeyPublishItemTypeName + itemTypeId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (UseCache)
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    typeName = o.ToString();
+                }
+                else
+                {
+                    typeName = DataProvider.Instance().GetItemTypeName(itemTypeId);
+                }
+
+                DataCache.SetCache(cacheKey, typeName, DateTime.Now.AddMinutes(CacheTime));
+                Utility.AddCacheKey(cacheKey, PortalId);
+            }
+            else
+            {
+                typeName = DataProvider.Instance().GetItemTypeName(itemTypeId);
+            }
+
+            return typeName;
         }
 
         public string Name

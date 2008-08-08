@@ -293,6 +293,19 @@ namespace Engage.Dnn.Publish.Util
 
         public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
 
+        public const string CacheKeyPublishItemTypeIntForItemId = "CacheKeyPublishItemTypeIntForItemId_";
+        public const string CacheKeyPublishItemTypeStringForItemVersionId = "CacheKeyPublishItemTypeStringForItemVersionId_";
+        public const string CacheKeyPublishItemTypesDT = "CacheKeyPublishItemTypesDT_";
+
+        public const string CacheKeyPublishItem = "CacheKeyPublishItem_";
+
+        
+
+        
+
+        public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
+
+
         //Cache keys for Tags
         public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
 
@@ -559,7 +572,7 @@ namespace Engage.Dnn.Publish.Util
         public static bool IsDisabled(int itemId, int portalId)
         {
             //check if an item is disabled
-            int typeId = Item.GetItemTypeId(itemId);
+            int typeId = Item.GetItemTypeId(itemId, portalId);
             Item item = Item.GetItem(itemId, portalId, typeId, true);
             return item.Disabled;
         }
@@ -710,6 +723,32 @@ namespace Engage.Dnn.Publish.Util
                     "adminType=" + type.Name + "Edit", "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture), returnUrl);
         }
 
+        public static string BuildEditUrl(int itemId, int tabId, int moduleId, int portalId)
+        {
+            int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
+            int typeId = Item.GetItemTypeId(id, portalId);
+            ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
+            Item i;// = null;
+            if (type.Name == ItemType.Article.Name)
+            {
+                i = Article.GetArticle(id,portalId);
+            }
+            else
+            {
+                i = Category.GetCategory(id, portalId);
+            }
+
+            string returnUrl = string.Empty;
+            if (HttpContext.Current != null)
+            {
+                returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
+            }
+
+            return Globals.NavigateURL(tabId, "", "ctl=" + AdminContainer, "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
+                    "adminType=" + type.Name + "Edit", "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture), returnUrl);
+        }
+
+
         public static bool IsPageOverrideable(int portalId, int displayTabId)
         {
             //int portalId = UserController.GetCurrentUserInfo().PortalID;
@@ -785,16 +824,16 @@ namespace Engage.Dnn.Publish.Util
             if (itemId != null)
             {
                 int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
-                int typeId = Item.GetItemTypeId(id);
+                int typeId = Item.GetItemTypeId(id, portalId);
                 ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
                 Item i;// = null;
                 if (type.Name == ItemType.Article.Name)
                 {
-                    i = Article.GetArticle(id);
+                    i = Article.GetArticle(id, portalId);
                 }
                 else
                 {
-                    i = Category.GetCategory(id);
+                    i = Category.GetCategory(id, portalId);
                 }
                 if (i == null)
                 {

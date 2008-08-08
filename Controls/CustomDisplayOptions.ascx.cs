@@ -32,7 +32,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 ddlItemTypeList.DataTextField = "Name";
                 ddlItemTypeList.DataValueField = "ItemTypeId";
-                ddlItemTypeList.DataSource = Item.GetItemTypes();
+                ddlItemTypeList.DataSource = Item.GetItemTypes(PortalId);
                 ddlItemTypeList.DataBind();
 
                 ddlItemTypeList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-2"));

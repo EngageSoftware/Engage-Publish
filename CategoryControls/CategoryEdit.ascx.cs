@@ -421,7 +421,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             if (ItemId > -1)
             {
                 //Using GetItemTypeId as substitute for IfExists
-                if (Item.GetItemTypeId(ItemId) > -1)
+                if (Item.GetItemTypeId(ItemId,PortalId) > -1)
                 {
                     itemExists = true;
                     DataSet children = ItemRelationship.GetAllChildren(ItemId, RelationshipType.ItemToParentCategory.GetId(), PortalId);

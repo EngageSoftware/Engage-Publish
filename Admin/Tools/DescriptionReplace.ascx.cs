@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
             foreach (DataRow dr in allArticles.Rows)
             {
                 articleCount++;
-                Article a = Article.GetArticle(Convert.ToInt32(dr["itemId"], CultureInfo.InvariantCulture));
+                Article a = Article.GetArticle(Convert.ToInt32(dr["itemId"], CultureInfo.InvariantCulture), PortalId);
                 if (a != null)
                 {
                     //if our article is over 8k characters be sure to trim it
@@ -71,7 +71,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 }
             }
 
-
+            Utility.ClearPublishCache(PortalId);
             //X articles updated out of Y
             lblOutput.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("ArticleUpdate", LocalResourceFile).ToString(), articleUpdate, articleCount);
 

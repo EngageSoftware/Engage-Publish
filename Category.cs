@@ -17,6 +17,7 @@ using DotNetNuke.Entities.Host;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 using Localize = DotNetNuke.Services.Localization.Localization;
+using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish
 {
@@ -239,6 +240,8 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategoryVersion(int itemVersionId, int portalId)
 		{
+
+            //cache this 
 			Category c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategoryVersion(itemVersionId, portalId), typeof(Category));
             if (c != null)
             {
@@ -249,14 +252,16 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(string categoryName, int portalId)
         {
-            int itemId = DataProvider.Instance().GetCategory(categoryName, portalId);
-            Category c = GetCategory(itemId);
-            return c;
+            //cache this
+            int itemId = DataProvider.Instance().GetCategoryItemId(categoryName, portalId);
+            Category c = GetCategory(itemId, portalId);
 
+            return c;
         }
 
         public static Category GetCategory(int itemId)
         {
+
             Category c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
@@ -267,12 +272,36 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategory(int itemId, int portalId)
 		{
-            Category c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId, portalId), typeof(Category));
-            if (c != null)
+            string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
+            Category c = new Category();
+            if (ModuleBase.UseCachePortal(portalId))
             {
-                c.CorrectDates();
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    c = (Category)o;
+                }
+                else
+                {
+                    c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                    if (c != null)
+                    {
+                        c.CorrectDates();
+                    }
+                }
+                DataCache.SetCache(cacheKey, c, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                if (c != null)
+                {
+                    c.CorrectDates();
+                }
             }
             return c;
+
 		}
 
 		public static DataTable GetCategories(int portalId)
@@ -318,7 +347,7 @@ namespace Engage.Dnn.Publish
 
             foreach (DataRow row in children.Rows)
             {
-                articles.Add(Article.GetArticle((int)row["ItemId"]));
+                articles.Add(Article.GetArticle((int)row["ItemId"], portalId));
             }
             return articles;
         }

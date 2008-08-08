@@ -174,7 +174,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 			 */
             DataRow dr = ((DataRowView)e.Item.DataItem).Row;
 
-            Item a = Item.GetItem((int)dr["ItemId"], PortalId, Item.GetItemTypeId((int)dr["ItemID"]), true);
+            Item a = Item.GetItem((int)dr["ItemId"], PortalId, Item.GetItemTypeId((int)dr["ItemID"], PortalId), true);
             
             HyperLink lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
             HyperLink lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");

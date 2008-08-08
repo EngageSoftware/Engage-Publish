@@ -109,7 +109,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
                 if (!Page.IsPostBack)
                 {
-                    Category c = Category.GetCategory(CategoryId);
+                    Category c = Category.GetCategory(CategoryId, PortalId);
                     if (c != null)
                     {
                         lblCategory.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblCategory", LocalResourceFile),c.Name);

@@ -178,7 +178,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (customDisplaySettings.ShowParent && categoryId != -1)
                 {
                     lblCategory.Visible = true;
-                    lblCategory.Text = Category.GetCategory(categoryId).Name;
+                    lblCategory.Text = Category.GetCategory(categoryId, PortalId).Name;
                 }
                 else
                 {
@@ -564,9 +564,9 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-        protected static string GetItemTypeCssClass(object dataItem)
+        protected string GetItemTypeCssClass(object dataItem)
         {
-            return ItemType.GetItemTypeName((int)DataBinder.Eval(dataItem, "ChildItemTypeId"));
+            return ItemType.GetItemTypeName((int)DataBinder.Eval(dataItem, "ChildItemTypeId"), UseCache, PortalId, CacheTime);
         }
 
 
@@ -585,9 +585,9 @@ namespace Engage.Dnn.Publish.Controls
 
         #endregion
 
-        protected static string BuildEditUrl(int itemId, int tabId, int moduleId)
+        protected static string BuildEditUrl(int itemId, int tabId, int moduleId, int portalId)
         {
-            return Utility.BuildEditUrl(itemId, tabId, moduleId);
+            return Utility.BuildEditUrl(itemId, tabId, moduleId, portalId);
         }
     }
 }

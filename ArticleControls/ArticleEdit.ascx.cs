@@ -660,7 +660,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (ItemId > -1)
             {
                 //Using GetItemTypeId as substitute for IfExists
-                if (Item.GetItemTypeId(ItemId) > -1)
+                if (Item.GetItemTypeId(ItemId, PortalId) > -1)
                 {
                     itemExists = true;
                     bool inUse = false;

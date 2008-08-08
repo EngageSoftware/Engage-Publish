@@ -697,7 +697,7 @@ namespace Engage.Dnn.Publish.Data
 
 
 
-        public override int GetCategory(string categoryName, int portalId)
+        public override int GetCategoryItemId(string categoryName, int portalId)
         {
             StringBuilder sql = new StringBuilder(256);
             sql.Append("select itemId from ");

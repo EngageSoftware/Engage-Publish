@@ -61,7 +61,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
             // load "Categories"
             ddlItemType.DataTextField = "Name";
             ddlItemType.DataValueField = "ItemTypeId";
-            ddlItemType.DataSource = Item.GetItemTypes();
+            ddlItemType.DataSource = Item.GetItemTypes(PortalId);
             ddlItemType.DataBind();
             ddlItemType.Items.Insert(0, new ListItem(Localization.GetString("CategoriesAndArticles", LocalResourceFile), "-1"));
 
