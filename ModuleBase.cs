@@ -1028,8 +1028,8 @@ namespace Engage.Dnn.Publish
         protected Item BindItemData(int itemId)
         {
             Item i = null;
-            string currentItemType = Item.GetItemType(ItemId,PortalId);
-            bool getitem = true;
+            string currentItemType = Item.GetItemType(itemId,PortalId);
+            //bool getitem = true;
             if (itemId > 0)
             {
                 if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
