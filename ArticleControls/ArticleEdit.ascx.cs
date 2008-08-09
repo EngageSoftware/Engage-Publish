@@ -244,7 +244,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("SpecificPage", LocalResourceFile), false.ToString(CultureInfo.InvariantCulture)));
 
                     //get the pnlPrinterFriendly setting
-                    ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlPrinterFriendly", "Visible");
+                    ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlPrinterFriendly", "Visible", PortalId);
                     if (pfSetting != null)
                     {
                         chkPrinterFriendly.Checked = Convert.ToBoolean(pfSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -256,7 +256,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
 
                     //get the pnlEmailAFriend setting
-                    ItemVersionSetting efSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlEmailAFriend", "Visible");
+                    ItemVersionSetting efSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlEmailAFriend", "Visible", PortalId);
                     if (efSetting != null)
                     {
                         chkEmailAFriend.Checked = Convert.ToBoolean(efSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -271,7 +271,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     if (AreRatingsEnabled)
                     {
                         //get the upnlRating setting
-                        ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "upnlRating", "Visible");
+                        ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "upnlRating", "Visible", PortalId);
                         if (rtSetting != null)
                         {
                             chkRatings.Checked = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -291,7 +291,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     if (IsCommentsEnabled)
                     {
                         //get the pnlComments setting
-                        ItemVersionSetting ctSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlComments", "Visible");
+                        ItemVersionSetting ctSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlComments", "Visible", PortalId);
                         if (ctSetting != null)
                         {
                             chkComments.Checked = Convert.ToBoolean(ctSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -308,7 +308,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         }
                         else
                         {
-                            ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "chkForumComments", "Checked");
+                            ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "chkForumComments", "Checked", PortalId);
                             chkForumComments.Checked = forumCommentSetting == null || Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture);
                         }
                     }
@@ -319,11 +319,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
 
                     //chkIncludeRelatedArticles
-                    ItemVersionSetting raSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "IncludeParentCategoryArticles");
+                    ItemVersionSetting raSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "IncludeParentCategoryArticles", PortalId);
                     chkIncludeOtherArticlesFromSameList.Checked = raSetting != null && Convert.ToBoolean(raSetting.PropertyValue, CultureInfo.InvariantCulture);
 
                     //chkShowAuthor
-                    ItemVersionSetting auSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlAuthor", "Visible");
+                    ItemVersionSetting auSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlAuthor", "Visible", PortalId);
                     if (auSetting != null)
                     {
                         chkShowAuthor.Checked = Convert.ToBoolean(auSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -335,7 +335,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
 
                     //chkShowTags
-                    ItemVersionSetting tagSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlTags", "Visible");
+                    ItemVersionSetting tagSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlTags", "Visible", PortalId);
                     if (tagSetting != null)
                     {
                         chkTags.Checked = Convert.ToBoolean(tagSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -347,7 +347,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
 
                     //chkDisplayOnCurrentPage
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage", PortalId);
                     if (cpSetting != null)
                     {
                         //TODO: cache display on currentpage setting somewhere?
@@ -384,7 +384,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     chkForceDisplayTab.Checked = av.ForceDisplayOnPage();
 
-                    ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "DisplayReturnToList");
+                    ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "DisplayReturnToList", PortalId);
                     if (rlSetting != null)
                     {
                         chkReturnList.Checked = Convert.ToBoolean(rlSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -396,7 +396,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
 
                     //use approvals setting
-                    ItemVersionSetting useApprovals = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "chkUseApprovals", "Checked");
+                    ItemVersionSetting useApprovals = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "chkUseApprovals", "Checked", PortalId);
                     chkUseApprovals.Checked = useApprovals == null || Convert.ToBoolean(useApprovals.PropertyValue, CultureInfo.InvariantCulture);
                     chkUseApprovals.Visible = IsAdmin && UseApprovals;
                     phApproval.Visible = chkUseApprovals.Checked && UseApprovals;
@@ -832,7 +832,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 if (ddlPhotoGalleryAlbum.Items.Count > 0)
                 {
-                    ItemVersionSetting simpleGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue");
+                    ItemVersionSetting simpleGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue", PortalId);
                     if (simpleGalleryAlbum != null && Utility.HasValue(simpleGalleryAlbum.PropertyValue))
                     {
                         ddlPhotoGalleryAlbum.ClearSelection();
@@ -840,7 +840,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     else
                     {
-                        ItemVersionSetting ultraMediaGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue");
+                        ItemVersionSetting ultraMediaGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue", PortalId);
                         if (ultraMediaGalleryAlbum != null && Utility.HasValue(ultraMediaGalleryAlbum.PropertyValue))
                         {
                             ddlPhotoGalleryAlbum.ClearSelection();
@@ -983,7 +983,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
             //forum comments thread ID
             //just continue forward to the next version, this doesn't get set in the edit screen
-            itemVersionSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSetting", "CommentForumThreadId");
+            itemVersionSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSetting", "CommentForumThreadId", PortalId);
             if (itemVersionSetting != null)
             {
                 av.VersionSettings.Add(itemVersionSetting);

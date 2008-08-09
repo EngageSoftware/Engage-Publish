@@ -279,7 +279,7 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishForumProviderType = "PublishForumProviderType";
 
         /*******************Cache Key Constants********************/
-        public const string CacheKeyPublishCategory = "PublishCacheKey_";
+        
 
         //cache keys for Categories
         public const string CacheKeyPublishCustomDisplay = "PublishCacheKeyCustomDisplay_";
@@ -287,9 +287,15 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishCategoryFeature = "PublishCacheKeyCategoryFeature_";
         public const string CacheKeyPublishCategoryNLevels = "PublishCacheKeyCategoryNLevels_";
         public const string CacheKeyPublishAdminCategorySort = "CacheKeyPublishAdminCategorySort_";
+        public const string CacheKeyPublishCategory = "CacheKeyPublishCategory_";
+        public const string CacheKeyPublishCategoryVersion = "CacheKeyPublishCategoryVersion_";
 
         //Cache keys for Articles
         public const string CacheKeyPublishArticle = "PublishCacheKeyArticleDisplay_";
+        public const string CacheKeyPublishArticleTags = "CacheKeyPublishArticleTags_";
+
+        public const string CacheKeyPublishArticleVersion = "CacheKeyPublishArticleVersion_";
+        
 
         public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
 
@@ -299,15 +305,27 @@ namespace Engage.Dnn.Publish.Util
 
         public const string CacheKeyPublishItem = "CacheKeyPublishItem_";
 
-        
+        public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
+        public const string CacheKeyPublishItemVersionSetting = "CacheKeyPublishItemVersionSetting_";
 
-        
+        public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
+        public const string CacheKeyPublishChildCategories = "CacheKeyPublishChildCategories_";
+
+        public const string CacheKeyPublishChildCategoriesItemType = "CacheKeyPublishChildCategoriesItemType_";
+
+
 
         public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
+        public const string CacheKeyPublishItemTypeNameItemId = "CacheKeyPublishItemTypeNameItemId_";
 
 
         //Cache keys for Tags
         public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
+
+        public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
+        public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
+
+        
 
         public static bool HasValue(string value)
         {

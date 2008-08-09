@@ -388,10 +388,33 @@ namespace Engage.Dnn.Publish
 
 		public static Article GetArticleVersion(int articleVersionId, int portalId)
 		{
-            Article a = (Article)CBO.FillObject(DataProvider.Instance().GetArticleVersion(articleVersionId, portalId), typeof(Article));
-            if (a != null)
+            string cacheKey = Utility.CacheKeyPublishArticleVersion + articleVersionId.ToString(CultureInfo.InvariantCulture);
+            Article a = new Article();
+            if (ModuleBase.UseCachePortal(portalId))
             {
-                a.CorrectDates();
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    a = (Article)o;
+                }
+                else
+                {
+                    a = (Article)CBO.FillObject(DataProvider.Instance().GetArticleVersion(articleVersionId, portalId), typeof(Article));
+                    if (a != null)
+                    {
+                        a.CorrectDates();
+                    }
+                }
+                DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                a = (Article)CBO.FillObject(DataProvider.Instance().GetArticleVersion(articleVersionId, portalId), typeof(Article));
+                if (a != null)
+                {
+                    a.CorrectDates();
+                }
             }
             return a;
 		}

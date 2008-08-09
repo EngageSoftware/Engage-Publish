@@ -121,7 +121,7 @@ namespace Engage.Dnn.Publish
 
             ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
-            ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage");
+            ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
             if (cpSetting != null)
             {
                 return Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -136,7 +136,7 @@ namespace Engage.Dnn.Publish
         {
             ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
-            ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage");
+            ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
             if (fpSetting != null)
             {
                 return Convert.ToBoolean(fpSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -982,6 +982,33 @@ namespace Engage.Dnn.Publish
         {
             return DataProvider.Instance().GetItemType(itemId);
         }
+
+        public static string GetItemType(int itemId, int portalId)
+        {
+            string itemType = string.Empty;
+            //return DataProvider.Instance().GetItemType(itemId);
+            string cacheKey = Utility.CacheKeyPublishItemTypeNameItemId + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    itemType = o.ToString();
+                }
+                else
+                {
+                    itemType = Item.GetItemType(itemId);
+                }
+                DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                itemType = Item.GetItemType(itemId);
+            }
+            return itemType;
+        }
+
 
         public static int GetItemTypeId(int itemId)
         {

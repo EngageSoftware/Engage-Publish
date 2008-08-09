@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 this.VersionInfoObject = Category.GetCategory(ItemId, PortalId);
             }
 
-            if (ItemId > 0 && (Item.GetItemType(ItemId) == "Category" || Item.GetItemType(ItemId) == "TopLevelCategory"))
+            if (ItemId > 0 && (Item.GetItemType(ItemId,PortalId) == "Category" || Item.GetItemType(ItemId,PortalId) == "TopLevelCategory"))
             {
                 this.VersionInfoObject = Category.GetCategory(ItemId, PortalId);
             }

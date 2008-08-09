@@ -260,7 +260,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     //else { o = true; }
 
-                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked");
+                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId);
                     if (forumCommentSetting == null)
                     {
                         forumCommentSetting = new ItemVersionSetting();
@@ -288,7 +288,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 
                 if (base.IsPublishCommentType) return false;
-                ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked");
+                ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId);
                 int? categoryForumId = GetCategoryForumId();
                 if (!categoryForumId.HasValue || categoryForumId<1) return false;
                 return (base.IsCommentsEnabled && !base.IsPublishCommentType)
@@ -395,7 +395,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private int? GetCategoryForumId()
         {
             int parentCategoryItemVersionId = Category.GetCategory(Category.GetParentCategory(VersionInfoObject.ItemId, PortalId), PortalId).ItemVersionId;
-            ItemVersionSetting categoryForumSetting = ItemVersionSetting.GetItemVersionSetting(parentCategoryItemVersionId, "CategorySettings", "CommentForumId");
+            ItemVersionSetting categoryForumSetting = ItemVersionSetting.GetItemVersionSetting(parentCategoryItemVersionId, "CategorySettings", "CommentForumId", PortalId);
             int categoryForumId;
             if (categoryForumSetting == null)
                 return null;
@@ -734,7 +734,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     pnlComments.Visible = true;
                     mvCommentDisplay.SetActiveView(vwForumComments);
-                    ItemVersionSetting forumThreadIdSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSetting", "CommentForumThreadId");
+                    ItemVersionSetting forumThreadIdSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSetting", "CommentForumThreadId", PortalId);
                     if (forumThreadIdSetting != null)
                     {
                         lnkGoToForum.Visible = true;
@@ -753,7 +753,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void ConfigureTags()
         {
             //get the upnlRating setting
-            ItemVersionSetting tgSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "pnlTags", "Visible");
+            ItemVersionSetting tgSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "pnlTags", "Visible", PortalId);
             if (tgSetting != null)
             {
                 pnlTags.Visible = Convert.ToBoolean(tgSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -847,7 +847,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 lblLastUpdated.Text = Localization.GetString("LastUpdated", LocalResourceFile) + " " + lastUpdated.ToString(LastUpdatedFormat, CultureInfo.CurrentCulture);
 
                 //get the pnlAuthor setting
-                ItemVersionSetting auSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlAuthor", "Visible");
+                ItemVersionSetting auSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlAuthor", "Visible", PortalId);
                 if (auSetting != null)
                 {
                     ShowAuthor = Convert.ToBoolean(auSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -871,28 +871,28 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
 
                 //get the pnlPrinterFriendly setting
-                ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlPrinterFriendly", "Visible");
+                ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlPrinterFriendly", "Visible", PortalId);
                 if (pfSetting != null)
                 {
                     pnlPrinterFriendly.Visible = Convert.ToBoolean(pfSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
 
                 //get the pnlEmailAFriend setting
-                ItemVersionSetting efSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlEmailAFriend", "Visible");
+                ItemVersionSetting efSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlEmailAFriend", "Visible", PortalId);
                 if (efSetting != null)
                 {
                     pnlEmailAFriend.Visible = Convert.ToBoolean(efSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
 
                 //get the pnlComments setting
-                ItemVersionSetting ctSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlComments", "Visible");
+                ItemVersionSetting ctSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlComments", "Visible", PortalId);
                 if (ctSetting != null)
                 {
                     pnlComments.Visible = Convert.ToBoolean(ctSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
 
                 //get the upnlRating setting
-                ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "upnlRating", "Visible");
+                ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "upnlRating", "Visible", PortalId);
                 if (rtSetting != null)
                 {
                     upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -1252,7 +1252,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private int? GetSimpleGalleryAlbumId()
         {
-            ItemVersionSetting simpleGallerySettings = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue");
+            ItemVersionSetting simpleGallerySettings = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue", PortalId);
             if (simpleGallerySettings != null && Utility.HasValue(simpleGallerySettings.PropertyValue))
             {
                 int albumId;
@@ -1266,7 +1266,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private int? GetUltraMediaGalleryAlbumId()
         {
-            ItemVersionSetting ultraMediaGallerySettings = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue");
+            ItemVersionSetting ultraMediaGallerySettings = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue", PortalId);
             if (ultraMediaGallerySettings != null && Utility.HasValue(ultraMediaGallerySettings.PropertyValue))
             {
                 int albumId;

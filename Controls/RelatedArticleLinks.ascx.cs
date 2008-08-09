@@ -67,7 +67,7 @@ namespace Engage.Dnn.Publish.Controls
 				
 				List<Article> related = new List<Article>(VersionInfoObject.GetRelatedArticles(PortalId));
 
-                ItemVersionSetting parentRelationshipSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSettings", "IncludeParentCategoryArticles");
+                ItemVersionSetting parentRelationshipSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSettings", "IncludeParentCategoryArticles", PortalId);
                 if (parentRelationshipSetting != null && Convert.ToBoolean(parentRelationshipSetting.PropertyValue, CultureInfo.InvariantCulture))
                 {
                     int parentCategoryId = Category.GetParentCategory(VersionInfoObject.ItemId, PortalId);

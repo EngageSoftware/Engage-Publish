@@ -1013,7 +1013,7 @@ namespace Engage.Dnn.Publish
         private void BindNewItemByItemType()
         {
             Item i;// = null;
-            string currentItemType = Item.GetItemType(ItemId);
+            string currentItemType = Item.GetItemType(ItemId,PortalId);
             if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
             {
                 i = Category.Create(PortalId);
@@ -1028,46 +1028,28 @@ namespace Engage.Dnn.Publish
         protected Item BindItemData(int itemId)
         {
             Item i = null;
-            string currentItemType = Item.GetItemType(itemId);
+            string currentItemType = Item.GetItemType(ItemId,PortalId);
             bool getitem = true;
             if (itemId > 0)
             {
                 if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                    if (UseCache)
-                    {
-                        i = DataCache.GetCache(cacheKey) as Article;
-                        if (i != null)
-                        {
-                            getitem = false;
-                        }
-                    }
+                    //TODO: remove this caching
 
-                    //TODO: bind the tags to this version
-                    
-                    if (getitem || !UseCache)
-                    {
                         i = Article.GetArticle(itemId, PortalId);
                         if (ItemVersionId > 0)
                         {
                             i = Article.GetArticleVersion(ItemVersionId, PortalId);
-
                         }
-
                         if (i != null)
                         {
-
                             if (AllowTags)
                             {
-                                foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId))
+                                foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, PortalId))
                                 {
                                     i.Tags.Add(it);
                                 }
                             }
-
-                            DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(CacheTime));
-                            Utility.AddCacheKey(cacheKey, PortalId);
                         }
 
                         //If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
@@ -1075,31 +1057,16 @@ namespace Engage.Dnn.Publish
                         {
                             i = Article.Create(PortalId);
                         }
-                    }
+                    
                 }
 
                 else if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                    if (UseCache)
-                    {
-                        i = DataCache.GetCache(cacheKey) as Category;
-                        if (i != null)
-                        {
-                            getitem = false;
-                        }
-                    }
-                    if (getitem || !UseCache)
-                    {
+                    //TODO: remove this caching
                         i = Category.GetCategory(itemId, PortalId);
                         if (ItemVersionId > 0)
                         {
                             i = Category.GetCategoryVersion(ItemVersionId, PortalId);
-                        }
-                        if (i != null)
-                        {
-                            DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(CacheTime));
-                            Utility.AddCacheKey(cacheKey, PortalId);
                         }
                         //If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                         if (i == null)
@@ -1107,76 +1074,38 @@ namespace Engage.Dnn.Publish
                             i = Category.Create(PortalId);
                         }
 
-                    }
+                    
                 }
 
                 else if (currentItemType.Equals("TOPLEVELCATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                    if (UseCache)
-                    {
-
-                        i = DataCache.GetCache(cacheKey) as Category;
-                        if (i != null)
-                        {
-                            getitem = false;
-                        }
-                    }
-
-                    if (getitem || !UseCache)
-                    {
                         i = Category.GetCategory(itemId, PortalId);
                         if (ItemVersionId > 0)
                         {
                             i = Category.GetCategoryVersion(ItemVersionId, PortalId);
 
                         }
-                        if (i != null)
-                        {
-                            DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(CacheTime));
-                            Utility.AddCacheKey(cacheKey, PortalId);
-                        }
 
                         //If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                         if (i == null)
                         {
                             i = Category.Create(PortalId);
-                        }
-                    }
+                        }                   
                 }
 
                 else
                 {
-                    string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                    if (UseCache)
-                    {
-
-                        i = DataCache.GetCache(cacheKey) as Article;
-                        {
-                            getitem = false;
-                        }
-                    }
-                    if (getitem || !UseCache)
-                    {
                         i = Article.GetArticle(itemId, PortalId);
                         if (ItemVersionId > 0)
                         {
                             i = Article.GetArticleVersion(ItemVersionId, PortalId);
                         }
 
-                        if (i != null)
-                        {
-                            DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(CacheTime));
-                            Utility.AddCacheKey(cacheKey, PortalId);
-                        }
-
                         //If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                         if (i == null)
                         {
                             i = Article.Create(PortalId);
                         }
-
-                    }
                 }
                 
             }

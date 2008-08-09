@@ -199,7 +199,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
 
                     //chkDisplayOnCurrentPage
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "DisplayOnCurrentPage");
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "DisplayOnCurrentPage", PortalId);
                     if (cpSetting != null)
                     {
                         //TODO: cache display on currentpage setting somewhere?
@@ -241,7 +241,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     LoadCategoryDisplayTabDropDown();
                     LoadChildDisplayTabDropDown();
 
-                    ItemVersionSetting useApprovals = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkUseApprovals", "Checked");
+                    ItemVersionSetting useApprovals = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkUseApprovals", "Checked", PortalId);
                     chkUseApprovals.Checked = useApprovals == null || Convert.ToBoolean(useApprovals.PropertyValue, CultureInfo.InvariantCulture);
                     chkUseApprovals.Visible = IsAdmin && UseApprovals;
                     phApproval.Visible = UseApprovals && chkUseApprovals.Checked;
@@ -443,7 +443,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                             int itemId;// = 0;
                             if (int.TryParse(row["itemId"].ToString(), out itemId))
                             {
-                                errorMessage.AppendFormat(CultureInfo.CurrentCulture, "{0} ({1}, id: {2}){3}", row["name"], Item.GetItemType(itemId), itemId, Environment.NewLine);
+                                errorMessage.AppendFormat(CultureInfo.CurrentCulture, "{0} ({1}, id: {2}){3}", row["name"], Item.GetItemType(ItemId,PortalId), itemId, Environment.NewLine);
                             }
                             else
                             {
@@ -527,7 +527,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
                 ddlCommentForum.Items.Insert(0,(new ListItem(Localization.GetString("NoForum",LocalResourceFile),"-1")));
 
-                ItemVersionSetting commentForumSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "CommentForumId");
+                ItemVersionSetting commentForumSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "CommentForumId", PortalId);
                 if (commentForumSetting != null)
                 {
                     ddlCommentForum.SelectedValue = commentForumSetting.PropertyValue;

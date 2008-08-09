@@ -65,7 +65,7 @@ namespace Engage.Dnn.Publish.Admin
 						divSettings.Visible=true;
 						divDelete.Visible=true;
                         divComments.Visible = true;
-                        //TODO: if we enable syndication turn on
+                        //TODO: if we enable syndication move this to admin settings
                         divSyndication.Visible = false;
                         divAdminTools.Visible = true;
 					}

@@ -13,6 +13,9 @@ using System.Data;
 using System.Diagnostics;
 using DotNetNuke.Common.Utilities;
 using Engage.Dnn.Publish.Data;
+using Engage.Dnn.Publish.Util;
+using System;
+using System.Globalization;
 
 namespace Engage.Dnn.Publish
 {
@@ -45,9 +48,37 @@ namespace Engage.Dnn.Publish
 
 		#endregion
 
-		public static ArrayList GetItemTags(int itemVersionId)
-		{
+        public static ArrayList GetItemTags(int itemVersionId)
+        {
             return CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
+        }
+
+
+		public static ArrayList GetItemTags(int itemVersionId, int portalId)
+		{
+            //cache this
+            string cacheKey = Utility.CacheKeyPublishArticleTags + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            ArrayList al = null;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    al = (ArrayList)o;
+                }
+                else
+                {
+                    al = CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
+                }
+                DataCache.SetCache(cacheKey, al, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                al = CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
+            }
+            return al;
+            //return CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
         }
 
 		public ItemTag()

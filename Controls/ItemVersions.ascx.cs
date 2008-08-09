@@ -95,7 +95,7 @@ namespace Engage.Dnn.Publish.Controls
                 int itemVersionId = Convert.ToInt32(view["ItemVersionId"], CultureInfo.InvariantCulture);
                 int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
                 int i = Item.GetItemIdFromVersion(itemVersionId, PortalId);
-                string currentItemType = Item.GetItemType(i);
+                string currentItemType = Item.GetItemType(i, PortalId);
                 Item version = null;
 
                 if (currentItemType.Equals("article", StringComparison.OrdinalIgnoreCase))

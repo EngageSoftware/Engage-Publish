@@ -4,6 +4,8 @@ using Engage.Dnn.Publish.Data;
 using System.Collections;
 using System.Globalization;
 using System.Xml.Serialization;
+using DotNetNuke.Common.Utilities;
+using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
@@ -265,14 +267,63 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
+            //Cache this
             //parse through the table and create each tag?
-            return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
+            //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
+            string tags = string.Empty;
+            if (tagList != null) tags = tagList.ToString().Replace(" ", "");
+            string cacheKey = Utility.CacheKeyPublishPopularTags + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
+            DataTable dt = new DataTable();
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    dt = (DataTable)o;
+                }
+                else
+                {
+                    dt = DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
+                }
+                DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                dt = DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
+            }
+            return dt;
         }
 
         public static int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
+            //Cache this
             //parse through the table and create each tag?
-            return DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
+            //return DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
+
+            string tags = string.Empty;
+            if (tagList != null) tags = tagList.ToString().Replace(" ", "");
+            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
+            int tagCount = -1;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    tagCount = (int)o;
+                }
+                else
+                {
+                    tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
+                }
+                DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
+            }
+            return tagCount;
         }
 
         public static ArrayList ParseTags(string tags, int portalId)

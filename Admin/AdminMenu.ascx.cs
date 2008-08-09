@@ -52,7 +52,7 @@ namespace Engage.Dnn.Publish.Admin
                     //check if the user is logged in and an admin. If so let them approve items
                     if (IsAdmin && !VersionInfoObject.IsNew)
                     {
-                        if (UseApprovals && Item.GetItemType(itemId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+                        if (UseApprovals && Item.GetItemType(itemId,PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                         {
                             //ddlApprovalStatus.Attributes.Clear();
                             //ddlApprovalStatus.Attributes.Add("onchange", "javascript:if (!confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteConfirmation", LocalResourceFile)) + "')) resetDDLIndex(); else ");
@@ -90,7 +90,7 @@ namespace Engage.Dnn.Publish.Admin
         //    {
         //        if (ItemId > -1)
         //        {
-        //            string currentItemType = Item.GetItemType(ItemId);
+        //            string currentItemType = Item.GetItemType(ItemId,PortalId);
 
         //            //Load the Add new Article Link
         //            DNNToolBarButton dtbAddArticle = new DNNToolBarButton();
@@ -165,7 +165,7 @@ namespace Engage.Dnn.Publish.Admin
 
                 if (ItemId > -1)
                 {
-                    string currentItemType = Item.GetItemType(ItemId);
+                    string currentItemType = Item.GetItemType(ItemId, PortalId);
                     int versionId = -1;
                     if (!VersionInfoObject.IsNew)
                     {
@@ -220,7 +220,7 @@ namespace Engage.Dnn.Publish.Admin
             int edittabid = TabId;
             if (ItemId > -1)
             {
-                //string currentItemType = Item.GetItemType(ItemId);
+                //string currentItemType = Item.GetItemType(ItemId,PortalId);
                 int itemId = -1;
                 if (!VersionInfoObject.IsNew)
                 {
@@ -254,7 +254,7 @@ namespace Engage.Dnn.Publish.Admin
                     }
                 }
 
-                //string currentItemType = Item.GetItemType(ItemId);
+                //string currentItemType = Item.GetItemType(ItemId,PortalId);
                 return DotNetNuke.Common.Globals.NavigateURL(TabId, string.Empty, "ctl=" + Utility.AdminContainer,
                     "mid=" + ModuleId.ToString(CultureInfo.InvariantCulture), "adminType=articlelist",
                     "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
@@ -303,7 +303,7 @@ namespace Engage.Dnn.Publish.Admin
 
             if (itemId != -1 && !VersionInfoObject.IsNew)
             {
-                string currentItemType = Item.GetItemType(itemId);
+                string currentItemType = Item.GetItemType(itemId, PortalId);
 
                 //the following dynamicly builds the Admin Menu for an item when viewing the item display control.
                 Literal lc = new Literal();
@@ -435,7 +435,7 @@ namespace Engage.Dnn.Publish.Admin
             divApprovalStatus.Visible = true;
             
             //check if we're editing an article, if so show version comments
-            if (Item.GetItemType(ItemId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+            if (Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
             {
                 if (ItemVersionId == -1)
                 {

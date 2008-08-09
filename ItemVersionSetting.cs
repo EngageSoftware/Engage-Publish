@@ -16,6 +16,8 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Portability;
+using Engage.Dnn.Publish.Util;
+using System.Globalization;
 
 namespace Engage.Dnn.Publish
 {
@@ -136,11 +138,70 @@ namespace Engage.Dnn.Publish
             return (ItemVersionSetting)CBO.FillObject(dr, typeof(ItemVersionSetting));
         }
 
+        public static ItemVersionSetting GetItemVersionSetting(int itemVersionId, string controlName, string propertyName, int portalId)
+        {
+            //IDataReader dr = DataProvider.Instance().GetItemVersionSetting(itemVersionId, controlName, propertyName);
+
+            //return (ItemVersionSetting)CBO.FillObject(dr, typeof(ItemVersionSetting));
+
+            string cacheKey = Utility.CacheKeyPublishItemVersionSetting + controlName.ToString(CultureInfo.InvariantCulture) + propertyName.ToString(CultureInfo.InvariantCulture) + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            ItemVersionSetting ivs;
+
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    ivs = (ItemVersionSetting)o;
+                }
+                else
+                {
+                    ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
+                }
+                DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
+            }
+            return ivs;
+
+        }
+
+
+
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName)
         {
-
             //TODO: cache this 
             return CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettings(itemVersionId, controlName)); 
+        }
+
+        public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName, int portalId)
+        {
+
+            string cacheKey = Utility.CacheKeyPublishItemVersionSettings + controlName.ToString(CultureInfo.InvariantCulture) + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            List<ItemVersionSetting> ivs;
+
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    ivs = (List<ItemVersionSetting>)o;
+                }
+                else
+                {
+                    ivs = ItemVersionSetting.GetItemVersionSettings(itemVersionId, controlName);
+                }
+                DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                ivs = ItemVersionSetting.GetItemVersionSettings(itemVersionId, controlName);
+            }
+            return ivs;
         }
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByPortalId(int portalId)
