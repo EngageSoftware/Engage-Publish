@@ -864,7 +864,7 @@ namespace Engage.Dnn.Publish
                     ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
                     i= (Item)CBO.FillObject(dr, it.GetItemType);
-                    i.CorrectDates();
+                    i.CorrectDates();   
                 }
                 DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                 Utility.AddCacheKey(cacheKey, portalId);
