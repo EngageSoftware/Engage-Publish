@@ -928,7 +928,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             foreach (ItemTag t in article.Tags)
             {
                 HyperLink hl = new HyperLink();
-                Tag tag = Tag.GetTag(t.TagId);
+                Tag tag = Tag.GetTag(t.TagId, PortalId);
                 hl.Text = tag.Name;
                 hl.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, "", "&tags=" + tag.Name);
                 hl.Attributes.Add("rel", "tag");

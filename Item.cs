@@ -279,7 +279,7 @@ namespace Engage.Dnn.Publish
                 //if this item tag relationship already existed for another versionID don't increment the count;
                 if (!ItemTag.CheckItemTag(trans, this.ItemId, it.TagId))
                 {
-                    Tag t = Tag.GetTag(it.TagId);
+                    Tag t = Tag.GetTag(it.TagId, PortalId);
                     t.TotalItems++;
                     t.Save();
                 }

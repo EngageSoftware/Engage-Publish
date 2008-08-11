@@ -190,7 +190,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 StringBuilder tagList = new StringBuilder(255);
                 foreach (ItemTag it in VersionInfoObject.Tags)
                 {
-                    tagList.Append(Tag.GetTag(it.TagId).Name);
+                    tagList.Append(Tag.GetTag(it.TagId,PortalId).Name);
                     tagList.Append(";");
                 }
 

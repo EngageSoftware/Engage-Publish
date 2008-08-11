@@ -324,10 +324,17 @@ namespace Engage.Dnn.Publish.Util
 
         //Cache keys for Tags
         public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
+        public const string CacheKeyPublishTagById = "PublishCacheKeyTagById_";
 
         public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
         public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
 
+        public const string CacheKeyPublishGetTagsByString = "CacheKeyPublishGetTagsByString_";
+
+        public const string CacheKeyPublishGetTagsByPortal = "CacheKeyPublishGetTagsByPortal_";
+
+        
+        
         
 
         public static bool HasValue(string value)
