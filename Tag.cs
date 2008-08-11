@@ -249,6 +249,7 @@ namespace Engage.Dnn.Publish
         public static DataTable GetTags(int portalId)
         {
             //parse through the table and create each tag?
+            //Cache this
 
             return DataProvider.Instance().GetTags(portalId);
         }
@@ -261,6 +262,7 @@ namespace Engage.Dnn.Publish
         public static DataTable GetTagsByString(string partialTag, int portalId)
         {
             //parse through the table and create each tag?
+            //Cache This
 
             return DataProvider.Instance().GetTagsByString(partialTag, portalId);
         }
@@ -285,8 +287,11 @@ namespace Engage.Dnn.Publish
                 {
                     dt = DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
                 }
-                DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (dt != null)
+                {
+                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -316,8 +321,11 @@ namespace Engage.Dnn.Publish
                 {
                     tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
                 }
-                DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (tagCount != null)
+                {
+                    DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {

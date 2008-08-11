@@ -119,32 +119,92 @@ namespace Engage.Dnn.Publish
         {
             //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
 
-            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+            //Cache this?
+            //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
-            ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
-            if (cpSetting != null)
+            //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
+            //if (cpSetting != null)
+            //{
+            //    return Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+            //}
+            //else
+            //{
+            //    return this.displayTabId < 0;
+            //}
+
+            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+            string cacheKey = Utility.CacheKeyPublishDisplayOnCurrentPage + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            bool returnVal = false;
+
+            if (ModuleBase.UseCachePortal(PortalId))
             {
-                return Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    returnVal = (bool)o;
+                }
+                else
+                {
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
+                    if (cpSetting != null)
+                    {
+                        returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        returnVal = this.displayTabId < 0;
+                    }
+                }
+                DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
             }
-            else
-            {
-                return this.displayTabId < 0;
-            }
+            return returnVal;
         }
 
         public bool ForceDisplayOnPage()
         {
-            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
-            ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
-            if (fpSetting != null)
+            //Cache this?
+
+            //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+
+            //ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
+            //if (fpSetting != null)
+            //{
+            //    return Convert.ToBoolean(fpSetting.PropertyValue, CultureInfo.InvariantCulture);
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+
+            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+            string cacheKey = Utility.CacheKeyPublishForceDisplayOn + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            bool returnVal = false;
+
+            if (ModuleBase.UseCachePortal(PortalId))
             {
-                return Convert.ToBoolean(fpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    returnVal = (bool)o;
+                }
+                else
+                {
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
+                    if (cpSetting != null)
+                    {
+                        returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        returnVal = false;
+                    }
+                }
+                DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
             }
-            else
-            {
-                return false;
-            }
+            return returnVal;
         }
 
         /// <summary>
@@ -863,11 +923,14 @@ namespace Engage.Dnn.Publish
                     IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
                     ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
-                    i= (Item)CBO.FillObject(dr, it.GetItemType);
-                    i.CorrectDates();   
+                    i = (Item)CBO.FillObject(dr, it.GetItemType);
+                    i.CorrectDates();
                 }
-                DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (i != null)
+                {
+                    DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -881,7 +944,7 @@ namespace Engage.Dnn.Publish
 
 
             //IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
-            
+
             //ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
             //Item a = (Item)CBO.FillObject(dr, it.GetItemType);
@@ -999,8 +1062,11 @@ namespace Engage.Dnn.Publish
                 {
                     itemType = Item.GetItemType(itemId);
                 }
-                DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (itemType != null)
+                {
+                    DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -1030,8 +1096,11 @@ namespace Engage.Dnn.Publish
                 {
                     itemType = Item.GetItemTypeId(itemId);
                 }
-                DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (itemType != null)
+                {
+                    DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -1094,11 +1163,13 @@ namespace Engage.Dnn.Publish
                 }
                 else
                 {
-                    dt= Item.GetItemTypes();
+                    dt = Item.GetItemTypes();
                 }
-
-                DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (dt != null)
+                {
+                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -1175,13 +1246,13 @@ namespace Engage.Dnn.Publish
             if (user != null)
             {
                 authorUserId = user.UserID;
-                
+
             }
             else
             {
                 //default to the current user
                 authorUserId = UserController.GetCurrentUserInfo().UserID;
-                
+
             }
 
             //Revising user.

@@ -405,8 +405,11 @@ namespace Engage.Dnn.Publish
                         a.CorrectDates();
                     }
                 }
-                DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (a != null)
+                {
+                    DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -486,8 +489,11 @@ namespace Engage.Dnn.Publish
                         a.CorrectDates();
                     }
                 }
-                DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (a != null)
+                {
+                    DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {

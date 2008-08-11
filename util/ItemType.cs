@@ -124,9 +124,11 @@ namespace Engage.Dnn.Publish.Util
                 {
                     typeName = DataProvider.Instance().GetItemTypeName(itemTypeId);
                 }
-
-                DataCache.SetCache(cacheKey, typeName, DateTime.Now.AddMinutes(CacheTime));
-                Utility.AddCacheKey(cacheKey, PortalId);
+                if (typeName != null)
+                {
+                    DataCache.SetCache(cacheKey, typeName, DateTime.Now.AddMinutes(CacheTime));
+                    Utility.AddCacheKey(cacheKey, PortalId);
+                }
             }
             else
             {

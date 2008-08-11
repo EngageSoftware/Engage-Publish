@@ -158,8 +158,11 @@ namespace Engage.Dnn.Publish
                 {
                     ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
                 }
-                DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (ivs != null)
+                {
+                    DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {
@@ -194,8 +197,11 @@ namespace Engage.Dnn.Publish
                 {
                     ivs = ItemVersionSetting.GetItemVersionSettings(itemVersionId, controlName);
                 }
-                DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
+                if (ivs != null)
+                {
+                    DataCache.SetCache(cacheKey, ivs, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
             }
             else
             {

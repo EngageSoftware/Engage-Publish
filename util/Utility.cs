@@ -308,6 +308,9 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
         public const string CacheKeyPublishItemVersionSetting = "CacheKeyPublishItemVersionSetting_";
 
+        public const string CacheKeyPublishDisplayOnCurrentPage = "CacheKeyPublishDisplayOnCurrentPage_";
+        public const string CacheKeyPublishForceDisplayOn = "CacheKeyPublishForceDisplayOn_";
+
         public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string CacheKeyPublishChildCategories = "CacheKeyPublishChildCategories_";
 
