@@ -1083,7 +1083,7 @@ namespace Engage.Dnn.Publish
 
         public static int GetItemTypeId(int itemId, int portalId)
         {
-            int itemType;
+            int itemType=-1;
             string cacheKey = Utility.CacheKeyPublishItemTypeIntForItemId + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -1096,7 +1096,7 @@ namespace Engage.Dnn.Publish
                 {
                     itemType = Item.GetItemTypeId(itemId);
                 }
-                if (itemType != null)
+                if (itemType != -1)
                 {
                     DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);

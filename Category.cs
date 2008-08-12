@@ -294,12 +294,63 @@ namespace Engage.Dnn.Publish
 
 		public static DataTable GetAllChildCategories(int parentItemId, int portalId)
 		{	//cache this
-			return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
+			//return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
+
+            string cacheKey = Utility.CacheKeyPublishAllChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
+            DataTable dt = new DataTable();
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    dt = (DataTable)o;
+                }
+                else
+                {
+                    dt = DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
+                }
+                if (dt != null)
+                {
+                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                dt = DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
+            }
+
+            return dt;
 		}
 
 		public static int GetParentCategory(int childItemId, int portalId)
 		{	//cache this
-			return DataProvider.Instance().GetParentCategory(childItemId, portalId);
+			//return DataProvider.Instance().GetParentCategory(childItemId, portalId);
+
+            int parentId = -1;
+            string cacheKey = Utility.CacheKeyPublishItemParentCategoryId + childItemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    parentId = Convert.ToInt32(o.ToString());
+                }
+                else
+                {
+                    parentId = DataProvider.Instance().GetParentCategory(childItemId, portalId);
+                }
+                if (parentId != -1)
+                {
+                    DataCache.SetCache(cacheKey, parentId, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                parentId = DataProvider.Instance().GetParentCategory(childItemId, portalId);
+            }
+            return parentId;
 		}
 
 		public static void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
@@ -375,8 +426,10 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategory(int itemId, int portalId)
 		{
+
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
             Category c = new Category();
+            if (itemId == -1) return c;
             if (ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey) as object;

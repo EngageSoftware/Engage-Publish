@@ -394,6 +394,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private int? GetCategoryForumId()
         {
+            //TODO: we need to handle items that no longer have a valid parent
             int parentCategoryItemVersionId = Category.GetCategory(Category.GetParentCategory(VersionInfoObject.ItemId, PortalId), PortalId).ItemVersionId;
             ItemVersionSetting categoryForumSetting = ItemVersionSetting.GetItemVersionSetting(parentCategoryItemVersionId, "CategorySettings", "CommentForumId", PortalId);
             int categoryForumId;

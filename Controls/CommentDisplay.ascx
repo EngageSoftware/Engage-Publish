@@ -5,7 +5,7 @@
 <asp:Label ID="lblNoComments" runat="server" resourcekey="lblNoComments" CssClass="PublishNoComments"></asp:Label>
 <asp:UpdatePanel ID="upnlCommentDisplay" runat="server" UpdateMode="Always">
     <ContentTemplate>
-    <asp:DataList ID="dlCommentText" runat="server" RepeatLayout="Flow">
+    <asp:DataList ID="dlCommentText" runat="server" RepeatLayout="Flow" RepeatDirection="Horizontal">
         <AlternatingItemStyle CssClass="PublishCommentAlternate" />
         <ItemTemplate>
            <div id="PublishComment">

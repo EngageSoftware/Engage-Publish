@@ -319,6 +319,7 @@ namespace Engage.Dnn.Publish.Util
 
         public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string CacheKeyPublishChildCategories = "CacheKeyPublishChildCategories_";
+        public const string CacheKeyPublishAllChildCategories = "CacheKeyPublishAllChildCategories_";
 
         public const string CacheKeyPublishChildCategoriesItemType = "CacheKeyPublishChildCategoriesItemType_";
 
@@ -326,6 +327,9 @@ namespace Engage.Dnn.Publish.Util
 
         public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
         public const string CacheKeyPublishItemTypeNameItemId = "CacheKeyPublishItemTypeNameItemId_";
+
+        public const string CacheKeyPublishItemParentCategoryId = "CacheKeyPublishItemParentCategoryId_";
+
 
 
         //Cache keys for Tags

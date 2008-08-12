@@ -169,10 +169,7 @@ namespace Engage.Dnn.Publish
                 ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
             }
             return ivs;
-
         }
-
-
 
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName)
         {
@@ -182,7 +179,6 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName, int portalId)
         {
-
             string cacheKey = Utility.CacheKeyPublishItemVersionSettings + controlName.ToString(CultureInfo.InvariantCulture) + itemVersionId.ToString(CultureInfo.InvariantCulture);
             List<ItemVersionSetting> ivs;
 
