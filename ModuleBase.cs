@@ -1043,8 +1043,9 @@ namespace Engage.Dnn.Publish
                         }
                         if (i != null)
                         {
-                            if (AllowTags)
+                            if (AllowTags && i.Tags.Count<1)
                             {
+
                                 foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, PortalId))
                                 {
                                     i.Tags.Add(it);
