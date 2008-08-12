@@ -470,11 +470,13 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {
+            //TODO: cache this
             return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
         }
 
         public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
         {
+            //TODO: cache this
             return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
         }
 

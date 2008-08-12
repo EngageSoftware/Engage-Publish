@@ -1200,7 +1200,7 @@ namespace Engage.Dnn.Publish
         /// <returns></returns>
         public Article[] GetRelatedArticles(int articlePortalId)
         {
-            ArrayList al = ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, RelationshipType.ItemToRelatedArticle.GetId(), true);
+            ArrayList al = ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, RelationshipType.ItemToRelatedArticle.GetId(), true, portalId);
 
             ArrayList m = new ArrayList();
             foreach (ItemRelationship ir in al)
@@ -1217,7 +1217,7 @@ namespace Engage.Dnn.Publish
         /// <returns></returns>
         public Article GetRelatedArticle(int articlePortalId)
         {
-            ArrayList al = ItemRelationship.GetItemRelationships(this.itemId, this.itemVersionId, RelationshipType.ItemToArticleLinks.GetId(), true);
+            ArrayList al = ItemRelationship.GetItemRelationships(this.itemId, this.itemVersionId, RelationshipType.ItemToArticleLinks.GetId(), true, portalId);
             //ArrayList m = new ArrayList();
             Article a = null;
             foreach (ItemRelationship ir in al)

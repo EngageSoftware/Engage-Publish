@@ -815,7 +815,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             
-            if (Item.GetItemType(VersionInfoObject.ItemId) == "Article")
+            if (Item.GetItemType(VersionInfoObject.ItemId,PortalId) == "Article")
             {
                 UseCache = true;
 

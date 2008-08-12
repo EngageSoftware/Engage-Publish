@@ -21,6 +21,7 @@ using Engage.Dnn.Publish.Portability;
 using Engage.Dnn.Publish.Util;
 using TreeNode=System.Windows.Forms.TreeNode;
 using TreeView=System.Windows.Forms.TreeView;
+using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish
 {
@@ -230,10 +231,77 @@ namespace Engage.Dnn.Publish
             return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof (ItemRelationship));
         }
 
+        public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive, int portalId)
+        {
+            //todo: cache this
+            //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
+            
+            string cacheKey = Utility.CacheKeyPublishItemRelationships + childItemId.ToString(CultureInfo.InvariantCulture) + "_" + childItemVersionId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);
+            ArrayList al;
+
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    al = (ArrayList)o;
+                }
+                else
+                {
+                    al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
+                }
+                if (al != null)
+                {
+                    DataCache.SetCache(cacheKey, al, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
+            }
+            return al;
+
+
+        }
+
 	    public static ArrayList GetItemChildRelationships(int parentItemId , int relationshipTypeId)
 		{
-		    return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof (ItemRelationship));
+            return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof (ItemRelationship));
 		}
+
+        public static ArrayList GetItemChildRelationships(int parentItemId, int relationshipTypeId, int portalId)
+        {
+            //todo: cache this
+            //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
+
+            string cacheKey = Utility.CacheKeyPublishChildItemRelationships + parentItemId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);
+            ArrayList al;
+
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    al = (ArrayList)o;
+                }
+                else
+                {
+                    al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
+                }
+                if (al != null)
+                {
+                    DataCache.SetCache(cacheKey, al, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
+            }
+            return al;
+        }
+
 
 	    public static List<ItemRelationship> GetAllRelationships(int moduleId)
         {
