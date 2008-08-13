@@ -818,21 +818,26 @@ Module CSS
 #CommentName
 {
 	float:left;
+	width:100%;
 }
 #CommentCreatedDate
 {
 	float:right;
 }
-#PublishComment
+.PublishComment
 {
 	background-color:#f0efef;
-	width:99%;
-	display:table;
 	padding:3px;
 	border-bottom:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
 	border-top:solid 1px #b0b0b0; /*adds a border to the top of each listing */
 	border-left:solid 1px #b0b0b0; /*adds a border to the left of each listing */
 	border-right:solid 1px #b0b0b0; /*adds a border to the right of each listing */
+	width:100%;
+}
+
+.PublishComment div
+{
+	
 }
 
 .PublishNoComments
@@ -840,7 +845,7 @@ Module CSS
 	clear:both;
 }
 
-.PublishCommentAlternate #PublishComment
+.PublishCommentAlternate 
 {
 	background-color:#fcf7f7;
 }

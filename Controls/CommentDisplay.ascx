@@ -6,9 +6,10 @@
 <asp:UpdatePanel ID="upnlCommentDisplay" runat="server" UpdateMode="Always">
     <ContentTemplate>
     <asp:DataList ID="dlCommentText" runat="server" RepeatLayout="Flow" RepeatDirection="Horizontal">
-        <AlternatingItemStyle CssClass="PublishCommentAlternate" />
+        <AlternatingItemStyle CssClass="PublishComment PublishCommentAlternate" />
+        <ItemStyle CssClass="PublishComment" />
         <ItemTemplate>
-           <div id="PublishComment">
+           <div>
                 <div id="CommentValue"><asp:label ID="lblCommentText" Runat="server"><%#Eval("CommentText") %></asp:label></div>
                 <div id="CommentName">
                     <asp:Label id="lblName" runat="server" resourcekey="lblName"></asp:Label>
