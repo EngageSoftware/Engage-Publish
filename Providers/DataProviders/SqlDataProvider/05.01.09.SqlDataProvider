@@ -539,3 +539,32 @@ drop table #TempTable
 END
 GO
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComments]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComments]  
+ @itemId int,  
+ @approvalStatusId int  
+AS  
+BEGIN  
+ SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName, c.emailAddress, c.url  
+ FROM [{objectQualifier}Publish_vwComments] c  
+ WHERE c.ItemId = @itemId  
+  AND c.approvalStatusId = @approvalStatusId  
+ ORDER BY c.lastUpdated
+END  
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetComment]
+	@commentId int
+AS
+BEGIN
+	SELECT c.commentId, c.commentText, c.userId, c.itemId, c.itemVersionId, c.approvalStatusId, c.createdDate, c.lastUpdated, c.ratingId, c.firstName, c.lastName, c.emailAddress, c.url
+	FROM [{objectQualifier}Publish_vwComments] c
+	WHERE c.commentId = @commentId
+END
+GO
+

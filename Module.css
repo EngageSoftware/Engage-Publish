@@ -818,25 +818,28 @@ Module CSS
 #CommentName
 {
 	float:left;
-	width:100%;
+}
+
+.CommentNameDate
+{
+	
 }
 #CommentCreatedDate
 {
-	float:right;
+	float:left;
 }
 .PublishComment
 {
 	background-color:#f0efef;
 	padding:3px;
-	border-bottom:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
-	border-top:solid 1px #b0b0b0; /*adds a border to the top of each listing */
-	border-left:solid 1px #b0b0b0; /*adds a border to the left of each listing */
-	border-right:solid 1px #b0b0b0; /*adds a border to the right of each listing */
-	width:100%;
+	border:solid 1px #b0b0b0;
+	display:block;
+	margin-bottom:5px;
 }
 
-.PublishComment div
+.PublishCommentWrapper
 {
+	overflow:auto;
 	
 }
 
@@ -1059,8 +1062,7 @@ a.mouseOverImage:hover
 
 .categoryItemList
 {
-	display:table;
-	width:100%;
+	display:block;
 	clear:both;
 	background-color:#f0efef; /* the background color for the listing */
 	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */

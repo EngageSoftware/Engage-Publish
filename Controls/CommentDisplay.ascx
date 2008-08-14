@@ -9,14 +9,9 @@
         <AlternatingItemStyle CssClass="PublishComment PublishCommentAlternate" />
         <ItemStyle CssClass="PublishComment" />
         <ItemTemplate>
-           <div>
-                <div id="CommentValue"><asp:label ID="lblCommentText" Runat="server"><%#Eval("CommentText") %></asp:label></div>
-                <div id="CommentName">
-                    <asp:Label id="lblName" runat="server" resourcekey="lblName"></asp:Label>
-                    <asp:Label ID="lblFirstName" runat="server"><%#Eval("FirstName") %></asp:Label>
-                    <asp:Label ID="lblLastName" runat="server"><%#Eval("LastName") %></asp:Label>
-                </div>
-                <div id="CommentCreatedDate"><asp:Label ID="lblCreatedDate" runat="server"><%#Eval("CreatedDate") %></asp:Label></div>
+           <div class="PublishCommentWrapper">
+                <div id="CommentValue"><asp:label ID="lblCommentText" Runat="server"><%# Eval("CommentText") %></asp:label></div>
+                <div class="CommentNameDate"><asp:Label ID="lblCommentNameDate" runat="server"><%# BuildCommentNameDate(Eval("FirstName"), Eval("LastName"),Eval("Url"),Eval("CreatedDate")) %></asp:Label></div>
             </div>
         </ItemTemplate>
     </asp:DataList>

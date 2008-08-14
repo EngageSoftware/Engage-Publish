@@ -17,6 +17,7 @@ using DotNetNuke.UI.Utilities;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 using Engage.Dnn.UserFeedback;
+using DotNetNuke.Services.Localization;
 
 //TODO: add last updated date
 
@@ -227,6 +228,42 @@ namespace Engage.Dnn.Publish.Controls
                 lblNoComments.Visible = true;
             }
         }
+
+        public string BuildCommentNameDate(object firstName, object lastName, object url, object date)
+        {
+            string sComment;
+            string sUrl = string.Empty;
+            string sName = string.Empty;
+            
+            if (firstName != null)
+                sName += firstName.ToString();
+
+            if (lastName!= null)
+                sName += " " + lastName.ToString();
+
+            if (url != null)
+            {
+                sUrl = url.ToString();
+                sComment = string.Format(Localization.GetString("CommentNameDateWithLink", LocalResourceFile), sUrl, sName, Convert.ToDateTime(date.ToString()).ToString(LastUpdatedFormat, CultureInfo.CurrentCulture));
+
+            }
+            else
+            {
+                sComment = string.Format(Localization.GetString("CommentNameDateNoLink", LocalResourceFile), sName, Convert.ToDateTime(date.ToString()).ToString(LastUpdatedFormat, CultureInfo.CurrentCulture));
+            }
+
+            return sComment;
+        }
+
+        private string LastUpdatedFormat
+        {
+            get
+            {
+                object o = Settings["adLastUpdatedFormat"];
+                return (o == null ? "MMM yyyy" : o.ToString());
+            }
+        }
+
 
        
         //TODO: should prev_click do anything?

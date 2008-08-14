@@ -30,8 +30,8 @@ namespace Engage.Dnn.Publish
         /// <param name="firstName">First name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="lastName">Last name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="emailAddress">Email address of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.EmailAddressSizeLimit"/>.</param>
-        private Comment(int commentId, int itemVersionId, int? userId, string commentText, int approvalStatusId, DateTime createdDate, DateTime lastUpdated, int? ratingId, string firstName, string lastName, string emailAddress)
-            : base(commentId, itemVersionId, userId, commentText, approvalStatusId, createdDate, lastUpdated, ratingId, firstName,  lastName, emailAddress)
+        private Comment(int commentId, int itemVersionId, int? userId, string commentText, int approvalStatusId, DateTime createdDate, DateTime lastUpdated, int? ratingId, string firstName, string lastName, string emailAddress, string url)
+            : base(commentId, itemVersionId, userId, commentText, approvalStatusId, createdDate, lastUpdated, ratingId, firstName,  lastName, emailAddress, url)
         {
         }
 
@@ -46,8 +46,8 @@ namespace Engage.Dnn.Publish
         /// <param name="firstName">First name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="lastName">Last name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="emailAddress">Email address of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.EmailAddressSizeLimit"/>.</param>
-        public Comment(int itemVersionId, int? userId, string commentText, int approvalStatusId, int? ratingId, string firstName, string lastName, string emailAddress)
-            : base(itemVersionId, userId, commentText, approvalStatusId, ratingId, firstName, lastName, emailAddress)
+        public Comment(int itemVersionId, int? userId, string commentText, int approvalStatusId, int? ratingId, string firstName, string lastName, string emailAddress, string url)
+            : base(itemVersionId, userId, commentText, approvalStatusId, ratingId, firstName, lastName, emailAddress, url)
         {
         }
 
@@ -94,6 +94,7 @@ namespace Engage.Dnn.Publish
             string firstName = null;
             string lastName = null;
             string emailAddress = null;
+            string url = null;
 
             if (!dr.IsDBNull(dr.GetOrdinal("userId")))
             {
@@ -116,7 +117,12 @@ namespace Engage.Dnn.Publish
                 emailAddress = dr["emailAddress"].ToString();
             }
 
-            return new Comment((int)dr["commentId"], (int)dr["itemVersionId"], userId, (string)dr["commentText"], (int)dr["approvalStatusId"], Convert.ToDateTime(dr["createdDate"], CultureInfo.InvariantCulture), Convert.ToDateTime(dr["lastUpdated"], CultureInfo.InvariantCulture), ratingId, firstName, lastName, emailAddress);
+            if (!dr.IsDBNull(dr.GetOrdinal("url")))
+            {
+                url = dr["url"].ToString();
+            }
+
+            return new Comment((int)dr["commentId"], (int)dr["itemVersionId"], userId, (string)dr["commentText"], (int)dr["approvalStatusId"], Convert.ToDateTime(dr["createdDate"], CultureInfo.InvariantCulture), Convert.ToDateTime(dr["lastUpdated"], CultureInfo.InvariantCulture), ratingId, firstName, lastName, emailAddress, url);
         }
 	    #endregion
 

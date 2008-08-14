@@ -156,4 +156,10 @@
   <data name="UnableToFindAction.Text" xml:space="preserve">
     <value>Click here to configure the module.</value>
   </data>
+  <data name="CommentNameDateNoLink.Text" xml:space="preserve">
+    <value>Posted By: {0} on {1}</value>
+  </data>
+  <data name="CommentNameDateWithLink.Text" xml:space="preserve">
+    <value>Posted By: &lt;a href="{0}" target="_blank" rel="nofollow"&gt;{1}&lt;/a&gt; on {2}</value>
+  </data>
 </root>
