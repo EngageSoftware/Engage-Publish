@@ -612,7 +612,7 @@ GO
 
 
 /*remove Publish host settings on uninstall */
-delete from {databaseOwner}[{objectQualifier}hostsettings
+delete from {databaseOwner}[{objectQualifier}hostsettings]
 where settingname like 'Publish%'
 GO
 
