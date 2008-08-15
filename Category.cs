@@ -34,8 +34,12 @@ namespace Engage.Dnn.Publish
 		private int sortOrder = 5;
 
 		private int childDisplayTabId = -1;
+
+        private string childDisplayTabName = string.Empty;
+
 		#endregion
 
+        #region "Public Properties"
         [XmlElement(Order = 39)]
 		public int SortOrder
 		{
@@ -48,14 +52,11 @@ namespace Engage.Dnn.Publish
 		{
 			get { return childDisplayTabId;}
 			set { childDisplayTabId = value;}
-		}
-
-
-        private string childDisplayTabName = string.Empty;
+        }
         [XmlElement(Order = 41)]
         public string ChildDisplayTabName
         {
-            get 
+            get
             {
                 if (childDisplayTabName.Length == 0)
                 {
@@ -67,21 +68,30 @@ namespace Engage.Dnn.Publish
                         }
                     }
                 }
-                return childDisplayTabName; 
+                return childDisplayTabName;
             }
-            set 
-            { 
-                childDisplayTabName = value; 
+            set
+            {
+                childDisplayTabName = value;
             }
         }
 
-		#region "Public Methods"
 
-		public Category()
+
+        #endregion
+
+        
+        #region "Public Methods"
+
+        public Category()
 		{
 			//this type is always a Category
 			ItemTypeId = ItemType.Category.GetId();
 		}
+
+        
+
+
 
 
 		#endregion
@@ -118,6 +128,7 @@ namespace Engage.Dnn.Publish
 
 				//do all category save
 				trans.Commit();
+                Utility.ClearPublishCache(PortalId);
 			}
 			catch
 			{
@@ -142,6 +153,7 @@ namespace Engage.Dnn.Publish
             {
                 base.UpdateApprovalStatus(trans);
                 trans.Commit();
+                Utility.ClearPublishCache(PortalId);
             }
             catch
             {
@@ -198,6 +210,48 @@ namespace Engage.Dnn.Publish
 			return i;
 		}
 
+        /// <summary>
+        /// Creates a Category object that you can continue to modify or save back into the database., 
+        /// </summary>
+        /// <param name="name">Name of the Category to be created.</param>
+        /// <param name="description">The description/abstract of the category to be created.</param>
+        /// <param name="authorUserId">The ID of the author of this category.</param>
+        /// <param name="moduleId">The moduleid for where this category will most likely be displayed.</param>
+        /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
+        /// <param name="displayTabId">The Tab ID of the page this Category should be displayed on.</param>
+        /// <returns>A <see cref="Category" /> with the assigned values.</returns>
+
+        public static Category CreateCategory(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
+        {
+            Category c = new Category();
+            c.Name = name;
+            c.Description = description;
+            c.AuthorUserId = authorUserId;
+
+            //default to the top level item type of category
+            ItemRelationship irel = new ItemRelationship();
+            irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+
+            irel.ParentItemId = Util.TopLevelCategoryItemType.Category.GetId();
+
+            c.Relationships.Add(irel);
+            c.StartDate = c.LastUpdated = c.CreatedDate = DateTime.Now.ToString();
+            c.PortalId = portalId;
+            c.ModuleId = moduleId;
+
+            c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+            c.NewWindow = false;
+
+            return c;
+
+        }
+
+        /// <summary>
+        /// Returns a dataset of the top level categories available for a specific portal
+        /// </summary>
+        /// <param name="portalId">The Portal ID that we want to return data for.</param>
+        /// <returns>A <see cref="DataSet" /> with the categories available.</returns>
+
 		public static DataSet GetTopLevelCategories(int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishTopLevelCategories + portalId.ToString(CultureInfo.InvariantCulture);
@@ -229,9 +283,7 @@ namespace Engage.Dnn.Publish
 
 		public static DataTable GetChildCategories(int parentItemId, int portalId)
 		{
-            //cache this
 			//return DataProvider.Instance().GetChildCategories(parentItemId, portalId);
-
             string cacheKey = Utility.CacheKeyPublishChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
             DataTable dt = new DataTable();
             if (ModuleBase.UseCachePortal(portalId))
@@ -261,7 +313,6 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetChildCategories(int parentItemId, int portalId, int itemTypeId)
         {
-            //cache this
             //return DataProvider.Instance().GetChildCategories(parentItemId, portalId, itemTypeId);
 
             string cacheKey = Utility.CacheKeyPublishChildCategoriesItemType + parentItemId.ToString(CultureInfo.InvariantCulture) + "_" + itemTypeId.ToString(CultureInfo.InvariantCulture);
@@ -293,7 +344,7 @@ namespace Engage.Dnn.Publish
         }
 
 		public static DataTable GetAllChildCategories(int parentItemId, int portalId)
-		{	//cache this
+		{	
 			//return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
 
             string cacheKey = Utility.CacheKeyPublishAllChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
@@ -324,7 +375,7 @@ namespace Engage.Dnn.Publish
 		}
 
 		public static int GetParentCategory(int childItemId, int portalId)
-		{	//cache this
+		{
 			//return DataProvider.Instance().GetParentCategory(childItemId, portalId);
 
             int parentId = -1;
@@ -370,7 +421,6 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategoryVersion(int itemVersionId, int portalId)
 		{
-
             string cacheKey = Utility.CacheKeyPublishCategoryVersion + itemVersionId.ToString(CultureInfo.InvariantCulture); Category c = new Category();
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -426,7 +476,6 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategory(int itemId, int portalId)
 		{
-
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
             Category c = new Category();
             if (itemId == -1) return c;
@@ -524,10 +573,7 @@ namespace Engage.Dnn.Publish
             //The very first thing is that PortalID needs to be changed to the current portal where content is being
             //imported. Several methods resolving Id's is expecting the correct PortalId (current). hk
             PortalId = portalId;
-
             ResolveIds(currentModuleId);
-
-            
         }
 
         protected override void ResolveIds(int currentModuleId)

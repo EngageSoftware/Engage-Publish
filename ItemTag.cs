@@ -56,7 +56,6 @@ namespace Engage.Dnn.Publish
 
 		public static ArrayList GetItemTags(int itemVersionId, int portalId)
 		{
-            //cache this
             string cacheKey = Utility.CacheKeyPublishArticleTags + itemVersionId.ToString(CultureInfo.InvariantCulture);
             ArrayList al = null;
             if (ModuleBase.UseCachePortal(portalId))

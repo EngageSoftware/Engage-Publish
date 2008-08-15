@@ -631,7 +631,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 //remove all the cache items for this publish item
                 //DataCache.RemoveCache(Utility.CacheKeyPublishArticle + VersionInfoObject.ItemId.ToString(CultureInfo.InvariantCulture));
-                Util.Utility.ClearPublishCache(PortalId);
+                
 
                 string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
                 if (!Utility.HasValue(returnUrl))
@@ -695,7 +695,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                         Item.DeleteItem(ItemId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
 
-                        Util.Utility.ClearPublishCache(PortalId);
                     }
                     else
                     {

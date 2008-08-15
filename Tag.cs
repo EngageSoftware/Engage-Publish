@@ -302,9 +302,6 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static DataTable GetTags(int portalId)
         {
-            //parse through the table and create each tag?
-            //Cache this
-
             //return DataProvider.Instance().GetTags(portalId);
 
             string cacheKey = Utility.CacheKeyPublishGetTagsByPortal + portalId.ToString(CultureInfo.InvariantCulture);
@@ -341,7 +338,6 @@ namespace Engage.Dnn.Publish
         public static DataTable GetTagsByString(string partialTag, int portalId)
         {
             //parse through the table and create each tag?
-            //Cache This
 
             //return DataProvider.Instance().GetTagsByString(partialTag, portalId);
             string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture);
@@ -372,7 +368,7 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
-            //Cache this
+
             //parse through the table and create each tag?
             //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
             string tags = string.Empty;
@@ -405,7 +401,6 @@ namespace Engage.Dnn.Publish
 
         public static int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
-            //Cache this
             //parse through the table and create each tag?
             //return DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
 

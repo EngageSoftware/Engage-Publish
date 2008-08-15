@@ -422,7 +422,7 @@ namespace Engage.Dnn.Publish.Admin
                 }
                 VersionInfoObject.UpdateApprovalStatus();
 
-                Utility.ClearPublishCache(PortalId);
+                //Utility.ClearPublishCache(PortalId);
 
                 Response.Redirect(BuildVersionsUrl(), false);
 

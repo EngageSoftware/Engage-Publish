@@ -58,7 +58,6 @@ namespace Engage.Dnn.Publish.Util
 
         public static ItemType GetFromId(int id, Type ct)
         {
-
             //TODO: can we cache this?
             if (ct == null)
                 throw new ArgumentNullException("ct");
@@ -108,10 +107,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemTypeName(int itemTypeId, bool UseCache, int PortalId, int CacheTime)
         {
-            //cache this
             string typeName = string.Empty;
-
-
             string cacheKey = Utility.CacheKeyPublishItemTypeName + itemTypeId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (UseCache)
             {

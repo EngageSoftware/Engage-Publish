@@ -107,7 +107,7 @@ namespace Engage.Dnn.Publish.Services
                     //    //ping
                     //    Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
                     //}
-                    Utility.ClearPublishCache(PortalId);
+                    //Utility.ClearPublishCache(PortalId);
                     return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");    
                     
                 }

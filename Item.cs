@@ -113,13 +113,13 @@ namespace Engage.Dnn.Publish
         public void UpdateDescription()
         {
             DataProvider.Instance().UpdateDescription(this.itemVersionId, this.description, this.metaDescription);
+            Util.Utility.ClearPublishCache(PortalId);
         }
 
         public bool DisplayOnCurrentPage()
         {
             //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
 
-            //Cache this?
             //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
             //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
@@ -164,7 +164,6 @@ namespace Engage.Dnn.Publish
         public bool ForceDisplayOnPage()
         {
 
-            //Cache this?
 
             //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
 
@@ -907,7 +906,6 @@ namespace Engage.Dnn.Publish
 
         public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
         {
-            //TODO: cache this 
 
             string cacheKey = Utility.CacheKeyPublishItem + itemId.ToString(CultureInfo.InvariantCulture);
             Item i = null;
@@ -1177,13 +1175,16 @@ namespace Engage.Dnn.Publish
             }
             return dt;
 
-            //cache this?
+
             //return DataProvider.Instance().GetItemTypes();
         }
 
         public static void DeleteItem(int itemId)
         {
+            
             DataProvider.Instance().DeleteItem(itemId);
+            //TODO: implement Util.Utility.ClearPublishCache(this.PortalId);
+
         }
 
 

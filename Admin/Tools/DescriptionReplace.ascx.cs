@@ -71,7 +71,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 }
             }
 
-            Utility.ClearPublishCache(PortalId);
+            //Utility.ClearPublishCache(PortalId);
             //X articles updated out of Y
             lblOutput.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("ArticleUpdate", LocalResourceFile).ToString(), articleUpdate, articleCount);
 

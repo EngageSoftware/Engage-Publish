@@ -355,7 +355,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                 }
 
-                Utility.ClearPublishCache(PortalId);
+                //Utility.ClearPublishCache(PortalId);
                 BindData();
                 this.lblMessage.Text = Localization.GetString("ArticlesApproved", LocalResourceFile);
                 lblMessage.Visible = true;
@@ -381,7 +381,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                 }
 
-                Utility.ClearPublishCache(PortalId);
+                //Utility.ClearPublishCache(PortalId);
                 BindData();
                 this.lblMessage.Text = Localization.GetString("ArticlesDeleted", LocalResourceFile);
                 lblMessage.Visible = true;

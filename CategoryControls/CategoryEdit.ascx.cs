@@ -373,7 +373,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 VersionInfoObject.Save(UserId);
 
                 //Clear the cache for all Publish items
-                Utility.ClearPublishCache(PortalId);
+                //Utility.ClearPublishCache(PortalId);
 
                 if (SecurityFilter.IsSecurityEnabled(PortalId))
                 {
@@ -431,7 +431,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     {
                         Item.DeleteItem(ItemId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
-                        Util.Utility.ClearPublishCache(PortalId);
+                        //Util.Utility.ClearPublishCache(PortalId);
                     }
                     else
                     {

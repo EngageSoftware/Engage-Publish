@@ -173,7 +173,6 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName)
         {
-            //TODO: cache this 
             return CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettings(itemVersionId, controlName)); 
         }
 

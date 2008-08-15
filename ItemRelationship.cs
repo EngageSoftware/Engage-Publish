@@ -233,7 +233,6 @@ namespace Engage.Dnn.Publish
 
         public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive, int portalId)
         {
-            //todo: cache this
             //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
             
             string cacheKey = Utility.CacheKeyPublishItemRelationships + childItemId.ToString(CultureInfo.InvariantCulture) + "_" + childItemVersionId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);
@@ -272,7 +271,6 @@ namespace Engage.Dnn.Publish
 
         public static ArrayList GetItemChildRelationships(int parentItemId, int relationshipTypeId, int portalId)
         {
-            //todo: cache this
             //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
 
             string cacheKey = Utility.CacheKeyPublishChildItemRelationships + parentItemId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);

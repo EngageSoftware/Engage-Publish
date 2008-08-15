@@ -220,6 +220,7 @@ namespace Engage.Dnn.Publish
                     //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
 
                 }
+                Utility.ClearPublishCache(PortalId);
 
 			}
 			catch
@@ -245,6 +246,7 @@ namespace Engage.Dnn.Publish
             {
                 base.UpdateApprovalStatus(trans);
                 trans.Commit();
+                Utility.ClearPublishCache(PortalId);
             }
             catch
             {
