@@ -22,16 +22,12 @@ namespace Engage.Dnn.Publish.Portability
         /// Method to convert a custom Object to XML string
         /// </summary>
         /// <returns>XML string</returns>
-        public string SerializeObject()
+        public string SerializeObjectToXml()
         {
             try
             {
-                //string xml = null;
-                //MemoryStream memoryStream = new MemoryStream();
                 XmlSerializer xs = new XmlSerializer(this.GetType());
-                //XmlTextWriter writer = new XmlTextWriter(memoryStream, Encoding.UTF8);
                 StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
-
                 xs.Serialize(writer, this);
 
                 return writer.GetStringBuilder().ToString();
@@ -39,10 +35,10 @@ namespace Engage.Dnn.Publish.Portability
             catch (Exception e)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
-                return null;
+                throw;
             }
         }
-
+        
         public abstract void Import(int currentModuleId, int portalId);
 
     }

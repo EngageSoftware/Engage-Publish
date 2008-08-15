@@ -44,7 +44,7 @@ namespace Engage.Dnn.Publish
         private string name = string.Empty;
         private string url = string.Empty;
 
-        private bool newWindow = false;
+        private bool newWindow;
 
         private string description = string.Empty;
         private string itemVersionDate = string.Empty;
@@ -84,17 +84,19 @@ namespace Engage.Dnn.Publish
         }
 
 
-
+        [XmlIgnore]
         public ItemRelationshipCollection Relationships
         {
             get { return this.relationships; }
         }
 
+        [XmlIgnore]
         public ItemTagCollection Tags
         {
             get { return this.tags; }
         }
 
+        [XmlIgnore]
         public ItemVersionSettingCollection VersionSettings
         {
             get { return this.versionSettings; }
@@ -138,14 +140,14 @@ namespace Engage.Dnn.Publish
 
             if (ModuleBase.UseCachePortal(PortalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     returnVal = (bool)o;
                 }
                 else
                 {
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "DisplayOnCurrentPage", portalId);
                     if (cpSetting != null)
                     {
                         returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -183,22 +185,15 @@ namespace Engage.Dnn.Publish
 
             if (ModuleBase.UseCachePortal(PortalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     returnVal = (bool)o;
                 }
                 else
                 {
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
-                    if (cpSetting != null)
-                    {
-                        returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        returnVal = false;
-                    }
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", portalId);
+                    returnVal = cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
                 DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                 Utility.AddCacheKey(cacheKey, portalId);
@@ -209,7 +204,7 @@ namespace Engage.Dnn.Publish
         /// <summary>
         /// This method currently verifies that the item is assigned to a display page. Future versions
         /// will eliminate this requirement all together but for now this is needed by ItemLink.aspx when
-        /// linking occurs. NOTE: This could be used to test other settings to be valid before displaying.
+        /// linking occurs. This could be used to test other settings to be valid before displaying.
         /// </summary>
         /// <returns></returns>
         public bool IsLinkable()
@@ -268,7 +263,10 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        //TODO: if we remove a tag from a version we should decrement the TotalItems for a tag.
+        /// <summary>
+        /// if we remove a tag from a version we should decrement the TotalItems for a tag.
+        /// </summary>
+        /// <param name="trans"></param>
         protected void SaveTags(IDbTransaction trans)
         {
             for (int i = 0; i < Tags.Count; i++)
@@ -308,6 +306,8 @@ namespace Engage.Dnn.Publish
             if (!string.IsNullOrEmpty(this.EndDate)) this.EndDate = Convert.ToDateTime(this.EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(this.StartDate)) this.StartDate = Convert.ToDateTime(this.StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(this.CreatedDate)) this.CreatedDate = Convert.ToDateTime(this.CreatedDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(this.ItemVersionDate)) this.ItemVersionDate = Convert.ToDateTime(this.ItemVersionDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(this.LastUpdated)) this.LastUpdated = Convert.ToDateTime(this.LastUpdated, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
         }
 
 
@@ -328,7 +328,6 @@ namespace Engage.Dnn.Publish
             }
             if (ModuleBase.ApprovalEmailsEnabled(PortalId))
             {
-                //TODO: this probably should be moved into the check for emails being enabled
                 SendStatusUpdateEmail();
             }
             UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.revisingUserId, this.approvalComments);
@@ -344,17 +343,14 @@ namespace Engage.Dnn.Publish
             {
                 if (!mi.IsDeleted)
                 {
-                    DotNetNuke.Entities.Tabs.TabController objTabs = new DotNetNuke.Entities.Tabs.TabController();
+                    TabController objTabs = new TabController();
                     if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
                     {
                         edittabid = mi.TabID;
                         editModuleId = mi.ModuleID;
                         break;
                     }
-                    else
-                    {
-                        continue;
-                    }
+                    continue;
                 }
             }
 
@@ -394,17 +390,14 @@ namespace Engage.Dnn.Publish
             {
                 if (!mi.IsDeleted)
                 {
-                    DotNetNuke.Entities.Tabs.TabController objTabs = new DotNetNuke.Entities.Tabs.TabController();
+                    TabController objTabs = new TabController();
                     if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
                     {
                         edittabid = mi.TabID;
                         editModuleId = mi.ModuleID;
                         break;
                     }
-                    else
-                    {
-                        continue;
-                    }
+                    continue;
                 }
             }
 
@@ -430,7 +423,7 @@ namespace Engage.Dnn.Publish
                     body = body.Replace("[ADMINNAME]", ui.DisplayName);
                     body = body.Replace("[ENGAGEITEMCOMMENTS]", this.approvalComments);
 
-                    body = body.Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name.ToString());
+                    body = body.Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
 
                     string subject = EmailStatusChangeSubject;
 
@@ -466,7 +459,7 @@ namespace Engage.Dnn.Publish
                 }
                 return moduleTitle;
             }
-            set { ; }
+            set { }
         }
 
         [XmlIgnore]
@@ -513,22 +506,18 @@ namespace Engage.Dnn.Publish
                 {
                     return ItemVersionIdentifier.ToString();
                 }
-                else
+                //must resolve id to guid
+                string approvedItemVersionIdentifier = string.Empty;
+                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(this.approvedItemVersionId))
                 {
-                    //must resolve id to guid
-                    string approvedItemVersionIdentifier = string.Empty;
-                    using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(approvedItemVersionId))
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            approvedItemVersionIdentifier = dr["ItemVersionIdentifier"].ToString();
-                        }
+                        approvedItemVersionIdentifier = dr["ItemVersionIdentifier"].ToString();
                     }
-                    return approvedItemVersionIdentifier;
                 }
-
+                return approvedItemVersionIdentifier;
             }
-            set { ; }
+            set { }
         }
 
         [XmlElement(Order = 8)]
@@ -568,21 +557,18 @@ namespace Engage.Dnn.Publish
                 {
                     return ItemVersionIdentifier.ToString();
                 }
-                else
+                //must resolve id to guid
+                string originalItemVersionIdentifier = string.Empty;
+                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(this.originalItemVersionId))
                 {
-                    //must resolve id to guid
-                    string originalItemVersionIdentifier = string.Empty;
-                    using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(originalItemVersionId))
+                    if (dr.Read())
                     {
-                        if (dr.Read())
-                        {
-                            originalItemVersionIdentifier = dr["ItemVersionIdentifier"].ToString();
-                        }
+                        originalItemVersionIdentifier = dr["ItemVersionIdentifier"].ToString();
                     }
-                    return originalItemVersionIdentifier;
                 }
+                return originalItemVersionIdentifier;
             }
-            set { ; }
+            set { }
         }
 
         [XmlElement(Order = 13)]
@@ -610,18 +596,9 @@ namespace Engage.Dnn.Publish
         public string StartDate
         {
             get { return startDate; }
-            set
+            set 
             {
-                if (Utility.HasValue(value))
-                {
-                    //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
-                    //startDate = Convert.ToDateTime(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
-                    startDate = value;
-                }
-                else
-                {
-                    startDate = null;
-                }
+                this.startDate = Utility.HasValue(value) ? value : null;
             }
         }
 
@@ -629,20 +606,9 @@ namespace Engage.Dnn.Publish
         public string EndDate
         {
             get { return endDate; }
-            set
+            set 
             {
-                if (Utility.HasValue(value))
-                {
-                    //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
-                    //endDate = Convert.ToDateTime(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
-                    //value.ToString(CultureInfo.InvariantCulture);
-                    endDate = value;
-
-                }
-                else
-                {
-                    endDate = null;
-                }
+                this.endDate = Utility.HasValue(value) ? value : null;
             }
         }
 
@@ -709,7 +675,7 @@ namespace Engage.Dnn.Publish
             {
                 return ApprovalStatus.GetFromId(approvalStatusId, typeof(ApprovalStatus)).Name;
             }
-            set { ; }
+            set {  }
         }
 
         [XmlElement(Order = 23)]
@@ -831,7 +797,7 @@ namespace Engage.Dnn.Publish
             set { newWindow = value; }
         }
 
-        [XmlElement(Order = 37)]
+        [XmlElement(Order = 38)]
         public int RevisingUserId
         {
             set { this.revisingUserId = value; }
@@ -839,7 +805,7 @@ namespace Engage.Dnn.Publish
         }
 
         private string originalRevisingUser = string.Empty;
-        [XmlElement(Order = 38)]
+        [XmlElement(Order = 37)]
         public string RevisingUser
         {
             get
@@ -906,12 +872,11 @@ namespace Engage.Dnn.Publish
 
         public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
         {
-
             string cacheKey = Utility.CacheKeyPublishItem + itemId.ToString(CultureInfo.InvariantCulture);
-            Item i = null;
+            Item i;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     i = (Item)o;
@@ -924,7 +889,9 @@ namespace Engage.Dnn.Publish
                     i = (Item)CBO.FillObject(dr, it.GetItemType);
                     i.CorrectDates();
                 }
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if (i != null)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
@@ -1046,20 +1013,13 @@ namespace Engage.Dnn.Publish
 
         public static string GetItemType(int itemId, int portalId)
         {
-            string itemType = string.Empty;
+            string itemType;
             //return DataProvider.Instance().GetItemType(itemId);
             string cacheKey = Utility.CacheKeyPublishItemTypeNameItemId + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
-                if (o != null)
-                {
-                    itemType = o.ToString();
-                }
-                else
-                {
-                    itemType = Item.GetItemType(itemId);
-                }
+                object o = DataCache.GetCache(cacheKey);
+                itemType = o != null ? o.ToString() : GetItemType(itemId);
                 if (itemType != null)
                 {
                     DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
@@ -1068,7 +1028,7 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                itemType = Item.GetItemType(itemId);
+                itemType = GetItemType(itemId);
             }
             return itemType;
         }
@@ -1081,65 +1041,25 @@ namespace Engage.Dnn.Publish
 
         public static int GetItemTypeId(int itemId, int portalId)
         {
-            int itemType=-1;
+            int itemTypeId;
             string cacheKey = Utility.CacheKeyPublishItemTypeIntForItemId + itemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
-                if (o != null)
+                object o = DataCache.GetCache(cacheKey);
+                itemTypeId = o != null ? Convert.ToInt32(o.ToString()) : GetItemTypeId(itemId);
+                if (itemTypeId != -1)
                 {
-                    itemType = Convert.ToInt32(o.ToString());
-                }
-                else
-                {
-                    itemType = Item.GetItemTypeId(itemId);
-                }
-                if (itemType != -1)
-                {
-                    DataCache.SetCache(cacheKey, itemType, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    DataCache.SetCache(cacheKey, itemTypeId, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }
             }
             else
             {
-                itemType = Item.GetItemTypeId(itemId);
+                itemTypeId = GetItemTypeId(itemId);
             }
-            return itemType;
+
+            return itemTypeId;
         }
-
-        //public static string GetItemTypeFromVersion(int itemVersionId)
-        //{
-        //    return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
-        //}
-
-
-        //public static string GetItemTypeFromVersion(int itemVersionId, int portalId)
-        //{
-        //    string typeId;
-        //    string cacheKey = Utility.CacheKeyPublishItemTypeStringForItemVersionId + itemVersionId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-        //    if (ModuleBase.UseCachePortal(portalId))
-        //    {
-        //        object o = DataCache.GetCache(cacheKey) as object;
-        //        if (o != null)
-        //        {
-        //            typeId = o.ToString();
-        //        }
-        //        else
-        //        {
-        //            typeId = Item.GetItemTypeFromVersion(itemVersionId);
-        //        }
-
-        //        DataCache.SetCache(cacheKey, typeId, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-        //        Utility.AddCacheKey(cacheKey, portalId);
-        //    }
-        //    else
-        //    {
-        //        typeId = Item.GetItemTypeFromVersion(itemVersionId);
-        //    }
-        //    return typeId;
-
-        //    //return DataProvider.Instance().GetItemTypeFromVersion(itemVersionId);
-        //}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not displaying properties of this class.")]
         public static DataTable GetItemTypes()
@@ -1154,14 +1074,14 @@ namespace Engage.Dnn.Publish
             string cacheKey = Utility.CacheKeyPublishItemTypesDT + portalId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
                 }
                 else
                 {
-                    dt = Item.GetItemTypes();
+                    dt = GetItemTypes();
                 }
                 if (dt != null)
                 {
@@ -1171,7 +1091,7 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                dt = Item.GetItemTypes();
+                dt = GetItemTypes();
             }
             return dt;
 
@@ -1241,44 +1161,18 @@ namespace Engage.Dnn.Publish
         protected virtual void ResolveIds(int currentModuleId)
         {
             //If the XML doesn't specify a start date we'll default to Today.
-            if (string.IsNullOrEmpty(StartDate)) StartDate = DateTime.Now.ToString();
+            if (string.IsNullOrEmpty(StartDate)) StartDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
             UserInfo user = UserController.GetUserByName(portalId, Author);
-            if (user != null)
-            {
-                authorUserId = user.UserID;
-
-            }
-            else
-            {
-                //default to the current user
-                authorUserId = UserController.GetCurrentUserInfo().UserID;
-
-            }
+            this.authorUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             //Revising user.
             user = UserController.GetUserByName(portalId, RevisingUser);
-            if (user != null)
-            {
-                revisingUserId = user.UserID;
-            }
-            else
-            {
-                //default to the current user
-                revisingUserId = UserController.GetCurrentUserInfo().UserID;
-            }
+            this.revisingUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             //Approving user.
             user = UserController.GetUserByName(portalId, ApprovalUser);
-            if (user != null)
-            {
-                approvalUserId = user.UserID;
-            }
-            else
-            {
-                //default to the current user
-                approvalUserId = UserController.GetCurrentUserInfo().UserID;
-            }
+            this.approvalUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             bool found = false;
             //display tab - try and resolve from name in XML file.

@@ -171,7 +171,7 @@ namespace Engage.Dnn.Publish
                 {
                     _startDate = null;
                 } 
-            }
+			}
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -182,7 +182,7 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThrough]
 			get {return this._endDate;}
             [DebuggerStepThrough]
-            set 
+            set
             {
                 if (Utility.HasValue(value))
                 {
@@ -195,7 +195,7 @@ namespace Engage.Dnn.Publish
                     _endDate = null;
                 }
             }
-		}
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int? _sortOrder;
@@ -228,74 +228,62 @@ namespace Engage.Dnn.Publish
 
         public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId,bool isActive)
         {
-            return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof (ItemRelationship));
+            return CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof (ItemRelationship));
         }
 
         public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive, int portalId)
         {
-            //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
-            
             string cacheKey = Utility.CacheKeyPublishItemRelationships + childItemId.ToString(CultureInfo.InvariantCulture) + "_" + childItemVersionId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);
             ArrayList al;
 
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     al = (ArrayList)o;
                 }
                 else
                 {
-                    al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
-                }
-                if (al != null)
-                {
+                    al = CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
                     DataCache.SetCache(cacheKey, al, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }
             }
             else
             {
-                al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
+                al = CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof(ItemRelationship));
             }
             return al;
-
-
         }
 
 	    public static ArrayList GetItemChildRelationships(int parentItemId , int relationshipTypeId)
 		{
-            return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof (ItemRelationship));
+            return CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof (ItemRelationship));
 		}
 
         public static ArrayList GetItemChildRelationships(int parentItemId, int relationshipTypeId, int portalId)
         {
-            //return DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
-
             string cacheKey = Utility.CacheKeyPublishChildItemRelationships + parentItemId.ToString(CultureInfo.InvariantCulture) + "_" + relationshipTypeId.ToString(CultureInfo.InvariantCulture);
             ArrayList al;
 
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     al = (ArrayList)o;
                 }
                 else
                 {
-                    al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
-                }
-                if (al != null)
-                {
+                    al = CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
                     DataCache.SetCache(cacheKey, al, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }
             }
             else
             {
-                al = DotNetNuke.Common.Utilities.CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
+                al = CBO.FillCollection(DataProvider.Instance().GetItemChildRelationships(parentItemId, relationshipTypeId), typeof(ItemRelationship));
             }
             return al;
         }
@@ -303,12 +291,12 @@ namespace Engage.Dnn.Publish
 
 	    public static List<ItemRelationship> GetAllRelationships(int moduleId)
         {
-            return DotNetNuke.Common.Utilities.CBO.FillCollection<ItemRelationship>(DataProvider.Instance().GetAllRelationships(moduleId));
+            return CBO.FillCollection<ItemRelationship>(DataProvider.Instance().GetAllRelationships(moduleId));
         }
 
         public static List<ItemRelationship> GetAllRelationshipsByPortalId(int portalId)
         {
-            return DotNetNuke.Common.Utilities.CBO.FillCollection<ItemRelationship>(DataProvider.Instance().GetAllRelationshipsByPortalId(portalId));
+            return CBO.FillCollection<ItemRelationship>(DataProvider.Instance().GetAllRelationshipsByPortalId(portalId));
         }
 
         public static DataSet GetItemRelationshipByItemRelationshipId(int itemRelationshipId)
@@ -325,7 +313,7 @@ namespace Engage.Dnn.Publish
 	    /// Inserts a collection of <see cref="ListItem"/> into a <see cref="System.Web.UI.WebControls.ListControl"/>.  
 	    /// Each item has a value of the name of the category plus ticks to indicate hierarchy between categories.  
 	    /// Each item has a value of the category's itemId.
-        /// If you have problems showing all Categories, you can try using <see cref="DisplayChildren"/> on an instantiated ItemRelationship (see <see cref="Controls.ItemRelationships.UpdateAvailableItems"/> for an example).
+        /// If you have problems showing all Categories, you can try using <see cref="DisplayChildren(ListControl, int, int?)"/> on an instantiated ItemRelationship (see <see cref="Controls.ItemRelationships.UpdateAvailableItems"/> for an example).
 	    /// </summary>
 	    /// <param name="lc">The <see cref="System.Web.UI.WebControls.ListControl"/> into which the category options will be added.</param>
 	    /// <param name="categoryId">The id of the parent category from which the hierarchy will start, or -1 if all categories.</param>
@@ -336,11 +324,11 @@ namespace Engage.Dnn.Publish
 	        DisplayCategoryHierarchy(lc, categoryId, portalId, includeParentCategory, -1);
 	    }
 
-	    /// <summary>
-        /// Inserts a collection of <see cref="ListItem"/> into a <see cref="System.Web.UI.WebControls.ListControl"/>.  
-        /// Each item has a value of the name of the category plus ticks to indicate hierarchy between categories.  
+        /// <summary>
+        /// Inserts a collection of <see cref="ListItem"/> into a <see cref="System.Web.UI.WebControls.ListControl"/>.
+        /// Each item has a value of the name of the category plus ticks to indicate hierarchy between categories.
         /// Each item has a value of the category's itemId.
-        /// If you have problems showing all Categories, you can try using <see cref="DisplayChildren"/> on an instantiated ItemRelationship (see <see cref="Controls.ItemRelationships.UpdateAvailableItems"/> for an example).
+        /// If you have problems showing all Categories, you can try using <see cref="DisplayChildren(ListControl, int, int?)"/> on an instantiated ItemRelationship (see <see cref="Controls.ItemRelationships.UpdateAvailableItems"/> for an example).
         /// </summary>
         /// <param name="lc">The <see cref="System.Web.UI.WebControls.ListControl"/> into which the category options will be added.</param>
         /// <param name="categoryId">The id of the parent category from which the hierarchy will start, or -1 if all categories.</param>
@@ -564,8 +552,13 @@ namespace Engage.Dnn.Publish
 //			return dt;
         //		}
 
+        public void CorrectDates()
+        {
+            if (!string.IsNullOrEmpty(this.StartDate)) this.StartDate = Convert.ToDateTime(this.StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(this.EndDate)) this.EndDate = Convert.ToDateTime(this.EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+        }
 
-        #region TransportableElement Methods
+	    #region TransportableElement Methods
 
         /// <summary>
         /// This method is invoked by the Import mechanism and has to take this instance of a ItemRelationship and resolve

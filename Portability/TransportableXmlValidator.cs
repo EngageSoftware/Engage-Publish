@@ -5,10 +5,10 @@ using DotNetNuke.Common;
 namespace Engage.Dnn.Publish.Portability
 {
 
-    public class TransportableXmlValidator : DotNetNuke.Common.XmlValidatorBase
+    public class TransportableXmlValidator : XmlValidatorBase
     {
 
-        public override bool Validate(System.IO.Stream xmlStream)
+        public override bool Validate(Stream xmlStream)
         {
             bool valid = false;
 
@@ -22,13 +22,13 @@ namespace Engage.Dnn.Publish.Portability
             }
             catch(Exception ex)
             {
-                base.Errors.Add(ex.ToString());
+                Errors.Add(ex.ToString());
             }
 
             return valid;
         }
 
-        public bool Validate(System.IO.Stream xmlStream, string schemaFile)
+        public bool Validate(Stream xmlStream, string schemaFile)
         {
             SchemaSet.Add("", schemaFile);
             return base.Validate(xmlStream);

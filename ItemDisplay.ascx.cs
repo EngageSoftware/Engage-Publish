@@ -8,24 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Exceptions;
+    using Util;
+
     public partial class ItemDisplay : ModuleBase, IActionable
     {
 
@@ -54,15 +46,7 @@ namespace Engage.Dnn.Publish
         }
 
         #endregion
-        #region Event Handlers
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-        }
-
-        #endregion
-
+        
         #region Private Methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Code paths are easy to understand, test, and maintain")]
@@ -75,7 +59,7 @@ namespace Engage.Dnn.Publish
             if (oid != null)
             {
                 //made this a 301 redirect for better SEO
-                string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid.ToString();
+                string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid;
                 Response.Status = "301 Moved Permanently";
                 Response.RedirectLocation = href;
 
@@ -88,20 +72,13 @@ namespace Engage.Dnn.Publish
                 displayType = Settings["DisplayType"].ToString();
             }
 
-            ItemType t = base.TypeOfItem;
+            ItemType t = TypeOfItem;
 
             if (t != null)
             {
                 if (t.Name.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (displayType == "ArticleDisplay")
-                    {
-                        controlToLoad = "ArticleControls/ArticleDisplay.ascx";
-                    }
-                    else
-                    {
-                        controlToLoad = "ArticleControls/ArticleDisplay.ascx";
-                    }
+                    this.controlToLoad = displayType == "ArticleDisplay" ? "ArticleControls/ArticleDisplay.ascx" : "ArticleControls/ArticleDisplay.ascx";
                 }
                 else if (t.Name.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
@@ -233,7 +210,7 @@ namespace Engage.Dnn.Publish
 
                     if (displayType != "CategorySearch" && displayType != "ItemListing" && displayType != "CategoryNLevels")
                     {
-                        string adminControlToLoad = "Admin/AdminMenu.ascx";
+                        const string adminControlToLoad = "Admin/AdminMenu.ascx";
                         ModuleBase mbl = (ModuleBase)LoadControl(adminControlToLoad);
                         mbl.ModuleConfiguration = ModuleConfiguration;
                         mbl.ID = System.IO.Path.GetFileNameWithoutExtension(adminControlToLoad);
@@ -253,8 +230,8 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                ModuleActionCollection Actions = new ModuleActionCollection();
-                Actions.Add(GetNextActionID(), Localization.GetString("Administration", this.LocalResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                ModuleActionCollection actions = new ModuleActionCollection();
+                actions.Add(GetNextActionID(), Localization.GetString("Administration", this.LocalResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
                 return Actions;
             }
         }

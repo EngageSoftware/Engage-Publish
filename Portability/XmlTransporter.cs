@@ -51,11 +51,7 @@ namespace Engage.Dnn.Publish.Portability
             XmlElement element = _doc.CreateElement("publish");
             element.SetAttribute("xmlns:xsi", xsiNS);
             element.SetAttribute("noNamespaceSchemaLocation", xsiNS, "Content.Publish.xsd");
-            //element.SetAttribute("version", _version);
             _doc.AppendChild(element);
-            //XmlNode publishNode = _doc.AppendChild(element); 
-            _doc.AppendChild(element); //TODO: Are we intending to add this twice?
-
         }
 
         [Obsolete("Not implemented")]
@@ -83,16 +79,8 @@ namespace Engage.Dnn.Publish.Portability
         {
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode categoriesNode = _doc.CreateElement("categories");
-            DataTable dt;
 
-            if (exportAll)
-            {
-                dt = Category.GetCategoriesByPortalId(_portalId); 
-            }
-            else
-            {
-                dt = Category.GetCategoriesByModuleId(_moduleId);
-            }
+            DataTable dt = exportAll ? Category.GetCategoriesByPortalId(this._portalId) : Category.GetCategoriesByModuleId(this._moduleId);
 
             try
             {
@@ -102,7 +90,7 @@ namespace Engage.Dnn.Publish.Portability
                     int portalId = Convert.ToInt32(row["PortalId"], CultureInfo.InvariantCulture);
                     Category c = Category.GetCategoryVersion(itemVersionId, portalId);
 
-                    string xml = c.SerializeObject();
+                    string xml = c.SerializeObjectToXml();
                     XmlDocument categoryDoc = new XmlDocument();
                     categoryDoc.LoadXml(xml);
 
@@ -128,16 +116,8 @@ namespace Engage.Dnn.Publish.Portability
         {
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode articlesNode = _doc.CreateElement("articles");
-            DataTable dt;
 
-            if (exportAll)
-            {
-                dt = Article.GetArticlesByPortalId(_portalId);
-            }
-            else
-            {
-                dt = Article.GetArticlesByModuleId(_moduleId);
-            }
+            DataTable dt = exportAll ? Article.GetArticlesByPortalId(this._portalId) : Article.GetArticlesByModuleId(this._moduleId);
 
 
             foreach (DataRow row in dt.Rows)
@@ -147,7 +127,7 @@ namespace Engage.Dnn.Publish.Portability
 
                 Article a = Article.GetArticleVersion(itemVersionId, portalId);
 
-                string xml = a.SerializeObject();
+                string xml = a.SerializeObjectToXml();
                 XmlDocument articleDoc = new XmlDocument();
                 articleDoc.LoadXml(xml);
 
@@ -166,20 +146,13 @@ namespace Engage.Dnn.Publish.Portability
         {
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode relationshipsNode = _doc.CreateElement("relationships");
-            List<ItemRelationship> relationships;
 
-            if (exportAll)
-            {
-                relationships = ItemRelationship.GetAllRelationshipsByPortalId(_portalId);
-            }
-            else
-            {
-                relationships = ItemRelationship.GetAllRelationships(_moduleId);
-            }
+            List<ItemRelationship> relationships = exportAll ? ItemRelationship.GetAllRelationshipsByPortalId(this._portalId) : ItemRelationship.GetAllRelationships(this._moduleId);
 
             foreach (ItemRelationship relationship  in relationships)
             {
-                string xml = relationship.SerializeObject();
+                relationship.CorrectDates();
+                string xml = relationship.SerializeObjectToXml();
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
 
@@ -220,19 +193,11 @@ namespace Engage.Dnn.Publish.Portability
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode settingsNode = _doc.CreateElement("itemversionsettings");
 
-            List<ItemVersionSetting> settings;
-            if (exportAll)
-            {
-                settings = ItemVersionSetting.GetItemVersionSettingsByPortalId(_portalId);
-            }
-            else
-            {
-                settings = ItemVersionSetting.GetItemVersionSettingsByModuleId(_moduleId);
-            }
+            List<ItemVersionSetting> settings = exportAll ? ItemVersionSetting.GetItemVersionSettingsByPortalId(this._portalId) : ItemVersionSetting.GetItemVersionSettingsByModuleId(this._moduleId);
 
             foreach (ItemVersionSetting setting in settings)
             {
-                string xml = setting.SerializeObject();
+                string xml = setting.SerializeObjectToXml();
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
 
@@ -260,8 +225,8 @@ namespace Engage.Dnn.Publish.Portability
             foreach (XPathNavigator categoryNode in categoriesNode.Select("//category"))
             {
                 // Create an instance of the XmlSerializer specifying type.
-                System.Xml.Serialization.XmlSerializer serializer = new XmlSerializer(typeof(Category));
-                System.IO.StringReader reader = new StringReader(categoryNode.OuterXml);
+                XmlSerializer serializer = new XmlSerializer(typeof(Category));
+                StringReader reader = new StringReader(categoryNode.OuterXml);
 
                 // Use the Deserialize method to restore the object's state.
                 Category c = (Category)serializer.Deserialize(reader);

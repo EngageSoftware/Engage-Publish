@@ -9,19 +9,16 @@
 //DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Data;
 using System.Globalization;
+using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
-using Localize = DotNetNuke.Services.Localization.Localization;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
-using System.Xml.Serialization;
-
-using DotNetNuke.Entities.Host;
-using System.Collections;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-
+using Localize = DotNetNuke.Services.Localization.Localization;
 
 namespace Engage.Dnn.Publish
 {
@@ -38,7 +35,7 @@ namespace Engage.Dnn.Publish
 		private string referenceNumber = "";
         private float averageRating;
 
-        private readonly string[] pageSeperator = new string[] { "[PAGE]" };
+        private readonly string[] pageSeperator = new[] { "[PAGE]" };
 
         public Article()
 		{
@@ -162,9 +159,7 @@ namespace Engage.Dnn.Publish
             this.VersionSettings.Add(itemVersionSetting);
 
         }
-
-
-
+        
 		#region Item method implementation
         
         public override void Save(int revisingUserId)
@@ -174,11 +169,11 @@ namespace Engage.Dnn.Publish
 
 			try
 			{
-				base.SaveInfo(trans, revisingUserId);
-				base.UpdateApprovalStatus(trans);
+				SaveInfo(trans, revisingUserId);
+				UpdateApprovalStatus(trans);
 
 				//update category version now
-				AddArticleVersion(trans, base.ItemVersionId, base.ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText, this.ReferenceNumber);
+				AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText, this.ReferenceNumber);
 
                 //Save the ItemVersionSettings
                 SaveItemVersionSettings(trans);
@@ -186,7 +181,7 @@ namespace Engage.Dnn.Publish
                 //Save the Relationships
 				SaveRelationships(trans);
 				//do all category save
-                string s = DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
+                string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
                 if (Utility.HasValue(s))
                 {
                     if (Convert.ToBoolean(s, CultureInfo.InvariantCulture))
@@ -204,7 +199,7 @@ namespace Engage.Dnn.Publish
                         if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
                         {
                             string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                            string changedUrl = Utility.HasValue(surl) ? s.ToString() : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
+                            string changedUrl = Utility.HasValue(surl) ? s : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
                             Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
 
                             //ping
@@ -212,10 +207,11 @@ namespace Engage.Dnn.Publish
                         }
                     }
                 }
-                catch (Exception exc)
+                catch (Exception)
                 {
+                    /// WHAT IS THIS? Why try/catch and gooble up errors???
                     //catch the ping exception but let everything else proceed.
-                    //TODO: localize this error
+                    /// localize this error
                     //Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
                     //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
 
@@ -227,7 +223,7 @@ namespace Engage.Dnn.Publish
 			{
 				trans.Rollback();
 	            //Rolling back to the original version, exception thrown.
-				base.ItemVersionId = base.OriginalItemVersionId;
+				ItemVersionId = OriginalItemVersionId;
 				throw;
 			}
 			finally
@@ -244,7 +240,7 @@ namespace Engage.Dnn.Publish
             IDbTransaction trans = newConnection.BeginTransaction();
             try
             {
-                base.UpdateApprovalStatus(trans);
+                UpdateApprovalStatus(trans);
                 trans.Commit();
                 Utility.ClearPublishCache(PortalId);
             }
@@ -252,10 +248,6 @@ namespace Engage.Dnn.Publish
             {
                 trans.Rollback();
                 throw;
-            }
-            finally
-            {
-                //clean up connection stuff
             }
         }
 
@@ -297,8 +289,6 @@ namespace Engage.Dnn.Publish
 
 		#endregion
 
-
-
         [XmlElement(Order = 39)]
 		public string ArticleText 
 		{
@@ -339,17 +329,10 @@ namespace Engage.Dnn.Publish
                 return averageRating;
             }
              set
-            {
-                //if value is NULL in database, CBO fills it with MinValue
-                if (value != float.MinValue)
-                {
-                    averageRating = value;
-                }
-                else
-                {
-                    averageRating = 0;
-                }
-            }
+             {
+                 //if value is NULL in database, CBO fills it with MinValue
+                 this.averageRating = value != float.MinValue ? value : 0;
+             }
         }
 
        
@@ -366,7 +349,7 @@ namespace Engage.Dnn.Publish
             {
                 return pageLocations[pageId - 1];
             }
-            else return pageLocations[pageLocations.Length - 1];
+            return pageLocations[pageLocations.Length - 1];
         }
 
 
@@ -391,10 +374,10 @@ namespace Engage.Dnn.Publish
 		public static Article GetArticleVersion(int articleVersionId, int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishArticleVersion + articleVersionId.ToString(CultureInfo.InvariantCulture);
-            Article a = new Article();
+            Article a;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     a = (Article)o;
@@ -406,9 +389,6 @@ namespace Engage.Dnn.Publish
                     {
                         a.CorrectDates();
                     }
-                }
-                if (a != null)
-                {
                     DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }
@@ -455,7 +435,6 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetArticlesSearchIndexingNew(portalId, displayTabId);
 		}
         
-        
 		public static DataTable GetArticles(int parentItemId, int portalId)
 		{
 			return DataProvider.Instance().GetArticles(parentItemId, portalId);
@@ -475,21 +454,21 @@ namespace Engage.Dnn.Publish
 		public static Article GetArticle(int itemId, int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
-            Article a = new Article();
+            Article a;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     a = (Article)o;
                 }
                 else
                 {
-                    a = Article.GetArticle(itemId);
-                    if (a != null)
-                    {
-                        a.CorrectDates();
-                    }
+                    a = GetArticle(itemId);
+                    //if (a != null)
+                    //{
+                    //    a.CorrectDates();
+                    //}
                 }
                 if (a != null)
                 {
@@ -499,11 +478,11 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                a = Article.GetArticle(itemId);
-                if (a != null)
-                {
-                    a.CorrectDates();
-                }
+                a = GetArticle(itemId);
+                //if (a != null)
+                //{
+                //    a.CorrectDates();
+                //}
             }
             return a;
 
@@ -530,8 +509,6 @@ namespace Engage.Dnn.Publish
             }
             return false;
         }
-
-
 
 
         #region TransportableElement Methods
