@@ -1025,6 +1025,7 @@ a.mouseOverImage:hover
 .categoryItemList .itemAuthor
 {
 	float:left;
+	clear:left;
 }
 
 .categoryItemList .itemAuthorDate
