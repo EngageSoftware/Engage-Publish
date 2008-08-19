@@ -163,8 +163,6 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(value))
                 {
-                    //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
-                    //startDate = Convert.ToDateTime(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                     _startDate = value;
                 }
                 else
@@ -186,8 +184,6 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(value))
                 {
-                    //TODO: document convert.todatetime use the culture you want to convert to, not what it came from
-                    //startDate = Convert.ToDateTime(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                     _endDate = value;
                 }
                 else

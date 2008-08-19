@@ -232,7 +232,7 @@ namespace Engage.Dnn.Publish
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
                 actions.Add(GetNextActionID(), Localization.GetString("Administration", this.LocalResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
-                return Actions;
+                return actions;
             }
         }
 

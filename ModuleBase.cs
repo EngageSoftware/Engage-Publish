@@ -13,7 +13,6 @@ using System.Globalization;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;

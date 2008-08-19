@@ -115,7 +115,7 @@ namespace Engage.Dnn.Publish
         public void UpdateDescription()
         {
             DataProvider.Instance().UpdateDescription(this.itemVersionId, this.description, this.metaDescription);
-            Util.Utility.ClearPublishCache(PortalId);
+            Utility.ClearPublishCache(PortalId);
         }
 
         public bool DisplayOnCurrentPage()
