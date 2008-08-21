@@ -21,7 +21,7 @@ using Engage.Dnn.Publish.Util;
 namespace Engage.Dnn.Publish
 {
     /// <summary>
-    /// Summary description for ModuleBase.
+    /// 
     /// </summary>
     public class ModuleBase : PortalModuleBase
     {
@@ -37,7 +37,7 @@ namespace Engage.Dnn.Publish
         private int pageId;
         private bool useCache = true;
 
-        private bool useUrls = false;
+        private bool useUrls;
         public bool UseUrls
         {
             get
@@ -813,11 +813,11 @@ namespace Engage.Dnn.Publish
                     object o = Request.QueryString["pageid"];
                     object c = Request.QueryString["catpageid"];
 
-                    if (o != null && versionInfoObject.ItemTypeId == Util.ItemType.Article.GetId())
+                    if (o != null && versionInfoObject.ItemTypeId == ItemType.Article.GetId())
                     {
                         pageId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                     }
-                    else if (c != null && (versionInfoObject.ItemTypeId == Util.ItemType.Category.GetId() || versionInfoObject.ItemTypeId == Util.ItemType.TopLevelCategory.GetId()))
+                    else if (c != null && (versionInfoObject.ItemTypeId == ItemType.Category.GetId() || versionInfoObject.ItemTypeId == ItemType.TopLevelCategory.GetId()))
                     {
                         pageId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
                     }
@@ -1114,7 +1114,6 @@ namespace Engage.Dnn.Publish
 
         private void BindCurrentItem()
         {
-            Item i = null;
             //check for version id
             int itemId = ItemId;
             versionInfoObject = BindItemData(itemId);
@@ -1146,7 +1145,7 @@ namespace Engage.Dnn.Publish
 
         public string BuildLinkUrl(string qsParameters)
         {
-            return DotNetNuke.Common.Globals.NavigateURL(TabId, "", qsParameters);
+            return DotNetNuke.Common.Globals.NavigateURL(TabId, string.Empty, qsParameters);
         }
 
         public static string DesktopModuleFolderName
@@ -1223,7 +1222,7 @@ namespace Engage.Dnn.Publish
                     return "_blank";
                 }
             }
-            return "";
+            return string.Empty;
         }
 
 
@@ -1249,7 +1248,7 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrl(object itemId, int portalId)
         {
-            return Util.Utility.IsDisabled(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), portalId) ? string.Empty : GetItemLinkUrl((itemId));
+            return Utility.IsDisabled(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), portalId) ? string.Empty : GetItemLinkUrl((itemId));
 
         }
 
@@ -1374,7 +1373,7 @@ namespace Engage.Dnn.Publish
                 if (fileName.StartsWith(ThumbnailSubdirectory, StringComparison.OrdinalIgnoreCase) ||
                     (!fileName.StartsWith("/", StringComparison.Ordinal) && !fileName.StartsWith("http", StringComparison.OrdinalIgnoreCase)))
                 {
-                    return GenerateLocalThumbnailUrl(fileName, PortalId);
+                    return this.GenerateLocalThumbnailUrl(fileName);
                 }
                 else
                 {
@@ -1383,7 +1382,7 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        private string GenerateLocalThumbnailUrl(string fileName, int portalId)
+        private string GenerateLocalThumbnailUrl(string fileName)
         {
             //DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(portalId);
             return Request.Url.Scheme + "://" + Request.Url.Host + PortalSettings.HomeDirectory + fileName;

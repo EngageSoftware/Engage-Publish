@@ -1,14 +1,17 @@
 using System;
-using System.Data;
-using Engage.Dnn.Publish.Data;
 using System.Collections;
+using System.Data;
 using System.Globalization;
 using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
+using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
+    using System.Diagnostics;
+    using System.Web;
+
     [XmlRootAttribute(ElementName = "Tag", IsNullable = false)]
     public class Tag
     {
@@ -16,23 +19,23 @@ namespace Engage.Dnn.Publish
 
         #region Private Variables
         //attributes hide private members from debugger, so both properties and members aren't shown - BD
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private int tagId;
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private string name;
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private string description;
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private int totalItems;
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private DateTime mostRecentDate;
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private int languageId;
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private DateTime createdDate;
 
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private int portalId;
 
         #endregion
@@ -44,7 +47,7 @@ namespace Engage.Dnn.Publish
         /// <value>The tag id of the tag.</value>
         public int? TagId
         {
-         [System.Diagnostics.DebuggerStepThroughAttribute()]
+         [DebuggerStepThroughAttribute]
             get
             {
                 return tagId;
@@ -57,12 +60,12 @@ namespace Engage.Dnn.Publish
         /// <value>The Name of the Tag.</value>
         public String Name
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThrough]
             get
             {
                 return name;
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set
             {
                 name = value;
@@ -75,12 +78,12 @@ namespace Engage.Dnn.Publish
         /// <value>The description of the Tag.</value>
         public String Description
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return description;
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set
             {
                 description = value;
@@ -94,12 +97,12 @@ namespace Engage.Dnn.Publish
         /// <value>The Total Items Tag.</value>
         public int TotalItems
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return totalItems;
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set
             {
                 totalItems = value;
@@ -112,7 +115,7 @@ namespace Engage.Dnn.Publish
         /// <value>The creation date of this rating.</value>
         public DateTime MostRecentDate
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return mostRecentDate;
@@ -126,12 +129,12 @@ namespace Engage.Dnn.Publish
         /// <value>The Language Id</value>
         public int LanguageId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return languageId;
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set
             {
                 languageId = value;
@@ -145,7 +148,7 @@ namespace Engage.Dnn.Publish
         /// <value>The creation date of this rating.</value>
         public DateTime CreatedDate
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return createdDate;
@@ -160,12 +163,12 @@ namespace Engage.Dnn.Publish
         /// <value>The Language Id</value>
         public int PortalId
         {
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             get
             {
                 return portalId;
             }
-            [System.Diagnostics.DebuggerStepThroughAttribute()]
+            [DebuggerStepThroughAttribute]
             set
             {
                 portalId = value;
@@ -234,10 +237,10 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetTag(tag, portalId);
 
             string cacheKey = Utility.CacheKeyPublishTag + tag.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -270,10 +273,10 @@ namespace Engage.Dnn.Publish
         public static Tag GetTag(int tagId, int portalId)
         {
             string cacheKey = Utility.CacheKeyPublishTagById + tagId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -305,10 +308,10 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetTags(portalId);
 
             string cacheKey = Utility.CacheKeyPublishGetTagsByPortal + portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -341,10 +344,10 @@ namespace Engage.Dnn.Publish
 
             //return DataProvider.Instance().GetTagsByString(partialTag, portalId);
             string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -372,12 +375,12 @@ namespace Engage.Dnn.Publish
             //parse through the table and create each tag?
             //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
             string tags = string.Empty;
-            if (tagList != null) tags = tagList.ToString().Replace(" ", "");
+            if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
             string cacheKey = Utility.CacheKeyPublishPopularTags + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -405,12 +408,16 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
 
             string tags = string.Empty;
-            if (tagList != null) tags = tagList.ToString().Replace(" ", "");
+            if (tagList != null)
+            {
+                tags = tagList.ToString().Replace(" ", string.Empty);
+            }
+
             string cacheKey = Utility.CacheKeyPublishPopularTagsCount + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
-            int tagCount = -1;
+            int tagCount;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     tagCount = (int)o;
@@ -419,22 +426,21 @@ namespace Engage.Dnn.Publish
                 {
                     tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
                 }
-                if (tagCount != null)
-                {
-                    DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
+
+                DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
             }
             else
             {
                 tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
             }
+
             return tagCount;
         }
 
         public static ArrayList ParseTags(string tags, int portalId)
         {
-            return ParseTags(tags, portalId, Util.Utility.GetTagSeparators(), true);
+            return ParseTags(tags, portalId, Utility.GetTagSeparators(), true);
         }
 
         public static ArrayList ParseTags(string tags, int portalId, char[] separators, bool add)
@@ -448,7 +454,7 @@ namespace Engage.Dnn.Publish
                     Tag t = new Tag(GetTag(sTag.Trim(), portalId));
                     if (t.tagId == 0 && add)
                     {
-                        t.Name = sTag.Trim();
+                        t.Name = HttpUtility.UrlDecode(sTag).Trim();
                         t.PortalId = portalId;
                         t.Description = "Added by article edit";
                         t.TotalItems = 0;
@@ -474,8 +480,6 @@ namespace Engage.Dnn.Publish
             //TODO: cache this
             return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
         }
-
-
 
         #endregion
 

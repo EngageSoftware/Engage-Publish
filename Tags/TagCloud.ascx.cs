@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -18,7 +19,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
-using System.Globalization;
 
 namespace Engage.Dnn.Publish.Tags
 {
@@ -42,7 +42,7 @@ namespace Engage.Dnn.Publish.Tags
                 //check VI for null then set information
                 //if (!Page.IsPostBack)
                 //{
-                lnkTagFilters.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(ModuleBase.DefaultTagDisplayTabIdForPortal(PortalId));
+                lnkTagFilters.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabIdForPortal(PortalId));
                 SetTagPageTitle();
                 LoadTagList();
                 //}
@@ -178,17 +178,17 @@ namespace Engage.Dnn.Publish.Tags
         private string BuildTagLink(string name, bool useExisting, string useOthers)
         {
             object o = Request.QueryString["tags"];
-            string existingTags = string.Empty;
+            string existingTags;
             if (o != null && useExisting)
             {
-                existingTags = o.ToString() + "-";
+                existingTags = o.ToString() + HttpUtility.UrlEncode(";");
             }
             else
             {
                 existingTags = useOthers;
             }
 
-            return DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, "", "&tags=" + existingTags + name);
+            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "&tags=" + existingTags + name);
         }
 
 

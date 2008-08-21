@@ -72,13 +72,13 @@ namespace Engage.Dnn.Publish.Controls
             //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
             if (AllowTags && Overrideable)
             {
-                object t = Request.QueryString["Tags"];
-                if (t != null)
+                string tags = Request.QueryString["Tags"];
+                if (tags != null)
                 {
-                    DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                    DotNetNuke.Security.PortalSecurity objSecurity = new PortalSecurity();
 
-                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(t.ToString()), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
-                    char[] seperator = { '-' };
+                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(tags), PortalSecurity.FilterFlag.NoSQL);
+                    char[] seperator = { ';' };
                     tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
                     foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))
                     {
@@ -125,7 +125,7 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.Visible = true;
                 string rssImage = Localization.GetString("rssImage", LocalResourceFile);
 #if DEBUG
-                rssImage = rssImage.Replace("[L]", "");
+                rssImage = rssImage.Replace("[L]", string.Empty);
 #endif
 
                 lnkRss.ImageUrl = ApplicationUrl + rssImage; //"/images/xml.gif";
@@ -161,7 +161,7 @@ namespace Engage.Dnn.Publish.Controls
             else
             {
                 visibility = false;
-                editText = "";
+                editText = string.Empty;
             }
 
             try
@@ -246,7 +246,7 @@ namespace Engage.Dnn.Publish.Controls
 
                     if (Utility.IsDisabled(childItemId, PortalId))
                     {
-                        lnkTitle.NavigateUrl = "";
+                        lnkTitle.NavigateUrl = string.Empty;
                         if (pnlReadMore != null)
                         {
                             pnlReadMore.Visible = false;
@@ -349,7 +349,7 @@ namespace Engage.Dnn.Publish.Controls
             //setup the caching for CustomDisplay
 
             string cacheKey = Utility.CacheKeyPublishCustomDisplay +
-                    customDisplaySettings.SortOption.Replace(" ", "").ToString(CultureInfo.InvariantCulture) +
+                    customDisplaySettings.SortOption.Replace(" ", string.Empty).ToString(CultureInfo.InvariantCulture) +
                         categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) +
                             "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
             DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
@@ -531,10 +531,10 @@ namespace Engage.Dnn.Publish.Controls
                 //if <strip> is the first item in our text we need to strip all HTML
                 if (text.ToString().IndexOf("[PublishStrip]", StringComparison.Ordinal) > -1)
                 {
-                    string result = text.ToString().Replace("[PublishStrip]", "");
+                    string result = text.ToString().Replace("[PublishStrip]", string.Empty);
 
                     //return HtmlUtils.StripEntities(result, false);
-                    return System.Web.HttpUtility.HtmlDecode(result);
+                    return HttpUtility.HtmlDecode(result);
 
                 }
                 return text.ToString();
@@ -577,7 +577,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, string.Empty, string.Empty, EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }
