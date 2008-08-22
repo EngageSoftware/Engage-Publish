@@ -153,6 +153,7 @@ namespace Engage.Dnn.Publish
             this.Load += this.Page_Load;
             base.OnInit(e);
 
+            // TODO: refactor this between here, CustomDisplay.OnInit, TagCloud.LoadTagInfo
             //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
             if (this.AllowTags)
             {
