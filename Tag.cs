@@ -11,6 +11,7 @@ namespace Engage.Dnn.Publish
 {
     using System.Diagnostics;
     using System.Web;
+    using System.Text;
 
     [XmlRootAttribute(ElementName = "Tag", IsNullable = false)]
     public class Tag
@@ -374,9 +375,22 @@ namespace Engage.Dnn.Publish
 
             //parse through the table and create each tag?
             //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
-            string tags = string.Empty;
-            if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
-            string cacheKey = Utility.CacheKeyPublishPopularTags + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
+
+            //TODO: change tagList to a <List> of strings
+            //string tags = string.Empty;
+            StringBuilder sb = new StringBuilder(50);
+            //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
+
+            if (tagList != null)
+            {
+                foreach (int tag in tagList)
+                {
+                    sb.Append(tag.ToString());
+                    sb.Append("_");
+                }
+            }
+
+            string cacheKey = Utility.CacheKeyPublishPopularTags + sb.ToString() + selectTop.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -405,15 +419,23 @@ namespace Engage.Dnn.Publish
         public static int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
             //parse through the table and create each tag?
-            //return DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
+            //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
 
-            string tags = string.Empty;
+            //TODO: change tagList to a <List> of strings
+            //string tags = string.Empty;
+            StringBuilder sb = new StringBuilder(50);
+            //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
+
             if (tagList != null)
             {
-                tags = tagList.ToString().Replace(" ", string.Empty);
+                foreach (int tag in tagList)
+                {
+                    sb.Append(tag.ToString());
+                    sb.Append("_");
+                }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + tags + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb.ToString() + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
             int tagCount;
             if (ModuleBase.UseCachePortal(portalId))
             {
