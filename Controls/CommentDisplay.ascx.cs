@@ -121,7 +121,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 if (articleId != -1)
                 {
-                    SetItemId = articleId;
+                    SetItemId(this.articleId);
                 }
                 else
                 {

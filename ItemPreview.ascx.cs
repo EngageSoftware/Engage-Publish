@@ -53,7 +53,7 @@ namespace Engage.Dnn.Publish
 		/// </summary>
 		private void InitializeComponent()
 		{
-            SetItemId = Convert.ToInt32(Request.QueryString["itemid"], CultureInfo.InvariantCulture);
+            SetItemId(Convert.ToInt32(this.Request.QueryString["itemid"], CultureInfo.InvariantCulture));
 
             if (TypeOfItem == ItemType.Article)
             {
@@ -89,7 +89,7 @@ namespace Engage.Dnn.Publish
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.InvalidOperationException.#ctor(System.String)", Justification = "Message is for internal use only"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Exception.#ctor(System.String)", Justification = "Message is for internal use only")]
         private void DisplayCurrentVersion()
         {
-            SetItemId = Convert.ToInt32(Request.QueryString["itemid"], CultureInfo.InvariantCulture);
+            SetItemId(Convert.ToInt32(this.Request.QueryString["itemid"], CultureInfo.InvariantCulture));
 
             if (TypeOfItem == ItemType.Article)
             {
@@ -107,7 +107,7 @@ namespace Engage.Dnn.Publish
                 ad.DisplayRelatedArticle = false;
                 ad.DisplayRelatedLinks = false;
                 ad.DisplayEmailAFriend = false;
-                ad.SetItemId = a.ItemId;
+                ad.SetItemId(a.ItemId);
                 phItem.Controls.Add(ad);
             }
             else if (TypeOfItem == ItemType.Category)
@@ -123,7 +123,7 @@ namespace Engage.Dnn.Publish
                 cd.ID = Path.GetFileNameWithoutExtension(categoryControlToLoad);
                 cd.Overrideable = true;
                 cd.ShowAll = true;
-                cd.SetItemId = category.ItemId;
+                cd.SetItemId(category.ItemId);
                 phItem.Controls.Add(cd);
             }
             else

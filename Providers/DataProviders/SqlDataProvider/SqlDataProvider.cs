@@ -30,11 +30,11 @@ namespace Engage.Dnn.Publish.Data
 {
     public class SqlDataProvider : DataProvider
     {
-        private const string providerType = "data";
+        private const string ProviderType = "data";
 
         #region Private Members
 
-        private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(providerType);
+        private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
         private readonly string connectionString;
         private readonly string providerPath;
         private readonly string objectQualifier;
@@ -1324,7 +1324,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(itemId);
 
             object o = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString());
-            return o != null ? o.ToString() : "";
+            return o != null ? o.ToString() : string.Empty;
         }
 
         public override int GetItemTypeId(int itemId)
@@ -2085,11 +2085,50 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetComments", itemId, approvalStatusId);
         }
 
+        /// <exception cref="InvalidOperationException">Could not retrieve the module's version to determine which stored procedure to use</exception>
         public override IDataReader GetSimpleGalleryAlbums(int moduleId)
         {
-            const int showCurrent = -1;
-            const bool showPublicOnly = false;
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "DnnForge_SimpleGallery_AlbumListAll", moduleId, showCurrent, showPublicOnly);
+            List<int> version = null;
+            try
+            {
+                version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new char[] { '.' }));
+            }
+            catch (FormatException)
+            {
+                //if we can't get the version, just swallow the exception. BD
+            }
+
+            if (version != null)
+            {
+                int parentAlbumId = Null.NullInteger;
+                const bool showChildren = true;
+                const bool showPublicOnly = false;
+
+                object[] parameters;
+                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] {2, 3, 8})))
+                {
+                    // 0 = Ventrian.SimpleGallery.Common.AlbumSortType.Caption, 1 = CreateDate, 2 = Custom, 3 = Random
+                    const int sortBy = 0;
+
+                    // 0 = Ventrian.SimpleGallery.Common.SortDirection.DESC, 1 = ASC
+                    const int sortOrder = 1;
+
+                    parameters = new object[] {moduleId, parentAlbumId, showPublicOnly, showChildren, sortBy, sortOrder};
+                }
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] {2, 3, 3})))
+                {
+                    parameters = new object[] {moduleId, parentAlbumId, showPublicOnly, showChildren};
+                }
+                else // Version 1.5
+                {
+                    int showCurrent = Null.NullInteger;
+                    parameters = new object[] {moduleId, showCurrent, showPublicOnly};
+                }
+
+                return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "DnnForge_SimpleGallery_AlbumListAll", parameters);
+            }
+
+            throw new InvalidOperationException("Could not retrieve the module's version to determine which stored procedure to use");
         }
 
         private IDataReader GetSimpleGalleryAlbum(int albumId)
@@ -2102,7 +2141,7 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, string.Format(CultureInfo.InvariantCulture, "select Version from {0}{1}DesktopModules where ModuleName = @moduleName", DatabaseOwner, ObjectQualifier), Utility.CreateVarcharParam("@moduleName", Utility.SimpleGalleryDefinitionModuleName, 256)) as string;
         }
 
-        /// <exception cref="InvalidOperationException">If module version cannot be retrieved.</exception>
+        /// <exception cref="InvalidOperationException">Could not retrieve the module's version to determine which stored procedure to use</exception>
         public override DataTable GetSimpleGalleryPhotos(int albumId, int? maxCount)
         {
             int moduleId;
@@ -2125,8 +2164,10 @@ namespace Engage.Dnn.Publish.Data
             {
                 version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new char[] { '.' }));
             }
-            //if we can't get the version, just swallow the exception. BD
-            catch (FormatException) { }
+            catch (FormatException)
+            {
+                //if we can't get the version, just swallow the exception. BD
+            }
 
             if (version != null)
             {
@@ -2247,14 +2288,14 @@ namespace Engage.Dnn.Publish.Data
         //Get number of items waiting for approval
         public override int WaitingForApprovalCount(int portalId)
         {
-            string sql = String.Format(CultureInfo.InvariantCulture, "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, Util.ApprovalStatus.Waiting.GetId().ToString());
+            string sql = String.Format(CultureInfo.InvariantCulture, "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId().ToString());
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
         }
 
 
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
-            string sql = String.Format(CultureInfo.InvariantCulture, "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, Util.ApprovalStatus.Waiting.GetId().ToString());
+            string sql = String.Format(CultureInfo.InvariantCulture, "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId().ToString());
             
             //select count(*) from dnn_publish_comment pc join dnn_publish_vwitems vi on (vi.itemversionId = pc.itemversionid) where pc.approvalstatusid != 3 and portalId =0 and vi.authoruserid = 1
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));

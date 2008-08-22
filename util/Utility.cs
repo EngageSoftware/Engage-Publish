@@ -8,32 +8,32 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Search;
-using Engage.Dnn.Publish.Data;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Localization;
-
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using Data;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search;
+
     public enum SearchSortOption
     {
         ItemId = 0,
@@ -71,7 +71,6 @@ namespace Engage.Dnn.Publish.Util
         /// Displays the Author name.
         /// </summary>
         Author
-
     }
 
     public enum ArticleViewOption
@@ -128,6 +127,7 @@ namespace Engage.Dnn.Publish.Util
         /// </summary>
         Enable
     }
+
     /// <summary>
     /// Display options for the CommentDisplay control on the ArticleDisplay module
     /// </summary>
@@ -142,7 +142,6 @@ namespace Engage.Dnn.Publish.Util
         /// </summary>
         ShowAll
     }
-
 
     /// <summary>
     /// Options used when displaying and collecting names
@@ -179,196 +178,212 @@ namespace Engage.Dnn.Publish.Util
     /// </summary>
     public static class Utility
     {
-        public const string MediaFileTypes = "jpg,jpeg,jpe,gif,bmp,png,swf";
+        public const string ActiveForumsDefinitionModuleName = "NTForums";
+        public const string AdminContainer = "AdminContainer";
+        public const string CacheKeyPublishAdminCategorySort = "CacheKeyPublishAdminCategorySort_";
+        public const string CacheKeyPublishAllChildCategories = "CacheKeyPublishAllChildCategories_";
+        public const string CacheKeyPublishArticle = "PublishCacheKeyArticleDisplay_";
+        public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
+        public const string CacheKeyPublishArticleTags = "CacheKeyPublishArticleTags_";
+
+        public const string CacheKeyPublishArticleVersion = "CacheKeyPublishArticleVersion_";
+        public const string CacheKeyPublishCategory = "CacheKeyPublishCategory_";
+        public const string CacheKeyPublishCategoryDisplay = "PublishCacheKeyCategoryDisplay_";
+        public const string CacheKeyPublishCategoryFeature = "PublishCacheKeyCategoryFeature_";
+        public const string CacheKeyPublishCategoryNLevels = "PublishCacheKeyCategoryNLevels_";
+        public const string CacheKeyPublishCategoryVersion = "CacheKeyPublishCategoryVersion_";
+        public const string CacheKeyPublishChildCategories = "CacheKeyPublishChildCategories_";
+        public const string CacheKeyPublishChildCategoriesItemType = "CacheKeyPublishChildCategoriesItemType_";
+        public const string CacheKeyPublishChildItemRelationships = "CacheKeyPublishChildItemRelationships_";
+        public const string CacheKeyPublishCustomDisplay = "PublishCacheKeyCustomDisplay_";
+        public const string CacheKeyPublishDisplayOnCurrentPage = "CacheKeyPublishDisplayOnCurrentPage_";
+        public const string CacheKeyPublishForceDisplayOn = "CacheKeyPublishForceDisplayOn_";
+        public const string CacheKeyPublishGetTagsByPortal = "CacheKeyPublishGetTagsByPortal_";
+        public const string CacheKeyPublishGetTagsByString = "CacheKeyPublishGetTagsByString_";
+        public const string CacheKeyPublishItem = "CacheKeyPublishItem_";
+        public const string CacheKeyPublishItemParentCategoryId = "CacheKeyPublishItemParentCategoryId_";
+        public const string CacheKeyPublishItemRelationships = "CacheKeyPublishItemRelationships_";
+        public const string CacheKeyPublishItemTypeIntForItemId = "CacheKeyPublishItemTypeIntForItemId_";
+        public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
+        public const string CacheKeyPublishItemTypeNameItemId = "CacheKeyPublishItemTypeNameItemId_";
+        public const string CacheKeyPublishItemTypesDT = "CacheKeyPublishItemTypesDT_";
+        public const string CacheKeyPublishItemTypeStringForItemVersionId = "CacheKeyPublishItemTypeStringForItemVersionId_";
+        public const string CacheKeyPublishItemVersionSetting = "CacheKeyPublishItemVersionSetting_";
+        public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
+        public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
+        public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
+        public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
+        public const string CacheKeyPublishTagById = "PublishCacheKeyTagById_";
+        public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string DnnFriendlyModuleName = "Engage: Publish";
 
         public const string DnnTagsFriendlyModuleName = "Engage: Publish Tag Cloud";
-
-        public const string SimpleGalleryFriendlyName = "SimpleGallery";
-        public const string SimpleGalleryDefinitionModuleName = "SimpleGallery";
-        public const string UltraMediaGalleryFriendlyName = "BizModules - UltraPhotoGallery";
-        public const string UltraMediaGalleryDefinitionModuleName = "BizModules - UltraPhotoGallery";
-        public const string ActiveForumsDefinitionModuleName = "NTForums";
-        public const int RedirectInSeconds = 10;
-        public const string AdminContainer = "AdminContainer";
-        public const string PublishEmailNotificationRole = "PublishEmailNotificationRole";
+        public const string MediaFileTypes = "jpg,jpeg,jpe,gif,bmp,png,swf";
         public const string PublishAdminRole = "PublishAdminRole";
-        public const string PublishAuthorRole = "PublishAuthorRole";
-        public const string PublishEmail = "PublishEmail";
-        public const string PublishSetup = "PublishSetup";
-        public const string PublishRating = "PublishRating";
-
-        private readonly static char[] tagSeparators = { ';', ',' };
-        public static char[] GetTagSeparators()
-        {
-            return (char[])tagSeparators.Clone();
-        }
-
-        public const string PublishArticleEditWidth = "PublishArticleEditWidth";
+        public const string PublishAllowRichTextDescriptions = "PublishAllowRichTextDescriptions";
         public const string PublishArticleEditHeight = "PublishArticleEditHeight";
-        public const string PublishDescriptionEditHeight = "PublishDescriptionEditHeight";
-        public const string PublishDescriptionEditWidth = "PublishDescriptionEditWidth";
+        public const string PublishArticleEditWidth = "PublishArticleEditWidth";
+        public const string PublishAuthorCategoryEdit = "PublishAuthorCategoryEdit";
+        public const string PublishAuthorRole = "PublishAuthorRole";
+        public const string PublishAutoApproveContent = "PublishAutoApproveContent";
+        public const string PublishAutoArchiveContent = "PublishAutoArchiveContent";
 
         public const string PublishCacheKeys = "PublishCacheKeys";
 
         public const string PublishCacheTime = "PublishCacheTime";
-
-        public const string PublishDefaultAdminPagingSize = "PublishDefaultAdminPagingSize";
-        
-        public const string PublishThumbnailDisplayOption = "PublishThumbnailDisplayOption";
-
-        public const string PublishEnableArticlePaging = "PublishEnableArticlePaging";
-        public const string PublishEnableTags = "PublishEnableTags";
-
-
-        public const string PublishShortItemLink = "PublishShortItemLink";
-
-        public const string PublishEnableVenexusSearch = "PublishEnableVenexusSearch";
-        public const string PublishEnableSimpleGalleryIntegration = "PublishEnableSimpleGalleryIntegration";
-        public const string PublishEnableUltraMediaGalleryIntegration = "PublishEnableUltraMediaGalleryIntegration";
-        public const string PublishEnableViewTracking = "PublishEnableViewTracking";
-        public const string PublishEnablePublishFriendlyUrls = "PublishEnablePublishFriendlyUrls";
-        public const string PublishEnableDisplayNameAsHyperlink = "PublishEnableDisplayNameAsHyperlink";
-        public const string PublishAllowRichTextDescriptions = "PublishAllowRichTextDescriptions";
-        public const string PublishUseApprovals = "PublishUseApprovals";
-        public const string PublishUseEmbeddedArticles = "PublishUseEmbeddedArticles";
-        public const string PublishShowItemId = "PublishShowItemId";
-        public const string PublishThumbnailSubdirectory = "PublishThumbnailSubdirectory";
-        public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
-
-
-
-        public const string PublishDefaultTagPage = "PublishDefaultTagPage";
-
-        public const string PublishRatingMaximum = "PublishRatingMaximum";
-        public const string PublishRatingAnonymous = "PublishRatingAnonymous";
         public const string PublishComment = "PublishComment";
-        public const string PublishDefaultEmailAFriend = "PublishDefaultEmailAFriend";
-        public const string PublishDefaultPrinterFriendly = "PublishDefaultPrinterFriendly";
-        public const string PublishDefaultRatings = "PublishDefaultRatings";
-        public const string PublishDefaultComments = "PublishDefaultComments";
-        public const string PublishDefaultReturnToList = "PublishDefaultReturnToList";
-        public const string PublishSessionReturnToList = "PublishSessionReturnToList";
-        public const string PublishDefaultShowAuthor = "PublishDefaultShowAuthor";
-        public const string PublishDefaultShowTags = "PublishDefaultShowTags";
-
-        //publisher/subscriber
-        public const string PublishAutoArchiveContent = "PublishAutoArchiveContent";
-        public const string PublishAutoApproveContent = "PublishAutoApproveContent";
-        public const string PublishSubscriberKey = "PublishSubscriberKey";
-        public const string PublishSubscriberUrl = "PublishSubscriberUrl";
-
-        public const string PublishCommentApproval = "PublishCommentApproval";
         public const string PublishCommentAnonymous = "PublishCommentAnonymous";
+        public const string PublishCommentApproval = "PublishCommentApproval";
         public const string PublishCommentAutoApprove = "PublishCommentAutoApprove";
 
         public const string PublishCommentEmailAuthor = "PublishCommentEmailAuthor";
 
-        public const string PublishAuthorCategoryEdit = "PublishAuthorCategoryEdit";
-        public const string PublishPopularTagCount = "PublishPopularTagCount";
+        public const string PublishDefaultAdminPagingSize = "PublishDefaultAdminPagingSize";
+        public const string PublishDefaultComments = "PublishDefaultComments";
 
-        //ping settings
-        public const string PublishEnablePing = "PublishEnablePing";
-        public const string PublishPingServers = "PublishPingServers";
-        public const string PublishPingChangedUrl = "PublishPingChangedUrl";
+        public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
+
+        public const string PublishDefaultEmailAFriend = "PublishDefaultEmailAFriend";
+        public const string PublishDefaultPrinterFriendly = "PublishDefaultPrinterFriendly";
+        public const string PublishDefaultRatings = "PublishDefaultRatings";
+        public const string PublishDefaultReturnToList = "PublishDefaultReturnToList";
+        public const string PublishDefaultShowAuthor = "PublishDefaultShowAuthor";
+        public const string PublishDefaultShowTags = "PublishDefaultShowTags";
+        public const string PublishDefaultTagPage = "PublishDefaultTagPage";
+        public const string PublishDescriptionEditHeight = "PublishDescriptionEditHeight";
+        public const string PublishDescriptionEditWidth = "PublishDescriptionEditWidth";
+        public const string PublishEmail = "PublishEmail";
+        public const string PublishEmailNotificationRole = "PublishEmailNotificationRole";
+        public const string PublishEnableArticlePaging = "PublishEnableArticlePaging";
+
+        //publisher/subscriber
 
         //Community Settings
         public const string PublishEnableCommunityCredit = "PublishEnableCommunityCredit";
+        public const string PublishEnableDisplayNameAsHyperlink = "PublishEnableDisplayNameAsHyperlink";
+        public const string PublishEnablePing = "PublishEnablePing";
+        public const string PublishEnablePublishFriendlyUrls = "PublishEnablePublishFriendlyUrls";
+        public const string PublishEnableSimpleGalleryIntegration = "PublishEnableSimpleGalleryIntegration";
+        public const string PublishEnableTags = "PublishEnableTags";
+        public const string PublishEnableUltraMediaGalleryIntegration = "PublishEnableUltraMediaGalleryIntegration";
+        public const string PublishEnableVenexusSearch = "PublishEnableVenexusSearch";
+        public const string PublishEnableViewTracking = "PublishEnableViewTracking";
 
         //Forum settings
         public const string PublishForumProviderType = "PublishForumProviderType";
+        public const string PublishPingChangedUrl = "PublishPingChangedUrl";
+        public const string PublishPingServers = "PublishPingServers";
+        public const string PublishPopularTagCount = "PublishPopularTagCount";
+        public const string PublishRating = "PublishRating";
+        public const string PublishRatingAnonymous = "PublishRatingAnonymous";
+        public const string PublishRatingMaximum = "PublishRatingMaximum";
+        public const string PublishSessionReturnToList = "PublishSessionReturnToList";
+        public const string PublishSetup = "PublishSetup";
+        public const string PublishShortItemLink = "PublishShortItemLink";
+        public const string PublishShowItemId = "PublishShowItemId";
+        public const string PublishSubscriberKey = "PublishSubscriberKey";
+        public const string PublishSubscriberUrl = "PublishSubscriberUrl";
+        public const string PublishThumbnailDisplayOption = "PublishThumbnailDisplayOption";
+        public const string PublishThumbnailSubdirectory = "PublishThumbnailSubdirectory";
+        public const string PublishUseApprovals = "PublishUseApprovals";
+        public const string PublishUseEmbeddedArticles = "PublishUseEmbeddedArticles";
+        public const int RedirectInSeconds = 10;
+        public const string SimpleGalleryDefinitionModuleName = "SimpleGallery";
+        public const string SimpleGalleryFriendlyName = "SimpleGallery";
+        public const string UltraMediaGalleryDefinitionModuleName = "BizModules - UltraPhotoGallery";
+        public const string UltraMediaGalleryFriendlyName = "BizModules - UltraPhotoGallery";
 
         /*******************Cache Key Constants********************/
-        
 
         //cache keys for Categories
-        public const string CacheKeyPublishCustomDisplay = "PublishCacheKeyCustomDisplay_";
-        public const string CacheKeyPublishCategoryDisplay = "PublishCacheKeyCategoryDisplay_";
-        public const string CacheKeyPublishCategoryFeature = "PublishCacheKeyCategoryFeature_";
-        public const string CacheKeyPublishCategoryNLevels = "PublishCacheKeyCategoryNLevels_";
-        public const string CacheKeyPublishAdminCategorySort = "CacheKeyPublishAdminCategorySort_";
-        public const string CacheKeyPublishCategory = "CacheKeyPublishCategory_";
-        public const string CacheKeyPublishCategoryVersion = "CacheKeyPublishCategoryVersion_";
 
-        //Cache keys for Articles
-        public const string CacheKeyPublishArticle = "PublishCacheKeyArticleDisplay_";
-        public const string CacheKeyPublishArticleTags = "CacheKeyPublishArticleTags_";
+        private static readonly object cacheLock = new object();
+        private static readonly char[] tagSeparators = {';', ','};
+        public static string DesktopModuleFolderName
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder(128);
+                sb.Append("/DesktopModules/");
+                sb.Append(Globals.GetDesktopModuleByName(DnnFriendlyModuleName).FolderName);
+                sb.Append("/");
+                return sb.ToString();
+            }
+        }
+        public static bool IsSimpleGalleryInstalled
+        {
+            get
+            {
+                DesktopModuleController desktopModules = new DesktopModuleController();
+                //return desktopModules.GetDesktopModuleByFriendlyName(SimpleGalleryFriendlyName) != null;
+                return desktopModules.GetDesktopModuleByModuleName(SimpleGalleryDefinitionModuleName) != null;
+            }
+        }
 
-        public const string CacheKeyPublishArticleVersion = "CacheKeyPublishArticleVersion_";
-        
+        public static bool IsUltraMediaGalleryInstalled
+        {
+            get
+            {
+                DesktopModuleController desktopModules = new DesktopModuleController();
+                //return desktopModules.GetDesktopModuleByFriendlyName(UltraMediaGalleryDefinitionFriendlyName) != null;
+                return desktopModules.GetDesktopModuleByModuleName(UltraMediaGalleryDefinitionModuleName) != null;
+            }
+        }
 
-        public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
+        public static string ApplicationUrl
+        {
+            get
+            {
+                if (HttpContext.Current == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
+                }
+            }
+        }
 
-        public const string CacheKeyPublishItemTypeIntForItemId = "CacheKeyPublishItemTypeIntForItemId_";
-        public const string CacheKeyPublishItemTypeStringForItemVersionId = "CacheKeyPublishItemTypeStringForItemVersionId_";
-        public const string CacheKeyPublishItemTypesDT = "CacheKeyPublishItemTypesDT_";
+        public static string WebServiceUrl
+        {
+            get
+            {
+                StringBuilder url = new StringBuilder();
+                if (HttpContext.Current != null)
+                {
+                    url.Append(HttpContext.Current.Request.Url.Scheme);
+                    url.Append("://");
+                    url.Append(HttpContext.Current.Request.Url.Authority);
+                    url.Append(ApplicationUrl);
+                    url.Append(DesktopModuleFolderName);
+                    url.Append("services/publishservices.asmx");
+                }
 
-        public const string CacheKeyPublishItem = "CacheKeyPublishItem_";
+                return url.ToString();
+            }
+        }
 
-        public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
-        public const string CacheKeyPublishItemVersionSetting = "CacheKeyPublishItemVersionSetting_";
-
-
-        public const string CacheKeyPublishItemRelationships = "CacheKeyPublishItemRelationships_";
-
-        public const string CacheKeyPublishChildItemRelationships = "CacheKeyPublishChildItemRelationships_";
-
-
-        public const string CacheKeyPublishDisplayOnCurrentPage = "CacheKeyPublishDisplayOnCurrentPage_";
-        public const string CacheKeyPublishForceDisplayOn = "CacheKeyPublishForceDisplayOn_";
-
-        public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
-        public const string CacheKeyPublishChildCategories = "CacheKeyPublishChildCategories_";
-        public const string CacheKeyPublishAllChildCategories = "CacheKeyPublishAllChildCategories_";
-
-        public const string CacheKeyPublishChildCategoriesItemType = "CacheKeyPublishChildCategoriesItemType_";
-
-
-
-        public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
-        public const string CacheKeyPublishItemTypeNameItemId = "CacheKeyPublishItemTypeNameItemId_";
-
-        public const string CacheKeyPublishItemParentCategoryId = "CacheKeyPublishItemParentCategoryId_";
-
-
-
-        //Cache keys for Tags
-        public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
-        public const string CacheKeyPublishTagById = "PublishCacheKeyTagById_";
-
-        public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
-        public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
-
-        public const string CacheKeyPublishGetTagsByString = "CacheKeyPublishGetTagsByString_";
-
-        public const string CacheKeyPublishGetTagsByPortal = "CacheKeyPublishGetTagsByPortal_";
-
-        
-        
-        
+        public static char[] GetTagSeparators()
+        {
+            return (char[])tagSeparators.Clone();
+        }
 
         public static bool HasValue(string value)
         {
             return !String.IsNullOrEmpty(value) && value.Trim().Length > 0;
         }
 
-        private static object cacheLock = new object();
-
-        public static void AddCacheKey(string KeyName, int portalId)
+        public static void AddCacheKey(string keyName, int portalId)
         {
-            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
 
             lock (cacheLock)
             {
-                List<string> cacheList = DataCache.GetCache(cacheKey) as List<string>;
-                //ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
-                if (cacheList == null)
+                List<string> cacheList = DataCache.GetCache(cacheKey) as List<string> ?? new List<string>();
+                if (!cacheList.Contains(keyName))
                 {
-                    cacheList = new List<string>();
-                }
-                if (!cacheList.Contains(KeyName))
-                {
-                    cacheList.Add(KeyName);
+                    cacheList.Add(keyName);
                     DataCache.SetCache(cacheKey, cacheList);
                 }
             }
@@ -376,8 +391,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static void ClearPublishCache(int portalId)
         {
-
-            string cacheKey = Utility.PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
 
             lock (cacheLock)
             {
@@ -394,18 +408,6 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
-        public static string DesktopModuleFolderName
-        {
-            get
-            {
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("/DesktopModules/");
-                sb.Append(Globals.GetDesktopModuleByName(DnnFriendlyModuleName).FolderName);
-                sb.Append("/");
-                return sb.ToString();
-            }
-        }
-
         public static Uri GetThumbnailLibraryPath(int portalId)
         {
             return new Uri(Path.Combine(GetPortalSettings(portalId).HomeDirectory, ModuleBase.ThumbnailSubdirectoryForPortal(portalId)), UriKind.Relative);
@@ -413,7 +415,8 @@ namespace Engage.Dnn.Publish.Util
 
         public static Uri GetThumbnailLibraryMapPath(int portalId)
         {
-            Uri path = new Uri(Path.Combine(GetPortalSettings(portalId).HomeDirectoryMapPath, ModuleBase.ThumbnailSubdirectoryForPortal(portalId)), UriKind.Absolute);
+            Uri path = new Uri(
+                Path.Combine(GetPortalSettings(portalId).HomeDirectoryMapPath, ModuleBase.ThumbnailSubdirectoryForPortal(portalId)), UriKind.Absolute);
 
             //make sure it exists before we tell people about it.  BD
             if (!Directory.Exists(path.AbsolutePath))
@@ -430,7 +433,7 @@ namespace Engage.Dnn.Publish.Util
 
             ModuleController mc = new ModuleController();
             TabController tc = new TabController();
-            ArrayList al;// = null;
+            ArrayList al; // = null;
 
             //only want a unique list of ItemIds
             IDictionary list = new Hashtable();
@@ -477,7 +480,6 @@ namespace Engage.Dnn.Publish.Util
                 al.Add(ti);
             }
 
-
             al.Sort(new TabInfoNameComparer());
 
             DataTable dt = new DataTable();
@@ -503,7 +505,7 @@ namespace Engage.Dnn.Publish.Util
 
             ModuleController mc = new ModuleController();
             TabController tc = new TabController();
-            ArrayList al;// = null;
+            ArrayList al; // = null;
 
             //only want a unique list of ItemIds
             IDictionary list = new Hashtable();
@@ -534,7 +536,6 @@ namespace Engage.Dnn.Publish.Util
                 al.Add(ti);
             }
 
-
             al.Sort(new TabInfoNameComparer());
 
             DataTable dt = new DataTable();
@@ -554,17 +555,22 @@ namespace Engage.Dnn.Publish.Util
             return dt;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
         public static int GetArticleId(SearchResultsInfo result)
         {
-            if (result == null || result.SearchKey.IndexOf("Article", StringComparison.Ordinal) == -1) return 0;
+            if (result == null || result.SearchKey.IndexOf("Article", StringComparison.Ordinal) == -1)
+            {
+                return 0;
+            }
             int id = 0;
             int index = result.SearchKey.IndexOf("-", StringComparison.Ordinal);
             if (index > -1)
             {
                 string s = result.SearchKey.Substring(index + 1);
-                if (Int32.TryParse(s.ToString(), out id))
+                if (Int32.TryParse(s, out id))
+                {
                     return id;
+                }
                 id = 0;
             }
 
@@ -590,7 +596,7 @@ namespace Engage.Dnn.Publish.Util
                     returnString.Append(sCurrent);
                 }
             }
-            returnString = returnString.Replace(" ", "-");//Replace(sAns, " ", "-")
+            returnString = returnString.Replace(" ", "-"); //Replace(sAns, " ", "-")
 
             return returnString.ToString();
         }
@@ -604,7 +610,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string StripTags(string html)
         {
-            return Regex.Replace(html, "<[^>]*>", "");
+            return Regex.Replace(html, "<[^>]*>", string.Empty);
         }
 
         public static bool IsDisabled(int itemId, int portalId)
@@ -626,7 +632,7 @@ namespace Engage.Dnn.Publish.Util
             return new PortalSettings(-1, GetPortalAliasInfo(portalId));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
         public static IList GetRandomItem(IList view)
         {
             if (view == null || view.Count <= 1)
@@ -649,7 +655,7 @@ namespace Engage.Dnn.Publish.Util
             return view;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Does not return class state information")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Does not return class state information")]
         public static int GetRandomSeed()
         {
             // Use a 4-byte array to fill it with random bytes and convert it then
@@ -698,11 +704,9 @@ namespace Engage.Dnn.Publish.Util
             {
                 return value;
             }
-
-
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
         public static DataTable SortDataTable(DataTable dt, string sortOrder)
         {
             if (dt != null && !String.IsNullOrEmpty(sortOrder))
@@ -723,7 +727,6 @@ namespace Engage.Dnn.Publish.Util
                         dtreturn.ImportRow(dr);
                         dt.Rows.Remove(dr);
                     }
-
                 }
                 //for any rows that weren't in the sort list add them to this list.
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -741,7 +744,7 @@ namespace Engage.Dnn.Publish.Util
             int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
             int typeId = Item.GetItemTypeId(id);
             ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-            Item i;// = null;
+            Item i; // = null;
             if (type.Name == ItemType.Article.Name)
             {
                 i = Article.GetArticle(id);
@@ -757,8 +760,14 @@ namespace Engage.Dnn.Publish.Util
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
             }
 
-            return Globals.NavigateURL(tabId, "", "ctl=" + AdminContainer, "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
-                    "adminType=" + type.Name + "Edit", "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture), returnUrl);
+            return Globals.NavigateURL(
+                tabId,
+                string.Empty,
+                "ctl=" + AdminContainer,
+                "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
+                "adminType=" + type.Name + "Edit",
+                "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture),
+                returnUrl);
         }
 
         public static string BuildEditUrl(int itemId, int tabId, int moduleId, int portalId)
@@ -766,10 +775,10 @@ namespace Engage.Dnn.Publish.Util
             int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
             int typeId = Item.GetItemTypeId(id, portalId);
             ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-            Item i;// = null;
+            Item i; // = null;
             if (type.Name == ItemType.Article.Name)
             {
-                i = Article.GetArticle(id,portalId);
+                i = Article.GetArticle(id, portalId);
             }
             else
             {
@@ -782,10 +791,15 @@ namespace Engage.Dnn.Publish.Util
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
             }
 
-            return Globals.NavigateURL(tabId, "", "ctl=" + AdminContainer, "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
-                    "adminType=" + type.Name + "Edit", "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture), returnUrl);
+            return Globals.NavigateURL(
+                tabId,
+                string.Empty,
+                "ctl=" + AdminContainer,
+                "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
+                "adminType=" + type.Name + "Edit",
+                "versionId=" + i.ItemVersionId.ToString(CultureInfo.InvariantCulture),
+                returnUrl);
         }
-
 
         public static bool IsPageOverrideable(int portalId, int displayTabId)
         {
@@ -793,7 +807,7 @@ namespace Engage.Dnn.Publish.Util
             try
             {
                 ModuleController mc = new ModuleController();
-                DotNetNuke.Entities.Tabs.TabController tc = new TabController();
+                TabController tc = new TabController();
                 TabInfo tab = tc.GetTab(displayTabId, portalId, false);
                 if (tab.IsDeleted) //The tab is in the recycle bin.
                 {
@@ -825,7 +839,6 @@ namespace Engage.Dnn.Publish.Util
             }
             catch (Exception)
             {
-
                 //if we get an error here then return false as it's not linkable
                 return false;
             }
@@ -833,7 +846,6 @@ namespace Engage.Dnn.Publish.Util
 
         public static ModuleInfo GetPublishModuleInfo(int moduleId)
         {
-
             //4.6.2 and later this would work, but for backwards compatibility we can't use.
             //ModuleController mc = new ModuleController();
             //foreach (ModuleInfo info in mc.GetModuleTabs(moduleId))
@@ -864,7 +876,7 @@ namespace Engage.Dnn.Publish.Util
                 int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
                 int typeId = Item.GetItemTypeId(id, portalId);
                 ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-                Item i;// = null;
+                Item i; // = null;
                 if (type.Name == ItemType.Article.Name)
                 {
                     i = Article.GetArticle(id, portalId);
@@ -889,40 +901,42 @@ namespace Engage.Dnn.Publish.Util
                         {
                             if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                             {
-                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
+                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                                       + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
                             }
                             else
                             {
-                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
+                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                                       + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
                             }
-
-
                         }
                         else
                         {
                             if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                             {
-                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
+                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                                       + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
                             }
                             else
                             {
-                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
+                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                                       + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId)
+                                       + otherParameters;
                             }
-
-
                         }
                     }
                     else
                     {
                         if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                         {
-                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
+                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId)
+                                   + otherParameters;
                         }
                         else
                         {
-                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
+                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                                   + UsePageId(pageId, portalId) + otherParameters;
                         }
-
                     }
                 }
             }
@@ -938,62 +952,9 @@ namespace Engage.Dnn.Publish.Util
             {
                 return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
             }
-            else return string.Empty;
-        }
-
-        public static bool IsSimpleGalleryInstalled
-        {
-            get
+            else
             {
-                DesktopModuleController desktopModules = new DesktopModuleController();
-                //return desktopModules.GetDesktopModuleByFriendlyName(SimpleGalleryFriendlyName) != null;
-                return desktopModules.GetDesktopModuleByModuleName(SimpleGalleryDefinitionModuleName) != null;
-            }
-        }
-
-        public static bool IsUltraMediaGalleryInstalled
-        {
-            get
-            {
-                DesktopModuleController desktopModules = new DesktopModuleController();
-                //return desktopModules.GetDesktopModuleByFriendlyName(UltraMediaGalleryDefinitionFriendlyName) != null;
-                return desktopModules.GetDesktopModuleByModuleName(UltraMediaGalleryDefinitionModuleName) != null;
-            }
-        }
-
-        public static string ApplicationUrl
-        {
-            get
-            {
-                if (HttpContext.Current == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return HttpContext.Current.Request.ApplicationPath == "/" ? "" : HttpContext.Current.Request.ApplicationPath;
-                }
-            }
-        }
-
-
-
-        public static string WebServiceUrl
-        {
-            get
-            {
-                StringBuilder url = new StringBuilder();
-                if (HttpContext.Current != null)
-                {
-                    url.Append(HttpContext.Current.Request.Url.Scheme);
-                    url.Append("://");
-                    url.Append(HttpContext.Current.Request.Url.Authority);
-                    url.Append(ApplicationUrl);
-                    url.Append(DesktopModuleFolderName);
-                    url.Append("services/publishservices.asmx");
-                }
-
-                return url.ToString();
+                return string.Empty;
             }
         }
 
@@ -1099,6 +1060,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>
         /// 	<c>true</c> if the <paramref name="leftHandSide"/> if greater or equal to the <paramref name="rightHandSide"/>; otherwise, <c>false</c>.
         /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref cref="leftHandSide"/> or <paramref cref="rightHandSide"/> is null.</exception>
         public static bool IsVersionGreaterOrEqual(List<int> leftHandSide, List<int> rightHandSide)
         {
             if (leftHandSide != null && rightHandSide != null)
@@ -1174,9 +1136,9 @@ namespace Engage.Dnn.Publish.Util
                 data_row.ItemArray = arr;
                 dt.Rows.Add(data_row);
             }
-
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="gridView"/> is null.</exception>
         public static void LocalizeGridView(GridView gridView, string resourceFile)
         {
             if (gridView == null)
@@ -1293,7 +1255,9 @@ namespace Engage.Dnn.Publish.Util
                 int lastSpace = description.LastIndexOf(' ');
 
                 if (lastSpace != description.Length - 1 && lastSpace > 0)
+                {
                     description = description.Substring(0, lastSpace);
+                }
             }
             return description;
         }
@@ -1346,14 +1310,11 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
-
-
         public static bool IsPingEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
-            return Utility.HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
+            string s = HostSettings.GetHostSetting(PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
+            return HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
         }
-
 
         #endregion
 
@@ -1425,7 +1386,7 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>A SqlParameter with the correct value and type.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateGuidParam(string parameterName, Guid? value)
         {
             SqlParameter param = new SqlParameter(parameterName, SqlDbType.UniqueIdentifier);
@@ -1447,11 +1408,12 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>A SqlParameter with the correct value and type.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateDateTimeParam(string parameterName, DateTime? value)
         {
             SqlParameter param = new SqlParameter(parameterName, SqlDbType.DateTime);
-            if (!value.HasValue || value.Equals(Null.NullDate) || value.Equals(new DateTime()) || value.Equals(DateTime.MaxValue) || value.Equals(DateTime.MinValue))
+            if (!value.HasValue || value.Equals(Null.NullDate) || value.Equals(new DateTime()) || value.Equals(DateTime.MaxValue)
+                || value.Equals(DateTime.MinValue))
             {
                 param.Value = DBNull.Value;
             }
@@ -1524,7 +1486,7 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
         /// <param name="value">The value of the parameter.</param>
         /// <returns>A <see cref="SqlParameter" /> with the correct value and type.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateDoubleParam(string parameterName, double? value)
         {
             SqlParameter param = new SqlParameter(parameterName, SqlDbType.Float);
@@ -1542,4 +1504,3 @@ namespace Engage.Dnn.Publish.Util
         #endregion
     }
 }
-

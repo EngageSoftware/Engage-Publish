@@ -28,6 +28,8 @@ using DotNetNuke.Services.Mail;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using DotNetNuke.Common.Utilities;
+
     public partial class ArticleDisplay : ModuleBase, IActionable
     {
         private CommentDisplayBase commentDisplay;
@@ -695,7 +697,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     
                     
                     
-                    ad.SetItemId = a.ItemId;
+                    this.ad.SetItemId(a.ItemId);
                     ad.DisplayTitle = false;
                     this.phRelatedArticle.Controls.Add(ad);
                     divRelatedArticle.Visible = true;
@@ -1244,7 +1246,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else //simple gallery
                 {
-                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&amp;ItemID=" + row["PhotoID"].ToString() + "&amp;Border=" + GetBorderStyle(moduleId) + "&amp;sb=" + GetSortBy(moduleId) + "&amp;sd=" + GetSortDirection(moduleId));
+                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&TagID=" + Null.NullInteger.ToString(CultureInfo.InvariantCulture)  + "&ItemID=" + row["PhotoID"].ToString() + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId) + "&tt=" + GetToolTipSetting(moduleId));
                     return "window.open('" + popupUrl + "','smallscreen','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width=" + GetPopupWidth(moduleId).ToString(CultureInfo.InvariantCulture) + ",height=" + GetPopupHeight(moduleId).ToString(CultureInfo.InvariantCulture) + "')";
                 }
             }
@@ -1401,6 +1403,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
             }
             return Utility.GetTabModuleSettingAsString(moduleId, "SortDirection", defaultValue);
+        }
+
+        private static string GetToolTipSetting(int moduleId)
+        {
+            return Utility.GetTabModuleSettingAsString(moduleId, "EnableTooltip", true.ToString(CultureInfo.InvariantCulture));
         }
 
         private static string GetBorderStyle(int moduleId)
