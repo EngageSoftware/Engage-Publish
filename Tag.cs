@@ -478,6 +478,7 @@ namespace Engage.Dnn.Publish
                     {
                         t.Name = HttpUtility.UrlDecode(sTag).Trim();
                         t.PortalId = portalId;
+                        //TODO: localize this
                         t.Description = "Added by article edit";
                         t.TotalItems = 0;
                         t.Save();
