@@ -64,26 +64,25 @@ namespace Engage.Dnn.Publish.Controls
         #region Event Handlers
         override protected void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
 
-            BindItemData();
+            this.BindItemData();
 
             //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
-            if (AllowTags && Overrideable)
+            if (this.AllowTags && this.Overrideable)
             {
                 string tags = Request.QueryString["Tags"];
                 if (tags != null)
                 {
-                    DotNetNuke.Security.PortalSecurity objSecurity = new PortalSecurity();
-
-                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(tags), PortalSecurity.FilterFlag.NoSQL);
+                    this.qsTags = tags;
                     char[] seperator = { ';' };
-                    tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
-                    foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))
+                    ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
+                    this.tagQuery = new ArrayList(tagList.Count);
+                    foreach (Tag tg in tagList)
                     {
                         //create a list of tagids to query the database
-                        tagQuery.Add(tg.TagId);
+                        this.tagQuery.Add(tg.TagId);
                     }
                 }
             }

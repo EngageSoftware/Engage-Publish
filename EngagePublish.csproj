@@ -66,6 +66,7 @@
     </Reference>
     <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <Private>True</Private>
@@ -937,7 +938,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ArticleControls\AuthorToken.ascx" />
-    <Content Include="bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Services\App_LocalResources\MetaWeblog.ashx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -945,7 +945,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\QuickStats.ascx" />
-    <Content Include="bin\CommunityCredit.dll" />
     <Content Include="Controls\App_LocalResources\RelatedArticleLinks.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

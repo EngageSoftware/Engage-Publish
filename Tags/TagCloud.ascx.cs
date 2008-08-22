@@ -22,12 +22,25 @@ using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Tags
 {
+    using System.Web.UI;
+
     public partial class TagCloud : ModuleBase
     {
         private ArrayList tagQuery;
         private string qsTags = string.Empty;
+        private int popularTagsTotal;
+        private int mostPopularTagCount;
+        private int leastPopularTagCount;
 
-        #region Event Handlers
+        private bool popularTagCount
+        {
+            get
+            {
+                object o = this.Settings["tcPopularTagBool"];
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+            }
+        }
+
         override protected void OnInit(EventArgs e)
         {
             this.Load += this.Page_Load;
@@ -52,7 +65,6 @@ namespace Engage.Dnn.Publish.Tags
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        #endregion
 
         private void SetTagPageTitle()
         {
@@ -90,7 +102,7 @@ namespace Engage.Dnn.Publish.Tags
                         Literal lnkTag = new Literal();
                         StringBuilder sb = new StringBuilder(255);
                         sb.Append("<li class=\"");
-                        sb.Append(tagSizeClass(totalItems));
+                        sb.Append(this.GetTagSizeClass(totalItems));
                         sb.Append("\"><span>");
                         sb.Append(totalItems.ToString(CultureInfo.CurrentCulture));
                         sb.Append(itemsWithTag);
@@ -107,53 +119,43 @@ namespace Engage.Dnn.Publish.Tags
                 else
                 {
                     //display a message about tags not found
-                    Literal txtNoTags = new Literal();
-                    txtNoTags.Text = Localization.GetString("NoTags.Text", LocalResourceFile);
-                    phTagCloud.Controls.Add(txtNoTags);
+                    phTagCloud.Controls.Add(new LiteralControl(Localization.GetString("NoTags.Text", LocalResourceFile)));
                 }
             }
             else
             {
                 //display a message about tags not found
-                Literal txtNoTags = new Literal();
-                txtNoTags.Text = Localization.GetString("NoTags.Text", LocalResourceFile);
-                phTagCloud.Controls.Add(txtNoTags);
+                phTagCloud.Controls.Add(new LiteralControl(Localization.GetString("NoTags.Text", LocalResourceFile)));
             }
         }
 
-        private string tagSizeClass(int itemCount)
+        private string GetTagSizeClass(int itemCount)
         {
-            //mostPopularTagCount
-            //leastPopularTagCount
-
             int tagCountSpread = mostPopularTagCount - leastPopularTagCount;
             double result = Convert.ToDouble(itemCount) / Convert.ToDouble(tagCountSpread);
-            string resultString = "size3";
-            if ((0 <= result) && (result <= 1666))
+
+            string resultString;
+            if (result <= 1666)
             {
                 resultString = "size1";
             }
-            if ((.1667 < result) && (result <= .3333))
+            else if (result <= .3333)
             {
                 resultString = "size2";
             }
-
-            if ((.3334 < result) && (result <= .4999))
+            else if (result <= .4999)
             {
                 resultString = "size3";
             }
-
-            if ((.5 < result) && (result <= .6666))
+            else if (result <= .6666)
             {
                 resultString = "size4";
             }
-
-            if ((.6667 < result) && (result <= .8333))
+            else if (result <= .8333)
             {
                 resultString = "size5";
             }
-
-            if ((.8334 < result))
+            else
             {
                 resultString = "size6";
             }
@@ -161,34 +163,20 @@ namespace Engage.Dnn.Publish.Tags
             return resultString;
         }
 
-        private bool popularTagCount
-        {
-            get
-            {
-                object o = Settings["tcPopularTagBool"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        private int popularTagsTotal;
-        private int mostPopularTagCount;
-        private int leastPopularTagCount;
-
-
         private string BuildTagLink(string name, bool useExisting, string useOthers)
         {
             object o = Request.QueryString["tags"];
             string existingTags;
             if (o != null && useExisting)
             {
-                existingTags = o.ToString() + HttpUtility.UrlEncode(";");
+                existingTags = HttpUtility.UrlEncode(o.ToString() + ";");
             }
             else
             {
                 existingTags = useOthers;
             }
 
-            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "&tags=" + existingTags + name);
+            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "&tags=" + existingTags + HttpUtility.UrlEncode(name));
         }
 
 
@@ -196,44 +184,34 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (AllowTags)
             {
-                object t = Request.QueryString["Tags"];
-                if (t != null)
+                string tags = Request.QueryString["Tags"];
+                if (tags != null)
                 {
-                    DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                    qsTags = tags;
 
-                    qsTags = objSecurity.InputFilter(HttpUtility.UrlDecode(t.ToString()), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
-                    //qsTags = HttpUtility.UrlDecode(t.ToString());
-
-                    char[] seperator = { '-' };
-                    tagQuery = new ArrayList(Tag.ParseTags(qsTags, PortalId, seperator, false).Count);
+                    char[] seperator = { ';' };
+                    ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
+                    tagQuery = new ArrayList(tagList.Count);
                     string useOthers = string.Empty;
-                    foreach (Tag tg in Tag.ParseTags(qsTags, PortalId, seperator, false))
+                    foreach (Tag tg in tagList)
                     {
                         //create a list of tagids to query the database
                         tagQuery.Add(tg.TagId);
                         //Add the tag to the filtered list
 
                         //add the seperator in first
-                        Literal tagSeperator = new Literal();
-                        tagSeperator.Text = Localization.GetString("TagSeperator.Text", LocalResourceFile);
+                        phTagFilters.Controls.Add(new LiteralControl(Localization.GetString("TagSeperator.Text", LocalResourceFile)));
 
-                        phTagFilters.Controls.Add(tagSeperator);
-
-                        Literal lnkTag = new Literal();
                         StringBuilder sb = new StringBuilder(255);
-
                         sb.Append("<li class=\"PublishFilterList");
-
                         sb.Append("\">");
-
                         sb.Append("<a href=\"");
                         sb.Append(BuildTagLink(tg.Name, false, useOthers));
                         sb.Append("\" class=\"tag\">");
                         sb.Append(tg.Name);
                         sb.Append("</a> ");
 
-                        lnkTag.Text = sb.ToString();
-                        phTagFilters.Controls.Add(lnkTag);
+                        phTagFilters.Controls.Add(new LiteralControl(sb.ToString()));
 
                         useOthers += tg.Name + "-";
                     }
