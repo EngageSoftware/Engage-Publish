@@ -509,7 +509,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                             string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
                             emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
 
-                            Mail.SendMail(PortalSettings.Email, ui.Email, "", emailSubject, emailBody, "", "HTML", "", "", "", "");
+                            Mail.SendMail(PortalSettings.Email, ui.Email, string.Empty, emailSubject, emailBody, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
                         }
                     }
                     
@@ -843,7 +843,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 article.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
 
-                DateTime lastUpdated = Convert.ToDateTime(article.LastUpdated, CultureInfo.CurrentCulture);
+                DateTime lastUpdated = Convert.ToDateTime(article.LastUpdated, CultureInfo.InvariantCulture);
 
                 lblLastUpdated.Text = Localization.GetString("LastUpdated", LocalResourceFile) + " " + lastUpdated.ToString(LastUpdatedFormat, CultureInfo.CurrentCulture);
 
@@ -931,7 +931,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 HyperLink hl = new HyperLink();
                 Tag tag = Tag.GetTag(t.TagId, PortalId);
                 hl.Text = tag.Name;
-                hl.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, "", "&tags=" + tag.Name);
+                hl.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, string.Empty, "&tags=" + tag.Name);
                 hl.Attributes.Add("rel", "tag");
                 Literal li = new Literal();
                 li.Text = ",&nbsp;";
@@ -990,7 +990,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             //check if we're using paging
             if (AllowArticlePaging && (PageId > 0))
             {
-                lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", "");
+                lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", string.Empty);
                 
                 //lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", "");
 
@@ -1012,7 +1012,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
             else
             {
-                lblArticleText.Text = article.ArticleText.Replace("[PAGE]", "");
+                lblArticleText.Text = article.ArticleText.Replace("[PAGE]", string.Empty);
                 lnkPreviousPage.Visible = false;
                 lnkNextPage.Visible = false;
             }
@@ -1049,7 +1049,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (Session["PublishListLink"] != null && Utility.HasValue(Session["PublishListLink"].ToString()))
                 {
                     lnkReturnToList.NavigateUrl = Session["PublishListLink"].ToString().Trim();
-                    lnkReturnToList.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lnkReturnToList", LocalResourceFile), "");
+                    lnkReturnToList.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lnkReturnToList", LocalResourceFile), string.Empty);
                 }
                 else
                 {
@@ -1416,7 +1416,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             get
             {
                 DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, string.Empty, string.Empty, EditUrl("Settings"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

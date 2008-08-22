@@ -1297,7 +1297,7 @@ namespace Engage.Dnn.Publish
             url.Append("&DisplayType=");
             url.Append(displayType);
             url.Append("&Tags=");
-            url.Append(tags);
+            url.Append(HttpUtility.UrlEncode(tags));
 
             return url.ToString();
         }

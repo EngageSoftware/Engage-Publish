@@ -110,7 +110,7 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append("<a href=\"");
                         sb.Append(BuildTagLink(tagName, true, string.Empty));
                         sb.Append("\" class=\"tag\">");
-                        sb.Append(tagName);
+                        sb.Append(HttpUtility.HtmlEncode(tagName));
                         sb.Append("</a> </li>");
                         lnkTag.Text = sb.ToString();
                         phTagCloud.Controls.Add(lnkTag);
@@ -193,11 +193,12 @@ namespace Engage.Dnn.Publish.Tags
                     ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
                     tagQuery = new ArrayList(tagList.Count);
                     string useOthers = string.Empty;
+
+                    //create a list of tagids to query the database
                     foreach (Tag tg in tagList)
                     {
-                        //create a list of tagids to query the database
-                        tagQuery.Add(tg.TagId);
                         //Add the tag to the filtered list
+                        tagQuery.Add(tg.TagId);
 
                         //add the seperator in first
                         phTagFilters.Controls.Add(new LiteralControl(Localization.GetString("TagSeperator.Text", LocalResourceFile)));
@@ -208,7 +209,7 @@ namespace Engage.Dnn.Publish.Tags
                         sb.Append("<a href=\"");
                         sb.Append(BuildTagLink(tg.Name, false, useOthers));
                         sb.Append("\" class=\"tag\">");
-                        sb.Append(tg.Name);
+                        sb.Append(HttpUtility.HtmlEncode(tg.Name));
                         sb.Append("</a> ");
 
                         phTagFilters.Controls.Add(new LiteralControl(sb.ToString()));
