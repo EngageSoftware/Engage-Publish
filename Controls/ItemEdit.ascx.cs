@@ -265,6 +265,8 @@ namespace Engage.Dnn.Publish.Controls
                     al.Add(uri);
                 }
             }
+
+            //TODO: sort the authors list by name
             
             ddlAuthor.DataTextField = "FullName";
             ddlAuthor.DataValueField = "UserId";
