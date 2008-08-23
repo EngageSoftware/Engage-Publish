@@ -87,7 +87,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = settings["AllowPaging"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 
@@ -163,7 +163,7 @@ namespace Engage.Dnn.Publish.Controls
             }
             get
             {
-                string setting = string.Empty;
+                string setting = CustomDisplaySettings.StartDateSort;
                 object o = settings["SortOption"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
@@ -183,7 +183,7 @@ namespace Engage.Dnn.Publish.Controls
             }
             get
             {
-                string setting = string.Empty;
+                string setting = "1";//by default sort descending
                 object o = settings["SortDirection"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
@@ -205,7 +205,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = settings["DisplayOptionTitle"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 
@@ -220,7 +220,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = settings["DisplayOptionAbstract"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 
@@ -250,7 +250,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = settings["DisplayOptionDate"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 
@@ -265,7 +265,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = settings["DisplayOptionReadMore"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 

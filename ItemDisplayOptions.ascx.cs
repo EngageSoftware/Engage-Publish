@@ -100,10 +100,10 @@ namespace Engage.Dnn.Publish
                 {
                     ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CustomDisplay", LocalResourceFile), "CustomDisplay"));
                     ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ArticleDisplay", LocalResourceFile), "ArticleDisplay"));
-                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryDisplay", LocalResourceFile), "CategoryDisplay"));
-                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryFeatureDisplay", LocalResourceFile), "CategoryFeatureDisplay"));
                     ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryNLevels", LocalResourceFile), "CategoryNLevels"));
                     ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategorySearch", LocalResourceFile), "CategorySearch"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryFeatureDisplay", LocalResourceFile), "CategoryFeatureDisplay"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryDisplay", LocalResourceFile), "CategoryDisplay"));
                     ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ItemListing", LocalResourceFile), "ItemListing"));
                     ddlChooseDisplayType.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), string.Empty));
 

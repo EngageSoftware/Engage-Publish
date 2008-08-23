@@ -157,7 +157,7 @@
     <value>Format child items:</value>
   </data>
   <data name="lblChooseDisplayType.Help" xml:space="preserve">
-    <value>This dropdown box tells the ItemDisplay control which type of display it will be defaulting to.</value>
+    <value>This dropdown box tells the ItemDisplay control which type of display to use by default. It is recommended that you use either Article Display or Custom List for most scenarios. The Category Display and Item Listing options are considered obsolete and should be replaced with the Custom Display type.</value>
   </data>
   <data name="lblChooseDisplayType.Text1" xml:space="preserve">
     <value>Choose a Display Option:</value>
@@ -187,13 +187,13 @@
     <value>Article Display</value>
   </data>
   <data name="CustomDisplay.Text" xml:space="preserve">
-    <value>Custom Display</value>
+    <value>Custom List</value>
   </data>
   <data name="ArticleDisplayOptions.Text" xml:space="preserve">
     <value />
   </data>
   <data name="CategoryDisplay.Text" xml:space="preserve">
-    <value>Category Display</value>
+    <value>Category Display (obsolete)</value>
   </data>
   <data name="CategoryDisplayOptions.Text" xml:space="preserve">
     <value />
@@ -208,7 +208,7 @@
     <value>[Choose One]</value>
   </data>
   <data name="ItemListing.Text" xml:space="preserve">
-    <value>Item Listing</value>
+    <value>Item Listing (obsolete)</value>
   </data>
   <data name="CategoryFeatureOptions.Text" xml:space="preserve">
     <value>Options</value>

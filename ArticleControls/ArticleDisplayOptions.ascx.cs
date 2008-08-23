@@ -210,9 +210,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 ModuleController modules = new ModuleController();
                 modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", value.ToString(CultureInfo.InvariantCulture));
-                
             }
-
             get
             {
                 object o = Settings["adArticleId"];
@@ -232,7 +230,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             get
             {
                 object o = Settings["adLastUpdatedFormat"];
-                return (o == null ? "MMM yyyy" : o.ToString());
+                return (o == null ? "F" : o.ToString());
             }
         }
 
@@ -569,7 +567,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                 ModuleController modules = new ModuleController();
                 modules.UpdateTabModuleSetting(this.TabModuleId, "adLastNameCollectOption", value.ToString());
             }
-
             get
             {
                 object o = Settings["adLastNameCollectOption"];
@@ -577,7 +574,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     return (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), o.ToString());
                 }
-                return NameDisplayOption.Initial;
+                return NameDisplayOption.Full;
             }
         }
 
@@ -598,7 +595,6 @@ namespace Engage.Dnn.Publish.ArticleControls
             get
             {
                 object o = Settings["adCollectEmailAddress"];
-
                 if (o != null)
                 {
                     bool collectEmailAddress;
