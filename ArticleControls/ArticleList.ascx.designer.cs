@@ -131,6 +131,15 @@ namespace Engage.Dnn.Publish.ArticleControls {
         protected global::System.Web.UI.WebControls.LinkButton cmdApprove;
         
         /// <summary>
+        /// cmdArchive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdArchive;
+        
+        /// <summary>
         /// cmdDelete control.
         /// </summary>
         /// <remarks>

@@ -100,6 +100,7 @@
         <div style="text-align:center;">
         
             <asp:linkbutton cssclass="CommandButton" id="cmdApprove" resourcekey="cmdApprove" runat="server" text="Approve Articles" causesvalidation="False" OnClick="cmdApprove_Click"></asp:linkbutton>
+            <asp:linkbutton cssclass="CommandButton" id="cmdArchive" resourcekey="cmdArchive" runat="server" text="Archive Articles" causesvalidation="False" OnClick="cmdArchive_Click"></asp:linkbutton>
             <asp:linkbutton cssclass="CommandButton" id="cmdDelete" resourcekey="cmdDelete" runat="server" text="Delete Articles" causesvalidation="False" OnClick="cmdDelete_Click"></asp:linkbutton>
             <asp:linkbutton cssclass="CommandButton" id="cmdBack" resourcekey="cmdBack" runat="server" text="Back" causesvalidation="False" OnClick="cmdBack_Click"></asp:linkbutton>
         </div>

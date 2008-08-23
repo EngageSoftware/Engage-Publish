@@ -219,4 +219,10 @@
   <data name="lblArticleSearch.Text" xml:space="preserve">
     <value>Article Title Search</value>
   </data>
+  <data name="ArticlesArchived.Text" xml:space="preserve">
+    <value>Article(s) Archived</value>
+  </data>
+  <data name="cmdArchive.Text" xml:space="preserve">
+    <value>Archive Articles</value>
+  </data>
 </root>
