@@ -113,6 +113,19 @@
             </td>
         </tr>
     </table>
+    
+    <table class="PublishEditTable Normal">
+        <tr id="Tr1" runat="server">
+            <td class="editTableLabelColumn nowrap">
+                <dnn:Label ID="lblRssUrl" Runat="server" class="title" />
+            </td>
+            <td class="fullWidth">
+                <asp:TextBox ID="txtRssUrl" runat="server"></asp:TextBox>
+                <hr />
+            </td>
+        </tr>
+    </table>
+
 </asp:Panel>
     <table class="PublishEditTable Normal">
         <tr>

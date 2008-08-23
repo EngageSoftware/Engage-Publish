@@ -1006,6 +1006,28 @@ namespace Engage.Dnn.Publish
             }
         }
 
+        public void SetExternalRssUrl(string rssUrl, string rssTitle)
+        {
+            if (rssUrl != null && rssTitle != null)
+            {
+                LiteralControl lc = new LiteralControl();
+                StringBuilder sb = new StringBuilder(400);
+                sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
+                sb.Append(rssUrl);
+                sb.Append("\" title=\"");
+                sb.Append(rssTitle);
+                sb.Append("\" />");
+                lc.Text = sb.ToString();
+
+                CDefault tp = (CDefault)this.Page;
+                if (tp != null)
+                {
+                    tp.Header.Controls.Add(lc);
+                }
+            }
+        }
+
+
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Compiler doesn't see validation")]
         public string GetThumbnailUrl(object objFileName)
         {

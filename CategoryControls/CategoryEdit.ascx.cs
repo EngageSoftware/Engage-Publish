@@ -246,6 +246,16 @@ namespace Engage.Dnn.Publish.CategoryControls
                     chkUseApprovals.Visible = IsAdmin && UseApprovals;
                     phApproval.Visible = UseApprovals && chkUseApprovals.Checked;
                     lblNotUsingApprovals.Visible = !UseApprovals || !chkUseApprovals.Checked;
+
+
+                    //itemversionsetting for external RSS feed
+                    //provide the ability to define an external RSS feed for a category.
+                    ItemVersionSetting rssSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "RssUrl", PortalId);
+                    if (rssSetting != null)
+                    {
+                        txtRssUrl.Text = rssSetting.PropertyValue;
+                    }
+
                 }
                 else
                 {
@@ -654,6 +664,13 @@ namespace Engage.Dnn.Publish.CategoryControls
             //fpSetting.PropertyName = "ForceDisplayOnPage";
             //fpSetting.PropertyValue = chkForceDisplayTab.Checked.ToString(CultureInfo.InvariantCulture);
             VersionInfoObject.VersionSettings.Add(itemVersionSetting);
+
+            //external RSS Url for category
+            setting = Setting.CategorySettingsRssUrl;
+            setting.PropertyValue = txtRssUrl.Text.Trim();
+            itemVersionSetting = new ItemVersionSetting(setting);
+            VersionInfoObject.VersionSettings.Add(itemVersionSetting);
+            
 
             if (rowCommentForum.Visible)
             {

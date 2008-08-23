@@ -294,4 +294,10 @@
   <data name="lblCategoryEditExtendedHeader.Text" xml:space="preserve">
     <value>Extended Properties</value>
   </data>
+  <data name="lblRssUrl.Help" xml:space="preserve">
+    <value>If you use an external rss feed syndication service such as Feedburner you can provide the URL you would like to provide to users here.</value>
+  </data>
+  <data name="lblRssUrl.Text" xml:space="preserve">
+    <value>RSS Url</value>
+  </data>
 </root>

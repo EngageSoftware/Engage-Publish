@@ -136,13 +136,27 @@ namespace Engage.Dnn.Publish.Controls
                 if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
                     lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
+                    SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
                 }
                 else
                 {
-                    //TODO: configure the # of items for an RSS feed
-                    lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
+                    //check for a setting of an external URL
+                    ItemVersionSetting rssSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "RssUrl", PortalId);
+                    if (rssSetting != null && rssSetting.PropertyValue!=string.Empty)
+                    {
+                        lnkRss.NavigateUrl = rssSetting.PropertyValue;
+                        SetExternalRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                        
+                    }
+                    else
+                    {
+                        //TODO: configure the # of items for an RSS feed
+                        lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
+                        SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                    }
+
                 }
-                SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                
             }
 
             //store the URL into session for the return to list options

@@ -26,6 +26,7 @@ namespace Engage.Dnn.Publish
         public static readonly Setting CategorySettingsCurrentDisplay = new Setting("CategorySettings", "DisplayOnCurrentPage");
         public static readonly Setting CategorySettingsForceDisplay = new Setting("CategorySettings", "ForceDisplayOnPage");
         public static readonly Setting CategorySettingsCommentForumId = new Setting("CategorySettings", "CommentForumId");
+        public static readonly Setting CategorySettingsRssUrl = new Setting("CategorySettings", "RssUrl");
 
         private Setting(string controlName, string propertyName)//, string description)
         {
