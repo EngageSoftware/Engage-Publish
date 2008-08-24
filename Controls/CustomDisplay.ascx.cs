@@ -76,7 +76,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (tags != null)
                 {
                     this.qsTags = tags;
-                    char[] seperator = { ';' };
+                    char[] seperator = { '-' };
                     ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
                     this.tagQuery = new ArrayList(tagList.Count);
                     foreach (Tag tg in tagList)

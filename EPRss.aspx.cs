@@ -161,7 +161,7 @@ namespace Engage.Dnn.Publish
                 if (tags != null)
                 {
                     this.qsTags = HttpUtility.UrlDecode(tags);
-                    char[] seperator = {';'};
+                    char[] seperator = {'-'};
                     ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
                     this.tagQuery = new ArrayList(tagList.Count);
                     foreach (Tag tg in tagList)

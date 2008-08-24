@@ -159,7 +159,6 @@ namespace Engage.Dnn.Publish.Tags
             {
                 resultString = "size6";
             }
-
             return resultString;
         }
 
@@ -169,16 +168,14 @@ namespace Engage.Dnn.Publish.Tags
             string existingTags;
             if (o != null && useExisting)
             {
-                existingTags = HttpUtility.UrlEncode(o.ToString() + ";");
+                existingTags = o.ToString() + "-";
             }
             else
             {
                 existingTags = useOthers;
-            }
-
-            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "&tags=" + existingTags + HttpUtility.UrlEncode(name));
+            }   
+            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "tags=" + existingTags + HttpUtility.UrlEncode(name));
         }
-
 
         private void LoadTagInfo()
         {
@@ -189,7 +186,7 @@ namespace Engage.Dnn.Publish.Tags
                 {
                     qsTags = tags;
 
-                    char[] seperator = { ';' };
+                    char[] seperator = { '-' };
                     ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
                     tagQuery = new ArrayList(tagList.Count);
                     string useOthers = string.Empty;
@@ -214,7 +211,7 @@ namespace Engage.Dnn.Publish.Tags
 
                         phTagFilters.Controls.Add(new LiteralControl(sb.ToString()));
 
-                        useOthers += tg.Name + "-";
+                        useOthers += tg.Name + ";";
                     }
                 }
                 popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
