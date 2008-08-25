@@ -53,8 +53,9 @@
       <HintPath>..\..\Bin\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.41784, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\DotNetNuke.Search.DataStore.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls, Version=1.5.3.20116, Culture=neutral">
       <Private>False</Private>
@@ -548,11 +549,9 @@
     <Compile Include="Tags\TagEntry.ascx.designer.cs">
       <DependentUpon>TagEntry.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Tokens\TokenParameters.cs" />
     <Compile Include="util\ApprovalStatus.cs" />
     <Compile Include="util\Breadcrumb.cs" />
     <Compile Include="util\CommunityController.cs" />
-    <Compile Include="Tokens\Token.cs" />
     <Compile Include="util\Ping.cs" />
     <Compile Include="util\FeaturesController.cs" />
     <Compile Include="util\ItemType.cs" />
@@ -967,9 +966,6 @@
     <Content Include="References\DotNetNuke.WebUtility.dll" />
     <Content Include="References\Engage.Dnn.UserFeedback.dll" />
     <Content Include="References\Microsoft.ApplicationBlocks.Data.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tokens\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />

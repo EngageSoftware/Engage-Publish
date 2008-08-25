@@ -24,6 +24,7 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.Framework;
     using DotNetNuke.UI.Utilities;
     using Util;
+    using DotNetNuke.Entities.Users;
 
     public partial class EPRss : PageBase
     {
@@ -267,7 +268,8 @@ namespace Engage.Dnn.Publish
                            description = String.Empty,
                            childItemId = String.Empty,
                            thumbnail = String.Empty,
-                           guid = String.Empty;
+                           guid = String.Empty,
+                           author = string.Empty;
 
                     DateTime startDate = DateTime.MinValue;
 
@@ -280,6 +282,9 @@ namespace Engage.Dnn.Publish
                         guid = r["itemVersionIdentifier"].ToString();
                         startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
+                        UserController uc = new UserController();
+                        UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
+                        author = ui.DisplayName;
                     }
                     else if (string.Equals(this.DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
                     {
@@ -289,6 +294,9 @@ namespace Engage.Dnn.Publish
                         guid = r["itemVersionIdentifier"].ToString();
                         startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
+                        UserController uc = new UserController();
+                        UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
+                        author = ui.DisplayName;
                     }
 
                     if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute))
@@ -316,10 +324,11 @@ namespace Engage.Dnn.Publish
                     }
 
                     wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
+                    wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
                     wr.WriteElementString("thumbnail", thumbnail);
 
                     //TODO: get creator
-                    //wr.WriteElementString("dc:creator", r["DisplayName"].ToString());
+                    wr.WriteElementString("dc:creator", author);
 
                     wr.WriteElementString("pubDate", startDate.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
                     wr.WriteStartElement("guid");
