@@ -211,7 +211,7 @@ namespace Engage.Dnn.Publish.Tags
 
                         phTagFilters.Controls.Add(new LiteralControl(sb.ToString()));
 
-                        useOthers += tg.Name + ";";
+                        useOthers += tg.Name + "-";
                     }
                 }
                 popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
