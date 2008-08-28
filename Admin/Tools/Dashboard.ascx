@@ -4,7 +4,5 @@
 	<dnn:Label ID="lblControlTitle" ResourceKey="lblControlTitle" Runat="server" cssclass="Head"></dnn:Label>
 	<hr />
     <asp:PlaceHolder ID="phAdminTools" runat="server"></asp:PlaceHolder>
-    
-
 </div>
 

@@ -44,6 +44,8 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 hl.Text = Localization.GetString("DescriptionReplace", LocalResourceFile);
                 phAdminTools.Controls.Add(hl);
 
+                //TODO: build a way to clear Publish cache
+
             }
             catch (Exception exc)
             {
