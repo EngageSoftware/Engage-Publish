@@ -946,6 +946,63 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
+
+        public static string GetItemLinkUrlFromItemId(object itemId, int portalId)
+        {
+            if (itemId != null)
+            {
+                int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
+                int typeId = Item.GetItemTypeId(id, portalId);
+                ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
+                Item i; // = null;
+                if (type.Name == ItemType.Article.Name)
+                {
+                    i = Article.GetArticle(id, portalId);
+                }
+                else
+                {
+                    i = Category.GetCategory(id, portalId);
+                }
+                if (i == null)
+                {
+                    //there is no current version of this ITEM. Can't view it currently because ItemLink.aspx doesn't
+                    //support versions. hk
+                    return string.Empty;
+                }
+                else
+                {
+                    //see DisplayOnCurrentPage is true for this item.
+                    if (i.DisplayOnCurrentPage())
+                    {
+                        if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
+                        {
+                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId.ToString();
+                        }
+                        else
+                        {
+                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId.ToString(); ;
+                        }
+                        
+                    }
+                    else
+                    {
+                        if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
+                        {
+                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private static string UsePageId(int pageid, int portalid)
         {
             if (pageid > 1 && ModuleBase.AllowArticlePagingForPortal(portalid))

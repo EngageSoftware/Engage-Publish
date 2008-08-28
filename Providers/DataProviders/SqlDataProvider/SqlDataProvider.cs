@@ -2009,7 +2009,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("ci.CreatedDate, ");
             sql.Append("ci.StartDate, ");
             sql.Append("i.name as CategoryName, ");
-            sql.Append("ci.AuthorUserId ");
+            sql.Append("ci.AuthorUserId, ");
+            sql.Append("ci.ItemVersionIdentifier ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwChildItems ci ");

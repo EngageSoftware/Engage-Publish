@@ -29,8 +29,7 @@ namespace Engage.Dnn.Publish.Services
     //http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
 
 
-    //TODO: none of this is localized;
-
+    
     //TODO: Thoughts on MetaBlogAPI
     //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.
     //Right now Publish works well as a single blog, not multiple blogs for different users
@@ -96,19 +95,8 @@ namespace Engage.Dnn.Publish.Services
                     }
 
                     a.Save(ui.UserID);
-                    //check if ping enabled
-                    //if (Utility.IsPingEnabledForPortal(PortalId))
-                    //{
-                    //    string s = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                    //    string changedUrl = Utility.HasValue(s) ? s.ToString() : Globals.NavigateURL(pc[0].ChildDisplayTabId);
 
-                    //    Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
-
-                    //    //ping
-                    //    Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
-                    //}
-                    //Utility.ClearPublishCache(PortalId);
-                    return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");    
+                    return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");
                     
                 }
 
