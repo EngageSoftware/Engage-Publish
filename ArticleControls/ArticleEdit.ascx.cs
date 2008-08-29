@@ -504,6 +504,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 this.txtMessage.Text = string.Empty;
                 bool error = false;
 
+                //TODO: look at changing this value as Description is now nText
                 if (TextBoxMaxLengthExceeded(this.itemEditControl.DescriptionText, "Article Description", 4000))
                 {
                     error = true;
