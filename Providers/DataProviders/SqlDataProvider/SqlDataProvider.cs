@@ -1499,6 +1499,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override void AddItemView(int itemId, int itemVersionId, int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
         {
+            //TODO: covert these to parameters
             SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spInsertItemView", itemId, itemVersionId, userId, tabId, ipAddress, userAgent, httpReferrer, siteUrl);
         }
 

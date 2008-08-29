@@ -67,7 +67,7 @@
         </td>
         <td>
             <asp:RadioButtonList ID="rbSortDirection" runat="server" RepeatDirection="Horizontal" TextAlign="Right" CssClass="Normal">
-                <asp:ListItem Selected="true" Text="Ascending" Value="0"/>
+                <asp:ListItem Text="Ascending" Value="0"/>
                 <asp:ListItem Text="Descending" Value="1"/>
             </asp:RadioButtonList>
         </td>
