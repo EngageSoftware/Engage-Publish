@@ -237,7 +237,7 @@ namespace Engage.Dnn.Publish
         {
             //return DataProvider.Instance().GetTag(tag, portalId);
 
-            string cacheKey = Utility.CacheKeyPublishTag + tag.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishTag + tag.ToString(CultureInfo.InvariantCulture) + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -273,7 +273,7 @@ namespace Engage.Dnn.Publish
 
         public static Tag GetTag(int tagId, int portalId)
         {
-            string cacheKey = Utility.CacheKeyPublishTagById + tagId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishTagById + tagId.ToString(CultureInfo.InvariantCulture) + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -344,7 +344,7 @@ namespace Engage.Dnn.Publish
             //parse through the table and create each tag?
 
             //return DataProvider.Instance().GetTagsByString(partialTag, portalId);
-            string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -372,10 +372,6 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
-
-            //parse through the table and create each tag?
-            //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
-
             //TODO: change tagList to a <List> of strings
             //string tags = string.Empty;
             StringBuilder sb = new StringBuilder(50);
@@ -390,7 +386,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTags + sb.ToString() + selectTop.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishPopularTags + sb.ToString() + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -418,9 +414,6 @@ namespace Engage.Dnn.Publish
 
         public static int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
-            //parse through the table and create each tag?
-            //return DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
-
             //TODO: change tagList to a <List> of strings
             //string tags = string.Empty;
             StringBuilder sb = new StringBuilder(50);
@@ -435,7 +428,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb.ToString() + "_" + selectTop.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb.ToString() + "_" + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             int tagCount;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -493,15 +486,91 @@ namespace Engage.Dnn.Publish
         }
 
         public static DataTable GetItemsFromTags(int portalId, ArrayList tagList)
-        {
-            //TODO: cache this
-            return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
+        {   //return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
+            StringBuilder sb = new StringBuilder(50);
+            //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
+
+            if (tagList != null)
+            {
+                foreach (int tag in tagList)
+                {
+                    sb.Append(tag.ToString());
+                    sb.Append("_");
+                }
+            }
+            if (sb.Length < 1)
+                sb.Append("none");
+
+            string cacheKey = Utility.CacheKeyPublishItemsFromTags + sb.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            DataTable dt;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey);
+                if (o != null)
+                {
+                    dt = (DataTable)o;
+                }
+                else
+                {
+                    dt = DataProvider.Instance().GetItemsFromTags(portalId, tagList);
+                }
+                if (dt != null)
+                {
+                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                dt = DataProvider.Instance().GetItemsFromTags(portalId, tagList);
+            }
+            return dt;
         }
 
         public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
         {
-            //TODO: cache this
-            return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+            //return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+
+            StringBuilder sb = new StringBuilder(50);
+            //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
+
+            if (tagList != null)
+            {
+                foreach (int tag in tagList)
+                {
+                    sb.Append(tag.ToString());
+                    sb.Append("_");
+                }
+            }
+            if (sb.Length < 1)
+                sb.Append("none");
+
+
+
+            string cacheKey = Utility.CacheKeyPublishItemsFromTagsPage + sb.ToString() + "_" + pageId.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            DataTable dt;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey);
+                if (o != null)
+                {
+                    dt = (DataTable)o;
+                }
+                else
+                {
+                    dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+                }
+                if (dt != null)
+                {
+                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+            }
+            return dt;
         }
 
         #endregion

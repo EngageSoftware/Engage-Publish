@@ -53,10 +53,9 @@ namespace Engage.Dnn.Publish
             return CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
         }
 
-
 		public static ArrayList GetItemTags(int itemVersionId, int portalId)
 		{
-            string cacheKey = Utility.CacheKeyPublishArticleTags + itemVersionId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishArticleTags + itemVersionId.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             ArrayList al = null;
             if (ModuleBase.UseCachePortal(portalId))
             {

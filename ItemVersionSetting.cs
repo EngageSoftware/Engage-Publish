@@ -209,7 +209,6 @@ namespace Engage.Dnn.Publish
         {
             //TODO: cache this 
             List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
-
             return settings;
         }
 
@@ -217,7 +216,6 @@ namespace Engage.Dnn.Publish
         {
             //TODO: cache this 
             List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
-
             return settings;
         }
 

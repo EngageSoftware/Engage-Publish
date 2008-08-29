@@ -2380,12 +2380,11 @@ namespace Engage.Dnn.Publish.Data
             DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)));
             return ds.Tables[0];
         }
-        //TODO: implement paging for GetItemsFromTags
+        //implement paging for GetItemsFromTags
         public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
         {
             DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageIndex", pageId), Utility.CreateIntegerParam("@PageSize", maxItems));
             return ds.Tables[0];
-
         }
 
 

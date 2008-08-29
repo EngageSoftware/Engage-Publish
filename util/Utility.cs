@@ -211,9 +211,19 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishItemVersionSetting = "CacheKeyPublishItemVersionSetting_";
         public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
         public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
+
+        public const string CacheKeyPublishItemTypeId = "CacheKeyPublishItemTypeId_";
+
         public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
         public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
+
         public const string CacheKeyPublishTagById = "PublishCacheKeyTagById_";
+        public const string CacheKeyPublishItemsFromTags = "CacheKeyPublishItemsFromTags_";
+
+        public const string CacheKeyPublishItemsFromTagsPage = "CacheKeyPublishItemsFromTagsPage_";
+
+        
+
         public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string DnnFriendlyModuleName = "Engage: Publish";
 

@@ -39,7 +39,6 @@ namespace Engage.Dnn.Publish
 
         public Article()
 		{
-			//this type is always a Category
 			ItemTypeId = ItemType.Article.GetId();
 		}
 

@@ -350,7 +350,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                     ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage", PortalId);
                     if (cpSetting != null)
                     {
-                        //TODO: cache display on currentpage setting somewhere?
                         rblDisplayOnCurrentPage.SelectedValue = av.DisplayOnCurrentPage().ToString(CultureInfo.InvariantCulture);
                         if (av.DisplayOnCurrentPage())
                         {

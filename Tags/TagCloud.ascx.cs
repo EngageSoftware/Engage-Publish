@@ -27,7 +27,7 @@ namespace Engage.Dnn.Publish.Tags
     public partial class TagCloud : ModuleBase
     {
         private ArrayList tagQuery;
-        private string qsTags = string.Empty;
+        private string qsTags = "none";
         private int popularTagsTotal;
         private int mostPopularTagCount;
         private int leastPopularTagCount;
@@ -79,8 +79,10 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (popularTagsTotal > 0)
             {
-                string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
+                //string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
+                //DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
+
+                DataTable dt = Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -91,8 +93,8 @@ namespace Engage.Dnn.Publish.Tags
 
                     Utility.SortDataTableSingleParam(dt, "name asc");
 
-                    DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
-                    Utility.AddCacheKey(tagCacheKey, PortalId);
+                    //DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
+                    //Utility.AddCacheKey(tagCacheKey, PortalId);
                     phTagCloud.Controls.Clear();
                     string itemsWithTag = Localization.GetString("ItemsWithTag", LocalResourceFile);
                     foreach (DataRow dr in dt.DefaultView.Table.Rows)

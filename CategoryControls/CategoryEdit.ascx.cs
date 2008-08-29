@@ -202,7 +202,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                     ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "DisplayOnCurrentPage", PortalId);
                     if (cpSetting != null)
                     {
-                        //TODO: cache display on currentpage setting somewhere?
                         rblDisplayOnCurrentPage.SelectedValue = VersionInfoObject.DisplayOnCurrentPage().ToString(CultureInfo.InvariantCulture);
                         if (VersionInfoObject.DisplayOnCurrentPage())
                         {

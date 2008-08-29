@@ -145,10 +145,19 @@ namespace Engage.Dnn.Publish.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
         public int GetId()
         {
+            //cache this
             if (this.id == -1)
             {
                 IDataReader dr = null;
 
+            string cacheKey = Utility.CacheKeyPublishItemTypeId + this.itemType.ToString();
+            object o = DataCache.GetCache(cacheKey);
+            if (o != null)
+            {
+                this.id = (int)o;
+            }
+            else
+            {
                 try
                 {
                     dr = DataProvider.Instance().GetItemType(this.name);
@@ -164,6 +173,28 @@ namespace Engage.Dnn.Publish.Util
                         dr.Close();
                     }
                 }
+            }
+            if (this.id >0)
+            {
+                DataCache.SetCache(cacheKey, this.id, DateTime.Now.AddMinutes(15));
+                Utility.AddCacheKey(cacheKey, 0);
+            }
+                
+                //try
+                //{
+                //    dr = DataProvider.Instance().GetItemType(this.name);
+                //    if (dr.Read())
+                //    {
+                //        this.id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
+                //    }
+                //}
+                //finally
+                //{
+                //    if (dr != null)
+                //    {
+                //        dr.Close();
+                //    }
+                //}
             }
 
             return this.id;
