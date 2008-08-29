@@ -60,7 +60,7 @@ namespace Engage.Dnn.Publish
             {
                 if (childDisplayTabName.Length == 0)
                 {
-                    using (IDataReader dr = Data.DataProvider.Instance().GetPublishTabName(childDisplayTabId, PortalId))
+                    using (IDataReader dr = DataProvider.Instance().GetPublishTabName(childDisplayTabId, PortalId))
                     {
                         if (dr.Read())
                         {
@@ -100,9 +100,8 @@ namespace Engage.Dnn.Publish
 
         public override void Save(int authorId)
 		{
-			IDbTransaction trans;// = null;
-			IDbConnection newConnection = DataProvider.GetConnection();
-			trans = newConnection.BeginTransaction();
+            IDbConnection newConnection = DataProvider.GetConnection();
+			IDbTransaction trans = newConnection.BeginTransaction();
 			
 			//int relationTypeId = RelationshipType.ItemToParentCategory.GetId();
 
@@ -110,13 +109,13 @@ namespace Engage.Dnn.Publish
 			//get a connection
 			try
 			{
-				base.SaveInfo(trans, authorId);
+				SaveInfo(trans, authorId);
 				
 				//TODO: only do the following if admin
-				base.UpdateApprovalStatus(trans);
+				UpdateApprovalStatus(trans);
 
 				//update category version now
-				Category.AddCategoryVersion(trans, base.ItemVersionId, base.ItemId, this.SortOrder, this.ChildDisplayTabId);
+				AddCategoryVersion(trans, ItemVersionId, ItemId, this.SortOrder, this.ChildDisplayTabId);
 
                 SaveItemVersionSettings(trans);
 
@@ -134,7 +133,7 @@ namespace Engage.Dnn.Publish
 			{
 				trans.Rollback();
 				//rollback and throw an error
-				base.ItemVersionId = base.OriginalItemVersionId;
+				ItemVersionId = OriginalItemVersionId;
 				throw;
 			}
 			finally
@@ -146,12 +145,11 @@ namespace Engage.Dnn.Publish
 
         public override void UpdateApprovalStatus()
         {
-            IDbTransaction trans;// = null;
             IDbConnection newConnection = DataProvider.GetConnection();
-            trans = newConnection.BeginTransaction();
+            IDbTransaction trans = newConnection.BeginTransaction();
             try
             {
-                base.UpdateApprovalStatus(trans);
+                UpdateApprovalStatus(trans);
                 trans.Commit();
                 Utility.ClearPublishCache(PortalId);
             }
@@ -232,7 +230,7 @@ namespace Engage.Dnn.Publish
             ItemRelationship irel = new ItemRelationship();
             irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
 
-            irel.ParentItemId = Util.TopLevelCategoryItemType.Category.GetId();
+            irel.ParentItemId = TopLevelCategoryItemType.Category.GetId();
 
             c.Relationships.Add(irel);
             c.StartDate = c.LastUpdated = c.CreatedDate = DateTime.Now.ToString();
@@ -255,10 +253,10 @@ namespace Engage.Dnn.Publish
 		public static DataSet GetTopLevelCategories(int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishTopLevelCategories + portalId.ToString(CultureInfo.InvariantCulture);
-            DataSet ds = new DataSet();
+            DataSet ds;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     ds = (DataSet)o;
@@ -285,10 +283,10 @@ namespace Engage.Dnn.Publish
 		{
 			//return DataProvider.Instance().GetChildCategories(parentItemId, portalId);
             string cacheKey = Utility.CacheKeyPublishChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -316,10 +314,10 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetChildCategories(parentItemId, portalId, itemTypeId);
 
             string cacheKey = Utility.CacheKeyPublishChildCategoriesItemType + parentItemId.ToString(CultureInfo.InvariantCulture) + "_" + itemTypeId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -348,10 +346,10 @@ namespace Engage.Dnn.Publish
 			//return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
 
             string cacheKey = Utility.CacheKeyPublishAllChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = new DataTable();
+            DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     dt = (DataTable)o;
@@ -376,21 +374,12 @@ namespace Engage.Dnn.Publish
 
 		public static int GetParentCategory(int childItemId, int portalId)
 		{
-			//return DataProvider.Instance().GetParentCategory(childItemId, portalId);
-
-            int parentId = -1;
+            int parentId;
             string cacheKey = Utility.CacheKeyPublishItemParentCategoryId + childItemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
-                if (o != null)
-                {
-                    parentId = Convert.ToInt32(o.ToString());
-                }
-                else
-                {
-                    parentId = DataProvider.Instance().GetParentCategory(childItemId, portalId);
-                }
+                object o = DataCache.GetCache(cacheKey);
+                parentId = o != null ? Convert.ToInt32(o.ToString()) : DataProvider.Instance().GetParentCategory(childItemId, portalId);
                 if (parentId != -1)
                 {
                     DataCache.SetCache(cacheKey, parentId, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
@@ -421,17 +410,18 @@ namespace Engage.Dnn.Publish
 
 		public static Category GetCategoryVersion(int itemVersionId, int portalId)
 		{
-            string cacheKey = Utility.CacheKeyPublishCategoryVersion + itemVersionId.ToString(CultureInfo.InvariantCulture); Category c = new Category();
+            string cacheKey = Utility.CacheKeyPublishCategoryVersion + itemVersionId.ToString(CultureInfo.InvariantCulture);
+		    Category c;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     c = (Category)o;
                 }
                 else
                 {
-                    c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategoryVersion(itemVersionId, portalId), typeof(Category));
+                    c = (Category)CBO.FillObject(DataProvider.Instance().GetCategoryVersion(itemVersionId, portalId), typeof(Category));
                     if (c != null)
                     {
                         c.CorrectDates();
@@ -445,7 +435,7 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategoryVersion(itemVersionId, portalId), typeof(Category));
+                c = (Category)CBO.FillObject(DataProvider.Instance().GetCategoryVersion(itemVersionId, portalId), typeof(Category));
                 if (c != null)
                 {
                     c.CorrectDates();
@@ -466,7 +456,7 @@ namespace Engage.Dnn.Publish
         public static Category GetCategory(int itemId)
         {
 
-            Category c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+            Category c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
                 c.CorrectDates();
@@ -477,32 +467,28 @@ namespace Engage.Dnn.Publish
 		public static Category GetCategory(int itemId, int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
-            Category c = new Category();
-            if (itemId == -1) return c;
+		    Category c;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     c = (Category)o;
                 }
                 else
                 {
-                    c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                    c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
                     if (c != null)
                     {
                         c.CorrectDates();
+                        DataCache.SetCache(cacheKey, c, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                        Utility.AddCacheKey(cacheKey, portalId);
                     }
-                }
-                if (c != null)
-                {
-                    DataCache.SetCache(cacheKey, c, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
                 }
             }
             else
             {
-                c = (Category)DotNetNuke.Common.Utilities.CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
                 if (c != null)
                 {
                     c.CorrectDates();
@@ -550,7 +536,7 @@ namespace Engage.Dnn.Publish
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Not a reusable library")]
         public static List<Article> GetCategoryArticles(int itemId, int portalId)
         {
-            DataTable children = Item.GetAllChildren(ItemType.Article.GetId(), itemId, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), portalId).Tables[0];
+            DataTable children = GetAllChildren(ItemType.Article.GetId(), itemId, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), portalId).Tables[0];
             List<Article> articles = new List<Article>(children.Rows.Count);
 
             foreach (DataRow row in children.Rows)
@@ -581,7 +567,7 @@ namespace Engage.Dnn.Publish
             base.ResolveIds(currentModuleId);
 
             //display tab
-            using (IDataReader dr = Data.DataProvider.Instance().GetPublishTabId(ChildDisplayTabName, PortalId))
+            using (IDataReader dr = DataProvider.Instance().GetPublishTabId(ChildDisplayTabName, PortalId))
             {
                 if (dr.Read())
                 {

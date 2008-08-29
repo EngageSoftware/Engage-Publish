@@ -402,7 +402,7 @@ namespace Engage.Dnn.Publish
                     {
                         return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                     }
-                    else if (this.ItemVersionId > 0)
+                    if (this.ItemVersionId > 0)
                     {
                         return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
                     }
@@ -461,7 +461,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
                 }
-                else if (GetDefaultCacheSetting(this.PortalId) > 0)
+                if (GetDefaultCacheSetting(this.PortalId) > 0)
                 {
                     return GetDefaultCacheSetting(this.PortalId);
                 }
@@ -831,10 +831,7 @@ namespace Engage.Dnn.Publish
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static int CacheTimePortal(int portalId)
@@ -853,10 +850,7 @@ namespace Engage.Dnn.Publish
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
         public static int GetAdminDefaultPagingSize(int portalId)
@@ -866,10 +860,7 @@ namespace Engage.Dnn.Publish
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
             }
-            else
-            {
-                return 25;
-            }
+            return 25;
         }
 
         public string BuildLinkUrl(string qsParameters)
@@ -913,10 +904,7 @@ namespace Engage.Dnn.Publish
             {
                 return "http://" + this.PortalAlias.HTTPAlias + "/itemlink.aspx?itemId=" + itemId;
             }
-            else
-            {
-                return "http://" + this.PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
-            }
+            return "http://" + this.PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
         }
 
         public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)
@@ -1036,19 +1024,13 @@ namespace Engage.Dnn.Publish
             {
                 return ApplicationUrl + "/images/spacer.gif";
             }
-            else
+            //check if we're storing another URL, if it doesn't start with a / then we have trouble brewing
+            if (fileName.StartsWith(this.ThumbnailSubdirectory, StringComparison.OrdinalIgnoreCase)
+                || (!fileName.StartsWith("/", StringComparison.Ordinal) && !fileName.StartsWith("http", StringComparison.OrdinalIgnoreCase)))
             {
-                //check if we're storing another URL, if it doesn't start with a / then we have trouble brewing
-                if (fileName.StartsWith(this.ThumbnailSubdirectory, StringComparison.OrdinalIgnoreCase)
-                    || (!fileName.StartsWith("/", StringComparison.Ordinal) && !fileName.StartsWith("http", StringComparison.OrdinalIgnoreCase)))
-                {
-                    return this.GenerateLocalThumbnailUrl(fileName);
-                }
-                else
-                {
-                    return fileName;
-                }
+                return this.GenerateLocalThumbnailUrl(fileName);
             }
+            return fileName;
         }
 
         protected void AddBreadcrumb(string pageName)
@@ -1065,8 +1047,6 @@ namespace Engage.Dnn.Publish
             {
                 if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    //TODO: remove this caching
-
                     i = Article.GetArticle(itemId, this.PortalId);
                     if (this.ItemVersionId > 0)
                     {
@@ -1092,7 +1072,6 @@ namespace Engage.Dnn.Publish
 
                 else if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    //TODO: remove this caching
                     i = Category.GetCategory(itemId, this.PortalId);
                     if (this.ItemVersionId > 0)
                     {

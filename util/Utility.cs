@@ -348,10 +348,7 @@ namespace Engage.Dnn.Publish.Util
                 {
                     return string.Empty;
                 }
-                else
-                {
-                    return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
-                }
+                return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
             }
         }
 
@@ -901,61 +898,40 @@ namespace Engage.Dnn.Publish.Util
                     //support versions. hk
                     return string.Empty;
                 }
-                else
+
+                //see DisplayOnCurrentPage is true for this item.
+                if (i.DisplayOnCurrentPage())
                 {
-                    //see DisplayOnCurrentPage is true for this item.
-                    if (i.DisplayOnCurrentPage())
-                    {
-                        //check if there is an overrideable module on this page, if not be sure to pass the moduleid
-                        if (IsPageOverrideable(portalId, tabId))
-                        {
-                            if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                            {
-                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
-                                       + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
-                            }
-                            else
-                            {
-                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
-                                       + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
-                            }
-                        }
-                        else
-                        {
-                            if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                            {
-                                return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
-                                       + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
-                            }
-                            else
-                            {
-                                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
-                                       + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId)
-                                       + otherParameters;
-                            }
-                        }
-                    }
-                    else
+                    //check if there is an overrideable module on this page, if not be sure to pass the moduleid
+                    if (IsPageOverrideable(portalId, tabId))
                     {
                         if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                         {
-                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId)
-                                   + otherParameters;
+                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                                   + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
                         }
-                        else
-                        {
-                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
-                                   + UsePageId(pageId, portalId) + otherParameters;
-                        }
+                        return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                               + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
                     }
+                    if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
+                    {
+                        return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                               + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
+                    }
+                    return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                           + "&tabid=" + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId)
+                           + otherParameters;
                 }
+                if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
+                {
+                    return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId)
+                           + otherParameters;
+                }
+                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
+                       + UsePageId(pageId, portalId) + otherParameters;
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
-
 
         public static string GetItemLinkUrlFromItemId(object itemId, int portalId)
         {
@@ -979,38 +955,22 @@ namespace Engage.Dnn.Publish.Util
                     //support versions. hk
                     return string.Empty;
                 }
-                else
+                //see DisplayOnCurrentPage is true for this item.
+                if (i.DisplayOnCurrentPage())
                 {
-                    //see DisplayOnCurrentPage is true for this item.
-                    if (i.DisplayOnCurrentPage())
+                    if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                     {
-                        if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                        {
-                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId.ToString();
-                        }
-                        else
-                        {
-                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId.ToString(); ;
-                        }
-                        
+                        return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId;
                     }
-                    else
-                    {
-                        if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                        {
-                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
-                        }
-                        else
-                        {
-                            return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
-                        }
-                    }
+                    return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId; 
                 }
+                if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
+                {
+                    return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
+                }
+                return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
 
         private static string UsePageId(int pageid, int portalid)
@@ -1019,10 +979,7 @@ namespace Engage.Dnn.Publish.Util
             {
                 return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
 
         //		Public Function OnlyAlphaNumericChars(ByVal OrigString As String) As String
@@ -1164,10 +1121,7 @@ namespace Engage.Dnn.Publish.Util
             {
                 throw new ArgumentNullException("leftHandSide");
             }
-            else
-            {
-                throw new ArgumentNullException("rightHandSide");
-            }
+            throw new ArgumentNullException("rightHandSide");
         }
 
         public static void SortDataTableSingleParam(DataTable dt, string sort)

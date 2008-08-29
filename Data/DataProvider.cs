@@ -60,7 +60,7 @@ namespace Engage.Dnn.Publish.Data
             }
 
             IDbConnection newConnection = new System.Data.SqlClient.SqlConnection();
-            newConnection.ConnectionString = _connectionString.ToString();
+            newConnection.ConnectionString = _connectionString;
             newConnection.Open();
             return newConnection;
         }
@@ -146,6 +146,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract string GetItemName(int itemId);
 
         public abstract string GetItemTypeName(int itemTypeId);
+        public abstract string GetItemTypeName(int itemTypeId, bool useCache, int portalId, int cacheTime);
 
         public abstract IDataReader GetTopLevelCategoryItem(string itemName);
         public abstract IDataReader GetApprovalStatusId(string itemName);

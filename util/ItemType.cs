@@ -105,33 +105,9 @@ namespace Engage.Dnn.Publish.Util
             return DataProvider.Instance().GetItemTypeName(itemTypeId);
         }
 
-        public static string GetItemTypeName(int itemTypeId, bool UseCache, int PortalId, int CacheTime)
+        public static string GetItemTypeName(int itemTypeId, bool useCache, int portalId, int cacheTime)
         {
-            string typeName = string.Empty;
-            string cacheKey = Utility.CacheKeyPublishItemTypeName + itemTypeId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-            if (UseCache)
-            {
-                object o = DataCache.GetCache(cacheKey) as object;
-                if (o != null)
-                {
-                    typeName = o.ToString();
-                }
-                else
-                {
-                    typeName = DataProvider.Instance().GetItemTypeName(itemTypeId);
-                }
-                if (typeName != null)
-                {
-                    DataCache.SetCache(cacheKey, typeName, DateTime.Now.AddMinutes(CacheTime));
-                    Utility.AddCacheKey(cacheKey, PortalId);
-                }
-            }
-            else
-            {
-                typeName = DataProvider.Instance().GetItemTypeName(itemTypeId);
-            }
-
-            return typeName;
+           return DataProvider.Instance().GetItemTypeName(itemTypeId, useCache, portalId, cacheTime);
         }
 
         public string Name
@@ -148,53 +124,27 @@ namespace Engage.Dnn.Publish.Util
             //cache this
             if (this.id == -1)
             {
-                IDataReader dr = null;
-
-            string cacheKey = Utility.CacheKeyPublishItemTypeId + this.itemType.ToString();
-            object o = DataCache.GetCache(cacheKey);
-            if (o != null)
-            {
-                this.id = (int)o;
-            }
-            else
-            {
-                try
+                string cacheKey = Utility.CacheKeyPublishItemTypeId + this.itemType;
+                object o = DataCache.GetCache(cacheKey);
+                if (o != null)
                 {
-                    dr = DataProvider.Instance().GetItemType(this.name);
-                    if (dr.Read())
+                    this.id = (int)o;
+                }
+                else
+                {
+                    using( IDataReader dr = DataProvider.Instance().GetItemType(this.name))
                     {
-                        this.id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
+                        if (dr.Read())
+                        {
+                            this.id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
+                            if (this.id > 0)
+                            {
+                                DataCache.SetCache(cacheKey, this.id, DateTime.Now.AddMinutes(15));
+                                Utility.AddCacheKey(cacheKey, 0);
+                            }
+                        }
                     }
                 }
-                finally
-                {
-                    if (dr != null)
-                    {
-                        dr.Close();
-                    }
-                }
-            }
-            if (this.id >0)
-            {
-                DataCache.SetCache(cacheKey, this.id, DateTime.Now.AddMinutes(15));
-                Utility.AddCacheKey(cacheKey, 0);
-            }
-                
-                //try
-                //{
-                //    dr = DataProvider.Instance().GetItemType(this.name);
-                //    if (dr.Read())
-                //    {
-                //        this.id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
-                //    }
-                //}
-                //finally
-                //{
-                //    if (dr != null)
-                //    {
-                //        dr.Close();
-                //    }
-                //}
             }
 
             return this.id;

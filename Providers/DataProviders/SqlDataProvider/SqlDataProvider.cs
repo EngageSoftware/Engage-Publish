@@ -192,6 +192,28 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString()).ToString();
         }
 
+        public override string GetItemTypeName(int itemTypeId, bool useCache, int portalId, int cacheTime)
+        {
+            string typeName;
+            string cacheKey = Utility.CacheKeyPublishItemTypeName + itemTypeId.ToString(CultureInfo.InvariantCulture); // +"PageId";
+            if (useCache)
+            {
+                object o = DataCache.GetCache(cacheKey);
+                typeName = o != null ? o.ToString() : Instance().GetItemTypeName(itemTypeId);
+                if (typeName != null)
+                {
+                    DataCache.SetCache(cacheKey, typeName, DateTime.Now.AddMinutes(cacheTime));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                typeName = Instance().GetItemTypeName(itemTypeId);
+            }
+
+            return typeName;
+        }
+
         public override IDataReader GetItems(int itemTypeId, int portalId)
         {
             StringBuilder sql = new StringBuilder(256);
@@ -1396,7 +1418,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("ItemVersionSettings where itemVersionId = ");
             sql.Append(itemVersionId);
             sql.Append(" and controlName = '");
-            sql.Append(controlName.ToString().Trim());
+            sql.Append(controlName.Trim());
             sql.Append("' order by [propertyName]");
             return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql.ToString());
         }
@@ -1419,9 +1441,9 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("ItemVersionSettings where itemVersionId = ");
             sql.Append(itemVersionId);
             sql.Append(" and controlName = '");
-            sql.Append(controlName.ToString().Trim());
+            sql.Append(controlName.Trim());
             sql.Append("' and propertyName = '");
-            sql.Append(propertyName.ToString().Trim());
+            sql.Append(propertyName.Trim());
             sql.Append("' order by [propertyName]");
 
             return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql.ToString());
@@ -1661,7 +1683,7 @@ namespace Engage.Dnn.Publish.Data
             {
                 return null;
             }
-            DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
+            DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql);
             return ds.Tables[0];
         }
 
@@ -1790,10 +1812,7 @@ namespace Engage.Dnn.Publish.Data
 
                 return sb.ToString();
             }
-            else
-            {
-                return "'Everyone'"; //is this always 'Everyone'?
-            }
+            return "'Everyone'"; //is this always 'Everyone'?
         }
 
         public override DataTable GetAssignedRoles(int categoryId)

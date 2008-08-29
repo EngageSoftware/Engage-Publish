@@ -103,10 +103,7 @@ namespace Engage.Dnn.Publish.Util
 			{
 				return false;
 			}
-			else
-			{
-				return (bci.pageName == this.pageName && bci.pageUrl == this.pageUrl);
-			}
+		    return (bci.pageName == this.pageName && bci.pageUrl == this.pageUrl);
 		}
 
 		public override int GetHashCode()
