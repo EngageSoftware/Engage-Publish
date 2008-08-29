@@ -992,7 +992,7 @@ namespace Engage.Dnn.Publish
                 LiteralControl lc = new LiteralControl();
                 StringBuilder sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
-                sb.Append(HttpUtility.UrlEncode(rssUrl));
+                sb.Append(rssUrl);
                 sb.Append("\" title=\"");
                 sb.Append(rssTitle);
                 sb.Append("\" />");

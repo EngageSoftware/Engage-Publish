@@ -324,10 +324,10 @@ namespace Engage.Dnn.Publish
                     }
 
                     wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
-                    wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
-                    wr.WriteElementString("thumbnail", thumbnail);
+                    //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
+                    //TODO: why was thumbnail included?
+                    //wr.WriteElementString("thumbnail", thumbnail);
 
-                    //TODO: get creator
                     wr.WriteElementString("dc:creator", author);
 
                     wr.WriteElementString("pubDate", startDate.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));

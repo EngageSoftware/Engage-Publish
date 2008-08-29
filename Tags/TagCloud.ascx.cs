@@ -27,7 +27,7 @@ namespace Engage.Dnn.Publish.Tags
     public partial class TagCloud : ModuleBase
     {
         private ArrayList tagQuery;
-        private string qsTags = "none";
+        private string qsTags = string.Empty;
         private int popularTagsTotal;
         private int mostPopularTagCount;
         private int leastPopularTagCount;

@@ -498,9 +498,7 @@ namespace Engage.Dnn.Publish
                     sb.Append("_");
                 }
             }
-            if (sb.Length < 1)
-                sb.Append("none");
-
+            
             string cacheKey = Utility.CacheKeyPublishItemsFromTags + sb.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
@@ -542,9 +540,6 @@ namespace Engage.Dnn.Publish
                     sb.Append("_");
                 }
             }
-            if (sb.Length < 1)
-                sb.Append("none");
-
 
 
             string cacheKey = Utility.CacheKeyPublishItemsFromTagsPage + sb.ToString() + "_" + pageId.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);

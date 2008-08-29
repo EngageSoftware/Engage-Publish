@@ -61,8 +61,7 @@ namespace Engage.Dnn.Publish.Services
             Post post, bool publish)
         {
             LocatePortal(Context.Request);
-            //TODO: something fails in here
-
+            
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
@@ -77,7 +76,10 @@ namespace Engage.Dnn.Publish.Services
                 {
                     Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), 
                         post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
-                    a.StartDate = post.dateCreated.ToString();
+                    //TODO: check if dateCreated is a valid date
+                    //TODO: date Created is coming in as UTC time
+                    //TODO: re-enable Date created
+                    //a.StartDate = post.dateCreated.ToString();
                     a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
 
                     //look to see if there are other categories
