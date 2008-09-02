@@ -212,6 +212,15 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::DotNetNuke.UI.UserControls.UrlControl ctlUrlSelection;
         
         /// <summary>
+        /// chkNewWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkNewWindow;
+        
+        /// <summary>
         /// lblPostingDates control.
         /// </summary>
         /// <remarks>

@@ -50,7 +50,7 @@ namespace Engage.Dnn.Publish.Admin
                             lnkWaitingForApproval.Visible = false;
                         }
                         //Comments always require approval
-                        if (IsCommentsEnabled)
+                        if (IsCommentsEnabled && IsPublishCommentTypeForPortal(PortalId))
                         {
                             lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), DataProvider.Instance().CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
                             lnkCommentsForApproval.Visible = true;

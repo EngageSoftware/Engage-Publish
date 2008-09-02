@@ -388,7 +388,7 @@ namespace Engage.Dnn.Publish
             ModuleController objModules = new ModuleController();
             foreach (ModuleInfo mi in objModules.GetModulesByDefinition(PortalId, Utility.DnnFriendlyModuleName))
             {
-                if (!mi.IsDeleted)
+                if (!mi.IsDeleted && mi.TabID != -1)
                 {
                     TabController objTabs = new TabController();
                     if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)

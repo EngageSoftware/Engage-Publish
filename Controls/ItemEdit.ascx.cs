@@ -46,15 +46,11 @@ namespace Engage.Dnn.Publish.Controls
             {
                 this.ctlUrlSelection.Url = VersionInfoObject.Url;
                 //TODO: this "open in new window" link needs changed, won't work in URLCOntrol
-                
-                CheckBox cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
-                if (cb!=null)
-                    cb.Checked = true;// VersionInfoObject.NewWindow;
+                chkNewWindow.Checked    = VersionInfoObject.NewWindow;
 
                 //this.ctlUrlSelection.NewWindow = VersionInfoObject.NewWindow;
-
-                chkUrlSelection.Checked = true;
                 pnlUrlSelection.Visible = true;
+                chkUrlSelection.Checked = true;
                 UseUrls = true;
             }
 		}
@@ -159,8 +155,8 @@ namespace Engage.Dnn.Publish.Controls
 
                     VersionInfoObject.Url = ctlUrlSelection.Url;
                     
-                    CheckBox cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
-                    VersionInfoObject.NewWindow = cb.Checked;
+                    
+                    VersionInfoObject.NewWindow = chkNewWindow.Checked;
                     DateTime dt;
                     if (Utility.HasValue(txtStartDate.Text) && DateTime.TryParse(txtStartDate.Text, out dt))
                     {

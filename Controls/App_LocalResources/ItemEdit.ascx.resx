@@ -234,4 +234,7 @@
   <data name="lblAuthor.Text" xml:space="preserve">
     <value>Author:</value>
   </data>
+  <data name="chkNewWindow.Text" xml:space="preserve">
+    <value>Open New Window?</value>
+  </data>
 </root>

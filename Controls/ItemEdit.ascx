@@ -102,7 +102,8 @@
                              ShowLog="false" 
                              ShowTrack="false" 
                              Required="False" 
-                             ShowNewWindow="true"/>
+                             ShowNewWindow="False"/>
+                             <asp:CheckBox ID="chkNewWindow" resourcekey="chkNewWindow" runat="server" />
                         </div>
                     </asp:Panel>
                 </ContentTemplate></asp:UpdatePanel>
