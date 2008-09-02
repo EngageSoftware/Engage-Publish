@@ -45,10 +45,14 @@ namespace Engage.Dnn.Publish.Controls
             if (Utility.HasValue(VersionInfoObject.Url))
             {
                 this.ctlUrlSelection.Url = VersionInfoObject.Url;
-
-                CheckBox  cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
+                //TODO: this "open in new window" link needs changed, won't work in URLCOntrol
+                
+                CheckBox cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
                 if (cb!=null)
-                cb.Checked = VersionInfoObject.NewWindow;
+                    cb.Checked = true;// VersionInfoObject.NewWindow;
+
+                //this.ctlUrlSelection.NewWindow = VersionInfoObject.NewWindow;
+
                 chkUrlSelection.Checked = true;
                 pnlUrlSelection.Visible = true;
                 UseUrls = true;
@@ -154,7 +158,9 @@ namespace Engage.Dnn.Publish.Controls
 					VersionInfoObject.Disabled = !chkDisplayAsHyperlink.Checked;
 
                     VersionInfoObject.Url = ctlUrlSelection.Url;
-                    VersionInfoObject.NewWindow = ctlUrlSelection.NewWindow;
+                    
+                    CheckBox cb = (CheckBox)this.ctlUrlSelection.FindControl("chkNewWindow");
+                    VersionInfoObject.NewWindow = cb.Checked;
                     DateTime dt;
                     if (Utility.HasValue(txtStartDate.Text) && DateTime.TryParse(txtStartDate.Text, out dt))
                     {
