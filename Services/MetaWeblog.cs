@@ -95,16 +95,11 @@ namespace Engage.Dnn.Publish.Services
                             a.Relationships.Add(irel);
                         }
                     }
-
                     a.Save(ui.UserID);
-
-                    return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");
-                    
-                }
-
+                    //return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");
+                    return a.ItemId.ToString();
+               }
                 throw new XmlRpcFaultException(0, Localization.GetString("PostCategoryFailed.Text", LocalResourceFile));
-
-                
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
@@ -116,15 +111,46 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-
                 bool result = false;
 
-                //TODO: should we add a new version of a post?
-                
+                Article a = Article.GetArticle(Convert.ToInt32(postid));
 
+                a.Description = post.description;
+                a.ArticleText = post.description;
+                a.Name = post.title;
+                a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
+
+                List<Publish.Category> pc = new List<Engage.Dnn.Publish.Category>();
+                foreach (string s in post.categories)
+                {
+                    Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
+                    pc.Add(c);
+                }
+                if (pc.Count > 0)
+                {
+
+                    ItemRelationship irel = new ItemRelationship();
+                    irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+                    irel.ParentItemId = pc[0].ItemId;
+                    a.Relationships.Add(irel);
+                }
+
+                if (pc.Count > 1)
+                {
+                    for (int i = 1; i < pc.Count; i++)
+                    {
+                        ItemRelationship irel = new ItemRelationship();
+                        irel.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
+                        irel.ParentItemId = pc[i].ItemId;
+                        a.Relationships.Add(irel);
+                    }
+                }
+
+                a.Save(ui.UserID);
+                result = true;
                 return result;
             }
-            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedToUpdatePost.Text", LocalResourceFile));
         }
 
         Post IMetaWeblog.GetPost(string postid, string username, string password)
@@ -135,8 +161,25 @@ namespace Engage.Dnn.Publish.Services
             {
                 Post post = new Post();
 
-                // TODO: Implement your own logic to update the post and set the post
+                Article a = Article.GetArticle(Convert.ToInt32(postid));
 
+                post.description = a.ArticleText;
+                post.title = a.Name;
+                post.postid = a.ItemId.ToString();
+                post.userid = a.AuthorUserId.ToString();
+                post.dateCreated = Convert.ToDateTime(a.StartDate);
+
+                int i = 0;
+                foreach (ItemRelationship ir in a.Relationships)
+                {
+                    Category c = new Category();
+                    c.categoryId = ir.ParentItemId.ToString();
+                    Publish.Category pcc = Publish.Category.GetCategory(ir.ParentItemId);
+                    c.categoryName = pcc.Name;
+                    post.categories[i] = c.ToString();
+                    i++;
+                }
+                // TODO: Implement your own logic to update the post and set the post
                 return post;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));

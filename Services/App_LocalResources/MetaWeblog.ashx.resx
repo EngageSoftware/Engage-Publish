@@ -120,6 +120,9 @@
   <data name="FailedAuthentication.Text" xml:space="preserve">
     <value>User failed to authenticate</value>
   </data>
+  <data name="FailedToUpdatePost.Text" xml:space="preserve">
+    <value>Failed to Update Post</value>
+  </data>
   <data name="MetaBlogApi.Text" xml:space="preserve">
     <value>Added via the MetaBlogApi</value>
   </data>
