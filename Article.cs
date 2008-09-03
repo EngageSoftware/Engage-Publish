@@ -528,6 +528,7 @@ namespace Engage.Dnn.Publish
         protected override void ResolveIds(int currentModuleId)
         {
             base.ResolveIds(currentModuleId);
+            bool save = false;
 
             //now the Unique Id's
             //Does this ItemVersion exist in my db?
@@ -537,9 +538,6 @@ namespace Engage.Dnn.Publish
                 {
                     //this item already exists
                     //update some stuff???
-                    ItemId = Convert.ToInt32(dr["ItemId"]);
-                    ItemVersionId = Convert.ToInt32(dr["ItemVersionId"]);
-                    ModuleId = currentModuleId;
                 }
                 else
                 {   
@@ -547,10 +545,11 @@ namespace Engage.Dnn.Publish
                     ItemId = -1;
                     ItemVersionId = -1;
                     ModuleId = currentModuleId;
+                    save = true;
                 }
              }
 
-             Save(this.RevisingUserId);
+             if (save) Save(this.RevisingUserId);
         }
      
         #endregion
