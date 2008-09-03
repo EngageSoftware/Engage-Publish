@@ -547,9 +547,9 @@ namespace Engage.Dnn.Publish
                     ModuleId = currentModuleId;
                     save = true;
                 }
-             }
-
-             if (save) Save(this.RevisingUserId);
+            }
+            
+            if (save) Save(this.RevisingUserId);
         }
      
         #endregion
