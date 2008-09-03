@@ -1,0 +1,24 @@
+﻿Update Publish_Item set ItemIdentifier = NEWID()
+GO
+Update Publish_ItemVersion set ItemversionIdentifier = NEWID()
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Item]') AND name = N'{objectQualifier}IX_Item_ItemIdentifier')
+BEGIN
+	DROP INDEX  [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
+	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
+	(
+		[ItemIdentifier] ASC
+	) ON [PRIMARY]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersion]') AND name = N'{objectQualifier}IX_ItemVersion_ItemVersionIdentifier')
+BEGIN
+	DROP INDEX  [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	(
+		[ItemVersionIdentifier] ASC
+	) ON [PRIMARY]
+END
+GO

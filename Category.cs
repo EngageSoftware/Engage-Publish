@@ -600,6 +600,9 @@ namespace Engage.Dnn.Publish
                 {
                     //this item already exists
                     //update some stuff???
+                    ItemId = Convert.ToInt32(dr["ItemId"]);
+                    ItemVersionId = Convert.ToInt32(dr["ItemVersionId"]);
+                    ModuleId = currentModuleId;
                 }
                 else
                 {
@@ -607,9 +610,10 @@ namespace Engage.Dnn.Publish
                     ItemId = -1;
                     ItemVersionId = -1;
                     ModuleId = currentModuleId;
-                    Save(this.RevisingUserId);
                 }
             }
+
+            Save(this.RevisingUserId);
         }
 
         #endregion
