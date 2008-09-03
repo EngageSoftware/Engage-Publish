@@ -50,7 +50,7 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Item]') AND name = N'{objectQualifier}IX_Item_ItemIdentifier')
 BEGIN
-	DROP INDEX  [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
+	DROP INDEX  {databaseOwner}[{objectQualifier}Publish_Item].[{objectQualifier}IX_Item_ItemIdentifier]
 	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
 	(
 		[ItemIdentifier] ASC
@@ -60,7 +60,7 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersion]') AND name = N'{objectQualifier}IX_ItemVersion_ItemVersionIdentifier')
 BEGIN
-	DROP INDEX  [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	DROP INDEX  {databaseOwner}[{objectQualifier}Publish_ItemVersion].[{objectQualifier}IX_ItemVersion_ItemVersionIdentifier]
 	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
 	(
 		[ItemVersionIdentifier] ASC
