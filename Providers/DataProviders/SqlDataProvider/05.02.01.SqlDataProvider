@@ -1,6 +1,51 @@
-﻿Update Publish_Item set ItemIdentifier = NEWID()
+﻿declare @id int
+declare @identifier UniqueIdentifier
+DECLARE statements CURSOR LOCAL FAST_FORWARD FOR 
+	select Count(*), ItemIdentifier
+	From {databaseOwner}[{objectQualifier}publish_Item]
+	where ItemId > 5
+	Group by ItemIdentifier
+	Having COunt(*) > 1
+OPEN statements
+
+FETCH NEXT FROM statements INTO @id, @identifier
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	Update {databaseOwner}[{objectQualifier}Publish_Item]
+	set ItemIdentifier = NEWID()
+	where ItemIdentifier = @identifier
+	
+	FETCH NEXT FROM statements INTO  @id, @identifier
+	SET NOCOUNT ON
+END
+
+CLOSE statements
+DEALLOCATE statements
 GO
-Update Publish_ItemVersion set ItemversionIdentifier = NEWID()
+
+declare @id int
+declare @identifier UniqueIdentifier
+DECLARE statements CURSOR LOCAL FAST_FORWARD FOR 
+	select Count(*), ItemVersionIdentifier
+	From {databaseOwner}[{objectQualifier}publish_ItemVersion]
+	where ItemId > 5
+	Group by ItemVersionIdentifier
+	Having COunt(*) > 1
+OPEN statements
+
+FETCH NEXT FROM statements INTO @id, @identifier
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	Update {databaseOwner}[{objectQualifier}Publish_ItemVersion]
+	set ItemVersionIdentifier = NEWID()
+	where ItemVersionIdentifier = @identifier
+	
+	FETCH NEXT FROM statements INTO  @id, @identifier
+	SET NOCOUNT ON
+END
+
+CLOSE statements
+DEALLOCATE statements
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Item]') AND name = N'{objectQualifier}IX_Item_ItemIdentifier')
