@@ -24,12 +24,8 @@ using System.Globalization;
 
 namespace Engage.Dnn.Publish.Services
 {
-    //Most of this code is from
-
-    //http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
-
-
-    
+    //This code is written based off the article located at http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
+        
     //TODO: Thoughts on MetaBlogAPI
     //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.
     //Right now Publish works well as a single blog, not multiple blogs for different users
@@ -44,7 +40,6 @@ namespace Engage.Dnn.Publish.Services
         }
 
         #endregion
-
 
         #region IMetaWeblog Members
 
@@ -230,7 +225,9 @@ namespace Engage.Dnn.Publish.Services
             MediaObject mediaObject)
         {
             LocatePortal(Context.Request);
-            if (ValidateUser(username, password))
+                        LocatePortal(Context.Request);
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
             {
                 MediaObjectInfo objectInfo = new MediaObjectInfo();
 
@@ -276,14 +273,10 @@ namespace Engage.Dnn.Publish.Services
 
                 bi.blogName = ui.Username;
 
-                //bi.url = pacc[0].HTTPAlias.ToString();
                 infoList.Add(bi);
-
-                // TODO: Implement your own logic to get blog info objects and set the infoList
 
                 return infoList.ToArray();
             }
-            //TODO: localize this 
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
@@ -308,16 +301,6 @@ namespace Engage.Dnn.Publish.Services
         #endregion
 
         #region Private Methods
-
-        private bool ValidateUser(string username, string password)
-        {
-            LocatePortal(Context.Request);
-            bool result = false;
-
-            // TODO: Implement the logic to validate the user
-
-            return result;
-        }
 
         ///<summary>
         /// Authenticate user

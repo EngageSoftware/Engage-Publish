@@ -229,7 +229,8 @@ namespace Engage.Dnn.Publish
                 this.itemId = AddItem(trans, this.itemTypeId, this.portalId, this.moduleId, itemIdentifier);
             }
             //save generic information	
-            if (itemVersionIdentifier == Guid.Empty) itemVersionIdentifier = Guid.NewGuid();
+            //if (itemVersionIdentifier == Guid.Empty) itemVersionIdentifier = Guid.NewGuid();
+            itemVersionIdentifier = Guid.NewGuid();
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
                 this.Name, this.Description, this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
