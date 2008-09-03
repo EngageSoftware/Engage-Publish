@@ -216,6 +216,8 @@ namespace Engage.Dnn.Publish.Services
 
                 // TODO: Implement your own logic to get posts and set the posts
 
+
+
                 return posts.ToArray();
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
