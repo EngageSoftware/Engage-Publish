@@ -264,7 +264,6 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-
        
         //TODO: should prev_click do anything?
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
