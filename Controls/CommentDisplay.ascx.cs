@@ -241,7 +241,7 @@ namespace Engage.Dnn.Publish.Controls
             if (lastName!= null)
                 sName += " " + lastName.ToString();
 
-            if (url != null)
+            if (url != null && url.ToString().Trim() != string.Empty)
             {
                 sUrl = url.ToString();
                 sComment = string.Format(Localization.GetString("CommentNameDateWithLink", LocalResourceFile), sUrl, sName, Convert.ToDateTime(date.ToString()).ToString(LastUpdatedFormat, CultureInfo.CurrentCulture));

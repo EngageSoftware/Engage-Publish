@@ -248,7 +248,8 @@ namespace Engage.Dnn.Publish.Services
             {
                 bool result = false;
 
-                // TODO: Implement your own logic to delete the post and set the result
+                Item.DeleteItem(Convert.ToInt32(postid));
+                result = true;
 
                 return result;
             }
