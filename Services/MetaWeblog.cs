@@ -108,7 +108,7 @@ namespace Engage.Dnn.Publish.Services
             {
                 bool result = false;
 
-                Article a = Article.GetArticle(Convert.ToInt32(postid));
+                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId);
 
                 a.Description = post.description;
                 a.ArticleText = post.description;
@@ -156,7 +156,7 @@ namespace Engage.Dnn.Publish.Services
             {
                 Post post = new Post();
 
-                Article a = Article.GetArticle(Convert.ToInt32(postid));
+                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId);
 
                 post.description = a.ArticleText;
                 post.title = a.Name;

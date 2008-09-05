@@ -323,6 +323,7 @@ namespace Engage.Dnn.Publish
                 LocalizeControls();
                 if (itemType != null)
                 {
+                    //TODO: we need to figure out PortalID so we can get the folloing items from Cache
                     if (itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         //TODO: where can we get portalid from?

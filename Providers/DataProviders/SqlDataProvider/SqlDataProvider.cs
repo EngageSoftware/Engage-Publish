@@ -1336,7 +1336,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select [Name]");
+            sql.Append("select [Name] ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("Item i join ");

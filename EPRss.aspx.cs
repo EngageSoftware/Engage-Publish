@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish
                 if (i != null)
                 {
                     // look up the itemType if ItemId passed in.
-                    this.ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture)).ToUpperInvariant();
+                    this.ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture), PortalId).ToUpperInvariant();
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
                 else
