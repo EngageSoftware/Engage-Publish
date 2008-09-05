@@ -150,13 +150,19 @@ namespace Engage.Dnn.Publish
             if (ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey) as object;
-                if (o != null)
+                if (o != null && o.ToString() != "-1")
                 {
                     ivs = (ItemVersionSetting)o;
                 }
                 else
                 {
                     ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
+                    if(ivs==null)
+                    {             
+                        //for settings we don't have a value for in the DB we should set the cache to -1 so we don't always make requests to the DB
+                        DataCache.SetCache(cacheKey, "-1", DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                        Utility.AddCacheKey(cacheKey, portalId);
+                    }
                 }
                 if (ivs != null)
                 {
