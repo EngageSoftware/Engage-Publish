@@ -1144,7 +1144,7 @@ namespace Engage.Dnn.Publish.Util
 
             //clear the incoming dt 
             dt.Rows.Clear();
-
+            
             for (int i = 0; i < newDT.Rows.Count; i++)
             {
                 object[] arr = new object[dt.Columns.Count];
@@ -1158,6 +1158,7 @@ namespace Engage.Dnn.Publish.Util
                 dt.Rows.Add(data_row);
             }
         }
+
 
         /// <exception cref="ArgumentNullException"><paramref name="gridView"/> is null.</exception>
         public static void LocalizeGridView(GridView gridView, string resourceFile)
