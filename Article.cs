@@ -501,7 +501,7 @@ namespace Engage.Dnn.Publish
 
         public bool DisplayReturnToList()
         {
-            ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayReturnToList");
+            ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayReturnToList", PortalId);
             if (rlSetting != null)
             {
                 return Convert.ToBoolean(rlSetting.PropertyValue, CultureInfo.InvariantCulture);

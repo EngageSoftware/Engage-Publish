@@ -52,7 +52,7 @@ namespace Engage.Dnn.Publish.Admin
                         //Comments always require approval
                         if (IsCommentsEnabled && IsPublishCommentTypeForPortal(PortalId))
                         {
-                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), DataProvider.Instance().CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
+                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), Comment.CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
                             lnkCommentsForApproval.Visible = true;
                             lnkCommentsForApproval.NavigateUrl = EditUrl("","",Utility.AdminContainer, "&adminType=commentList");
                         }

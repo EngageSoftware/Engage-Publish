@@ -5,6 +5,7 @@ using System.Globalization;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 using System.Xml.Serialization;
+using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish
 {
@@ -124,6 +125,39 @@ namespace Engage.Dnn.Publish
 
             return new Comment((int)dr["commentId"], (int)dr["itemVersionId"], userId, (string)dr["commentText"], (int)dr["approvalStatusId"], Convert.ToDateTime(dr["createdDate"], CultureInfo.InvariantCulture), Convert.ToDateTime(dr["lastUpdated"], CultureInfo.InvariantCulture), ratingId, firstName, lastName, emailAddress, url);
         }
+
+
+        public static int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
+        {
+            //cache this
+            int commentCount = 0;
+            string cacheKey = Utility.CacheKeyPublishAuthorCommentCount + authorUserId.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString();
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey);
+                if (o != null)
+                {
+                    commentCount = (int)o;
+                }
+                else
+                {
+                    commentCount = DataProvider.Instance().CommentsWaitingForApprovalCount(portalId, authorUserId);
+                }
+
+                DataCache.SetCache(cacheKey, commentCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                Utility.AddCacheKey(cacheKey, portalId);
+
+            }
+            else
+            {
+                commentCount = DataProvider.Instance().CommentsWaitingForApprovalCount(portalId, authorUserId);
+            }
+
+            return commentCount;
+
+        }
+
+
 	    #endregion
 
         #region Instance Methods

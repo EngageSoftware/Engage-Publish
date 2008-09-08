@@ -186,6 +186,8 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
         public const string CacheKeyPublishArticleTags = "CacheKeyPublishArticleTags_";
 
+        public const string CacheKeyPublishAuthorCommentCount = "CacheKeyPublishAuthorCommentCount_";
+
         public const string CacheKeyPublishArticleVersion = "CacheKeyPublishArticleVersion_";
         public const string CacheKeyPublishCategory = "CacheKeyPublishCategory_";
         public const string CacheKeyPublishCategoryDisplay = "PublishCacheKeyCategoryDisplay_";
@@ -242,6 +244,7 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishCacheTime = "PublishCacheTime";
         public const string PublishComment = "PublishComment";
+
         public const string PublishCommentAnonymous = "PublishCommentAnonymous";
         public const string PublishCommentApproval = "PublishCommentApproval";
         public const string PublishCommentAutoApprove = "PublishCommentAutoApprove";
