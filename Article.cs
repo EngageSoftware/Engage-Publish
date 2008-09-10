@@ -22,25 +22,25 @@ using Localize = DotNetNuke.Services.Localization.Localization;
 
 namespace Engage.Dnn.Publish
 {
-	/// <summary>
-	/// Summary description for ArticleInfo.
-	/// ArticleInfo holds all of the article specific information
-	/// </summary>
+    /// <summary>
+    /// Summary description for ArticleInfo.
+    /// ArticleInfo holds all of the article specific information
+    /// </summary>
     [XmlRootAttribute(ElementName = "article", IsNullable = false)]
     public class Article : Item
-	{
-		private string articleText = "";
-		private string versionNumber = "";
-		private string versionDescription = "";
-		private string referenceNumber = "";
+    {
+        private string articleText = "";
+        private string versionNumber = "";
+        private string versionDescription = "";
+        private string referenceNumber = "";
         private float averageRating;
 
         private readonly string[] pageSeperator = new[] { "[PAGE]" };
 
         public Article()
-		{
-			ItemTypeId = ItemType.Article.GetId();
-		}
+        {
+            ItemTypeId = ItemType.Article.GetId();
+        }
 
         public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
         {
@@ -158,80 +158,83 @@ namespace Engage.Dnn.Publish
             this.VersionSettings.Add(itemVersionSetting);
 
         }
-        
-		#region Item method implementation
-        
+
+        #region Item method implementation
+
         public override void Save(int revisingUserId)
-		{
+        {
             IDbConnection newConnection = DataProvider.GetConnection();
-			IDbTransaction trans = newConnection.BeginTransaction();
+            IDbTransaction trans = newConnection.BeginTransaction();
 
-			try
-			{
-				SaveInfo(trans, revisingUserId);
-				UpdateApprovalStatus(trans);
+            try
+            {
+                SaveInfo(trans, revisingUserId);
+                UpdateApprovalStatus(trans);
 
-				//update category version now
-				AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText, this.ReferenceNumber);
+                //update category version now
+                AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText, this.ReferenceNumber);
+                //Save the Relationships
+                SaveRelationships(trans);
 
                 //Save the ItemVersionSettings
-                SaveItemVersionSettings(trans);
+                //SaveItemVersionSettings(trans);
 
-                //Save the Relationships
-				SaveRelationships(trans);
-				//do all category save
-                string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
-                if (Utility.HasValue(s))
-                {
-                    if (Convert.ToBoolean(s, CultureInfo.InvariantCulture))
-                    {
-                        //Save Tags
-                        SaveTags(trans);
-                    }
-                }
-				trans.Commit();
-
-                try
-                {
-                    if (Utility.IsPingEnabledForPortal(this.PortalId))
-                    {
-                        if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
-                        {
-                            string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                            string changedUrl = Utility.HasValue(surl) ? s : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
-                            Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
-
-                            //ping
-                            Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    /// WHAT IS THIS? Why try/catch and gooble up errors???
-                    //catch the ping exception but let everything else proceed.
-                    /// localize this error
-                    //Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
-                    //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
-
-                }
-                Utility.ClearPublishCache(PortalId);
-
-			}
-			catch
-			{
-				trans.Rollback();
-	            //Rolling back to the original version, exception thrown.
-				ItemVersionId = OriginalItemVersionId;
-				throw;
-			}
-			finally
-			{
-				//clean up connection stuff
+                trans.Commit();
+            }
+            catch
+            {
+                trans.Rollback();
+                //Rolling back to the original version, exception thrown.
+                ItemVersionId = OriginalItemVersionId;
+                throw;
+            }
+            finally
+            {
+                //clean up connection stuff
                 newConnection.Close();
-			}
+            }
 
-		}
+            SaveItemVersionSettings();
+
+            string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
+            if (Utility.HasValue(s))
+            {
+                if (Convert.ToBoolean(s, CultureInfo.InvariantCulture))
+                {
+                    //Save Tags
+                    //SaveTags(trans);
+                    SaveTags();
+                }
+            }
+
+            try
+            {
+                if (Utility.IsPingEnabledForPortal(this.PortalId))
+                {
+                    if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
+                    {
+                        string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
+                        string changedUrl = Utility.HasValue(surl) ? s : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
+                        Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
+
+                        //ping
+                        Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                /// WHAT IS THIS? Why try/catch and gooble up errors???
+                //catch the ping exception but let everything else proceed.
+                /// localize this error
+                //Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
+                //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
+
+            }
+            Utility.ClearPublishCache(PortalId);
+
+
+        }
 
         public override void UpdateApprovalStatus()
         {
@@ -252,7 +255,7 @@ namespace Engage.Dnn.Publish
 
         public override string EmailApprovalBody
         {
-            get 
+            get
             {
                 string body = Localize.GetString("EMAIL_APPROVAL_BODY", "~" + Utility.DesktopModuleFolderName + "articlecontrols/App_LocalResources/articleedit");
                 return body;
@@ -261,7 +264,7 @@ namespace Engage.Dnn.Publish
 
         public override string EmailApprovalSubject
         {
-            get 
+            get
             {
                 string subject = Localize.GetString("EMAIL_APPROVAL_SUBJECT", "~" + Utility.DesktopModuleFolderName + "articlecontrols/App_LocalResources/articleedit");
                 return subject;
@@ -270,7 +273,7 @@ namespace Engage.Dnn.Publish
 
         public override string EmailStatusChangeBody
         {
-            get 
+            get
             {
                 string body = Localize.GetString("EMAIL_STATUSCHANGE_BODY", "~" + Utility.DesktopModuleFolderName + "articlecontrols/App_LocalResources/articleedit");
                 return body;
@@ -286,37 +289,37 @@ namespace Engage.Dnn.Publish
             }
         }
 
-		#endregion
+        #endregion
 
         [XmlElement(Order = 39)]
-		public string ArticleText 
-		{
-			get {return this.articleText;}
-			set {this.articleText = value;}
-		}
+        public string ArticleText
+        {
+            get { return this.articleText; }
+            set { this.articleText = value; }
+        }
 
         [XmlElement(Order = 40)]
-		public string VersionNumber 
-		{
-			get {return this.versionNumber;}
-			set {this.versionNumber = value;}
-		}
+        public string VersionNumber
+        {
+            get { return this.versionNumber; }
+            set { this.versionNumber = value; }
+        }
 
         [XmlElement(Order = 41)]
-		public string VersionDescription 
-		{
-			get {return this.versionDescription;}
-			set {this.versionDescription = value;}
-		}
+        public string VersionDescription
+        {
+            get { return this.versionDescription; }
+            set { this.versionDescription = value; }
+        }
 
         [XmlElement(Order = 42)]
-		public string ReferenceNumber 
-		{
-			get {return this.referenceNumber;}
-			set {this.referenceNumber = value;}
-		}
+        public string ReferenceNumber
+        {
+            get { return this.referenceNumber; }
+            set { this.referenceNumber = value; }
+        }
 
-                /// <summary>
+        /// <summary>
         /// Gets the average rating of this article.
         /// </summary>
         /// <value>The average rating for this article.</value>
@@ -327,14 +330,14 @@ namespace Engage.Dnn.Publish
             {
                 return averageRating;
             }
-             set
-             {
-                 //if value is NULL in database, CBO fills it with MinValue
-                 this.averageRating = value != float.MinValue ? value : 0;
-             }
+            set
+            {
+                //if value is NULL in database, CBO fills it with MinValue
+                this.averageRating = value != float.MinValue ? value : 0;
+            }
         }
 
-       
+
         public void AddRating(int rating, int? userId)
         {
             UserFeedback.Rating.AddRating(this.ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
@@ -363,15 +366,15 @@ namespace Engage.Dnn.Publish
             }
         }
 
-		public static Article Create(int portalId)
-		{
-			Article a = new Article();
-			a.PortalId = portalId;
-			return a;
-		}
+        public static Article Create(int portalId)
+        {
+            Article a = new Article();
+            a.PortalId = portalId;
+            return a;
+        }
 
-		public static Article GetArticleVersion(int articleVersionId, int portalId)
-		{
+        public static Article GetArticleVersion(int articleVersionId, int portalId)
+        {
             string cacheKey = Utility.CacheKeyPublishArticleVersion + articleVersionId.ToString(CultureInfo.InvariantCulture);
             Article a;
             if (ModuleBase.UseCachePortal(portalId))
@@ -401,18 +404,18 @@ namespace Engage.Dnn.Publish
                 }
             }
             return a;
-		}
+        }
 
-		public static void AddArticleVersion(int itemVersionId, int itemId, string  versionNumber, string versionDescription, string articleText, string referenceNumber)
-		{DataProvider.Instance().AddArticleVersion(itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber);}
+        public static void AddArticleVersion(int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
+        { DataProvider.Instance().AddArticleVersion(itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber); }
 
-		public static void AddArticleVersion(IDbTransaction trans, int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
-		{DataProvider.Instance().AddArticleVersion(trans, itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber);}
+        public static void AddArticleVersion(IDbTransaction trans, int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
+        { DataProvider.Instance().AddArticleVersion(trans, itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber); }
 
-		public static DataTable GetArticles(int portalId)
-		{
-			return DataProvider.Instance().GetArticles(portalId);
-		}
+        public static DataTable GetArticles(int portalId)
+        {
+            return DataProvider.Instance().GetArticles(portalId);
+        }
 
         public static DataTable GetArticlesByPortalId(int portalId)
         {
@@ -425,19 +428,19 @@ namespace Engage.Dnn.Publish
         }
 
         public static DataTable GetArticlesSearchIndexingUpdated(int portalId, int moduleDefId, int displayTabId)
-		{
+        {
             return DataProvider.Instance().GetArticlesSearchIndexingUpdated(portalId, moduleDefId, displayTabId);
-		}
+        }
 
         public static DataTable GetArticlesSearchIndexingNew(int portalId, int displayTabId)
-		{
+        {
             return DataProvider.Instance().GetArticlesSearchIndexingNew(portalId, displayTabId);
-		}
-        
-		public static DataTable GetArticles(int parentItemId, int portalId)
-		{
-			return DataProvider.Instance().GetArticles(parentItemId, portalId);
-		}
+        }
+
+        public static DataTable GetArticles(int parentItemId, int portalId)
+        {
+            return DataProvider.Instance().GetArticles(parentItemId, portalId);
+        }
 
         public static Article GetArticle(int itemId)
         {
@@ -450,8 +453,8 @@ namespace Engage.Dnn.Publish
             return a;
         }
 
-		public static Article GetArticle(int itemId, int portalId)
-		{
+        public static Article GetArticle(int itemId, int portalId)
+        {
             string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
             Article a;
             if (ModuleBase.UseCachePortal(portalId))
@@ -492,7 +495,7 @@ namespace Engage.Dnn.Publish
             //    a.CorrectDates();
             //}
             //return a;
-		}
+        }
 
         public static int GetOldArticleId(int itemId)
         {
@@ -540,7 +543,7 @@ namespace Engage.Dnn.Publish
                     //update some stuff???
                 }
                 else
-                {   
+                {
                     //this version does not exist.
                     ItemId = -1;
                     ItemVersionId = -1;
@@ -548,10 +551,10 @@ namespace Engage.Dnn.Publish
                     save = true;
                 }
             }
-            
+
             if (save) Save(this.RevisingUserId);
         }
-     
+
         #endregion
     }
 }

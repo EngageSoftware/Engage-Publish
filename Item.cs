@@ -275,7 +275,27 @@ namespace Engage.Dnn.Publish
                 ItemTag it = Tags[i];
 
                 //if this item tag relationship already existed for another versionID don't increment the count;
-                if (!ItemTag.CheckItemTag(trans, this.ItemId, it.TagId))
+                //if (!ItemTag.CheckItemTag(trans, this.ItemId, it.TagId))
+                //{
+                //    Tag t = Tag.GetTag(it.TagId, PortalId);
+                //    t.TotalItems++;
+                //    t.Save(trans);
+                //}
+
+                it.ItemVersionId = this.ItemVersionId;
+                //ad the itemtag relationship
+                ItemTag.AddItemTag(trans, it.ItemVersionId, it.TagId);
+            }
+        }
+
+        protected void SaveTags()
+        {
+            for (int i = 0; i < Tags.Count; i++)
+            {
+                ItemTag it = Tags[i];
+
+                //if this item tag relationship already existed for another versionID don't increment the count;
+                if (!ItemTag.CheckItemTag(this.ItemId, it.TagId))
                 {
                     Tag t = Tag.GetTag(it.TagId, PortalId);
                     t.TotalItems++;
@@ -284,7 +304,7 @@ namespace Engage.Dnn.Publish
 
                 it.ItemVersionId = this.ItemVersionId;
                 //ad the itemtag relationship
-                ItemTag.AddItemTag(trans, it.ItemVersionId, it.TagId);
+                ItemTag.AddItemTag(it.ItemVersionId, it.TagId);
             }
         }
 
@@ -297,6 +317,18 @@ namespace Engage.Dnn.Publish
                 ir.ItemVersionId = this.ItemVersionId;
 
                 ItemVersionSetting.AddItemVersionSetting(trans, ir.ItemVersionId, ir.ControlName, ir.PropertyName, ir.PropertyValue);
+            }
+        }
+
+        protected void SaveItemVersionSettings()
+        {
+            for (int i = 0; i < VersionSettings.Count; i++)
+            {
+                ItemVersionSetting ir = VersionSettings[i];
+
+                ir.ItemVersionId = this.ItemVersionId;
+
+                ItemVersionSetting.AddItemVersionSetting(ir.ItemVersionId, ir.ControlName, ir.PropertyName, ir.PropertyValue);
             }
         }
 

@@ -295,11 +295,16 @@ namespace Engage.Dnn.Publish.Data
         public abstract IDataReader GetItemTags(int itemVersionId);
 
         public abstract int CheckItemTag(IDbTransaction trans, int itemId, int tagId);
+        public abstract int CheckItemTag(int itemId, int tagId);
 
         public abstract void AddItemTag(int itemVersionId, int tagId);
         public abstract void AddItemTag(IDbTransaction trans, int itemVersionId, int tagId);
 
         public abstract int AddTag(Tag tag);
+        public abstract int AddTag(IDbTransaction trans,Tag tag);
+
+        public abstract void UpdateTag(IDbTransaction trans, Tag tag);
+
         public abstract void UpdateTag(Tag tag);
 
         #endregion

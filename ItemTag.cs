@@ -106,6 +106,12 @@ namespace Engage.Dnn.Publish
         {
             return DataProvider.Instance().CheckItemTag(trans, itemId, tagId) > 0;
         }
+
+        public static bool CheckItemTag(int itemId, int tagId)
+        {
+            return DataProvider.Instance().CheckItemTag(itemId, tagId) > 0;
+        }
+
 	}
 }
 

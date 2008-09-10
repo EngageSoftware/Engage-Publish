@@ -67,3 +67,46 @@ BEGIN
 	) ON [PRIMARY]
 END
 GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddComment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddComment]
+	@itemVersionId int,
+	@userId int,
+	@commentText ntext,
+	@approvalStatusId int,
+	@ratingId int,
+	@firstName nvarchar(50),
+	@lastName nvarchar(50),
+	@emailAddress nvarchar(256),
+	@URL nvarchar(255)
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Comment] (ItemVersionId, UserId, RatingId, CommentText, CreatedDate, LastUpdated, ApprovalStatusId, FirstName, LastName, EmailAddress, URL)
+	VALUES (@itemVersionId, @userId, @ratingId, @commentText, getdate(), getdate(), @approvalStatusId, @firstName, @lastName, @emailAddress, @URL)
+
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spAddRating]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddRating]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spAddRating]
+	@itemVersionId int, 
+	@userId int, 
+	@rating int = 0
+AS
+BEGIN
+	INSERT INTO [{objectQualifier}Publish_Rating] (ItemVersionId, UserId, Rating, CreatedDate, LastUpdated)
+	VALUES (@itemVersionId, @userId, @rating, getdate(), getdate())
+
+	select SCOPE_IDENTITY()
+	return SCOPE_IDENTITY()
+END
+GO
+
+
+

@@ -582,6 +582,19 @@ namespace Engage.Dnn.Publish
             }
         }
 
+        public void Save(IDbTransaction trans)
+        {
+            if (this.TagId == 0)
+            {
+                this.tagId = DataProvider.Instance().AddTag(trans, this);
+            }
+            else
+            {
+                DataProvider.Instance().UpdateTag(trans, this);
+            }
+        }
+
+
 //        #region Static Data Methods
 //        /// <summary>
 //        /// Adds an item to a tag.

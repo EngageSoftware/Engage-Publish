@@ -2504,8 +2504,21 @@ namespace Engage.Dnn.Publish.Data
 
         public override void UpdateTag(Tag tag)
         {
+
             SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spUpdateTag", tag.TagId, tag.Description, tag.TotalItems);
         }
+        public override int AddTag(IDbTransaction trans, Tag tag)
+        {
+            
+            return Convert.ToInt32(SqlHelper.ExecuteScalar((SqlTransaction)trans, NamePrefix + "spInsertTag", tag.Name, tag.Description, tag.TotalItems, tag.LanguageId, tag.PortalId), CultureInfo.InvariantCulture);
+            //return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spInsertTag", tag.Name, tag.Description, tag.TotalItems, tag.LanguageId, tag.PortalId), CultureInfo.InvariantCulture);
+        }
+
+        public override void UpdateTag(IDbTransaction trans, Tag tag)
+        {
+            SqlHelper.ExecuteNonQuery((SqlTransaction)trans, NamePrefix + "spUpdateTag", tag.TagId, tag.Description, tag.TotalItems);
+        }
+
 
         public override int CheckItemTag(IDbTransaction trans, int itemId, int tagId)
         {
@@ -2521,6 +2534,22 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(tagId);
             return Convert.ToInt32(SqlHelper.ExecuteScalar((SqlTransaction)trans, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
         }
+
+        public override int CheckItemTag(int itemId, int tagId)
+        {
+            StringBuilder sql = new StringBuilder(250);
+            sql.Append("select top 1 itemversionid from ");
+            sql.Append(NamePrefix);
+            sql.Append("itemversiontags ivt ");
+            sql.Append(" where ivt.itemversionId in (select itemversionId from ");
+            sql.Append(NamePrefix);
+            sql.Append("vwItemVersions viv where itemId=");
+            sql.Append(itemId);
+            sql.Append(")and tagId = ");
+            sql.Append(tagId);
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
+        }
+
 
 
         public static object ConvertTagsToXml(ArrayList tagIds)
