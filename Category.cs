@@ -21,37 +21,37 @@ using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish
 {
-	/// <summary>
-	/// Summary description for Category.
-	/// </summary>
+    /// <summary>
+    /// Summary description for Category.
+    /// </summary>
     [XmlRootAttribute(ElementName = "category", IsNullable = false)]
     public class Category : Item
-	{
+    {
         //[XmlAttribute(AttributeName="noNamespaceSchemaLocation", Namespace="http://www.w3.org/2001/XMLSchema-instance")]
         //public string noNamespaceSchemaLocation = "Content.Publish.xsd";
 
-		#region "Private Properties"
-		private int sortOrder = 5;
+        #region "Private Properties"
+        private int sortOrder = 5;
 
-		private int childDisplayTabId = -1;
+        private int childDisplayTabId = -1;
 
         private string childDisplayTabName = string.Empty;
 
-		#endregion
+        #endregion
 
         #region "Public Properties"
         [XmlElement(Order = 39)]
-		public int SortOrder
-		{
-			get { return sortOrder;}
-			set { sortOrder = value;}
-		}
+        public int SortOrder
+        {
+            get { return sortOrder; }
+            set { sortOrder = value; }
+        }
 
         [XmlElement(Order = 40)]
-		public int ChildDisplayTabId
-		{
-			get { return childDisplayTabId;}
-			set { childDisplayTabId = value;}
+        public int ChildDisplayTabId
+        {
+            get { return childDisplayTabId; }
+            set { childDisplayTabId = value; }
         }
         [XmlElement(Order = 41)]
         public string ChildDisplayTabName
@@ -80,68 +80,71 @@ namespace Engage.Dnn.Publish
 
         #endregion
 
-        
+
         #region "Public Methods"
 
         public Category()
-		{
-			//this type is always a Category
-			ItemTypeId = ItemType.Category.GetId();
-		}
-
-        
+        {
+            //this type is always a Category
+            ItemTypeId = ItemType.Category.GetId();
+        }
 
 
 
 
-		#endregion
 
-		#region Item method implementation
+
+        #endregion
+
+        #region Item method implementation
 
         public override void Save(int authorId)
-		{
+        {
             IDbConnection newConnection = DataProvider.GetConnection();
-			IDbTransaction trans = newConnection.BeginTransaction();
-			
-			//int relationTypeId = RelationshipType.ItemToParentCategory.GetId();
+            IDbTransaction trans = newConnection.BeginTransaction();
 
-			//create a transaction
-			//get a connection
-			try
-			{
-				SaveInfo(trans, authorId);
-				
-				//TODO: only do the following if admin
-				UpdateApprovalStatus(trans);
+            //int relationTypeId = RelationshipType.ItemToParentCategory.GetId();
 
-				//update category version now
-				AddCategoryVersion(trans, ItemVersionId, ItemId, this.SortOrder, this.ChildDisplayTabId);
+            //create a transaction
+            //get a connection
+            try
+            {
+                SaveInfo(trans, authorId);
 
-                SaveItemVersionSettings(trans);
+                //TODO: only do the following if admin
+                UpdateApprovalStatus(trans);
 
-				SaveRelationships(trans);
-
-                //Save Tags
-                SaveTags(trans);
+                //update category version now
+                AddCategoryVersion(trans, ItemVersionId, ItemId, this.SortOrder, this.ChildDisplayTabId);
 
 
-				//do all category save
-				trans.Commit();
-                Utility.ClearPublishCache(PortalId);
-			}
-			catch
-			{
-				trans.Rollback();
-				//rollback and throw an error
-				ItemVersionId = OriginalItemVersionId;
-				throw;
-			}
-			finally
-			{
-				//clean up connection stuff
-				newConnection.Close();
-			}
-		}
+                SaveRelationships(trans);
+
+
+
+                //do all category save
+                trans.Commit();
+            }
+            catch
+            {
+                trans.Rollback();
+                //rollback and throw an error
+                ItemVersionId = OriginalItemVersionId;
+                throw;
+            }
+            finally
+            {
+                //clean up connection stuff
+                newConnection.Close();
+            }
+
+            //Save Tags
+            SaveTags();
+            SaveItemVersionSettings();
+
+
+            Utility.ClearPublishCache(PortalId);
+        }
 
         public override void UpdateApprovalStatus()
         {
@@ -197,16 +200,16 @@ namespace Engage.Dnn.Publish
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Static methods
+        #region Static methods
 
-		public static Category Create(int portalId)
-		{
-			Category i = new Category();
-			i.PortalId = portalId;
-			return i;
-		}
+        public static Category Create(int portalId)
+        {
+            Category i = new Category();
+            i.PortalId = portalId;
+            return i;
+        }
 
         /// <summary>
         /// Creates a Category object that you can continue to modify or save back into the database., 
@@ -250,8 +253,8 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal ID that we want to return data for.</param>
         /// <returns>A <see cref="DataSet" /> with the categories available.</returns>
 
-		public static DataSet GetTopLevelCategories(int portalId)
-		{
+        public static DataSet GetTopLevelCategories(int portalId)
+        {
             string cacheKey = Utility.CacheKeyPublishTopLevelCategories + portalId.ToString(CultureInfo.InvariantCulture);
             DataSet ds;
             if (ModuleBase.UseCachePortal(portalId))
@@ -273,15 +276,15 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                ds = DataProvider.Instance().GetTopLevelCategories(portalId);            
+                ds = DataProvider.Instance().GetTopLevelCategories(portalId);
             }
-        
-            return ds;
-		}
 
-		public static DataTable GetChildCategories(int parentItemId, int portalId)
-		{
-			//return DataProvider.Instance().GetChildCategories(parentItemId, portalId);
+            return ds;
+        }
+
+        public static DataTable GetChildCategories(int parentItemId, int portalId)
+        {
+            //return DataProvider.Instance().GetChildCategories(parentItemId, portalId);
             string cacheKey = Utility.CacheKeyPublishChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
@@ -307,7 +310,7 @@ namespace Engage.Dnn.Publish
             }
 
             return dt;
-		}
+        }
 
         public static DataTable GetChildCategories(int parentItemId, int portalId, int itemTypeId)
         {
@@ -341,9 +344,9 @@ namespace Engage.Dnn.Publish
 
         }
 
-		public static DataTable GetAllChildCategories(int parentItemId, int portalId)
-		{	
-			//return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
+        public static DataTable GetAllChildCategories(int parentItemId, int portalId)
+        {
+            //return DataProvider.Instance().GetAllChildCategories(parentItemId, portalId);
 
             string cacheKey = Utility.CacheKeyPublishAllChildCategories + parentItemId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
@@ -370,10 +373,10 @@ namespace Engage.Dnn.Publish
             }
 
             return dt;
-		}
+        }
 
-		public static int GetParentCategory(int childItemId, int portalId)
-		{
+        public static int GetParentCategory(int childItemId, int portalId)
+        {
             int parentId;
             string cacheKey = Utility.CacheKeyPublishItemParentCategoryId + childItemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
             if (ModuleBase.UseCachePortal(portalId))
@@ -391,27 +394,27 @@ namespace Engage.Dnn.Publish
                 parentId = DataProvider.Instance().GetParentCategory(childItemId, portalId);
             }
             return parentId;
-		}
+        }
 
-		public static void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
-		{
+        public static void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
+        {
             DataProvider.Instance().AddCategoryVersion(itemVersionId, itemId, sortOrder, childDisplayTabId);
         }
 
-		public static void AddCategoryVersion(IDbTransaction trans, int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
-		{
+        public static void AddCategoryVersion(IDbTransaction trans, int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
+        {
             DataProvider.Instance().AddCategoryVersion(trans, itemVersionId, itemId, sortOrder, childDisplayTabId);
         }
 
         public static DataTable GetChildrenInCategoryPaging(int categoryId, int childTypeId, int maxItems, int portalId, bool customSort, bool customSortDirection, string sortOrder, int index, int pageSize)
         {
-             return DataProvider.Instance().GetChildrenInCategoryPaging(categoryId, childTypeId, maxItems, portalId, customSort, customSortDirection, sortOrder, index, pageSize);
+            return DataProvider.Instance().GetChildrenInCategoryPaging(categoryId, childTypeId, maxItems, portalId, customSort, customSortDirection, sortOrder, index, pageSize);
         }
 
-		public static Category GetCategoryVersion(int itemVersionId, int portalId)
-		{
+        public static Category GetCategoryVersion(int itemVersionId, int portalId)
+        {
             string cacheKey = Utility.CacheKeyPublishCategoryVersion + itemVersionId.ToString(CultureInfo.InvariantCulture);
-		    Category c;
+            Category c;
             if (ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
@@ -442,11 +445,11 @@ namespace Engage.Dnn.Publish
                 }
             }
             return c;
-		}
+        }
 
         public static Category GetCategory(string categoryName, int portalId)
         {
-            
+
             int itemId = DataProvider.Instance().GetCategoryItemId(categoryName, portalId);
             Category c = GetCategory(itemId, portalId);
 
@@ -464,10 +467,10 @@ namespace Engage.Dnn.Publish
             return c;
         }
 
-		public static Category GetCategory(int itemId, int portalId)
-		{
+        public static Category GetCategory(int itemId, int portalId)
+        {
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
-		    Category c;
+            Category c;
             if (ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
@@ -496,12 +499,12 @@ namespace Engage.Dnn.Publish
             }
             return c;
 
-		}
+        }
 
-		public static DataTable GetCategories(int portalId)
-		{
-			return DataProvider.Instance().GetCategories(portalId);
-		}
+        public static DataTable GetCategories(int portalId)
+        {
+            return DataProvider.Instance().GetCategories(portalId);
+        }
 
         public static DataTable GetCategoriesByModuleId(int moduleId)
         {
@@ -513,20 +516,20 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetCategoriesByPortalId(portalId);
         }
 
-		public static DataTable GetCategoriesHierarchy(int portalId)
-		{
-			return DataProvider.Instance().GetCategoriesHierarchy(portalId);
-		}
+        public static DataTable GetCategoriesHierarchy(int portalId)
+        {
+            return DataProvider.Instance().GetCategoriesHierarchy(portalId);
+        }
 
-//		public static IDataReader GetCategories(int portalId)
-//		{
-//			return DataProvider.Instance().GetCategories(portalId);
-//		}
+        //		public static IDataReader GetCategories(int portalId)
+        //		{
+        //			return DataProvider.Instance().GetCategories(portalId);
+        //		}
 
-		public static IDataReader GetCategoryListing(int parentItemId, int portalId)
-		{
-			return DataProvider.Instance().GetCategoryListing(parentItemId, portalId);
-		}
+        public static IDataReader GetCategoryListing(int parentItemId, int portalId)
+        {
+            return DataProvider.Instance().GetCategoryListing(parentItemId, portalId);
+        }
 
         public static int GetOldCategoryId(int itemId)
         {
@@ -545,8 +548,8 @@ namespace Engage.Dnn.Publish
             }
             return articles;
         }
-        
-		#endregion
+
+        #endregion
 
         #region TransportableElement Methods
 
@@ -591,7 +594,7 @@ namespace Engage.Dnn.Publish
             relationship.RelationshipTypeId = RelationshipType.CategoryToTopLevelCategory.GetId();
             relationship.ParentItemId = TopLevelCategoryItemType.Category.GetId();
             this.Relationships.Add(relationship);
-            bool save= false;
+            bool save = false;
 
             //now the Unique Id's
             //Does this ItemVersion exist in my db?
