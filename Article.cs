@@ -55,7 +55,7 @@ namespace Engage.Dnn.Publish
             irel.ParentItemId = parentCategoryId;
 
             a.Relationships.Add(irel);
-            a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.Now.ToString();
+            a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             a.PortalId = portalId;
             a.ModuleId = moduleId;
 
