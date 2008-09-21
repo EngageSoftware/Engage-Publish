@@ -323,7 +323,8 @@ namespace Engage.Dnn.Publish
                         }
                     }
 
-                    wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
+                    //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
+                    wr.WriteElementString("description", this.Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
                     //TODO: why was thumbnail included?
                     //wr.WriteElementString("thumbnail", thumbnail);
