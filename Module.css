@@ -1065,6 +1065,7 @@ a.mouseOverImage:hover
 	padding:0px; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
 	display:inline-block; /*this enables the div to wrap around items in IE7 */
 	border:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
+	width:100%;
 }
 
 .altCategoryItemList

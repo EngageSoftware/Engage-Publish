@@ -91,9 +91,6 @@ namespace Engage.Dnn.Publish
 
 
 
-
-
-
         #endregion
 
         #region Item method implementation
@@ -110,19 +107,11 @@ namespace Engage.Dnn.Publish
             try
             {
                 SaveInfo(trans, authorId);
-
                 //TODO: only do the following if admin
                 UpdateApprovalStatus(trans);
-
                 //update category version now
                 AddCategoryVersion(trans, ItemVersionId, ItemId, this.SortOrder, this.ChildDisplayTabId);
-
-
                 SaveRelationships(trans);
-
-
-
-                //do all category save
                 trans.Commit();
             }
             catch
@@ -203,6 +192,12 @@ namespace Engage.Dnn.Publish
         #endregion
 
         #region Static methods
+
+        /// <summary>
+        /// Creates an empty Category object
+        /// </summary>
+        /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
+        /// <returns>A <see cref="Category" /> with the assigned values.</returns>
 
         public static Category Create(int portalId)
         {
