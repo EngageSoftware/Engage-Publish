@@ -1132,24 +1132,17 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetItemTypes();
         }
 
-        [Obsolete("This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly.", false)]
+        [Obsolete("This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly. DeleteItem(int itemId, int portalId).", false)]
         public static void DeleteItem(int itemId)
         {
-                        
             DataProvider.Instance().DeleteItem(itemId);
-            //TODO: implement Util.Utility.ClearPublishCache(this.PortalId);
-
         }
 
         public static void DeleteItem(int itemId, int portalId)
         {
-
             DataProvider.Instance().DeleteItem(itemId);
-            Util.Utility.ClearPublishCache(portalId);
-
+            Utility.ClearPublishCache(portalId);
         }
-
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
         public string GetApprovalStatusTypeName()

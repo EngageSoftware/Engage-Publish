@@ -74,33 +74,33 @@ namespace Engage.Dnn.Publish
 
             if (m != null)
             {
-                if (Utility.HasValue(m.ToString()))
+                if (Utility.HasValue(m))
                 {
-                    modid = Convert.ToInt32(m.ToString(), CultureInfo.InvariantCulture);
+                    modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
                 }
             }
 
             if (pi != null)
             {
-                if (Utility.HasValue(pi.ToString()))
+                if (Utility.HasValue(pi))
                 {
-                    pageid = Convert.ToInt32(pi.ToString(), CultureInfo.InvariantCulture);
+                    pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
                 }
             }
 
             if (o != null)
             {
-                if (Utility.HasValue(o.ToString()))
+                if (Utility.HasValue(o))
                 {
-                    tabid = Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
+                    tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
             }
 
             if (lang != null)
             {
-                if (Utility.HasValue(lang.ToString()))
+                if (Utility.HasValue(lang))
                 {
-                    language = lang.ToString();
+                    language = lang;
                 }
             }
 
@@ -161,8 +161,8 @@ namespace Engage.Dnn.Publish
                 string languageValue = string.Empty;
                 if (!string.IsNullOrEmpty(language))
                 {
-                    languageValue = "&language=" + language.ToString();
-                    friendlyLanguageValue = "/language/" + language.ToString() + "/";
+                    languageValue = "&language=" + this.language;
+                    friendlyLanguageValue = "/language/" + this.language + "/";
                 }
 
                 if (item != null)
@@ -311,12 +311,10 @@ namespace Engage.Dnn.Publish
                 {
                     return "/pageid/" + pageid.ToString(CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
-                }
+                
+                return "&pageid=" + this.pageid.ToString(CultureInfo.InvariantCulture);
             }
-            else return string.Empty;
+            return string.Empty;
         }
 
         private void Page_Load(object sender, EventArgs e)

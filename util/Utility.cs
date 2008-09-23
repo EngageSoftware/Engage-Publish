@@ -361,12 +361,9 @@ namespace Engage.Dnn.Publish.Util
         public static string GetPortalUrl(int portalId)
         {
             PortalAliasInfo pai = GetPortalAliasInfo(portalId);
-            if (pai != null)
-                return "http://" + pai.HTTPAlias.ToString();
-            else
-            {
-                return ApplicationUrl;
-            }
+            if (pai != null) return "http://" + pai.HTTPAlias;
+            
+            return ApplicationUrl;
         }
 
         public static string WebServiceUrl
