@@ -108,6 +108,15 @@ namespace Engage.Dnn.Publish
                     lblArticleTitle.Text = pageTitle.Text = a.Name;
                     lblArticleText.Text = a.ArticleText.Replace("[PAGE]", "");
 
+                    //TODO: configure this page to allow for displaying author, date, etc based on the itemversionsettings
+
+                    //ItemVersionSetting auSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlAuthor", "Visible", PortalId);
+                    //if (auSetting != null)
+                    //{
+                    //    ShowAuthor = Convert.ToBoolean(auSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    //}
+
+
                     lnkPortalLogo.NavigateUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias.ToString();
                     lnkPortalLogo.ImageUrl = PortalSettings.HomeDirectory + PortalSettings.LogoFile;
 

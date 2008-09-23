@@ -692,7 +692,8 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     if (!inUse && !isFeatured)
                     {
-                        Item.DeleteItem(ItemId);
+                        //Item.DeleteItem(ItemId);
+                        Item.DeleteItem(ItemId,PortalId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
 
                     }

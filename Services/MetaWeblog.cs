@@ -248,7 +248,8 @@ namespace Engage.Dnn.Publish.Services
             {
                 bool result = false;
 
-                Item.DeleteItem(Convert.ToInt32(postid));
+                //Item.DeleteItem(Convert.ToInt32(postid));
+                Item.DeleteItem(Convert.ToInt32(postid), portalId);
                 result = true;
 
                 return result;

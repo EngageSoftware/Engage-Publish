@@ -1134,11 +1134,20 @@ namespace Engage.Dnn.Publish
 
         public static void DeleteItem(int itemId)
         {
-            
+                        
             DataProvider.Instance().DeleteItem(itemId);
             //TODO: implement Util.Utility.ClearPublishCache(this.PortalId);
 
         }
+
+        public static void DeleteItem(int itemId, int portalId)
+        {
+
+            DataProvider.Instance().DeleteItem(itemId);
+            Util.Utility.ClearPublishCache(portalId);
+
+        }
+
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]

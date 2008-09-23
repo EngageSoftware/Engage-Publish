@@ -438,7 +438,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     if (!hasChildren)
                     {
-                        Item.DeleteItem(ItemId);
+                        //Item.DeleteItem(ItemId);
+                        Item.DeleteItem(ItemId, PortalId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
                         //Util.Utility.ClearPublishCache(PortalId);
                     }
