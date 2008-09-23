@@ -347,11 +347,25 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
+
+                //todo: should application URL use PortalId?
+
                 if (HttpContext.Current == null)
                 {
                     return string.Empty;
                 }
                 return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
+            }
+        }
+
+        public static string GetPortalUrl(int portalId)
+        {
+            PortalAliasInfo pai = GetPortalAliasInfo(portalId);
+            if (pai != null)
+                return "http://" + pai.HTTPAlias.ToString();
+            else
+            {
+                return ApplicationUrl;
             }
         }
 
@@ -910,7 +924,7 @@ namespace Engage.Dnn.Publish.Util
                     {
                         if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                         {
-                            return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                            return GetPortalUrl(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
                                    + tabId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters;
                         }
                         return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
@@ -918,7 +932,7 @@ namespace Engage.Dnn.Publish.Util
                     }
                     if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                     {
-                        return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
+                        return GetPortalUrl(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid="
                                + tabId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId + UsePageId(pageId, portalId) + otherParameters;
                     }
                     return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
@@ -927,7 +941,7 @@ namespace Engage.Dnn.Publish.Util
                 }
                 if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                 {
-                    return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId)
+                    return GetPortalUrl(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId)
                            + otherParameters;
                 }
                 return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture)
@@ -963,13 +977,13 @@ namespace Engage.Dnn.Publish.Util
                 {
                     if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                     {
-                        return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId;
+                        return GetPortalAliasInfo(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId;
                     }
                     return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId; 
                 }
                 if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
                 {
-                    return ApplicationUrl + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
+                    return GetPortalAliasInfo(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
                 }
                 return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
             }
@@ -984,41 +998,6 @@ namespace Engage.Dnn.Publish.Util
             }
             return string.Empty;
         }
-
-        //		Public Function OnlyAlphaNumericChars(ByVal OrigString As String) As String
-        //            '***********************************************************
-        //            'INPUT:  Any String
-        //            'OUTPUT: The Input String with all non-alphanumeric characters 
-        //            '        removed
-        //            'EXAMPLE Debug.Print OnlyAlphaNumericChars("Hello World!")
-        //            'output = "HelloWorld")
-        //            'NOTES:  Not optimized for speed and will run slow on long
-        //            '        strings.  If you plan on using long strings, consider 
-        //            '        using alternative method of appending to output string,
-        //            '        such as the method at
-        //            '        http://www.freevbcode.com/ShowCode.Asp?ID=154
-        //            '***********************************************************
-        //            Dim lLen As Integer
-        //            Dim sAns As String
-        //            Dim lCtr As Integer
-        //            Dim sChar As String
-        //
-        //            OrigString = Trim(OrigString)
-        //            lLen = Len(OrigString)
-        //            For lCtr = 1 To lLen
-        //                sChar = Mid(OrigString, lCtr, 1)
-        //                If IsAlphaNumeric(Mid(OrigString, lCtr, 1)) Then
-        //                    sAns = sAns & sChar
-        //                End If
-        //            Next
-        //
-        //            OnlyAlphaNumericChars = sAns
-        //
-        //        End Function
-        //
-        //        Private Function IsAlphaNumeric(ByVal sChr As String) As Boolean
-        //            IsAlphaNumeric = sChr Like "[0-9A-Za-z]"
-        //        End Function
 
         public static IDataReader GetModuleByModuleId(int moduleId)
         {

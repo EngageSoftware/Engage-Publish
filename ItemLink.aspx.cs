@@ -184,6 +184,9 @@ namespace Engage.Dnn.Publish
                             }
                             pageName = pageName + ".aspx";
 
+                            DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
+
+
                             TabController tc = new TabController();
                             TabInfo ti;
 
@@ -201,7 +204,7 @@ namespace Engage.Dnn.Publish
                                 Response.Status = "301 Moved Permanently";
                                 Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti,
                                      "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/"
-                                     + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true), pageName);
+                                     + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true), pageName, ps);
 
                             }
                             else if (tabid > 0 && item.DisplayOnCurrentPage())
@@ -217,12 +220,12 @@ namespace Engage.Dnn.Publish
                                 {
 
                                     Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + modid.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName);
+                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + modid.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
                                 }
                                 else
                                 {
                                     Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName);
+                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
                                 }
                             }
                             else
@@ -233,7 +236,7 @@ namespace Engage.Dnn.Publish
                                     ti = tc.GetTab(defaultTabId, item.PortalId, false);
                                 }
                                 Response.Status = "301 Moved Permanently";
-                                Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName);
+                                Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
                             }
                         }
                         else

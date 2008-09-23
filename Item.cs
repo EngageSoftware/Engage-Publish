@@ -1132,6 +1132,7 @@ namespace Engage.Dnn.Publish
             //return DataProvider.Instance().GetItemTypes();
         }
 
+        [Obsolete("This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly.", false)]
         public static void DeleteItem(int itemId)
         {
                         
