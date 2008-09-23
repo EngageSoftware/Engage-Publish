@@ -121,6 +121,8 @@ namespace Engage.Dnn.Publish.Controls
 
             if (customDisplaySettings.EnableRss)
             {
+
+                //TODO: replace the hyperlink control on the display side and insert our Link/IMAGE dynamically so we can set the alt text.
                 lnkRss.Visible = true;
                 string rssImage = Localization.GetString("rssImage", LocalResourceFile);
 #if DEBUG

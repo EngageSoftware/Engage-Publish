@@ -217,7 +217,7 @@ namespace Engage.Dnn.Publish
         /// <param name="displayTabId">The Tab ID of the page this Category should be displayed on.</param>
         /// <returns>A <see cref="Category" /> with the assigned values.</returns>
 
-        public static Category CreateCategory(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
+        public static Category Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
         {
             Category c = new Category();
             c.Name = name;
@@ -239,7 +239,23 @@ namespace Engage.Dnn.Publish
             c.NewWindow = false;
 
             return c;
-
+        }
+        
+        /// <summary>
+        /// Creates a Category object that you can continue to modify or save back into the database. You should use the Category.Create method instead of this. 
+        /// </summary>
+        /// <param name="name">Name of the Category to be created.</param>
+        /// <param name="description">The description/abstract of the category to be created.</param>
+        /// <param name="authorUserId">The ID of the author of this category.</param>
+        /// <param name="moduleId">The moduleid for where this category will most likely be displayed.</param>
+        /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
+        /// <param name="displayTabId">The Tab ID of the page this Category should be displayed on.</param>
+        /// <returns>A <see cref="Category" /> with the assigned values.</returns>
+        [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
+        public static Category CreateCategory(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
+        {
+            Category c = Category.Create(name, description, authorUserId, moduleId, portalId, displayTabId);
+            return c;
         }
 
         /// <summary>

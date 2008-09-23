@@ -42,35 +42,56 @@ namespace Engage.Dnn.Publish
             ItemTypeId = ItemType.Article.GetId();
         }
 
-        public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
+        public static Article Create(int portalId)
+        {
+            Article a = new Article();
+            a.PortalId = portalId;
+            return a;
+        }
+
+        /// <summary>
+        /// Creates an Article object that you can continue to modify or save back into the database. 
+        /// </summary>
+        /// <param name="name">Name of the Category to be created.</param>
+        /// <param name="description">The description/abstract of the category to be created.</param>
+        /// <param name="authorUserId">The ID of the author of this category.</param>
+        /// <param name="moduleId">The moduleid for where this category will most likely be displayed.</param>
+        /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
+        /// <returns>A <see cref="Article" /> with the assigned values.</returns>
+        public static Article Create(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
         {
             Article a = new Article();
             a.Name = name;
             a.Description = description;
             a.articleText = articleText;
             a.AuthorUserId = authorUserId;
-
             ItemRelationship irel = new ItemRelationship();
             irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
             irel.ParentItemId = parentCategoryId;
-
             a.Relationships.Add(irel);
             a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             a.PortalId = portalId;
             a.ModuleId = moduleId;
-
             Category c = Category.GetCategory(parentCategoryId, portalId);
             a.DisplayTabId = c.ChildDisplayTabId;
-
             a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
             a.NewWindow = false;
-
             a.SetDefaultItemVersionSettings();
-
             return a;
-
         }
 
+
+
+        [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
+        public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
+        {
+            Article a = Article.Create(name, description, articleText, authorUserId, parentCategoryId, moduleId, portalId);
+            return a;
+        }
+
+        /// <summary>
+        /// This method will configure the default ItemVersionSettings for an article, it is called from the Create method on article so that users of the API do not have to pass in itemversionsettings.
+        /// </summary>
         private void SetDefaultItemVersionSettings()
         {
             //Printer Friendly
@@ -82,7 +103,6 @@ namespace Engage.Dnn.Publish
 
             //Email A Friend
             string hostEmailFriendSetting = HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture));
-
             setting = Setting.EmailAFriend;
             setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
@@ -368,12 +388,8 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        public static Article Create(int portalId)
-        {
-            Article a = new Article();
-            a.PortalId = portalId;
-            return a;
-        }
+
+
 
         public static Article GetArticleVersion(int articleVersionId, int portalId)
         {
