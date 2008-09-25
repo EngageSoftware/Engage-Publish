@@ -21,6 +21,7 @@ using System.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common;
 using System.Globalization;
+using System.IO;
 
 namespace Engage.Dnn.Publish.Services
 {
@@ -69,7 +70,7 @@ namespace Engage.Dnn.Publish.Services
                 //This only works for the first category, how should we handle other categories?
                 if (pc.Count>0)
                 {
-                    Article a = Article.CreateArticle(post.title.ToString(), post.description.ToString(), 
+                    Article a = Article.Create(post.title.ToString(), post.description.ToString(), 
                         post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
                     //TODO: check if dateCreated is a valid date
                     //TODO: date Created is coming in as UTC time
@@ -227,7 +228,7 @@ namespace Engage.Dnn.Publish.Services
             MediaObject mediaObject)
         {
             LocatePortal(Context.Request);
-                        LocatePortal(Context.Request);
+
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
@@ -235,6 +236,19 @@ namespace Engage.Dnn.Publish.Services
 
                 // TODO: Implement your own logic to add media object and set the objectInfo
 
+                string name = mediaObject.name; //object name
+                string type = mediaObject.type; //object type
+                byte[] media = (byte[])mediaObject.bits;   //object body
+                
+                //Save media object to filesystem. Split name with '/' to extract filename (Windows Live Writer specific)
+                int index = name.LastIndexOf('/');
+                Directory.CreateDirectory(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath + name.Substring(0, index));
+                FileStream stream = File.Create(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath + name);
+                stream.Write(media, 0, media.Length);
+                stream.Flush();
+                stream.Close();
+                stream.Dispose();
+                objectInfo.url = Utility.GetThumbnailLibraryPath(PortalId) + name;
                 return objectInfo;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
@@ -333,10 +347,13 @@ namespace Engage.Dnn.Publish.Services
             return objUser;
         }
 
-        #endregion
 
+        ///<summary>
+        /// Locate Portal takes the current request and locates which portal is being called based on this request.
+        /// </summary>
+        /// <param name="request">request</param>
         private void LocatePortal(HttpRequest request)
-        {            
+        {
             string requestedPath = request.Url.AbsoluteUri;
             string domainName = string.Empty;
             string portalAlias = string.Empty;
@@ -349,8 +366,15 @@ namespace Engage.Dnn.Publish.Services
             if (pai != null)
             {
                 PortalId = pai.PortalID;
+                PortalSettings ps = Utility.GetPortalSettings(pai.PortalID);
+                PortalPath = ps.HomeDirectory;
+               
             }
         }
+
+
+        #endregion
+
 
 
         private static int portalId;// = 0;
@@ -362,6 +386,17 @@ namespace Engage.Dnn.Publish.Services
             }
             set { portalId = value; }
         }
+
+        private static string portalPath;// = 0;
+        public static string PortalPath
+        {
+            get
+            {
+                return portalPath;
+            }
+            set { portalPath = value; }
+        }
+
         
         public string LocalResourceFile
         {

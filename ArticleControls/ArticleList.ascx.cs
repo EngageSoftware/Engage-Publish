@@ -377,7 +377,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     CheckBox chkSelect = (CheckBox)gvr.FindControl("chkSelect");
                     if (hlId != null && chkSelect != null && chkSelect.Checked)
                     {
-                        Item.DeleteItem(Convert.ToInt32(hlId.Text, CultureInfo.CurrentCulture));
+                        Item.DeleteItem(Convert.ToInt32(hlId.Text, CultureInfo.CurrentCulture), PortalId);
                     }
                 }
 

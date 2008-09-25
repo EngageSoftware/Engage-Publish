@@ -106,7 +106,7 @@ namespace Engage.Dnn.Publish.Admin
                 if (Item.GetItemTypeId(itemId) != -1)
                 {
                     //call the delete functionality.
-                    Item.DeleteItem(itemId);
+                    Item.DeleteItem(itemId, PortalId);
                     success = true;
                 }
             }
