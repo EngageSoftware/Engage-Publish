@@ -124,7 +124,7 @@
     <value>This allows you to filter the listing by a specific category.</value>
   </data>
   <data name="lblOverrideable.Text" xml:space="preserve">
-    <value>Allow items from other lists to display here (aka:overrideable):</value>
+    <value>Allow items from querystring parameters to display here (aka:overrideable):</value>
   </data>
   <data name="lblOverrideable.Help" xml:space="preserve">
     <value>Overrideable from the querystring. This will cause the control to load an item based on a querystring parameter. You would only set this value on one control per page.</value>
