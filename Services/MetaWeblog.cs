@@ -70,6 +70,13 @@ namespace Engage.Dnn.Publish.Services
                 //This only works for the first category, how should we handle other categories?
                 if (pc.Count>0)
                 {
+
+                    //TODO: parse tags
+
+                    //get description
+                    //string description = post.description.Substring(0,post.description.IndexOf("
+                    
+
                     Article a = Article.Create(post.title.ToString(), post.description.ToString(), 
                         post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
                     //TODO: check if dateCreated is a valid date
