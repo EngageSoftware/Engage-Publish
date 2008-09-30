@@ -1563,6 +1563,11 @@ namespace Engage.Dnn.Publish.Data
             SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spDeleteItem", itemId);
         }
 
+        public override void DeleteItems()
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spDeleteAllItems");
+        }
+
         #endregion
 
         public override DataSet GetCategoryItems(int categoryId, int itemTypeId)

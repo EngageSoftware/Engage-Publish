@@ -1,0 +1,24 @@
+﻿IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteAllItems]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteAllItems]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteAllItems]
+AS
+	declare @id int
+	DECLARE statements CURSOR LOCAL FAST_FORWARD FOR 
+		select ItemId From publish_vwItems where ItemType != 'TopLevelCategory' and ApprovalComments != 'Initial Setup'
+	OPEN statements
+
+	FETCH NEXT FROM statements INTO @id
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		exec Publish_spDeleteItem @id
+		
+		FETCH NEXT FROM statements INTO  @id
+		SET NOCOUNT ON
+	END
+
+	CLOSE statements
+	DEALLOCATE statements
+
+GO
+

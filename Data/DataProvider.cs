@@ -237,6 +237,7 @@ namespace Engage.Dnn.Publish.Data
 
         #region "Delete Method"
         public abstract void DeleteItem(int itemId);
+        public abstract void DeleteItems();
         #endregion
 
 
