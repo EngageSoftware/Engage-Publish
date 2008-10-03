@@ -169,6 +169,13 @@
     <Compile Include="Admin\Syndication.ascx.designer.cs">
       <DependentUpon>Syndication.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Tools\ResetDisplayPage.ascx.cs">
+      <DependentUpon>ResetDisplayPage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools\ResetDisplayPage.ascx.designer.cs">
+      <DependentUpon>ResetDisplayPage.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Tools\Dashboard.ascx.cs">
       <DependentUpon>Dashboard.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -956,6 +963,7 @@
     <Content Include="05.01.07.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Tools\ResetDisplayPage.ascx" />
     <Content Include="App_GlobalResources\GlobalResources.resx">
       <SubType>Designer</SubType>
     </Content>

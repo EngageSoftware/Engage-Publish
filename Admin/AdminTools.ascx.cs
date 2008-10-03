@@ -35,6 +35,7 @@ namespace Engage.Dnn.Publish.Admin
             ht.Add("DESCRIPTIONREPLACE", "tools/DescriptionReplace.ascx");
             ht.Add("DASHBOARD", "tools/Dashboard.ascx");
             ht.Add("ITEMVIEWREPORT", "tools/ItemViewReport.ascx");
+            ht.Add("RESETDISPLAYPAGE", "tools/ResetDisplayPage.ascx");
             
             idict = ht;
         }

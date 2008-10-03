@@ -129,4 +129,7 @@
   <data name="lblControlTitle.Text" xml:space="preserve">
     <value>Publish Admin Dashboard</value>
   </data>
+  <data name="ResetDisplayPage.Text" xml:space="preserve">
+    <value>Reset Child Display Pages</value>
+  </data>
 </root>
