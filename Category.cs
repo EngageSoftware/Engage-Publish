@@ -80,7 +80,6 @@ namespace Engage.Dnn.Publish
 
         #endregion
 
-
         #region "Public Methods"
 
         public Category()
@@ -630,6 +629,60 @@ namespace Engage.Dnn.Publish
         }
 
         #endregion
+
+        /// <summary>
+        /// Updates the <see cref="Item.DisplayTabId"/> and <see cref="ChildDisplayTabId"/> settings of all children of this <see cref="Category"/> (and their children's children, etc.)
+        /// </summary>
+        /// <param name="revisingUser">The revising user.</param>
+        /// <returns>The number of affected <see cref="Item"/>s</returns>
+        public int CascadeChildDisplayTab(int revisingUser)
+        {
+            int count = 0;
+            foreach (DataRow itemRow in GetAllChildren(this.ItemId, RelationshipType.ItemToParentCategory.GetId(), this.PortalId).Tables[0].Rows)
+            {
+                Item childItem;
+                int itemId = (int)itemRow["itemId"];
+                if (GetItemTypeId(itemId) == ItemType.Article.GetId())
+                {
+                    childItem = Article.GetArticle(itemId);
+                }
+                else
+                {
+                    childItem = GetCategory(itemId);
+                }
+
+                childItem.DisplayTabId = this.ChildDisplayTabId;
+
+                Category childCategory = childItem as Category;
+                if (childCategory != null)
+                {
+                    childCategory.ChildDisplayTabId = this.ChildDisplayTabId;
+                }
+
+                Setting displayOnCurrentPageSetting = Setting.ArticleSettingCurrentDisplay;
+                displayOnCurrentPageSetting.PropertyValue = false.ToString(CultureInfo.InvariantCulture);
+                childItem.VersionSettings.Add(new ItemVersionSetting(displayOnCurrentPageSetting));
+
+                // TODO: I shouldn't have to re-add relationships
+                foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(itemId, childItem.ItemVersionId, RelationshipType.ItemToParentCategory.GetId(), true))
+                {
+                    // TODO: I _definitely_ shouldn't have to correct the relationship dates
+                    relationship.CorrectDates();
+                    childItem.Relationships.Add(relationship);
+                }
+
+                // TODO: I shouldn't have to re-add tags
+                foreach (ItemTag tag in ItemTag.GetItemTags(childItem.ItemVersionId))
+                {
+                    childItem.Tags.Add(tag);
+                }
+
+                childItem.Save(revisingUser);
+                count++;
+            }
+
+            return count;
+        }
     }
 }
 
