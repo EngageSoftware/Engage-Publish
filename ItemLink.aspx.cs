@@ -143,12 +143,9 @@ namespace Engage.Dnn.Publish
                 //do our redirect now
                 Response.Status = "301 Moved Permanently";
                 Response.RedirectLocation = item.GetItemExternalUrl;
-
             }
             else
             {
-
-
                 int defaultTabId = -1;
                 object o = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + item.PortalId);
                 if (o != null && Utility.HasValue(o.ToString()))

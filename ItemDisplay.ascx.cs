@@ -53,11 +53,16 @@ namespace Engage.Dnn.Publish
         private void ReadItemType()
         {
 
+            //TODO: check for a valid itemid for this module
+            CheckItemUrl();
+
 
             //here we are looking to see if any old publish URLs are being used, if so redirect to the new URL
             object oid = Request.Params["aid"];
             if (oid != null)
             {
+
+                //TODO:build the full url
                 //made this a 301 redirect for better SEO
                 string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid;
                 Response.Status = "301 Moved Permanently";
@@ -65,6 +70,7 @@ namespace Engage.Dnn.Publish
 
                 //Response.Redirect(ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid.ToString(), false);
             }
+
 
             string displayType = string.Empty;
             if (Settings.Contains("DisplayType"))
@@ -182,8 +188,6 @@ namespace Engage.Dnn.Publish
                     controlToLoad = "ArticleControls/ArticleDisplay.ascx";
                 }
             }
-
-
         }
 
         private void LoadControlType()
@@ -196,7 +200,6 @@ namespace Engage.Dnn.Publish
                 phControls.Controls.Add(mb);
                 
                 //Don't show the menu if we're in VIEW mode
-
 
                 //Don't show the menu at the top if the control is not configured to display anything. hk
                 if ((IsAdmin || IsAuthor) && mb.ItemId != -1 && IsEditable)
@@ -221,6 +224,24 @@ namespace Engage.Dnn.Publish
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Check's to see if the item being loaded in this module should be displayed on this tabid/moduleid, if not does a 301 redirect to the proper page.
+        /// </summary>
+        private void CheckItemUrl()
+        {
+            if (VersionInfoObject != null)
+            {
+                //check to see if this Item should be redirected to a URL
+                if (Utility.HasValue(VersionInfoObject.Url) && (this.VersionInfoObject.Url != this.Request.Url.ToString()))
+                {
+                    //do our redirect now
+                    Response.Status = "301 Moved Permanently";
+                    Response.RedirectLocation = VersionInfoObject.GetItemExternalUrl;
+                }
+                //TODO: check if we're on the correct URL before progressing
             }
         }
 

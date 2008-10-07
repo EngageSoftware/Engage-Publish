@@ -900,11 +900,12 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrlExternal(object itemId)
         {
-            if (this.IsShortLinkEnabled)
-            {
-                return "http://" + this.PortalAlias.HTTPAlias + "/itemlink.aspx?itemId=" + itemId;
-            }
-            return "http://" + this.PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
+            //if (this.IsShortLinkEnabled)
+            //{
+            //    return "http://" + this.PortalAlias.HTTPAlias + "/itemlink.aspx?itemId=" + itemId;
+            //}
+            //return "http://" + this.PortalAlias.HTTPAlias + DesktopModuleFolderName + "itemlink.aspx?itemId=" + itemId;
+            return Utility.GetItemLinkUrl(itemId, PortalId);
         }
 
         public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)

@@ -308,19 +308,22 @@ namespace Engage.Dnn.Publish
                     wr.WriteElementString("title", title);
 
                     //if the item isn't disabled add the link
+                    //TODO: make this use the full urls
                     if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), this.PortalId))
                     {
-                        if (ModuleBase.IsShortLinkEnabledForPortal(this.PortalId))
-                        {
-                            wr.WriteElementString("link", "http://" + this.Request.Url.Authority + ApplicationUrl + "/itemlink.aspx?itemId=" + childItemId);
-                        }
-                        else
-                        {
-                            wr.WriteElementString(
-                                "link",
-                                "http://" + this.Request.Url.Authority + ApplicationUrl + ModuleBase.DesktopModuleFolderName + "itemlink.aspx?itemId="
-                                + childItemId);
-                        }
+                        wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, this.PortalId));
+
+                        //if (ModuleBase.IsShortLinkEnabledForPortal(this.PortalId))
+                        //{
+                        //    wr.WriteElementString("link", "http://" + this.Request.Url.Authority + ApplicationUrl + "/itemlink.aspx?itemId=" + childItemId);
+                        //}
+                        //else
+                        //{
+                        //    wr.WriteElementString(
+                        //        "link",
+                        //        "http://" + this.Request.Url.Authority + ApplicationUrl + ModuleBase.DesktopModuleFolderName + "itemlink.aspx?itemId="
+                        //        + childItemId);
+                        //}
                     }
 
                     //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
