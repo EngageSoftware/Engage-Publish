@@ -174,6 +174,7 @@
             </td>
             <td class="fullWidth">
                 <asp:DropDownList ID="ddlChildDisplayTabId" BorderWidth="0" DataValueField='TabID' DataTextField="TabName" runat="server" />
+                <asp:CheckBox ID="chkResetChildDisplayTabs" runat="server" ResourceKey="chkResetChildDisplayTabs" />
                 <hr />
             </td>
         </tr>

@@ -390,6 +390,10 @@ namespace Engage.Dnn.Publish.CategoryControls
                     this.categoryPermissions.Save();
                 }
 
+                if (chkResetChildDisplayTabs.Checked)
+                {
+                    ((Category)VersionInfoObject).CascadeChildDisplayTab(this.UserId);
+                }
 
                 string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
                 if (!Utility.HasValue(returnUrl))

@@ -300,4 +300,7 @@
   <data name="lblRssUrl.Text" xml:space="preserve">
     <value>RSS Url</value>
   </data>
+  <data name="chkResetChildDisplayTabs.Text" xml:space="preserve">
+    <value>Update Display Page for &lt;em&gt;all&lt;/em&gt; children and grandchildren of this category</value>
+  </data>
 </root>
