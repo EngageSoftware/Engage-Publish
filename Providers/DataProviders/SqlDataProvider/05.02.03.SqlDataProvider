@@ -5,13 +5,13 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteAllItems]
 AS
 	declare @id int
 	DECLARE statements CURSOR LOCAL FAST_FORWARD FOR 
-		select ItemId From publish_vwItems where ItemType != 'TopLevelCategory' and ApprovalComments != 'Initial Setup'
+		select ItemId From {objectQualifier}publish_vwItems where ItemType != 'TopLevelCategory' and ApprovalComments != 'Initial Setup'
 	OPEN statements
 
 	FETCH NEXT FROM statements INTO @id
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		exec Publish_spDeleteItem @id
+		exec {objectQualifier}Publish_spDeleteItem @id
 		
 		FETCH NEXT FROM statements INTO  @id
 		SET NOCOUNT ON
