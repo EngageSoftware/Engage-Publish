@@ -53,6 +53,7 @@ namespace Engage.Dnn.Publish
         private void ReadItemType()
         {
 
+            BindItemData();
             //TODO: check for a valid itemid for this module
             CheckItemUrl();
 
