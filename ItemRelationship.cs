@@ -222,7 +222,12 @@ namespace Engage.Dnn.Publish
             return new ItemRelationship();
         }
 
-        public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId,bool isActive)
+        public static List<ItemRelationship> GetItemRelationships(int childItemId, int childItemVersionId, bool isActive)
+        {
+            return CBO.FillCollection<ItemRelationship>(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, isActive));
+        }
+
+        public static ArrayList GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive)
         {
             return CBO.FillCollection(DataProvider.Instance().GetItemRelationships(childItemId, childItemVersionId, relationshipTypeId, isActive), typeof (ItemRelationship));
         }

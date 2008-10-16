@@ -324,7 +324,7 @@ namespace Engage.Dnn.Publish
                     //TODO: we need to figure out PortalID so we can get the folloing items from Cache
                     if (itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        //TODO: where can we get portalid from?
+                        //TODO: where can we get portalid from? NEED NEW METHOD - HK
                         Category category = Category.GetCategory(itemId);
                         DisplayItem(category);
                     }

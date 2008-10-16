@@ -110,6 +110,7 @@ namespace Engage.Dnn.Publish.Data
 
         public abstract int GetOldCategoryId(int itemId);
 
+        public abstract IDataReader GetItemRelationships(int childItemId, int childItemVersionId, bool isActive);
         public abstract IDataReader GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive);
         public abstract DataSet GetItemRelationshipByItemRelationshipId(int itemRelationshipId);
         public abstract IDataReader GetAllRelationships(int moduleId);

@@ -54,7 +54,9 @@ namespace Engage.Dnn.Publish
         /// </summary>
         /// <param name="name">Name of the Category to be created.</param>
         /// <param name="description">The description/abstract of the category to be created.</param>
+        /// <param name="articleText"></param>
         /// <param name="authorUserId">The ID of the author of this category.</param>
+        /// <param name="parentCategoryId"></param>
         /// <param name="moduleId">The moduleid for where this category will most likely be displayed.</param>
         /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
         /// <returns>A <see cref="Article" /> with the assigned values.</returns>
@@ -80,12 +82,10 @@ namespace Engage.Dnn.Publish
             return a;
         }
 
-
-
         [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
         public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
         {
-            Article a = Article.Create(name, description, articleText, authorUserId, parentCategoryId, moduleId, portalId);
+            Article a = Create(name, description, articleText, authorUserId, parentCategoryId, moduleId, portalId);
             return a;
         }
 
@@ -460,6 +460,7 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetArticles(parentItemId, portalId);
         }
 
+        [Obsolete("This version does not using Caching. Please use GetArticle(itemId, portalId) or version that loads relationships and tags.", false)]
         public static Article GetArticle(int itemId)
         {
             IDataReader dr = DataProvider.Instance().GetArticle(itemId);
@@ -471,7 +472,7 @@ namespace Engage.Dnn.Publish
             return a;
         }
 
-        public static Article GetArticle(int itemId, int portalId)
+        public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags)
         {
             string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
             Article a;
@@ -485,10 +486,6 @@ namespace Engage.Dnn.Publish
                 else
                 {
                     a = GetArticle(itemId);
-                    //if (a != null)
-                    //{
-                    //    a.CorrectDates();
-                    //}
                 }
                 if (a != null)
                 {
@@ -499,20 +496,30 @@ namespace Engage.Dnn.Publish
             else
             {
                 a = GetArticle(itemId);
-                //if (a != null)
-                //{
-                //    a.CorrectDates();
-                //}
+            }
+
+            if (a != null && loadRelationships)
+            {
+                foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(itemId, a.ItemVersionId, true))
+                {
+                    relationship.CorrectDates();
+                    a.Relationships.Add(relationship);
+                }
+            }
+
+            if (a != null && loadTags)
+            {
+                foreach (ItemTag tag in ItemTag.GetItemTags(a.ItemVersionId))
+                {
+                    a.Tags.Add(tag);
+                }
             }
             return a;
+        }
 
-            //IDataReader dr = DataProvider.Instance().GetArticle(itemId, portalId);
-            //Article a = (Article) CBO.FillObject(dr, typeof(Article));
-            //if (a != null)
-            //{
-            //    a.CorrectDates();
-            //}
-            //return a;
+        public static Article GetArticle(int itemId, int portalId)
+        {
+            return GetArticle(itemId, portalId, false, false);
         }
 
         public static int GetOldArticleId(int itemId)

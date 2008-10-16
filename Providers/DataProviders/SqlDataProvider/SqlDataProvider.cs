@@ -941,6 +941,11 @@ namespace Engage.Dnn.Publish.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
         }
 
+        public override IDataReader GetItemRelationships(int childItemId, int childItemVersionId,  bool isActive)
+        {
+            return GetItemRelationships(childItemId, childItemVersionId, -1, isActive);
+        }
+
         public override IDataReader GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive)
         {
             StringBuilder sql = new StringBuilder(521);
@@ -953,8 +958,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" join ");
             sql.Append(NamePrefix);
             sql.Append("RelationshipType rt on (r.RelationshipTypeID = rt.RelationshipTypeID) ");
-
-
+            
             sql.Append(" join ");
             sql.Append(NamePrefix);
             sql.Append("vwItems Parent on (r.ParentItemId = parent.ItemId) ");
@@ -974,8 +978,11 @@ namespace Engage.Dnn.Publish.Data
 
             sql.Append(" and child.ItemVersionID = ");
             sql.Append(childItemVersionId);
-            sql.Append(" and r.RelationshipTypeID =  ");
-            sql.Append(relationshipTypeId);
+            if (relationshipTypeId > 0)
+            {
+                sql.Append(" and r.RelationshipTypeID =  ");
+                sql.Append(relationshipTypeId);
+            }
 
             sql.Append(" and Parent.IsCurrentVersion=1 ");
             sql.Append(" order by r.SortOrder ");

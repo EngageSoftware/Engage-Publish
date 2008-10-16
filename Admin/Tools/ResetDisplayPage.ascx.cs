@@ -101,7 +101,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
         {
             if (this.ParentCategory != null)
             {
-                int affectedCount = this.ParentCategory.CascadeChildDisplayTab(this.UserId);
+                int affectedCount = this.ParentCategory.CascadeChildDisplayTab(this.PortalId, this.UserId);
 
                 this.SuccessMessage.Text = string.Format(
                     CultureInfo.CurrentCulture, 

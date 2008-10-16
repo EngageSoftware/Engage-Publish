@@ -392,7 +392,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (chkResetChildDisplayTabs.Checked)
                 {
-                    ((Category)VersionInfoObject).CascadeChildDisplayTab(this.UserId);
+                    ((Category)VersionInfoObject).CascadeChildDisplayTab(this.PortalId, this.UserId);
                 }
 
                 string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);

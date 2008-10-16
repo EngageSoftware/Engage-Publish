@@ -765,10 +765,12 @@ namespace Engage.Dnn.Publish.Util
             int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
             int typeId = Item.GetItemTypeId(id);
             ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-            Item i; // = null;
+            Item i;
+            ModuleController controller = new ModuleController();
+            int portalId = controller.GetModule(moduleId, tabId).PortalID;
             if (type.Name == ItemType.Article.Name)
             {
-                i = Article.GetArticle(id);
+                i = Article.GetArticle(id, portalId);
             }
             else
             {
