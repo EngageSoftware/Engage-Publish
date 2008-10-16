@@ -16,7 +16,9 @@ using DotNetNuke.Services.Localization;
 
 namespace Engage.Dnn.Publish.Util
 {
-	/// <summary>
+    using System;
+
+    /// <summary>
 	/// Summary description for Breadcrumb.
 	/// </summary>
 	public static class Breadcrumb
@@ -79,6 +81,7 @@ namespace Engage.Dnn.Publish.Util
 		}
 	}
 
+    [Serializable]
 	public class BreadcrumbItem
 	{
 		private string pageName;

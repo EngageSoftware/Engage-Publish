@@ -20,6 +20,7 @@ using AjaxControlToolkit;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    [Serializable]
     public class ItemRelationshipSort : IEquatable<ItemRelationshipSort>
     {
         private int _itemRelationshipId = -1;
