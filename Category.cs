@@ -633,10 +633,9 @@ namespace Engage.Dnn.Publish
         /// <summary>
         /// Updates the <see cref="Item.DisplayTabId"/> and <see cref="ChildDisplayTabId"/> settings of all children of this <see cref="Category"/> (and their children's children, etc.)
         /// </summary>
-        /// <param name="portalId"></param>
         /// <param name="revisingUser">The revising user.</param>
         /// <returns>The number of affected <see cref="Item"/>s</returns>
-        public int CascadeChildDisplayTab(int portalId, int revisingUser)
+        public int CascadeChildDisplayTab(int revisingUser)
         {
             int count = 0;
             foreach (DataRow itemRow in GetAllChildren(this.ItemId, RelationshipType.ItemToParentCategory.GetId(), this.PortalId).Tables[0].Rows)
@@ -645,7 +644,7 @@ namespace Engage.Dnn.Publish
                 int itemId = (int)itemRow["itemId"];
                 if (GetItemTypeId(itemId) == ItemType.Article.GetId())
                 {
-                    childItem = Article.GetArticle(itemId, portalId, true, true);
+                    childItem = Article.GetArticle(itemId, this.PortalId, true, true);
                 }
                 else
                 {
