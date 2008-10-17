@@ -203,13 +203,14 @@ namespace Engage.Dnn.Publish.Services
                     ci.title = dr["Name"].ToString();
                     ci.categoryid = dr["ItemId"].ToString();
                     ci.description = dr["Description"].ToString();
-                    ci.htmlUrl = Utility.GetItemLinkUrl(dr["ItemId"].ToString(), PortalId, Convert.ToInt32(dr["DisplayTabId"].ToString()), Convert.ToInt32(dr["ModuleId"].ToString()), 0, "");
-                    ci.rssUrl = ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(), PortalId, "");
+                    ci.htmlUrl = Utility.GetItemLinkUrl((int)dr["ItemId"], PortalId, (int)dr["DisplayTabId"], (int)dr["ModuleId"]);
+                    ci.rssUrl = ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(), PortalId, string.Empty);
                     categoryInfos.Add(ci);
                 }
 
                 return categoryInfos.ToArray();
             }
+
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 

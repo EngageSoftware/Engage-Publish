@@ -178,7 +178,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             DataProvider dp = DataProvider.Instance();
             int permissionId = PermissionType.View.GetId();
 
-            //should we just delete all, and then reinsert?, sounds easier
+            // TODO: wrap delete and update in a transaction
+            // should we just delete all, and then reinsert?, sounds easier
             dp.DeletePermissions(this.categoryId);
 
             foreach (ListItem li in this.lstSelectedItems.Items)

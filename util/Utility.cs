@@ -13,6 +13,7 @@ namespace Engage.Dnn.Publish.Util
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Data;
     using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
@@ -186,9 +187,8 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishArticleComments = "CacheKeyPublishArticleComments_";
         public const string CacheKeyPublishArticleTags = "CacheKeyPublishArticleTags_";
 
-        public const string CacheKeyPublishAuthorCommentCount = "CacheKeyPublishAuthorCommentCount_";
-
         public const string CacheKeyPublishArticleVersion = "CacheKeyPublishArticleVersion_";
+        public const string CacheKeyPublishAuthorCommentCount = "CacheKeyPublishAuthorCommentCount_";
         public const string CacheKeyPublishCategory = "CacheKeyPublishCategory_";
         public const string CacheKeyPublishCategoryDisplay = "PublishCacheKeyCategoryDisplay_";
         public const string CacheKeyPublishCategoryFeature = "PublishCacheKeyCategoryFeature_";
@@ -205,6 +205,10 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishItem = "CacheKeyPublishItem_";
         public const string CacheKeyPublishItemParentCategoryId = "CacheKeyPublishItemParentCategoryId_";
         public const string CacheKeyPublishItemRelationships = "CacheKeyPublishItemRelationships_";
+        public const string CacheKeyPublishItemsFromTags = "CacheKeyPublishItemsFromTags_";
+
+        public const string CacheKeyPublishItemsFromTagsPage = "CacheKeyPublishItemsFromTagsPage_";
+        public const string CacheKeyPublishItemTypeId = "CacheKeyPublishItemTypeId_";
         public const string CacheKeyPublishItemTypeIntForItemId = "CacheKeyPublishItemTypeIntForItemId_";
         public const string CacheKeyPublishItemTypeName = "CacheKeyPublishItemTypeName_";
         public const string CacheKeyPublishItemTypeNameItemId = "CacheKeyPublishItemTypeNameItemId_";
@@ -214,17 +218,10 @@ namespace Engage.Dnn.Publish.Util
         public const string CacheKeyPublishItemVersionSettings = "CacheKeyPublishItemVersionSettings_";
         public const string CacheKeyPublishPopularTags = "CacheKeyPublishPopularTags_";
 
-        public const string CacheKeyPublishItemTypeId = "CacheKeyPublishItemTypeId_";
-
         public const string CacheKeyPublishPopularTagsCount = "CacheKeyPublishPopularTagsCount_";
         public const string CacheKeyPublishTag = "PublishCacheKeyTag_";
 
         public const string CacheKeyPublishTagById = "PublishCacheKeyTagById_";
-        public const string CacheKeyPublishItemsFromTags = "CacheKeyPublishItemsFromTags_";
-
-        public const string CacheKeyPublishItemsFromTagsPage = "CacheKeyPublishItemsFromTagsPage_";
-
-
 
         public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string DnnFriendlyModuleName = "Engage: Publish";
@@ -311,7 +308,7 @@ namespace Engage.Dnn.Publish.Util
         //cache keys for Categories
 
         private static readonly object cacheLock = new object();
-        private static readonly char[] tagSeparators = { ';', ',' };
+        private static readonly char[] tagSeparators = {';', ','};
         public static string DesktopModuleFolderName
         {
             get
@@ -347,7 +344,6 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-
                 //todo: should application URL use PortalId?
 
                 if (HttpContext.Current == null)
@@ -356,14 +352,6 @@ namespace Engage.Dnn.Publish.Util
                 }
                 return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
             }
-        }
-
-        public static string GetPortalUrl(int portalId)
-        {
-            PortalAliasInfo pai = GetPortalAliasInfo(portalId);
-            if (pai != null) return "http://" + pai.HTTPAlias;
-
-            return ApplicationUrl;
         }
 
         public static string WebServiceUrl
@@ -383,6 +371,17 @@ namespace Engage.Dnn.Publish.Util
 
                 return url.ToString();
             }
+        }
+
+        public static string GetPortalUrl(int portalId)
+        {
+            PortalAliasInfo pai = GetPortalAliasInfo(portalId);
+            if (pai != null)
+            {
+                return "http://" + pai.HTTPAlias;
+            }
+
+            return ApplicationUrl;
         }
 
         public static char[] GetTagSeparators()
@@ -892,140 +891,6 @@ namespace Engage.Dnn.Publish.Util
             return info;
         }
 
-        public static string GetItemLinkUrl(object itemId, int portalId, int tabId, int moduleId, int pageId, string otherParameters)
-        {
-
-            if (itemId != null)
-            {
-                int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
-                int typeId = Item.GetItemTypeId(id, portalId);
-                ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-                Item item; // = null;
-                if (type.Name == ItemType.Article.Name)
-                {
-                    item = Article.GetArticle(id, portalId);
-                }
-                else
-                {
-                    item = Category.GetCategory(id, portalId);
-                }
-                if (item != null)
-                    return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId, otherParameters);
-
-            }
-            return string.Empty;
-
-        }
-
-        public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId, string otherParameters)
-        {
-            int defaultTabId = -1;
-            string returnUrl = string.Empty;
-
-            if ((item != null) && (item.IsLinkable()))
-            {
-                defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
-                if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
-                {
-                    string pageName = item.Name.Trim();
-                    if (pageName.Length > 50)
-                    {
-                        pageName = item.Name.Substring(0, 50);
-                    }
-                    pageName = Utility.OnlyAlphanumericCharacters(pageName);
-                    //Global.asax Application_BeginRequest checks for these values and will try to redirect to the non-existent page
-                    if (pageName.EndsWith("install", StringComparison.CurrentCultureIgnoreCase) || pageName.EndsWith("installwizard", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        pageName = pageName.Substring(0, pageName.Length - 1);
-                    }
-                    pageName = pageName + ".aspx";
-
-                    DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
-                    TabController tc = new TabController();
-                    TabInfo ti;
-                    //if the setting to "force display on this page" is set, be sure to send them there.
-                    if (item.ForceDisplayOnPage())
-                    {
-                        ti = tc.GetTab(item.DisplayTabId, item.PortalId, false);
-                        if (ti.IsDeleted)
-                        {
-                            if (defaultTabId > 0)
-                            {
-                                ti = tc.GetTab(defaultTabId, item.PortalId, false);
-                            }
-                        }
-                        returnUrl = DotNetNuke.Common.Globals.FriendlyUrl(ti,
-                             "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/"
-                             + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, item.PortalId), pageName, ps);
-                    }
-                    else if (tabId > 0 && item.DisplayOnCurrentPage())
-                    {
-                        ti = tc.GetTab(tabId, item.PortalId, false);
-                        if (ti.IsDeleted)
-                        {
-                            ti = tc.GetTab(defaultTabId, item.PortalId, false);
-                        }
-                        //check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                        if (moduleId > 0)
-                        {
-                            returnUrl = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + moduleId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters, pageName, ps);
-                        }
-                        else
-                        {
-                            returnUrl = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters, pageName, ps);
-                        }
-                    }
-                    else
-                    {
-                        ti = tc.GetTab(item.DisplayTabId, item.PortalId, false);
-                        if (ti.IsDeleted)
-                        {
-                            ti = tc.GetTab(defaultTabId, item.PortalId, false);
-                        }
-                        returnUrl = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters, pageName, ps);
-                    }
-                }
-                else
-                {
-                    //we need to check for ForceOnCurrentPage
-                    TabController tc = new TabController();
-                    TabInfo ti;
-                    DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
-                    //if we are passing in a TabId use it
-
-                    if (item.ForceDisplayOnPage())
-                    {
-                        ti = tc.GetTab(item.DisplayTabId, item.PortalId, false);
-                        returnUrl = DotNetNuke.Common.Globals.NavigateURL(ti.TabID, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(pageId, portalId) + otherParameters);
-                    }
-
-                    if (tabId > 0)
-                    {
-                        if (moduleId > 0)
-                        {
-                            returnUrl = DotNetNuke.Common.Globals.NavigateURL(tabId, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId.ToString(CultureInfo.InvariantCulture) +  UsePageId(pageId, portalId) + otherParameters);
-                        }
-                        else
-                        {
-                            returnUrl = DotNetNuke.Common.Globals.NavigateURL(tabId, ps, "", "itemid=" + item.ItemId + UsePageId(pageId,portalId) + otherParameters);
-                        }
-                    }
-                    returnUrl = DotNetNuke.Common.Globals.NavigateURL(item.DisplayTabId, ps, "", "itemid=" + item.ItemId + UsePageId(pageId, portalId) + otherParameters);
-                }
-            }
-            return returnUrl;
-        }
-
-
-        public static string GetItemLinkUrlFromItemId(object itemId, int portalId)
-        {
-            if (itemId != null)
-            {
-               return GetItemLinkUrl(itemId, portalId);
-            }
-            return string.Empty;
-        }
-
         public static string GetItemLinkUrl(object itemId, int portalId)
         {
             if (itemId != null)
@@ -1033,7 +898,8 @@ namespace Engage.Dnn.Publish.Util
                 int id = Convert.ToInt32(itemId, CultureInfo.InvariantCulture);
                 int typeId = Item.GetItemTypeId(id, portalId);
                 ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
-                Item i; // = null;
+
+                Item i;
                 if (type.Name == ItemType.Article.Name)
                 {
                     i = Article.GetArticle(id, portalId);
@@ -1042,46 +908,261 @@ namespace Engage.Dnn.Publish.Util
                 {
                     i = Category.GetCategory(id, portalId);
                 }
-                if (i == null)
+
+                if (i != null)
                 {
-                    //there is no current version of this ITEM. Can't view it currently because ItemLink.aspx doesn't
-                    //support versions. hk
-                    return string.Empty;
+                    return GetItemLinkUrl(i);
                 }
-                return GetItemLinkUrl(i);
-                ////see DisplayOnCurrentPage is true for this item.
-                //if (i.DisplayOnCurrentPage())
-                //{
-                //    if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                //    {
-                //        return GetPortalAliasInfo(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId;
-                //    }
-                //    return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture) + "&tabid=" + i.DisplayTabId;
-                //}
-                //if (ModuleBase.IsShortLinkEnabledForPortal(portalId))
-                //{
-                //    return GetPortalAliasInfo(portalId) + "/itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
-                //}
-                //return ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?itemId=" + id.ToString(CultureInfo.InvariantCulture);
+                
+                //else there is no current version of this ITEM. Can't view it currently because ItemLink.aspx doesn't
+                //support versions. hk
             }
             return string.Empty;
         }
-
 
         public static string GetItemLinkUrl(Item item)
         {
             return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, string.Empty);
         }
 
-
-
-        private static string UsePageId(int pageid, int portalid)
+        public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId)
         {
-            if (pageid > 1 && ModuleBase.AllowArticlePagingForPortal(portalid))
+            return GetItemLinkUrl(itemId, portalId, tabId, moduleId, 1, string.Empty);
+        }
+
+        public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId, int pageId, string cultureName)
+        {
+            int typeId = Item.GetItemTypeId(itemId, portalId);
+            ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
+            Item item; // = null;
+            if (type.Name == ItemType.Article.Name)
             {
-                return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
+                item = Article.GetArticle(itemId, portalId);
             }
+            else
+            {
+                item = Category.GetCategory(itemId, portalId);
+            }
+
+            if (item != null)
+            {
+                return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId, cultureName);
+            }
+
             return string.Empty;
+        }
+
+        public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId, string cultureName)
+        {
+            string returnUrl = string.Empty;
+
+            if (item != null && item.IsLinkable())
+            {
+                if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
+                {
+                    returnUrl = GetFriendlyItemLinkUrl(item, tabId, moduleId, pageId, portalId, cultureName);
+                }
+                else
+                {
+                    returnUrl = GetNonFriendlyLinkUrl(item, tabId, moduleId, pageId, portalId);
+                }
+            }
+
+            return returnUrl;
+        }
+
+        /// <summary>
+        /// Gets a URL linking to the given item when friendly URLs are not turned on.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleId">The module id.</param>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>A URL linking to the given item</returns>
+        private static string GetNonFriendlyLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId)
+        {
+            PortalSettings portalSettings = GetPortalSettings(item.PortalId);
+
+            int displayTabId = item.DisplayTabId;
+            int? queryStringModuleId = null;
+
+            if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
+            {
+                displayTabId = tabId;
+                if (moduleId > 0)
+                {
+                    queryStringModuleId = moduleId;
+                }
+            }
+
+            string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, string.Empty));
+            return Globals.NavigateURL(displayTabId, portalSettings, string.Empty, queryStringParameters);
+        }
+
+        /// <summary>
+        /// Gets a URL linking to the given item when friendly URLs are turned on
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleId">The module id.</param>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
+        /// <returns>A URL linking to the given item</returns>
+        private static string GetFriendlyItemLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId, string cultureName)
+        {
+            TabInfo tabInfo;
+            TabController tabController = new TabController();
+            int? queryStringModuleId = null;
+            int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
+            string pageName = GetFriendlyPageName(item.Name);
+
+            // if the setting to "force display on this page" is set, be sure to send them there.
+            if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
+            {
+                tabInfo = tabController.GetTab(tabId, item.PortalId, false);
+
+                // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
+                if (moduleId > 0)
+                {
+                    queryStringModuleId = moduleId;
+                }
+            }
+            else
+            {
+                tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
+            }
+
+            if (tabInfo.IsDeleted)
+            {
+                tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+            }
+
+            return Globals.FriendlyUrl(tabInfo, ConvertParametersToFriendly(CreateParametersForQueryString(item.ItemId, tabInfo.TabID, queryStringModuleId, pageId, portalId, cultureName)), pageName, GetPortalSettings(item.PortalId));
+        }
+
+        /// <summary>
+        /// Converts the given <c>QueryString</c> parameters to the non-friendly (<see cref="Globals.NavigateURL"/>) format.
+        /// </summary>
+        /// <param name="queryStringParameters">The query string parameters.</param>
+        /// <returns></returns>
+        private static string[] ConvertParametersToNonFriendly(NameValueCollection queryStringParameters)
+        {
+            string[] results = queryStringParameters.AllKeys;
+
+            for (int i = 0; i < results.Length; i++)
+            {
+                // add value to key
+                results[i] += "=" + queryStringParameters[results[i]];
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Converts the given <c>QueryString</c> parameters to the friendly ("/key/value/") format.
+        /// </summary>
+        /// <param name="queryStringParameters">The query string parameters.</param>
+        /// <returns></returns>
+        private static string ConvertParametersToFriendly(NameValueCollection queryStringParameters)
+        {
+            StringBuilder friendlyParameters = new StringBuilder();
+
+            for (int i = 0; i < queryStringParameters.Count; i++)
+            {
+                // Friendly URLs start reading parameters with tabId, it must be first
+                string key = queryStringParameters.Keys[i];
+                if (key.Equals("TABID", StringComparison.OrdinalIgnoreCase))
+                {
+                    friendlyParameters.Insert(0, "/" + key + "/" + queryStringParameters[i]);
+                }
+                else
+                {
+                    friendlyParameters.Append("/");
+                    friendlyParameters.Append(key);
+                    friendlyParameters.Append("/");
+                    friendlyParameters.Append(queryStringParameters[i]);
+                }
+            }
+
+            return friendlyParameters.ToString();
+        }
+
+        /// <summary>
+        /// Creates a collection of the possible parameters to be added to the <c>QueryString</c> of a URL linking to an item.
+        /// </summary>
+        /// <param name="itemId">The item id.</param>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleId">The module id.</param>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
+        /// <returns>
+        /// A collection of the possible <c>QueryString</c> parameters to use when linking to an item
+        /// </returns>
+        private static NameValueCollection CreateParametersForQueryString(int itemId, int? tabId, int? moduleId, int pageId, int portalId, string cultureName)
+        {
+            NameValueCollection queryStringParameters = new NameValueCollection(5);
+            queryStringParameters.Add("itemId", itemId.ToString(CultureInfo.InvariantCulture));
+
+            if (tabId.HasValue)
+            {
+                queryStringParameters.Add("tabId", tabId.Value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (moduleId.HasValue)
+            {
+                queryStringParameters.Add("moduleId", moduleId.Value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (UsePageId(pageId, portalId))
+            {
+                queryStringParameters.Add("pageId", pageId.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (HasValue(cultureName))
+            {                
+                queryStringParameters.Add("language", cultureName);
+            }
+
+            return queryStringParameters;
+        }
+
+        /// <summary>
+        /// Gets the item's name as a page name for a friendly URL.
+        /// </summary>
+        /// <param name="itemName">Name of the item.</param>
+        /// <returns>The item's name as a page name for a friendly URL</returns>
+        private static string GetFriendlyPageName(string itemName)
+        {
+            string pageName = itemName.Trim();
+            if (pageName.Length > 50)
+            {
+                pageName = pageName.Substring(0, 50);
+            }
+
+            pageName = OnlyAlphanumericCharacters(pageName);
+
+            // Global.asax Application_BeginRequest checks for these values and will try to redirect to the non-existent page
+            if (pageName.EndsWith("install", StringComparison.CurrentCultureIgnoreCase)
+                || pageName.EndsWith("installwizard", StringComparison.CurrentCultureIgnoreCase))
+            {
+                pageName = pageName.Substring(0, pageName.Length - 1);
+            }
+
+            return pageName + ".aspx";
+        }
+
+        /// <summary>
+        /// Whether to use the current page ID on the <c>QueryString</c>.
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns><c>true</c> if the current page ID should appear on the <c>QueryString</c>; otherwise <c>false</c></returns>
+        private static bool UsePageId(int pageId, int portalId)
+        {
+            return pageId > 1 && ModuleBase.AllowArticlePagingForPortal(portalId);
         }
 
         public static IDataReader GetModuleByModuleId(int moduleId)
@@ -1225,7 +1306,6 @@ namespace Engage.Dnn.Publish.Util
                 dt.Rows.Add(data_row);
             }
         }
-
 
         /// <exception cref="ArgumentNullException"><paramref name="gridView"/> is null.</exception>
         public static void LocalizeGridView(GridView gridView, string resourceFile)

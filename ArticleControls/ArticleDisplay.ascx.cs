@@ -990,33 +990,33 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void DisplayArticlePaging(Article article)
         {
             //check if we're using paging
-            if (AllowArticlePaging && (PageId > 0))
+            if (this.AllowArticlePaging && (this.PageId > 0))
             {
-                lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", string.Empty);
+                this.lblArticleText.Text = article.GetPage(this.PageId).Replace("[PAGE]", string.Empty);
                 
                 //lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", "");
 
                 //lnkPreviousPage
 
-                if (PageId > 1)
+                if (this.PageId > 1)
                 {
-                    lnkPreviousPage.Text = Localization.GetString("lnkPreviousPage", LocalResourceFile);
-                    lnkPreviousPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, PortalId, TabId, ModuleId, PageId - 1, BuildOtherParameters());
-                    lnkNextPage.Attributes.Add("rel", "prev");
+                    this.lnkPreviousPage.Text = Localization.GetString("lnkPreviousPage", this.LocalResourceFile);
+                    this.lnkPreviousPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId - 1, this.GetCultureName());
+                    this.lnkNextPage.Attributes.Add("rel", "prev");
                 }
 
-                if (PageId < article.GetNumberOfPages)
+                if (this.PageId < article.GetNumberOfPages)
                 {
-                    lnkNextPage.Text = Localization.GetString("lnkNextPage", LocalResourceFile);
-                    lnkNextPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, PortalId, TabId, ModuleId, PageId + 1, BuildOtherParameters());
-                    lnkNextPage.Attributes.Add("rel", "next");
+                    this.lnkNextPage.Text = Localization.GetString("lnkNextPage", this.LocalResourceFile);
+                    this.lnkNextPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId + 1, this.GetCultureName());
+                    this.lnkNextPage.Attributes.Add("rel", "next");
                 }
             }
             else
             {
-                lblArticleText.Text = article.ArticleText.Replace("[PAGE]", string.Empty);
-                lnkPreviousPage.Visible = false;
-                lnkNextPage.Visible = false;
+                this.lblArticleText.Text = article.ArticleText.Replace("[PAGE]", string.Empty);
+                this.lnkPreviousPage.Visible = false;
+                this.lnkNextPage.Visible = false;
             }
         }
 

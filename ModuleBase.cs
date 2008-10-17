@@ -11,6 +11,7 @@
 namespace Engage.Dnn.Publish
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
@@ -870,7 +871,12 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrl(object itemId)
         {
-            return Utility.GetItemLinkUrl(itemId, this.PortalId, this.TabId, this.ModuleId, this.PageId, this.BuildOtherParameters());
+            if (itemId != null)
+            {
+                return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, this.PageId, this.GetCultureName());
+            }
+
+            return string.Empty;
         }
 
         public void SetItemId(int value)
@@ -1135,22 +1141,25 @@ namespace Engage.Dnn.Publish
             this.BindItemData(false);
         }
 
-        protected string BuildOtherParameters()
+        /// <summary>
+        /// Gets the name of the current culture under which the page and user is operating.
+        /// </summary>
+        /// <returns>The current culture name, or <see cref="string.Empty"/> if none is found</returns>
+        protected string GetCultureName()
         {
-            //add to this if necessary, currently we're only looking for language
-            object o = this.Request.QueryString["language"];
-            if (o != null)
+            // add to this if necessary, currently we're only looking for language
+            string languageValue = this.Request.QueryString["language"];
+            if (languageValue != null)
             {
-                //if languages are turned on we should pass the language querystring parameter
-                if (this.UserId > -1 && this.UserInfo.Profile.PreferredLocale != null)
+                // if languages are turned on we should pass the language querystring parameter
+                if (this.UserId > -1 && this.UserInfo.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
                 {
-                    if (this.UserInfo.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
-                    {
-                        return "&language=" + this.UserInfo.Profile.PreferredLocale;
-                    }
+                    return this.UserInfo.Profile.PreferredLocale;
                 }
-                return "&language=" + o;
+
+                return languageValue;
             }
+
             return string.Empty;
         }
 
