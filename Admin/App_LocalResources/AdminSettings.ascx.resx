@@ -566,4 +566,10 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="rvAdminPagingSize.Text" xml:space="preserve">
     <value>Please enter a valid Integer from 1 to 1000</value>
   </data>
+  <data name="plDefaultTextHtmlCategory.Help" xml:space="preserve">
+    <value>Please choose a default category for content saved with the Publish Text/HTML module.</value>
+  </data>
+  <data name="plDefaultTextHtmlCategory.Text" xml:space="preserve">
+    <value>Default category for Publish Text/HTML module.</value>
+  </data>
 </root>

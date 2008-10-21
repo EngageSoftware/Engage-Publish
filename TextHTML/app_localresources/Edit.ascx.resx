@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,16 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnSubmit.Text" xml:space="preserve">
-    <value>update</value>
-  </data>
-  <data name="ChooseOne.Text" xml:space="preserve">
-    <value>[Choose One]</value>
-  </data>
-  <data name="CollapsedImage.Text" xml:space="preserve">
-    <value>/images/dbldn.gif</value>
-  </data>
-  <data name="ExpandedImage.Text" xml:space="preserve">
-    <value>/images/dblup.gif</value>
+  <data name="description.Text" xml:space="preserve">
+    <value>This article was saved with the Publish Text/HTML Module on {0}</value>
   </data>
 </root>

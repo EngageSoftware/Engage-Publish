@@ -302,6 +302,13 @@ namespace Engage.Dnn.Publish
             get { return DefaultTagDisplayTabIdForPortal(this.PortalId); }
         }
 
+        public int DefaultTextHtmlCategory
+        {
+            get { return DefaultTextHtmlCategoryForPortal(this.PortalId); }
+        }
+
+
+
         public bool AllowRichTextDescriptions
         {
             get { return AllowRichTextDescriptionsForPortal(this.PortalId); }
@@ -734,6 +741,18 @@ namespace Engage.Dnn.Publish
             }
             return -1;
         }
+
+
+        public static int DefaultTextHtmlCategoryForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishDefaultTextHtmlCategory + portalId.ToString(CultureInfo.InvariantCulture));
+            if (Utility.HasValue(s))
+            {
+                return Convert.ToInt32(s, CultureInfo.InvariantCulture);
+            }
+            return -1;
+        }
+
 
         public static bool AllowRichTextDescriptionsForPortal(int portalId)
         {

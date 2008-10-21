@@ -253,6 +253,8 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
 
+        public const string PublishDefaultTextHtmlCategory = "PublishDefaultTextHtmlCategory";
+
         public const string PublishDefaultEmailAFriend = "PublishDefaultEmailAFriend";
         public const string PublishDefaultPrinterFriendly = "PublishDefaultPrinterFriendly";
         public const string PublishDefaultRatings = "PublishDefaultRatings";

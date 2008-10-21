@@ -130,7 +130,7 @@
 				<asp:TextBox ID="txtDefaultCacheTime" runat="server" /> <asp:RangeValidator ID="rvDefaultCacheTime" resourcekey="rvDefaultCacheTime" runat="server" ControlToValidate="txtDefaultCacheTime" Type="integer" MaximumValue="1000" MinimumValue="0"></asp:RangeValidator>
 			</td>
 		</tr>
- <tr>
+         <tr>
 			<td>
 				<dnn:label id="plAdminPagingSize" runat="server" controlname="txtAdminPagingSize" text="Admin Paging Size:"></dnn:label>
 			</td>
@@ -138,6 +138,15 @@
 				<asp:TextBox ID="txtAdminPagingSize" runat="server" /> <asp:RangeValidator ID="rvAdminPagingSize" resourcekey="rvAdminPagingSize" runat="server" ControlToValidate="txtAdminPagingSize" Type="integer" MaximumValue="1000" MinimumValue="1"></asp:RangeValidator>
 			</td>
 		</tr>
+         <tr>
+			<td>
+				<dnn:label id="plDefaultTextHtmlCategory" runat="server" controlname="ddlDefaultTextHtmlCategory" text="Admin Paging Size:"></dnn:label>
+			</td>
+			<td>
+				<asp:DropDownList ID="ddlDefaultTextHtmlCategory" runat="server" />
+			</td>
+		</tr>
+
 		</table>
     
     <table id="tblDisplayFunctionality" border="0" class="Normal AdminSettingsTable SettingsTable">
@@ -509,8 +518,7 @@
                 &nbsp;
             </td>
         </tr>
-    </table>          
-           
+    </table>
     </asp:Panel>
     
 <asp:Panel ID="pnlTagSettings" runat="server">
@@ -587,8 +595,6 @@
 		</tr>		
 		</table>
     </asp:Panel>
-
-
 </ContentTemplate>
 </asp:UpdatePanel>
     <br />

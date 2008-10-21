@@ -82,7 +82,7 @@ namespace Engage.Dnn.Publish
             return a;
         }
 
-        [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
+        [Obsolete("This method should not be used, please use Article.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
         public static Article CreateArticle(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
         {
             Article a = Create(name, description, articleText, authorUserId, parentCategoryId, moduleId, portalId);

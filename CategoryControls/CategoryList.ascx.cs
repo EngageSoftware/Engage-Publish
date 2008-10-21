@@ -367,7 +367,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             ItemRelationship.DisplayCategoryHierarchy(cboItemType, CategoryId, PortalId, false);
 
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", GlobalResourceFile), "-1");
             this.cboItemType.Items.Insert(0, li);
 
             cboWorkflow.Visible = UseApprovals;

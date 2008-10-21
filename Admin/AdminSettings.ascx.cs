@@ -118,6 +118,9 @@ namespace Engage.Dnn.Publish.Admin
                 objHostSettings.UpdateHostSetting(Utility.PublishThumbnailDisplayOption + PortalId.ToString(CultureInfo.InvariantCulture), radThumbnailSelection.SelectedValue.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultDisplayPage + PortalId.ToString(CultureInfo.InvariantCulture), ddlDefaultDisplay.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
+                if(ddlDefaultTextHtmlCategory.SelectedIndex>0)
+                objHostSettings.UpdateHostSetting(Utility.PublishDefaultTextHtmlCategory+ PortalId.ToString(CultureInfo.InvariantCulture), ddlDefaultTextHtmlCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
+
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultTagPage + PortalId.ToString(CultureInfo.InvariantCulture), ddlTagList.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultReturnToList + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultReturnToList.Checked.ToString(CultureInfo.InvariantCulture));
@@ -227,6 +230,9 @@ namespace Engage.Dnn.Publish.Admin
             Utility.SetSettingListValue(Utility.PublishEmailNotificationRole, PortalId, ddlEmailRoles);
             Utility.SetSettingListValue(Utility.PublishDefaultTagPage, PortalId, ddlTagList);
             Utility.SetSettingListValue(Utility.PublishDefaultDisplayPage, PortalId, ddlDefaultDisplay);
+
+            Utility.SetSettingListValue(Utility.PublishDefaultTextHtmlCategory, PortalId, ddlDefaultTextHtmlCategory);
+            
             Utility.SetSettingListValue(Utility.PublishForumProviderType, PortalId, ddlCommentsType);
 
             txtDefaultCacheTime.Text = Utility.GetStringPortalSetting(Utility.PublishCacheTime, PortalId, "5");
@@ -362,6 +368,8 @@ namespace Engage.Dnn.Publish.Admin
             LoadTagDropDown();
             LoadCommentTypesDropDown();
             LoadThumbnailSelectionRadioButtonList();
+
+            LoadDefaultTextHtmlCategoryDropDown();
         }
 
         private void LoadAdminRolesDropDown(ArrayList portalRoles)
@@ -411,6 +419,14 @@ namespace Engage.Dnn.Publish.Admin
                 ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
                 this.ddlDefaultDisplay.Items.Add(li);
             }
+        }
+
+        private void LoadDefaultTextHtmlCategoryDropDown()
+        {
+            ItemRelationship.DisplayCategoryHierarchy(ddlDefaultTextHtmlCategory, -1, PortalId, false);
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", GlobalResourceFile), "-1");
+            this.ddlDefaultTextHtmlCategory.Items.Insert(0, li);
+
         }
 
 
