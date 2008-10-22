@@ -41,8 +41,10 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             try
             {
-                //TODO: load the article for this module
+                //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
+                
                 //load the article id (itemid) from the module settings.
+                
                 LoadArticle();
 
             }

@@ -377,5 +377,42 @@
         </file>
       </files>
     </folder>
+    <folder>
+      <name>Engage: Publish Text/HTML</name>
+      <friendlyname>EP Text/HTML</friendlyname>
+      <foldername>EngagePublish/TextHTML</foldername>
+      <modulename>Engage: Publish Text/HTML</modulename>
+      <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
+      <version>05.02.03</version>
+      <businesscontrollerclass></businesscontrollerclass>
+      <dependencies></dependencies>
+      <modules>
+        <module>
+          <friendlyname>EP Text/HTML</friendlyname>
+          <cachetime>0</cachetime>
+          <controls>
+            <control>
+              <src>DesktopModules/EngagePublish/TextHTML/View.ascx</src>
+              <type>View</type>
+            </control>
+            <control>
+              <key>Settings</key>
+              <src>DesktopModules/EngagePublish/TextHTML/Settings.ascx</src>
+              <type>Edit</type>
+            </control>
+            <control>
+              <key>Edit</key>
+              <src>DesktopModules/EngagePublish/TextHTML/Edit.ascx</src>
+              <type>Edit</type>
+            </control>
+          </controls>
+        </module>
+      </modules>
+      <files>
+        <file>
+          <name>View.ascx</name>
+        </file>
+      </files>
+    </folder>
   </folders>  
 </dotnetnuke>
