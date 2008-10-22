@@ -8,20 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using Localize = DotNetNuke.Services.Localization.Localization;
-
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using Data;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using Util;
+    using Localize = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Summary description for ArticleInfo.
     /// ArticleInfo holds all of the article specific information
@@ -498,22 +498,19 @@ namespace Engage.Dnn.Publish
                 a = GetArticle(itemId);
             }
 
-            if (a != null && loadRelationships)
+            if (a != null)
             {
-                foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(itemId, a.ItemVersionId, true))
+                if (loadRelationships)
                 {
-                    relationship.CorrectDates();
-                    a.Relationships.Add(relationship);
+                    a.LoadRelationships();
+                }
+
+                if (loadTags)
+                {
+                    a.LoadTags();
                 }
             }
 
-            if (a != null && loadTags)
-            {
-                foreach (ItemTag tag in ItemTag.GetItemTags(a.ItemVersionId))
-                {
-                    a.Tags.Add(tag);
-                }
-            }
             return a;
         }
 

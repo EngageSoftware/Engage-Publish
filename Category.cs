@@ -8,19 +8,19 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Xml.Serialization;
-using DotNetNuke.Entities.Host;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using Localize = DotNetNuke.Services.Localization.Localization;
-using DotNetNuke.Common.Utilities;
-
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using Data;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using Util;
+    using Localize = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Summary description for Category.
     /// </summary>
@@ -468,12 +468,27 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId)
         {
+            return GetCategory(itemId, false, false);
+        }
 
+        public static Category GetCategory(int itemId, bool loadRelationships, bool loadTags)
+        {
             Category c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
                 c.CorrectDates();
+
+                if (loadRelationships)
+                {
+                    c.LoadRelationships();
+                }
+
+                if (loadTags)
+                {
+                    c.LoadTags();
+                }
             }
+
             return c;
         }
 
@@ -648,7 +663,7 @@ namespace Engage.Dnn.Publish
                 }
                 else
                 {
-                    childItem = GetCategory(itemId);
+                    childItem = GetCategory(itemId, true, true);
                 }
 
                 childItem.DisplayTabId = this.ChildDisplayTabId;

@@ -1191,6 +1191,30 @@ namespace Engage.Dnn.Publish
             return Category.GetParentCategory(this.ItemId, PortalId);
         }
 
+        /// <summary>
+        /// Loads the <see cref="ItemTag"/>s for this <see cref="Item"/>, clearing any tags already in the <see cref="Item.Tags"/> collection.
+        /// </summary>
+        protected void LoadTags()
+        {
+            this.Tags.Clear();
+            foreach (ItemTag tag in ItemTag.GetItemTags(this.ItemVersionId))
+            {
+                this.Tags.Add(tag);
+            }
+        }
+
+        /// <summary>
+        /// Loads the <see cref="ItemRelationship"/>s for this <see cref="Item"/>, clearing any relationships already in the <see cref="Item.Relationships"/> collection.
+        /// </summary>
+        protected void LoadRelationships()
+        {
+            this.Relationships.Clear();
+            foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(this.ItemId, this.ItemVersionId, true))
+            {
+                relationship.CorrectDates();
+                this.Relationships.Add(relationship);
+            }
+        }
 
         #region TransportableElement Methods
 
