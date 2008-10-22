@@ -15,7 +15,7 @@
             <table id="tblAdvanced" cellspacing="0" cellpadding="0" border="0" class="SettingsTable" >
                 <tr>
                     <td class="SubHead"><dnn:label id="lblTemplate" resourcekey="lblTemplate" runat="server" /></td>
-                    <td class="NormalTextBox"><asp:TextBox ID="txtTemplate" runat="server" Text="[ArticleText]" /></td>
+                    <td class="NormalTextBox"><asp:TextBox ID="txtTemplate" runat="server" Text="[ArticleText]" TextMode="MultiLine" CssClass="TemplateTextBox" /></td>
                 </tr>
             </table>
     </div>

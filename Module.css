@@ -1373,3 +1373,11 @@ a.mouseOverImage:hover
 {
 	width:60%;
 }
+
+
+/*Module Settings*/
+.TemplateTextBox
+{
+	width:300px;
+	height:150px;
+}
