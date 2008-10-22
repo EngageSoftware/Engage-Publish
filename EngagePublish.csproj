@@ -556,12 +556,12 @@
     <Compile Include="Tags\TagEntry.ascx.designer.cs">
       <DependentUpon>TagEntry.ascx</DependentUpon>
     </Compile>
-    <Compile Include="TextHtml\Copy Of View.ascx.cs">
-      <DependentUpon>Copy Of View.ascx</DependentUpon>
+    <Compile Include="TextHtml\Edit.ascx.cs">
+      <DependentUpon>Edit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TextHtml\Copy Of View.ascx.designer.cs">
-      <DependentUpon>Copy Of View.ascx</DependentUpon>
+    <Compile Include="TextHtml\Edit.ascx.designer.cs">
+      <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="TextHtml\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -1000,7 +1000,7 @@
   <ItemGroup>
     <Content Include="Admin\Tools\App_LocalResources\ResetDisplayPage.ascx.resx">
     </Content>
-    <Content Include="TextHtml\Copy Of View.ascx" />
+    <Content Include="TextHtml\Edit.ascx" />
     <Content Include="TextHtml\View.ascx" />
   </ItemGroup>
   <ItemGroup>
