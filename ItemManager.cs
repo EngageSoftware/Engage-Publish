@@ -201,6 +201,12 @@ namespace Engage.Dnn.Publish
             //Columns:  NewItemId and OldArticleID
             //Publish_ArticleMapping
             //Columns: NewItemId and OldCateogryID
+
+            if (PreviousArticleId != -1 && string.Compare(DisplayOption, "texthtml", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                id = ItemId;
+            }
+            
             //Verify that these tables have been populated correctly! hk
             if (PreviousArticleId != -1 && string.Compare(DisplayOption, "article", StringComparison.OrdinalIgnoreCase) == 0)
             {

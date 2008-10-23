@@ -129,4 +129,13 @@
   <data name="ExpandedImage.Text" xml:space="preserve">
     <value>/images/dblup.gif</value>
   </data>
+  <data name="Administration.Text" xml:space="preserve">
+    <value>Manage Content</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Versions.Text" xml:space="preserve">
+    <value>Versions</value>
+  </data>
 </root>

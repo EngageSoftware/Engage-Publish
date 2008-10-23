@@ -61,8 +61,8 @@ namespace Engage.Dnn.Publish.Controls
         {
             clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", LocalResourceFile);
             clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", LocalResourceFile);
-            clpAdvanced.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", GlobalResourceFile).Replace("[L]", "");
-            clpAdvanced.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", GlobalResourceFile).Replace("[L]", "");
+            clpAdvanced.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpAdvanced.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
         }
  
 		private void Page_Load(object sender, EventArgs e)

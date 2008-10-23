@@ -33,8 +33,10 @@ namespace Engage.Dnn.Publish.TextHtml
 
         override protected void OnInit(EventArgs e)
         {
+            SetItemId();
             this.Load += this.Page_Load;
             base.OnInit(e);
+            BindItemData(true);
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -42,33 +44,40 @@ namespace Engage.Dnn.Publish.TextHtml
             try
             {
                 //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
-                
                 //load the article id (itemid) from the module settings.
-                
                 LoadArticle();
-
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        private void LoadArticle()
+
+        private void SetItemId()
         {
-            if(Settings.Contains("ItemId"))
+            //TODO: look at setting itemid in the ItemId property off module base
+
+            //TODO: make the preview mode work
+            if (Settings.Contains("ItemId"))
             {
-                Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId);
-                lblArticleText.Text = a.ArticleText;
+                this.SetItemId(Convert.ToInt32(Settings["ItemId"]));
             }
         }
 
+        private void LoadArticle()
+        {
+            Article a = Article.GetArticle(ItemId, PortalId);
+            lblArticleText.Text = a.ArticleText;
+        }
 
         public ModuleActionCollection ModuleActions
         {
             get
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Edit", GlobalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), Localization.GetString("Edit", LocalSharedResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                //                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

@@ -981,9 +981,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Tools\ResetDisplayPage.ascx" />
-    <Content Include="App_GlobalResources\GlobalResources.resx">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="References\AjaxControlToolkit.dll" />
     <Content Include="References\CookComputing.XmlRpcV2.dll" />
     <Content Include="References\DotNetNuke.dll" />
@@ -1006,7 +1003,13 @@
     <Content Include="TextHtml\Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="05.02.04.txt" />
     <Content Include="TextHtml\app_localresources\Settings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\SharedResources.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

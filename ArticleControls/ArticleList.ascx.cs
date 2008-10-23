@@ -335,7 +335,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Does not return class state information")]
         protected string GetLocalizedVersionText()
         {
-            return Localization.GetString("Versions", LocalResourceFile);
+            return Localization.GetString("Versions", LocalSharedResourceFile);
         }
 
 

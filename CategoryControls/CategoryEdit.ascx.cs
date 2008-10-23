@@ -690,8 +690,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             clpExtended.CollapsedText = Localization.GetString("clpExtended.CollapsedText", LocalResourceFile);
             clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
 
-            clpExtended.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", GlobalResourceFile).Replace("[L]", "");
-            clpExtended.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", GlobalResourceFile).Replace("[L]", "");
+            clpExtended.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpExtended.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
 
         }
 

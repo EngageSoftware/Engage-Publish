@@ -180,9 +180,6 @@
   <data name="lblSortOption.Text" xml:space="preserve">
     <value>Choose a Sort Order:</value>
   </data>
-  <data name="Administration.Text" xml:space="preserve">
-    <value>Manage Content</value>
-  </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>

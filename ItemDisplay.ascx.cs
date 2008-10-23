@@ -232,15 +232,20 @@ namespace Engage.Dnn.Publish
         {
             if (VersionInfoObject != null)
             {
-                //check to see if this Item should be redirected to a URL
+                //check to see if this Item should be redirected to a different URL
                 if (Utility.HasValue(VersionInfoObject.Url) && (this.VersionInfoObject.Url != this.Request.Url.ToString()))
                 {
                     //do our redirect now
                     Response.Status = "301 Moved Permanently";
                     Response.RedirectLocation = VersionInfoObject.GetItemExternalUrl;
                 }
-                //TODO: check if we're on the correct URL before progressing
 
+                //check if we're on the correct URL before progressing
+                if (VersionInfoObject.ForceDisplayOnPage() && (TabId != VersionInfoObject.DisplayTabId))
+                {
+                    Response.Status = "301 Moved Permanently";
+                    Response.RedirectLocation = GetItemLinkUrl(VersionInfoObject.ItemId);                    
+                }
             }
         }
 
@@ -251,13 +256,10 @@ namespace Engage.Dnn.Publish
             get
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Administration", this.LocalResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }
-
-
-
     }
 }
 

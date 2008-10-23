@@ -293,7 +293,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     hl.NavigateUrl = BuildLinkUrl(qsp.ToString());
 
-                    hl.Text = Localization.GetString("Versions", LocalResourceFile);
+                    hl.Text = Localization.GetString("Versions", LocalSharedResourceFile);
 
                     cell = new TableCell();
                     row.Cells.Add(cell);
@@ -367,7 +367,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             ItemRelationship.DisplayCategoryHierarchy(cboItemType, CategoryId, PortalId, false);
 
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", GlobalResourceFile), "-1");
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
             this.cboItemType.Items.Insert(0, li);
 
             cboWorkflow.Visible = UseApprovals;

@@ -54,7 +54,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
         protected void LocalizeText()
         {
-            btnSubmit.Text = Localization.GetString("btnSubmit", GlobalResourceFile);
+            btnSubmit.Text = Localization.GetString("btnSubmit", LocalSharedResourceFile);
         }
         protected void LoadArticle()
         {
@@ -86,19 +86,35 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.DisplayTabId = TabId;
                 
                 //TODO: how to handle approval status Ids?
-
-
+                
+                //force display on specific page
+                Setting setting = Setting.ArticleSettingForceDisplay;
+                setting.PropertyValue = "true";
+                ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+                a.VersionSettings.Add(itemVersionSetting);
+                a.ModuleId = ModuleId;
                 a.Save(UserId);
                 
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+                modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
             }
             else
             {
                 Article a = Article.Create(articleName.ToString(), articleDescription, teArticleText.Text.ToString(), UserId, DefaultTextHtmlCategory, ModuleId, PortalId);
                 a.DisplayTabId = TabId;
                 //TODO: how to handle approval status Ids?
+
+                //force display on specific page
+                Setting setting = Setting.ArticleSettingForceDisplay;
+                setting.PropertyValue = "true";
+                ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+                a.VersionSettings.Add(itemVersionSetting);
+
+                a.ModuleId = ModuleId;
+
                 a.Save(UserId);             
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+                modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
             }
 
             

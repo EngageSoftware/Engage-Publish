@@ -54,7 +54,15 @@ namespace Engage.Dnn.Publish
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Item versionInfoObject;
 
-        public const string GlobalResourceFile = "~/DesktopModules/EngagePublish/App_GlobalResources/globalresources.resx";
+        //public const string GlobalResourceFile = "~/DesktopModules/EngagePublish/App_GlobalResources/globalresources.resx";
+
+        public string LocalSharedResourceFile 
+        {
+            get
+            {
+                return "~" + DesktopModuleFolderName + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/" + DotNetNuke.Services.Localization.Localization.LocalSharedResourceFile;
+            }
+        }
 
         public bool UseUrls
         {
@@ -1281,5 +1289,28 @@ namespace Engage.Dnn.Publish
             //DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(portalId);
             return this.Request.Url.Scheme + "://" + this.Request.Url.Host + this.PortalSettings.HomeDirectory + fileName;
         }
+
+        public string BuildVersionsUrl()
+        {
+            //find the location of the ams admin module on the site.
+            //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
+            if (this.ItemId > -1)
+            {
+                //string currentItemType = Item.GetItemType(ItemId,PortalId);
+                int itemId = -1;
+                if (!this.VersionInfoObject.IsNew)
+                {
+                    itemId = this.VersionInfoObject.ItemId;
+                }
+                return DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + ItemId.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+
+
     }
 }

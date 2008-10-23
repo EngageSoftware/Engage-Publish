@@ -110,7 +110,7 @@ namespace Engage.Dnn.Publish.Controls
                 string href = string.Empty;
                 if (version != null && version.IsLinkable())
                 {
-                    href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture));
+                    href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
                 }
 
                 return href;

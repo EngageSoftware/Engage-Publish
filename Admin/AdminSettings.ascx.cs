@@ -424,7 +424,7 @@ namespace Engage.Dnn.Publish.Admin
         private void LoadDefaultTextHtmlCategoryDropDown()
         {
             ItemRelationship.DisplayCategoryHierarchy(ddlDefaultTextHtmlCategory, -1, PortalId, false);
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", GlobalResourceFile), "-1");
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
             this.ddlDefaultTextHtmlCategory.Items.Insert(0, li);
 
         }
@@ -449,8 +449,8 @@ namespace Engage.Dnn.Publish.Admin
         private void LocalizeCollapsePanels()
         {
 
-            string expandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", GlobalResourceFile).Replace("[L]", "");
-            string collapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", GlobalResourceFile).Replace("[L]", "");
+            string expandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            string collapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
 
             clpTagSettings.CollapsedText = Localization.GetString("clpTagSettings.CollapsedText", LocalResourceFile);
             clpTagSettings.ExpandedText = Localization.GetString("clpTagSettings.ExpandedText", LocalResourceFile);

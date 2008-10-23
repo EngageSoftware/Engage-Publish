@@ -405,6 +405,11 @@
               <src>DesktopModules/EngagePublish/TextHTML/Edit.ascx</src>
               <type>Edit</type>
             </control>
+            <control>
+              <key>AdminContainer</key>
+              <src>DesktopModules/EngagePublish/AdminLoader.ascx</src>
+              <type>Edit</type>
+            </control>
           </controls>
         </module>
       </modules>

@@ -1,0 +1,3 @@
+desktopmodules\engagepublish\app_globalresources\globalresources.resx
+desktopmodules\engagepublish\app_globalresources
+	

@@ -211,27 +211,6 @@ namespace Engage.Dnn.Publish.Admin
             }
         }
 
-        public string BuildVersionsUrl()
-        {
-            //find the location of the ams admin module on the site.
-            //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
-            if (this.ItemId > -1)
-            {
-                //string currentItemType = Item.GetItemType(ItemId,PortalId);
-                int itemId = -1;
-                if (!this.VersionInfoObject.IsNew)
-                {
-                    itemId = this.VersionInfoObject.ItemId;
-                }
-
-                return DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + itemId.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
-
 
         public string BuildCategoryListUrl()
         {
@@ -330,7 +309,7 @@ namespace Engage.Dnn.Publish.Admin
                     this.lnkUpdateStatus.Visible = false;
                 }
 
-                this.AddMenuLink(localizedItemTypeName + " " + Localization.GetString("Versions", this.LocalResourceFile), this.BuildVersionsUrl());
+                this.AddMenuLink(localizedItemTypeName + " " + Localization.GetString("Versions", LocalSharedResourceFile), this.BuildVersionsUrl());
             }
         }
 
