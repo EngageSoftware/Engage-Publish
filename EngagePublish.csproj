@@ -526,9 +526,6 @@
     <Compile Include="Services\Structs.cs" />
     <Compile Include="Services\MetaWeblog.cs" />
     <Compile Include="Services\IMetaWeblog.cs" />
-    <Compile Include="Services\MetaWeblogOld.asmx.cs">
-      <DependentUpon>MetaWeblogOld.asmx</DependentUpon>
-    </Compile>
     <Compile Include="Services\PublishServices.asmx.cs">
       <DependentUpon>PublishServices.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -969,7 +966,6 @@
     <Content Include="Services\App_LocalResources\MetaWeblog.ashx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Services\MetaWeblogOld.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\QuickStats.ascx" />

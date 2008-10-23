@@ -193,7 +193,7 @@ namespace Engage.Dnn.Publish.Portability
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode settingsNode = _doc.CreateElement("itemversionsettings");
 
-            List<ItemVersionSetting> settings = exportAll ? ItemVersionSetting.GetItemVersionSettingsByPortalId(this._portalId) : ItemVersionSetting.GetItemVersionSettingsByModuleId(this._moduleId);
+            List<ItemVersionSetting> settings = exportAll ? ItemVersionSetting.GetItemVersionSettingsByPortalId(this._portalId) : ItemVersionSetting.GetItemVersionSettingsByModuleId(this._moduleId, this._portalId);
 
             foreach (ItemVersionSetting setting in settings)
             {

@@ -308,7 +308,6 @@ namespace Engage.Dnn.Publish
                     wr.WriteElementString("title", title);
 
                     //if the item isn't disabled add the link
-                    //TODO: make this use the full urls
                     if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), this.PortalId))
                     {
                         wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, this.PortalId));
@@ -329,7 +328,7 @@ namespace Engage.Dnn.Publish
                     //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
                     wr.WriteElementString("description", this.Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
-                    //TODO: why was thumbnail included?
+                    //why was thumbnail included?
                     //wr.WriteElementString("thumbnail", thumbnail);
 
                     wr.WriteElementString("dc:creator", author);

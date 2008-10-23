@@ -281,7 +281,6 @@ namespace Engage.Dnn.Publish
             get { return EnableDisplayNameAsHyperlinkForPortal(this.PortalId); }
         }
 
-        //TODO: implement settings on the Publish Admin Settings Control
         public bool AllowTags
         {
             get { return AllowTagsForPortal(this.PortalId); }

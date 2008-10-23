@@ -45,10 +45,7 @@ namespace Engage.Dnn.Publish.Controls
             if (Utility.HasValue(VersionInfoObject.Url))
             {
                 this.ctlUrlSelection.Url = VersionInfoObject.Url;
-                //TODO: this "open in new window" link needs changed, won't work in URLCOntrol
                 chkNewWindow.Checked    = VersionInfoObject.NewWindow;
-
-                //this.ctlUrlSelection.NewWindow = VersionInfoObject.NewWindow;
                 pnlUrlSelection.Visible = true;
                 chkUrlSelection.Checked = true;
                 UseUrls = true;
@@ -179,7 +176,6 @@ namespace Engage.Dnn.Publish.Controls
                     VersionInfoObject.Description = DescriptionText;
                     VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
 
-                    //TODO: check why saving a new item fails
                     VersionInfoObject.AuthorUserId = Convert.ToInt32(ddlAuthor.SelectedValue);
                     VersionInfoObject.RevisingUserId = UserId;
 				}

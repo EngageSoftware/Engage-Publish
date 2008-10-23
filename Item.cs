@@ -866,7 +866,6 @@ namespace Engage.Dnn.Publish
             get
             {
                 string strUrl = string.Empty;
-                //TODO: check if language parameters work (should work with navigateurl)
                 switch (Globals.GetURLType(this.url))
                 {
                     case TabType.Normal:

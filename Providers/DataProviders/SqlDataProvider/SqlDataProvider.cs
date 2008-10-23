@@ -1518,11 +1518,13 @@ namespace Engage.Dnn.Publish.Data
 
         public override void AddArticleVersion(int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
         {
+            //TODO: covert these to parameters
             SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "spInsertArticleVersion", itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber);
         }
 
         public override void AddArticleVersion(IDbTransaction trans, int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
         {
+            //TODO: covert these to parameters
             SqlHelper.ExecuteNonQuery((SqlTransaction)trans, NamePrefix + "spInsertArticleVersion", itemVersionId, itemId, versionNumber, versionDescription, articleText, referenceNumber);
         }
 

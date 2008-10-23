@@ -213,17 +213,73 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByPortalId(int portalId)
         {
-            //TODO: cache this 
-            List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
+            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByPortalId + portalId.ToString();
+            List<ItemVersionSetting> settings;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    settings = (List<ItemVersionSetting>)o;
+                }
+                else
+                {
+                    settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
+                }
+                if (settings != null)
+                {
+                    DataCache.SetCache(cacheKey, settings, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
+            }
             return settings;
+            
+            //List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByPortalId(portalId));
+            //return settings;
         }
-
+        [Obsolete("This method should not be used, please use GetItemVersionSettingsByModuleId(moduleId, portalId).", true)]
         public static List<ItemVersionSetting> GetItemVersionSettingsByModuleId(int moduleId)
         {
-            //TODO: cache this 
             List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
             return settings;
         }
+
+        public static List<ItemVersionSetting> GetItemVersionSettingsByModuleId(int moduleId, int portalId)
+        {
+            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByModuleId + moduleId.ToString();
+            List<ItemVersionSetting> settings;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey) as object;
+                if (o != null)
+                {
+                    settings = (List<ItemVersionSetting>)o;
+                }
+                else
+                {
+                    settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
+                }
+                if (settings != null)
+                {
+                    DataCache.SetCache(cacheKey, settings, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                    Utility.AddCacheKey(cacheKey, portalId);
+                }
+            }
+            else
+            {
+                settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
+            }
+            return settings;
+
+            //List<ItemVersionSetting> settings = CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettingsByModuleId(moduleId));
+            //return settings;
+        }
+
+
 
         public static int GetItemVersionSettingByIdentifier(Guid itemVersionIdentifier, int portalId)
         {

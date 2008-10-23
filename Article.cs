@@ -361,8 +361,6 @@ namespace Engage.Dnn.Publish
         public void AddRating(int rating, int? userId)
         {
             UserFeedback.Rating.AddRating(this.ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
-
-            //TODO: should we clear the cache?
         }
 
         public string GetPage(int pageId)

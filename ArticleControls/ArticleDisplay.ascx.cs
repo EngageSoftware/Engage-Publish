@@ -495,8 +495,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         objSecurity.InputFilter(txtUrlComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         DataProvider.ModuleQualifier);
 
-                    //TODO: see if comment notification is turned on. Notify the ItemVersion.Author?
-
+                    //see if comment notification is turned on. Notify the ItemVersion.Author
                     if (IsCommentAuthorNotificationEnabled)
                     {
                         UserController uc = new UserController();
@@ -953,7 +952,6 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private static void ReplaceTokens(Article a)
         {
-            //TODO: this only checks for the first token, not all of them.
             //TODO: change : to | (pipe) sometime
             int youTubeLocation = a.ArticleText.ToUpperInvariant().IndexOf("[YOUTUBE:", StringComparison.Ordinal);
             if (youTubeLocation >= 0)

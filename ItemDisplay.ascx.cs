@@ -68,11 +68,8 @@ namespace Engage.Dnn.Publish
                 string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid;
                 Response.Status = "301 Moved Permanently";
                 Response.RedirectLocation = href;
-
-                //Response.Redirect(ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid.ToString(), false);
             }
-
-
+            
             string displayType = string.Empty;
             if (Settings.Contains("DisplayType"))
             {
@@ -243,6 +240,7 @@ namespace Engage.Dnn.Publish
                     Response.RedirectLocation = VersionInfoObject.GetItemExternalUrl;
                 }
                 //TODO: check if we're on the correct URL before progressing
+
             }
         }
 

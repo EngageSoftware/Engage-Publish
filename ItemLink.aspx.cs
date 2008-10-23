@@ -136,8 +136,7 @@ namespace Engage.Dnn.Publish
         private void DisplayItem(Item item)
         {
 
-            //TODO: check if item.URL is populated, if so figure out where to redirect.
-
+            //check if item.URL is populated, if so figure out where to redirect.
             if (Utility.HasValue(item.Url))
             {
                 //do our redirect now

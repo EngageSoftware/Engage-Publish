@@ -39,7 +39,6 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             try
             {
-                //TODO: load the article for this module
                 //load the article id (itemid) from the module settings.
                 LocalizeText();
                 if (!Page.IsPostBack)
@@ -97,10 +96,8 @@ namespace Engage.Dnn.Publish.TextHtml
             {
                 Article a = Article.Create(articleName.ToString(), articleDescription, teArticleText.Text.ToString(), UserId, DefaultTextHtmlCategory, ModuleId, PortalId);
                 a.DisplayTabId = TabId;
-                //TODO: why is this not creating a new version?
-
-                a.Save(UserId);
-                
+                //TODO: how to handle approval status Ids?
+                a.Save(UserId);             
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
             }
 

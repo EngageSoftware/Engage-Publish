@@ -22,8 +22,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
 
-//TODO: allow for paging?
-//TODO: allow sort order - possible admin function (1-10 ranking)
 namespace Engage.Dnn.Publish.CategoryControls
 {
     public partial class CategoryNLevels : ModuleBase, IActionable
@@ -116,8 +114,6 @@ namespace Engage.Dnn.Publish.CategoryControls
            //add the parent category to the list first.
            if (showParentItem)
            {
-               
-               //TODO: get the category from cache
                 Category parentItem = Category.GetCategory(ItemId, PortalId);
                 #region showparent
                 if (parentItem != null)

@@ -47,6 +47,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 this.AddDashboardLink("ResetDisplayPage", "ResetDisplayPage");
 
                 //TODO: build a way to clear Publish cache
+                //TODO: create a report for items that are approved but not longer have a valid parent category id
             }
             catch (Exception exc)
             {

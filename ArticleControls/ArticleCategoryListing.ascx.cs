@@ -13,7 +13,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Exceptions;
 
-//TODO: Show child items, articles, for the specified category ID (itemId from qs or module setting)
+
 
 namespace Engage.Dnn.Publish.ArticleControls
 {

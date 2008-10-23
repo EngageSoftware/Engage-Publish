@@ -16,7 +16,6 @@ namespace Engage.Dnn.Publish
     [XmlRootAttribute(ElementName = "Tag", IsNullable = false)]
     public class Tag
     {
-        //TODO: Create SQL and Dataprovider for TAGS
 
         #region Private Variables
         //attributes hide private members from debugger, so both properties and members aren't shown - BD
@@ -200,10 +199,6 @@ namespace Engage.Dnn.Publish
             totalItems= tagTotalItems;
             mostRecentDate = DateTime.Now;
         }
-
-
-        //TODO: create add tag
-
 
 
         /// <summary>

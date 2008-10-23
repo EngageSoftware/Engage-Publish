@@ -27,7 +27,6 @@ namespace Engage.Dnn.Publish.Services
 {
     //This code is written based off the article located at http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
         
-    //TODO: Thoughts on MetaBlogAPI
     //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.
     //Right now Publish works well as a single blog, not multiple blogs for different users
     //Need to figure out how we're going to do our parsing
@@ -164,7 +163,7 @@ namespace Engage.Dnn.Publish.Services
             {
                 Post post = new Post();
 
-                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId);
+                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId, true, false);
 
                 post.description = a.ArticleText;
                 post.title = a.Name;
@@ -182,7 +181,6 @@ namespace Engage.Dnn.Publish.Services
                     post.categories[i] = c.ToString();
                     i++;
                 }
-                // TODO: Implement your own logic to update the post and set the post
                 return post;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
@@ -224,9 +222,7 @@ namespace Engage.Dnn.Publish.Services
                 List<Post> posts = new List<Post>();
 
                 // TODO: Implement your own logic to get posts and set the posts
-
-
-
+                
                 return posts.ToArray();
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
@@ -241,8 +237,6 @@ namespace Engage.Dnn.Publish.Services
             if (ui.UserID > 0)
             {
                 MediaObjectInfo objectInfo = new MediaObjectInfo();
-
-                // TODO: Implement your own logic to add media object and set the objectInfo
 
                 string name = mediaObject.name; //object name
                 string type = mediaObject.type; //object type

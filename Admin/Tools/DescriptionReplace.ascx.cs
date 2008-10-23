@@ -44,7 +44,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "lb")]
         protected void lbReplace_Click(object sender, EventArgs e)
         {
-            //TODO: build the DescriptionReplace functionality
+            
             int articleCount = 0;
             int articleUpdate = 0;
             DataTable allArticles = Article.GetArticles(PortalId);

@@ -18,7 +18,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
 
-//TODO: add a view link to the version listing page.
+
 namespace Engage.Dnn.Publish.Controls
 {
 	public partial class ItemVersions :  ModuleBase, IActionable
@@ -85,7 +85,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 DataRowView view = (DataRowView)row;
 
-                //TODO: Once we make ItemLink.aspx deal with Version(s) i.e. VersionId then we can just
+                
                 //call GetItemLinkUrl() and it will figure out where to send the user AND if the display 
                 //page isn't set it will automatically appear in our ItemPreview.ascx control.
                 //int itemVersionId = Convert.ToInt32(view["ItemVersionId"]);

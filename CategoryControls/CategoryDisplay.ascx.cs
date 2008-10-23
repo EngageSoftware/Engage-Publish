@@ -27,8 +27,6 @@ using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
 using System.Text;
 
-//TODO: allow for paging?
-//TODO: allow sort order - possible admin function (1-10 ranking)
 namespace Engage.Dnn.Publish.CategoryControls
 {
     public partial class CategoryDisplay : ModuleBase, IActionable

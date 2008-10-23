@@ -193,8 +193,7 @@ namespace Engage.Dnn.Publish.Admin
                 lblMessage.Visible = false;
             }
     	}
-
-        
+              
 
         private int CategoryId
 		{

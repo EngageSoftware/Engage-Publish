@@ -59,7 +59,6 @@ namespace Engage.Dnn.Publish.Controls
             int itemId = ItemId;  //Since figuring out the Item ID is so expensive, do it only once.
             //this obviously needs refactoring
 
-            //TODO: setup caching for paging
             string cacheKey = Utility.CacheKeyPublishCategory + "ItemListing_" + DataType.ToString().Replace(" ", "") + CategoryId; // +"PageId";
             DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
 
