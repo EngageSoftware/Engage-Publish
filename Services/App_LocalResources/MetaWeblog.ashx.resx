@@ -126,6 +126,9 @@
   <data name="MetaBlogApi.Text" xml:space="preserve">
     <value>Added via the MetaBlogApi</value>
   </data>
+  <data name="NotImplemented.Text" xml:space="preserve">
+    <value>Feature Not Implemented</value>
+  </data>
   <data name="PostCategoryFailed.Text" xml:space="preserve">
     <value>You need to choose a Category for this post.</value>
   </data>

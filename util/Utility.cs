@@ -255,6 +255,8 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
 
+        public const string PublishEnableWLWSupport = "PublishEnableWLWSupport";
+
         public const string PublishDefaultTextHtmlCategory = "PublishDefaultTextHtmlCategory";
 
         public const string PublishDefaultEmailAFriend = "PublishDefaultEmailAFriend";

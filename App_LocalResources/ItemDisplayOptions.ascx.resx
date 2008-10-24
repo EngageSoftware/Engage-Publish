@@ -288,4 +288,10 @@
   <data name="rvCacheTime.Text" xml:space="preserve">
     <value>Please enter a number between 0-1000.</value>
   </data>
+  <data name="lblEnableWLWSupport.Help" xml:space="preserve">
+    <value>By enabling WLW support this module will output RSD and WLW Manifest information to the head of the page.</value>
+  </data>
+  <data name="lblEnableWLWSupport.Text" xml:space="preserve">
+    <value>Enable Windows Live Writer Support:</value>
+  </data>
 </root>

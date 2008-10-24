@@ -40,6 +40,10 @@
                     <td class="NormalTextBox"><asp:checkbox id="chkLogBreadcrumb" Runat="server"></asp:checkbox></td>
                 </tr>
                 <tr>
+                    <td class="SubHead"><dnn:label id="lblEnableWLWSupport" resourcekey="lblEnableWLWSupport" runat="server" /></td>
+                    <td class="NormalTextBox"><asp:checkbox id="chkEnableWLWSupport" Runat="server"></asp:checkbox></td>
+                </tr>
+                <tr>
                     <td class="SubHead"><dnn:label id="lblCacheTime" resourcekey="lblCacheTime" runat="server" /></td>
                     <td class="NormalTextBox"><asp:TextBox ID="txtCacheTime" runat="server" Text="0" /><asp:RangeValidator id="rvCacheTime"  resourcekey="rvCacheTime" CssClass="error" runat="server" ControlToValidate="txtCacheTime" MaximumValue="1000" MinimumValue="0" Type="Integer"></asp:RangeValidator></td>
                 </tr>

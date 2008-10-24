@@ -59,6 +59,15 @@ namespace Engage.Dnn.Publish.Services
         public string wp_slug;
     }
 
+    [XmlRpcMissingMapping(MappingAction.Ignore)]
+    public struct BloggerPost
+    {
+        public string content;
+        public DateTime dateCreated;
+        public object postid;
+        public string userid;
+    }
+
 
     [XmlRpcMissingMapping(MappingAction.Ignore)]
     public struct Source
@@ -91,6 +100,13 @@ namespace Engage.Dnn.Publish.Services
         public string url;
     }
 
+    public struct MTCategory
+    {
+        public string categoryId;
+        public string categoryName;
+        public bool isPrimary;
+    }
+    
     #endregion
 
 

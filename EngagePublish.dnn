@@ -6,7 +6,7 @@
       <foldername>EngagePublish</foldername>
       <modulename>Engage: Publish</modulename>
       <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
-      <version>05.02.03</version>
+      <version>05.02.04</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <resourcefile>Resources.zip</resourcefile>
@@ -301,6 +301,9 @@
           <name>05.01.07.txt</name>
         </file>
         <file>
+          <name>05.02.04.txt</name>
+        </file>
+        <file>
           <name>Uninstall.SqlDataProvider</name>
         </file>
         <file>
@@ -351,7 +354,7 @@
       <foldername>EngagePublish/Tags</foldername>
       <modulename>Engage: Publish Tag Cloud</modulename>
       <description>The tag cloud for the Engage: Publish module.</description>
-      <version>05.02.03</version>
+      <version>05.02.04</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>
@@ -383,7 +386,7 @@
       <foldername>EngagePublish/TextHTML</foldername>
       <modulename>Engage: Publish Text/HTML</modulename>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
-      <version>05.02.03</version>
+      <version>05.02.04</version>
       <businesscontrollerclass></businesscontrollerclass>
       <dependencies></dependencies>
       <modules>

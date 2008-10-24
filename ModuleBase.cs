@@ -375,6 +375,13 @@ namespace Engage.Dnn.Publish
             get { return Utility.IsPingEnabledForPortal(this.PortalId); }
         }
 
+
+        public bool IsWLWEnabled
+        {
+            get { return GetWLWSupportForPortal(this.PortalId); }
+        }
+
+
         public bool IsPublishCommentType
         {
             get { return IsPublishCommentTypeForPortal(this.PortalId); }
@@ -847,6 +854,16 @@ namespace Engage.Dnn.Publish
             return string.IsNullOrEmpty(HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture)));
         }
 
+        public bool GetWLWSupportForPortal(int portalId)
+        {
+            if (this.Settings.Contains("SupportWLW"))
+            {
+                string supportwlw = this.Settings["SupportWLW"].ToString();
+                return Convert.ToBoolean(supportwlw);
+            }
+            return false;            
+        }
+
         public static string ForumProviderTypeForPortal(int portalId)
         {
             return HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture));
@@ -1003,6 +1020,47 @@ namespace Engage.Dnn.Publish
 
                 //tp.SmartNavigation = true;
                 this.Page.SetFocus(tp.ClientID);
+            }
+        }
+
+        public void SetWLWSupport()
+        {
+            if (this.IsWLWEnabled)
+            {
+                //<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wlwmanifest.xml" />
+                //<link id="Rsd" rel="EditURI" type="application/rsd+xml" title="RSD" href="http://idunno.org/rsd.xml.ashx" />
+
+                CDefault tp = (CDefault)this.Page;
+                if (tp != null)
+                {
+
+                    LiteralControl lc = new LiteralControl();
+                    LiteralControl lcrsd = new LiteralControl();
+                    StringBuilder sb = new StringBuilder(400);
+                    sb.Append("<link rel=\"wlwmanifest\" type=\"application/wlwmanifest+xml\" href=\"");
+                    //manifesturl
+                    string manifestUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/wlwmanifest.xml";
+
+                    sb.Append(manifestUrl.ToString());
+                    sb.Append("\" \\>");
+                    lc.Text = sb.ToString();
+
+                    tp.Header.Controls.Add(lc);
+
+                    StringBuilder rsd = new StringBuilder(400);
+                    rsd.Append("<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"");
+
+                    string rsdUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias +
+                        Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/publishrsd.aspx?portalid=" + PortalId.ToString() + "&HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
+
+                    rsd.Append(rsdUrl.ToString());
+                    rsd.Append("\" \\>");
+                    lcrsd.Text = rsd.ToString();
+
+                    tp.Header.Controls.Add(lcrsd);
+
+                    //<link rel="EditURI" type="application/rsd+xml" title="RSD"  href="http://www.userdomain.com/DesktopModules/EngagePublish/Services/rsd.xml" />
+                }
             }
         }
 

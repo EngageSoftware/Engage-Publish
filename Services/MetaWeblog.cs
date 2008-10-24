@@ -26,7 +26,7 @@ using System.IO;
 namespace Engage.Dnn.Publish.Services
 {
     //This code is written based off the article located at http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
-        
+
     //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.
     //Right now Publish works well as a single blog, not multiple blogs for different users
     //Need to figure out how we're going to do our parsing
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish.Services
             Post post, bool publish)
         {
             LocatePortal(Context.Request);
-            
+
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
@@ -67,16 +67,16 @@ namespace Engage.Dnn.Publish.Services
                     pc.Add(c);
                 }
                 //This only works for the first category, how should we handle other categories?
-                if (pc.Count>0)
+                if (pc.Count > 0)
                 {
 
                     //TODO: parse tags
 
                     //get description
                     //string description = post.description.Substring(0,post.description.IndexOf("
-                    
 
-                    Article a = Article.Create(post.title.ToString(), post.description.ToString(), 
+
+                    Article a = Article.Create(post.title.ToString(), post.description.ToString(),
                         post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
                     //TODO: check if dateCreated is a valid date
                     //TODO: date Created is coming in as UTC time
@@ -89,7 +89,7 @@ namespace Engage.Dnn.Publish.Services
 
                     if (pc.Count > 1)
                     {
-                        for (int i =1; i<pc.Count; i++)
+                        for (int i = 1; i < pc.Count; i++)
                         {
                             ItemRelationship irel = new ItemRelationship();
                             irel.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
@@ -100,7 +100,7 @@ namespace Engage.Dnn.Publish.Services
                     a.Save(ui.UserID);
                     //return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");
                     return a.ItemId.ToString();
-               }
+                }
                 throw new XmlRpcFaultException(0, Localization.GetString("PostCategoryFailed.Text", LocalResourceFile));
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
@@ -222,11 +222,32 @@ namespace Engage.Dnn.Publish.Services
                 List<Post> posts = new List<Post>();
 
                 // TODO: Implement your own logic to get posts and set the posts
-                
+
                 return posts.ToArray();
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
+
+
+        BloggerPost[] IMetaWeblog.GetRecentPosts(string key, string blogid, string username, string password, int numberOfPosts)
+        {
+            DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            if (ui.UserID > 0)
+            {
+                List<BloggerPost> posts = new List<BloggerPost>();
+
+                BloggerPost bp = new BloggerPost();
+                bp.content = "test post";
+                bp.dateCreated = DateTime.Now;
+                bp.postid = "1";
+                bp.userid = "1";
+                // TODO: Implement your own logic to get posts and set the posts
+
+                return posts.ToArray();
+            }
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
+        }
+
 
         MediaObjectInfo IMetaWeblog.NewMediaObject(string blogid, string username, string password,
             MediaObject mediaObject)
@@ -241,7 +262,7 @@ namespace Engage.Dnn.Publish.Services
                 string name = mediaObject.name; //object name
                 string type = mediaObject.type; //object type
                 byte[] media = (byte[])mediaObject.bits;   //object body
-                
+
                 //Save media object to filesystem. Split name with '/' to extract filename (Windows Live Writer specific)
                 int index = name.LastIndexOf('/');
                 Directory.CreateDirectory(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath + name.Substring(0, index));
@@ -277,7 +298,7 @@ namespace Engage.Dnn.Publish.Services
         {
             LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
-            
+
             if (ui.UserID > 0)
             {
                 //todo: configure blog info for users
@@ -300,6 +321,7 @@ namespace Engage.Dnn.Publish.Services
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
+        
         UserInfo IMetaWeblog.GetUserInfo(string key, string username, string password)
         {
             LocatePortal(Context.Request);
@@ -315,6 +337,12 @@ namespace Engage.Dnn.Publish.Services
 
                 return info;
             }
+            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
+        }
+
+
+        bool IMetaWeblog.SetPostCategories(string postid, string username, string password, MTCategory[] cat)
+        {
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
@@ -370,15 +398,13 @@ namespace Engage.Dnn.Publish.Services
                 PortalId = pai.PortalID;
                 PortalSettings ps = Utility.GetPortalSettings(pai.PortalID);
                 PortalPath = ps.HomeDirectory;
-               
+
             }
         }
 
 
         #endregion
-
-
-
+        
         private static int portalId;// = 0;
         public static int PortalId
         {
@@ -399,7 +425,7 @@ namespace Engage.Dnn.Publish.Services
             set { portalPath = value; }
         }
 
-        
+
         public string LocalResourceFile
         {
             get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx.resx"; }

@@ -31,6 +31,7 @@ namespace Engage.Dnn.Publish.Services
 
         [XmlRpcMethod("metaWeblog.getRecentPosts")]
         Post[] GetRecentPosts(string blogid, string username, string password, int numberOfPosts);
+        
 
         [XmlRpcMethod("metaWeblog.newMediaObject")]
         MediaObjectInfo NewMediaObject(string blogid, string username, string password,
@@ -48,7 +49,21 @@ namespace Engage.Dnn.Publish.Services
 
         [XmlRpcMethod("blogger.getUserInfo")]
         UserInfo GetUserInfo(string key, string username, string password);
+
+        [XmlRpcMethod("blogger.getRecentPosts")]
+        BloggerPost[] GetRecentPosts(string key, string blogid,  string username, string password, int numberOfPosts);
+
+
         #endregion
+
+        #region Moveable Type API
+
+
+        [XmlRpcMethod("mt.setPostCategories")]
+        bool SetPostCategories(string postid, string username, string password, MTCategory[] cat);
+        #endregion
+
+
 
     }
 

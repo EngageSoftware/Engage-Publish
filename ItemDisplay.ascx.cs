@@ -25,10 +25,9 @@ namespace Engage.Dnn.Publish
 
         #region Web Form Designer generated code
         override protected void OnInit(EventArgs e)
-        {
-          
+        { 
             base.OnInit(e);
-
+            SetWLWSupport();
             ReadItemType();
             LoadControlType();
 
@@ -41,7 +40,6 @@ namespace Engage.Dnn.Publish
                     action.Url = action.Url + "?all=1";
                     break;
                 }
-
             }
         }
 
@@ -52,17 +50,14 @@ namespace Engage.Dnn.Publish
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Code paths are easy to understand, test, and maintain")]
         private void ReadItemType()
         {
-
             BindItemData();
-            //TODO: check for a valid itemid for this module
+            //check for a valid itemid for this module
             CheckItemUrl();
-
 
             //here we are looking to see if any old publish URLs are being used, if so redirect to the new URL
             object oid = Request.Params["aid"];
             if (oid != null)
             {
-
                 //TODO:build the full url
                 //made this a 301 redirect for better SEO
                 string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid;

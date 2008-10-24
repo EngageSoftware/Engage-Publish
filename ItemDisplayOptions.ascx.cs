@@ -61,6 +61,8 @@ namespace Engage.Dnn.Publish
                 modules.UpdateTabModuleSetting(this.TabModuleId, "AllowTitleUpdate", (chkAllowTitleUpdate.Checked ? "true" : "false"));
                 modules.UpdateTabModuleSetting(this.TabModuleId, "CacheTime", (txtCacheTime.Text.Trim()));
 
+                modules.UpdateTabModuleSetting(this.TabModuleId, "SupportWLW", (chkEnableWLWSupport.Checked ? "true" : "false"));
+                
                 //foreach (ModuleSettingsBase settingsControl in settingsChildren)
                 //{
                 //    settingsControl.UpdateSettings();
@@ -166,6 +168,20 @@ namespace Engage.Dnn.Publish
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
                 chkLogBreadcrumb.Checked = o.ToString().Equals("true");
+            }
+
+            o = Settings["SupportWLW"];
+            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            {
+                bool supportWLW;
+                if (bool.TryParse(Settings["SupportWLW"].ToString(), out supportWLW))
+                {
+                    chkEnableWLWSupport.Checked = supportWLW;
+                }
+            }
+            else
+            {
+                chkEnableWLWSupport.Checked = false;     //default to not checked when not set.
             }
         }
 

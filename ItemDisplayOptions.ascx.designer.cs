@@ -149,6 +149,24 @@ namespace Engage.Dnn.Publish {
         protected global::System.Web.UI.WebControls.CheckBox chkLogBreadcrumb;
         
         /// <summary>
+        /// lblEnableWLWSupport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblEnableWLWSupport;
+        
+        /// <summary>
+        /// chkEnableWLWSupport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableWLWSupport;
+        
+        /// <summary>
         /// lblCacheTime control.
         /// </summary>
         /// <remarks>
