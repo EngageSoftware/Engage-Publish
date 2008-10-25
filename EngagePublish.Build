@@ -97,6 +97,7 @@
         <include name="**/${globalresource.dir}/*.xml" />
         <include name="**/*.ascx" />
         <include name="**/*.ashx" />
+        <include name="**/wlwmanifest.xml" />
         <include name="**/*.js" />
         <include name="**/*.css" />
         <include name="**/*.aspx" />
