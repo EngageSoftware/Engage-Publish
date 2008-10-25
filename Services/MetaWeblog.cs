@@ -343,6 +343,27 @@ namespace Engage.Dnn.Publish.Services
 
         bool IMetaWeblog.SetPostCategories(string postid, string username, string password, MTCategory[] cat)
         {
+            
+            for (int i = 0; i < cat.Length; i++)
+            {
+                MTCategory mcat;
+                mcat = cat[i];
+                Item iv = Item.GetItem(Convert.ToInt32(postid), portalId, ItemType.Article.GetId(), false);
+                Tag t = Tag.GetTag(mcat.categoryName, portalId);
+ 
+                
+                //if this item tag relationship already existed for another versionID don't increment the count;
+                if (!ItemTag.CheckItemTag(iv.ItemId, Convert.ToInt32(t.TagId)))
+                {
+                    t.TotalItems++;
+                    t.Save();
+                }
+
+                //it.ItemVersionId = i.ItemVersionId;
+                //ad the itemtag relationship
+                ItemTag.AddItemTag(iv.ItemVersionId, Convert.ToInt32(t.TagId));
+            }
+
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 

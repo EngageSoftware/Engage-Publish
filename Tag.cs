@@ -228,7 +228,7 @@ namespace Engage.Dnn.Publish
         /// </summary>
         /// <param name="tag">The tag string.</param>
         /// <param name="portalId">The Portal Id.</param>
-        public static DataTable GetTag(string tag, int portalId)
+        public static Tag GetTag(string tag, int portalId)
         {
             //return DataProvider.Instance().GetTag(tag, portalId);
 
@@ -255,7 +255,7 @@ namespace Engage.Dnn.Publish
             {
                 dt = DataProvider.Instance().GetTag(tag, portalId);
             }
-            return dt;
+            return new Tag(dt);
         }
 
         /// <summary>
@@ -461,7 +461,7 @@ namespace Engage.Dnn.Publish
             {
                 if (sTag.Trim().Length > 0)
                 {
-                    Tag t = new Tag(GetTag(sTag.Trim(), portalId));
+                    Tag t = GetTag(sTag.Trim(), portalId);
                     if (t.tagId == 0 && add)
                     {
                         t.Name = HttpUtility.UrlDecode(sTag).Trim();
