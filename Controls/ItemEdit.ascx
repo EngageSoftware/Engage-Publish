@@ -86,34 +86,6 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblChooseUrl" runat="server" ResourceKey="lblChooseUrl"/>
-            </td>
-            <td class="fullWidth">
-                <asp:CheckBox ID="chkUrlSelection" runat="server" AutoPostBack="true" OnCheckedChanged="chkUrlSelection_CheckedChanged" />
-                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                <Triggers><asp:AsyncPostBackTrigger ControlID="chkUrlSelection" /></Triggers>
-                <ContentTemplate>
-                    <asp:Panel ID="pnlUrlSelection" runat="server" visible="false">
-                        <div id="divUrlSelection"><%-- runat="server"--%>
-                            <dnn:URL ID="ctlUrlSelection" runat="server" Width="325"
-                             ShowFiles="true"
-                             ShowUrls="true" 
-                             ShowTabs="true" 
-                             ShowLog="false" 
-                             ShowTrack="false" 
-                             Required="False" 
-                             ShowNewWindow="False"/>
-                             <asp:CheckBox ID="chkNewWindow" resourcekey="chkNewWindow" runat="server" />
-                        </div>
-                    </asp:Panel>
-                </ContentTemplate></asp:UpdatePanel>
-                <hr />
-            </td>
-        </tr>
-    </table>
-    <table class="PublishEditTable Normal">
-        <tr>
-            <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblPostingDates" runat="server" ResourceKey="lblPostingDates" />
             </td><td class="fullWidth">
                 <table class="Normal fullWidth"><tr>
@@ -161,5 +133,34 @@
             </td>
         </tr>
     </table>
+    <table class="PublishEditTable Normal">
+        <tr>
+            <td class="editTableLabelColumn nowrap">
+                <dnn:label ID="lblChooseUrl" runat="server" ResourceKey="lblChooseUrl"/>
+            </td>
+            <td class="fullWidth">
+                <asp:CheckBox ID="chkUrlSelection" runat="server" AutoPostBack="true" OnCheckedChanged="chkUrlSelection_CheckedChanged" />
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <Triggers><asp:AsyncPostBackTrigger ControlID="chkUrlSelection" /></Triggers>
+                <ContentTemplate>
+                    <asp:Panel ID="pnlUrlSelection" runat="server" visible="false">
+                        <div id="divUrlSelection"><%-- runat="server"--%>
+                            <dnn:URL ID="ctlUrlSelection" runat="server" Width="325"
+                             ShowFiles="true"
+                             ShowUrls="true" 
+                             ShowTabs="true" 
+                             ShowLog="false" 
+                             ShowTrack="false" 
+                             Required="False" 
+                             ShowNewWindow="False"/>
+                             <asp:CheckBox ID="chkNewWindow" resourcekey="chkNewWindow" runat="server" />
+                        </div>
+                    </asp:Panel>
+                </ContentTemplate></asp:UpdatePanel>
+                <hr />
+            </td>
+        </tr>
+    </table>
+
 </asp:Panel>
 

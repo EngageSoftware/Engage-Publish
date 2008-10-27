@@ -70,10 +70,9 @@ namespace Engage.Dnn.Publish.Services
                 if (pc.Count > 0)
                 {
 
-                    //TODO: parse tags
-
                     //get description
                     //string description = post.description.Substring(0,post.description.IndexOf("
+                    //look for <!--pagebreak--> 
 
 
                     Article a = Article.Create(post.title.ToString(), post.description.ToString(),
@@ -83,9 +82,6 @@ namespace Engage.Dnn.Publish.Services
                     //TODO: re-enable Date created
                     //a.StartDate = post.dateCreated.ToString();
                     a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
-
-                    //look to see if there are other categories
-                    //currently we're taking the "first" category as the parent, this might not be correct but as of know we don't have another solution
 
                     if (pc.Count > 1)
                     {
@@ -97,8 +93,25 @@ namespace Engage.Dnn.Publish.Services
                             a.Relationships.Add(irel);
                         }
                     }
+
+                    //check for tags
+                    if(post.mt_keywords.Trim() != string.Empty)
+                    {
+                        //split tags
+                        foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))
+                        {
+                            ItemTag it = ItemTag.Create();
+                            it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
+                            a.Tags.Add(it);
+                        } 
+                    }
+                    if (post.mt_excerpt!=null && post.mt_excerpt.Trim() != string.Empty)
+                    {
+                        a.Description = post.mt_excerpt;
+                    }
+                    //TODO: look at handling itemversionsettings
+                                        
                     a.Save(ui.UserID);
-                    //return Utility.GetItemLinkUrl(a.ItemId, PortalId, a.DisplayTabId, a.ModuleId, 0, "");
                     return a.ItemId.ToString();
                 }
                 throw new XmlRpcFaultException(0, Localization.GetString("PostCategoryFailed.Text", LocalResourceFile));
@@ -340,32 +353,33 @@ namespace Engage.Dnn.Publish.Services
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
 
-
-        bool IMetaWeblog.SetPostCategories(string postid, string username, string password, MTCategory[] cat)
-        {
+        //REMOVED AS WE'RE NOT USING THIS
+        //bool IMetaWeblog.SetPostCategories(string postid, string username, string password, MTCategory[] cat)
+        //{
             
-            for (int i = 0; i < cat.Length; i++)
-            {
-                MTCategory mcat;
-                mcat = cat[i];
-                Item iv = Item.GetItem(Convert.ToInt32(postid), portalId, ItemType.Article.GetId(), false);
-                Tag t = Tag.GetTag(mcat.categoryName, portalId);
+        //    for (int i = 0; i < cat.Length; i++)
+        //    {
+        //        MTCategory mcat;
+        //        mcat = cat[i];
+        //        Item iv = Item.GetItem(Convert.ToInt32(postid), portalId, ItemType.Article.GetId(), false);
+        //        Tag t = Tag.GetTag(mcat.categoryName, portalId);
  
                 
-                //if this item tag relationship already existed for another versionID don't increment the count;
-                if (!ItemTag.CheckItemTag(iv.ItemId, Convert.ToInt32(t.TagId)))
-                {
-                    t.TotalItems++;
-                    t.Save();
-                }
+        //        //if this item tag relationship already existed for another versionID don't increment the count;
+        //        if (!ItemTag.CheckItemTag(iv.ItemId, Convert.ToInt32(t.TagId)))
+        //        {
+        //            t.TotalItems++;
+        //            t.Save();
+        //        }
 
-                //it.ItemVersionId = i.ItemVersionId;
-                //ad the itemtag relationship
-                ItemTag.AddItemTag(iv.ItemVersionId, Convert.ToInt32(t.TagId));
-            }
+        //        //it.ItemVersionId = i.ItemVersionId;
+        //        //ad the itemtag relationship
+        //        ItemTag.AddItemTag(iv.ItemVersionId, Convert.ToInt32(t.TagId));
+        //    }
 
-            throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
-        }
+        //    throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
+        //}
+
 
         #endregion
 

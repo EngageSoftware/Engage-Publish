@@ -57,6 +57,8 @@ namespace Engage.Dnn.Publish.Services
         public object postid;
         public string userid;
         public string wp_slug;
+        public string mt_keywords;
+        public string mt_excerpt;
     }
 
     [XmlRpcMissingMapping(MappingAction.Ignore)]

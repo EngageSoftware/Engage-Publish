@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?> 
+<?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns="http://schemas.microsoft.com/wlw/manifest/weblog">
 
-<options>
+  <options>
     <clientType>Metaweblog</clientType>
     <supportsNewCategories>No</supportsNewCategories>
     <supportsTrackbacks>No</supportsTrackbacks>
     <supportsEmbeds>No</supportsEmbeds>
     <supportsKeywords>Yes</supportsKeywords>
-</options>
-</manifest> 
+    <supportsExcerpt>Yes</supportsExcerpt>   
+  </options>
+</manifest>

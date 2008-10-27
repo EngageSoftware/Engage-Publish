@@ -59,8 +59,8 @@ namespace Engage.Dnn.Publish.Services
         #region Moveable Type API
 
 
-        [XmlRpcMethod("mt.setPostCategories")]
-        bool SetPostCategories(string postid, string username, string password, MTCategory[] cat);
+        //[XmlRpcMethod("mt.setPostCategories")]
+        //bool SetPostCategories(string postid, string username, string password, MTCategory[] cat);
         #endregion
 
 
