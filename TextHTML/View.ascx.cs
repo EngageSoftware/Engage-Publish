@@ -39,6 +39,21 @@ namespace Engage.Dnn.Publish.TextHtml
             BindItemData(true);
         }
 
+        public int LocalItemId
+        {
+            get
+            {
+
+
+                if (Settings.Contains("ItemId"))
+                {
+                    return Convert.ToInt32(Settings["ItemId"]);
+                }
+                return -1;
+            }
+        }
+
+
         private void Page_Load(object sender, EventArgs e)
         {
             try
@@ -58,16 +73,40 @@ namespace Engage.Dnn.Publish.TextHtml
             //TODO: look at setting itemid in the ItemId property off module base
 
             //TODO: make the preview mode work
-            if (Settings.Contains("ItemId"))
+            if (LocalItemId > 0)
             {
-                this.SetItemId(Convert.ToInt32(Settings["ItemId"]));
+                this.SetItemId(LocalItemId);
             }
         }
 
         private void LoadArticle()
         {
-            Article a = Article.GetArticle(ItemId, PortalId);
-            lblArticleText.Text = a.ArticleText;
+            //TODO: load a specific version
+            //TODO: can we use binditem from modulebase?
+
+
+            //check if we should be loading a preview version
+            object o = Request.QueryString["VersionId"];
+            object m = Request.QueryString["modid"];
+            Article a = null;
+            if (o != null && m != null)
+            {
+                if (m.ToString() == ModuleId.ToString())
+                {
+                    a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
+
+                }
+            }
+
+            else
+            {
+
+                a = Article.GetArticle(ItemId, PortalId);
+
+            }
+            if (a != null) lblArticleText.Text = a.ArticleText;
+
+
         }
 
         public ModuleActionCollection ModuleActions
@@ -77,7 +116,10 @@ namespace Engage.Dnn.Publish.TextHtml
                 ModuleActionCollection actions = new ModuleActionCollection();
                 actions.Add(GetNextActionID(), Localization.GetString("Edit", LocalSharedResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
                 //                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
-                actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
+                if (LocalItemId > 0)
+                {
+                    actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
+                }
                 return actions;
             }
         }
