@@ -93,6 +93,9 @@ namespace Engage.Dnn.Publish.TextHtml
                 ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
                 a.VersionSettings.Add(itemVersionSetting);
                 a.ModuleId = ModuleId;
+
+                a.ApprovalStatusId = epApprovals.ApprovalStatusId;
+
                 a.Save(UserId);
                 
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());

@@ -418,6 +418,15 @@ namespace Engage.Dnn.Publish
                 //we need to look if we're in admin mode, if so forget the reference about IsOverridable, it's always overridable.
                 string ctl = this.Request.QueryString["ctl"];
 
+                int modid = -1;
+
+                 object o = this.Request.Params["modid"];
+                 if (o != null)
+                 {
+                     modid = Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
+                 }
+
+
                 if (!String.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
                 {
                     if (!String.IsNullOrEmpty(i))
@@ -434,8 +443,7 @@ namespace Engage.Dnn.Publish
 
                 //Check if there's a moduleid
 
-                object o = this.Request.Params["modid"];
-                if (o != null)
+                if (modid >0)
                 {
                     if (Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId)
                     {
@@ -445,7 +453,7 @@ namespace Engage.Dnn.Publish
                             return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                         }
                         //The local variable ItemVersionId is set so resolve the ItemVersionid to an Itemid
-                        if (this.ItemVersionId > 0)
+                        if (this.ItemVersionId > 0 && modid == ModuleId)
                         {
                             return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
                         }
@@ -461,7 +469,7 @@ namespace Engage.Dnn.Publish
                 }
 
                 //The local variable ItemVersionId is set so resolve the ItemVersionid to an Itemid
-                if (manager.IsOverrideable && this.ItemVersionId > 0)
+                if (manager.IsOverrideable && this.ItemVersionId > 0 && modid == ModuleId)
                 {
                     return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
                 }

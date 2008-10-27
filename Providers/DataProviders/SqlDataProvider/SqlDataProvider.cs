@@ -896,7 +896,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ItemVersionId, DisplayTabId, Name, Description, AuthorUserId, RevisingUserId, approvalStatusId, StartDate, EndDate, adminType, VersionNumber, ItemVersionDate ");
+            sql.Append("select ItemVersionId, DisplayTabId, Name, Description, AuthorUserId, RevisingUserId, approvalStatusId, StartDate, EndDate, adminType, VersionNumber, ItemVersionDate, ModuleId ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwItemVersions v ");

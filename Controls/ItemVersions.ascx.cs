@@ -226,6 +226,7 @@ namespace Engage.Dnn.Publish.Controls
             qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
             qsp.Add("adminType", view["adminType"]);
             qsp.Add("versionid", view["ItemVersionId"]);
+            qsp.Add("modid", view["ModuleId"]);
 
             return  BuildLinkUrl(qsp.ToString());
         }

@@ -94,7 +94,6 @@ namespace Engage.Dnn.Publish.TextHtml
                 if (m.ToString() == ModuleId.ToString())
                 {
                     a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
-
                 }
             }
 

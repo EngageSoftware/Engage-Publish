@@ -304,6 +304,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
                     qsp.Add("adminType", "categoryEdit");
                     qsp.Add("versionid", r["ItemVersionId"]);
+                    qsp.Add("modid", r["ModuleId"]);
                     qsp.Add("parentId", itemId);
                     if (TopLevelId == -1)
                     {
