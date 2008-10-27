@@ -316,7 +316,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate ");
+            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid ");
             sql.Append("from  ");
             sql.Append(NamePrefix);
             sql.Append("vwItems i ");
