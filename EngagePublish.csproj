@@ -961,6 +961,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.01.08.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.02.05.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -1011,7 +1012,7 @@
     <Content Include="TextHtml\Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.02.04.txt" />
+    <Content Include="05.02.05.txt" />
     <Content Include="TextHtml\app_localresources\Settings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
