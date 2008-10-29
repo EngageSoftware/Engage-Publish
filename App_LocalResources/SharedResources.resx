@@ -138,4 +138,10 @@
   <data name="Versions.Text" xml:space="preserve">
     <value>Versions</value>
   </data>
+  <data name="ApprovalStatus.Text" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="chkSubmitForApproval.Text" xml:space="preserve">
+    <value>Submit For Approval</value>
+  </data>
 </root>

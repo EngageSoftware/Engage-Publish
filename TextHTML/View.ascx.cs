@@ -81,10 +81,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void LoadArticle()
         {
-            //TODO: load a specific version
             //TODO: can we use binditem from modulebase?
-
-
             //check if we should be loading a preview version
             object o = Request.QueryString["VersionId"];
             object m = Request.QueryString["modid"];
@@ -96,16 +93,11 @@ namespace Engage.Dnn.Publish.TextHtml
                     a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
                 }
             }
-
             else
             {
-
                 a = Article.GetArticle(ItemId, PortalId);
-
             }
             if (a != null) lblArticleText.Text = a.ArticleText;
-
-
         }
 
         public ModuleActionCollection ModuleActions

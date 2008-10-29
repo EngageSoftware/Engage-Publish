@@ -214,7 +214,7 @@
     <value>filter</value>
   </data>
   <data name="lblArticleSearch.Help" xml:space="preserve">
-    <value>You can search for comments on specific articles by filtering your search with a string found in an article title.</value>
+    <value>You can filter the list of Articles below by searching for a keyword in the Article name.</value>
   </data>
   <data name="lblArticleSearch.Text" xml:space="preserve">
     <value>Article Title Search</value>

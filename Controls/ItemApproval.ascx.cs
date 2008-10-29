@@ -58,6 +58,7 @@ namespace Engage.Dnn.Publish.Controls
                         divApprovalStatus.Visible = false;
                         divSubmitForApproval.Visible = true;
                     }
+                    LocalizeText();
 				}
                 //else
                 //{
@@ -73,6 +74,11 @@ namespace Engage.Dnn.Publish.Controls
 			}
 		}
 		#endregion
+
+        private void LocalizeText()
+        {
+            chkSubmitForApproval.Text = Localization.GetString("chkSubmitForApproval", LocalSharedResourceFile);
+        }
 
 		private int GetApprovalId()
 		{

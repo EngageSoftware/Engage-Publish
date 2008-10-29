@@ -44,6 +44,7 @@ namespace Engage.Dnn.Publish.TextHtml
                 if (!Page.IsPostBack)
                 {
                     LoadArticle();
+                    
                 }
             }
             catch (Exception exc)
@@ -55,6 +56,8 @@ namespace Engage.Dnn.Publish.TextHtml
         protected void LocalizeText()
         {
             btnSubmit.Text = Localization.GetString("btnSubmit", LocalSharedResourceFile);
+            lblApproval.Text = Localization.GetString("ApprovalStatus", LocalSharedResourceFile);
+            
         }
         protected void LoadArticle()
         {
@@ -114,6 +117,8 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.VersionSettings.Add(itemVersionSetting);
 
                 a.ModuleId = ModuleId;
+
+                a.ApprovalStatusId = epApprovals.ApprovalStatusId;
 
                 a.Save(UserId);             
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());

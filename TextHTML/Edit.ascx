@@ -8,7 +8,7 @@
     <dnn:texteditor id="teArticleText" runat="server" Width="100%" Height="500" HtmlEncode="false" TextRenderMode="Raw" />
     
     
-    <dnn:label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
+    <asp:label ID="lblApproval" runat="server" />
     
     <ep:approvals ID="epApprovals" runat="server" />
     

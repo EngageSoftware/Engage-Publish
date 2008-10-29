@@ -6,7 +6,7 @@
 	    <asp:RadioButtonList Runat="server" ID="radApprovalStatus" RepeatDirection="Vertical" CssClass="Normal"/>
     </div>
     <div id="divSubmitForApproval" runat="server" visible="false">
-	    <asp:CheckBox ID="chkSubmitForApproval" resourcekey="chkSubmitForApproval" Runat="server"/>
+	    <asp:CheckBox ID="chkSubmitForApproval" Runat="server"/>
     </div>
 </div>
 
