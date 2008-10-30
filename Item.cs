@@ -1248,7 +1248,7 @@ namespace Engage.Dnn.Publish
             {
                 //The TabId couldn't be resolved using the DisplayTabName, let's try to resolve the current moduleId
                 //to a TabId.
-                using (IDataReader dr = DataProvider.Instance().GetModuleByModuleId(currentModuleId))
+                using (IDataReader dr = DataProvider.Instance().GetModulesByModuleId(currentModuleId))
                 {
                     if (dr.Read())
                     {

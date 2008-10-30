@@ -119,7 +119,7 @@
             </asp:View>
         </asp:MultiView>
         <ajaxToolkit:ModalPopupExtender ID="mpeComment" runat="server" BackgroundCssClass="commentBackground" PopupControlID="pnlComment" TargetControlID="btnComment" BehaviorID="mpeComment" />
-        <ajaxToolkit:ModalPopupExtender ID="mpeForumComment" runat="server" BackgroundCssClass="commentBackground" PopupControlID="pnlComment" TargetControlID="btnForumComment" BehaviorID="mpeForumComment" />
+        <ajaxToolkit:ModalPopupExtender ID="mpeForumComment" runat="server" BackgroundCssClass="commentBackground" PopupControlID="pnlComment" TargetControlID="btnForumComment" />
         <asp:Panel ID="pnlComment" runat="server" CssClass="commentPopup" style="display:none">
 	        <asp:UpdatePanel ID="upnlComments" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>   

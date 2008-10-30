@@ -2286,7 +2286,7 @@ namespace Engage.Dnn.Publish.Data
             }
         }
 
-        internal override IDataReader GetModuleByModuleId(int moduleId)
+        internal override IDataReader GetModulesByModuleId(int moduleId)
         {
             string sql = String.Format(CultureInfo.InvariantCulture, "select * from {0}{1}Modules m join {0}{1}TabModules tm on (m.ModuleId = tm.ModuleId) where m.ModuleId = @moduleId", DatabaseOwner, ObjectQualifier);
 

@@ -265,7 +265,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract IDataReader GetUltraMediaGalleryAlbums(int moduleId);
         public abstract DataTable GetUltraMediaGalleryPhotos(int albumId, int? maxCount);
 
-        internal abstract IDataReader GetModuleByModuleId(int moduleId);
+        internal abstract IDataReader GetModulesByModuleId(int moduleId);
 
 #region "Find Items"
         public abstract int FindItemId(string name, int authorUserId);

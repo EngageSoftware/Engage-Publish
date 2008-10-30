@@ -8,29 +8,38 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Globalization;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Services.Localization;
-using Microsoft.ApplicationBlocks.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.Forum
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Diagnostics;
+    using System.Globalization;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.ApplicationBlocks.Data;
+    using Util;
+
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification="Created through reflection by ForumProvider")]
     class ActiveForumsProvider : ForumProvider
     {
+        /// <summary>
+        /// The null representation of a <see cref="DateTime"/> for ActiveForums
+        /// </summary>
+        /// <remarks>
+        /// Found in reflecting through Active.Modules.Forums.40 assembly.
+        /// </remarks>
+        private readonly DateTime NullDate = new DateTime(1900, 1, 1);
         private const string ProviderType = "data";
         private readonly string LocalResourceFile = "~" + Utility.DesktopModuleFolderName + "Providers/ForumProvider/ActiveForumsProvider/App_LocalResources/ActiveForumsProvider.resx";
         private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-        private readonly string _connectionString;
+        private readonly string connectionString;
         private readonly string _objectQualifier;
         private readonly string _databaseOwner;
 
@@ -43,11 +52,11 @@ namespace Engage.Dnn.Publish.Forum
         {
             Provider provider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
-            this._connectionString = Config.GetConnectionString();
+            this.connectionString = Config.GetConnectionString();
 
-            if (String.IsNullOrEmpty(this._connectionString))
+            if (String.IsNullOrEmpty(this.connectionString))
             {
-                this._connectionString = provider.Attributes["connectionString"];
+                this.connectionString = provider.Attributes["connectionString"];
             }
 
             this._objectQualifier = provider.Attributes["objectQualifier"];
@@ -73,30 +82,75 @@ namespace Engage.Dnn.Publish.Forum
             UserInfo commenterInfo = UserController.GetUser(PortalId, commentUserId, false);
             string authorDisplayName = authorInfo != null ?  authorInfo.DisplayName : string.Empty;
             string commenterDisplayName = commenterInfo != null ? commenterInfo.DisplayName : string.Empty;
+            bool commenterIsSuperUser = commenterInfo != null ? commenterInfo.IsSuperUser : false;
             string body = string.Format(CultureInfo.InvariantCulture, Localization.GetString("PostBody", LocalResourceFile), description, linkUrl, title);
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
                 using (SqlTransaction transaction = connection.BeginTransaction())
                 {
-                    using (SqlDataReader searchReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, NamePrefix + "ActiveForums_StandardSearch",
-                        Utility.CreateVarcharParam("@ForumIDs", "<fs><f fid=\"" + forumId.ToString(CultureInfo.InvariantCulture) + "\" /></fs>", 8000),
-                        Utility.CreateIntegerParam("@PageIndex", 0), Utility.CreateIntegerParam("@PageSize", int.MaxValue - 1),
-                        Utility.CreateNvarcharParam("@Query", "%" + title + "%", 100), Utility.CreateNvarcharParam("@User", authorDisplayName, 200),
-                        Utility.CreateIntegerParam("@Timespan", 0)))
+                    int? moduleId = null;
+                    using (
+                        SqlDataReader forumReader = SqlHelper.ExecuteReader(
+                            this.connectionString,
+                            CommandType.StoredProcedure,
+                            NamePrefix + "ActiveForums_Forums_Get",
+                            Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                            Utility.CreateIntegerParam("@ModuleId", Null.NullInteger), // currently, this stored procedure doesn't use moduleId
+                            Utility.CreateIntegerParam("@ForumId", forumId)))
                     {
-                        if (searchReader.NextResult())
+                        if (forumReader.Read())
                         {
+                            moduleId = (int)forumReader["ModuleId"];
+                        }
+                    }
+
+
+                    if (moduleId.HasValue)
+                    {
+                        List<int> potentialMatchingTopicIds = new List<int>();
+                        using (
+                            SqlDataReader searchReader = SqlHelper.ExecuteReader(
+                                this.connectionString,
+                                CommandType.StoredProcedure,
+                                NamePrefix + "ActiveForums_Search_Standard",
+                                Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                                Utility.CreateIntegerParam("@ModuleId", moduleId),
+                                Utility.CreateIntegerParam("@UserId", authorUserId),
+                                Utility.CreateIntegerParam("@ForumId", forumId),
+                                Utility.CreateBitParam("@IsSuperUser", commenterIsSuperUser),
+                                Utility.CreateNvarcharParam("@SearchString", title, 200),
+                                Utility.CreateIntegerParam("@SearchField", 1), // 0=Subject&Body, 1= Subject, 2=Body
+                                Utility.CreateNvarcharParam("@Author", string.Empty, 200),
+                                Utility.CreateVarcharParam("@Forums", string.Empty, 8000),
+                                Utility.CreateNvarcharParam("@Tags", string.Empty, 400)))
+                        {
+                            searchReader.NextResult();
+
                             while (searchReader.Read())
                             {
-                                int bodyColumnIndex = searchReader.GetOrdinal("Body");
-                                if (!searchReader.IsDBNull(bodyColumnIndex))
+                                potentialMatchingTopicIds.Add((int)searchReader["TopicId"]);
+                            }
+                        }
+
+                        foreach (int topicId in potentialMatchingTopicIds)
+                        {
+                            using (SqlDataReader topicReader = SqlHelper.ExecuteReader(
+                                this.connectionString, 
+                                CommandType.StoredProcedure, 
+                                NamePrefix + "ActiveForums_Topics_Get",
+                                Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                                Utility.CreateIntegerParam("@ModuleId", moduleId),
+                                Utility.CreateIntegerParam("@TopicId", topicId),
+                                Utility.CreateIntegerParam("@ForumId", forumId)))
+                            {
+                                if (topicReader.Read())
                                 {
-                                    topicAlreadyCreated = string.Equals((string)searchReader[bodyColumnIndex], body, StringComparison.Ordinal);
+                                    topicAlreadyCreated = string.Equals(topicReader["Body"].ToString(), body, StringComparison.Ordinal);
                                     if (topicAlreadyCreated)
                                     {
-                                        threadId = (int)searchReader["PostID"];
+                                        threadId = topicId;
                                         break;
                                     }
                                 }
@@ -107,51 +161,60 @@ namespace Engage.Dnn.Publish.Forum
                     if (!topicAlreadyCreated)
                     {
                         //Create thread by author
-                        threadId = (int)(decimal)SqlHelper.ExecuteScalar(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_AddTopic",
-                            Utility.CreateIntegerParam("@ForumID", forumId), Utility.CreateNvarcharParam("@Subject", title, 150),
-                            Utility.CreateNtextParam("@Body", body), Utility.CreateIntegerParam("@UserID", authorUserId),
-                            Utility.CreateNvarcharParam("@UserName", authorDisplayName, 50), Utility.CreateBitParam("@Pinned", false),
-                            Utility.CreateNvarcharParam("@Icon", null, 25), Utility.CreateBitParam("@Locked", false), Utility.CreateBitParam("@Approved", true),
-                            Utility.CreateNvarcharParam("@EmailAddress", "", 200), Utility.CreateNvarcharParam("@IPAddress", "", 50),
-                            Utility.CreateBitParam("@IsAnnounce", false), Utility.CreateDateTimeParam("@StartDate", DateTime.Now),
-                            Utility.CreateDateTimeParam("@EndDate", (DateTime?)null), Utility.CreateNvarcharParam("@PostType", "POST", 10));
+                        threadId = (int)SqlHelper.ExecuteScalar(
+                            transaction,
+                            CommandType.StoredProcedure,
+                            NamePrefix + "ActiveForums_Topics_Save",
+                            Utility.CreateIntegerParam("@TopicId", null),
+                            Utility.CreateIntegerParam("@ViewCount", 0),
+                            Utility.CreateIntegerParam("@ReplyCount", 0),
+                            Utility.CreateBitParam("@IsLocked", false),
+                            Utility.CreateBitParam("@IsPinned", false),
+                            Utility.CreateNvarcharParam("@TopicIcon", null, 25),
+                            Utility.CreateIntegerParam("@StatusId", Null.NullInteger), // 0=informative, 1=not resolved, 3=resolved
+                            Utility.CreateBitParam("@IsApproved", true),
+                            Utility.CreateBitParam("@IsDeleted", false),
+                            Utility.CreateBitParam("@IsAnnounce", false),
+                            Utility.CreateBitParam("@IsArchived", false),
+                            Utility.CreateDateTimeParam("@AnnounceStart", NullDate),
+                            Utility.CreateDateTimeParam("@AnnounceEnd", NullDate),
+                            Utility.CreateNvarcharParam("@Subject", title, 255),
+                            Utility.CreateNtextParam("@Body", body),
+                            Utility.CreateDateTimeParam("@DateCreated", DateTime.Now),
+                            Utility.CreateDateTimeParam("@DateUpdated", DateTime.Now),
+                            Utility.CreateIntegerParam("@AuthorId", authorUserId),
+                            Utility.CreateNvarcharParam("@AuthorName", authorDisplayName, 150),
+                            Utility.CreateNvarcharParam("@IPAddress", string.Empty, 50),
+                            Utility.CreateIntegerParam("@TopicType", 0)); // 0=topic, 1=poll
 
                         //Add thread as a thread in the forum
-                        SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_AddTopicReply",
-                            Utility.CreateIntegerParam("@NewPostID", threadId), Utility.CreateIntegerParam("@ForumID", forumId));
+                        SqlHelper.ExecuteNonQuery(
+                            transaction, 
+                            CommandType.StoredProcedure, 
+                            NamePrefix + "ActiveForums_Topics_SaveToForum",
+                            Utility.CreateIntegerParam("@ForumID", forumId),
+                            Utility.CreateIntegerParam("@TopicID", threadId), 
+                            Utility.CreateIntegerParam("@LastReplyID", Null.NullInteger));
 
-                        //Increment author's post count
-                        SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_UpdateUserPosts",
-                            Utility.CreateIntegerParam("@UserID", authorUserId), Utility.CreateIntegerParam("@Increment", 1));
+                        // TODO: Send update to forum subscribers
                     }
                     Debug.Assert(threadId != -1);
 
                     //Create comment reply
-                    int replyThreadId =
-                        (int)(decimal)SqlHelper.ExecuteScalar(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_AddReply",
-                            Utility.CreateIntegerParam("@ParentPostID", threadId), Utility.CreateIntegerParam("@ForumID", forumId),
-                            Utility.CreateNtextParam("@Body", commentText), Utility.CreateIntegerParam("@UserID", commentUserId),
-                            Utility.CreateNvarcharParam("@UserName", commenterDisplayName, 50), Utility.CreateNvarcharParam("@Icon", null, 25),
-                            Utility.CreateBitParam("@Locked", false), Utility.CreateNvarcharParam("@Subject", "Re: " + title, 150),
-                            Utility.CreateBitParam("@Approved", true), Utility.CreateNvarcharParam("@EmailAddress", "", 200),
+                    SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "ActiveForums_Reply_Save",
+                            Utility.CreateIntegerParam("@TopicId", threadId), 
+                            Utility.CreateIntegerParam("@ReplyId", Null.NullInteger),
+                            Utility.CreateIntegerParam("@ReplyToId", threadId),
+                            Utility.CreateIntegerParam("@StatusId", Null.NullInteger), // 0=informative, 1=not resolved, 3=resolved
+                            Utility.CreateBitParam("@IsApproved", true),
+                            Utility.CreateBitParam("@IsDeleted", false), 
+                            Utility.CreateNvarcharParam("@Subject", "Re: " + title, 255),
+                            Utility.CreateNtextParam("@Body", commentText),
+                            Utility.CreateDateTimeParam("@DateCreated", DateTime.Now),
+                            Utility.CreateDateTimeParam("@DateUpdated", DateTime.Now),
+                            Utility.CreateIntegerParam("@AuthorId", commentUserId),
+                            Utility.CreateNvarcharParam("@AuthorName", commenterDisplayName, 150), 
                             Utility.CreateNvarcharParam("@IPAddress", commentUserIPAddress, 50));
-
-                    if (!Null.IsNull(commentUserId))
-                    {
-                        //Increment author's post count
-                        SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_UpdateUserPosts",
-                            Utility.CreateIntegerParam("@UserID", commentUserId), Utility.CreateIntegerParam("@Increment", 1));
-                    }
-
-                    //Add reply as a post in the thread
-                    SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_AddPostReply",
-                        Utility.CreateIntegerParam("@NewPostID", replyThreadId), Utility.CreateDateTimeParam("@PostDate", DateTime.Now),
-                        Utility.CreateIntegerParam("@ParentPostID", threadId));
-
-                    //Add reply as a post in the thread
-                    SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, NamePrefix + "NTForums_UpdateForumReplies",
-                        Utility.CreateIntegerParam("@ForumID", forumId), Utility.CreateIntegerParam("@PostID", replyThreadId),
-                        Utility.CreateIntegerParam("@Increment", 1));
 
                     transaction.Commit();
                 }
@@ -161,45 +224,52 @@ namespace Engage.Dnn.Publish.Forum
 
         public override Dictionary<int, string> GetForums()
         {
-            using (IDataReader forumsReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, NamePrefix + "ActiveForums_GetGroupAndForum", Utility.CreateIntegerParam("@PortalID", PortalId)))
+            Dictionary<int, string> forums = new Dictionary<int, string>();
+            foreach (ModuleInfo activeForumsModule in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName))
             {
-                Dictionary<int, string> forums = new Dictionary<int, string>();
-
-                while (forumsReader.Read())
+                using (IDataReader forumsReader = SqlHelper.ExecuteReader(
+                    this.connectionString, 
+                    CommandType.StoredProcedure, 
+                    NamePrefix + "ActiveForums_Forums_List",
+                    Utility.CreateIntegerParam("@ModuleId", activeForumsModule.ModuleID),
+                    Utility.CreateIntegerParam("@ForumGroupId", Null.NullInteger),
+                    Utility.CreateIntegerParam("@ParentForumId", Null.NullInteger),
+                    Utility.CreateBitParam("@FillLastPost", false)))
                 {
-                    int nameColumnIndex = forumsReader.GetOrdinal("Name");
-                    forums.Add((int)forumsReader["ForumID"], forumsReader.IsDBNull(nameColumnIndex) ? string.Empty : (string)forumsReader[nameColumnIndex]);
-                }
+                    while (forumsReader.Read())
+                    {
+                        forums.Add((int)forumsReader["ForumId"], forumsReader["ForumName"].ToString());
+                    }
 
-                return forums;
+                }
             }
+
+            return forums;
         }
 
         public override string GetThreadUrl(int threadId)
         {
             int? forumId = null;
-            using (SqlDataReader postReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, NamePrefix + "NTForums_GetPostbyID",
-                Utility.CreateIntegerParam("@PostID", threadId)))
+            int? moduleId = null;
+            using (SqlDataReader postReader = SqlHelper.ExecuteReader(
+                this.connectionString, 
+                CommandType.Text,
+                string.Format(CultureInfo.InvariantCulture, "SELECT ForumId, ModuleId FROM {0}vw_activeforums_ForumTopics WHERE TopicId = @TopicId", this.NamePrefix),
+                Utility.CreateIntegerParam("@TopicId", threadId)))
             {
                 if (postReader.Read())
                 {
-                    forumId = (int)postReader["ForumID"];
+                    forumId = (int)postReader["ForumId"];
+                    moduleId = (int)postReader["ModuleId"];
                 }
             }
 
             if (forumId.HasValue)
             {
-                using (SqlDataReader forumReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure,
-                    NamePrefix + "ActiveForums_GetForumTabID", Utility.CreateIntegerParam("@ForumID", forumId)))
-                {
-                    if (forumReader.Read())
-                    {
-                        int tabId = (int)forumReader["TabID"];
-
-                        return Globals.NavigateURL(tabId, string.Empty, "forumid=" + forumId.Value.ToString(CultureInfo.InvariantCulture), "postid=" + threadId.ToString(CultureInfo.InvariantCulture), "view=topic");
-                    }
-                }
+                ModuleInfo module = new ModuleController().GetModule(moduleId.Value, Null.NullInteger);
+                return Globals.NavigateURL(module.TabID, string.Empty, "aff=" + forumId.Value.ToString(CultureInfo.InvariantCulture), "aft=" + threadId.ToString(CultureInfo.InvariantCulture), "afv=topic");
             }
+
             return string.Empty;
         }
     }

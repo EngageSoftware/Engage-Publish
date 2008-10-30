@@ -179,7 +179,7 @@ namespace Engage.Dnn.Publish.Util
     /// </summary>
     public static class Utility
     {
-        public const string ActiveForumsDefinitionModuleName = "NTForums";
+        public const string ActiveForumsDefinitionModuleName = "Active Forums";
         public const string AdminContainer = "AdminContainer";
         public const string CacheKeyPublishAdminCategorySort = "CacheKeyPublishAdminCategorySort_";
         public const string CacheKeyPublishAllChildCategories = "CacheKeyPublishAllChildCategories_";
@@ -255,7 +255,7 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishDefaultDisplayPage = "PublishDefaultDisplayPage";
 
-        public const string PublishEnableWLWSupport = "PublishEnableWLWSupport";
+        public const string PublishEnableWlwSupport = "PublishEnableWLWSupport";
 
         public const string PublishDefaultTextHtmlCategory = "PublishDefaultTextHtmlCategory";
 
@@ -1173,7 +1173,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static IDataReader GetModuleByModuleId(int moduleId)
         {
-            return DataProvider.Instance().GetModuleByModuleId(moduleId);
+            return DataProvider.Instance().GetModulesByModuleId(moduleId);
         }
 
         public static string GetTabModuleSettingAsString(int moduleId, string settingName, string defaultValue)
