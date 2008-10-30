@@ -445,7 +445,7 @@ namespace Engage.Dnn.Publish
 
                 if (modid >0)
                 {
-                    if (Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId)
+                    if ((Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId || Overrideable))
                     {
                         //if we found the moduleid in the querystring we are trying to force the article here.                      
                         if (!String.IsNullOrEmpty(i))
@@ -453,7 +453,7 @@ namespace Engage.Dnn.Publish
                             return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                         }
                         //The local variable ItemVersionId is set so resolve the ItemVersionid to an Itemid
-                        if (this.ItemVersionId > 0 && modid == ModuleId)
+                        if (this.ItemVersionId > 0 )
                         {
                             return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
                         }
