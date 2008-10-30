@@ -11,6 +11,9 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
 @ApprovalStatusId int,    
 @PortalId int,
 @OrderBy nvarchar (100)
+
+with RECOMPILE
+
 AS    
 BEGIN
 set nocount on    
@@ -85,6 +88,9 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListingS
 @PortalId int,
 @OrderBy nvarchar (100),
 @SearchKey nvarchar(250)
+
+with RECOMPILE
+
 AS    
 BEGIN
 set nocount on    
