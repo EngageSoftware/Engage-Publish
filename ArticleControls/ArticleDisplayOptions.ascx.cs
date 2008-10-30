@@ -14,6 +14,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
+using System.Diagnostics;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
@@ -27,68 +28,68 @@ namespace Engage.Dnn.Publish.ArticleControls
 
             //if (!IsPostBack)
             //{
-                ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
-                if (li != null)
-                {
-                    li.Selected = true;
-                }
-                li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
-                if (li != null)
-                {
-                    li.Selected = true;
-                }
-                li = ddlDisplayComments.Items.FindByValue(CommentDisplayOption.ToString());
-                if (li != null)
-                {
-                    li.Selected = true;
-                }
-                li = ddlFirstNameCollect.Items.FindByValue(FirstNameCollectOption.ToString());
-                if (li != null)
-                {
-                    li.Selected = true;
-                }
-                li = ddlLastNameCollect.Items.FindByValue(LastNameCollectOption.ToString());
-                if (li != null)
-                {
-                    li.Selected = true;
-                }
+            ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+            li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+            li = ddlDisplayComments.Items.FindByValue(CommentDisplayOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+            li = ddlFirstNameCollect.Items.FindByValue(FirstNameCollectOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+            li = ddlLastNameCollect.Items.FindByValue(LastNameCollectOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
 
-                if (MaximumNumberOfThumbnails.HasValue && MaximumNumberOfThumbnails.Value > 0)
-                {
-                    txtPhotoGalleryMaxCount.Text = MaximumNumberOfThumbnails.Value.ToString(CultureInfo.CurrentCulture);
-                }
+            if (MaximumNumberOfThumbnails.HasValue && MaximumNumberOfThumbnails.Value > 0)
+            {
+                txtPhotoGalleryMaxCount.Text = MaximumNumberOfThumbnails.Value.ToString(CultureInfo.CurrentCulture);
+            }
 
-                if (HoverThumbnailHeight.HasValue && HoverThumbnailHeight.Value > 0)
-                {
-                    txtPhotoGalleryHoverThumbnailHeight.Text = HoverThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
-                }
-                if (HoverThumbnailWidth.HasValue && HoverThumbnailWidth.Value > 0)
-                {
-                    txtPhotoGalleryHoverThumbnailWidth.Text = HoverThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
-                }
+            if (HoverThumbnailHeight.HasValue && HoverThumbnailHeight.Value > 0)
+            {
+                txtPhotoGalleryHoverThumbnailHeight.Text = HoverThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
+            }
+            if (HoverThumbnailWidth.HasValue && HoverThumbnailWidth.Value > 0)
+            {
+                txtPhotoGalleryHoverThumbnailWidth.Text = HoverThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
+            }
 
-                if (GalleryThumbnailHeight.HasValue && GalleryThumbnailHeight.Value > 0)
-                {
-                    txtPhotoGalleryThumbnailHeight.Text = GalleryThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
-                }
-                if (GalleryThumbnailWidth.HasValue && GalleryThumbnailWidth.Value > 0)
-                {
-                    txtPhotoGalleryThumbnailWidth.Text = GalleryThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
-                }
+            if (GalleryThumbnailHeight.HasValue && GalleryThumbnailHeight.Value > 0)
+            {
+                txtPhotoGalleryThumbnailHeight.Text = GalleryThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
+            }
+            if (GalleryThumbnailWidth.HasValue && GalleryThumbnailWidth.Value > 0)
+            {
+                txtPhotoGalleryThumbnailWidth.Text = GalleryThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
+            }
 
-                //chkPhotoGalleryShowAll.Checked = !MaximumNumberOfThumbnails.HasValue;
-                chkDisplayPhotoGallery.Checked = AllowPhotoGalleryDisplay;
-                //SetPhotoGallerySettingsEnabled(chkDisplayPhotoGallery.Checked);
-                //SetThumbnailMaxCountSettingEnabled(chkDisplayPhotoGallery.Checked && !chkPhotoGalleryShowAll.Checked);
+            //chkPhotoGalleryShowAll.Checked = !MaximumNumberOfThumbnails.HasValue;
+            chkDisplayPhotoGallery.Checked = AllowPhotoGalleryDisplay;
+            //SetPhotoGallerySettingsEnabled(chkDisplayPhotoGallery.Checked);
+            //SetThumbnailMaxCountSettingEnabled(chkDisplayPhotoGallery.Checked && !chkPhotoGalleryShowAll.Checked);
 
-                chkCommentDisplay.Checked = DisplayComments;
-                chkCommentSubmit.Checked = DisplayCommentSubmission;
-                //txtCommentPaging.Text = CommentsPerPage.ToString(CultureInfo.CurrentCulture);
-                //chkCommentRandom.Checked = DisplayRandomComment;
-                chkEmailAddressCollect.Checked = CollectEmailAddress;
-                chkUrlCollect.Checked = CollectUrl;
+            chkCommentDisplay.Checked = DisplayComments;
+            chkCommentSubmit.Checked = DisplayCommentSubmission;
+            //txtCommentPaging.Text = CommentsPerPage.ToString(CultureInfo.CurrentCulture);
+            //chkCommentRandom.Checked = DisplayRandomComment;
+            chkEmailAddressCollect.Checked = CollectEmailAddress;
+            chkUrlCollect.Checked = CollectUrl;
 
-                txtLastUpdatedFormat.Text = LastUpdatedFormat;
+            txtLastUpdatedFormat.Text = LastUpdatedFormat;
             //}
 
             SetPhotoGalleryOptionsVisiblity(ModuleBase.AllowSimpleGalleryIntegrationForPortal(PortalId) || ModuleBase.AllowUltraMediaGalleryIntegrationForPortal(PortalId));
@@ -98,11 +99,14 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void BindData()
         {
-            ddlArticleList.DataTextField = "Name";
-            ddlArticleList.DataValueField = "ItemId";
-            ddlArticleList.DataSource = Article.GetArticles(PortalId);
-            ddlArticleList.DataBind();
-            ddlArticleList.Items.Insert(0, new ListItem(Localization.GetString("ChooseAnArticle", LocalResourceFile), "-1"));
+            if (ShowArticles)
+            {
+                ddlArticleList.DataTextField = "Name";
+                ddlArticleList.DataValueField = "ItemId";
+                ddlArticleList.DataSource = Article.GetArticles(PortalId);
+                ddlArticleList.DataBind();
+                ddlArticleList.Items.Insert(0, new ListItem(Localization.GetString("ChooseAnArticle", LocalResourceFile), "-1"));
+            }
 
             ddlDisplayRatings.Items.Clear();
             ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(Util.RatingDisplayOption.Enable.ToString(), LocalResourceFile), Util.RatingDisplayOption.Enable.ToString()));
@@ -171,12 +175,15 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void save()
         {
             //save the new setting
-//            ModuleController modules = new ModuleController();
-//            modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", this.ddlArticleList.SelectedValue.ToString());
+            //            ModuleController modules = new ModuleController();
+            //            modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", this.ddlArticleList.SelectedValue.ToString());
 
             if (Page.IsValid)
             {
-                ArticleId = int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
+                if (ShowArticles)
+                {
+                    ArticleId = int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
+                }
                 LastUpdatedFormat = txtLastUpdatedFormat.Text.Trim();
                 RatingDisplayOption = (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), ddlDisplayRatings.SelectedValue);
                 DisplayCommentSubmission = chkCommentSubmit.Checked;
@@ -631,24 +638,17 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
         }
 
-        //protected void cvCommentPaging_ServerValidate(object source, ServerValidateEventArgs args)
-        //{
-        //    int max = 0;
-        //    args.IsValid = int.TryParse(args.Value.ToString(), out max);
-        //    if (args.IsValid)
-        //    {
-        //        if (max <= 0)
-        //        {
-        //            args.IsValid = false;
-        //            cvCommentPaging.Text = Localization.GetString("cvCommentPaging_Range", LocalResourceFile);
-        //        }
-        //    }
-        //}
-
-        //protected void chkCommentRandom_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    txtCommentPaging.Enabled = !chkCommentRandom.Checked;
-        //}
+        #region Public Properties
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private bool _showArticles = false;// = false;
+        public bool ShowArticles
+        {
+            [DebuggerStepThrough]
+            get { return _showArticles; }
+            [DebuggerStepThrough]
+            set { _showArticles = value; }
+        }
+        #endregion
     }
 }
 

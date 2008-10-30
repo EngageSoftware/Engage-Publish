@@ -15,6 +15,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using System.Globalization;
+using Engage.Dnn.Publish.ArticleControls;
 
 namespace Engage.Dnn.Publish
 {
@@ -215,7 +216,8 @@ namespace Engage.Dnn.Publish
                     LoadSettingsControl("controls/CustomDisplayOptions.ascx"/*, "CustomDisplayOptions"*/);
                     break;
                 case "ArticleDisplay":
-                    LoadSettingsControl("articlecontrols/ArticleDisplayOptions.ascx"/*, "ArticleDisplayOptions"*/);
+                    LoadSettingsControl("articlecontrols/ArticleDisplayOptions.ascx",true);///*, "ArticleDisplayOptions"*/);
+                    //configure ShowArticle=true
                     break;
                 case "CategoryDisplay":
                     LoadSettingsControl("categorycontrols/CategoryDisplayOptions.ascx"/*, "CategoryDisplayOptions"*/);
@@ -295,6 +297,16 @@ namespace Engage.Dnn.Publish
             this.phControls.Controls.Add(currentSettingsBase);
         }
 
+        private void LoadSettingsControl(string controlName, bool showArticles)
+        {
+            this.phControls.EnableViewState = false;
+
+            currentSettingsBase = CreateSettingsControl(controlName, showArticles);
+
+            this.phControls.Controls.Add(currentSettingsBase);
+        }
+
+
         private ModuleSettingsBase CreateSettingsControl(string controlName)
         {
             ModuleSettingsBase settingsControl = (ModuleSettingsBase)LoadControl(controlName);
@@ -311,6 +323,29 @@ namespace Engage.Dnn.Publish
             settingsControl.LoadSettings();
 
             return settingsControl;
+        }
+
+        private ModuleSettingsBase CreateSettingsControl(string controlName, bool showArticles)
+        {
+            ModuleSettingsBase settingsControl = (ModuleSettingsBase)LoadControl(controlName);
+            ModuleController mc = new ModuleController();
+            ModuleInfo mi = mc.GetModule(ModuleId, TabId);
+            settingsControl.ModuleConfiguration = mi;
+
+            //SEE LINE BELOW remove the following two lines for 4.6 because 4.6 no longer supports setting the moduleid, you have to get it through the module configuration.
+            //the following appears to work fine in 4.6.2 now
+            settingsControl.ModuleId = ModuleId;
+            settingsControl.TabModuleId = TabModuleId;
+
+            settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
+
+            ArticleDisplayOptions ado = (ArticleDisplayOptions)settingsControl;
+            ado.ShowArticles = true;
+
+
+            ado.LoadSettings();
+
+            return ado;
         }
 
         //This is the cachetime used by Publish modules
