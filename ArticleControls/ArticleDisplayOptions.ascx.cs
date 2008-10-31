@@ -15,25 +15,74 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
 using System.Diagnostics;
+using DotNetNuke.Services.Exceptions;
+using System.IO;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
     public partial class ArticleDisplayOptions : ModuleSettingsBase
     {
+
+        private ModuleSettingsBase currentSettingsBase;
+
         #region Event Handlers
+
+        override protected void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            base.Load += ArticleDisplayOptions_Load;
+        }
+
+        protected void ArticleDisplayOptions_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                //by now ViewState has been restored so we can set the Settings control.
+                //LoadSettingsControl("../controls/AdminItemSearch.ascx");
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+
+        private void LoadSettingsControl(string controlName)
+        {
+            this.phArticleSelection.EnableViewState = false;
+            currentSettingsBase = CreateSettingsControl(controlName);
+            this.phArticleSelection.Controls.Add(currentSettingsBase);
+        }
+
+        private ModuleSettingsBase CreateSettingsControl(string controlName)
+        {
+            ModuleSettingsBase settingsControl = (ModuleSettingsBase)LoadControl(controlName);
+            ModuleController mc = new ModuleController();
+            ModuleInfo mi = mc.GetModule(ModuleId, TabId);
+            settingsControl.ModuleConfiguration = mi;
+
+            settingsControl.ModuleId = ModuleId;
+            settingsControl.TabModuleId = TabModuleId;
+            settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
+            settingsControl.LoadSettings();
+            return settingsControl;
+        }
 
         public override void LoadSettings()
         {
+            LoadSettingsControl("../controls/AdminItemSearch.ascx");
+
             BindData();
 
             //if (!IsPostBack)
             //{
-            ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-            li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
+            ((Engage.Dnn.Publish.Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedItemId = ArticleId;
+            //ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
+            //if (li != null)
+            //{
+            //    li.Selected = true;
+            //}
+            ListItem li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
             if (li != null)
             {
                 li.Selected = true;
@@ -99,14 +148,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void BindData()
         {
-            if (ShowArticles)
-            {
-                ddlArticleList.DataTextField = "Name";
-                ddlArticleList.DataValueField = "ItemId";
-                ddlArticleList.DataSource = Article.GetArticles(PortalId);
-                ddlArticleList.DataBind();
-                ddlArticleList.Items.Insert(0, new ListItem(Localization.GetString("ChooseAnArticle", LocalResourceFile), "-1"));
-            }
+            phArticleSelection.Visible = ShowArticles;
 
             ddlDisplayRatings.Items.Clear();
             ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(Util.RatingDisplayOption.Enable.ToString(), LocalResourceFile), Util.RatingDisplayOption.Enable.ToString()));
@@ -177,12 +219,13 @@ namespace Engage.Dnn.Publish.ArticleControls
             //save the new setting
             //            ModuleController modules = new ModuleController();
             //            modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", this.ddlArticleList.SelectedValue.ToString());
-
             if (Page.IsValid)
             {
                 if (ShowArticles)
                 {
-                    ArticleId = int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
+                    
+                    ArticleId = ((Engage.Dnn.Publish.Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedItemId; 
+                    //int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
                 }
                 LastUpdatedFormat = txtLastUpdatedFormat.Text.Trim();
                 RatingDisplayOption = (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), ddlDisplayRatings.SelectedValue);

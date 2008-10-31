@@ -23,22 +23,11 @@ using DotNetNuke.UI.Utilities;
 
 namespace Engage.Dnn.Publish.Controls
 {
-    public partial class AdminItemSearch : ModuleBase
+    public partial class AdminItemSearch : PublishSettingsBase
     {
         #region Protected Members
-
-        private int _listRelationshipTypeId;
-        private int _createRelationshipTypeId;
-        private int _parentItemId;
-        private string _startDate;
-        private string _endDate;
-
+        private int _selectedItemId;
         private int _itemTypeId = -1;
-        private bool _flatView;// = false;
-        private bool _isRequired;// = false;
-        private bool _allowSearch;// = false;
-        private bool _enableSortOrder;// = false;
-        private bool _enableDates;// = false;
         #endregion
 
         
@@ -47,55 +36,81 @@ namespace Engage.Dnn.Publish.Controls
         {
             InitializeComponent();
             base.OnInit(e);
+            FillDropDowns();
         }
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
+            this.ddlArticleList.SelectedIndexChanged += this.ddlArticleList_SelectedIndexChanged;
+            
         }
 
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //check VI for null then set information
-                if (!Page.IsPostBack)
-                {
-                    ////get the relationshipId and populate relationships
-                    //ArrayList alItemRelationships = ItemRelationship.GetItemRelationships(VersionInfoObject.ItemId, VersionInfoObject.ItemVersionId, CreateRelationshipTypeId, false);
-                    //foreach (ItemRelationship ir in alItemRelationships)
-                    //{
-                    //    string parentName = ItemType.GetItemName(ir.ParentItemId);
-                    //    if (this._enableDates)
-                    //    {
-                    //        //add dates to the viewstate
-                    //        SetAdditionalSetting("startDate", Utility.GetInvariantDateTime(ir.StartDate), ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
-                    //        SetAdditionalSetting("endDate", Utility.GetInvariantDateTime(ir.EndDate), ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
-                    //    }
-                    //    ListItem li = new ListItem(ir.ParentItemId + "-" + parentName, ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
-                    //    lstSelectedItems.Items.Add(li);
-                    //}
-
-                    //if (this._allowSearch)
-                    //{
-                    //    pnlItemSearch.Visible = true;
-                    //}
-                    //if (this.AvailableSelectionMode == ListSelectionMode.Single)
-                    //{
-                    //    lstSelectedItems.Rows = 1;
-                    //}
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
       
         #endregion
 
-        
 
+        private int selectedItemId;
+
+        public int SelectedItemId
+        {
+            get
+            {
+                if(txtSelectedId.Text.Trim()!=string.Empty)
+                return Convert.ToInt32(txtSelectedId.Text);
+                return -1;
+            }
+            set
+            {
+                selectedItemId = value;
+            }
+        }
+
+        public void FillDropDowns()
+        {
+            cboCategories.Items.Clear();
+                ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
+
+                ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
+                this.cboCategories.Items.Insert(0, li);
+            //search for itemsetting
+        }
+
+        public void FillArticlesDropDown()
+        {
+            if (categoryId > -1)
+            {
+                ddlArticleList.DataSource = Article.GetArticles(categoryId, PortalId);
+                ddlArticleList.DataBind();
+            }
+        }
+
+        private void cboCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillArticlesDropDown();
+        }
+
+
+        private void ddlArticleList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtSelectedId.Text = ddlArticleList.SelectedValue;
+            lblSelectedItem.Text = ddlArticleList.SelectedItem.Text;
+        }
+
+        public int categoryId
+        {
+            get
+            {
+                if (cboCategories.SelectedIndex > 0)
+                    return Convert.ToInt32(cboCategories.SelectedValue);
+                else return -1;
+            }
+        }
+
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            FillArticlesDropDown();
+        }
     }
 }
 

@@ -69,7 +69,6 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void cboCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindData();
-
         }
 
         private void cboWorkflow_SelectedIndexChanged(object sender, EventArgs e)

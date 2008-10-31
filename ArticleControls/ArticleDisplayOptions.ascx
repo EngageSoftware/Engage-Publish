@@ -1,21 +1,19 @@
 <%@ Control Language="c#" AutoEventWireup="False" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplayOptions" Codebehind="ArticleDisplayOptions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 
+
 <style type="text/css">
     @import url(<%=Engage.Dnn.Publish.ModuleBase.ApplicationUrl %><%=Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName %>Module.css);
 </style>
 
 <asp:UpdatePanel ID="upnlArticleDisplayOptions" runat="server" UpdateMode="Conditional"><ContentTemplate>
 </ContentTemplate></asp:UpdatePanel>
+    
+    <asp:PlaceHolder ID="phArticleSelection" runat="server" />
     <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
-        <tr class="articleOptionDropDown">
-	        <td class="subhead"><dnn:label ID="lblArticleList" resourcekey="lblArticleList" runat="server" /></td>
-		    <td><asp:dropdownlist id="ddlArticleList" Runat="server" CssClass="articleListDropDown NormalTextBox"></asp:dropdownlist></td>
-	    </tr>
 	    <tr>
 	        <td class="subhead"><dnn:label ID="lblLastUpdatedFormat" resourcekey="lblLastUpdatedFormat" runat="server" /></td>
 		    <td><asp:TextBox ID="txtLastUpdatedFormat" runat="server" CssClass="NormalTextBox"></asp:TextBox></td>
-
 	    </tr>
     </table>
     <hr />
