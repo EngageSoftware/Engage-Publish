@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblArticleList.Help" xml:space="preserve">
-    <value>You can select a default article for display with this dropdown list.</value>
+    <value>Once you have selected a Category select an Article from this list to display.</value>
   </data>
   <data name="lblArticleList.Text" xml:space="preserve">
     <value>Choose Article:</value>

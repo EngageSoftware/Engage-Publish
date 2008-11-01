@@ -9,108 +9,94 @@
 //DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.UI.Utilities;
 
 namespace Engage.Dnn.Publish.Controls
 {
     public partial class AdminItemSearch : PublishSettingsBase
     {
-        #region Protected Members
-        private int _selectedItemId;
-        private int _itemTypeId = -1;
-        #endregion
-
         
         #region Event Handlers
         override protected void OnInit(EventArgs e)
         {
             InitializeComponent();
             base.OnInit(e);
-            FillDropDowns();
+            if (ddlCategories.Items.Count == 0) FillDropDowns();  //if articleid was already stored the setter for SelectedArticleid hasn't been called.
         }
 
         private void InitializeComponent()
         {
-            this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
-            this.ddlArticleList.SelectedIndexChanged += this.ddlArticleList_SelectedIndexChanged;
-            
+            this.ddlCategories.SelectedIndexChanged += this.ddlCategories_SelectedIndexChanged;
         }
 
-      
+        private void ddlCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillArticlesDropDown();
+        }
+
         #endregion
 
-
-        private int selectedItemId;
-
-        public int SelectedItemId
+        public int SelectedArticleId
         {
             get
             {
-                if(txtSelectedId.Text.Trim()!=string.Empty)
-                return Convert.ToInt32(txtSelectedId.Text);
+                if (this.ddlArticleList.SelectedValue != null)
+                {
+                    return Convert.ToInt32(this.ddlArticleList.SelectedValue);
+                }
                 return -1;
             }
             set
             {
-                selectedItemId = value;
+                if (ddlCategories.Items.Count == 0) FillDropDowns();
+                Article article = Article.GetArticle(value, PortalId);
+                if (article != null)
+                {
+                    int categoryId = article.GetParentCategoryId();
+                    //find category
+                    ListItem li = this.ddlCategories.Items.FindByValue(categoryId.ToString());
+                    if (li != null)
+                    {
+                        li.Selected = true;
+                        FillArticlesDropDown();
+                    }
+                    //find article
+                    li = this.ddlArticleList.Items.FindByValue(value.ToString());
+                    if (li != null)
+                        li.Selected = true;
+                }
             }
         }
 
         public void FillDropDowns()
         {
-            cboCategories.Items.Clear();
-                ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
+            this.ddlCategories.Items.Clear();
+            ItemRelationship.DisplayCategoryHierarchy(this.ddlCategories, -1, PortalId, false);
 
-                ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
-                this.cboCategories.Items.Insert(0, li);
-            //search for itemsetting
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
+            this.ddlCategories.Items.Insert(0, li);
         }
 
         public void FillArticlesDropDown()
         {
-            if (categoryId > -1)
+            if (CategoryId > -1)
             {
-                ddlArticleList.DataSource = Article.GetArticles(categoryId, PortalId);
+                ddlArticleList.DataSource = Article.GetArticles(CategoryId, PortalId);
                 ddlArticleList.DataBind();
             }
         }
 
-        private void cboCategories_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            FillArticlesDropDown();
-        }
-
-
-        private void ddlArticleList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtSelectedId.Text = ddlArticleList.SelectedValue;
-            lblSelectedItem.Text = ddlArticleList.SelectedItem.Text;
-        }
-
-        public int categoryId
+        private int CategoryId
         {
             get
             {
-                if (cboCategories.SelectedIndex > 0)
-                    return Convert.ToInt32(cboCategories.SelectedValue);
-                else return -1;
+                if (this.ddlCategories.SelectedIndex > 0)
+                    return Convert.ToInt32(this.ddlCategories.SelectedValue);
+                return -1;
             }
         }
 
-        protected void btnFilter_Click(object sender, EventArgs e)
-        {
-            FillArticlesDropDown();
-        }
     }
 }
 

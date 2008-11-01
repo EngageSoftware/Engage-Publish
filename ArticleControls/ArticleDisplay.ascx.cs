@@ -111,7 +111,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                if (base.AllowSimpleGalleryIntegration || base.AllowUltraMediaGalleryIntegration)
+                if (AllowSimpleGalleryIntegration || AllowUltraMediaGalleryIntegration)
                 {
                     bool value;
                     object o = Settings["adShowPhotoGallery"];
@@ -206,7 +206,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                if (base.AreRatingsEnabled)
+                if (AreRatingsEnabled)
                 {
                     object o = Settings["adEnableRatings"];
                     if (o != null && Enum.IsDefined(typeof(RatingDisplayOption), o))
@@ -230,7 +230,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                if (base.IsCommentsEnabled)
+                if (IsCommentsEnabled)
                 {
                     object o = Settings["adCommentsLink"];
                     return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
@@ -250,7 +250,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                if (base.IsCommentsEnabled)
+                if (IsCommentsEnabled)
                 {
                     object o = Settings["adCommentsDisplay"];
                     if (o != null)
@@ -289,11 +289,11 @@ namespace Engage.Dnn.Publish.ArticleControls
             get
             {
                 
-                if (base.IsPublishCommentType) return false;
+                if (IsPublishCommentType) return false;
                 ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId);
                 int? categoryForumId = GetCategoryForumId();
                 if (!categoryForumId.HasValue || categoryForumId<1) return false;
-                return (base.IsCommentsEnabled && !base.IsPublishCommentType)
+                return (IsCommentsEnabled && !IsPublishCommentType)
                     && (forumCommentSetting != null && Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture));
                 //{
                 //    object o = Settings["adCommentsDisplay"];
@@ -720,7 +720,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             btnComment.Visible = DisplayCommentsLink;
-            if (base.IsCommentsEnabled)
+            if (IsCommentsEnabled)
             {
                 if (!UseForumComments || (DisplayPublishComments && !VersionInfoObject.IsNew))
                 {
@@ -805,7 +805,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         lblArticleText.Text = Localization.GetString("NoDataToDisplay", LocalResourceFile);
                     }
-                    else if (base.IsConfigured == false)
+                    else if (IsConfigured == false)
                     {
                         lnkConfigure.Text = Localization.GetString("UnableToFindAction", LocalResourceFile);
                         lnkConfigure.NavigateUrl = EditUrl("ModuleId", ModuleId.ToString(CultureInfo.InvariantCulture), "Module");
@@ -825,7 +825,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (displayTitle)
                 {
                     SetPageTitle();
-                    lblArticleTitle.Text = article.Name.ToString();
+                    lblArticleTitle.Text = article.Name;
                     divArticleTitle.Visible = true;
                     divLastUpdated.Visible = true;
                 }
@@ -840,7 +840,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 string url = string.Empty;
                 if (HttpContext.Current.Request.RawUrl != null)
                 {
-                    url = HttpContext.Current.Request.RawUrl.ToString();
+                    url = HttpContext.Current.Request.RawUrl;
                 }
                 article.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
 
@@ -1091,12 +1091,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
                 if (row.DataView.Table.Columns.Contains("HomeDirectory"))
                 {
-                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + row["Width"].ToString() + "&height=" + row["Height"].ToString() + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"].ToString()) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"].ToString() + "&q=1");
+                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + row["Width"] + "&height=" + row["Height"] + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
                 }
-                else
-                {
-                    return row["ImagePath"].ToString();
-                }
+                return row["ImagePath"].ToString();
             }
             return string.Empty;
         }
@@ -1109,12 +1106,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
                 if (row.DataView.Table.Columns.Contains("HomeDirectory"))
                 {
-                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + GetPhotoWidth(row).ToString(CultureInfo.InvariantCulture) + "&height=" + GetPhotoHeight(row).ToString(CultureInfo.InvariantCulture) + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"].ToString()) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"].ToString() + "&q=1");
+                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + GetPhotoWidth(row).ToString(CultureInfo.InvariantCulture) + "&height=" + GetPhotoHeight(row).ToString(CultureInfo.InvariantCulture) + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
                 }
-                else
-                {
-                    return row["ImageThumbPath"].ToString();
-                }
+                return row["ImageThumbPath"].ToString();
             }
             return string.Empty;
         }
@@ -1131,10 +1125,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     return row["Name"].ToString();
                 }
-                else
-                {
-                    return row["Title"].ToString();
-                }
+                return row["Title"].ToString();
             }
             return string.Empty;
         }
@@ -1163,19 +1154,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    int thumbnailWidth;
                     int actualHeight = (int)row["Height"];
                     int actualWidth = (int)row["Width"];
                     int maxThumbnailWidth = GetMaxThumbnailWidth((int)row["ModuleId"]);
                     int maxThumbnailHeight = GetMaxThumbnailHeight((int)row["ModuleId"]);
-                    if (actualWidth > maxThumbnailWidth)
-                    {
-                        thumbnailWidth = maxThumbnailWidth;
-                    }
-                    else
-                    {
-                        thumbnailWidth = actualWidth;
-                    }
+                    int thumbnailWidth = actualWidth > maxThumbnailWidth ? maxThumbnailWidth : actualWidth;
 
                     if (Convert.ToInt32(actualHeight / ((double)actualWidth / thumbnailWidth)) > maxThumbnailHeight)
                     {
@@ -1204,19 +1187,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    int thumbnailWidth;
                     int actualHeight = (int)row["Height"];
                     int actualWidth = (int)row["Width"];
                     int maxThumbnailWidth = GetMaxThumbnailWidth((int)row["ModuleId"]);
                     int maxThumbnailHeight = GetMaxThumbnailHeight((int)row["ModuleId"]);
-                    if (actualWidth > maxThumbnailWidth)
-                    {
-                        thumbnailWidth = maxThumbnailWidth;
-                    }
-                    else
-                    {
-                        thumbnailWidth = actualWidth;
-                    }
+                    int thumbnailWidth = actualWidth > maxThumbnailWidth ? maxThumbnailWidth : actualWidth;
                     int thumbnailHeight = Convert.ToInt32(actualHeight / ((double)actualWidth / thumbnailWidth));
                     if (thumbnailHeight > maxThumbnailHeight)
                     {
@@ -1244,7 +1219,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else //simple gallery
                 {
-                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&TagID=" + Null.NullInteger.ToString(CultureInfo.InvariantCulture)  + "&ItemID=" + row["PhotoID"].ToString() + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId) + "&tt=" + GetToolTipSetting(moduleId));
+                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&TagID=" + Null.NullInteger.ToString(CultureInfo.InvariantCulture)  + "&ItemID=" + row["PhotoID"] + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId) + "&tt=" + GetToolTipSetting(moduleId));
                     return "window.open('" + popupUrl + "','smallscreen','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width=" + GetPopupWidth(moduleId).ToString(CultureInfo.InvariantCulture) + ",height=" + GetPopupHeight(moduleId).ToString(CultureInfo.InvariantCulture) + "')";
                 }
             }
@@ -1303,8 +1278,8 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 foreach (DataRow row in photos.Rows)
                 {
-                    row["ImageThumbPath"] = PortalSettings.HomeDirectory + "UltraPhotoGallery/" + row["ModuleId"].ToString() + "/" + row["AlbumId"].ToString() + "/" + "thumbs" + "/" + row["Src"].ToString();
-                    row["ImagePath"] = PortalSettings.HomeDirectory + "UltraPhotoGallery/" + row["ModuleId"].ToString() + "/" + row["AlbumId"].ToString() + "/" + "large" + "/" + row["Src"].ToString();
+                    row["ImageThumbPath"] = PortalSettings.HomeDirectory + "UltraPhotoGallery/" + row["ModuleId"] + "/" + row["AlbumId"] + "/" + "thumbs" + "/" + row["Src"];
+                    row["ImagePath"] = PortalSettings.HomeDirectory + "UltraPhotoGallery/" + row["ModuleId"] + "/" + row["AlbumId"] + "/" + "large" + "/" + row["Src"];
                 }
             }
             return photos;
@@ -1329,13 +1304,10 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 return width;
             }
-            else
+            widthObj = (new ModuleController()).GetModuleSettings(moduleId)["PopupWidth"];
+            if (widthObj != null && int.TryParse(widthObj.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out width))
             {
-                widthObj = (new ModuleController()).GetModuleSettings(moduleId)["PopupWidth"];
-                if (widthObj != null && int.TryParse(widthObj.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out width))
-                {
-                    return width;
-                }
+                return width;
             }
             return 645;
         }
@@ -1349,14 +1321,11 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 return height;
             }
-            else
+            //SimpleGallery
+            heightObj = (new ModuleController()).GetModuleSettings(moduleId)["PopupHeight"];
+            if (heightObj != null && int.TryParse(heightObj.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out height))
             {
-                //SimpleGallery
-                heightObj = (new ModuleController()).GetModuleSettings(moduleId)["PopupHeight"];
-                if (heightObj != null && int.TryParse(heightObj.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out height))
-                {
-                    return height;
-                }
+                return height;
             }
             return 600;
         }

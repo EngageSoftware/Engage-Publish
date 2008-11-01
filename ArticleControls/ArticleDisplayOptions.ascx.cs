@@ -30,7 +30,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.Load += ArticleDisplayOptions_Load;
+            Load += ArticleDisplayOptions_Load;
         }
 
         protected void ArticleDisplayOptions_Load(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
             //if (!IsPostBack)
             //{
-            ((Engage.Dnn.Publish.Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedItemId = ArticleId;
+            ((Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedArticleId = ArticleId;
             //ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
             //if (li != null)
             //{
@@ -151,9 +151,9 @@ namespace Engage.Dnn.Publish.ArticleControls
             phArticleSelection.Visible = ShowArticles;
 
             ddlDisplayRatings.Items.Clear();
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(Util.RatingDisplayOption.Enable.ToString(), LocalResourceFile), Util.RatingDisplayOption.Enable.ToString()));
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(Util.RatingDisplayOption.ReadOnly.ToString(), LocalResourceFile), Util.RatingDisplayOption.ReadOnly.ToString()));
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(Util.RatingDisplayOption.Disable.ToString(), LocalResourceFile), Util.RatingDisplayOption.Disable.ToString()));
+            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Enable.ToString(), LocalResourceFile), RatingDisplayOption.Enable.ToString()));
+            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.ReadOnly.ToString(), LocalResourceFile), RatingDisplayOption.ReadOnly.ToString()));
+            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Disable.ToString(), LocalResourceFile), RatingDisplayOption.Disable.ToString()));
 
             ddlDisplayComments.Items.Clear();
             ddlDisplayComments.Items.Add(new ListItem(Localization.GetString(CommentDisplayOption.ShowAll.ToString(), LocalResourceFile), CommentDisplayOption.ShowAll.ToString()));
@@ -214,7 +214,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         //}
         #endregion
 
-        private void save()
+        private void SaveSettings()
         {
             //save the new setting
             //            ModuleController modules = new ModuleController();
@@ -223,8 +223,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 if (ShowArticles)
                 {
-                    
-                    ArticleId = ((Engage.Dnn.Publish.Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedItemId; 
+
+                    ArticleId = ((Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedArticleId; 
                     //int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
                 }
                 LastUpdatedFormat = txtLastUpdatedFormat.Text.Trim();
@@ -251,7 +251,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         public override void UpdateSettings()
         {
-            save();
+            SaveSettings();
         }
 
         private int ArticleId
@@ -504,7 +504,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         /// </summary>
         /// <value>
         /// The comment display option.
-        /// Defaults to <see cref="CommentDisplayOption.ShowAll"/> if no setting is defined.
+        /// Defaults to <see cref="CommentDisplayOption"/> if no setting is defined.
         /// </value>
         private CommentDisplayOption CommentDisplayOption
         {
@@ -682,8 +682,9 @@ namespace Engage.Dnn.Publish.ArticleControls
         }
 
         #region Public Properties
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _showArticles = false;// = false;
+        private bool _showArticles;
         public bool ShowArticles
         {
             [DebuggerStepThrough]

@@ -220,7 +220,7 @@
     <value>Example: To display Jun 2007 enter MMM yyyy</value>
   </data>
   <data name="lblLastUpdatedFormat.Text" xml:space="preserve">
-    <value>Last Updated Formatting (ex:MMM yyyy)</value>
+    <value>Last Updated Formatting (ex: MMM yyyy)</value>
   </data>
   <data name="cvPhotoGalleryMaxCount.Text" xml:space="preserve">
     <value>Maximum Number of Thumbnails must be a positive, integer value.  If you do not want to show thumbnails, uncheck the Display Thumbnails from Photo Gallery check box.  If you want to display all thumbnails, check the option to show all.</value>
