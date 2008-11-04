@@ -354,9 +354,9 @@ namespace Engage.Dnn.Publish.Util
 
                 if (HttpContext.Current == null)
                 {
-                    return string.Empty;
+                    return String.Empty;
                 }
-                return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
+                return HttpContext.Current.Request.ApplicationPath == "/" ? String.Empty : HttpContext.Current.Request.ApplicationPath;
             }
         }
 
@@ -400,6 +400,7 @@ namespace Engage.Dnn.Publish.Util
             return !String.IsNullOrEmpty(value) && value.Trim().Length > 0;
         }
 
+        [Obsolete("This should only be used by Utility.GetValueFromCache, use that method for caching instead")]
         public static void AddCacheKey(string keyName, int portalId)
         {
             string cacheKey = PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
@@ -636,7 +637,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string StripTags(string html)
         {
-            return Regex.Replace(html, "<[^>]*>", string.Empty);
+            return Regex.Replace(html, "<[^>]*>", String.Empty);
         }
 
         public static bool IsDisabled(int itemId, int portalId)
@@ -701,7 +702,7 @@ namespace Engage.Dnn.Publish.Util
         {
             if (String.IsNullOrEmpty(value))
             {
-                return string.Empty;
+                return String.Empty;
             }
 
             try
@@ -719,7 +720,7 @@ namespace Engage.Dnn.Publish.Util
         {
             if (String.IsNullOrEmpty(value))
             {
-                return string.Empty;
+                return String.Empty;
             }
 
             try
@@ -782,7 +783,7 @@ namespace Engage.Dnn.Publish.Util
                 i = Category.GetCategory(id);
             }
 
-            string returnUrl = string.Empty;
+            string returnUrl = String.Empty;
             if (HttpContext.Current != null)
             {
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
@@ -790,7 +791,7 @@ namespace Engage.Dnn.Publish.Util
 
             return Globals.NavigateURL(
                 tabId,
-                string.Empty,
+                String.Empty,
                 "ctl=" + AdminContainer,
                 "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
                 "adminType=" + type.Name + "Edit",
@@ -813,7 +814,7 @@ namespace Engage.Dnn.Publish.Util
                 i = Category.GetCategory(id, portalId);
             }
 
-            string returnUrl = string.Empty;
+            string returnUrl = String.Empty;
             if (HttpContext.Current != null)
             {
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
@@ -821,7 +822,7 @@ namespace Engage.Dnn.Publish.Util
 
             return Globals.NavigateURL(
                 tabId,
-                string.Empty,
+                String.Empty,
                 "ctl=" + AdminContainer,
                 "mid=" + moduleId.ToString(CultureInfo.InvariantCulture),
                 "adminType=" + type.Name + "Edit",
@@ -923,17 +924,17 @@ namespace Engage.Dnn.Publish.Util
                 //else there is no current version of this ITEM. Can't view it currently because ItemLink.aspx doesn't
                 //support versions. hk
             }
-            return string.Empty;
+            return String.Empty;
         }
 
         public static string GetItemLinkUrl(Item item)
         {
-            return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, string.Empty);
+            return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId)
         {
-            return GetItemLinkUrl(itemId, portalId, tabId, moduleId, 1, string.Empty);
+            return GetItemLinkUrl(itemId, portalId, tabId, moduleId, 1, String.Empty);
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId, int pageId, string cultureName)
@@ -955,12 +956,12 @@ namespace Engage.Dnn.Publish.Util
                 return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId, cultureName);
             }
 
-            return string.Empty;
+            return String.Empty;
         }
 
         public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId, string cultureName)
         {
-            string returnUrl = string.Empty;
+            string returnUrl = String.Empty;
 
             if (item != null && item.IsLinkable())
             {
@@ -1002,8 +1003,8 @@ namespace Engage.Dnn.Publish.Util
                 }
             }
 
-            string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, string.Empty));
-            return Globals.NavigateURL(displayTabId, portalSettings, string.Empty, queryStringParameters);
+            string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
+            return Globals.NavigateURL(displayTabId, portalSettings, String.Empty, queryStringParameters);
         }
 
         /// <summary>
@@ -1322,20 +1323,20 @@ namespace Engage.Dnn.Publish.Util
             }
             foreach (DataControlField column in gridView.Columns)
             {
-                if (!string.IsNullOrEmpty(column.HeaderText))
+                if (!String.IsNullOrEmpty(column.HeaderText))
                 {
                     string localizedText = Localization.GetString(column.HeaderText + ".Header", resourceFile);
-                    if (!string.IsNullOrEmpty(localizedText))
+                    if (!String.IsNullOrEmpty(localizedText))
                     {
                         column.HeaderText = localizedText;
                         column.AccessibleHeaderText = localizedText;
                     }
                 }
-                if (!string.IsNullOrEmpty(column.FooterText))
+                if (!String.IsNullOrEmpty(column.FooterText))
                 {
                     column.FooterText = Localization.GetString(column.FooterText + ".Header", resourceFile);
                 }
-                if (!string.IsNullOrEmpty(column.AccessibleHeaderText))
+                if (!String.IsNullOrEmpty(column.AccessibleHeaderText))
                 {
                     column.AccessibleHeaderText = Localization.GetString(column.AccessibleHeaderText + ".Header", resourceFile);
                 }
@@ -1343,7 +1344,7 @@ namespace Engage.Dnn.Publish.Util
                 ButtonField buttonField = column as ButtonField;
                 if (buttonField != null)
                 {
-                    if (string.IsNullOrEmpty(buttonField.Text))
+                    if (String.IsNullOrEmpty(buttonField.Text))
                     {
                         buttonField.Text = Localization.GetString(buttonField.Text, resourceFile);
                     }
@@ -1353,7 +1354,7 @@ namespace Engage.Dnn.Publish.Util
                     CheckBoxField checkboxField = column as CheckBoxField;
                     if (checkboxField != null)
                     {
-                        if (!string.IsNullOrEmpty(checkboxField.Text))
+                        if (!String.IsNullOrEmpty(checkboxField.Text))
                         {
                             checkboxField.Text = Localization.GetString(checkboxField.Text, resourceFile);
                         }
@@ -1363,31 +1364,31 @@ namespace Engage.Dnn.Publish.Util
                         CommandField commands = column as CommandField;
                         if (commands != null)
                         {
-                            if (!string.IsNullOrEmpty(commands.CancelText))
+                            if (!String.IsNullOrEmpty(commands.CancelText))
                             {
                                 commands.CancelText = Localization.GetString(commands.CancelText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.DeleteText))
+                            if (!String.IsNullOrEmpty(commands.DeleteText))
                             {
                                 commands.DeleteText = Localization.GetString(commands.DeleteText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.EditText))
+                            if (!String.IsNullOrEmpty(commands.EditText))
                             {
                                 commands.EditText = Localization.GetString(commands.EditText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.InsertText))
+                            if (!String.IsNullOrEmpty(commands.InsertText))
                             {
                                 commands.InsertText = Localization.GetString(commands.InsertText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.NewText))
+                            if (!String.IsNullOrEmpty(commands.NewText))
                             {
                                 commands.NewText = Localization.GetString(commands.NewText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.SelectText))
+                            if (!String.IsNullOrEmpty(commands.SelectText))
                             {
                                 commands.SelectText = Localization.GetString(commands.SelectText, resourceFile);
                             }
-                            if (!string.IsNullOrEmpty(commands.UpdateText))
+                            if (!String.IsNullOrEmpty(commands.UpdateText))
                             {
                                 commands.UpdateText = Localization.GetString(commands.UpdateText, resourceFile);
                             }
@@ -1397,7 +1398,7 @@ namespace Engage.Dnn.Publish.Util
                             HyperLinkField hyperLinkfield = column as HyperLinkField;
                             if (hyperLinkfield != null)
                             {
-                                if (!string.IsNullOrEmpty(hyperLinkfield.Text))
+                                if (!String.IsNullOrEmpty(hyperLinkfield.Text))
                                 {
                                     hyperLinkfield.Text = Localization.GetString(hyperLinkfield.Text, resourceFile);
                                 }
@@ -1407,7 +1408,7 @@ namespace Engage.Dnn.Publish.Util
                                 ImageField imageField = column as ImageField;
                                 if (imageField != null)
                                 {
-                                    if (!string.IsNullOrEmpty(imageField.AlternateText))
+                                    if (!String.IsNullOrEmpty(imageField.AlternateText))
                                     {
                                         imageField.AlternateText = Localization.GetString(imageField.AlternateText, resourceFile);
                                     }
@@ -1665,7 +1666,7 @@ namespace Engage.Dnn.Publish.Util
         public static SqlParameter CreateDoubleParam(string parameterName, double? value)
         {
             SqlParameter param = new SqlParameter(parameterName, SqlDbType.Float);
-            if (!value.HasValue || value.Equals(Null.NullDouble) || value.Equals(double.MaxValue) || value.Equals(double.MinValue))
+            if (!value.HasValue || value.Equals(Null.NullDouble) || value.Equals(Double.MaxValue) || value.Equals(Double.MinValue))
             {
                 param.Value = DBNull.Value;
             }
@@ -1677,5 +1678,47 @@ namespace Engage.Dnn.Publish.Util
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the value for the given <paramref name="cacheKey"/> from cache, or calls <paramref name="getValue"/> if the key is not present in the cache.  
+        /// Stores the result in the cache for future retrievals, and adds the <paramref name="cacheKey"/> to the list of Publish keys.
+        /// </summary>
+        /// <typeparam name="T">The type of the value being retrieved from the cache</typeparam>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="cacheKey">The cache key with which the value should be stored and retrieved.</param>
+        /// <param name="getValue">A function to get the value if it is not present in the cache.</param>
+        /// <returns>The requested value calculated by <paramref name="getValue"/>, retrieved from the cache if possible </returns>
+        public static T GetValueFromCache<T>(int portalId, string cacheKey, Func<T> getValue)
+        {
+            T value;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object cachedValue = DataCache.GetCache(cacheKey);
+                value = cachedValue != null ? (T)cachedValue : getValue();
+
+                DataCache.SetCache(cacheKey, value, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                AddCacheKey(cacheKey, portalId);
+            }
+            else
+            {
+                value = getValue();
+            }
+
+            return value;
+        }
     }
+
+    /// <summary>
+    /// Encapsulates a method that has no parameters and returns a value of the type specified by the <typeparamref name="TResult"/> parameter.  
+    /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the return value of the method that this delegate encapsulates. 
+    /// </typeparam>
+    /// <remarks>
+    /// This is a copy of the type introduced in .NET 3.5 (http://msdn.microsoft.com/en-us/library/bb534960.aspx), and should be replaced by that type once possible.
+    /// </remarks>
+    /// <returns>
+    /// The return value of the method that this delegate encapsulates. 
+    /// </returns>
+    public delegate TResult Func<TResult>();
 }

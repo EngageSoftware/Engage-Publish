@@ -163,42 +163,21 @@ namespace Engage.Dnn.Publish
             return returnVal;
         }
 
+        /// <summary>
+        /// Determines whether this <see cref="Item"/> should be forced to always display on its assigned <see cref="DisplayTabId"/>, or whether it can display on any tab.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this <see cref="Item"/> should be forced to always display on its assigned <see cref="DisplayTabId"/>; otherwise, <c>false</c>.
+        /// </returns>
         public bool ForceDisplayOnPage()
         {
-
-
-            //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-
-            //ItemVersionSetting fpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "ForceDisplayOnPage", portalId);
-            //if (fpSetting != null)
-            //{
-            //    return Convert.ToBoolean(fpSetting.PropertyValue, CultureInfo.InvariantCulture);
-            //}
-            //else
-            //{
-            //    return false;
-            //}
-
-            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-            string cacheKey = Utility.CacheKeyPublishForceDisplayOn + itemVersionId.ToString(CultureInfo.InvariantCulture);
-            bool returnVal = false;
-
-            if (ModuleBase.UseCachePortal(PortalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    returnVal = (bool)o;
-                }
-                else
-                {
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", portalId);
-                    returnVal = cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
-                }
-                DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
-            }
-            return returnVal;
+            return Utility.GetValueFromCache(this.PortalId, Utility.CacheKeyPublishForceDisplayOn + this.itemVersionId.ToString(CultureInfo.InvariantCulture),
+                delegate
+                    {
+                        ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+                        ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", this.portalId);
+                        return cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    });
         }
 
         /// <summary>
