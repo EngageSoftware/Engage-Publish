@@ -881,6 +881,21 @@ namespace Engage.Dnn.Publish
             return false;
         }
 
+        /// <summary>
+        /// Checks to see if an item exists by a specific name, from a specific author, in a specific category.
+        /// </summary>
+        /// <param name="name">The name of the item</param>
+        /// <param name="authorUserId">The ID of the author</param>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <returns>true or false</returns>
+
+        public static bool DoesItemExist(string name, int authorUserId, int categoryId)
+        {
+            //try loading the item, if we get an ItemID back we know this already exists.
+            if (DataProvider.Instance().FindItemId(name, authorUserId, categoryId) > 0) return true;
+            return false;
+        }
+
         public static Item GetItem(int itemId, int portalId, int itemTypeId, bool isCurrent)
         {
             string cacheKey = Utility.CacheKeyPublishItem + itemId.ToString(CultureInfo.InvariantCulture);

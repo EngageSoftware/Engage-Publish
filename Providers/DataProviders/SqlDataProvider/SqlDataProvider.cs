@@ -2304,6 +2304,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and authoruserid = @AuthorUserId");
             //TODO: this replace function below should be put into a larger utility of wildcard escapes
             name = name.Trim().Replace("[", "[[]");
+            name = name.Trim().Replace("'", "''");
             SqlParameter sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
 
             SqlParameter sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
@@ -2316,6 +2317,35 @@ namespace Engage.Dnn.Publish.Data
             return -1;
             
         }
+        public override int FindItemId(string name, int authorUserId, int categoryId)
+        {
+            StringBuilder sql = new StringBuilder(741);
+            sql.Append("select itemId ");
+            sql.Append(" from ");
+            sql.AppendFormat(CultureInfo.InvariantCulture, " {0}vwChildItems il ", NamePrefix);
+            
+            sql.Append(" where name like @Name");
+            sql.Append(" and authoruserid = @AuthorUserId");
+            sql.Append(" and parentItemId = @CategoryId");
+
+            //TODO: this replace function below should be put into a larger utility of wildcard escapes
+            //TODO: we need to escape '
+            name = name.Trim().Replace("[", "[[]");
+            name = name.Trim().Replace("'", "%");
+            SqlParameter sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
+
+            SqlParameter sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
+            SqlParameter sqlCategoryId = new SqlParameter("@CategoryId", categoryId);
+
+            object o = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString(), sqlName, sqlAuthorUserId, sqlCategoryId);
+            if (o != null)
+            {
+                return Convert.ToInt32(o.ToString());
+            }
+            return -1;
+
+        }
+
         #endregion
 
 

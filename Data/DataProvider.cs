@@ -269,6 +269,7 @@ namespace Engage.Dnn.Publish.Data
 
 #region "Find Items"
         public abstract int FindItemId(string name, int authorUserId);
+        public abstract int FindItemId(string name, int authorUserId, int categoryId);
 #endregion
 
 
