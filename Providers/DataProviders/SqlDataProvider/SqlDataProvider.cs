@@ -948,6 +948,9 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive)
         {
+
+            //TODO: we're not checking to see if the child items are using the proper start dates.
+
             StringBuilder sql = new StringBuilder(521);
 
             sql.Append("select ");
