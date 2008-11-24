@@ -26,6 +26,7 @@ namespace Engage.Dnn.Publish.TextHtml
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
+    using Engage.Dnn.Publish.Data;
 
     public partial class View : ModuleBase, IActionable
     {
@@ -61,6 +62,25 @@ namespace Engage.Dnn.Publish.TextHtml
                 //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
                 //load the article id (itemid) from the module settings.
                 LoadArticle();
+                if (!Page.IsPostBack)
+                {
+                    //TODO: all this needs localized when project is available.
+                    //check if the user is logged in and an admin. If so let them approve items
+                    if (IsAdmin && !VersionInfoObject.IsNew)
+                    {
+                        divPublishApprovals.Visible = true;
+                        divPublishApprovals.Visible = true;
+                        if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+                        {
+                            FillDropDownList();
+                        }
+                        else
+                        {
+                            ddlApprovalStatus.Visible = false;
+                            divPublishApprovals.Visible = false;
+                        }
+                    }
+                }
             }
             catch (Exception exc)
             {
@@ -97,7 +117,12 @@ namespace Engage.Dnn.Publish.TextHtml
             {
                 a = Article.GetArticle(ItemId, PortalId);
             }
-            if (a != null) lblArticleText.Text = a.ArticleText;
+            if (a != null)
+            {
+                VersionInfoObject = a;
+                //VersionInfoObject.IsNew = false;
+                lblArticleText.Text = a.ArticleText;
+            }
         }
 
         public ModuleActionCollection ModuleActions
@@ -112,6 +137,83 @@ namespace Engage.Dnn.Publish.TextHtml
                     actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
                 }
                 return actions;
+            }
+        }
+
+        protected void lnkSaveApprovalStatus_Click(object sender, EventArgs e)
+        {
+            CallUpdateApprovalStatus();
+        }
+
+        protected void CallUpdateApprovalStatus()
+        {
+            if (!VersionInfoObject.IsNew)
+            {
+                VersionInfoObject.ApprovalStatusId = Convert.ToInt32(ddlApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
+                if (txtApprovalComments.Text.Trim().Length > 0)
+                {
+                    VersionInfoObject.ApprovalComments = txtApprovalComments.Text.Trim();
+                }
+                else
+                {
+                    VersionInfoObject.ApprovalComments = Localization.GetString("DefaultApprovalComment", LocalResourceFile);
+                }
+                VersionInfoObject.UpdateApprovalStatus();
+
+                //Utility.ClearPublishCache(PortalId);
+
+                Response.Redirect(BuildVersionsUrl(), false);
+
+                //redirect to the versions list for this item.
+            }
+        }
+
+        protected void lnkUpdateStatus_Click(object sender, EventArgs e)
+        {
+            divApprovalStatus.Visible = true;
+
+            //check if we're editing an article, if so show version comments
+            if (Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+            {
+                if (ItemVersionId == -1)
+                {
+                    Article a = Article.GetArticle(ItemId, PortalId);
+                    lblCurrentVersionComments.Text = a.VersionDescription;
+                }
+                else
+                {
+                    Article a = Article.GetArticleVersion(ItemVersionId, PortalId);
+                    lblCurrentVersionComments.Text = a.VersionDescription;
+                }
+
+
+                divVersionComments.Visible = true;
+            }
+            else
+            {
+                divVersionComments.Visible = false;
+            }
+
+            txtApprovalComments.Text = this.VersionInfoObject.ApprovalComments;
+        }
+
+        protected void lnkSaveApprovalStatusCancel_Click(object sender, EventArgs e)
+        {
+            divApprovalStatus.Visible = false;
+        }
+
+        private void FillDropDownList()
+        {
+
+            ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
+            ddlApprovalStatus.DataValueField = "ApprovalStatusID";
+            ddlApprovalStatus.DataTextField = "ApprovalStatusName";
+            ddlApprovalStatus.DataBind();
+            //set the current approval status
+            ListItem li = ddlApprovalStatus.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
+            if (li != null)
+            {
+                li.Selected = true;
             }
         }
     }
