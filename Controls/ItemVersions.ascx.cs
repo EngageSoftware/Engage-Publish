@@ -108,6 +108,7 @@ namespace Engage.Dnn.Publish.Controls
                 }
 
                 string href = string.Empty;
+                //TODO: we can only link to the moduleid if the moduleid is also on the same page as the display tabid
                 if (version != null && version.IsLinkable())
                 {
                     href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());

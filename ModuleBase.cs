@@ -521,6 +521,19 @@ namespace Engage.Dnn.Publish
             get
             {
                 string s = this.Request.QueryString["VersionId"];
+                if (s == null) return -1;
+                else
+                {
+                    object o = this.Request.Params["modid"];
+                    if (o != null)
+                    {
+                        //check to see if we're on the right module id, otherwise return -1
+                        if (Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture) == ModuleId) 
+                            return Convert.ToInt32(s, CultureInfo.InvariantCulture);
+                        else return -1;
+                    }
+                }
+
                 return (s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture));
             }
         }

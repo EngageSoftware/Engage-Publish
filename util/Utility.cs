@@ -582,6 +582,26 @@ namespace Engage.Dnn.Publish.Util
             return dt;
         }
 
+        public static int GetModuleIdFromDisplayTabId(int displayTabId, int portalId, string modules)
+        {
+            ModuleController mc = new ModuleController();
+            ArrayList al; // = null;
+            int modid = -1;
+            al = mc.GetModulesByDefinition(portalId, modules);
+            foreach (ModuleInfo mi in al)
+            {
+                TabController tc = new TabController();
+                TabInfo ti = tc.GetTab(mi.TabID, mi.PortalID, false);
+                if (ti != null && ti.TabID == displayTabId)
+                {
+                    modid = mi.ModuleID;
+                    return mi.ModuleID;
+                }
+            }
+            return modid;
+        }
+
+
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
         public static int GetArticleId(SearchResultsInfo result)
         {

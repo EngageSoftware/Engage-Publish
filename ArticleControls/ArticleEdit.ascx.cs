@@ -29,6 +29,7 @@ using Engage.Dnn.Publish.Controls;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Tags;
 using Engage.Dnn.Publish.Util;
+using DotNetNuke.Entities.Tabs;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
@@ -408,7 +409,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     if (ddlDisplayTabId.SelectedIndex > 0 && ddlDisplayTabId.Enabled)
                     {
+                        
                         av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
+                        
                     }
 
                     av.VersionNumber = this.txtVersionNumber.Text;
@@ -535,6 +538,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture) > -1)
                 {
                     VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
+                    //TODO: set module id here too
+
                 }
                 else
                 {
@@ -552,7 +557,10 @@ namespace Engage.Dnn.Publish.ArticleControls
                 av.VersionDescription = txtVersionDescription.Text;
                 av.VersionNumber = txtVersionNumber.Text;
                 av.Description = itemEditControl.DescriptionText;
-                if (av.IsNew) av.ModuleId = ModuleId;
+                //TODO: we need to look at making moduleid be configurable at anytime, not just on item creation, this makes previewing items impossible
+                if (av.IsNew)
+                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
+                //                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
 
                 //create a relationship
                 ItemRelationship irel = new ItemRelationship();

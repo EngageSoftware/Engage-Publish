@@ -37,7 +37,7 @@ namespace Engage.Dnn.Publish.TextHtml
             SetItemId();
             this.Load += this.Page_Load;
             base.OnInit(e);
-            BindItemData(true);
+            BindItemData();
         }
 
         public int LocalItemId
@@ -84,45 +84,47 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             //TODO: can we use binditem from modulebase?
             //check if we should be loading a preview version
-            object o = Request.QueryString["VersionId"];
-            object m = Request.QueryString["modid"];
-            Article a = null;
-            if (o != null && m != null)
-            {
-                if (m.ToString() == ModuleId.ToString())
-                {
-                    a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
-                    VersionInfoObject = a;
-                    if (!Page.IsPostBack)
-                    {
-                        //TODO: all this needs localized when project is available.
-                        //check if the user is logged in and an admin. If so let them approve items
-                        if ((IsAdmin && !VersionInfoObject.IsNew))
-                        {
-                            divPublishApprovals.Visible = true;
-                            divApprovalStatus.Visible = true;
-                            if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
-                            {
-                                FillDropDownList();
-                            }
-                            else
-                            {
-                                ddlApprovalStatus.Visible = false;
+            //object o = Request.QueryString["VersionId"];
+            //object m = Request.QueryString["modid"];
+            //Article a = null;
+            //if (o != null && m != null)
+            //{
+            //    if (m.ToString() == ModuleId.ToString())
+            //    {
+            //        a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
+            //        VersionInfoObject = a;
+            //        if (!Page.IsPostBack)
+            //        {
+            //            //TODO: all this needs localized when project is available.
+            //            //check if the user is logged in and an admin. If so let them approve items
+            //            if ((IsAdmin && !VersionInfoObject.IsNew))
+            //            {
+            //                divPublishApprovals.Visible = true;
+            //                divApprovalStatus.Visible = true;
+            //                if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+            //                {
+            //                    FillDropDownList();
+            //                }
+            //                else
+            //                {
+            //                    ddlApprovalStatus.Visible = false;
 
-                            }
-                        }
-                    }
+            //                }
+            //            }
+            //        }
 
-                }
-            }
-            else
-            {
-                a = Article.GetArticle(ItemId, PortalId);
-                VersionInfoObject = a;
-            }
+            //    }
+            //}
+            //else
+            //{
+            //    a = Article.GetArticle(ItemId, PortalId);
+            //    VersionInfoObject = a;
+            //}
+            Article a = (Article)VersionInfoObject;
+            //VersionInfoObject = a;
+
             if (a != null)
-            {
-                
+            {                
                 //VersionInfoObject.IsNew = false;
                 lblArticleText.Text = a.ArticleText;
             }
