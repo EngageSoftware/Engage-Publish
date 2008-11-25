@@ -32,33 +32,6 @@ namespace Engage.Dnn.Publish.TextHtml {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divApprovalStatus;
         
         /// <summary>
-        /// divVersionComments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divVersionComments;
-        
-        /// <summary>
-        /// lblVersionComments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblVersionComments;
-        
-        /// <summary>
-        /// lblCurrentVersionComments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrentVersionComments;
-        
-        /// <summary>
         /// lblApprovalComments control.
         /// </summary>
         /// <remarks>

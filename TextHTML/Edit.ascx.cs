@@ -87,9 +87,7 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.Description = articleDescription;
                 a.ArticleText = teArticleText.Text;
                 a.DisplayTabId = TabId;
-                
-                //TODO: how to handle approval status Ids?
-                
+                                
                 //force display on specific page
                 Setting setting = Setting.ArticleSettingForceDisplay;
                 setting.PropertyValue = "true";
@@ -117,15 +115,11 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.VersionSettings.Add(itemVersionSetting);
 
                 a.ModuleId = ModuleId;
-
                 a.ApprovalStatusId = epApprovals.ApprovalStatusId;
-
                 a.Save(UserId);             
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
                 modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
-            }
-
-            
+            }           
             
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }

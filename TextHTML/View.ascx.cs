@@ -62,25 +62,6 @@ namespace Engage.Dnn.Publish.TextHtml
                 //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
                 //load the article id (itemid) from the module settings.
                 LoadArticle();
-                if (!Page.IsPostBack)
-                {
-                    //TODO: all this needs localized when project is available.
-                    //check if the user is logged in and an admin. If so let them approve items
-                    if (IsAdmin && !VersionInfoObject.IsNew)
-                    {
-                        divPublishApprovals.Visible = true;
-                        divPublishApprovals.Visible = true;
-                        if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
-                        {
-                            FillDropDownList();
-                        }
-                        else
-                        {
-                            ddlApprovalStatus.Visible = false;
-                            divPublishApprovals.Visible = false;
-                        }
-                    }
-                }
             }
             catch (Exception exc)
             {
@@ -111,15 +92,37 @@ namespace Engage.Dnn.Publish.TextHtml
                 if (m.ToString() == ModuleId.ToString())
                 {
                     a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
+                    VersionInfoObject = a;
+                    if (!Page.IsPostBack)
+                    {
+                        //TODO: all this needs localized when project is available.
+                        //check if the user is logged in and an admin. If so let them approve items
+                        if ((IsAdmin && !VersionInfoObject.IsNew))
+                        {
+                            divPublishApprovals.Visible = true;
+                            divApprovalStatus.Visible = true;
+                            if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+                            {
+                                FillDropDownList();
+                            }
+                            else
+                            {
+                                ddlApprovalStatus.Visible = false;
+
+                            }
+                        }
+                    }
+
                 }
             }
             else
             {
                 a = Article.GetArticle(ItemId, PortalId);
+                VersionInfoObject = a;
             }
             if (a != null)
             {
-                VersionInfoObject = a;
+                
                 //VersionInfoObject.IsNew = false;
                 lblArticleText.Text = a.ArticleText;
             }
@@ -171,29 +174,6 @@ namespace Engage.Dnn.Publish.TextHtml
         protected void lnkUpdateStatus_Click(object sender, EventArgs e)
         {
             divApprovalStatus.Visible = true;
-
-            //check if we're editing an article, if so show version comments
-            if (Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
-            {
-                if (ItemVersionId == -1)
-                {
-                    Article a = Article.GetArticle(ItemId, PortalId);
-                    lblCurrentVersionComments.Text = a.VersionDescription;
-                }
-                else
-                {
-                    Article a = Article.GetArticleVersion(ItemVersionId, PortalId);
-                    lblCurrentVersionComments.Text = a.VersionDescription;
-                }
-
-
-                divVersionComments.Visible = true;
-            }
-            else
-            {
-                divVersionComments.Visible = false;
-            }
-
             txtApprovalComments.Text = this.VersionInfoObject.ApprovalComments;
         }
 
