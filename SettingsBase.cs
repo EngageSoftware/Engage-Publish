@@ -30,13 +30,6 @@ namespace Engage.Dnn.Publish
     /// </summary>
     public class PublishSettingsBase : ModuleSettingsBase
     {
-        public string LocalSharedResourceFile 
-        {
-            get
-            {
-                return "~" + DesktopModuleFolderName + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/" + DotNetNuke.Services.Localization.Localization.LocalSharedResourceFile;
-            }
-        }
         public static string DesktopModuleFolderName
         {
             get { return Utility.DesktopModuleFolderName; }

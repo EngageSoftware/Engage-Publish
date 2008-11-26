@@ -1458,6 +1458,14 @@ namespace Engage.Dnn.Publish.Util
             return description;
         }
 
+        public static string LocalSharedResourceFile
+        {
+            get
+            {
+                return "~" + DesktopModuleFolderName + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile;
+            }
+        }
+
         #region Portal Settings
 
         //public static bool? GetBooleanPortalSetting(string settingName, int portalId)

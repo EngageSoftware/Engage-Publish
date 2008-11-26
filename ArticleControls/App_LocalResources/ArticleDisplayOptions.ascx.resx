@@ -288,4 +288,10 @@
   <data name="lblUrlCollect.Text" xml:space="preserve">
     <value>Collect URL:</value>
   </data>
+  <data name="CategoriesLabel.Help" xml:space="preserve">
+    <value>Select a category to see a list of articles within that category</value>
+  </data>
+  <data name="CategoriesLabel.Text" xml:space="preserve">
+    <value>Categories:</value>
+  </data>
 </root>

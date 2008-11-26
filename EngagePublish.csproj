@@ -34,7 +34,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -326,13 +326,6 @@
       <DependentUpon>CategorySort.ascx</DependentUpon>
     </Compile>
     <Compile Include="Comment.cs" />
-    <Compile Include="Controls\AdminItemSearch.ascx.cs">
-      <DependentUpon>AdminItemSearch.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Controls\AdminItemSearch.ascx.designer.cs">
-      <DependentUpon>AdminItemSearch.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Breadcrumb.ascx.cs">
       <DependentUpon>Breadcrumb.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -650,7 +643,6 @@
     <Content Include="CategoryControls\CategorySearchOptions.ascx" />
     <Content Include="CategoryControls\CategorySort.ascx" />
     <Content Include="CategoryControls\main.js" />
-    <Content Include="Controls\AdminItemSearch.ascx" />
     <Content Include="Controls\Breadcrumb.ascx" />
     <Content Include="Controls\CommentDisplay.ascx" />
     <Content Include="Controls\CustomDisplay.ascx" />
@@ -1027,16 +1019,6 @@
     <Content Include="Services\publishrsd.aspx" />
     <Content Include="Services\wlwmanifest.xml" />
     <Content Include="TextHtml\Module.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Controls\App_LocalResources\AdminItemSearch.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TextHtml\app_localresources\View.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />

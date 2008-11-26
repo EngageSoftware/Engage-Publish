@@ -67,9 +67,9 @@
 	width: 100%;
 }
 
-.articleListDropDown
+.chooseArticleListDropDown
 {
-    width: 200px;
+    width: 100%;
 }
 
 .configureOverrideable .categoryOptionDropDown, .configureOverrideable .articleOptionDropDown

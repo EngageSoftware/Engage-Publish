@@ -14,75 +14,66 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
-using System.Diagnostics;
-using DotNetNuke.Services.Exceptions;
-using System.IO;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
     public partial class ArticleDisplayOptions : ModuleSettingsBase
     {
 
-        private ModuleSettingsBase currentSettingsBase;
-
         #region Event Handlers
 
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Load += ArticleDisplayOptions_Load;
+            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownList_SelectedIndexChanged;
         }
 
-        protected void ArticleDisplayOptions_Load(object sender, EventArgs e)
+        private void CategoriesDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            FillArticlesDropDown();
+        }
+        
+        private void FillArticlesDropDown()
+        {
+            if (CategoryId > -1)
             {
-                //by now ViewState has been restored so we can set the Settings control.
-                //LoadSettingsControl("../controls/AdminItemSearch.ascx");
+                ddlArticleList.DataSource = Article.GetArticles(CategoryId, PortalId);
+                ddlArticleList.DataBind();
+
+                ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString());
+                if (li != null) li.Selected = true;
             }
-            catch (Exception exc)
+        }
+
+        private int CategoryId
+        {
+            get
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                if (this.CategoriesDropDownList.SelectedIndex > 0)
+                    return Convert.ToInt32(this.CategoriesDropDownList.SelectedValue);
+                return -1;
             }
-        }
-
-
-        private void LoadSettingsControl(string controlName)
-        {
-            this.phArticleSelection.EnableViewState = false;
-            currentSettingsBase = CreateSettingsControl(controlName);
-            this.phArticleSelection.Controls.Add(currentSettingsBase);
-        }
-
-        private ModuleSettingsBase CreateSettingsControl(string controlName)
-        {
-            ModuleSettingsBase settingsControl = (ModuleSettingsBase)LoadControl(controlName);
-            ModuleController mc = new ModuleController();
-            ModuleInfo mi = mc.GetModule(ModuleId, TabId);
-            settingsControl.ModuleConfiguration = mi;
-
-            settingsControl.ModuleId = ModuleId;
-            settingsControl.TabModuleId = TabModuleId;
-            settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
-            settingsControl.LoadSettings();
-            return settingsControl;
         }
 
         public override void LoadSettings()
         {
-            LoadSettingsControl("../controls/AdminItemSearch.ascx");
-
             BindData();
 
-            //if (!IsPostBack)
-            //{
-            ((Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedArticleId = ArticleId;
-            //ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString(CultureInfo.InvariantCulture));
-            //if (li != null)
-            //{
-            //    li.Selected = true;
-            //}
-            ListItem li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
+            ListItem li;
+            Article article = Article.GetArticle(ArticleId, PortalId);
+            if (article != null)
+            {
+                int categoryId = article.GetParentCategoryId();
+                //find category
+                li = this.CategoriesDropDownList.Items.FindByValue(categoryId.ToString());
+                if (li != null)
+                {
+                    li.Selected = true;
+                    FillArticlesDropDown();
+                }
+            }
+
+            li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
             if (li != null)
             {
                 li.Selected = true;
@@ -148,8 +139,6 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void BindData()
         {
-            phArticleSelection.Visible = ShowArticles;
-
             ddlDisplayRatings.Items.Clear();
             ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Enable.ToString(), LocalResourceFile), RatingDisplayOption.Enable.ToString()));
             ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.ReadOnly.ToString(), LocalResourceFile), RatingDisplayOption.ReadOnly.ToString()));
@@ -168,20 +157,20 @@ namespace Engage.Dnn.Publish.ArticleControls
             ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Full.ToString(), LocalResourceFile), NameDisplayOption.Full.ToString()));
             ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Initial.ToString(), LocalResourceFile), NameDisplayOption.Initial.ToString()));
             ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.None.ToString(), LocalResourceFile), NameDisplayOption.None.ToString()));
+
+            FillCategoryDropDown();
+
         }
 
-        //private void SetPhotoGallerySettingsEnabled(bool photoGalleryEnabled)
-        //{
-        //    //chkPhotoGalleryShowAll.Enabled = photoGalleryEnabled;
-        //    SetThumbnailMaxCountSettingEnabled(photoGalleryEnabled);
-        //}
+        private void FillCategoryDropDown()
+        {
+            //this.CategoriesDropDownList.Items.Clear();
+            ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, PortalId, false);
 
-        //private void SetThumbnailMaxCountSettingEnabled(bool maxThumbnailEnabled)
-        //{
-        //    txtPhotoGalleryMaxCount.Enabled = maxThumbnailEnabled;
-        //    //rfvPhotoGalleryMaxCount.Enabled = maxThumbnailEnabled;
-        //    //cvPhotoGalleryMaxCount.Enabled = maxThumbnailEnabled;
-        //}
+            ListItem li = new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), "-1");
+            this.CategoriesDropDownList.Items.Insert(0, li);
+
+        }
 
         private void SetPhotoGalleryOptionsVisiblity(bool photoGallerySettingEnabled)
         {
@@ -201,32 +190,14 @@ namespace Engage.Dnn.Publish.ArticleControls
             lblEnableComments.Visible = !commentsEnabled;
         }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member")]
-        //protected void chkDisplayPhotoGallery_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    SetPhotoGallerySettingsEnabled(chkDisplayPhotoGallery.Checked);
-        //}
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member")]
-        //protected void chkPhotoGalleryShowAll_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    SetThumbnailMaxCountSettingEnabled(chkDisplayPhotoGallery.Checked && !chkPhotoGalleryShowAll.Checked);
-        //}
         #endregion
 
         private void SaveSettings()
         {
-            //save the new setting
-            //            ModuleController modules = new ModuleController();
-            //            modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", this.ddlArticleList.SelectedValue.ToString());
             if (Page.IsValid)
             {
-                if (ShowArticles)
-                {
-
-                    ArticleId = ((Controls.AdminItemSearch)phArticleSelection.Controls[0]).SelectedArticleId; 
-                    //int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
-                }
+                ArticleId = int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
+               
                 LastUpdatedFormat = txtLastUpdatedFormat.Text.Trim();
                 RatingDisplayOption = (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), ddlDisplayRatings.SelectedValue);
                 DisplayCommentSubmission = chkCommentSubmit.Checked;
@@ -680,19 +651,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                 return true;
             }
         }
-
-        #region Public Properties
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _showArticles;
-        public bool ShowArticles
-        {
-            [DebuggerStepThrough]
-            get { return _showArticles; }
-            [DebuggerStepThrough]
-            set { _showArticles = value; }
-        }
-        #endregion
     }
 }
 

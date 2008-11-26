@@ -340,8 +340,6 @@ namespace Engage.Dnn.Publish
             settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
 
             ArticleDisplayOptions ado = (ArticleDisplayOptions)settingsControl;
-            ado.ShowArticles = true;
-
 
             ado.LoadSettings();
 
