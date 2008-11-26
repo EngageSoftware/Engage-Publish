@@ -1,7 +1,7 @@
 	<%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryDisplay" Codebehind="CategoryDisplay.ascx.cs" %>
 	<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <div class="Normal">
-    <asp:Label ID="lblNoData" runat="server" Visible="false"/>
+    <asp:Literal ID="lblNoData" runat="server" Visible="false"/>
     <div class="divItemsListing">
 	    <asp:DataList ID="dlCategories" Runat="server" Width="100%" RepeatLayout="Flow">
 		    <ItemTemplate>
@@ -22,7 +22,7 @@
                                 </asp:HyperLink>
                             </div>
                             <div class="itemDescription">
-                                <asp:Label runat="server" ID="lblDescription" />
+                                <asp:Literal runat="server" ID="lblDescription" />
                             </div>
                         </div>
 			        </ItemTemplate>
@@ -43,7 +43,7 @@
 		                    </asp:HyperLink>
 		                </div>
 		                <div class="itemDescription">
-		                    <asp:Label runat="server" ID="lblDescription" />
+		                    <asp:Literal runat="server" ID="lblDescription" />
                         </div>
                 </div>
 		    </ItemTemplate>

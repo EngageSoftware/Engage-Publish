@@ -64,7 +64,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             {
                 Panel pnlThumbnail = (Panel)e.Item.FindControl("pnlThumbnail");
                 Panel pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
-                Label lblDescription = (Label)e.Item.FindControl("lblDescription");
+                Literal lblDescription = (Literal)e.Item.FindControl("lblDescription");
                 HyperLink lnkName = (HyperLink)e.Item.FindControl("lnkName");
                 HyperLink imgThumbnail = (HyperLink)e.Item.FindControl("imgThumbnail");
 
@@ -156,17 +156,14 @@ namespace Engage.Dnn.Publish.CategoryControls
 #endif
 
                     lnkRss.ImageUrl = ApplicationUrl + rssImage; //"/images/xml.gif";
-
                     lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
-
                     StringBuilder rssUrl = new StringBuilder();
                     rssUrl.Append(ApplicationUrl);
                     rssUrl.Append(DesktopModuleFolderName);
                     rssUrl.Append("epRss.aspx?");
                     rssUrl.AppendFormat("ItemId={0}", VersionInfoObject.ItemId);
-                    rssUrl.AppendFormat("&amp;RelationshipTypeId={0}&amp;PortalId={1}&amp;DisplayType=CategoryFeature", relationshipTypeId, PortalId);
+                    rssUrl.AppendFormat("&RelationshipTypeId={0}&PortalId={1}&DisplayType=CategoryFeature", relationshipTypeId, PortalId);
                     lnkRss.NavigateUrl = rssUrl.ToString();
-
                     SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssText", LocalResourceFile));
                 }
 

@@ -3,7 +3,7 @@
 <div class="Normal"> 
     <%--<div class="<%= DataDisplayFormat %>">--%>
     <asp:Panel ID="pnlCategory" runat="server" cssclass="itemCategory">
-        <asp:Label runat="server" ID="lblCategory" />
+        <asp:Literal runat="server" ID="lblCategory" />
     </asp:Panel>
     <div class="divItemsListing">
         <asp:repeater id="lstItems" runat="server" OnItemDataBound="lstItems_ItemDataBound">
@@ -26,14 +26,14 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">
-		                    <asp:Label id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>'></asp:Label>
+		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>'></asp:Literal>
 		                </asp:Panel>
 		                <asp:Panel ID="pnlDate" runat="server" CssClass="itemDate">
-			                <asp:Label id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Label>
+			                <asp:Literal id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Literal>
 		                </asp:Panel>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlDescription" runat="server" cssclass="itemDescription">
-		                <asp:Label runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
+		                <asp:Literal runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
 		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
@@ -57,14 +57,14 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">
-		                    <asp:Label id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>'></asp:Label>
+		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "DisplayName") %>'></asp:Literal>
 		                </asp:Panel>
 		                <asp:Panel ID="pnlDate" runat="server" CssClass="itemDate">
-			                <asp:Label id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Label>
+			                <asp:Literal id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Literal>
 		                </asp:Panel>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlDescription" runat="server" cssclass="itemDescription">
-		                <asp:Label runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
+		                <asp:Literal runat="server" ID="lblDescription" Text='<%# FormatText(DataBinder.Eval(Container.DataItem, "ChildDescription")) %>'/>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
 		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>

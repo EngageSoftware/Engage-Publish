@@ -976,6 +976,9 @@ namespace Engage.Dnn.Publish.Data
             {
                 sql.Append(" and r.StartDate <= getdate() ");
                 sql.Append(" and (r.EndDate > getdate() or r.EndDate is null) ");
+                sql.Append(" and parent.StartDate <= getdate() ");
+                sql.Append(" and (parent.EndDate > getdate() or parent.EndDate is null) ");
+
             }
             //sql.Append("and child.IsCurrentVersion = 1 ");
 

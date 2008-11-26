@@ -176,7 +176,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             
             HyperLink lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
             HyperLink lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
-            Label lblDescription = (Label)e.Item.FindControl("lblDescription");
+            Literal lblDescription = (Literal)e.Item.FindControl("lblDescription");
 
             if (a.ItemTypeId == Util.ItemType.Category.GetId())
             {

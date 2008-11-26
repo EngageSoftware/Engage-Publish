@@ -5,13 +5,14 @@
 
 	<div id="divArticleTitle" runat="server" visible="false">
 	    <h1 class="Head" id="publishTitle">
-		<asp:label ID="lblArticleTitle" Runat="server"></asp:label>
+		<asp:literal ID="lblArticleTitle" Runat="server"></asp:literal>
 		</h1>
 	</div>
 
 
     <div id="divLastUpdated" class="divLastUpdated" runat="server" visible="false" align="right">
-		<asp:label ID="lblLastUpdated" Runat="server"></asp:label>
+		<asp:Literal ID="lblLastUpdated" runat="server"></asp:Literal>
+		
 	</div>
 	<asp:Panel ID="pnlPrinterFriendly" runat="server">
 	    <asp:PlaceHolder ID="phPrinterFriendly" Runat="server"></asp:PlaceHolder>
@@ -22,7 +23,7 @@
 
 	<asp:Panel ID="pnlAuthor" runat="server" Visible="false">
 	    <asp:label ID="lblAuthorInfo" runat="server" resourcekey="lblAuthorInfo"></asp:label>
-	    <asp:label ID="lblAuthor" runat="server"></asp:label>
+	    <asp:literal ID="lblAuthor" runat="server"></asp:literal>
 	</asp:Panel>
 	
 	<div id="articleThumbnails">
@@ -62,7 +63,7 @@
 	    <asp:PlaceHolder ID="phRelatedArticle" Runat="server"></asp:PlaceHolder>
 	    </div>
 	<div id="divArticleContent" class="Normal">
-		<asp:label ID="lblArticleText" Runat="server"></asp:label>
+		<asp:literal ID="lblArticleText" Runat="server"></asp:literal>
 	</div>
 	
     <asp:Panel ID="pnlTags" runat="server" Visible="false" CssClass="Publish_ArticleTags">

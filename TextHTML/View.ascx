@@ -13,5 +13,5 @@
 </div>
 
 <div id="publishTextHtmlDisplay" class="Normal">
-    <asp:Label ID="lblArticleText" runat="server"></asp:Label>
+    <asp:Literal ID="lblArticleText" runat="server"></asp:Literal>
 </div>
