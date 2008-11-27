@@ -116,7 +116,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             teArticleText.TextRenderMode = "Raw";
             teArticleText.Width = ArticleEditWidth; //default values for the editor
             teArticleText.Height = ArticleEditHeight; //default values for the editor
-            teArticleText.ChooseMode = false;
+            teArticleText.ChooseMode = true;
             this.phArticleText.Controls.Add(teArticleText);
             teArticleText.Text = av.ArticleText;
 

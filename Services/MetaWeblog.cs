@@ -22,6 +22,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common;
 using System.Globalization;
 using System.IO;
+using DotNetNuke.Security;
 
 namespace Engage.Dnn.Publish.Services
 {
@@ -109,8 +110,20 @@ namespace Engage.Dnn.Publish.Services
                     {
                         a.Description = post.mt_excerpt;
                     }
-                    //TODO: look at handling itemversionsettings
-                                        
+
+                    // handle approval process
+                    if (ModuleBase.UseApprovalsForPortal(portalId))
+                    {
+                        if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + portalId)) || ui.IsSuperUser)
+                        {
+                            a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+                        }
+                        else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + portalId)))
+                        {
+                            a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
+                        }                        
+                    }
+
                     a.Save(ui.UserID);
                     return a.ItemId.ToString();
                 }
@@ -141,15 +154,6 @@ namespace Engage.Dnn.Publish.Services
                     Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
                     pc.Add(c);
                 }
-                if (pc.Count > 0)
-                {
-
-                    ItemRelationship irel = new ItemRelationship();
-                    irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-                    irel.ParentItemId = pc[0].ItemId;
-                    a.Relationships.Add(irel);
-                }
-
                 if (pc.Count > 1)
                 {
                     for (int i = 1; i < pc.Count; i++)
@@ -160,6 +164,37 @@ namespace Engage.Dnn.Publish.Services
                         a.Relationships.Add(irel);
                     }
                 }
+
+                //check for tags
+                if (post.mt_keywords.Trim() != string.Empty)
+                {
+                    //split tags
+                    foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))
+                    {
+                        ItemTag it = ItemTag.Create();
+                        it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
+                        a.Tags.Add(it);
+                    }
+                }
+
+                if (post.mt_excerpt != null && post.mt_excerpt.Trim() != string.Empty)
+                {
+                    a.Description = post.mt_excerpt;
+                }
+
+                // handle approval process
+                if (ModuleBase.UseApprovalsForPortal(portalId))
+                {
+                    if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + portalId)) || ui.IsSuperUser)
+                    {
+                        a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
+                    }
+                    else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + portalId)))
+                    {
+                        a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
+                    }
+                }
+
 
                 a.Save(ui.UserID);
                 result = true;
