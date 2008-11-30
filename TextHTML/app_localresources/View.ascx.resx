@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApprovalStatusConfirm.Text" xml:space="preserve">
-    <value>Approval Status Successfully Updated</value>
+  <data name="NotConfigured.Text" xml:space="preserve">
+    <value>Before you an edit the content of this module you must configure the default Text/HTML category in the &lt;a href="{0}"&gt;Engage: Publish admin settings&lt;/a&gt;.</value>
   </data>
-  <data name="Article.Text" xml:space="preserve">
-    <value>article</value>
-  </data>
-  <data name="ArticleList.Text" xml:space="preserve">
-    <value>article list</value>
-  </data>
-  <data name="Category.Text" xml:space="preserve">
-    <value>category</value>
-  </data>
-  <data name="DefaultApprovalComment.Text" xml:space="preserve">
-    <value>No approval comment entered.</value>
-  </data>
-  <data name="lblApprovalComments.Help" xml:space="preserve">
-    <value>If you're making a change to the approval status of an item you can apply comments to this change. Comments are useful when declining a version of an item so that the author can make necessary changes.</value>
-  </data>
-  <data name="lblApprovalComments.Text" xml:space="preserve">
-    <value>Approval Comments:</value>
-  </data>
-  <data name="lnkSaveApprovalStatus.Text" xml:space="preserve">
-    <value>save approval comments</value>
-  </data>
-  <data name="lnkSaveApprovalStatusCancel.Text" xml:space="preserve">
-    <value>cancel</value>
-  </data>
-  <data name="lnkShowApprovalComments.Text" xml:space="preserve">
-    <value>add approval comment</value>
-  </data>
-  <data name="lnkUpdateStatus.Text" xml:space="preserve">
-    <value>change approval status</value>
-  </data>
-  <data name="DeleteConfirmation.Text" xml:space="preserve">
-    <value>Are you sure you want to modify the status of this item?</value>
-  </data>
-  <data name="lblVersionComments.Text" xml:space="preserve">
-    <value>Version Comments</value>
+  <data name="NothingSaved.Text" xml:space="preserve">
+    <value>Add your content for this module by choose Edit from the module actions menu.</value>
   </data>
 </root>

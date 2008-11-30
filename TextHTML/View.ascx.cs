@@ -44,8 +44,6 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             get
             {
-
-
                 if (Settings.Contains("ItemId"))
                 {
                     return Convert.ToInt32(Settings["ItemId"]);
@@ -61,7 +59,19 @@ namespace Engage.Dnn.Publish.TextHtml
             {
                 //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
                 //load the article id (itemid) from the module settings.
-                LoadArticle();
+                if (DefaultTextHtmlCategory > 0)
+                {
+                    LoadArticle();
+                }
+                else
+                {
+                    //display message about module not being configured properly.
+                    string notConfigured = Localization.GetString("NotConfigured", LocalResourceFile);
+                    string adminSettingsLink = BuildLinkUrl("&amp;mid=" + ModuleId + "&amp;ctl=admincontainer&amp;adminType=amsSettings&amp;returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl));
+                    lblArticleText.Text = String.Format(notConfigured, adminSettingsLink);
+                    
+                    //disable the edit link
+                }
             }
             catch (Exception exc)
             {
@@ -71,9 +81,6 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void SetItemId()
         {
-            //TODO: look at setting itemid in the ItemId property off module base
-
-            //TODO: make the preview mode work
             if (LocalItemId > 0)
             {
                 this.SetItemId(LocalItemId);
@@ -82,51 +89,22 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void LoadArticle()
         {
-            //TODO: can we use binditem from modulebase?
-            //check if we should be loading a preview version
-            //object o = Request.QueryString["VersionId"];
-            //object m = Request.QueryString["modid"];
-            //Article a = null;
-            //if (o != null && m != null)
-            //{
-            //    if (m.ToString() == ModuleId.ToString())
-            //    {
-            //        a = Article.GetArticleVersion(Convert.ToInt32(o.ToString()), PortalId);
-            //        VersionInfoObject = a;
-            //        if (!Page.IsPostBack)
-            //        {
-            //            //TODO: all this needs localized when project is available.
-            //            //check if the user is logged in and an admin. If so let them approve items
-            //            if ((IsAdmin && !VersionInfoObject.IsNew))
-            //            {
-            //                divPublishApprovals.Visible = true;
-            //                divApprovalStatus.Visible = true;
-            //                if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
-            //                {
-            //                    FillDropDownList();
-            //                }
-            //                else
-            //                {
-            //                    ddlApprovalStatus.Visible = false;
-
-            //                }
-            //            }
-            //        }
-
-            //    }
-            //}
-            //else
-            //{
-            //    a = Article.GetArticle(ItemId, PortalId);
-            //    VersionInfoObject = a;
-            //}
             Article a = (Article)VersionInfoObject;
-            //VersionInfoObject = a;
-
             if (a != null)
-            {                
+            {
                 //VersionInfoObject.IsNew = false;
-                lblArticleText.Text = a.ArticleText;
+                if (a.ArticleText.Trim() == string.Empty)
+                {
+                    lblArticleText.Text = Localization.GetString("NothingSaved", LocalResourceFile);
+                }
+                else
+                {
+                    lblArticleText.Text = a.ArticleText;
+                }                
+            }
+            else
+            {
+                lblArticleText.Text = Localization.GetString("NothingSaved", LocalResourceFile);
             }
         }
 
@@ -135,11 +113,14 @@ namespace Engage.Dnn.Publish.TextHtml
             get
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Edit", LocalSharedResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
-                //                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
-                if (LocalItemId > 0)
+                if (DefaultTextHtmlCategory > 0)
                 {
-                    actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(GetNextActionID(), Localization.GetString("Edit", LocalSharedResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    //                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                    if (LocalItemId > 0)
+                    {
+                        actions.Add(GetNextActionID(), Localization.GetString("Versions", LocalSharedResourceFile), "", "", "", BuildVersionsUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    }
                 }
                 return actions;
             }
@@ -164,12 +145,7 @@ namespace Engage.Dnn.Publish.TextHtml
                     VersionInfoObject.ApprovalComments = Localization.GetString("DefaultApprovalComment", LocalResourceFile);
                 }
                 VersionInfoObject.UpdateApprovalStatus();
-
-                //Utility.ClearPublishCache(PortalId);
-
                 Response.Redirect(BuildVersionsUrl(), false);
-
-                //redirect to the versions list for this item.
             }
         }
 
@@ -186,7 +162,6 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void FillDropDownList()
         {
-
             ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
             ddlApprovalStatus.DataValueField = "ApprovalStatusID";
             ddlApprovalStatus.DataTextField = "ApprovalStatusName";

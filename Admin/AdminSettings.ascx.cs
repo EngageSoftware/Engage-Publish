@@ -153,7 +153,15 @@ namespace Engage.Dnn.Publish.Admin
                 //objHostSettings.UpdateHostSetting(Utility.PublishCommentAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousComment.Checked.ToString(CultureInfo.InvariantCulture));
                 //objHostSettings.UpdateHostSetting(Utility.PublishCommentAutoApprove + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentAutoApprove.Checked.ToString(CultureInfo.InvariantCulture));
 
-                Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, Utility.AdminContainer, "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture)));
+                string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
+                if (!Utility.HasValue(returnUrl))
+                {
+                    Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, Utility.AdminContainer, "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture)));
+                }
+                else
+                {
+                    Response.Redirect(returnUrl, true);
+                }
             }
         }
 
