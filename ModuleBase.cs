@@ -937,6 +937,7 @@ namespace Engage.Dnn.Publish
         {
             if (itemId != null)
             {
+                //TODO: should we pass TabId from the page, or from the display tab id for the module?
                 return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, this.PageId, this.GetCultureName());
             }
 

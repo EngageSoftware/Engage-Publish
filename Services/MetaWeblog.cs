@@ -154,6 +154,19 @@ namespace Engage.Dnn.Publish.Services
                     Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
                     pc.Add(c);
                 }
+                //remove all existing categories
+                a.Relationships.Clear();
+                //add the parent category
+                if (pc.Count > 0)
+                {
+                    ItemRelationship irel = new ItemRelationship();
+                    irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+                    irel.ParentItemId = pc[0].ItemId;
+                    a.Relationships.Add(irel);
+
+                }
+
+                //add any extra categories
                 if (pc.Count > 1)
                 {
                     for (int i = 1; i < pc.Count; i++)
@@ -165,12 +178,15 @@ namespace Engage.Dnn.Publish.Services
                     }
                 }
 
+                //remove existing tags
+                a.Tags.Clear();
+
                 //check for tags
                 if (post.mt_keywords.Trim() != string.Empty)
                 {
                     //split tags
                     foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))
-                    {
+                    {                        
                         ItemTag it = ItemTag.Create();
                         it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
                         a.Tags.Add(it);
@@ -194,8 +210,7 @@ namespace Engage.Dnn.Publish.Services
                         a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
                     }
                 }
-
-
+                
                 a.Save(ui.UserID);
                 result = true;
                 return result;

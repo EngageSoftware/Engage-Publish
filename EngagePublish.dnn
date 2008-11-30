@@ -403,11 +403,6 @@
               <type>View</type>
             </control>
             <control>
-              <key>Settings</key>
-              <src>DesktopModules/EngagePublish/TextHTML/Settings.ascx</src>
-              <type>Edit</type>
-            </control>
-            <control>
               <key>Edit</key>
               <src>DesktopModules/EngagePublish/TextHTML/Edit.ascx</src>
               <type>Edit</type>

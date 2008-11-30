@@ -21,6 +21,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Exceptions;
 using Engage.Dnn.Publish.Data;
+using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -57,7 +58,7 @@ namespace Engage.Dnn.Publish.Controls
 			{
 				if (ItemId > -1)
 				{
-					Response.Redirect(GetItemLinkUrl(ItemId), true);
+					Response.Redirect(Utility.GetItemLinkUrl(ItemId, PortalId), true);
 				}
 			} 
 			catch (Exception exc) 

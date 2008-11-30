@@ -994,7 +994,6 @@ namespace Engage.Dnn.Publish.Util
                     returnUrl = GetNonFriendlyLinkUrl(item, tabId, moduleId, pageId, portalId);
                 }
             }
-
             return returnUrl;
         }
 
@@ -1049,7 +1048,6 @@ namespace Engage.Dnn.Publish.Util
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
             {
                 tabInfo = tabController.GetTab(tabId, item.PortalId, false);
-
                 // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
                 if (moduleId > 0)
                 {

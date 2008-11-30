@@ -252,6 +252,7 @@ namespace Engage.Dnn.Publish
             {
                 ModuleActionCollection actions = new ModuleActionCollection();
                 actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                //actions.Add(GetNextActionID(), Localization.GetString("ClearCache", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }
