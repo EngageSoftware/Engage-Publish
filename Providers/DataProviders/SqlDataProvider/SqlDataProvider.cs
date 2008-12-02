@@ -392,10 +392,6 @@ namespace Engage.Dnn.Publish.Data
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
             DataTable dt = ds.Tables[0];
 
-            //do we need this?
-            SecurityFilter sf = SecurityFilter.Instance;
-            sf.FilterCategories(dt);
-
             return dt;
         }
 
@@ -410,6 +406,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("where PortalId = ");
             sql.Append(portalId);
             sql.Append(" and ItemType != 'TopLevelCategory' ");
+            sql.Append("and IsCurrentVersion = 1 ");
             sql.Append(" order by ");
             sql.Append("[Name]");
 
@@ -1129,6 +1126,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("vwArticles ");
             sql.Append("where PortalID = ");
             sql.Append(portalId);
+            sql.Append(" AND IsCurrentVersion = 1 AND StartDate < GetDate() AND (EndDate > GetDate() OR EndDate is null) ");
             sql.Append("order by [Name]");
 
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
