@@ -3,7 +3,6 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="ep" TagName="approvals" Src="~/desktopmodules/engagepublish/controls/itemapproval.ascx" %>
-    
 <div id="publishTextHtmlDisplay" class="Normal">
     <dnn:texteditor id="teArticleText" runat="server" Width="100%" Height="500" HtmlEncode="false" TextRenderMode="Raw" />
     
