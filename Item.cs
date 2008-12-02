@@ -423,7 +423,10 @@ namespace Engage.Dnn.Publish
                 if (versionAuthor != null && versionAuthor.Email != ui.Email)
                 {
                     DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                    string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
+                    //string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
+                    string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.ModuleId.ToString());
+                    //href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
+
                     string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
 
                     //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
