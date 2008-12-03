@@ -352,7 +352,7 @@
     <value>Engage: Publish File Selection</value>
   </data>
   <data name="plThumbnailSelection.Help" xml:space="preserve">
-    <value>When choosing thumbnails while editing an article or categor you can choose which interface your would like to use. The default is the DNN File Selection interface.</value>
+    <value>Choose which interface to use when adding a thumbnail to an article or category.  The DotNetNuke file selection is the same that is used by the DotNetNuke administrative screens.  The Engage: Publish file selection simplifies the upload and selection experience by restricting uploads to one folder (configured below).</value>
   </data>
   <data name="plThumbnailSelection.Text" xml:space="preserve">
     <value>Thumbnail Selection Option:</value>
