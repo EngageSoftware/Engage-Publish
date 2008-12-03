@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.ArticleSelector" Codebehind="ArticleSelector.ascx.cs" %>
+<%@ Control Language="c#" AutoEventWireup="True" Inherits="Engage.Dnn.Publish.Controls.ArticleSelector" Codebehind="ArticleSelector.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <asp:ScriptManagerProxy runat="server">
     <Services>
