@@ -1,241 +1,40 @@
-//Engage: Publish - http://www.engagemodules.com
-//Copyright (c) 2004-2008
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-using System;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
+// <copyright file="ArticleDisplayOptions.ascx.cs" company="Engage Software">
+// Engage: Publish - http://www.engagemodules.com
+// Copyright (c) 2004-2008
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
+    /// <summary>
+    /// A control for setting the settings of the Article Display type
+    /// </summary>
     public partial class ArticleDisplayOptions : ModuleSettingsBase
     {
-
-        #region Event Handlers
-
-        override protected void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownList_SelectedIndexChanged;
-        }
-
-        private void CategoriesDropDownList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            FillArticlesDropDown();
-        }
-        
-        private void FillArticlesDropDown()
-        {
-            if (CategoryId > -1)
-            {
-                ddlArticleList.DataSource = Article.GetArticles(CategoryId, PortalId);
-                ddlArticleList.DataBind();
-
-                ListItem li = ddlArticleList.Items.FindByValue(ArticleId.ToString());
-                if (li != null) li.Selected = true;
-            }
-        }
-
-        private int CategoryId
-        {
-            get
-            {
-                if (this.CategoriesDropDownList.SelectedIndex > 0)
-                    return Convert.ToInt32(this.CategoriesDropDownList.SelectedValue);
-                return -1;
-            }
-        }
-
-        public override void LoadSettings()
-        {
-            BindData();
-
-            ListItem li;
-            Article article = Article.GetArticle(ArticleId, PortalId);
-            if (article != null)
-            {
-                int categoryId = article.GetParentCategoryId();
-                //find category
-                li = this.CategoriesDropDownList.Items.FindByValue(categoryId.ToString());
-                if (li != null)
-                {
-                    li.Selected = true;
-                    FillArticlesDropDown();
-                }
-            }
-
-            li = ddlDisplayRatings.Items.FindByValue(RatingDisplayOption.ToString());
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-            li = ddlDisplayComments.Items.FindByValue(CommentDisplayOption.ToString());
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-            li = ddlFirstNameCollect.Items.FindByValue(FirstNameCollectOption.ToString());
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-            li = ddlLastNameCollect.Items.FindByValue(LastNameCollectOption.ToString());
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-
-            if (MaximumNumberOfThumbnails.HasValue && MaximumNumberOfThumbnails.Value > 0)
-            {
-                txtPhotoGalleryMaxCount.Text = MaximumNumberOfThumbnails.Value.ToString(CultureInfo.CurrentCulture);
-            }
-
-            if (HoverThumbnailHeight.HasValue && HoverThumbnailHeight.Value > 0)
-            {
-                txtPhotoGalleryHoverThumbnailHeight.Text = HoverThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
-            }
-            if (HoverThumbnailWidth.HasValue && HoverThumbnailWidth.Value > 0)
-            {
-                txtPhotoGalleryHoverThumbnailWidth.Text = HoverThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
-            }
-
-            if (GalleryThumbnailHeight.HasValue && GalleryThumbnailHeight.Value > 0)
-            {
-                txtPhotoGalleryThumbnailHeight.Text = GalleryThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
-            }
-            if (GalleryThumbnailWidth.HasValue && GalleryThumbnailWidth.Value > 0)
-            {
-                txtPhotoGalleryThumbnailWidth.Text = GalleryThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
-            }
-
-            //chkPhotoGalleryShowAll.Checked = !MaximumNumberOfThumbnails.HasValue;
-            chkDisplayPhotoGallery.Checked = AllowPhotoGalleryDisplay;
-            //SetPhotoGallerySettingsEnabled(chkDisplayPhotoGallery.Checked);
-            //SetThumbnailMaxCountSettingEnabled(chkDisplayPhotoGallery.Checked && !chkPhotoGalleryShowAll.Checked);
-
-            chkCommentDisplay.Checked = DisplayComments;
-            chkCommentSubmit.Checked = DisplayCommentSubmission;
-            //txtCommentPaging.Text = CommentsPerPage.ToString(CultureInfo.CurrentCulture);
-            //chkCommentRandom.Checked = DisplayRandomComment;
-            chkEmailAddressCollect.Checked = CollectEmailAddress;
-            chkUrlCollect.Checked = CollectUrl;
-
-            txtLastUpdatedFormat.Text = LastUpdatedFormat;
-            //}
-
-            SetPhotoGalleryOptionsVisiblity(ModuleBase.AllowSimpleGalleryIntegrationForPortal(PortalId) || ModuleBase.AllowUltraMediaGalleryIntegrationForPortal(PortalId));
-            SetCommentOptionsVisibility(ModuleBase.IsCommentsEnabledForPortal(PortalId));
-            SetRatingsOptionsVisibility(ModuleBase.AreRatingsEnabledForPortal(PortalId));
-        }
-
-        private void BindData()
-        {
-            ddlDisplayRatings.Items.Clear();
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Enable.ToString(), LocalResourceFile), RatingDisplayOption.Enable.ToString()));
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.ReadOnly.ToString(), LocalResourceFile), RatingDisplayOption.ReadOnly.ToString()));
-            ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Disable.ToString(), LocalResourceFile), RatingDisplayOption.Disable.ToString()));
-
-            ddlDisplayComments.Items.Clear();
-            ddlDisplayComments.Items.Add(new ListItem(Localization.GetString(CommentDisplayOption.ShowAll.ToString(), LocalResourceFile), CommentDisplayOption.ShowAll.ToString()));
-            ddlDisplayComments.Items.Add(new ListItem(Localization.GetString(CommentDisplayOption.Paging.ToString(), LocalResourceFile), CommentDisplayOption.Paging.ToString()));
-
-            ddlFirstNameCollect.Items.Clear();
-            ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Full.ToString(), LocalResourceFile), NameDisplayOption.Full.ToString()));
-            ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Initial.ToString(), LocalResourceFile), NameDisplayOption.Initial.ToString()));
-            ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.None.ToString(), LocalResourceFile), NameDisplayOption.None.ToString()));
-
-            ddlLastNameCollect.Items.Clear();
-            ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Full.ToString(), LocalResourceFile), NameDisplayOption.Full.ToString()));
-            ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Initial.ToString(), LocalResourceFile), NameDisplayOption.Initial.ToString()));
-            ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.None.ToString(), LocalResourceFile), NameDisplayOption.None.ToString()));
-
-            FillCategoryDropDown();
-
-        }
-
-        private void FillCategoryDropDown()
-        {
-            //this.CategoriesDropDownList.Items.Clear();
-            ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, PortalId, false);
-
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), "-1");
-            this.CategoriesDropDownList.Items.Insert(0, li);
-
-        }
-
-        private void SetPhotoGalleryOptionsVisiblity(bool photoGallerySettingEnabled)
-        {
-            lblEnablePhotoGallery.Visible = !photoGallerySettingEnabled;
-            pnlPhotoGallerySettings.Visible = photoGallerySettingEnabled;
-        }
-
-        private void SetRatingsOptionsVisibility(bool ratingsEnabled)
-        {
-            pnlRatingsSettings.Visible = ratingsEnabled;
-            lblEnableRatings.Visible = !ratingsEnabled;
-        }
-
-        private void SetCommentOptionsVisibility(bool commentsEnabled)
-        {
-            pnlCommentSettings.Visible = commentsEnabled;
-            lblEnableComments.Visible = !commentsEnabled;
-        }
-
-        #endregion
-
-        private void SaveSettings()
-        {
-            if (Page.IsValid)
-            {
-                ArticleId = int.Parse(ddlArticleList.SelectedValue, CultureInfo.InvariantCulture);
-               
-                LastUpdatedFormat = txtLastUpdatedFormat.Text.Trim();
-                RatingDisplayOption = (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), ddlDisplayRatings.SelectedValue);
-                DisplayCommentSubmission = chkCommentSubmit.Checked;
-                DisplayComments = chkCommentDisplay.Checked;
-                CommentDisplayOption = (CommentDisplayOption)Enum.Parse(typeof(CommentDisplayOption), ddlDisplayComments.SelectedValue);
-                //CommentsPerPage = int.Parse(txtCommentPaging.Text, CultureInfo.InvariantCulture);
-                DisplayRandomComment = CommentDisplayOption.Equals(CommentDisplayOption.Paging);//chkCommentRandom.Checked;
-                FirstNameCollectOption = (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), ddlFirstNameCollect.SelectedValue);
-                LastNameCollectOption = (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), ddlLastNameCollect.SelectedValue);
-                CollectEmailAddress = chkEmailAddressCollect.Checked;
-                CollectUrl = chkUrlCollect.Checked;
-                AllowPhotoGalleryDisplay = chkDisplayPhotoGallery.Checked;
-
-                int parsedValue;
-                MaximumNumberOfThumbnails = int.TryParse(txtPhotoGalleryMaxCount.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue) ? parsedValue : (int?)null;
-                HoverThumbnailHeight = int.TryParse(txtPhotoGalleryHoverThumbnailHeight.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue) ? parsedValue : (int?)null;
-                HoverThumbnailWidth = int.TryParse(txtPhotoGalleryHoverThumbnailWidth.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue) ? parsedValue : (int?)null;
-                GalleryThumbnailHeight = int.TryParse(txtPhotoGalleryThumbnailHeight.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue) ? parsedValue : (int?)null;
-                GalleryThumbnailWidth = int.TryParse(txtPhotoGalleryThumbnailWidth.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue) ? parsedValue : (int?)null;
-            }
-        }
-
-        public override void UpdateSettings()
-        {
-            SaveSettings();
-        }
-
         private int ArticleId
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adArticleId", value.ToString(CultureInfo.InvariantCulture));
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adArticleId", value.ToString(CultureInfo.InvariantCulture));
             }
+
             get
             {
-                object o = Settings["adArticleId"];
-                return (o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
+                object o = this.Settings["adArticleId"];
+                return o == null ? Null.NullInteger : Convert.ToInt32(o, CultureInfo.InvariantCulture);
             }
         }
 
@@ -243,15 +42,13 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adLastUpdatedFormat", value.ToString(CultureInfo.InvariantCulture));
-
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adLastUpdatedFormat", value.ToString(CultureInfo.InvariantCulture));
             }
 
             get
             {
-                object o = Settings["adLastUpdatedFormat"];
-                return (o == null ? "F" : o.ToString());
+                object o = this.Settings["adLastUpdatedFormat"];
+                return o == null ? "F" : o.ToString();
             }
         }
 
@@ -259,13 +56,13 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adShowPhotoGallery", value.ToString(CultureInfo.InvariantCulture));
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adShowPhotoGallery", value.ToString(CultureInfo.InvariantCulture));
             }
+
             get
             {
-                object o = Settings["adShowPhotoGallery"];
-                return (o == null ? false : Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture));
+                object o = this.Settings["adShowPhotoGallery"];
+                return o == null ? false : Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture);
             }
         }
 
@@ -273,24 +70,25 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
                 if (value.HasValue)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adNumberOfThumbnails", value.Value.ToString(CultureInfo.InvariantCulture));
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adNumberOfThumbnails", value.Value.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adNumberOfThumbnails", string.Empty);
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adNumberOfThumbnails", string.Empty);
                 }
             }
+
             get
             {
-                object o = Settings["adNumberOfThumbnails"];
+                object o = this.Settings["adNumberOfThumbnails"];
                 int value;
                 if (o != null && int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                 {
                     return value;
                 }
+
                 return null;
             }
         }
@@ -299,24 +97,26 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
                 if (value.HasValue)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailHeight", value.Value.ToString(CultureInfo.InvariantCulture));
+                    new ModuleController().UpdateTabModuleSetting(
+                        this.TabModuleId, "adHoverThumbnailHeight", value.Value.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailHeight", string.Empty);
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailHeight", string.Empty);
                 }
             }
+
             get
             {
-                object o = Settings["adHoverThumbnailHeight"];
+                object o = this.Settings["adHoverThumbnailHeight"];
                 int value;
                 if (o != null && int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                 {
                     return value;
                 }
+
                 return null;
             }
         }
@@ -325,24 +125,25 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
                 if (value.HasValue)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailWidth", value.Value.ToString(CultureInfo.InvariantCulture));
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailWidth", value.Value.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailWidth", string.Empty);
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adHoverThumbnailWidth", string.Empty);
                 }
             }
+
             get
             {
-                object o = Settings["adHoverThumbnailWidth"];
+                object o = this.Settings["adHoverThumbnailWidth"];
                 int value;
                 if (o != null && int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                 {
                     return value;
                 }
+
                 return null;
             }
         }
@@ -351,24 +152,26 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
                 if (value.HasValue)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailHeight", value.Value.ToString(CultureInfo.InvariantCulture));
+                    new ModuleController().UpdateTabModuleSetting(
+                        this.TabModuleId, "adGalleryThumbnailHeight", value.Value.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailHeight", string.Empty);
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailHeight", string.Empty);
                 }
             }
+
             get
             {
-                object o = Settings["adGalleryThumbnailHeight"];
+                object o = this.Settings["adGalleryThumbnailHeight"];
                 int value;
                 if (o != null && int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                 {
                     return value;
                 }
+
                 return null;
             }
         }
@@ -377,24 +180,26 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
                 if (value.HasValue)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailWidth", value.Value.ToString(CultureInfo.InvariantCulture));
+                    new ModuleController().UpdateTabModuleSetting(
+                        this.TabModuleId, "adGalleryThumbnailWidth", value.Value.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailWidth", string.Empty);
+                    new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adGalleryThumbnailWidth", string.Empty);
                 }
             }
+
             get
             {
-                object o = Settings["adGalleryThumbnailWidth"];
+                object o = this.Settings["adGalleryThumbnailWidth"];
                 int value;
                 if (o != null && int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                 {
                     return value;
                 }
+
                 return null;
             }
         }
@@ -411,23 +216,23 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adEnableRatings", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adEnableRatings", value.ToString());
             }
 
             get
             {
-                object o = Settings["adEnableRatings"];
+                object o = this.Settings["adEnableRatings"];
                 if (o != null && Enum.IsDefined(typeof(RatingDisplayOption), o))
                 {
                     return (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), o.ToString());
                 }
+
                 return RatingDisplayOption.Enable;
             }
         }
 
         /// <summary>
-        /// Gets or sets whether to display the option to create a comment.
+        /// Gets or sets a value indicating whether to display the option to create a comment.
         /// </summary>
         /// <value>
         /// <c>true</c> if the option to create a comment is displayed, otherwise <c>false</c>.
@@ -437,14 +242,13 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adCommentsLink", value.ToString(CultureInfo.InvariantCulture));
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adCommentsLink", value.ToString(CultureInfo.InvariantCulture));
             }
 
             get
             {
-                object o = Settings["adCommentsLink"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                object o = this.Settings["adCommentsLink"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
             }
         }
 
@@ -459,14 +263,13 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adCommentsDisplay", value.ToString(CultureInfo.InvariantCulture));
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adCommentsDisplay", value.ToString(CultureInfo.InvariantCulture));
             }
 
             get
             {
-                object o = Settings["adCommentsDisplay"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                object o = this.Settings["adCommentsDisplay"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
             }
         }
 
@@ -481,71 +284,33 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adCommentDisplayOption", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adCommentDisplayOption", value.ToString());
             }
 
             get
             {
-                object o = Settings["adCommentDisplayOption"];
+                object o = this.Settings["adCommentDisplayOption"];
                 if (o != null && Enum.IsDefined(typeof(CommentDisplayOption), o))
                 {
                     return (CommentDisplayOption)Enum.Parse(typeof(CommentDisplayOption), o.ToString());
                 }
+
                 return CommentDisplayOption.ShowAll;
             }
         }
 
-        ///// <summary>
-        ///// Gets or sets the number of comments per page, if comments are paged.
-        ///// </summary>
-        ///// <value>The number of comments per page.  Defaults to 1 if no setting is defined.</value>
-        //private int CommentsPerPage
-        //{
-        //    set
-        //    {
-        //        ModuleController modules = new ModuleController();
-        //        modules.UpdateTabModuleSetting(this.TabModuleId, "adCommentsPerPage", value.ToString(CultureInfo.InvariantCulture));
-        //    }
-
-        //    get
-        //    {
-        //        object o = Settings["adCommentsPerPage"];
-        //        int commentsPerPage = 1;
-
-        //        if (o != null)
-        //        {
-        //            int.TryParse(o.ToString(), out commentsPerPage);
-        //        }
-        //        return commentsPerPage;
-        //    }
-        //}
-
         /// <summary>
-        /// Gets or sets a value indicating whether to display one comment at a time, in a random order.
+        /// Sets a value indicating whether to display one comment at a time, in a random order.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if comments should be displayed one-at-a-time in random order; otherwise, <c>false</c>.
+        /// <c>true</c> if comments should be displayed one-at-a-time in random order; otherwise, <c>false</c>.
         /// </value>
         private bool DisplayRandomComment
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adRandomComment", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adRandomComment", value.ToString());
             }
-
-            //get
-            //{
-            //    object o = Settings["adRandomComment"];
-            //    bool displayRandomComment = false;
-
-            //    if (o != null)
-            //    {
-            //        bool.TryParse(o.ToString(), out displayRandomComment);
-            //    }
-            //    return displayRandomComment;
-            //}
         }
 
         /// <summary>
@@ -559,17 +324,17 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adFirstNameCollectOption", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adFirstNameCollectOption", value.ToString());
             }
 
             get
             {
-                object o = Settings["adFirstNameCollectOption"];
+                object o = this.Settings["adFirstNameCollectOption"];
                 if (o != null && Enum.IsDefined(typeof(NameDisplayOption), o))
                 {
                     return (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), o.ToString());
                 }
+
                 return NameDisplayOption.Full;
             }
         }
@@ -585,16 +350,17 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adLastNameCollectOption", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adLastNameCollectOption", value.ToString());
             }
+
             get
             {
-                object o = Settings["adLastNameCollectOption"];
+                object o = this.Settings["adLastNameCollectOption"];
                 if (o != null && Enum.IsDefined(typeof(NameDisplayOption), o))
                 {
                     return (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), o.ToString());
                 }
+
                 return NameDisplayOption.Full;
             }
         }
@@ -603,19 +369,18 @@ namespace Engage.Dnn.Publish.ArticleControls
         /// Gets or sets a value indicating whether to display a textbox to collect the email address of the commenter.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if the email address should be collected; otherwise, <c>false</c>.
+        /// <c>true</c> if the email address should be collected; otherwise, <c>false</c>.
         /// </value>
         private bool CollectEmailAddress
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adCollectEmailAddress", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adCollectEmailAddress", value.ToString());
             }
 
             get
             {
-                object o = Settings["adCollectEmailAddress"];
+                object o = this.Settings["adCollectEmailAddress"];
                 if (o != null)
                 {
                     bool collectEmailAddress;
@@ -624,6 +389,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         return collectEmailAddress;
                     }
                 }
+
                 return false;
             }
         }
@@ -632,13 +398,12 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             set
             {
-                ModuleController modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, "adCollectUrl", value.ToString());
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adCollectUrl", value.ToString());
             }
 
             get
             {
-                object o = Settings["adCollectUrl"];
+                object o = this.Settings["adCollectUrl"];
 
                 if (o != null)
                 {
@@ -648,9 +413,187 @@ namespace Engage.Dnn.Publish.ArticleControls
                         return value;
                     }
                 }
+
                 return true;
             }
         }
+
+        /// <summary>
+        /// Loads the settings for this module instance.
+        /// </summary>
+        public override void LoadSettings()
+        {
+            this.FillDropDowns();
+
+            if (!this.IsPostBack)
+            {
+                this.SetInitialValues();
+            }
+
+            this.SetPhotoGalleryOptionsVisibility(ModuleBase.AllowSimpleGalleryIntegrationForPortal(this.PortalId) || ModuleBase.AllowUltraMediaGalleryIntegrationForPortal(this.PortalId));
+            this.SetCommentOptionsVisibility(ModuleBase.IsCommentsEnabledForPortal(this.PortalId));
+            this.SetRatingsOptionsVisibility(ModuleBase.AreRatingsEnabledForPortal(this.PortalId));
+        }
+
+        /// <summary>
+        /// Updates the settings for this module instance.
+        /// </summary>
+        public override void UpdateSettings()
+        {
+            if (this.Page.IsValid)
+            {
+                this.ArticleId = this.ArticleSelectorControl.ArticleId ?? Null.NullInteger;
+
+                this.LastUpdatedFormat = this.txtLastUpdatedFormat.Text.Trim();
+                this.RatingDisplayOption = (RatingDisplayOption)Enum.Parse(typeof(RatingDisplayOption), this.ddlDisplayRatings.SelectedValue);
+                this.DisplayCommentSubmission = this.chkCommentSubmit.Checked;
+                this.DisplayComments = this.chkCommentDisplay.Checked;
+                this.CommentDisplayOption = (CommentDisplayOption)Enum.Parse(typeof(CommentDisplayOption), this.ddlDisplayComments.SelectedValue);
+                this.DisplayRandomComment = this.CommentDisplayOption.Equals(CommentDisplayOption.Paging); ////chkCommentRandom.Checked;
+                this.FirstNameCollectOption = (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), this.ddlFirstNameCollect.SelectedValue);
+                this.LastNameCollectOption = (NameDisplayOption)Enum.Parse(typeof(NameDisplayOption), this.ddlLastNameCollect.SelectedValue);
+                this.CollectEmailAddress = this.chkEmailAddressCollect.Checked;
+                this.CollectUrl = this.chkUrlCollect.Checked;
+                this.AllowPhotoGalleryDisplay = this.chkDisplayPhotoGallery.Checked;
+
+                int parsedValue;
+                this.MaximumNumberOfThumbnails = int.TryParse(this.txtPhotoGalleryMaxCount.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue)
+                                                     ? parsedValue
+                                                     : (int?)null;
+                this.HoverThumbnailHeight = int.TryParse(this.txtPhotoGalleryHoverThumbnailHeight.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue)
+                                                ? parsedValue
+                                                : (int?)null;
+                this.HoverThumbnailWidth = int.TryParse(this.txtPhotoGalleryHoverThumbnailWidth.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue)
+                                               ? parsedValue
+                                               : (int?)null;
+                this.GalleryThumbnailHeight = int.TryParse(this.txtPhotoGalleryThumbnailHeight.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue)
+                                                  ? parsedValue
+                                                  : (int?)null;
+                this.GalleryThumbnailWidth = int.TryParse(this.txtPhotoGalleryThumbnailWidth.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out parsedValue)
+                                                 ? parsedValue
+                                                 : (int?)null;
+            }
+        }
+
+        /// <summary>
+        /// Fills the drop downs on this control with their possible values.
+        /// </summary>
+        private void FillDropDowns()
+        {
+            this.ddlDisplayRatings.Items.Clear();
+            this.ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Enable.ToString(), this.LocalResourceFile), RatingDisplayOption.Enable.ToString()));
+            this.ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.ReadOnly.ToString(), this.LocalResourceFile), RatingDisplayOption.ReadOnly.ToString()));
+            this.ddlDisplayRatings.Items.Add(new ListItem(Localization.GetString(RatingDisplayOption.Disable.ToString(), this.LocalResourceFile), RatingDisplayOption.Disable.ToString()));
+
+            this.ddlDisplayComments.Items.Clear();
+            this.ddlDisplayComments.Items.Add(new ListItem(Localization.GetString(CommentDisplayOption.ShowAll.ToString(), this.LocalResourceFile), CommentDisplayOption.ShowAll.ToString()));
+            this.ddlDisplayComments.Items.Add(new ListItem(Localization.GetString(CommentDisplayOption.Paging.ToString(), this.LocalResourceFile), CommentDisplayOption.Paging.ToString()));
+
+            this.ddlFirstNameCollect.Items.Clear();
+            this.ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Full.ToString(), this.LocalResourceFile), NameDisplayOption.Full.ToString()));
+            this.ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Initial.ToString(), this.LocalResourceFile), NameDisplayOption.Initial.ToString()));
+            this.ddlFirstNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.None.ToString(), this.LocalResourceFile), NameDisplayOption.None.ToString()));
+
+            this.ddlLastNameCollect.Items.Clear();
+            this.ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Full.ToString(), this.LocalResourceFile), NameDisplayOption.Full.ToString()));
+            this.ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.Initial.ToString(), this.LocalResourceFile), NameDisplayOption.Initial.ToString()));
+            this.ddlLastNameCollect.Items.Add(new ListItem(Localization.GetString(NameDisplayOption.None.ToString(), this.LocalResourceFile), NameDisplayOption.None.ToString()));
+        }
+
+        /// <summary>
+        /// Sets the values on this form based on the settings stored for this module instance
+        /// </summary>
+        private void SetInitialValues()
+        {
+            ListItem li = this.ddlDisplayRatings.Items.FindByValue(this.RatingDisplayOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+
+            li = this.ddlDisplayComments.Items.FindByValue(this.CommentDisplayOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+
+            li = this.ddlFirstNameCollect.Items.FindByValue(this.FirstNameCollectOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+
+            li = this.ddlLastNameCollect.Items.FindByValue(this.LastNameCollectOption.ToString());
+            if (li != null)
+            {
+                li.Selected = true;
+            }
+
+            this.ArticleSelectorControl.ArticleId = this.ArticleId;
+
+            if (this.MaximumNumberOfThumbnails.HasValue && this.MaximumNumberOfThumbnails.Value > 0)
+            {
+                this.txtPhotoGalleryMaxCount.Text = this.MaximumNumberOfThumbnails.Value.ToString(CultureInfo.CurrentCulture);
+            }
+
+            if (this.HoverThumbnailHeight.HasValue && this.HoverThumbnailHeight.Value > 0)
+            {
+                this.txtPhotoGalleryHoverThumbnailHeight.Text = this.HoverThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
+            }
+
+            if (this.HoverThumbnailWidth.HasValue && this.HoverThumbnailWidth.Value > 0)
+            {
+                this.txtPhotoGalleryHoverThumbnailWidth.Text = this.HoverThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
+            }
+
+            if (this.GalleryThumbnailHeight.HasValue && this.GalleryThumbnailHeight.Value > 0)
+            {
+                this.txtPhotoGalleryThumbnailHeight.Text = this.GalleryThumbnailHeight.Value.ToString(CultureInfo.CurrentCulture);
+            }
+
+            if (this.GalleryThumbnailWidth.HasValue && this.GalleryThumbnailWidth.Value > 0)
+            {
+                this.txtPhotoGalleryThumbnailWidth.Text = this.GalleryThumbnailWidth.Value.ToString(CultureInfo.CurrentCulture);
+            }
+
+            this.chkDisplayPhotoGallery.Checked = this.AllowPhotoGalleryDisplay;
+
+            this.chkCommentDisplay.Checked = this.DisplayComments;
+            this.chkCommentSubmit.Checked = this.DisplayCommentSubmission;
+            this.chkEmailAddressCollect.Checked = this.CollectEmailAddress;
+            this.chkUrlCollect.Checked = this.CollectUrl;
+
+            this.txtLastUpdatedFormat.Text = this.LastUpdatedFormat;
+        }
+
+        /// <summary>
+        /// Sets the visibility of the photo gallery options, showing a message if the settings are not available.
+        /// </summary>
+        /// <param name="photoGallerySettingEnabled">if set to <c>true</c> the photo gallery settings are enabled.</param>
+        private void SetPhotoGalleryOptionsVisibility(bool photoGallerySettingEnabled)
+        {
+            this.lblEnablePhotoGallery.Visible = !photoGallerySettingEnabled;
+            this.pnlPhotoGallerySettings.Visible = photoGallerySettingEnabled;
+        }
+
+        /// <summary>
+        /// Sets the visibility of the ratings options, showing a message if the settings are not available.
+        /// </summary>
+        /// <param name="ratingsEnabled">if set to <c>true</c> the rating settings are enabled.</param>
+        private void SetRatingsOptionsVisibility(bool ratingsEnabled)
+        {
+            this.pnlRatingsSettings.Visible = ratingsEnabled;
+            this.lblEnableRatings.Visible = !ratingsEnabled;
+        }
+
+        /// <summary>
+        /// Sets the visibility of the comment options, showing a message if the settings are not available.
+        /// </summary>
+        /// <param name="commentsEnabled">if set to <c>true</c> the comments settings are enabled.</param>
+        private void SetCommentOptionsVisibility(bool commentsEnabled)
+        {
+            this.pnlCommentSettings.Visible = commentsEnabled;
+            this.lblEnableComments.Visible = !commentsEnabled;
+        }
     }
 }
-

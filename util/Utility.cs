@@ -949,7 +949,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemLinkUrl(Item item)
         {
-            return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
+            return GetItemLinkUrl(item, item.PortalId, -1, -1, -1);
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId)
@@ -973,107 +973,93 @@ namespace Engage.Dnn.Publish.Util
 
             if (item != null)
             {
-                return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId, cultureName);
+                return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId);
             }
 
             return String.Empty;
         }
 
-        public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId, string cultureName)
+        /// <summary>
+        /// Gets a URL link to the given <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">The item being linked to.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The current tab ID.</param>
+        /// <param name="moduleId">The current module ID.</param>
+        /// <param name="pageId">The current page ID.</param>
+        /// <returns>A URL link to the given <paramref name="item"/></returns>
+        public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId)
         {
-            string returnUrl = String.Empty;
+            string itemUrl = String.Empty;
 
             if (item != null && item.IsLinkable())
             {
+                TabInfo tabInfo = GetTabForItem(item, tabId, portalId);
+                PortalSettings portalSettings = GetPortalSettings(item.PortalId);
+                itemUrl = Globals.NavigateURL(tabInfo.TabID, portalSettings, String.Empty, GetQueryStringParameters(item, portalId, tabId, moduleId, pageId));
+
                 if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
                 {
-                    returnUrl = GetFriendlyItemLinkUrl(item, tabId, moduleId, pageId, portalId, cultureName);
-                }
-                else
-                {
-                    returnUrl = GetNonFriendlyLinkUrl(item, tabId, moduleId, pageId, portalId);
-                }
-            }
-            return returnUrl;
-        }
-
-        /// <summary>
-        /// Gets a URL linking to the given item when friendly URLs are not turned on.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="moduleId">The module id.</param>
-        /// <param name="pageId">The page id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>A URL linking to the given item</returns>
-        private static string GetNonFriendlyLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId)
-        {
-            PortalSettings portalSettings = GetPortalSettings(item.PortalId);
-
-            int displayTabId = item.DisplayTabId;
-            int? queryStringModuleId = null;
-
-            if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
-            {
-                displayTabId = tabId;
-                if (moduleId > 0)
-                {
-                    queryStringModuleId = moduleId;
+                    itemUrl = Globals.FriendlyUrl(tabInfo, itemUrl, GetFriendlyPageName(item.Name), portalSettings);
                 }
             }
 
-            string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
-            return Globals.NavigateURL(displayTabId, portalSettings, String.Empty, queryStringParameters);
+            return itemUrl;
         }
 
         /// <summary>
-        /// Gets a URL linking to the given item when friendly URLs are turned on
+        /// Gets the tab that the given item should display on.
         /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="moduleId">The module id.</param>
-        /// <param name="pageId">The page id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
-        /// <returns>A URL linking to the given item</returns>
-        private static string GetFriendlyItemLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId, string cultureName)
+        /// <param name="item">The item being linked to.</param>
+        /// <param name="tabId">The current tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>The tab that the given item should display on.</returns>
+        private static TabInfo GetTabForItem(Item item, int tabId, int portalId)
         {
             TabInfo tabInfo;
             TabController tabController = new TabController();
-            int? queryStringModuleId = null;
-            int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
-            string pageName = GetFriendlyPageName(item.Name);
 
-            // if the setting to "force display on this page" is set, be sure to send them there.
-            if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
+            if (CanDisplayItemOnTab(item, tabId))
             {
-                tabInfo = tabController.GetTab(tabId, item.PortalId, false);
-                // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                if (moduleId > 0)
-                {
-                    queryStringModuleId = moduleId;
-                }
+                tabInfo = tabController.GetTab(tabId, portalId, false);
             }
             else
             {
-                tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
+                tabInfo = tabController.GetTab(item.DisplayTabId, portalId, false);
             }
 
             if (tabInfo.IsDeleted)
             {
-                tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+                tabInfo = tabController.GetTab(ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId), portalId, false);
             }
 
-            return Globals.FriendlyUrl(tabInfo, ConvertParametersToFriendly(CreateParametersForQueryString(item.ItemId, tabInfo.TabID, queryStringModuleId, pageId, portalId, cultureName)), pageName, GetPortalSettings(item.PortalId));
+            return tabInfo;
         }
 
         /// <summary>
-        /// Converts the given <c>QueryString</c> parameters to the non-friendly (<see cref="Globals.NavigateURL"/>) format.
+        /// Gets the parameters used on the query string for links to the given item.
         /// </summary>
-        /// <param name="queryStringParameters">The query string parameters.</param>
-        /// <returns></returns>
-        private static string[] ConvertParametersToNonFriendly(NameValueCollection queryStringParameters)
+        /// <param name="item">The item being linked to.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The current tab ID.</param>
+        /// <param name="moduleId">The current module ID.</param>
+        /// <param name="pageId">The current page ID.</param>
+        /// <returns>A list of the parameters used on the query string for links to the given item.</returns>
+        private static string[] GetQueryStringParameters(Item item, int portalId, int tabId, int moduleId, int pageId)
         {
+            NameValueCollection queryStringParameters = new NameValueCollection(3);
+            queryStringParameters.Add("itemId", item.ItemId.ToString(CultureInfo.InvariantCulture));
+
+            if (UseModuleId(item, tabId, moduleId))
+            {
+                queryStringParameters.Add("moduleId", moduleId.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (UsePageId(pageId, portalId))
+            {
+                queryStringParameters.Add("pageId", pageId.ToString(CultureInfo.InvariantCulture));
+            }
+
             string[] results = queryStringParameters.AllKeys;
 
             for (int i = 0; i < results.Length; i++)
@@ -1083,75 +1069,6 @@ namespace Engage.Dnn.Publish.Util
             }
 
             return results;
-        }
-
-        /// <summary>
-        /// Converts the given <c>QueryString</c> parameters to the friendly ("/key/value/") format.
-        /// </summary>
-        /// <param name="queryStringParameters">The query string parameters.</param>
-        /// <returns></returns>
-        private static string ConvertParametersToFriendly(NameValueCollection queryStringParameters)
-        {
-            StringBuilder friendlyParameters = new StringBuilder();
-
-            for (int i = 0; i < queryStringParameters.Count; i++)
-            {
-                // Friendly URLs start reading parameters with tabId, it must be first
-                string key = queryStringParameters.Keys[i];
-                if (key.Equals("TABID", StringComparison.OrdinalIgnoreCase))
-                {
-                    friendlyParameters.Insert(0, "/" + key + "/" + queryStringParameters[i]);
-                }
-                else
-                {
-                    friendlyParameters.Append("/");
-                    friendlyParameters.Append(key);
-                    friendlyParameters.Append("/");
-                    friendlyParameters.Append(queryStringParameters[i]);
-                }
-            }
-
-            return friendlyParameters.ToString();
-        }
-
-        /// <summary>
-        /// Creates a collection of the possible parameters to be added to the <c>QueryString</c> of a URL linking to an item.
-        /// </summary>
-        /// <param name="itemId">The item id.</param>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="moduleId">The module id.</param>
-        /// <param name="pageId">The page id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
-        /// <returns>
-        /// A collection of the possible <c>QueryString</c> parameters to use when linking to an item
-        /// </returns>
-        private static NameValueCollection CreateParametersForQueryString(int itemId, int? tabId, int? moduleId, int pageId, int portalId, string cultureName)
-        {
-            NameValueCollection queryStringParameters = new NameValueCollection(5);
-            queryStringParameters.Add("itemId", itemId.ToString(CultureInfo.InvariantCulture));
-
-            if (tabId.HasValue)
-            {
-                queryStringParameters.Add("tabId", tabId.Value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            if (moduleId.HasValue)
-            {
-                queryStringParameters.Add("moduleId", moduleId.Value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            if (UsePageId(pageId, portalId))
-            {
-                queryStringParameters.Add("pageId", pageId.ToString(CultureInfo.InvariantCulture));
-            }
-
-            if (HasValue(cultureName))
-            {                
-                queryStringParameters.Add("language", cultureName);
-            }
-
-            return queryStringParameters;
         }
 
         /// <summary>
@@ -1177,6 +1094,31 @@ namespace Engage.Dnn.Publish.Util
             }
 
             return pageName + ".aspx";
+        }
+
+        /// <summary>
+        /// Determines whether the given <paramref name="item"/> can be displayed on the given <paramref name="tabId"/>.
+        /// </summary>
+        /// <param name="item">The item being displayed.</param>
+        /// <param name="tabId">The tab ID on which the item is requesting to be displayed.</param>
+        /// <returns>
+        /// <c>true</c> if the given <paramref name="item"/> can be displayed on the given <paramref name="tabId"/>; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool CanDisplayItemOnTab(Item item, int tabId)
+        {
+            return !item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage();
+        }
+
+        /// <summary>
+        /// Whether to use the current module ID on the <c>QueryString</c>.
+        /// </summary>
+        /// <param name="item">The item being linked to.</param>
+        /// <param name="tabId">The tab ID on which the item is requesting to being displayed.</param>
+        /// <param name="moduleId">The module ID to use, if a module ID is needed.</param>
+        /// <returns><c>true</c> if the current module ID should appear on the <c>QueryString</c>; otherwise <c>false</c></returns>
+        private static bool UseModuleId(Item item, int tabId, int moduleId)
+        {
+            return moduleId > 0 && CanDisplayItemOnTab(item, tabId);
         }
 
         /// <summary>
