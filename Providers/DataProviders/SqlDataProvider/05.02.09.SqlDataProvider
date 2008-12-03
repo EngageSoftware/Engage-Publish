@@ -1,0 +1,86 @@
+﻿IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
+		@ItemTypeId int,
+		@PortalId int,
+		@moduleId int,
+		@ItemIdentifier UniqueIdentifier
+	as
+
+	--So, there are rare cases where a user is working with a ItemVersion (first seen in IPortable import)
+	--where the ItemIdentifier existed in the database but the version did not. This proc used to fail 
+	--due to the fact that the ItemIdentifier already existing. Now, we've added a test to verify it doesn't 
+	--and simply return it back. This way, the subsequent call to save a new version will use this id. hk
+	declare @id int 
+	select @id = ItemId from {databaseOwner}[{objectQualifier}Publish_Item] where ItemIdentifier = @ItemIdentifier
+	if (@id > 0)
+	begin
+		select @id
+	end
+	else
+	begin
+		insert into {databaseOwner}[{objectQualifier}Publish_Item]
+		(
+			itemTypeId
+			, portalId
+			, moduleId
+			, ItemIdentifier
+		)
+		values(
+			@ItemTypeId
+			, @PortalId
+			, @moduleId
+			, @ItemIdentifier
+		)
+		select SCOPE_IDENTITY()
+		return SCOPE_IDENTITY()
+	end
+
+go
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]
+(
+	@ParentItemIdentifier Uniqueidentifier,
+	@ChildItemVersionIdentifier Uniqueidentifier,
+	@PortalId int
+)
+as
+	
+	declare @results table
+	(
+		ChildItemId int,
+		ChildItemVersionId int,
+		ParentItemId int
+	)
+
+	--first insert the childitem id and then gather the rest
+	insert into @results (ChildItemId, ChildItemVersionId)
+	select ItemId, ItemVersionId
+	From {databaseOwner}[{objectQualifier}Publish_vwItems]
+	where  ItemVersionIdentifier = @ChildItemVersionIdentifier
+	and PortalId = @PortalId
+
+	--this is kinda confusing here. So there is only one set of "Top Level Categories" across all
+	--Portals so you can't include PortalId when looking for the parent because it may be one of these. hk
+	declare @parentId int
+	select @parentId = ItemId from {databaseOwner}[{objectQualifier}publish_vwItems] where ItemIdentifier = @ParentItemIdentifier and PortalId = @PortalId
+	
+	if (@parentId is null)
+	begin
+		--just remove the portalId
+		select @parentId = ItemId from {databaseOwner}[{objectQualifier}publish_vwItems] where ItemIdentifier = @ParentItemIdentifier
+	end
+
+	--now the parent
+	update @results
+	set ParentItemId = @parentId
+	
+	select * from @results
+
+go

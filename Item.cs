@@ -201,15 +201,14 @@ namespace Engage.Dnn.Publish
             //insert new version or not
             //AuthorUserId = authorId;
             RevisingUserId = revisingId;
-
             if (this.IsNew)
             {
                 if (itemIdentifier == Guid.Empty) itemIdentifier = Guid.NewGuid();
                 this.itemId = AddItem(trans, this.itemTypeId, this.portalId, this.moduleId, itemIdentifier);
             }
-            //save generic information	
-            //if (itemVersionIdentifier == Guid.Empty) itemVersionIdentifier = Guid.NewGuid();
-            itemVersionIdentifier = Guid.NewGuid();
+
+            itemVersionIdentifier = itemVersionIdentifier == Guid.Empty ? Guid.NewGuid() : ItemVersionIdentifier;
+            
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
                 this.Name, this.Description, this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
