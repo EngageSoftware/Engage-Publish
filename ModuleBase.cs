@@ -224,11 +224,6 @@ namespace Engage.Dnn.Publish
             get { return IsCommentAuthorNotificationEnabledForPortal(this.PortalId); }
         }
 
-        public bool IsShortLinkEnabled
-        {
-            get { return IsShortLinkEnabledForPortal(this.PortalId); }
-        }
-
         public bool AllowAnonymousComments
         {
             get { return AllowAnonymousCommentsForPortal(this.PortalId); }
@@ -574,16 +569,6 @@ namespace Engage.Dnn.Publish
         public static bool IsCommentAuthorNotificationEnabledForPortal(int portalId)
         {
             string s = HostSettings.GetHostSetting(Utility.PublishCommentEmailAuthor + portalId);
-            if (Utility.HasValue(s))
-            {
-                return Convert.ToBoolean(s);
-            }
-            return false;
-        }
-
-        public static bool IsShortLinkEnabledForPortal(int portalId)
-        {
-            string s = HostSettings.GetHostSetting(Utility.PublishShortItemLink + portalId);
             if (Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s);

@@ -104,16 +104,6 @@
 				<asp:CheckBox ID="chkEnablePublishFriendlyUrls" runat="server" />
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<dnn:label id="plUseShortPublishLinks" runat="server" controlname="chkUseShortPublishLinks" text="Enable Shortened Link URLs:"></dnn:label>
-			    
-			</td>
-			<td>
-				<asp:CheckBox ID="chkUseShortPublishLinks" runat="server" />
-			</td>
-		</tr>
-
         <tr>
 			<td>
 				<dnn:label id="plEnablePaging" runat="server" controlname="chkEnablePaging" text="Enable Article Paging Functionality:"></dnn:label>

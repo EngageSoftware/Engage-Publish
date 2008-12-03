@@ -86,10 +86,6 @@ namespace Engage.Dnn.Publish.Admin
 
                 objHostSettings.UpdateHostSetting(Utility.PublishAuthorCategoryEdit + PortalId.ToString(CultureInfo.InvariantCulture), chkAuthorCategoryEdit.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishEnableArticlePaging + PortalId.ToString(CultureInfo.InvariantCulture), chkEnablePaging.Checked.ToString(CultureInfo.InvariantCulture));
-
-                objHostSettings.UpdateHostSetting(Utility.PublishShortItemLink + PortalId.ToString(CultureInfo.InvariantCulture), chkUseShortPublishLinks.Checked.ToString(CultureInfo.InvariantCulture));
-
-                
                 
                 objHostSettings.UpdateHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture), chkEnableTags.Checked.ToString(CultureInfo.InvariantCulture));
                 
@@ -259,8 +255,6 @@ namespace Engage.Dnn.Publish.Admin
             chkAuthorCategoryEdit.Checked = Utility.GetBooleanPortalSetting(Utility.PublishAuthorCategoryEdit, PortalId, false);
             chkEnableRatings.Checked = Utility.GetBooleanPortalSetting(Utility.PublishRating, PortalId, false);
             chkEnablePaging.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableArticlePaging, PortalId, true);
-
-            chkUseShortPublishLinks.Checked = Utility.GetBooleanPortalSetting(Utility.PublishShortItemLink, PortalId, false);
 
             chkEnableTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableTags, PortalId, false);
             chkEnableVenexus.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableVenexusSearch, PortalId, false);

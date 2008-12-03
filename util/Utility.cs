@@ -295,7 +295,6 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishRatingMaximum = "PublishRatingMaximum";
         public const string PublishSessionReturnToList = "PublishSessionReturnToList";
         public const string PublishSetup = "PublishSetup";
-        public const string PublishShortItemLink = "PublishShortItemLink";
         public const string PublishShowItemId = "PublishShowItemId";
         public const string PublishSubscriberKey = "PublishSubscriberKey";
         public const string PublishSubscriberUrl = "PublishSubscriberUrl";
@@ -1000,6 +999,9 @@ namespace Engage.Dnn.Publish.Util
 
                 if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
                 {
+                    // The commented out code works for DNN's built-in friendly URL provider
+                    ////string relativePath = itemUrl.Replace(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias), string.Empty);
+                    ////itemUrl = Globals.FriendlyUrl(tabInfo, relativePath, GetFriendlyPageName(item.Name), portalSettings);
                     itemUrl = Globals.FriendlyUrl(tabInfo, itemUrl, GetFriendlyPageName(item.Name), portalSettings);
                 }
             }
