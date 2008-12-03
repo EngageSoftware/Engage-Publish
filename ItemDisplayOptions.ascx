@@ -15,7 +15,7 @@
         <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
             <tr>
                 <td class="SubHead"><dnn:label id="lblChooseDisplayType" resourcekey="lblChooseDisplayType" runat="server" /></td>
-                <td class="NormalTextBox"><asp:dropdownlist id="ddlChooseDisplayType" Runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlChooseDisplayType_SelectedIndexChanged"></asp:dropdownlist></td>
+                <td class="NormalTextBox"><asp:dropdownlist id="ddlChooseDisplayType" Runat="server" AutoPostBack="true"></asp:dropdownlist></td>
             </tr>
         </table>
         <dnn:sectionhead id="shCurrentDisplay" cssclass="Head" runat="server" text="Basic Options" section="dvBasic" resourcekey="shCurrentDisplay" isexpanded="True"/><hr />
@@ -29,7 +29,7 @@
             <table id="tblAdvanced" cellspacing="0" cellpadding="0" border="0" class="SettingsTable" >
                 <tr>
                     <td class="SubHead"><dnn:label id="lblOverrideable" resourcekey="lblOverrideable" runat="server" /></td>
-                    <td class="NormalTextBox"><asp:checkbox id="chkOverrideable" Runat="server"></asp:checkbox>&nbsp;&nbsp;&nbsp;<asp:LinkButton id="btnConfigure" runat="server" OnClick="btnConfigure_Click" resourcekey="btnConfigure" /></td>
+                    <td class="NormalTextBox"><asp:checkbox id="chkOverrideable" Runat="server"></asp:checkbox>&nbsp;&nbsp;&nbsp;<asp:LinkButton id="btnConfigure" runat="server" resourcekey="btnConfigure" /></td>
                 </tr>
                 <tr>
                     <td class="SubHead"><dnn:label id="lblAllowTitleUpdate" resourcekey="lblAllowTitleUpdate" runat="server" /></td>
