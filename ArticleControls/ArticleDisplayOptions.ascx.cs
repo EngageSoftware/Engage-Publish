@@ -24,17 +24,18 @@ namespace Engage.Dnn.Publish.ArticleControls
     /// </summary>
     public partial class ArticleDisplayOptions : ModuleSettingsBase
     {
-        private int ArticleId
+        private int? ArticleId
         {
             set
             {
-                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adArticleId", value.ToString(CultureInfo.InvariantCulture));
+                if(value.HasValue)
+                new ModuleController().UpdateTabModuleSetting(this.TabModuleId, "adArticleId", value.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             get
             {
                 object o = this.Settings["adArticleId"];
-                return o == null ? Null.NullInteger : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+                return o == null ? (int?)null : Convert.ToInt32(o, CultureInfo.InvariantCulture);
             }
         }
 

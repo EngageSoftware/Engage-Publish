@@ -126,7 +126,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             this.CategoriesDropDownList.Items.Clear();
             ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, this.PortalId, false);
-            this.CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), "-1"));
+            this.CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), ""));
         }
 
         /// <summary>
