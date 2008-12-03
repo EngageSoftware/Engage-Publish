@@ -208,9 +208,9 @@ namespace Engage.Dnn.Publish
 
             }
 
-            if (this.itemVersionId > 1)
+            if (this.itemVersionId > 1 || ItemVersionIdentifier == Guid.Empty)
             {
-                itemVersionIdentifier =Guid.NewGuid();
+                itemVersionIdentifier = Guid.NewGuid();
             }
             else
             {
