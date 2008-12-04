@@ -58,9 +58,9 @@ namespace Engage.Dnn.Publish.Services
         /// <param name="categoryId">The category id.</param>
         /// <returns>A list of article names and IDs for the given category</returns>
         [WebMethod][ScriptMethod]
-        public IList<Pair> GetArticlesByCategory(int categoryId)
+        public Pair[] GetArticlesByCategory(int categoryId)
         {
-            IList<Pair> articles = new List<Pair>();
+            List<Pair> articles = new List<Pair>();
             Publish.Category category = Publish.Category.GetCategory(categoryId);
             if (category != null)
             {
@@ -70,7 +70,7 @@ namespace Engage.Dnn.Publish.Services
                 }
             }
 
-            return articles;
+            return articles.ToArray();
         }
     }
 }
