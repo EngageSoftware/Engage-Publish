@@ -44,7 +44,8 @@ namespace Engage.Dnn.Publish.TextHtml
                 if (!Page.IsPostBack)
                 {
                     LoadArticle();
-                    
+
+                    epApprovals.Visible = UseApprovals;
                 }
             }
             catch (Exception exc)
@@ -56,9 +57,9 @@ namespace Engage.Dnn.Publish.TextHtml
         protected void LocalizeText()
         {
             btnSubmit.Text = Localization.GetString("btnSubmit", LocalSharedResourceFile);
-            lblApproval.Text = Localization.GetString("ApprovalStatus", LocalSharedResourceFile);
-            
+            lblApproval.Text = UseApprovals ? Localization.GetString("ApprovalStatus", LocalSharedResourceFile) : Localization.GetString("ApprovalsDisabled", LocalSharedResourceFile);
         }
+
         protected void LoadArticle()
         {
             if(Settings.Contains("ItemId"))
@@ -95,7 +96,10 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.VersionSettings.Add(itemVersionSetting);
                 a.ModuleId = ModuleId;
 
-                a.ApprovalStatusId = epApprovals.ApprovalStatusId;
+                if (UseApprovals)
+                    a.ApprovalStatusId = epApprovals.ApprovalStatusId;
+                else
+                    a.ApprovalStatusId = Util.ApprovalStatus.Approved.GetId();
 
                 a.Save(UserId);
                 
@@ -106,7 +110,6 @@ namespace Engage.Dnn.Publish.TextHtml
             {
                 Article a = Article.Create(articleName.ToString(), articleDescription, teArticleText.Text.ToString(), UserId, DefaultTextHtmlCategory, ModuleId, PortalId);
                 a.DisplayTabId = TabId;
-                //TODO: how to handle approval status Ids?
 
                 //force display on specific page
                 Setting setting = Setting.ArticleSettingForceDisplay;
@@ -114,8 +117,12 @@ namespace Engage.Dnn.Publish.TextHtml
                 ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
                 a.VersionSettings.Add(itemVersionSetting);
 
-                a.ModuleId = ModuleId;
-                a.ApprovalStatusId = epApprovals.ApprovalStatusId;
+                a.ModuleId = ModuleId; 
+                if (UseApprovals)
+                    a.ApprovalStatusId = epApprovals.ApprovalStatusId;
+                else
+                    a.ApprovalStatusId = Util.ApprovalStatus.Approved.GetId();
+
                 a.Save(UserId);             
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
                 modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");

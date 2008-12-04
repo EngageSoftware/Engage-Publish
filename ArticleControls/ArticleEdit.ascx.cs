@@ -401,6 +401,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     chkUseApprovals.Visible = IsAdmin && UseApprovals;
                     phApproval.Visible = chkUseApprovals.Checked && UseApprovals;
                     lblNotUsingApprovals.Visible = !chkUseApprovals.Checked || !UseApprovals;
+                    lblNotUsingApprovals.Text = Localization.GetString("ApprovalsDisabled", LocalSharedResourceFile);
 
                     LoadPhotoGalleryDropDown(av);
                     LoadDisplayTabDropDown();

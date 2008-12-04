@@ -227,7 +227,7 @@
                         <ContentTemplate>
                             <asp:CheckBox ID="chkUseApprovals" runat="server" Text="Use Approvals" ResourceKey="chkUseApprovals" AutoPostBack="true" OnCheckedChanged="chkUseApprovals_CheckedChanged" Visible="false" Checked="true" />
                             <asp:PlaceHolder ID="phApproval" runat="Server" />
-                            <asp:Label ID="lblNotUsingApprovals" runat="server" Text="Approvals are turned off.  Any changes you make will appear immediately on your website." ResourceKey="lblNotUsingApprovals" Visible="false" />
+                            <asp:Label ID="lblNotUsingApprovals" runat="server" Visible="false" />
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </td>

@@ -128,7 +128,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                
+
                 int value;
                 object o = Settings["adNumberOfThumbnails"];
                 if (o != null && int.TryParse(o.ToString(), out value))
@@ -269,7 +269,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         forumCommentSetting.ControlName = "chkForumComments";
                         forumCommentSetting.PropertyName = "Checked";
                         forumCommentSetting.PropertyValue = false.ToString();
-                    }                    
+                    }
 
                     return IsPublishCommentType || !Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
@@ -288,11 +288,11 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             get
             {
-                
+
                 if (IsPublishCommentType) return false;
                 ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId);
                 int? categoryForumId = GetCategoryForumId();
-                if (!categoryForumId.HasValue || categoryForumId<1) return false;
+                if (!categoryForumId.HasValue || categoryForumId < 1) return false;
                 return (IsCommentsEnabled && !IsPublishCommentType)
                     && (forumCommentSetting != null && Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture));
                 //{
@@ -397,13 +397,19 @@ namespace Engage.Dnn.Publish.ArticleControls
         private int? GetCategoryForumId()
         {
             //TODO: we need to handle items that no longer have a valid parent
-            int parentCategoryItemVersionId = Category.GetCategory(Category.GetParentCategory(VersionInfoObject.ItemId, PortalId), PortalId).ItemVersionId;
-            ItemVersionSetting categoryForumSetting = ItemVersionSetting.GetItemVersionSetting(parentCategoryItemVersionId, "CategorySettings", "CommentForumId", PortalId);
-            int categoryForumId;
-            if (categoryForumSetting == null)
-                return null;
-            Int32.TryParse(categoryForumSetting.PropertyValue, out categoryForumId);
-            return categoryForumId;
+            Category pc = Category.GetCategory(Category.GetParentCategory(VersionInfoObject.ItemId, PortalId), PortalId);
+            
+            if (pc != null)
+            {
+                int parentCategoryItemVersionId = pc.ItemVersionId;
+                ItemVersionSetting categoryForumSetting = ItemVersionSetting.GetItemVersionSetting(parentCategoryItemVersionId, "CategorySettings", "CommentForumId", PortalId);
+                int categoryForumId;
+                if (categoryForumSetting == null)
+                    return null;
+                Int32.TryParse(categoryForumSetting.PropertyValue, out categoryForumId);
+                return categoryForumId;
+            }
+            return null;
         }
 
         private void LoadArticle()
@@ -418,7 +424,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
-        
+
         #region Event Handlers
 
         private void Page_Load(object sender, EventArgs e)
@@ -466,11 +472,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                 DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
                 if (UseForumComments)
                 {
-                    
+
                     int? categoryForumId = GetCategoryForumId();
                     if (categoryForumId.HasValue)
                     {
-                        
+
                         int threadId = ForumProvider.GetInstance(PortalId).AddComment(categoryForumId.Value, VersionInfoObject.AuthorUserId,
                             VersionInfoObject.Name, VersionInfoObject.Description, GetItemLinkUrl(VersionInfoObject.ItemId, PortalId),
                             objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), UserId,
@@ -513,7 +519,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                             Mail.SendMail(PortalSettings.Email, ui.Email, string.Empty, emailSubject, emailBody, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
                         }
                     }
-                    
+
                 }
                 ConfigureComments();
 
@@ -564,7 +570,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         imgThumbnail.Attributes["onmouseover"] = "ShowImage('" + pceArticleThumbnail.ClientID + "', '" + pnlLargeImage.ClientID + "')";
                         imgThumbnail.Attributes["onmouseout"] = "HideImage('" + pceArticleThumbnail.ClientID + "', '" + pnlLargeImage.ClientID + "', '" + pnlSmallImage.ClientID + "')";
                         imgThumbnail.Attributes["onclick"] = GetPhotoLink(e.Item.DataItem);
-                        
+
 
                         if (GalleryThumbnailHeight.HasValue)
                         {
@@ -590,7 +596,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     case NameDisplayOption.Initial:
                         txtFirstNameComment.MaxLength = 1;
-                        txtFirstNameComment.Text = (UserInfo != null && UserInfo.UserID !=-1) ? UserInfo.FirstName.Substring(0, 1) : string.Empty;
+                        txtFirstNameComment.Text = (UserInfo != null && UserInfo.UserID != -1) ? UserInfo.FirstName.Substring(0, 1) : string.Empty;
                         lblFirstNameComment.Text = Localization.GetString("FirstInitial", LocalResourceFile);
                         showNamePanel = true;
                         break;
@@ -693,9 +699,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                     ad.DisplayRelatedArticle = false;
                     ad.DisplayRelatedLinks = false;
                     ad.DisplayEmailAFriend = false;
-                    
-                    
-                    
+
+
+
                     this.ad.SetItemId(a.ItemId);
                     ad.DisplayTitle = false;
                     this.phRelatedArticle.Controls.Add(ad);
@@ -816,8 +822,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                 return;
             }
 
-            
-            if (Item.GetItemType(VersionInfoObject.ItemId,PortalId) == "Article")
+
+            if (Item.GetItemType(VersionInfoObject.ItemId, PortalId) == "Article")
             {
                 UseCache = true;
 
@@ -942,7 +948,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
             if (phTags.Controls.Count > 1)
             {
-                phTags.Controls.RemoveAt(phTags.Controls.Count-1);
+                phTags.Controls.RemoveAt(phTags.Controls.Count - 1);
             }
             else
             {
@@ -963,7 +969,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 string youTubeEmbed = "<div class=\"Publish_Video\"><object width=\"425\" height=\"355\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/" + youTubeId + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object></div>";
                 string fullArticleText = a.ArticleText.Substring(0, youTubeLocation);
                 fullArticleText += youTubeEmbed;
-                fullArticleText += a.ArticleText.Substring(youTubeLocation + youTubeId.Length + youTubeFinishLocation-1);
+                fullArticleText += a.ArticleText.Substring(youTubeLocation + youTubeId.Length + youTubeFinishLocation - 1);
                 a.ArticleText = fullArticleText;
                 ReplaceTokens(a);
             }
@@ -991,7 +997,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (this.AllowArticlePaging && (this.PageId > 0))
             {
                 this.lblArticleText.Text = article.GetPage(this.PageId).Replace("[PAGE]", string.Empty);
-                
+
                 //lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", "");
 
                 //lnkPreviousPage
@@ -1219,7 +1225,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else //simple gallery
                 {
-                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&TagID=" + Null.NullInteger.ToString(CultureInfo.InvariantCulture)  + "&ItemID=" + row["PhotoID"] + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId) + "&tt=" + GetToolTipSetting(moduleId));
+                    string popupUrl = ResolveUrl("~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&TagID=" + Null.NullInteger.ToString(CultureInfo.InvariantCulture) + "&ItemID=" + row["PhotoID"] + "&Border=" + GetBorderStyle(moduleId) + "&sb=" + GetSortBy(moduleId) + "&sd=" + GetSortDirection(moduleId) + "&tt=" + GetToolTipSetting(moduleId));
                     return "window.open('" + popupUrl + "','smallscreen','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width=" + GetPopupWidth(moduleId).ToString(CultureInfo.InvariantCulture) + ",height=" + GetPopupHeight(moduleId).ToString(CultureInfo.InvariantCulture) + "')";
                 }
             }
@@ -1339,7 +1345,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new char[] { '.' }));
             }
             //if we can't get the version, just swallow the exception. BD
-            catch (FormatException){}
+            catch (FormatException) { }
 
             if (version != null)
             {
@@ -1360,7 +1366,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new char[] { '.' }));
             }
             //if we can't get the version, just swallow the exception. BD
-            catch (FormatException){}
+            catch (FormatException) { }
 
             if (version != null)
             {

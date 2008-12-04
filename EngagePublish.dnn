@@ -391,7 +391,7 @@
     </folder>
     <folder>
       <name>Engage: Publish Text/HTML</name>
-      <friendlyname>EP Text/HTML</friendlyname>
+      <friendlyname>Engage: Text/HTML</friendlyname>
       <foldername>EngagePublish/TextHTML</foldername>
       <modulename>Engage: Publish Text/HTML</modulename>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
@@ -400,7 +400,7 @@
       <dependencies></dependencies>
       <modules>
         <module>
-          <friendlyname>EP Text/HTML</friendlyname>
+          <friendlyname>Engage: Text/HTML</friendlyname>
           <cachetime>0</cachetime>
           <controls>
             <control>

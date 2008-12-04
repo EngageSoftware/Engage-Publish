@@ -983,8 +983,13 @@ namespace Engage.Dnn.Publish.Util
         {
             string returnUrl = String.Empty;
 
-            if (item != null && item.IsLinkable())
+            if (item != null)
             {
+                if (!item.IsLinkable())
+                {
+                    tabId = ModuleBase.DefaultDisplayTabIdForPortal(portalId);
+                }
+
                 if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
                 {
                     returnUrl = GetFriendlyItemLinkUrl(item, tabId, moduleId, pageId, portalId, cultureName);
@@ -994,6 +999,7 @@ namespace Engage.Dnn.Publish.Util
                     returnUrl = GetNonFriendlyLinkUrl(item, tabId, moduleId, pageId, portalId);
                 }
             }
+
             return returnUrl;
         }
 
