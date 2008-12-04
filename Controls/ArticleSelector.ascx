@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <asp:ScriptManagerProxy runat="server">
     <Services>
-        <asp:ServiceReference path="../Services/PublishServices.asmx" />
+        <asp:ServiceReference path="~/DesktopModules/EngagePublish/Services/PublishServices.asmx" />
     </Services>
 </asp:ScriptManagerProxy>
 
