@@ -14,6 +14,7 @@ namespace Engage.Dnn.Publish.Controls
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Services.Localization;
     using Util;
@@ -91,6 +92,8 @@ namespace Engage.Dnn.Publish.Controls
             {
                 this.SelectArticle();
             }
+
+            RegisterScripts();
         }
 
         /// <summary>
@@ -165,6 +168,16 @@ namespace Engage.Dnn.Publish.Controls
             {
                 this.ArticlesDropDownList.SelectedValue = this.articleId.Value.ToString(CultureInfo.InvariantCulture);
             }
+        }
+
+        /// <summary>
+        /// Registers the scripts used on this page, for the cascading dropdown behavior.
+        /// </summary>
+        private void RegisterScripts()
+        {
+            string articleSelectorScriptControlIdsScript = string.Format(CultureInfo.InvariantCulture, "var CategoriesDropDownListId = '{0}'; var ArticlesDropDownListId = '{1}';", this.CategoriesDropDownList.ClientID, this.ArticlesDropDownList.ClientID);
+            ScriptManager.RegisterStartupScript(this, typeof(ArticleSelector), "ArticleSelectorScriptControlIds", articleSelectorScriptControlIdsScript, true);
+            ScriptManager.RegisterClientScriptResource(this, typeof(ArticleSelector), "Engage.Dnn.Publish.Scripts.ArticleSelector.js");
         }
     }
 }

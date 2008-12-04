@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Web.UI;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -42,3 +43,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
+
+[assembly: WebResource("Engage.Dnn.Publish.Scripts.ArticleSelector.js", "text/javascript")]
