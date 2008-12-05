@@ -39,7 +39,7 @@ using System.Web.UI;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("05.02.09.*")]
+[assembly: AssemblyVersion("05.03.00.*")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
