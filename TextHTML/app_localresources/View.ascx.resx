@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lblApprovalComments.Text" xml:space="preserve">
+    <value>ApprovalComments:</value>
+  </data>
+  <data name="lnkSaveApprovalStatus.Text" xml:space="preserve">
+    <value>update approval status</value>
+  </data>
+  <data name="lnkSaveApprovalStatusCancel.Text" xml:space="preserve">
+    <value>cancel</value>
+  </data>
   <data name="NotConfigured.Text" xml:space="preserve">
     <value>Before you an edit the content of this module you must configure the default Text/HTML category in the &lt;a href="{0}"&gt;Engage: Publish admin settings&lt;/a&gt;.</value>
   </data>

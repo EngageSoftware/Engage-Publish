@@ -1,0 +1,69 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateItemVersion]
+(
+	@ItemId [int]
+	, @ItemVersionId [int]
+	, @ApprovalStatusId [int]
+	, @ApprovalUserId [int]
+	, @ApprovalComments [nvarchar] (255)
+)
+AS 
+           
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_ApprovalstatusType] where approvalstatusname = 'Approved'))
+Begin
+	-- archive existing versions 
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+		set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] 
+									where approvalstatusname = 'Archived') 
+			, LastUpdated = GetDate()
+	WHERE ItemVersionId = @ItemVersionId 
+		and ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] 
+									where approvalstatusname = 'Approved')
+									
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+		set ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] 
+									where approvalstatusname = 'Archived')
+			, LastUpdated = GetDate()
+	WHERE ItemId = @ItemId 
+		and (ItemVersionId < @ItemVersionId or ApprovalStatusId=(select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] 
+									where approvalstatusname = 'Approved'))
+		and ItemVersionId <> @ItemVersionId 
+				
+	UPDATE {databaseOwner}[{objectQualifier}Publish_Item] set ApprovedItemVersionId = @ItemVersionId
+	WHERE ItemId = @ItemId
+		
+End
+Else
+Begin
+	-- get current approval status
+	declare @currentApprovalStatusId [int]
+	set @currentApprovalStatusId = (select approvalStatusId from {databaseOwner}[{objectQualifier}Publish_ItemVersion] where itemVersionId = @ItemVersionId)
+	if (@currentApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Approved'))
+	begin
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+	end
+End
+if (@ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'))
+begin
+	UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] SET ApprovalStatusId = (select approvalstatusid from {databaseOwner}[{objectQualifier}Publish_Approvalstatustype] where approvalstatusname = 'Archived'), LastUpdated = GetDate() WHERE ItemId = @ItemId and @ItemVersionId < @ItemVersionId 
+--and ApprovalStatusId != 3
+		update {databaseOwner}[{objectQualifier}Publish_Item] SET ApprovedItemVersionId = NULL where ItemId = @ItemId
+end
+UPDATE {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+	
+	SET  
+		 [ApprovalStatusID]	 = @ApprovalStatusID,
+		 [ApprovalUserID]	 = @ApprovalUserID,
+		 [ApprovalComments ]	 = @ApprovalComments 
+	
+	WHERE 
+		( [ItemVersionId]	 = @ItemVersionId AND
+		 [ItemId]	 = @ItemId)
+
+GO
+

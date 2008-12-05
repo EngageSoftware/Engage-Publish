@@ -57,11 +57,11 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             try
             {
-                //todo: check to see if the default Text/HTML category has been set in the Publish Settings, if not display a message.
-                //load the article id (itemid) from the module settings.
                 if (DefaultTextHtmlCategory > 0)
                 {
                     LoadArticle();
+
+
                 }
                 else
                 {
@@ -100,7 +100,31 @@ namespace Engage.Dnn.Publish.TextHtml
                 else
                 {
                     lblArticleText.Text = a.ArticleText;
-                }                
+                }
+
+                
+            object m = Request.QueryString["modid"];
+            if (m != null)
+            {
+                if (m.ToString() == ModuleId.ToString())
+                {
+                    //check if module id querystring is current moduleid
+                    if ((IsAdmin && !VersionInfoObject.IsNew))
+                    {
+                        divPublishApprovals.Visible = true;
+                        divApprovalStatus.Visible = true;
+                        if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+                        {
+                            FillDropDownList();
+                        }
+                        else
+                        {
+                            ddlApprovalStatus.Visible = false;
+                        }
+
+                    }
+                }
+            }
             }
             else
             {
@@ -162,15 +186,18 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void FillDropDownList()
         {
-            ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
-            ddlApprovalStatus.DataValueField = "ApprovalStatusID";
-            ddlApprovalStatus.DataTextField = "ApprovalStatusName";
-            ddlApprovalStatus.DataBind();
-            //set the current approval status
-            ListItem li = ddlApprovalStatus.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
-            if (li != null)
+            if (!Page.IsPostBack)
             {
-                li.Selected = true;
+                ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
+                ddlApprovalStatus.DataValueField = "ApprovalStatusID";
+                ddlApprovalStatus.DataTextField = "ApprovalStatusName";
+                ddlApprovalStatus.DataBind();
+                //set the current approval status
+                ListItem li = ddlApprovalStatus.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
+                if (li != null)
+                {
+                    li.Selected = true;
+                }
             }
         }
     }
