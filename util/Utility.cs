@@ -584,6 +584,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static int GetModuleIdFromDisplayTabId(int displayTabId, int portalId, string modules)
         {
+
             ModuleController mc = new ModuleController();
             ArrayList al; // = null;
             int modid = -1;
@@ -594,8 +595,20 @@ namespace Engage.Dnn.Publish.Util
                 TabInfo ti = tc.GetTab(mi.TabID, mi.PortalID, false);
                 if (ti != null && ti.TabID == displayTabId)
                 {
+                    //TODO: check if the module is overrideable, if so then set the moduleid
+                    object o = mc.GetTabModuleSettings(mi.TabModuleID)["Overrideable"];
+
+                    if (o != null)
+                    {
+                        if (Convert.ToBoolean(o, CultureInfo.InvariantCulture))
+                        {
+                            modid = mi.ModuleID;
+                            return modid;
+                        } //get out there is a module on the page that is configured overrideable.
+                    }
+                    //set the moduleid to the last one, in case we get to the end and haven't found a match
                     modid = mi.ModuleID;
-                    return mi.ModuleID;
+                    //else we just move on                   
                 }
             }
             return modid;
