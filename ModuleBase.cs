@@ -920,10 +920,34 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrl(object itemId)
         {
+
             if (itemId != null)
             {
                 //TODO: should we pass TabId from the page, or from the display tab id for the module?
                 return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, this.PageId, this.GetCultureName());
+            }
+
+            return string.Empty;
+        }
+
+        public string GetItemVersionLinkUrl(object itemVersionId)
+        {
+            Item version = null;
+            int i = Item.GetItemIdFromVersion(Convert.ToInt32(itemVersionId,CultureInfo.CurrentCulture), PortalId);
+            string currentItemType = Item.GetItemType(i, PortalId);
+
+            if (currentItemType.Equals("article", StringComparison.OrdinalIgnoreCase))
+            {
+                version = Article.GetArticleVersion(Convert.ToInt32(itemVersionId,CultureInfo.CurrentCulture), PortalId);
+            }
+            else if (currentItemType.Equals("category", StringComparison.OrdinalIgnoreCase))
+            {
+                version = Category.GetCategoryVersion(Convert.ToInt32(itemVersionId, CultureInfo.CurrentCulture), PortalId);
+            }
+            
+            if (itemVersionId != null)
+            {
+                return Utility.GetItemLinkUrl(version);
             }
 
             return string.Empty;

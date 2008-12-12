@@ -59,14 +59,14 @@
 
                      <asp:TemplateField ShowHeader="true"  HeaderText="ID" SortExpression="ItemId">
                         <ItemTemplate>
-                            <asp:HyperLink ID="hlId" runat="server" CssClass="Normal" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem,"ItemId")) %>'
-                                Text='<%# DataBinder.Eval(Container.DataItem,"ItemId") %>'></asp:HyperLink>
+                            <asp:HyperLink ID="hlId" runat="server" CssClass="Normal" NavigateUrl='<%# GetItemVersionLinkUrl(DataBinder.Eval(Container.DataItem,"ItemVersionId")) %>'  Text='<%# DataBinder.Eval(Container.DataItem,"ItemId") %>'/>
+                            <asp:Label ID="lblItemVersionId" runat="server" Visible="false" Text='<%# DataBinder.Eval(Container.DataItem,"ItemVersionId") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
 
                      <asp:TemplateField ShowHeader="true"  HeaderText="Name" SortExpression="Name">
                         <ItemTemplate>
-                            <asp:HyperLink ID="hlPreview" runat="server" CssClass="Normal" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem,"ItemId")) %>'
+                            <asp:HyperLink ID="hlPreview" runat="server" CssClass="Normal" NavigateUrl='<%# GetItemVersionLinkUrl(DataBinder.Eval(Container.DataItem,"ItemVersionId")) %>'
                                 Text='<%# DataBinder.Eval(Container.DataItem,"Name") %>'></asp:HyperLink>
                         </ItemTemplate>
                     </asp:TemplateField>

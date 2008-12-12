@@ -962,6 +962,11 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemLinkUrl(Item item)
         {
+            if (item != null && item.IsLinkable() && item.ApprovalStatusId != Util.ApprovalStatus.Approved.GetId())
+            {
+                return Utility.GetItemVersionLinkUrl(item);// Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
+            }
+
             return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
         }
 
@@ -1015,6 +1020,16 @@ namespace Engage.Dnn.Publish.Util
 
             return returnUrl;
         }
+
+        public static string GetItemVersionLinkUrl(Item item)
+        {
+            string returnUrl = String.Empty;
+
+            returnUrl = Globals.NavigateURL(item.DisplayTabId, "", "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId.ToString());
+
+            return returnUrl;
+        }
+
 
         /// <summary>
         /// Gets a URL linking to the given item when friendly URLs are not turned on.

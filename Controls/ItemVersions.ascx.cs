@@ -91,28 +91,12 @@ namespace Engage.Dnn.Publish.Controls
                 //int itemVersionId = Convert.ToInt32(view["ItemVersionId"]);
                 //string href = GetItemLinkUrl(itemVersionId);
 
-                //For now, we can test the version to see if the item is linkable. hk
-                int itemVersionId = Convert.ToInt32(view["ItemVersionId"], CultureInfo.InvariantCulture);
-                int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
-                int i = Item.GetItemIdFromVersion(itemVersionId, PortalId);
-                string currentItemType = Item.GetItemType(i, PortalId);
-                Item version = null;
-
-                if (currentItemType.Equals("article", StringComparison.OrdinalIgnoreCase))
-                {
-                    version = Article.GetArticleVersion(itemVersionId, PortalId);
-                }
-                else if (currentItemType.Equals("category", StringComparison.OrdinalIgnoreCase))
-                {
-                    version = Category.GetCategoryVersion(itemVersionId, PortalId);
-                }
+                ////For now, we can test the version to see if the item is linkable. hk
+                //int itemVersionId = 
+                //int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
 
                 string href = string.Empty;
-                //TODO: we can only link to the moduleid if the moduleid is also on the same page as the display tabid
-                if (version != null && version.IsLinkable())
-                {
-                    href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
-                }
+                href = GetItemVersionLinkUrl(view["ItemVersionId"]);
 
                 return href;
             }

@@ -346,15 +346,14 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
+                    Label lblItemVersionId = (Label)gvr.FindControl("lblItemVersionId");
                     CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
-                    if (hlId != null && cb != null && cb.Checked)
+                    if (lblItemVersionId != null && cb != null && cb.Checked)
                     {
                         //approve
-                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);
+                        Article a = (Article)Article.GetArticleVersion(Convert.ToInt32(lblItemVersionId.Text), PortalId);
                         a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         a.UpdateApprovalStatus();
-
                     }
                 }
 
