@@ -242,17 +242,19 @@ namespace Engage.Dnn.Publish
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 /// WHAT IS THIS? Why try/catch and gooble up errors???
+                /// this was added because some exceptions occur for ping servers that we don't need to let the users know about.
+                /// 
                 //catch the ping exception but let everything else proceed.
                 /// localize this error
-                //Exceptions.ProcessModuleLoadException("Ping Error", null, exc);
+
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(exc);
                 //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
 
             }
             Utility.ClearPublishCache(PortalId);
-
 
         }
 
