@@ -234,11 +234,11 @@ namespace Engage.Dnn.Publish
                     if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
                     {
                         string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                        string changedUrl = Utility.HasValue(surl) ? s : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
-                        Hashtable ht = PortalSettings.GetSiteSettings(PortalId);
+                        string changedUrl = Utility.HasValue(surl) ? surl : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
+                        PortalSettings ps = Utility.GetPortalSettings(PortalId);
 
                         //ping
-                        Ping.SendPing(ht["PortalName"].ToString(), ht["PortalAlias"].ToString(), changedUrl, PortalId);
+                        Ping.SendPing(ps.PortalName.ToString(), ps.PortalAlias.ToString(), changedUrl, PortalId);
                     }
                 }
             }

@@ -285,6 +285,7 @@ namespace Engage.Dnn.Publish.Services
                 List<Post> posts = new List<Post>();
 
                 // TODO: Implement your own logic to get posts and set the posts
+                //TODO: get a collection of posts for an author...
 
                 return posts.ToArray();
             }

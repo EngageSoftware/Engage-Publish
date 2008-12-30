@@ -22,7 +22,7 @@ namespace Engage.Dnn.Publish.Util
 {
     public static class Ping
     {
-        //http://solutionforyou.wordpress.com/2008/02/17/csharp-blog-ping-code-using-xml-rpc-and-weblogupdates-ping-for-pingomatic-technorati/
+
         public static void SendPing(string name, string url, string changesUrl, int portalId)
         {
             try
@@ -57,7 +57,10 @@ namespace Engage.Dnn.Publish.Util
                     {
                         xml.WriteStartDocument();
                         xml.WriteStartElement("methodCall");
-                        xml.WriteElementString("methodName", "weblogUpdates.ping");
+                        if (request.ServicePoint.Address.ToString() == "http://blogsearch.google.com/ping/RPC2")
+                            xml.WriteElementString("methodName", "weblogUpdates.extendedPing");
+                        else
+                            xml.WriteElementString("methodName", "weblogUpdates.ping");
                         xml.WriteStartElement("params");
                         xml.WriteStartElement("param");
                         xml.WriteElementString("value", name);

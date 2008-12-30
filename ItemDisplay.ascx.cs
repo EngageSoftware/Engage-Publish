@@ -58,7 +58,7 @@ namespace Engage.Dnn.Publish
             object oid = Request.Params["aid"];
             if (oid != null)
             {
-                //TODO:build the full url
+                //build the full url
                 //made this a 301 redirect for better SEO
                 string href = ApplicationUrl + DesktopModuleFolderName + "itemlink.aspx?aid=" + oid;
                 Response.Status = "301 Moved Permanently";
