@@ -1143,11 +1143,19 @@ a.mouseOverImage:hover
 	float:left;
 	clear:left;
 }
+
 .Publish_CommentApprovalName
 {
 	float:left;
 	clear:left;
 }
+
+.Publish_CommentApprovalUrl
+{
+	float:left;
+	clear:left;
+}
+
 
 .publishTextBoxWidth
 {

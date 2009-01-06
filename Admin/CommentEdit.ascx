@@ -11,6 +11,7 @@
 	    <dnn:label ID="lblFirstName" runat="server" /><asp:TextBox ID="txtFirstName" runat="server" /><br />
 	    <dnn:label ID="lblLastName" runat="server" /><asp:TextBox ID="txtLastName" runat="server" /><br />
 	    <dnn:label ID="lblEmailAddress" runat="server" /><asp:TextBox ID="txtEmailAddress" runat="server" /><br />
+	    <dnn:label ID="lblUrl" runat="server" /><asp:TextBox ID="txtUrl" runat="server" /><br />
 	</div>
 	<hr />
 	<div id="divCommentText" runat="server"><asp:placeholder id="phCommentText" Runat="server"></asp:placeholder></div>

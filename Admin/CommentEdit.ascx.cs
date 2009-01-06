@@ -91,6 +91,8 @@ namespace Engage.Dnn.Publish.Admin
 					this.teArticleText.Text = thisComment.CommentText;
                     this.ias.ApprovalStatusId = thisComment.ApprovalStatusId;
 
+                    this.txtUrl.Text = thisComment.Url;
+
                     this.txtFirstName.MaxLength = UserFeedback.Comment.NameSizeLimit;
                     this.txtLastName.MaxLength = UserFeedback.Comment.NameSizeLimit;
                     this.txtEmailAddress.MaxLength = UserFeedback.Comment.EmailAddressSizeLimit;
@@ -125,6 +127,7 @@ namespace Engage.Dnn.Publish.Admin
                 thisComment.LastName = txtLastName.Text;
                 thisComment.EmailAddress = txtEmailAddress.Text;
                 thisComment.ApprovalStatusId = ias.ApprovalStatusId;
+                thisComment.Url = txtUrl.Text.Trim();
 
                 thisComment.Save(DataProvider.ModuleQualifier);
                 Utility.ClearPublishCache(PortalId);

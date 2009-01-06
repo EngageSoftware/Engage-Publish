@@ -191,4 +191,10 @@
   <data name="lblEmailAddress.Text" xml:space="preserve">
     <value>Email Address</value>
   </data>
+  <data name="lblUrl.Help" xml:space="preserve">
+    <value>The URL entered along with the comment. It is recommended that you don't allow spam type URLs in your comments.</value>
+  </data>
+  <data name="lblUrl.Text" xml:space="preserve">
+    <value>URL:</value>
+  </data>
 </root>

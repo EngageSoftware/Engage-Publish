@@ -852,6 +852,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" comment.firstName, ");
             sql.Append(" comment.lastName, ");
             sql.Append(" comment.emailAddress, ");
+            sql.Append(" comment.Url, ");
             sql.Append(" comment.ratingId, ");
             sql.Append(" vi.name ");
             sql.AppendFormat(" from {0}vwComments comment ", NamePrefix);

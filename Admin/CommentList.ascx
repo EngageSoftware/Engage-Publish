@@ -63,6 +63,9 @@
                         <div class="Publish_CommentApprovalComment">
                             <%# GetCommentText(DataBinder.Eval(Container.DataItem,"CommentText")) %>
                         </div>
+                        
+                        <asp:HyperLink ID="hlUrl" CssClass="Publish_CommentApprovalUrl" runat="server" NavigateUrl='<%# DataBinder.Eval(Container.DataItem,"Url") %>' Text='<%# DataBinder.Eval(Container.DataItem,"Url") %>'></asp:HyperLink>
+                        
                         </div>
                     </asp:Panel>
                 </ItemTemplate>
