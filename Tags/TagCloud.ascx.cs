@@ -86,14 +86,18 @@ namespace Engage.Dnn.Publish.Tags
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    dt.DefaultView.Sort = "TotalItems desc";
-                    //Utility.SortDataTableSingleParam(dt, "TotalItems desc");
+                    //this doesn't work
+                    //dt.DefaultView.Sort = "TotalItems DESC";
+                    Utility.SortDataTableSingleParam(dt, "TotalItems desc");
                     //Get the most popular and lease popular tag totals
                     mostPopularTagCount = Convert.ToInt32(dt.Rows[0]["TotalItems"].ToString());
                     leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1]["TotalItems"].ToString());
-
-                    dt.DefaultView.Sort = "name asc";
-                    //Utility.SortDataTableSingleParam(dt, "name asc");
+                    
+                    //this doesn't work
+                    //dt.DefaultView.Sort = "Name ASC";
+                    
+                    
+                    Utility.SortDataTableSingleParam(dt, "name asc");
 
                     //DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
                     //Utility.AddCacheKey(tagCacheKey, PortalId);
@@ -139,7 +143,7 @@ namespace Engage.Dnn.Publish.Tags
             double result = Convert.ToDouble(itemCount) / Convert.ToDouble(tagCountSpread);
 
             string resultString;
-            if (result <= 1666)
+            if (result <= .1666)
             {
                 resultString = "size1";
             }
