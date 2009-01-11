@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplay" Codebehind="ArticleDisplay.ascx.cs" %>
+<%@ Control Language="c#" AutoEventWireup="True" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplay" Codebehind="ArticleDisplay.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
 <div id="articleDisplay" class="Normal">

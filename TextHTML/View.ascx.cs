@@ -60,8 +60,6 @@ namespace Engage.Dnn.Publish.TextHtml
                 if (DefaultTextHtmlCategory > 0)
                 {
                     LoadArticle();
-
-
                 }
                 else
                 {
@@ -99,7 +97,22 @@ namespace Engage.Dnn.Publish.TextHtml
                 }
                 else
                 {
-                    lblArticleText.Text = a.ArticleText;
+                    string articleText = a.ArticleText;
+                    
+                    DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
+                    tr.AccessingUser = UserInfo;
+                    tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
+                    
+
+                    articleText = tr.ReplaceEnvironmentTokens(articleText);
+                    lblArticleText.Text = articleText;
+                    
+
+                    //Dim tr As New DotNetNuke.Services.Tokens.TokenReplace()
+                    //    tr.AccessingUser = UserInfo
+                    //    tr.DebugMessages = Not IsTabPreview()
+                    //    strContent = tr.ReplaceEnvironmentTokens(strContent)
+                    //    lblContent.EditEnabled = False
                 }
 
                 
