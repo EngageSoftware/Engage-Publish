@@ -48,11 +48,7 @@
       <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.5.1.28, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Bin\DotNetNuke.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="DotNetNuke, Version=4.5.1.28, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\DotNetNuke.Search.DataStore.dll</HintPath>

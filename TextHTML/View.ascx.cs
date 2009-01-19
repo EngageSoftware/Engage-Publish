@@ -98,13 +98,15 @@ namespace Engage.Dnn.Publish.TextHtml
                 else
                 {
                     string articleText = a.ArticleText;
+                    //removed until we move forward with a newer version of DNN 4.6.2 or greater.
+                    //for enterprise licenses you can uncomment the following if you put the Dotnetnuke.dll (4.6.2+) in the engagepublish/references folder and recompile
                     
-                    DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
-                    tr.AccessingUser = UserInfo;
-                    tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
+                    //DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
+                    //tr.AccessingUser = UserInfo;
+                    //tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
                     
 
-                    articleText = tr.ReplaceEnvironmentTokens(articleText);
+                    //articleText = tr.ReplaceEnvironmentTokens(articleText);
                     lblArticleText.Text = articleText;
                     
 
