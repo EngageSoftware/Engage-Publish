@@ -1,6 +1,6 @@
 // <copyright file="PublishServices.asmx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagemodules.com
-// Copyright (c) 2004-2008
+// Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 

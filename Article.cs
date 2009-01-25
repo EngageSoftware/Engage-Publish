@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagemodules.com
-//Copyright (c) 2004-2008
+//Copyright (c) 2004-2009
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -216,6 +216,9 @@ namespace Engage.Dnn.Publish
 
             SaveItemVersionSettings();
 
+            Utility.ClearPublishCache(PortalId);
+
+
             string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
             if (Utility.HasValue(s))
             {
@@ -254,7 +257,6 @@ namespace Engage.Dnn.Publish
                 //Exceptions.ProcessModuleLoadException(Localize.GetString("PingError", LocalResourceFile), exc);
 
             }
-            Utility.ClearPublishCache(PortalId);
 
         }
 

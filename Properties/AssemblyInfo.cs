@@ -1,6 +1,6 @@
 ﻿
 //Engage: Publish - http://www.engagemodules.com
-//Copyright (c) 2004-2008
+//Copyright (c) 2004-2009
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,7 +24,7 @@ using System.Web.UI;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Engage Software, Inc.")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("2008 Engage Software Inc.")]
+[assembly: AssemblyCopyright("2009 Engage Software Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

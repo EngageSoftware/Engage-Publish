@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagemodules.com
-//Copyright (c) 2004-2008
+//Copyright (c) 2004-2009
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -100,13 +100,13 @@ namespace Engage.Dnn.Publish.TextHtml
                     string articleText = a.ArticleText;
                     //removed until we move forward with a newer version of DNN 4.6.2 or greater.
                     //for enterprise licenses you can uncomment the following if you put the Dotnetnuke.dll (4.6.2+) in the engagepublish/references folder and recompile
-                    
-                    //DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
-                    //tr.AccessingUser = UserInfo;
-                    //tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
-                    
 
-                    //articleText = tr.ReplaceEnvironmentTokens(articleText);
+                    DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
+                    tr.AccessingUser = UserInfo;
+                    tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
+
+
+                    articleText = tr.ReplaceEnvironmentTokens(articleText);
                     lblArticleText.Text = articleText;
                     
 
