@@ -77,6 +77,8 @@ namespace Engage.Dnn.Publish.Admin
                         UserFeedback.Comment c = UserFeedback.Comment.GetComment(Convert.ToInt32(commentId.Text, CultureInfo.CurrentCulture), DataProvider.ModuleQualifier);
                         c.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         c.Save(DataProvider.ModuleQualifier);
+
+                        //TODO: we need to increment the comment count when approved.
                     }
                 }
 

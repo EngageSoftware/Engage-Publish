@@ -48,7 +48,7 @@
       <HintPath>bin\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.9.0.85, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="DotNetNuke, Version=4.5.1.28, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\DotNetNuke.Search.DataStore.dll</HintPath>
@@ -164,6 +164,13 @@
     </Compile>
     <Compile Include="Admin\Syndication.ascx.designer.cs">
       <DependentUpon>Syndication.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Tools\ResetItemStatistics.ascx.cs">
+      <DependentUpon>ResetItemStatistics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools\ResetItemStatistics.ascx.designer.cs">
+      <DependentUpon>ResetItemStatistics.ascx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Tools\ResetDisplayPage.ascx.cs">
       <DependentUpon>ResetDisplayPage.ascx</DependentUpon>
@@ -962,6 +969,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.05.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.09.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.03.03.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -1032,7 +1040,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Tools\ResetItemStatistics.ascx" />
     <Content Include="Controls\App_LocalResources\ArticleSelector.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Admin\Tools\App_LocalResources\ResetItemStatistics.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Scripts\ArticleSelector.js" />

@@ -70,7 +70,8 @@ namespace Engage.Dnn.Publish
         private readonly ItemTagCollection tags;
         private readonly ItemVersionSettingCollection versionSettings;
         private string createdDate = string.Empty;
-
+        private int viewCount = 0;
+        private int commentCount = 0;
         #endregion
 
         #region "Public Methods"
@@ -876,6 +877,19 @@ namespace Engage.Dnn.Publish
 
         }
 
+        [XmlIgnore]
+        public int ViewCount
+        {
+            set { this.viewCount = value; }
+            get { return this.viewCount; }
+        }
+        [XmlIgnore]
+        public int CommentCount
+        {
+            set { this.commentCount = value; }
+            get { return this.commentCount; }
+        }
+
 
         public bool IsNew
         {
@@ -1146,6 +1160,27 @@ namespace Engage.Dnn.Publish
             DataProvider.Instance().DeleteItem(itemId);
             Utility.ClearPublishCache(portalId);
         }
+
+        /// <summary>
+        /// Clears the view count on the item table to 0 for all items within a portal
+        /// </summary>
+        /// <param name="portalId">The Portal in which the items will be cleared</param>
+        /// <returns></returns>
+        public static void ClearItemsViewCount(int portalId)
+        {
+            DataProvider.Instance().ClearItemsViewCount(portalId);
+        }
+
+        /// <summary>
+        /// Clears the comment count on the item table to 0 for all items within a portal
+        /// </summary>
+        /// <param name="portalId">The Portal in which the items will be cleared</param>
+        /// <returns></returns>
+        public static void ClearItemsCommentCount(int portalId)
+        {
+            DataProvider.Instance().ClearItemsCommentCount(portalId);
+        }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
         public string GetApprovalStatusTypeName()

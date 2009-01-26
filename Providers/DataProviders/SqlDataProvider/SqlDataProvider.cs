@@ -1993,15 +1993,21 @@ namespace Engage.Dnn.Publish.Data
             }
             sql.Append("(select count(*) TimesViewed from ");
             sql.Append(NamePrefix);
-            sql.Append("itemview where itemid = il.childitemid ) TimesViewed,");
+            sql.Append("itemview where itemid = il.childitemid ) TimesViewed, ");
+            sql.Append("(select count(*) TimesViewed from ");
+            sql.Append(NamePrefix);
+            sql.Append("itemview where itemid = il.childitemid ) TotalRows, ");
             sql.Append(" il.ItemId, il.CategoryName, il.ChildName, ");
-            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId ");
+            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName ");
 			sql.Append("from ");
 			sql.Append(NamePrefix);
             sql.Append("vwItemListing il");
             sql.Append(" join ");
             sql.Append(NamePrefix);
             sql.Append("vwItems i on (il.ChildItemId = i.ItemId) ");
+            sql.Append(" join ");
+            sql.Append(objectQualifier);
+            sql.Append("users u on (u.UserId = il.AuthorUserId) ");
             //sql.Append(" left join ");
             //sql.Append(NamePrefix);
             //sql.Append("ItemView iv on (il.ChildItemId = iv.ItemId) ");
@@ -2363,7 +2369,6 @@ namespace Engage.Dnn.Publish.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
         }
 
-
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
             string sql = String.Format(CultureInfo.InvariantCulture, "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId().ToString());
@@ -2372,6 +2377,19 @@ namespace Engage.Dnn.Publish.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));
             
         }
+
+        public override void ClearItemsViewCount(int portalId)
+        {
+            string sql = String.Format(CultureInfo.InvariantCulture, "update {0}item set viewcount=0 where portalId = @portalId", ObjectQualifier + ModuleQualifier);
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
+        }
+
+        public override void ClearItemsCommentCount(int portalId)
+        {
+            string sql = String.Format(CultureInfo.InvariantCulture, "update {0}item set commentcount=0 where portalId = @portalId", ObjectQualifier + ModuleQualifier);
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
+        }
+
 
         #endregion
 
