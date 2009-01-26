@@ -962,7 +962,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void SaveSettings()
         {
             Article av = (Article)VersionInfoObject;
-
+            av.VersionSettings.Clear();
             //Printer Friendly
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = chkPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture);
