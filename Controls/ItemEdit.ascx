@@ -107,7 +107,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <asp:Label ID="lblSearchEngine" runat="server" Text="Optimize for Search Engines: " ResourceKey="lblSearchEngine" />
+                <dnn:Label ID="lblSearchEngine" runat="server" Text="Optimize for Search Engines: " ResourceKey="lblSearchEngine" />
             </td><td class="fullWidth">
                 <asp:CheckBox ID="chkSearchEngine" runat="server" AutoPostBack="true" OnCheckedChanged="chkSearchEngine_CheckedChanged" />
                 

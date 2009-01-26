@@ -370,7 +370,18 @@
     <value>Show Author</value>
   </data>
   <data name="lblPublishInstructions.Text" xml:space="preserve">
-    <value>Basic Engage: Publish Instructions</value>
+    <value>&lt;strong&gt;Basic Engage: Publish Instructions&lt;/strong&gt;
+&lt;hr /&gt;
+
+These instructions can be modified by an Administrator using the DotNetNuke Language Editor.
+
+&lt;p&gt;
+This page is used for creating a new article or content entry on a website. At minimum you should define a Title, Description and Article Body for this article. You can however, instead of creating an article body use the URL Selection section (with Advanced Properties) to create a link to another source of material, defining a title/description and then the link to where this entry should point.
+&lt;/p&gt;
+
+&lt;p&gt;
+When you are done defining the content for your article at the bottom of the page you will find the workflow options. Depending on how your administrator has configured the website you might be able to post content immediately to the site (approved) or you might have to go through the process of having your content approved before it will show up live on the website.
+&lt;/p&gt;</value>
   </data>
   <data name="shArticleEdit.Text" xml:space="preserve">
     <value>Article Edit</value>
@@ -434,5 +445,8 @@
   </data>
   <data name="lblArticleEditExtendedHeader.Text" xml:space="preserve">
     <value>Extended Properties</value>
+  </data>
+  <data name="NewArticle.Text" xml:space="preserve">
+    <value>New article</value>
   </data>
 </root>

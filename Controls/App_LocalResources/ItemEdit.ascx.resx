@@ -198,6 +198,10 @@
   <data name="lblSearchEngine.Text" xml:space="preserve">
     <value>Optimize for Search Engines: </value>
   </data>
+  <data name="lblSearchEngine.Help" xml:space="preserve">
+    <value>You can control SEO specific options for articles and categories in this section, click the checkbox to expand the section.</value>
+  </data>
+
   <data name="lblPostingDates.Text" xml:space="preserve">
     <value>Posting Date(s): </value>
   </data>

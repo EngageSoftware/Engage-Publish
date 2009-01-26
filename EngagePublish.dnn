@@ -306,7 +306,6 @@
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>05.03.00.SqlDataProvider</name>
         </file>
-
         <file>
           <name>ReadMe.txt</name>
         </file>

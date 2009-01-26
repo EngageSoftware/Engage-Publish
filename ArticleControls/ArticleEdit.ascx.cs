@@ -236,7 +236,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     trArticleId.Visible = ShowItemIds;
 
-                    this.txtArticleId.Text = VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
+                    if (VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture) == "-1")
+                        this.txtArticleId.Text = Localization.GetString("NewArticle", LocalResourceFile);
+                    else
+                        this.txtArticleId.Text = VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
                     this.txtVersionNumber.Text = av.VersionNumber;
                     this.teArticleText.Text = av.ArticleText;
                     this.txtPreviousVersionDescription.Text = av.VersionDescription;
