@@ -233,6 +233,7 @@ namespace Engage.Dnn.Publish
                     dt = DataCache.GetCache(tagCacheKey) as DataTable;
                     if (dt == null)
                     {
+                        //ToDo: we need to make getitemsfromtags use the numberofitems value
                         dt = Tag.GetItemsFromTags(this.PortalId, this.tagQuery);
                         //TODO: should we set a 5 minute cache on RSS? 
                         DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(5));
