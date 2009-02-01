@@ -520,7 +520,7 @@ namespace Engage.Dnn.Publish
             return dt;
         }
 
-        public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId)
+        public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
         {
             //return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
 
@@ -548,7 +548,7 @@ namespace Engage.Dnn.Publish
                 }
                 else
                 {
-                    dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+                    dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId, sortOrder);
                 }
                 if (dt != null)
                 {
@@ -558,7 +558,7 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+                dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId, sortOrder);
             }
             return dt;
         }

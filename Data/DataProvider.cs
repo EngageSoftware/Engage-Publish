@@ -293,7 +293,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop);
         
         public abstract DataTable GetItemsFromTags(int portalId, ArrayList tagList);
-        public abstract DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId);
+        public abstract DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder);
 
         public abstract DataTable GetTag(string tag, int portalId);
         public abstract DataTable GetTag(int tagId);

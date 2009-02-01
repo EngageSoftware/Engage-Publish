@@ -290,7 +290,7 @@ namespace Engage.Dnn.Publish.Controls
                     dt = GetDataTable();
                 }
             }
-            if (UseCustomSort || UsePaging)// && tagQuery == null)
+            if (UsePaging && tagQuery == null)
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -300,10 +300,15 @@ namespace Engage.Dnn.Publish.Controls
                         BuildPageList(totalRows);
                     }
                 }
-
-                return dt;
             }
-            return SortTable(dt);
+
+            if (!UseCustomSort)
+            {
+                return SortTable(dt);
+            }
+            else
+                return dt;
+            
         }
 
 
@@ -379,7 +384,7 @@ namespace Engage.Dnn.Publish.Controls
                 dt = DataCache.GetCache(tagCacheKey) as DataTable;
                 if (dt == null)
                 {
-                    dt = Tag.GetItemsFromTagsPaging(PortalId, tagQuery, customDisplaySettings.MaxDisplayItems, PageId - 1);
+                    dt = Tag.GetItemsFromTagsPaging(PortalId, tagQuery, customDisplaySettings.MaxDisplayItems, PageId - 1, SortOrder());
                     //dt = Tag.GetItemsFromTags(PortalId, tagQuery);
 
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));

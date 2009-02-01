@@ -235,3 +235,132 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItemView]
 	where ItemId = @ItemId
 
 GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging] 
+	@PortalId int
+	, @TagList nvarchar(4000) = null
+	, @index int
+	, @pagesize int
+	, @sortParameters nvarchar(400)
+
+
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+
+	
+	declare @TagCount int
+
+	select @TagCount = count(*) from #Tags
+
+
+	declare @sql varchar(8000)
+	Create table #tmpResults 
+	(
+		Id int not null IDENTITY(1,1),
+		ChildItemId int, 
+		Thumbnail varchar(500), 
+		ChildName nvarchar(255), 
+		ChildDescription ntext,
+		ChildItemTypeId int,
+		StartDate datetime,
+		LastUpdated datetime,
+		CreatedDate datetime,
+		AuthorUserId int,
+		DisplayName nvarchar(128),
+		ItemRelationshipId int,
+		SortOrder int,
+		TotalRows int
+	)
+
+	set @sql =  'insert into #tmpResults (
+		ChildItemId
+		, Thumbnail
+		,  ChildName
+		, ChildDescription
+		, ChildItemTypeId
+		, StartDate
+		, LastUpdated
+		, CreatedDate
+		, AuthorUserId
+		, DisplayName)'
+
+	set @sql = @sql + ' select 
+	itemId as ''ChildItemId''
+	, Thumbnail
+	, [name] as ''ChildName''
+	,  description as ''ChildDescription''
+	, vi.ItemTypeId as ''ChildItemTypeId''
+	, StartDate
+	, LastUpdated
+	, CreatedDate
+	, AuthorUserId
+	, u.DisplayName
+	
+	from {objectQualifier}publish_vwitems vi
+	join {objectQualifier}users u on (u.UserId = vi.AuthorUserId)
+	where vi.itemversionid in (
+		select distinct  ivt.itemversionid
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				having count(*) = ' + Convert(varchar(20), @TagCount) + '
+				)
+		and vi.PortalId = ' + Convert(varchar(20), @PortalId) + ' Group By t.TagId, ivt.itemversionid having t.[TagId] in (select [TagId] from #Tags))'
+
+	set @sql = @sql + ' order by  ' + @sortParameters
+
+
+	exec (@sql)
+
+	DECLARE @rows int
+
+	select @rows = count(*) from #tmpResults
+
+	update #tmpResults set TotalRows = @rows
+
+
+
+	if (@PageSize <1)
+	 	BEGIN
+	 		select * from #tmpResults
+	 	END
+	ELSE
+	 	BEGIN
+	 		select * from #tmpResults
+	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
+	 	END
+
+
+	DROP TABLE #Tags
+
+
+	EXEC sp_xml_removedocument @xmlDoc
+
+GO
+
+
