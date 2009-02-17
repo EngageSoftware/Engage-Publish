@@ -103,7 +103,9 @@ namespace Engage.Dnn.Publish.TextHtml
 
                 a.Save(UserId);
                 
+                //this is likely unneccesary as we already have the itemid set in the settings
                 modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+
                 modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
             }
             else
