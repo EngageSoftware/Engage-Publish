@@ -123,6 +123,7 @@ namespace Engage.Dnn.Publish
                 this.pageId = 1;
                 if (this.versionInfoObject != null)
                 {
+                    //TODO: this needs changed. We need to know what we're loading in the querystring first, check the ItemID
                     object o = this.Request.QueryString["pageid"];
                     object c = this.Request.QueryString["catpageid"];
 
@@ -141,6 +142,7 @@ namespace Engage.Dnn.Publish
                 return this.pageId;
             }
         }
+
 
         //TODO: cache all the HostSetting values
         public bool IsSetup
@@ -924,7 +926,14 @@ namespace Engage.Dnn.Publish
             if (itemId != null)
             {
                 //TODO: should we pass TabId from the page, or from the display tab id for the module?
-                return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, this.PageId, this.GetCultureName());
+
+                //we need to check if the PageId is "current" or for a category list, if we're moving from a custom list to an article pageid is being passed, bad things.
+                //check to see if the link we're building is for the current item, or another item, if another item we want to use Pageid=1
+
+                int correctPageId =1;
+                if(Convert.ToInt32(itemId) == this.ItemId)
+                    correctPageId = this.pageId;
+                return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, correctPageId, this.GetCultureName());
             }
 
             return string.Empty;

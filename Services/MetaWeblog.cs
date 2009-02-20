@@ -96,7 +96,7 @@ namespace Engage.Dnn.Publish.Services
                     }
 
                     //check for tags
-                    if(post.mt_keywords.Trim() != string.Empty)
+                    if (post.mt_keywords!=null && post.mt_keywords.Trim() != string.Empty)
                     {
                         //split tags
                         foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))

@@ -144,20 +144,26 @@ namespace Engage.Dnn.Publish.Controls
                     thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
 				}
 				else
-				{
-					VersionInfoObject.MetaKeywords = txtMetaKeywords.Text;
-					VersionInfoObject.MetaDescription = txtMetaDescription.Text;
-					VersionInfoObject.MetaTitle = txtMetaTitle.Text;
-					VersionInfoObject.Disabled = !chkDisplayAsHyperlink.Checked;
+                {
+
+                    VersionInfoObject.Name = txtName.Text;
+                    VersionInfoObject.Description = DescriptionText;
+                    VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
+
+
+                    VersionInfoObject.MetaKeywords = txtMetaKeywords.Text;
+                    VersionInfoObject.MetaDescription = txtMetaDescription.Text;
+                    VersionInfoObject.MetaTitle = txtMetaTitle.Text;
+                    VersionInfoObject.Disabled = !chkDisplayAsHyperlink.Checked;
 
                     VersionInfoObject.Url = ctlUrlSelection.Url;
-                    
-                    
+
+
                     VersionInfoObject.NewWindow = chkNewWindow.Checked;
                     DateTime dt;
                     if (Utility.HasValue(txtStartDate.Text) && DateTime.TryParse(txtStartDate.Text, out dt))
                     {
-                        if(!dt.Equals(DateTime.MinValue))
+                        if (!dt.Equals(DateTime.MinValue))
                             VersionInfoObject.StartDate = dt.ToString(CultureInfo.InvariantCulture);
                     }
 
@@ -172,13 +178,9 @@ namespace Engage.Dnn.Publish.Controls
                     }
 
 
-                    VersionInfoObject.Name = txtName.Text;
-                    VersionInfoObject.Description = DescriptionText;
-                    VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
-
                     VersionInfoObject.AuthorUserId = Convert.ToInt32(ddlAuthor.SelectedValue);
                     VersionInfoObject.RevisingUserId = UserId;
-				}
+                }
 			} 
 			catch (Exception exc) 
 			{

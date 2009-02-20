@@ -217,7 +217,15 @@ namespace Engage.Dnn.Publish
             {
                 itemVersionIdentifier = ItemVersionIdentifier;
             }
-            
+
+            //if we aren't populating the meta description we should use the VersionInfoObject.Description                                       
+            if (this.metaDescription.Trim() == string.Empty && this.description.Trim() != string.Empty)
+            {
+                string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(this.description.Trim(), false);
+                this.metaDescription = Utility.TrimDescription(399, description);
+            }
+
+
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
                 this.Name, this.Description, this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
