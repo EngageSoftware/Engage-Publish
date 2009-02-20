@@ -941,7 +941,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 hl.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, string.Empty, "&tags=" + tag.Name);
                 hl.Attributes.Add("rel", "tag");
                 Literal li = new Literal();
-                li.Text = ", &nbsp;";
+                li.Text = ", ";
 
                 phTags.Controls.Add(hl);
                 phTags.Controls.Add(li);
