@@ -1,6 +1,6 @@
 @import "../module.css";
 
-#publishTextHtmlDisplay
+.publishTextHtmlDisplay
 {
 	text-align:left;
 }
