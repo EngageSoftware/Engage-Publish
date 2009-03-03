@@ -261,4 +261,10 @@
   <data name="StartDateSort.Text" xml:space="preserve">
     <value>Start Date</value>
   </data>
+  <data name="lblShowParentDescription.Help" xml:space="preserve">
+    <value>If you have Show Parent enabled you can also enable the display of the description for this category.</value>
+  </data>
+  <data name="lblShowParentDescription.Text" xml:space="preserve">
+    <value>Show Parent Category Description</value>
+  </data>
 </root>

@@ -232,6 +232,7 @@ namespace Engage.Dnn.Publish.Util
         public const string MediaFileTypes = "jpg,jpeg,jpe,gif,bmp,png,swf";
         public const string PublishAdminRole = "PublishAdminRole";
         public const string PublishAllowRichTextDescriptions = "PublishAllowRichTextDescriptions";
+        public const string PublishDefaultRichTextDescriptions = "PublishDefaultRichTextDescriptions";
         public const string PublishArticleEditHeight = "PublishArticleEditHeight";
         public const string PublishArticleEditWidth = "PublishArticleEditWidth";
         public const string PublishAuthorCategoryEdit = "PublishAuthorCategoryEdit";
@@ -1497,6 +1498,46 @@ namespace Engage.Dnn.Publish.Util
                 return "~" + DesktopModuleFolderName + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile;
             }
         }
+
+        //Utility method for replacing YouTube and Flickr tokens in text
+        public static string ReplaceTokens(string replaceText)
+        {
+            //TODO: change : to | (pipe) sometime
+            int youTubeLocation = replaceText.ToUpperInvariant().IndexOf("[YOUTUBE:", StringComparison.Ordinal);
+            if (youTubeLocation >= 0)
+            {
+                string afterToken = replaceText.Substring(youTubeLocation + 9);
+                int youTubeFinishLocation = afterToken.IndexOf("]", StringComparison.Ordinal);
+                string youTubeId = afterToken.Substring(0, youTubeFinishLocation);
+
+                //string youTubeEmbed = "<span class=\"Publish_Video\"><object width=\"425\" height=\"355\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/" + youTubeId + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object></span>";
+
+                string youTubeEmbed = "<span class=\"Publish_Video\"><object type=\"application/x-shockwave-flash\" width=\"425\" height=\"355\" data=\"http://www.youtube.com/v/" + youTubeId + "\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\" />" + Localization.GetString("NoFlash", LocalSharedResourceFile).ToString() + "</object></span>";
+                //<object type=\"application/x-shockwave-flash\" data=\"CONTENTHERE\" width=\"300\" height=\"120\"><param name=\"movie\" value=\"CONTENTHERE\" /><p>flash disabled</p></object>
+                string fullArticleText = replaceText.Substring(0, youTubeLocation);
+                fullArticleText += youTubeEmbed;
+                fullArticleText += replaceText.Substring(youTubeLocation + youTubeId.Length + youTubeFinishLocation - 1);
+                replaceText = fullArticleText;
+                replaceText = ReplaceTokens(replaceText);
+            }
+            //flickr
+            int flickrLocation = replaceText.ToUpperInvariant().IndexOf("[FLICKR|", StringComparison.Ordinal);
+            if (flickrLocation >= 0)
+            {
+                string afterToken = replaceText.Substring(flickrLocation + 8);
+                int flickrFinishLocation = afterToken.IndexOf("]", StringComparison.Ordinal);
+                string flickrId = afterToken.Substring(0, flickrFinishLocation);
+
+                string flickrEmbed = string.Format(CultureInfo.InvariantCulture, "<object type=\"application/x-shockwave-flash\" width=\"499\" height=\"333\" data=\"http://www.flickr.com/apps/video/stewart.swf?v=1.173\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"> <param name=\"flashvars\" value=\"intl_lang=en-us&amp;photo_secret=d70f929acb&amp;photo_id={0}&amp;show_info_box=true\"></param> <param name=\"movie\" value=\"http://www.flickr.com/apps/video/stewart.swf?v=1.173\"></param> <param name=\"bgcolor\" value=\"#000000\"></param> <param name=\"allowFullScreen\" value=\"true\"></param><embed type=\"application/x-shockwave-flash\" src=\"http://www.flickr.com/apps/video/stewart.swf?v=1.173\" bgcolor=\"#000000\" allowfullscreen=\"true\" flashvars=\"intl_lang=en-us&amp;photo_secret=d70f929acb&amp;photo_id={0}&amp;flickr_show_info_box=true\" height=\"333\" width=\"499\"></embed></object>", flickrId);
+                string fullArticleText = replaceText.Substring(0, flickrLocation);
+                fullArticleText += flickrEmbed;
+                fullArticleText += replaceText.Substring(flickrLocation + flickrId.Length + flickrFinishLocation - 1);
+                replaceText = fullArticleText;
+                replaceText = ReplaceTokens(replaceText);
+            }
+            return replaceText;
+        }
+
 
         #region Portal Settings
 

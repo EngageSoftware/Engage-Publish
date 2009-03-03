@@ -187,10 +187,10 @@
     <value>Return to {0} list</value>
   </data>
   <data name="lnkNextPage.Text" xml:space="preserve">
-    <value>Next Page &gt;&gt;</value>
+    <value>Next Page ..</value>
   </data>
   <data name="lnkPreviousPage.Text" xml:space="preserve">
-    <value>&lt;&lt; Previous Page</value>
+    <value>.. Previous Page</value>
   </data>
   <data name="PhotoMouseover.Text" xml:space="preserve">
     <value>Click to view gallery</value>

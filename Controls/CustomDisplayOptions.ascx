@@ -29,8 +29,15 @@
 	</tr>
 	<tr>
 		<td class="SubHead"><dnn:label id="lblShowParent" runat="server" controlname="chkShowParent" ResourceKey="lblShowParent" text="Show Parent Category:"/></td>
-		<td class="NormalTextBox" style="width: 252px"><asp:CheckBox ID="chkShowParent" Runat="server"/></td>
+		<td class="NormalTextBox" style="width: 252px"><asp:CheckBox ID="chkShowParent" 
+                Runat="server" AutoPostBack="True" 
+                oncheckedchanged="chkShowParent_CheckedChanged"/></td>
 	</tr>
+	<tr>
+		<td class="SubHead"><dnn:label id="lblShowParentDescription" runat="server" controlname="chkShowParentDescription" ResourceKey="lblShowParentDescription" text="Show Parent Category Description:"/></td>
+		<td class="NormalTextBox" style="width: 252px"><asp:CheckBox ID="chkShowParentDescription" Runat="server"/></td>
+	</tr>
+
 	<tr>
 		<td class="SubHead"><dnn:label id="lblLoadRelated" runat="server" controlname="chkRelatedItem" ResourceKey="lblLoadRelated" text="Dynamic Category:"/></td>
 		<td class="NormalTextBox" style="width: 252px"><asp:CheckBox ID="chkRelatedItem" Runat="server"/></td>

@@ -95,6 +95,7 @@ namespace Engage.Dnn.Publish.Admin
                 objHostSettings.UpdateHostSetting(Utility.PublishEnableViewTracking + PortalId.ToString(CultureInfo.InvariantCulture), chkEnableViewTracking.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishEnableDisplayNameAsHyperlink + PortalId.ToString(CultureInfo.InvariantCulture), chkEnableDisplayNameAsHyperlink.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishAllowRichTextDescriptions + PortalId.ToString(CultureInfo.InvariantCulture), chkAllowRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
+                objHostSettings.UpdateHostSetting(Utility.PublishDefaultRichTextDescriptions + PortalId.ToString(CultureInfo.InvariantCulture), chkDefaultRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishUseApprovals + PortalId.ToString(CultureInfo.InvariantCulture), chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishUseEmbeddedArticles + PortalId.ToString(CultureInfo.InvariantCulture), chkUseEmbeddedArticles.Checked.ToString(CultureInfo.InvariantCulture));
                 objHostSettings.UpdateHostSetting(Utility.PublishShowItemId + PortalId.ToString(CultureInfo.InvariantCulture), chkShowItemId.Checked.ToString(CultureInfo.InvariantCulture));
@@ -261,6 +262,8 @@ namespace Engage.Dnn.Publish.Admin
             chkEnableViewTracking.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableViewTracking, PortalId, false);
             chkEnableDisplayNameAsHyperlink.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableDisplayNameAsHyperlink, PortalId, false);
             chkAllowRichTextDescriptions.Checked = Utility.GetBooleanPortalSetting(Utility.PublishAllowRichTextDescriptions, PortalId, true);
+            DefaultRichTextDescriptions();
+            chkDefaultRichTextDescriptions.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultRichTextDescriptions, PortalId, false);
             chkUseApprovals.Checked = Utility.GetBooleanPortalSetting(Utility.PublishUseApprovals, PortalId, true);
             chkUseEmbeddedArticles.Checked = Utility.GetBooleanPortalSetting(Utility.PublishUseEmbeddedArticles, PortalId, false);
             chkShowItemId.Checked = Utility.GetBooleanPortalSetting(Utility.PublishShowItemId, PortalId, true);
@@ -307,6 +310,8 @@ namespace Engage.Dnn.Publish.Admin
                 chkEnablePublishFriendlyUrls.Checked = false;
                 chkEnablePublishFriendlyUrls.Enabled = false;
             }
+
+            DefaultRichTextDescriptions();
 
             //s = HostSettings.GetHostSetting(Utility.PublishRatingAnonymous + PortalId.ToString(CultureInfo.InvariantCulture));
             //if (Utility.HasValue(s))
@@ -481,6 +486,25 @@ namespace Engage.Dnn.Publish.Admin
             clpAddOns.CollapsedImage = collapsedImage;
 
 
+        }
+
+        protected void chkAllowRichTextDescriptions_CheckedChanged(object sender, EventArgs e)
+        {
+            DefaultRichTextDescriptions();
+        }
+
+        private void DefaultRichTextDescriptions()
+        {
+            if (chkAllowRichTextDescriptions.Checked)
+            {
+                chkDefaultRichTextDescriptions.Visible = true;
+                plDefaultRichTextDescriptions.Visible = true;
+            }
+            else
+            {
+                chkDefaultRichTextDescriptions.Visible = false;
+                plDefaultRichTextDescriptions.Visible = false;
+            }
         }
 
     }

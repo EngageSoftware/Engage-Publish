@@ -63,6 +63,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
                         a.MetaDescription = Utility.TrimDescription(399, description);
 
                         if (!Utility.HasValue(a.Description))
+                            //TODO: localize the end of the description 
                             a.Description = Utility.TrimDescription(3997, description) + "...";// description + "...";
                         
                         a.UpdateDescription();

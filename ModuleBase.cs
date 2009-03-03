@@ -318,6 +318,12 @@ namespace Engage.Dnn.Publish
             get { return AllowRichTextDescriptionsForPortal(this.PortalId); }
         }
 
+        public bool DefaultRichTextDescriptions
+        {
+            get { return DefaultRichTextDescriptionsForPortal(this.PortalId); }
+        }
+
+
         public bool UseApprovals
         {
             get { return UseApprovalsForPortal(this.PortalId); }
@@ -786,6 +792,16 @@ namespace Engage.Dnn.Publish
             return true;
         }
 
+        public static bool DefaultRichTextDescriptionsForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishDefaultRichTextDescriptions + portalId.ToString(CultureInfo.InvariantCulture));
+            if (Utility.HasValue(s))
+            {
+                return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
+            }
+            return true;
+        }
+
         public static bool UseApprovalsForPortal(int portalId)
         {
             string s = HostSettings.GetHostSetting(Utility.PublishUseApprovals + portalId.ToString(CultureInfo.InvariantCulture));
@@ -978,8 +994,13 @@ namespace Engage.Dnn.Publish
                 {
                     return "_blank";
                 }
+                else
+                {
+                    return "_self";
+                }
             }
-            return string.Empty;
+            return "_self";
+            //return string.Empty;
         }
 
         public string GetItemLinkUrl(object itemId, int portalId)
@@ -1026,9 +1047,9 @@ namespace Engage.Dnn.Publish
             url.Append("eprss.aspx?");
             url.Append("portalid=");
             url.Append(portalId);
-            url.Append("&DisplayType=");
+            url.Append("&amp;DisplayType=");
             url.Append(displayType);
-            url.Append("&Tags=");
+            url.Append("&amp;Tags=");
             url.Append(HttpUtility.UrlEncode(tags));
 
             return url.ToString();
@@ -1067,8 +1088,6 @@ namespace Engage.Dnn.Publish
         {
             if (this.IsWLWEnabled)
             {
-                //<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wlwmanifest.xml" />
-                //<link id="Rsd" rel="EditURI" type="application/rsd+xml" title="RSD" href="http://idunno.org/rsd.xml.ashx" />
 
                 CDefault tp = (CDefault)this.Page;
                 if (tp != null)
@@ -1082,7 +1101,7 @@ namespace Engage.Dnn.Publish
                     string manifestUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/wlwmanifest.xml";
 
                     sb.Append(manifestUrl.ToString());
-                    sb.Append("\" \\>");
+                    sb.Append("\" />");
                     lc.Text = sb.ToString();
 
                     tp.Header.Controls.Add(lc);
@@ -1091,15 +1110,13 @@ namespace Engage.Dnn.Publish
                     rsd.Append("<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"");
 
                     string rsdUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias +
-                        Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/publishrsd.aspx?portalid=" + PortalId.ToString() + "&HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
+                        Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/publishrsd.aspx?portalid=" + PortalId.ToString() + "&amp;HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
 
                     rsd.Append(rsdUrl.ToString());
-                    rsd.Append("\" \\>");
+                    rsd.Append("\" />");
                     lcrsd.Text = rsd.ToString();
 
                     tp.Header.Controls.Add(lcrsd);
-
-                    //<link rel="EditURI" type="application/rsd+xml" title="RSD"  href="http://www.userdomain.com/DesktopModules/EngagePublish/Services/rsd.xml" />
                 }
             }
         }
@@ -1111,7 +1128,7 @@ namespace Engage.Dnn.Publish
                 LiteralControl lc = new LiteralControl();
                 StringBuilder sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
-                sb.Append(rssUrl);
+                sb.Append(HttpUtility.HtmlAttributeEncode(rssUrl));
                 sb.Append("\" title=\"");
                 sb.Append(rssTitle);
                 sb.Append("\" />");

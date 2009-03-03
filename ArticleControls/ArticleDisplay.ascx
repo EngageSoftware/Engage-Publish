@@ -191,6 +191,8 @@
     // Add handler using the getElementById method
     $addHandler(Sys.UI.DomElement.getElementById('<%= ajaxRating.ClientID %>'), 'click', changeCssClassMethod);
     <% } %>
+    <% if (AllowPhotoGalleryIntegration) { %>
+
 
     var Engage_ThumbnailHashtable = {};
     var Engage_HideTimeoutId = null;
@@ -250,4 +252,7 @@
         
         return eventElement.offsetX >= 0 && eventElement.offsetX <= bounds.width && eventElement.offsetY >= 0 && eventElement.offsetY <= bounds.height;
     }
+    
+    <% } %>
+    
 </script>

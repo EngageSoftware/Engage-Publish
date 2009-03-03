@@ -129,7 +129,8 @@ namespace Engage.Dnn.Publish.Controls
                 rssImage = rssImage.Replace("[L]", string.Empty);
 #endif
 
-                lnkRss.ImageUrl = ApplicationUrl + rssImage; //"/images/xml.gif";
+                imgRss.Src= ApplicationUrl + rssImage; //"/images/xml.gif";
+                imgRss.Alt = Localization.GetString("rssAlt", LocalResourceFile);
                 
                 lnkRss.Attributes.Add("type", "application/rss+xml");
                 lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
@@ -193,7 +194,13 @@ namespace Engage.Dnn.Publish.Controls
                 if (customDisplaySettings.ShowParent && categoryId != -1)
                 {
                     lblCategory.Visible = true;
-                    lblCategory.Text = Category.GetCategory(categoryId, PortalId).Name;
+                    Category parentCategory = Category.GetCategory(categoryId, PortalId);
+                    lblCategory.Text = parentCategory.Name;
+                    //show the category description if enabled.
+                    if (customDisplaySettings.ShowParentDescription)
+
+                        lblCategoryDescription.Text = Utility.ReplaceTokens(parentCategory.Description);
+                    
                 }
                 else
                 {

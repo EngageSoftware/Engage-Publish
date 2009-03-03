@@ -572,4 +572,10 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="plDefaultTextHtmlCategory.Text" xml:space="preserve">
     <value>Default category for Publish Text/HTML module.</value>
   </data>
+  <data name="plDefaultRichTextDescriptions.Help" xml:space="preserve">
+    <value>If Rich-Text descriptions are enabled you can default the descriptions to rich text.</value>
+  </data>
+  <data name="plDefaultRichTextDescriptions.Text" xml:space="preserve">
+    <value>Default to Rich-Text Descriptions</value>
+  </data>
 </root>

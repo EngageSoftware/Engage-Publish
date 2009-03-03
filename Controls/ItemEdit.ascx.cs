@@ -90,9 +90,21 @@ namespace Engage.Dnn.Publish.Controls
 
                     if (AllowRichTextDescriptions)
                     {
-                        //if their profile is set to basic text mode, we need to show the radio buttons so they can get to rich text mode.
-                        teDescription.ChooseMode = (string)Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") == "BASIC";
-                        btnChangeDescriptionEditorMode.Text = Localization.GetString("btnChangeDescriptionEditorMode_" + txtDescription.Visible, LocalResourceFile);
+
+                        if (DefaultRichTextDescriptions)
+                        {
+                            teDescription.ChooseMode = true;
+                            btnChangeDescriptionEditorMode.Visible = false;
+                            teDescription.Visible = true;
+                            txtDescription.Visible = false;
+
+                        }
+                        else
+                        {
+                            //if their profile is set to basic text mode, we need to show the radio buttons so they can get to rich text mode.
+                            teDescription.ChooseMode = (string)Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") == "BASIC";
+                            btnChangeDescriptionEditorMode.Text = Localization.GetString("btnChangeDescriptionEditorMode_" + txtDescription.Visible, LocalResourceFile);
+                        }
                     }
                     else
                     {

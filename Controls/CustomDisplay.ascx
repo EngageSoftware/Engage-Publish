@@ -2,14 +2,18 @@
 <asp:label id="lblMessage" Font-Bold="True" Font-Size="Larger" runat="server" Visible="False"></asp:label>
 <div class="Normal"> 
     <%--<div class="<%= DataDisplayFormat %>">--%>
-    <asp:Panel ID="pnlCategory" runat="server" cssclass="itemCategory">
-        <asp:Literal runat="server" ID="lblCategory" />
+    <asp:Panel ID="pnlCategory" runat="server" cssclass="CustomList_ParentCategory">
+        <div class="CustomList_ParentCategoryName">
+            <h1><asp:Literal runat="server" ID="lblCategory" /></h1>
+        </div>
+        <div class="CustomList_ParentCategoryDescription">
+            <asp:Label runat="server" ID="lblCategoryDescription" />
+        </div>
     </asp:Panel>
     <div class="divItemsListing">
         <asp:repeater id="lstItems" runat="server" OnItemDataBound="lstItems_ItemDataBound">
             <headertemplate/>
-            <AlternatingItemTemplate>
-            
+            <AlternatingItemTemplate>            
             <div class='categoryItemList altCategoryItemList <%# GetItemTypeCssClass(Container.DataItem) %>'>
 		            <asp:Panel ID="pnlThumbnail" runat="server" cssclass='itemThumbnail'>
 		                <a href='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'>
@@ -80,5 +84,5 @@
         
     </asp:Panel>
         
-    <asp:HyperLink Runat="server" ID="lnkRss" Visible="False"/>
+    <asp:HyperLink Runat="server" ID="lnkRss" Visible="False"><img runat="server" id="imgRss" border="0" /></asp:HyperLink>
 </div>

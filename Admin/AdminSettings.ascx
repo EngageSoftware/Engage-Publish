@@ -264,7 +264,17 @@
 				<dnn:label id="plAllowRichTextDescriptions" runat="server" controlname="chkAllowRichTextDescriptions" text="Allow Rich-Text Descriptions for Items:"></dnn:label>
 			</td>
 			<td>
-				<asp:CheckBox ID="chkAllowRichTextDescriptions" runat="server" Checked="true" />
+				<asp:CheckBox ID="chkAllowRichTextDescriptions" runat="server" Checked="true" 
+                    AutoPostBack="true" 
+                    oncheckedchanged="chkAllowRichTextDescriptions_CheckedChanged" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<dnn:label id="plDefaultRichTextDescriptions" runat="server" controlname="chkDefaultRichTextDescriptions" text="Default to Rich-Text Descriptions for Items:"></dnn:label>
+			</td>
+			<td>
+				<asp:CheckBox ID="chkDefaultRichTextDescriptions" runat="server" Checked="true" />
 			</td>
 		</tr>
 		<tr>

@@ -147,4 +147,7 @@
   <data name="ApprovalsDisabled.Text" xml:space="preserve">
     <value>Approvals are turned off.  Any changes you make will appear immediately on your website.</value>
   </data>
+  <data name="NoFlash.Text" xml:space="preserve">
+    <value>Flash Not Installed</value>
+  </data>
 </root>

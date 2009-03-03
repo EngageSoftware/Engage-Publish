@@ -76,6 +76,23 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
+        internal bool ShowParentDescription
+        {
+            set
+            {
+                ModuleController modules = new ModuleController();
+                modules.UpdateTabModuleSetting(tabModuleId, "ShowParentDescription", value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            get
+            {
+                object o = settings["ShowParentDescription"];
+                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+            }
+        }
+
+
+
         internal bool AllowPaging
         {
             set

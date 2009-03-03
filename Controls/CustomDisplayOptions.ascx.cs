@@ -88,6 +88,8 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     lblShowParent.Visible = false;
                     chkShowParent.Visible = false;
+                    lblShowParentDescription.Visible = false;
+                    chkShowParentDescription.Visible = false;
                 }
                 else
                 {
@@ -95,6 +97,11 @@ namespace Engage.Dnn.Publish.Controls
                     chkShowParent.Visible = true;
                 }
                 chkShowParent.Checked = customDisplaySettings.ShowParent;
+                ShowParentDescriptionField();
+                if (chkShowParent.Checked)
+                {
+                    chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
+                }
 
                 chkRelatedItem.Checked = customDisplaySettings.GetParentFromQueryString;
 
@@ -161,6 +168,8 @@ namespace Engage.Dnn.Publish.Controls
 
                 //not sure if we need this. hk
                 customDisplaySettings.ShowParent = this.chkShowParent.Checked;
+
+                customDisplaySettings.ShowParentDescription = this.chkShowParentDescription.Checked;
 
                 //Display Options
                 ListItem li = chkDisplayOptions.Items.FindByValue(DisplayOption.Title.ToString());
@@ -283,6 +292,25 @@ namespace Engage.Dnn.Publish.Controls
             }           
         }
         #endregion
+
+        protected void chkShowParent_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowParentDescriptionField();
+        }
+        protected void ShowParentDescriptionField()
+        {
+            if (chkShowParent.Checked)
+            {
+                chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
+                lblShowParentDescription.Visible = true;
+                chkShowParentDescription.Visible = true;
+            }
+            else
+            {
+                lblShowParentDescription.Visible = false;
+                chkShowParentDescription.Visible = false;
+            }
+        }
     }
 }
 

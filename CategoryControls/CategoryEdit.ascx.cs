@@ -341,8 +341,17 @@ namespace Engage.Dnn.Publish.CategoryControls
                     this.txtMessage.Visible = true;
                     return;
                 }
-
                 VersionInfoObject.Description = itemEditControl.DescriptionText;
+
+
+                //auto populate the meta description if it's not populated already
+                if (!Utility.HasValue(VersionInfoObject.MetaDescription))
+                {
+                    string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(VersionInfoObject.Description, false);
+                    VersionInfoObject.MetaDescription = Utility.TrimDescription(399, description);
+                }
+                
+                
                 if (VersionInfoObject.IsNew) VersionInfoObject.ModuleId = ModuleId;
 
                 int sortCount = 0;
@@ -380,9 +389,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 VersionInfoObject.Save(UserId);
-
-                //Clear the cache for all Publish items
-                //Utility.ClearPublishCache(PortalId);
 
                 if (SecurityFilter.IsSecurityEnabled(PortalId))
                 {

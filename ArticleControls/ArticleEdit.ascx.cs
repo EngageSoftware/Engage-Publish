@@ -511,11 +511,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                 this.txtMessage.Text = string.Empty;
                 bool error = false;
 
-                //TODO: look at changing this value as Description is now nText
-                if (TextBoxMaxLengthExceeded(this.itemEditControl.DescriptionText, "Article Description", 4000))
-                {
-                    error = true;
-                }
+                //Removed the check for the Item Description length as we no longer have a restriction on this
+                
+                //if (TextBoxMaxLengthExceeded(this.itemEditControl.DescriptionText, "Article Description", 4000))
+                //{
+                //    error = true;
+                //}
+
                 if (TextBoxMaxLengthExceeded(this.txtVersionDescription.Text, "Version Description", 8000))
                 {
                     error = true;
@@ -543,7 +545,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                     //TODO: set module id here too
-
                 }
                 else
                 {
@@ -614,23 +615,29 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                 }
 
-                //TODO: add a checkbox to enable this functionality
-                //check to see if av.Description == string.empty
+                
+                
+
                 if (av.Description == string.Empty)
                 {
                     //trim article text to populate description
-                    //if our article is over 8k characters be sure to trim it
+                    
                     if (!Utility.HasValue(av.Description) || !Utility.HasValue(av.MetaDescription))
                     {
-                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.ArticleText, false);
-
-                        if (!Utility.HasValue(av.MetaDescription))
-                            av.MetaDescription = Utility.TrimDescription(399, description);
-
+                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.ArticleText, false);        
                         if (!Utility.HasValue(av.Description))
                             av.Description = Utility.TrimDescription(3997, description) + "...";// description + "...";
                     }
                 }
+                
+
+                //auto populate the meta description if it's not populated already
+                if (!Utility.HasValue(av.MetaDescription))
+                {
+                    string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.Description, false);
+                    av.MetaDescription = Utility.TrimDescription(399, description);
+                }
+
 
                 //Save the ItemVersionSettings
                 SaveSettings();
