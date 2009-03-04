@@ -64,8 +64,10 @@ namespace Engage.Dnn.Publish
         {
             Article a = new Article();
             a.Name = name;
-            a.Description = description;
-            a.articleText = articleText;
+            //should we strip <br> tags now?
+            a.Description = description.Replace("<br>", "<br />"); ;
+
+            a.articleText = articleText.Replace("<br>","<br />");
             a.AuthorUserId = authorUserId;
             ItemRelationship irel = new ItemRelationship();
             irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
@@ -191,8 +193,9 @@ namespace Engage.Dnn.Publish
                 SaveInfo(trans, revisingUserId);
                 UpdateApprovalStatus(trans);
 
-                //update category version now
-                AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText, this.ReferenceNumber);
+                //update article version now
+                //replace <br> with <br />
+                AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText.Replace("<br>","<br />"), this.ReferenceNumber);
                 //Save the Relationships
                 SaveRelationships(trans);
 
@@ -217,8 +220,7 @@ namespace Engage.Dnn.Publish
             SaveItemVersionSettings();
 
             Utility.ClearPublishCache(PortalId);
-
-
+            
             string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + PortalId.ToString(CultureInfo.InvariantCulture));
             if (Utility.HasValue(s))
             {

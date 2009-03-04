@@ -715,14 +715,23 @@ namespace Engage.Dnn.Publish.ArticleControls
 
             if (RatingDisplayOption.Equals(RatingDisplayOption.Enable) || RatingDisplayOption.Equals(RatingDisplayOption.ReadOnly))
             {
-                upnlRating.Visible = true;
-                lblRatingMessage.Visible = true;
-                ajaxRating.MaxRating = MaximumRating;
+                //get the upnlRating setting
+                ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "upnlRating", "Visible", PortalId);
+                if (rtSetting != null)
+                {
 
-                int avgRating = (int)Math.Round(((Article)VersionInfoObject).AverageRating);
-                ajaxRating.CurrentRating = (avgRating > MaximumRating ? MaximumRating : (avgRating < 0 ? 0 : avgRating));
+                upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
+                }
+                if (upnlRating.Visible)
+                {
+                    lblRatingMessage.Visible = true;
+                    ajaxRating.MaxRating = MaximumRating;
 
-                ajaxRating.ReadOnly = RatingDisplayOption.Equals(RatingDisplayOption.ReadOnly);
+                    int avgRating = (int)Math.Round(((Article)VersionInfoObject).AverageRating);
+                    ajaxRating.CurrentRating = (avgRating > MaximumRating ? MaximumRating : (avgRating < 0 ? 0 : avgRating));
+
+                    ajaxRating.ReadOnly = RatingDisplayOption.Equals(RatingDisplayOption.ReadOnly);
+                }
             }
 
             btnComment.Visible = DisplayCommentsLink;
@@ -900,12 +909,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                     pnlComments.Visible = Convert.ToBoolean(ctSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
 
-                //get the upnlRating setting
-                ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "upnlRating", "Visible", PortalId);
-                if (rtSetting != null)
-                {
-                    upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
-                }
 
                 ////get the upnlRating setting
                 //ItemVersionSetting tgSetting = ItemVersionSetting.GetItemVersionSetting(article.ItemVersionId, "pnlTags", "Visible");

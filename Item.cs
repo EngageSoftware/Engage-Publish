@@ -227,7 +227,7 @@ namespace Engage.Dnn.Publish
 
 
             int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
-                this.Name, this.Description, this.startDate, this.endDate, this.languageId,
+                this.Name, this.Description.Replace("<br>", "<br />"), this.startDate, this.endDate, this.languageId,
                 this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
                 this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url, newWindow, this.revisingUserId);
             this.originalItemVersionId = this.ItemVersionId;
