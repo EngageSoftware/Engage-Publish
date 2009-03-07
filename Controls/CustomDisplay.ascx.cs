@@ -108,13 +108,21 @@ namespace Engage.Dnn.Publish.Controls
             if (customDisplaySettings.GetParentFromQueryString)
             {
                 //CHECK IF THERE'S ANYTHING IN THE QS AND REACT
+
                 object o = Request.QueryString["ItemId"];
                 if (o != null)
                 {
                     int itemId;
                     if (int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out itemId))
                     {
-                        categoryId = Category.GetParentCategory(itemId, PortalId);
+                        //we need to load the children, rather than siblings if customDisplaySettings.GetRelatedChildren is enabled and the itemid is for a category, not an article
+                        if (customDisplaySettings.GetRelatedChildren && Item.GetItemType(itemId) == ItemType.Category.Name)
+                        {
+                            categoryId = itemId;
+                        }
+                        //otherwise we're going to get the parent category for the itemid passed in. 
+                        else
+                            categoryId = Category.GetParentCategory(itemId, PortalId);
                     }
                 }
             }
@@ -191,15 +199,22 @@ namespace Engage.Dnn.Publish.Controls
                 this.lstItems.DataSource = GetData();
                 this.lstItems.DataBind();
 
-                if (customDisplaySettings.ShowParent && categoryId != -1)
+                if ((customDisplaySettings.ShowParent || customDisplaySettings.ShowParentDescription) && categoryId != -1)
                 {
-                    lblCategory.Visible = true;
+                    
                     Category parentCategory = Category.GetCategory(categoryId, PortalId);
-                    lblCategory.Text = parentCategory.Name;
+                    if (customDisplaySettings.ShowParent)
+                    {
+                        divParentCategoryName.Visible = true;
+                        lblCategory.Text = parentCategory.Name;
+                    }
+
                     //show the category description if enabled.
                     if (customDisplaySettings.ShowParentDescription)
-
+                    {
+                        divParentCategoryDescription.Visible = true;
                         lblCategoryDescription.Text = Utility.ReplaceTokens(parentCategory.Description);
+                    }
                     
                 }
                 else
@@ -288,6 +303,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             DataTable dt = GetDataTable();
 
+            //customDisplaySettings.GetRelatedChildren
             if (customDisplaySettings.GetParentFromQueryString)
             {
                 if (dt.Rows.Count < 1)

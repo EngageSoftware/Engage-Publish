@@ -140,6 +140,22 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
+        internal bool GetRelatedChildren
+        {
+            set
+            {
+                ModuleController modules = new ModuleController();
+                modules.UpdateTabModuleSetting(tabModuleId, "GetRelatedChildren", value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            get
+            {
+                object o = settings["GetRelatedChildren"];
+                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+            }
+        }
+
+
         internal bool EnableRss
         {
             set

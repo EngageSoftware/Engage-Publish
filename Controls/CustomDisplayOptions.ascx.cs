@@ -97,13 +97,11 @@ namespace Engage.Dnn.Publish.Controls
                     chkShowParent.Visible = true;
                 }
                 chkShowParent.Checked = customDisplaySettings.ShowParent;
-                ShowParentDescriptionField();
-                if (chkShowParent.Checked)
-                {
-                    chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
-                }
+                chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
 
                 chkRelatedItem.Checked = customDisplaySettings.GetParentFromQueryString;
+
+                chkRelatedItemLevel.Checked = customDisplaySettings.GetRelatedChildren;
 
                 chkAllowPaging.Checked = customDisplaySettings.AllowPaging;
 
@@ -199,6 +197,8 @@ namespace Engage.Dnn.Publish.Controls
 
                 customDisplaySettings.GetParentFromQueryString = chkRelatedItem.Checked;
 
+                customDisplaySettings.GetRelatedChildren = chkRelatedItemLevel.Checked;
+
                 customDisplaySettings.EnableRss = chkEnableRss.Checked;
 
                 customDisplaySettings.AllowPaging = chkAllowPaging.Checked;
@@ -230,11 +230,15 @@ namespace Engage.Dnn.Publish.Controls
             {
                 lblShowParent.Visible = false;
                 chkShowParent.Visible = false;
+                chkShowParentDescription.Visible = false;
+                lblShowParentDescription.Visible = false;
             }
             else
             {
                 lblShowParent.Visible = true;
                 chkShowParent.Visible = true;
+                chkShowParentDescription.Visible = true;
+                lblShowParentDescription.Visible = true;
             }
 
             QueryStringParameters qsp = new QueryStringParameters();
@@ -293,24 +297,6 @@ namespace Engage.Dnn.Publish.Controls
         }
         #endregion
 
-        protected void chkShowParent_CheckedChanged(object sender, EventArgs e)
-        {
-            ShowParentDescriptionField();
-        }
-        protected void ShowParentDescriptionField()
-        {
-            if (chkShowParent.Checked)
-            {
-                chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
-                lblShowParentDescription.Visible = true;
-                chkShowParentDescription.Visible = true;
-            }
-            else
-            {
-                lblShowParentDescription.Visible = false;
-                chkShowParentDescription.Visible = false;
-            }
-        }
     }
 }
 

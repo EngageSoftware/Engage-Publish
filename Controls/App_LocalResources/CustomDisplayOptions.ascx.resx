@@ -154,7 +154,7 @@
     <value>The maximum number of items to display in the Listing, if paging is enabled this is the value of the number of items per page.</value>
   </data>
   <data name="Abstract.Text" xml:space="preserve">
-    <value> Abstract</value>
+    <value>Description (Abstract)</value>
   </data>
   <data name="ChooseOne.Text" xml:space="preserve">
     <value>[Please select an Item Type]</value>
@@ -266,5 +266,11 @@
   </data>
   <data name="lblShowParentDescription.Text" xml:space="preserve">
     <value>Show Parent Category Description</value>
+  </data>
+  <data name="lblLoadRelatedLevel.Help" xml:space="preserve">
+    <value>By default the Load List Based on Other Module setting will load a list of items at the same level of the item in the querystring. If you check this setting it will load children of the item in the query string.</value>
+  </data>
+  <data name="lblLoadRelatedLevel.Text" xml:space="preserve">
+    <value>Load Children (for Load List Based on Other Module setting)</value>
   </data>
 </root>

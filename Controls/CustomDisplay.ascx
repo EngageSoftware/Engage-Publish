@@ -2,14 +2,13 @@
 <asp:label id="lblMessage" Font-Bold="True" Font-Size="Larger" runat="server" Visible="False"></asp:label>
 <div class="Normal"> 
     <%--<div class="<%= DataDisplayFormat %>">--%>
-    <asp:Panel ID="pnlCategory" runat="server" cssclass="CustomList_ParentCategory">
-        <div class="CustomList_ParentCategoryName">
+        <div class="CustomList_ParentCategoryName" id="divParentCategoryName" runat="server">
             <h1><asp:Literal runat="server" ID="lblCategory" /></h1>
         </div>
-        <div class="CustomList_ParentCategoryDescription">
+        <div class="CustomList_ParentCategoryDescription" id="divParentCategoryDescription" runat="server">
             <asp:Label runat="server" ID="lblCategoryDescription" />
         </div>
-    </asp:Panel>
+
     <div class="divItemsListing">
         <asp:repeater id="lstItems" runat="server" OnItemDataBound="lstItems_ItemDataBound">
             <headertemplate/>
