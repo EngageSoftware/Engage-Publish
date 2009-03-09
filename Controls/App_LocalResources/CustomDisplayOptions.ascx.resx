@@ -268,7 +268,7 @@
     <value>Show Parent Category Description</value>
   </data>
   <data name="lblLoadRelatedLevel.Help" xml:space="preserve">
-    <value>By default the Load List Based on Other Module setting will load a list of items at the same level of the item in the querystring. If you check this setting it will load children of the item in the query string.</value>
+    <value>By default the Load List Based on Other Module setting will load a list of items at the same level of the item in the querystring. If you check this setting it will load children of the item in the query string, this will apply only to Categories. Articles will always load the siblings of that article.</value>
   </data>
   <data name="lblLoadRelatedLevel.Text" xml:space="preserve">
     <value>Load Children (for Load List Based on Other Module setting)</value>

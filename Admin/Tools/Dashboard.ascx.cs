@@ -63,7 +63,8 @@ namespace Engage.Dnn.Publish.Admin.Tools
         private void AddDashboardLink(string resourceKey, string toolValue)
         {
             this.phAdminTools.Controls.Add(this.GetDashboardLink(Localization.GetString(resourceKey, this.LocalResourceFile), toolValue));
-            this.phAdminTools.Controls.Add(new LiteralControl(" &nbsp; "));
+            this.phAdminTools.Controls.Add(this.GetDashboardLinkDescription(Localization.GetString(resourceKey + ".Help", this.LocalResourceFile), toolValue));
+            this.phAdminTools.Controls.Add(new LiteralControl(" <br /> "));
         }
 
         /// <summary>
@@ -78,6 +79,18 @@ namespace Engage.Dnn.Publish.Admin.Tools
             hl.NavigateUrl = this.BuildLinkUrl("&amp;mid=" + this.ModuleId + "&amp;ctl=admincontainer&amp;adminType=admintools&amp;tool=" + toolValue);
             hl.Text = linkText;
             return hl;
+        }
+        /// <summary>
+        /// Creates a link pointing to a tool visible in the dashboard.
+        /// </summary>
+        /// <param name="linkText">The text of the link.</param>
+        /// <param name="toolValue">The value of the tool <c>QueryString</c> key for this tool.</param>
+        /// <returns></returns>
+        private Literal GetDashboardLinkDescription(string descriptionText, string toolValue)
+        {
+            Literal lit = new Literal();
+            lit.Text = descriptionText;
+            return lit;
         }
     }
 }

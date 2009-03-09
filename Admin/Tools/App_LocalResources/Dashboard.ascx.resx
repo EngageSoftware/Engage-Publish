@@ -132,4 +132,10 @@
   <data name="ResetDisplayPage.Text" xml:space="preserve">
     <value>Reset Child Display Pages</value>
   </data>
+  <data name="DescriptionReplace.Help" xml:space="preserve">
+    <value>&amp;nbsp; The description replace functionality allows you to populate the descriptions for Articles and Categories that don't have the description populated already. This will also populate the Meta Description for search engine optimization purposes.</value>
+  </data>
+  <data name="ResetDisplayPage.Help" xml:space="preserve">
+    <value>&amp;nbsp; This will allow you to reset the display page for all items in a category.</value>
+  </data>
 </root>
