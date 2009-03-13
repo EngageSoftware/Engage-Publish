@@ -235,6 +235,7 @@ namespace Engage.Dnn.Publish
                     {
                         //ToDo: we need to make getitemsfromtags use the numberofitems value
                         dt = Tag.GetItemsFromTags(this.PortalId, this.tagQuery);
+                        //TODO: we should sort the tags 
                         //TODO: should we set a 5 minute cache on RSS? 
                         DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(5));
                         Utility.AddCacheKey(tagCacheKey, this.PortalId);
