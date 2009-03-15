@@ -331,6 +331,7 @@ namespace Engage.Dnn.Publish
                     }
 
                     //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
+                    description = Utility.ReplaceTokens(description);
                     wr.WriteElementString("description", this.Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
                     //why was thumbnail included?

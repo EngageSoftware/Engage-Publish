@@ -50,6 +50,8 @@ namespace Engage.Dnn.Publish.Controls
                 chkUrlSelection.Checked = true;
                 UseUrls = true;
             }
+
+            //TODO: should we allow NewWindow to work even if the URL option isn't chosen
 		}
 
         private void InitializeComponent()

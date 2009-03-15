@@ -150,4 +150,13 @@
   <data name="NoFlash.Text" xml:space="preserve">
     <value>Flash Not Installed</value>
   </data>
+  <data name="BreadCrumbLink.Text" xml:space="preserve">
+    <value>&lt;a class="navlink" href="{0}"&gt;{1}&lt;/a&gt;</value>
+  </data>
+  <data name="BreadCrumbSeparator.Text" xml:space="preserve">
+    <value>&lt;span class=\"separator\"&gt;&amp;nbsp;&amp;gt;&amp;nbsp;&lt;/span&gt;</value>
+  </data>
+  <data name="lblYouAreHere.Text" xml:space="preserve">
+    <value>You are here: </value>
+  </data>
 </root>

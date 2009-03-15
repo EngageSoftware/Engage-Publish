@@ -577,10 +577,11 @@ namespace Engage.Dnn.Publish.Controls
                     string result = text.ToString().Replace("[PublishStrip]", string.Empty);
 
                     //return HtmlUtils.StripEntities(result, false);
-                    return HttpUtility.HtmlDecode(result);
+                    return HttpUtility.HtmlDecode(Utility.ReplaceTokens(result));
 
                 }
-                return text.ToString();
+
+                return Utility.ReplaceTokens(text.ToString());
             }
             return string.Empty;
         }
