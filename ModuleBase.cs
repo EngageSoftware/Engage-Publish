@@ -429,8 +429,8 @@ namespace Engage.Dnn.Publish
                      modid = Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
                  }
 
-
-                if (!String.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
+                //if (!String.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
+                if (!String.IsNullOrEmpty(ctl) && ctl.ToLower().Equals(Utility.AdminContainer.ToLower()))
                 {
                     if (!String.IsNullOrEmpty(i))
                     {
