@@ -17,6 +17,7 @@ namespace Engage.Dnn.Publish
         public static readonly Setting ArticleSettingForceDisplay = new Setting("ArticleSettings", "ForceDisplayOnPage");
         public static readonly Setting ArticleSettingReturnToList = new Setting("ArticleSettings", "DisplayReturnToList");
         public static readonly Setting Author = new Setting("pnlAuthor", "Visible");//, "Display the Author's name on the module.");
+        public static readonly Setting AuthorName = new Setting("lblAuthorName", "Text");//, "Value of author's name to display.");
         public static readonly Setting ShowTags = new Setting("pnlTags", "Visible");//, "Show the TagList on an article.");
         public static readonly Setting UseApprovals = new Setting("chkUseApprovals", "Checked");//, "If checked, approval workflow is disabled for this item.");
         public static readonly Setting UseSimpleGalleryAlbum = new Setting("ddlSimpleGalleryAlbum", "SelectedValue");

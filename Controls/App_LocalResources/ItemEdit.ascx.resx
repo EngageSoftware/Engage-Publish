@@ -201,7 +201,6 @@
   <data name="lblSearchEngine.Help" xml:space="preserve">
     <value>You can control SEO specific options for articles and categories in this section, click the checkbox to expand the section.</value>
   </data>
-
   <data name="lblPostingDates.Text" xml:space="preserve">
     <value>Posting Date(s): </value>
   </data>
@@ -240,5 +239,11 @@
   </data>
   <data name="chkNewWindow.Text" xml:space="preserve">
     <value>Open New Window?</value>
+  </data>
+  <data name="lblAuthorName.Help" xml:space="preserve">
+    <value>You can override the name of the author to display to visitors of your web site.</value>
+  </data>
+  <data name="lblAuthorName.Text" xml:space="preserve">
+    <value>Author Name</value>
   </data>
 </root>

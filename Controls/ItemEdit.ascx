@@ -67,10 +67,20 @@
             <td class="editTableLabelColumn nowrap">
                 <dnn:label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" />
             </td><td class="fullWidth">
-                <asp:DropDownList ID="ddlAuthor" runat="server" />
+                <asp:DropDownList ID="ddlAuthor" runat="server" 
+                    onselectedindexchanged="ddlAuthor_SelectedIndexChanged" AutoPostBack="true" />
                 <hr />
             </td>
         </tr>
+        <tr>
+            <td class="editTableLabelColumn nowrap">
+                <dnn:label ID="lblAuthorName" runat="server" ResourceKey="lblAuthorName" />
+            </td><td class="fullWidth">
+                <asp:TextBox ID="txtAuthorName" runat="server" CssClass="NormalTextBox"></asp:TextBox>
+                <hr />
+            </td>
+        </tr>
+
     </table>
 
     <table class="PublishEditTable Normal">

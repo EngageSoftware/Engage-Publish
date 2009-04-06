@@ -271,6 +271,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         chkEmailAFriend.Checked = !Utility.HasValue(hostEmailFriendSetting) || Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture);
                     }
 
+
                     //if ratings are enabled show options
                     if (AreRatingsEnabled)
                     {
@@ -969,12 +970,20 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void SaveSettings()
         {
             Article av = (Article)VersionInfoObject;
+            
             av.VersionSettings.Clear();
             //Printer Friendly
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = chkPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture);
             ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
+
+            //AuthorName setting
+            setting = Setting.AuthorName;
+            setting.PropertyValue = itemEditControl.AuthorName;
+            itemVersionSetting = new ItemVersionSetting(setting);
+            av.VersionSettings.Add(itemVersionSetting);
+
 
             //Email A Friend
             setting = Setting.EmailAFriend;

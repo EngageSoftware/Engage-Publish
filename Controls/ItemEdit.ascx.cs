@@ -88,6 +88,18 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         ddlAuthor.SelectedValue = UserId.ToString();
                     }
+
+                    //configure the author name (Text) if defined
+                    //chkShowAuthor
+                    ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "lblAuthorName", "Text", PortalId);
+                    if (auNameSetting != null)
+                    {
+                        txtAuthorName.Text = auNameSetting.PropertyValue.ToString();
+                    }
+                    else
+                    {
+                        txtAuthorName.Text = ddlAuthor.SelectedItem.Text.Trim().ToString();
+                    }
                     
 
                     if (AllowRichTextDescriptions)
@@ -164,6 +176,8 @@ namespace Engage.Dnn.Publish.Controls
                     VersionInfoObject.Description = DescriptionText;
                     VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
 
+                    //define author's name to display
+                    authorName = txtAuthorName.Text.Trim();
 
                     VersionInfoObject.MetaKeywords = txtMetaKeywords.Text;
                     VersionInfoObject.MetaDescription = txtMetaDescription.Text;
@@ -327,6 +341,24 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
+
+        private string authorName = string.Empty;
+        public string AuthorName
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return authorName;
+            }
+            [DebuggerStepThrough]
+            set
+            {
+                authorName = value;
+            }
+        }
+
+
+
         #endregion
 
         #region Optional Interfaces
@@ -340,6 +372,11 @@ namespace Engage.Dnn.Publish.Controls
 			}
 		}
 		#endregion
+
+        protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtAuthorName.Text = ddlAuthor.SelectedItem.Text.ToString();
+        }
 	}
 }
 
