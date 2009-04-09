@@ -493,12 +493,17 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
+                    string urlText = txtUrlComment.Text;
+                    if (urlText.ToUpperInvariant().IndexOf("http://") < 0 && urlText.ToUpperInvariant().IndexOf("HTTPS://") < 0)
+                    {
+                        urlText = "http://" + urlText;
+                    }
                     UserFeedback.Comment.AddComment(VersionInfoObject.ItemVersionId, (UserId == -1 ? null : (int?)UserId),
                         objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), ApprovalStatus.Waiting.GetId(),
                         null, objSecurity.InputFilter(txtFirstNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtLastNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtEmailAddressComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
-                        objSecurity.InputFilter(txtUrlComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
+                        objSecurity.InputFilter(urlText, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         DataProvider.ModuleQualifier);
 
                     //see if comment notification is turned on. Notify the ItemVersion.Author

@@ -430,7 +430,7 @@ namespace Engage.Dnn.Publish
                  }
 
                 //if (!String.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
-                if (!String.IsNullOrEmpty(ctl) && ctl.ToLower().Equals(Utility.AdminContainer.ToLower()))
+                if (!String.IsNullOrEmpty(ctl) && ctl.ToUpperInvariant().Equals(Utility.AdminContainer.ToUpperInvariant()))
                 {
                     if (!String.IsNullOrEmpty(i))
                     {

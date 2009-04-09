@@ -564,7 +564,7 @@ namespace Engage.Dnn.Publish.Util
                 al.Add(ti);
             }
 
-            al.Sort(new TabInfoNameComparer());
+            al.Sort(new TabInfoNameComparer(false));
 
             DataTable dt = new DataTable();
             dt.Locale = CultureInfo.InvariantCulture;

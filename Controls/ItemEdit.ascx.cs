@@ -294,8 +294,8 @@ namespace Engage.Dnn.Publish.Controls
                 }
             }
 
-            //TODO: sort the authors list by name
-            
+            //sort the author list alphabetically 
+            al.Sort(new UserRoleInfoComparer(true));
             ddlAuthor.DataTextField = "FullName";
             ddlAuthor.DataValueField = "UserId";
             ddlAuthor.DataSource = al;
