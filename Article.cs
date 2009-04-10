@@ -478,6 +478,11 @@ namespace Engage.Dnn.Publish
 
         public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags)
         {
+            return GetArticle(itemId, portalId, loadRelationships, loadTags, false);
+        }
+
+        public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
+        {
             string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
             Article a;
             if (ModuleBase.UseCachePortal(portalId))
@@ -513,10 +518,16 @@ namespace Engage.Dnn.Publish
                 {
                     a.LoadTags();
                 }
+                if (loadItemVersionSettings)
+                {
+                    a.LoadItemVersionSettings();
+                }
             }
 
             return a;
         }
+
+
 
         public static Article GetArticle(int itemId, int portalId)
         {

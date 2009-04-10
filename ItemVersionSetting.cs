@@ -182,6 +182,12 @@ namespace Engage.Dnn.Publish
             return CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettings(itemVersionId, controlName)); 
         }
 
+        public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId)
+        {
+            return CBO.FillCollection<ItemVersionSetting>(DataProvider.Instance().GetItemVersionSettings(itemVersionId));
+        }
+
+
         public static List<ItemVersionSetting> GetItemVersionSettings(int itemVersionId, string controlName, int portalId)
         {
             string cacheKey = Utility.CacheKeyPublishItemVersionSettings + controlName.ToString(CultureInfo.InvariantCulture) + itemVersionId.ToString(CultureInfo.InvariantCulture);

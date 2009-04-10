@@ -362,7 +362,7 @@ namespace Engage.Dnn.Publish.Admin
             {
                 if (ItemVersionId == -1)
                 {
-                    Article a = Article.GetArticle(ItemId, PortalId);
+                    Article a = Article.GetArticle(ItemId, PortalId, true, true, true);
                     lblCurrentVersionComments.Text = a.VersionDescription;
                 }
                 else

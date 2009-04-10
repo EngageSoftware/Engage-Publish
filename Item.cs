@@ -1264,6 +1264,15 @@ namespace Engage.Dnn.Publish
             }
         }
 
+        protected void LoadItemVersionSettings()
+        {
+            this.VersionSettings.Clear();
+            foreach (ItemVersionSetting ivr in ItemVersionSetting.GetItemVersionSettings(this.ItemVersionId))
+            {
+                this.VersionSettings.Add(ivr);
+            }
+        }
+
         #region TransportableElement Methods
 
         protected virtual void ResolveIds(int currentModuleId)

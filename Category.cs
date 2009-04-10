@@ -473,6 +473,11 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId, bool loadRelationships, bool loadTags)
         {
+            return GetCategory(itemId, loadRelationships, loadTags, false);
+        }
+
+        public static Category GetCategory(int itemId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
+        {
             Category c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
@@ -486,6 +491,10 @@ namespace Engage.Dnn.Publish
                 if (loadTags)
                 {
                     c.LoadTags();
+                }
+                if (loadItemVersionSettings)
+                {
+                    c.LoadItemVersionSettings();
                 }
             }
 
@@ -659,7 +668,7 @@ namespace Engage.Dnn.Publish
                 int itemId = (int)itemRow["itemId"];
                 if (GetItemTypeId(itemId) == ItemType.Article.GetId())
                 {
-                    childItem = Article.GetArticle(itemId, this.PortalId, true, true);
+                    childItem = Article.GetArticle(itemId, this.PortalId, true, true, true);
                 }
                 else
                 {

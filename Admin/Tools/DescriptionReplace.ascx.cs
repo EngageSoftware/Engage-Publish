@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
             foreach (DataRow dr in allArticles.Rows)
             {
                 articleCount++;
-                Article a = Article.GetArticle(Convert.ToInt32(dr["itemId"], CultureInfo.InvariantCulture), PortalId);
+                Article a = Article.GetArticle(Convert.ToInt32(dr["itemId"], CultureInfo.InvariantCulture), PortalId, true, true, true);
                 if (a != null)
                 {
                     //if our article is over 8k characters be sure to trim it

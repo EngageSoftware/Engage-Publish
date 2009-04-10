@@ -508,7 +508,7 @@ namespace Engage.Dnn.Publish.Util
                 al.Add(ti);
             }
 
-            al.Sort(new TabInfoNameComparer());
+            al.Sort(new TabInfoNameComparer(true));
 
             DataTable dt = new DataTable();
             dt.Locale = CultureInfo.InvariantCulture;
@@ -564,7 +564,7 @@ namespace Engage.Dnn.Publish.Util
                 al.Add(ti);
             }
 
-            al.Sort(new TabInfoNameComparer(false));
+            al.Sort(new TabInfoNameComparer(true));
 
             DataTable dt = new DataTable();
             dt.Locale = CultureInfo.InvariantCulture;
