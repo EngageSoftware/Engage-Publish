@@ -1195,20 +1195,21 @@ namespace Engage.Dnn.Publish
             {
                 if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    i = Article.GetArticle(itemId, this.PortalId, true, this.AllowTags, true);
+                    //todo: should we check if allow tags is true?
+                    i = Article.GetArticle(itemId, this.PortalId, true, true, true);
                     if (this.ItemVersionId > 0)
                     {
                         i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
                     }
                     if (i != null)
                     {
-                        //if (this.AllowTags && i.Tags.Count < 1)
-                        //{
-                        //    foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, this.PortalId))
-                        //    {
-                        //        i.Tags.Add(it);
-                        //    }
-                        //}
+                        if (this.AllowTags && i.Tags.Count < 1)
+                        {
+                            foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, this.PortalId))
+                            {
+                                i.Tags.Add(it);
+                            }
+                        }
                     }
 
                     //If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
