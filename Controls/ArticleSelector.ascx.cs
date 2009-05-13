@@ -166,7 +166,9 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (this.articleId.HasValue)
             {
-                this.ArticlesDropDownList.SelectedValue = this.articleId.Value.ToString(CultureInfo.InvariantCulture);
+                ListItem li = ArticlesDropDownList.Items.FindByValue(this.articleId.Value.ToString(CultureInfo.InvariantCulture));
+                if(li!=null)
+                    this.ArticlesDropDownList.SelectedValue = this.articleId.Value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
