@@ -165,4 +165,7 @@
   <data name="PublishOverrideable.Text" xml:space="preserve">
     <value> (*)</value>
   </data>
+  <data name="PublishForceAdminMessage.Text" xml:space="preserve">
+    <value>The item you're viewing has been configured to be displayed on another page, you should check the module settings here.</value>
+  </data>
 </root>

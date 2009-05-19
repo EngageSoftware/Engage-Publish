@@ -217,7 +217,13 @@
     <value>Discuss this!</value>
   </data>
   <data name="CommentNotificationEmail.Text" xml:space="preserve">
-    <value>You have recently received a comment on the following article, {0}, you can moderate the comments for articles by visiting this url: {1}.</value>
+    <value>You have recently received a comment on the following article, {0}, you can moderate the comments for articles by visiting this url: {1}.
+
+The contents of the comment are included below:
+
+From: {2} {3}
+Email: {4}
+Body: {5}</value>
   </data>
   <data name="CommentNotificationEmailSubject.Text" xml:space="preserve">
     <value>New Comment: {0}</value>

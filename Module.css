@@ -294,6 +294,21 @@
 	font-weight:bold;
 }
 
+.ErrorBody
+{
+	background:#FDE0E0 none repeat scroll 0 0;
+	border:2px solid #FF0000;
+	color:Red;
+}
+
+.mmText
+{
+	height:100%;
+	margin:0 auto;
+	overflow:hidden;
+	padding:0.675em 0.675em 1em;
+}
+
 
 /*articles for admin item search, not used anymore */
 #articleDiv .divAdminItemSearch

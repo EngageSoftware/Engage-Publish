@@ -46,7 +46,6 @@
             <asp:TemplateField ShowHeader="true"  HeaderText="CommentText" HeaderStyle-CssClass="Publish_AdminCommentText">
                 <ItemTemplate>
                     <asp:Label ID="lblCommentText" runat="server" CssClass="Normal" Text='<%# GetShortCommentText(DataBinder.Eval(Container.DataItem,"CommentText")) %>'></asp:Label>
-                    
                      <ajaxToolkit:HoverMenuExtender 
                     id="hme2" 
                     runat="Server" 
@@ -70,12 +69,20 @@
                     </asp:Panel>
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:TemplateField ShowHeader="true" HeaderText="Date">
+                <ItemTemplate>
+                    <asp:Label ID="lblCreatedDate" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"CreatedDate") %>'></asp:Label>
+                    
+                </ItemTemplate>
+            </asp:TemplateField>
+
             <asp:TemplateField ShowHeader="true"  HeaderText="">
                 <ItemTemplate>
                        <asp:HyperLink ID="hlEdit" runat="server" CssClass="Normal" NavigateUrl='<%# GetCommentEditUrl(DataBinder.Eval(Container.DataItem,"CommentId")) %>'
                             Text='<%# GetLocalizedEditText() %>'></asp:HyperLink>                                                           
                 </ItemTemplate>
             </asp:TemplateField>
+
         </Columns>
     </asp:GridView></div> 
 <asp:label id="lblMessage" runat="server" CssClass="Subhead"></asp:label>

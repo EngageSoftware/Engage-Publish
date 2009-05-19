@@ -188,7 +188,9 @@ namespace Engage.Dnn.Publish.Admin
             }
             else
             {
-                dgItems.DataSource = ds;
+                DataView dv = ds.Tables[0].DefaultView;
+                dv.Sort = "CreatedDate desc";
+                dgItems.DataSource = dv;
                 dgItems.DataBind();
 
                 dgItems.Visible = true;

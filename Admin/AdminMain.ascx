@@ -13,7 +13,7 @@
 			</div>
 		</div>
 	</div>
-    <div class="admin_item">
+    <div class="admin_item" id="divCategories" runat="server" visible="false">
         <div class="admin_item_icon">
 		    <div id="admin_item_categories" class="admin_item_categories" runat="server">
 		        <a href='<%= BuildLinkUrl("&amp;mid="+ ModuleId +"&amp;ctl=admincontainer&amp;adminType=categorylist")%>'><img src='<%=ApplicationUrl%>/images/1x1.gif' alt="Publish Admin Categories" border="0" height="45"/></a>

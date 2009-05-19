@@ -189,4 +189,7 @@
   <data name="lblArticleSearch.Text" xml:space="preserve">
     <value>Article Title Search</value>
   </data>
+  <data name="Date.Header" xml:space="preserve">
+    <value>Date</value>
+  </data>
 </root>

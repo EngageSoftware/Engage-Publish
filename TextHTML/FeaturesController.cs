@@ -112,7 +112,8 @@ namespace Engage.Dnn.Publish.TextHTML
                 item.ModuleId = modInfo.ModuleID;
                 item.SearchKey = "Article-" + itemId;
                 item.Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true);
-                item.GUID = "itemid=" + itemId;
+                //because we're indexing the Text/HTML module we aren't worried about the ItemID querystring parameter
+                //item.GUID = "itemid=" + itemId;
 
                 items.Add(item);
 

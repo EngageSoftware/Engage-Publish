@@ -398,7 +398,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             //TODO: we need to handle items that no longer have a valid parent
             Category pc = Category.GetCategory(Category.GetParentCategory(VersionInfoObject.ItemId, PortalId), PortalId);
-            
+
             if (pc != null)
             {
                 int parentCategoryItemVersionId = pc.ItemVersionId;
@@ -472,11 +472,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
                 if (UseForumComments)
                 {
-
                     int? categoryForumId = GetCategoryForumId();
                     if (categoryForumId.HasValue)
                     {
-
                         int threadId = ForumProvider.GetInstance(PortalId).AddComment(categoryForumId.Value, VersionInfoObject.AuthorUserId,
                             VersionInfoObject.Name, VersionInfoObject.Description, GetItemLinkUrl(VersionInfoObject.ItemId, PortalId),
                             objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), UserId,
@@ -498,8 +496,15 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         urlText = "http://" + urlText;
                     }
+
+                    int approvalStatusId = ApprovalStatus.Waiting.GetId();
+                    if (IsAdmin)
+                    {//automatically approve admin comments
+                        approvalStatusId = ApprovalStatus.Approved.GetId();                        
+                    }
+
                     UserFeedback.Comment.AddComment(VersionInfoObject.ItemVersionId, (UserId == -1 ? null : (int?)UserId),
-                        objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), ApprovalStatus.Waiting.GetId(),
+                        objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), approvalStatusId,
                         null, objSecurity.InputFilter(txtFirstNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtLastNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
                         objSecurity.InputFilter(txtEmailAddressComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting),
@@ -516,7 +521,15 @@ namespace Engage.Dnn.Publish.ArticleControls
                         if (ui != null)
                         {
                             string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
-                            emailBody = String.Format(emailBody, VersionInfoObject.Name, this.GetItemLinkUrlExternal(VersionInfoObject.ItemId));
+                            emailBody = String.Format(emailBody
+                                , VersionInfoObject.Name
+                                , this.GetItemLinkUrlExternal(VersionInfoObject.ItemId)
+                                , objSecurity.InputFilter(txtFirstNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
+                                , objSecurity.InputFilter(txtLastNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
+                                , objSecurity.InputFilter(txtEmailAddressComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
+                                , objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
+
+                                );
 
                             string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", LocalResourceFile);
                             emailSubject = String.Format(emailSubject, VersionInfoObject.Name);
@@ -725,7 +738,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (rtSetting != null)
                 {
 
-                upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
                 if (upnlRating.Visible)
                 {

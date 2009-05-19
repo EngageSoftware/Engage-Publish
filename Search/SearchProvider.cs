@@ -27,7 +27,7 @@ namespace Engage.Dnn.Publish.Search
 	/// <summary>
 	/// Summary description for SearchProvider.
 	/// </summary>
-	public class SearchProvider : ISearchable
+	public class SearchProvider// : ISearchable
 	{
 		#region ISearchable Members
 

@@ -68,6 +68,7 @@ namespace Engage.Dnn.Publish.Admin
                         //TODO: if we enable syndication move this to admin settings
                         divSyndication.Visible = false;
                         divAdminTools.Visible = true;
+                        divCategories.Visible = true;
 					}
 					else
 					{
@@ -80,9 +81,11 @@ namespace Engage.Dnn.Publish.Admin
                         {
                             divComments.Visible = true;
                         }
-
-
-    				}
+                    }
+                    if (AllowAuthorEditCategory(PortalId) && !IsAdmin)
+                    {
+                        divCategories.Visible = true;
+                    }
 				}
 			} 
 			catch (Exception exc) 

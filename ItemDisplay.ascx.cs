@@ -25,7 +25,7 @@ namespace Engage.Dnn.Publish
 
         #region Web Form Designer generated code
         override protected void OnInit(EventArgs e)
-        { 
+        {
             base.OnInit(e);
             SetWLWSupport();
             ReadItemType();
@@ -44,7 +44,7 @@ namespace Engage.Dnn.Publish
         }
 
         #endregion
-        
+
         #region Private Methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Code paths are easy to understand, test, and maintain")]
@@ -64,7 +64,7 @@ namespace Engage.Dnn.Publish
                 Response.Status = "301 Moved Permanently";
                 Response.RedirectLocation = href;
             }
-            
+
             string displayType = string.Empty;
             if (Settings.Contains("DisplayType"))
             {
@@ -191,7 +191,7 @@ namespace Engage.Dnn.Publish
                 mb.ModuleConfiguration = ModuleConfiguration;
                 mb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
                 phControls.Controls.Add(mb);
-                
+
                 //Don't show the menu if we're in VIEW mode
 
                 //Don't show the menu at the top if the control is not configured to display anything. hk
@@ -236,10 +236,15 @@ namespace Engage.Dnn.Publish
                 }
 
                 //check if we're on the correct URL before progressing
-                if (VersionInfoObject.ForceDisplayOnPage() && (TabId != VersionInfoObject.DisplayTabId))
+                if (VersionInfoObject.ForceDisplayOnPage() && (TabId != VersionInfoObject.DisplayTabId) && !IsAdmin)
                 {
                     Response.Status = "301 Moved Permanently";
-                    Response.RedirectLocation = GetItemLinkUrl(VersionInfoObject.ItemId);                    
+                    Response.RedirectLocation = GetItemLinkUrl(VersionInfoObject.ItemId);
+                }
+                else if (VersionInfoObject.ForceDisplayOnPage() && (TabId != VersionInfoObject.DisplayTabId) && IsAdmin)
+                {
+                    lblPublishMessages.Text = Localization.GetString("PublishForceAdminMessage", LocalSharedResourceFile);
+                    divPublishNotifications.Visible = true;
                 }
             }
         }

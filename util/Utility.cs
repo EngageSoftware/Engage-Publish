@@ -1059,11 +1059,18 @@ namespace Engage.Dnn.Publish.Util
             // if the setting to "force display on this page" is set, be sure to send them there.
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
             {
-                tabInfo = tabController.GetTab(tabId, item.PortalId, false);
-                // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                if (moduleId > 0)
+                if (!IsPageOverrideable(item.PortalId, tabId))
+                {//not overrideable, send them to default tab id
+                    tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+                }
+                else
                 {
-                    queryStringModuleId = moduleId;
+                    tabInfo = tabController.GetTab(tabId, item.PortalId, false);
+                    // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
+                    if (moduleId > 0)
+                    {
+                        queryStringModuleId = moduleId;
+                    }
                 }
             }
             else
@@ -1075,11 +1082,12 @@ namespace Engage.Dnn.Publish.Util
             {
                 tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
             }
-            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters
-            if (!IsPageOverrideable(item.PortalId, tabInfo.TabID))
+            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
+            if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
             {
                 return Globals.NavigateURL(tabInfo.TabID);
             }
+
             string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
             return Globals.NavigateURL(tabInfo.TabID, portalSettings, String.Empty, queryStringParameters);
 
@@ -1120,11 +1128,18 @@ namespace Engage.Dnn.Publish.Util
             // if the setting to "force display on this page" is set, be sure to send them there.
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
             {
-                tabInfo = tabController.GetTab(tabId, item.PortalId, false);
-                // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                if (moduleId > 0)
+                if (!IsPageOverrideable(item.PortalId, tabId))
+                {//not overrideable, send them to default tab id
+                    tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+                }
+                else
                 {
-                    queryStringModuleId = moduleId;
+                    tabInfo = tabController.GetTab(tabId, item.PortalId, false);
+                    // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
+                    if (moduleId > 0)
+                    {
+                        queryStringModuleId = moduleId;
+                    }
                 }
             }
             else
@@ -1137,8 +1152,8 @@ namespace Engage.Dnn.Publish.Util
                 tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
             }
 
-            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters
-            if (!IsPageOverrideable(item.PortalId, tabInfo.TabID))
+            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
+            if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
             {
                 return Globals.NavigateURL(tabInfo.TabID);
             }

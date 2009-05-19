@@ -304,7 +304,7 @@ namespace Engage.Dnn.Publish
                         author = ui.DisplayName;
                     }
 
-                    if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute))
+                    if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute) && thumbnail!=string.Empty)
                     {
                         Uri thumnailLink = new Uri(this.Request.Url, ps.HomeDirectory + thumbnail);
                         thumbnail = thumnailLink.ToString();
@@ -334,8 +334,8 @@ namespace Engage.Dnn.Publish
                     description = Utility.ReplaceTokens(description);
                     wr.WriteElementString("description", this.Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
-                    //why was thumbnail included?
-                    //wr.WriteElementString("thumbnail", thumbnail);
+                    if (thumbnail != string.Empty) 
+                        wr.WriteElementString("thumbnail", thumbnail);
 
                     wr.WriteElementString("dc:creator", author);
 
