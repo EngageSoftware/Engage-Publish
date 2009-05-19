@@ -334,8 +334,7 @@ namespace Engage.Dnn.Publish
                     description = Utility.ReplaceTokens(description);
                     wr.WriteElementString("description", this.Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
-                    if (thumbnail != string.Empty) 
-                        wr.WriteElementString("thumbnail", thumbnail);
+                    wr.WriteElementString("thumbnail", thumbnail);
 
                     wr.WriteElementString("dc:creator", author);
 
