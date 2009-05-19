@@ -187,6 +187,7 @@
                         <ContentTemplate>
                             <asp:RadioButtonList ID="rblDisplayOnCurrentPage" runat="server" CssClass="Normal" Style="display: inline" RepeatDirection="Horizontal" AutoPostBack="true" OnSelectedIndexChanged="rblDisplayOnCurrentPage_SelectedIndexChanged" />
                             <asp:DropDownList ID="ddlDisplayTabId" BorderWidth="0" DataValueField="TabID" DataTextField="TabName" runat="server" />
+                            <br /> <asp:Label ID="lblPublishOverrideable" runat="server" />
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </td>

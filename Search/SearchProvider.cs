@@ -44,6 +44,8 @@ namespace Engage.Dnn.Publish.Search
         {
             //get all the updated items
             //DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
+
+            //TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
             DataTable dt = Article.GetArticles(modInfo.PortalID);
             SearchArticleIndex(dt, items, modInfo);
 

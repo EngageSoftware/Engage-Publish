@@ -154,7 +154,7 @@
     <value>Version Description</value>
   </data>
   <data name="lblDisplayTabId.Help" xml:space="preserve">
-    <value>Choose which page this item should be displayed on. This list is populated with all of the pages (tabs) that have the Engage:Publish module installed, and configured to allow items from other lists to display in it, or configured to be an Article or Category Display.</value>
+    <value>Choose which page this item should be displayed on. This list is populated with all of the pages (tabs) in your Portal. Pages with a (*) have an overrideable Publish module on them, meaning they can show multiple types of Engage:Publish content based on the URL.</value>
   </data>
   <data name="lblDisplayTabId.Text" xml:space="preserve">
     <value>Display Page:</value>
@@ -402,7 +402,7 @@ When you are done defining the content for your article at the bottom of the pag
     <value>Enter Tags (seperator ;):</value>
   </data>
   <data name="lblDisplayOnCurrentPage.Help" xml:space="preserve">
-    <value>Choose the option for this article to display. Current Page means the article will display on the page of any lists that link to that article. Choosing a page from a dropdown list will make all system generated links point to the selected page to display the article. By checking the "Force" checkbox you will make sure that an article can only be displayed on a specific page, even if requested from another instance of Publish through the querystring.</value>
+    <value>Choose the option for this article to display. Current Page means the article will display on the page of any lists that link to that article. Choosing a page from a dropdown list will make all system generated links point to the selected page to display the article. Pages with a (*) have an overrideable Publish module on them, meaning they can show multiple types of Engage:Publish content based on the URL. By checking the "Force" checkbox you will make sure that an article can only be displayed on a specific page, even if requested from another instance of Publish through the querystring.</value>
   </data>
   <data name="chkTags.Text" xml:space="preserve">
     <value>Tags</value>

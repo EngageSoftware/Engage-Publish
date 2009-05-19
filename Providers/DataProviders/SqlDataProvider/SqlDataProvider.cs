@@ -1117,6 +1117,7 @@ namespace Engage.Dnn.Publish.Data
             return ds.Tables[0];
         }
 
+
         public override DataTable GetArticlesByPortalId(int portalId)
         {
             StringBuilder sql = new StringBuilder(256);

@@ -73,8 +73,14 @@ namespace Engage.Dnn.Publish.CategoryControls
             //int tli = TopLevelId;
             LoadControlType();
             base.OnInit(e);
+            LoadSharedResources();
         }
 
+        private void LoadSharedResources()
+        {
+            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
+            lblPublishOverrideableChild.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
+        }
         private void InitializeComponent()
         {
             this.Load += this.Page_Load;
@@ -563,17 +569,36 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             ddlDisplayTabId.Items.Clear();
 
-            string[] modules = new string[] { "Engage: Publish" };
+            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
-            ListItem l = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
-            this.ddlDisplayTabId.Items.Insert(0, l);
+            //ListItem l = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            //this.ddlDisplayTabId.Items.Insert(0, l);
+
+            //foreach (DataRow dr in dt.Rows)
+            //{
+            //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+            //    this.ddlDisplayTabId.Items.Add(li);
+            //}
+            dt = Utility.GetDisplayTabIds(modules);
+
+            //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
+
+            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            this.ddlDisplayTabId.DataBind();
+
+
 
             foreach (DataRow dr in dt.Rows)
             {
-                ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
-                this.ddlDisplayTabId.Items.Add(li);
+                if (ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()) != null)
+                    ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()).Text += Localization.GetString("PublishOverrideable", LocalSharedResourceFile);
+
+                //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+                //    this.ddlDisplayTabId.Items.Add(li);
             }
+
+
 
             if (!VersionInfoObject.IsNew)
             {
@@ -621,17 +646,23 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             ddlChildDisplayTabId.Items.Clear();
             Category cv = (Category)VersionInfoObject;
-            string[] modules = new string[] { "Engage: Publish" };
+            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
-            ListItem l = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
-            this.ddlChildDisplayTabId.Items.Insert(0, l);
+
+            this.ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            this.ddlChildDisplayTabId.DataBind();
 
             foreach (DataRow dr in dt.Rows)
             {
-                ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
-                this.ddlChildDisplayTabId.Items.Add(li);
+
+                if (ddlChildDisplayTabId.Items.FindByValue(dr["TabID"].ToString()) != null)
+                    ddlChildDisplayTabId.Items.FindByValue(dr["TabID"].ToString()).Text += Localization.GetString("PublishOverrideable", LocalSharedResourceFile);
+
+                //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+                //    this.ddlDisplayTabId.Items.Add(li);
             }
+
 
             ListItem child = ddlChildDisplayTabId.Items.FindByValue(cv.ChildDisplayTabId.ToString(CultureInfo.InvariantCulture));
             if (child != null && child.Value != "-1")

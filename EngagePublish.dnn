@@ -403,7 +403,7 @@
       <modulename>Engage: Publish Text/HTML</modulename>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
       <version>05.03.06</version>
-      <businesscontrollerclass></businesscontrollerclass>
+      <businesscontrollerclass>Engage.Dnn.Publish.TextHTML.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>
         <module>

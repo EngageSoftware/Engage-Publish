@@ -75,6 +75,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             InitializeComponent();
             LoadControlType();
             base.OnInit(e);
+            LoadSharedResources();
+        }
+
+        private void LoadSharedResources()
+        {
+            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
         }
 
         private void InitializeComponent()
@@ -414,9 +420,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     if (ddlDisplayTabId.SelectedIndex > 0 && ddlDisplayTabId.Enabled)
                     {
-                        
-                        av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
-                        
+                        av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);                      
                     }
 
                     av.VersionNumber = this.txtVersionNumber.Text;
@@ -762,29 +766,33 @@ namespace Engage.Dnn.Publish.ArticleControls
             string[] modules = new string[] { Utility.DnnFriendlyModuleName };
             DataTable dt = new DataTable();
             dt.Locale = CultureInfo.InvariantCulture;
-            if (chkForceDisplayTab.Checked)
-            {
-                //if the ForceDisplayTab is checked we need to make sure we get ALL publish modules, not just overrideable ones
-                dt = Utility.GetDisplayTabIdsAll(modules);
-            }
-            else
-            {
-                dt = Utility.GetDisplayTabIds(modules);
-                if (dt.Rows.Count < 1)
-                {
-                    //if there are no items in the list, meaning there are no modules set to be overrideable, then get the list of all Publish pages.
-                    dt = Utility.GetDisplayTabIdsAll(modules);
-                }
+            //we're going to get all pages no matter if they have a Publish module on them or not. We'll only highlight Overrideable ones later
+            //if (chkForceDisplayTab.Checked)
+            //{
+            //    //if the ForceDisplayTab is checked we need to make sure we get ALL publish modules, not just overrideable ones
+            //    dt = Utility.GetDisplayTabIdsAll(modules);
+            //}
+            //else
+            //{
+            //    dt = Utility.GetDisplayTabIds(modules);
+            //    if (dt.Rows.Count < 1)
+            //    {
+            //        //if there are no items in the list, meaning there are no modules set to be overrideable, then get the list of all Publish pages.
+            //        dt = Utility.GetDisplayTabIdsAll(modules);
+            //    }
+            //}
+            dt = Utility.GetDisplayTabIds(modules);
 
-            }
+            //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
-            this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-
-
+            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            this.ddlDisplayTabId.DataBind();
             foreach (DataRow dr in dt.Rows)
             {
-                ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
-                this.ddlDisplayTabId.Items.Add(li);
+                if (ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()) != null)
+                    ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()).Text += Localization.GetString("PublishOverrideable", LocalSharedResourceFile);
+            //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+            //    this.ddlDisplayTabId.Items.Add(li);
             }
 
             //check if the DisplayTabId should be set.

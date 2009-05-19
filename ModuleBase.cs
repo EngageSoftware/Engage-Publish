@@ -1398,7 +1398,7 @@ namespace Engage.Dnn.Publish
             //check for version id
             int itemId = this.ItemId;
             this.versionInfoObject = this.BindItemData(itemId);
-            if (Convert.ToDateTime(this.versionInfoObject.EndDate) < DateTime.Now)
+            if (this.versionInfoObject.EndDate!=null && Convert.ToDateTime(this.versionInfoObject.EndDate) < DateTime.Now)
             {
                 BindNewItem();
             }

@@ -576,6 +576,7 @@
     <Compile Include="TextHtml\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TextHtml\FeaturesController.cs" />
     <Compile Include="TextHtml\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

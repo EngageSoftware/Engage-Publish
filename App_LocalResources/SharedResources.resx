@@ -159,4 +159,10 @@
   <data name="lblYouAreHere.Text" xml:space="preserve">
     <value>You are here: </value>
   </data>
+  <data name="lblPublishOverrideable.Text" xml:space="preserve">
+    <value>Pages with a (*) have an overrideable Publish module on them.</value>
+  </data>
+  <data name="PublishOverrideable.Text" xml:space="preserve">
+    <value> (*)</value>
+  </data>
 </root>

@@ -72,21 +72,37 @@ namespace Engage.Dnn.Publish.TextHtml
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             StringBuilder articleName = new StringBuilder(255);
-            articleName.Append("TabId-");
-            articleName.Append(TabId.ToString());
-            articleName.Append("ModuleId-");
-            articleName.Append(ModuleId.ToString());
-            string articleDescription = String.Format(Localization.GetString("description", LocalResourceFile), DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            
+            //replace name with the Page Name and Module Name
+            ModuleController mc = new ModuleController();
+            ModuleInfo mi = mc.GetModule(this.ModuleId, this.TabId);
+            articleName.Append(mi.ModuleTitle);
+            
+            if (articleName.Length < 1)
+            {//check to see if the moduletitle was set as the title for the article, otherwise use the following
+                articleName.Append("TabId-");
+                articleName.Append(TabId.ToString());
+                articleName.Append("ModuleId-");
+                articleName.Append(ModuleId.ToString());
+            }
+            //string articleDescription = String.Format(Localization.GetString("description", LocalResourceFile), DateTime.Now.ToString(CultureInfo.CurrentCulture));
 
-            ModuleController modules = new ModuleController();
-
+            string articleText = teArticleText.Text;
+            string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(articleText, false);
+            string articleDescription = Utility.TrimDescription(3997, description) + "...";// description + "...";
+          
+            
             //save article
             //if the article id (itemid) already exists in the module settings let's update, otherwise create new
             if (Settings.Contains("ItemId"))
             {
                 Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId, true, true);
-                a.Description = articleDescription;
+                
                 a.ArticleText = teArticleText.Text;
+                a.Description = articleDescription;
+                //trim the content entered for a description
+                
+
                 a.DisplayTabId = TabId;
                                 
                 //force display on specific page
@@ -104,9 +120,9 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.Save(UserId);
                 
                 //this is likely unneccesary as we already have the itemid set in the settings
-                modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+                mc.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
 
-                modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
+                mc.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
             }
             else
             {
@@ -126,8 +142,8 @@ namespace Engage.Dnn.Publish.TextHtml
                     a.ApprovalStatusId = Util.ApprovalStatus.Approved.GetId();
 
                 a.Save(UserId);             
-                modules.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
-                modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
+                mc.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+                mc.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
             }           
             
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
