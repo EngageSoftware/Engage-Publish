@@ -393,8 +393,10 @@ namespace Engage.Dnn.Publish.Controls
 
             string cacheKey = Utility.CacheKeyPublishCustomDisplay +
                     customDisplaySettings.SortOption.Replace(" ", string.Empty).ToString(CultureInfo.InvariantCulture) +
-                        categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) +
-                            "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
+                        categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" 
+                        + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture)
+                        + "ItemType" + customDisplaySettings.ItemTypeId
+                        + "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
             DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
             //check for tags
             if (AllowTags && tagQuery != null && tagQuery.Count > 0)

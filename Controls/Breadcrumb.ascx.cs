@@ -69,7 +69,8 @@ namespace Engage.Dnn.Publish.Controls
             try
             {
                 //check VI for null then set information
-                if (!Page.IsPostBack)
+                //if itemid<=5 then we're dealing with a toplevelitemtype, ignore for breadcrumb
+                if (!Page.IsPostBack && ItemId>5)
                 {
                     StringBuilder sb = new StringBuilder(100);
                     loadParents(ItemId);

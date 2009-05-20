@@ -40,9 +40,9 @@ namespace Engage.Dnn.Publish.CategoryControls
             try
             {
                 ItemRelationship.DisplayCategoryHierarchy(ddlCategoryList, -1, PortalId, false);
-                ddlCategoryList.Items.Insert(0, new ListItem(Localization.GetString("TopLevel", LocalResourceFile), TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
+                
                 ddlCategoryList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-
+                ddlCategoryList.Items.Insert(1, new ListItem(Localization.GetString("TopLevel", LocalResourceFile), TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
                 object o = Settings["nLevels"];
                 if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
@@ -134,16 +134,19 @@ namespace Engage.Dnn.Publish.CategoryControls
             //modules.UpdateTabModuleSetting(this.TabModuleId, "nSortOrder", OrderString);
         }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        //protected void ddlCategoryList_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    DataTable dt = GetAllChildrenDataTable();
-        //    if (dt != null)
-        //    {
-        //        lstItems.DataSource = Utility.SortDataTable(dt, BuildOrderList());
-        //        lstItems.DataBind();
-        //    }
-        //}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void ddlCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlCategoryList.SelectedValue == TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture))
+            {
+                chkShowParentItem.Checked = false;
+                chkShowParentItem.Enabled = false;
+            }
+            else
+            {
+                chkShowParentItem.Enabled = true;
+            }
+        }
 
         //private DataTable GetAllChildrenDataTable()
         //{
