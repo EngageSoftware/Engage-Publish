@@ -945,13 +945,13 @@ namespace Engage.Dnn.Publish
                     IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
                     ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
-                    i = (Item)CBO.FillObject(dr, it.GetItemType);
-                    i.CorrectDates();
+                    i = (Item)CBO.FillObject(dr, it.GetItemType);                   
                 }
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if (i != null)
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
+                    i.CorrectDates();
                     DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }

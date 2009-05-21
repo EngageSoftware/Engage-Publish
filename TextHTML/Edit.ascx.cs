@@ -64,8 +64,27 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             if(Settings.Contains("ItemId"))
             {
-                Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId, false, false);
-                teArticleText.Text = a.ArticleText;
+                SetItemId(Convert.ToInt32(Settings["ItemId"].ToString()));
+                Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId, true, true, true);
+                if (a != null)
+                {
+                    teArticleText.Text = a.ArticleText;
+                    publishTextHTMLEntry.Visible = true;
+                    divPublishNotifications.Visible = false;
+                }
+                else
+                {
+
+                    //we need to fill the versioninfoobject because that's what the buildversionsurl needs to use
+
+                    VersionInfoObject = new Article();
+                    VersionInfoObject.ItemId = ItemId;
+
+                    //there aren't any approved versions of this article, provide a link to the versions page.
+                    publishTextHTMLEntry.Visible = false;
+                    divPublishNotifications.Visible = true;
+                    lblPublishMessages.Text = String.Format(Localization.GetString("notApproved", LocalResourceFile), BuildVersionsUrl());
+                }
             }
         }
 

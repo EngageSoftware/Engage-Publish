@@ -123,4 +123,7 @@
   <data name="description.Text" xml:space="preserve">
     <value>This article was saved with the Publish Text/HTML Module on {0}</value>
   </data>
+  <data name="notApproved.Text" xml:space="preserve">
+    <value>There aren't any approved versions of this article, check out the &lt;a href="{0}"&gt;Versions list&lt;/a&gt; for all the previous versions.</value>
+  </data>
 </root>

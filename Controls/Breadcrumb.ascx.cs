@@ -155,8 +155,11 @@ namespace Engage.Dnn.Publish.Controls
             if (itemId > -1)
             {
                 Item i = Item.GetItem(itemId, PortalId, Item.GetItemTypeId(itemId), true);
-                string linkUrl = Engage.Dnn.Publish.Util.Utility.GetItemLinkUrl(i);
-                bci.Add(i.Name, linkUrl);
+                if (i != null)
+                {
+                    string linkUrl = Engage.Dnn.Publish.Util.Utility.GetItemLinkUrl(i);
+                    bci.Add(i.Name, linkUrl);
+                }
             }
 
         }
