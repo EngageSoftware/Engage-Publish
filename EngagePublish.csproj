@@ -976,6 +976,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.09.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.03.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.03.07.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>

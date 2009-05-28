@@ -27,6 +27,7 @@ namespace Engage.Dnn.Publish
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            CheckClearCache();
             SetWLWSupport();
             ReadItemType();
             LoadControlType();
@@ -46,6 +47,24 @@ namespace Engage.Dnn.Publish
         #endregion
 
         #region Private Methods
+
+        private void CheckClearCache()
+        {
+            if (IsAdmin)
+            {
+                object o = Request.QueryString["clearcache"];
+                if (o != null)
+                {
+                    if (Convert.ToBoolean(o.ToString()))
+                    {
+                        Utility.ClearPublishCache(PortalId);
+                    }
+                    Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());                    
+                }
+            }
+            
+        }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Code paths are easy to understand, test, and maintain")]
         private void ReadItemType()
@@ -258,6 +277,10 @@ namespace Engage.Dnn.Publish
                 ModuleActionCollection actions = new ModuleActionCollection();
                 actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
                 //actions.Add(GetNextActionID(), Localization.GetString("ClearCache", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                if (IsAdmin)
+                {
+                    actions.Add(GetNextActionID(), Localization.GetString("ClearCache", LocalSharedResourceFile), "", "", "action_refresh.gif", DotNetNuke.Common.Globals.NavigateURL("", "&clearcache=true"), false, SecurityAccessLevel.Edit, true, false);
+                }
                 return actions;
             }
         }

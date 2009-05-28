@@ -688,9 +688,18 @@ namespace Engage.Dnn.Publish
                 //{
                 //    return string.Empty;
                 //}
+
+                ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", PortalId);
+                if (auNameSetting != null)
+                {
+                    originalAuthor = auNameSetting.PropertyValue.ToString();
+                }
+
                 return originalAuthor;
             }
-            set { originalAuthor = value; }
+            set {               
+                    originalAuthor = value;
+            }
         }
 
         [XmlElement(Order = 21)]

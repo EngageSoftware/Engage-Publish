@@ -284,11 +284,12 @@ namespace Engage.Dnn.Publish
                         guid = r["itemVersionIdentifier"].ToString();
                         startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
-                        UserController uc = new UserController();
+                        author = r["Author"].ToString();
 
-                        UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
-                        if(ui!=null)
-                        author = ui.DisplayName;
+                        //UserController uc = new UserController();
+                        //UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
+                        //if(ui!=null)
+                        //author = ui.DisplayName;
                     }
                     else if (string.Equals(this.DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
                     {
@@ -298,10 +299,12 @@ namespace Engage.Dnn.Publish
                         guid = r["itemVersionIdentifier"].ToString();
                         startDate = (DateTime)r["StartDate"];
                         thumbnail = r["Thumbnail"].ToString();
-                        UserController uc = new UserController();
-                        UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
-                        if (ui != null)
-                        author = ui.DisplayName;
+                        author = r["Author"].ToString();
+
+                        //UserController uc = new UserController();
+                        //UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(r["AuthorUserId"].ToString()));
+                        //if (ui != null)
+                        //author = ui.DisplayName;
                     }
 
                     if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute) && thumbnail!=string.Empty)

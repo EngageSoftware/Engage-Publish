@@ -217,7 +217,7 @@ namespace Engage.Dnn.Publish.Data
         public override IDataReader GetItems(int itemTypeId, int portalId)
         {
             StringBuilder sql = new StringBuilder(256);
-            sql.Append("select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
+            sql.Append("select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, Author, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
             sql.Append(NamePrefix);
             sql.Append("vwItems vi join ");
             sql.Append(databaseOwner);
@@ -277,7 +277,7 @@ namespace Engage.Dnn.Publish.Data
             StringBuilder sql = new StringBuilder(256);
 
             sql.Append(" select ");
-            sql.Append(" c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.ItemTypeId, c.CreatedDate, c.LastUpdated, c.Thumbnail, c.StartDate, c.AuthorUserId, u.DisplayName, c.RevisingUserId, c.ApprovedItemVersionID ");
+            sql.Append(" c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.ItemTypeId, c.CreatedDate, c.LastUpdated, c.Thumbnail, c.StartDate, c.AuthorUserId, u.DisplayName, c.Author, c.RevisingUserId, c.ApprovedItemVersionID ");
             sql.Append(" from ");
             sql.Append(NamePrefix);
             sql.Append("vwChildItems c  join ");
@@ -1907,7 +1907,7 @@ namespace Engage.Dnn.Publish.Data
             {
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
-            sql.Append("il.ChildItemId, il.Thumbnail, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemTypeId, il.StartDate, il.LastUpdated, il.CreatedDate, il.AuthorUserId, u.DisplayName, il.RevisingUserId ");
+            sql.Append("il.ChildItemId, il.Thumbnail, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemTypeId, il.StartDate, il.LastUpdated, il.CreatedDate, il.AuthorUserId, u.DisplayName, il.Author, il.RevisingUserId ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("vwItemListing il ");
@@ -1999,7 +1999,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(NamePrefix);
             sql.Append("itemview where itemid = il.childitemid ) TotalRows, ");
             sql.Append(" il.ItemId, il.CategoryName, il.ChildName, ");
-            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName ");
+            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName, il.Author ");
 			sql.Append("from ");
 			sql.Append(NamePrefix);
             sql.Append("vwItemListing il");

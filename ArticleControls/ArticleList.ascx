@@ -76,7 +76,7 @@
                             <asp:Label ID="lblDescription" runat="server" CssClass="Normal" Text='<%# GetDescription(DataBinder.Eval(Container.DataItem,"Description")) %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="DisplayName" HeaderText="DisplayName" SortExpression="DisplayName" ItemStyle-CssClass="Normal" />
+                    <asp:BoundField DataField="Author" HeaderText="DisplayName" SortExpression="Author" ItemStyle-CssClass="Normal" />
                     <asp:BoundField DataField="CreatedDate" HeaderText="CreatedDate" SortExpression="CreatedDate" ItemStyle-CssClass="Normal" />
                     <asp:BoundField DataField="LastUpdated" HeaderText="LastUpdated" SortExpression="LastUpdated" ItemStyle-CssClass="Normal" />
                      <asp:TemplateField ShowHeader="true"  HeaderText="">

@@ -892,9 +892,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (ShowAuthor)
                 {
                     pnlAuthor.Visible = true;
-                    UserController uc = new UserController();
-                    UserInfo ui = uc.GetUser(PortalId, article.AuthorUserId);
-                    lblAuthor.Text = ui.DisplayName;
+                    lblAuthor.Text = article.Author;
+                    if (lblAuthor.Text.Trim().Length < 1)
+                    {
+                        UserController uc = new UserController();
+                        UserInfo ui = uc.GetUser(PortalId, article.AuthorUserId);
+                        lblAuthor.Text = ui.DisplayName;
+                    }
 
                     if (lblAuthor.Text.Trim().Length < 1)
                     {

@@ -168,4 +168,7 @@
   <data name="PublishForceAdminMessage.Text" xml:space="preserve">
     <value>The item you're viewing has been configured to be displayed on another page, you should check the module settings here.</value>
   </data>
+  <data name="ClearCache.Text" xml:space="preserve">
+    <value>Clear Publish Cache</value>
+  </data>
 </root>
