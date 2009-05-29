@@ -557,11 +557,16 @@ namespace Engage.Dnn.Publish.ArticleControls
                     this.txtMessage.Text += Localization.GetString("ErrorDisplayPage.Text", LocalResourceFile);
                 }
 
+                
+
+
                 if (error)
                 {
                     this.txtMessage.Visible = true;
                     return;
                 }
+
+                
 
                 av.ArticleText = teArticleText.Text;
                 av.VersionDescription = txtVersionDescription.Text;

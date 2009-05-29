@@ -246,4 +246,7 @@
   <data name="lblAuthorName.Text" xml:space="preserve">
     <value>Author Name</value>
   </data>
+  <data name="NameError.Text" xml:space="preserve">
+    <value>There was a problem with the Name of this item.</value>
+  </data>
 </root>

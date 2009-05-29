@@ -307,14 +307,28 @@ namespace Engage.Dnn.Publish.Controls
         {
             get
             {
-                ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
+                bool returnVal = true;
+                
                 DateTime start;
                 DateTime end;
                 if (DateTime.TryParse(txtStartDate.Text, out start) && DateTime.TryParse(txtEndDate.Text, out end))
                 {
-                    return end > start;
+                    returnVal = end > start;
+                    ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
                 }
-                return start != DateTime.MinValue && !Utility.HasValue(this.txtEndDate.Text);
+                else if (start == DateTime.MinValue && Utility.HasValue(this.txtEndDate.Text))
+                {
+                    returnVal = false;
+                    ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
+                }
+
+                if (txtName.Text.Trim().Length < 1)
+                {
+                    returnVal = false;
+                    ErrorMessage += Localization.GetString("NameError", LocalResourceFile);
+                }                
+
+                return returnVal;
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
