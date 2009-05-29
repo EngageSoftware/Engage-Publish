@@ -789,8 +789,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             dt = Utility.GetDisplayTabIds(modules);
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            
+            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
             this.ddlDisplayTabId.DataBind();
             foreach (DataRow dr in dt.Rows)
             {

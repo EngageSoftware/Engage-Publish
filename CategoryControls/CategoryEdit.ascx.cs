@@ -584,7 +584,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
             this.ddlDisplayTabId.DataBind();
 
 
@@ -650,7 +650,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
 
-            this.ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(PortalId, false, true, false, false, false);
+            this.ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
             this.ddlChildDisplayTabId.DataBind();
 
             foreach (DataRow dr in dt.Rows)
