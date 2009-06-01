@@ -1047,9 +1047,9 @@ namespace Engage.Dnn.Publish
             url.Append("eprss.aspx?");
             url.Append("portalid=");
             url.Append(portalId);
-            url.Append("&amp;DisplayType=");
+            url.Append("&DisplayType=");
             url.Append(displayType);
-            url.Append("&amp;Tags=");
+            url.Append("&Tags=");
             url.Append(HttpUtility.UrlEncode(tags));
 
             return url.ToString();
@@ -1125,6 +1125,7 @@ namespace Engage.Dnn.Publish
         {
             if (rssUrl != null && rssTitle != null)
             {
+
                 LiteralControl lc = new LiteralControl();
                 StringBuilder sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");

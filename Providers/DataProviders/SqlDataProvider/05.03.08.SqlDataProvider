@@ -1,0 +1,59 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}publish_spGetItemsForTags]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetItemsForTags] 
+	@PortalId int,
+	@TagList nvarchar(4000) = null
+AS
+
+SET Transaction Isolation Level Read UNCOMMITTED
+
+	declare @xmlDoc int
+	EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
+
+	CREATE TABLE #Tags
+	(
+		[TagId] nvarchar(255)
+	)
+
+	insert into #Tags ([TagId])
+	select CONVERT(nvarchar(255), [text])
+	from OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+	where [text] is not null
+	
+		
+	declare @TagCount int
+
+	select @TagCount = count(*) from #Tags
+
+	
+
+	select  [name] as 'ChildName', Thumbnail, itemId as 'ChildItemId', ItemVersionId
+	, ItemVersionIdentifier, description as 'ChildDescription', StartDate, CreatedDate, AuthorUserId
+	, u.DisplayName, vi.Author, vi.ItemTypeId as 'ChildItemTypeId'
+	, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName'
+	from {objectQualifier}publish_vwitems vi
+	join {objectQualifier}users u on (u.UserId = vi.AuthorUserId)
+	where vi.itemversionid in (
+		select distinct  ivt.itemversionid
+		from {objectQualifier}publish_tags t
+		inner join {objectQualifier}publish_itemversiontags ivt on t.TagId = ivt.TagId
+		where ivt.ItemVersionId in (
+				select vi2.ItemVersionId
+				from #Tags X
+				inner join {objectQualifier}publish_tags t2 on Convert(int, X.[TagId]) = t2.TagId
+				inner join {objectQualifier}publish_itemversiontags ivt2 on ivt2.TagId = t2.TagId
+				inner join {objectQualifier}publish_vwItems vi2 on vi2.ItemVersionId = ivt2.ItemVersionId
+				where vi2.IsCurrentVersion = 1
+				group by vi2.ItemVersionId
+				Having count(*) = @TagCount
+				)
+		and vi.PortalId = @PortalId
+		Group By t.TagId, ivt.itemversionid
+		having t.[TagId] in (select [TagId] from #Tags))
+
+	DROP TABLE #Tags
+	EXEC sp_xml_removedocument @xmlDoc
+
+GO
