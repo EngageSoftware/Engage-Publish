@@ -27,6 +27,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Data;
 using Engage.Dnn.Publish.Util;
+using DotNetNuke.Entities.Users;
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -634,6 +635,16 @@ namespace Engage.Dnn.Publish.Controls
         protected static string BuildEditUrl(int itemId, int tabId, int moduleId, int portalId)
         {
             return Utility.BuildEditUrl(itemId, tabId, moduleId, portalId);
+        }
+
+        protected static string GetAuthor(object author, object authorUserId, int PortalId)
+        {
+            if (author.ToString().Trim().Length > 0)
+                return author.ToString();
+            UserController uc = new UserController();
+            return uc.GetUser(PortalId, Convert.ToInt32(authorUserId)).DisplayName;
+                
+
         }
     }
 }

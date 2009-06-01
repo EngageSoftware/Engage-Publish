@@ -316,7 +316,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid ");
+            sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid, i.author ");
             sql.Append("from  ");
             sql.Append(NamePrefix);
             sql.Append("vwItems i ");
@@ -350,7 +350,7 @@ namespace Engage.Dnn.Publish.Data
         {
             StringBuilder sql = new StringBuilder(256);
 
-            sql.Append("select ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ApprovedItemVersionID ");
+            sql.Append("select ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ApprovedItemVersionID, Author ");
             sql.Append("from  ");
             sql.Append(NamePrefix);
             sql.Append("vwItems ");
@@ -2056,6 +2056,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("ci.StartDate, ");
             sql.Append("i.name as CategoryName, ");
             sql.Append("ci.AuthorUserId, ");
+            sql.Append("ci.Author, ");
             sql.Append("ci.ItemVersionIdentifier ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -2102,7 +2103,7 @@ namespace Engage.Dnn.Publish.Data
             {
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
-            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId ");
+            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId, child.Author ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "from {0}vwItemListing il ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems child on (il.ChilditemId = child.itemId) ", NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems parent on (il.itemId = parent.itemId) ", NamePrefix);

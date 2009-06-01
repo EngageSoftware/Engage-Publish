@@ -689,10 +689,16 @@ namespace Engage.Dnn.Publish
                 //    return string.Empty;
                 //}
 
+
                 ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", PortalId);
-                if (auNameSetting != null)
+                if (auNameSetting != null && auNameSetting.ToString().Trim().Length>0)
                 {
                     originalAuthor = auNameSetting.PropertyValue.ToString();
+                }
+                else
+                {
+                    UserController uc = new UserController();
+                    originalAuthor = uc.GetUser(portalId, authorUserId).DisplayName;
                 }
 
                 return originalAuthor;

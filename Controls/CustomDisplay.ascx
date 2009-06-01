@@ -29,7 +29,7 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">
-		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Author") %>'></asp:Literal>
+		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# GetAuthor(DataBinder.Eval(Container.DataItem, "Author"), DataBinder.Eval(Container.DataItem, "AuthorUserId"), PortalId) %>'></asp:Literal>
 		                </asp:Panel>
 		                <asp:Panel ID="pnlDate" runat="server" CssClass="itemDate">
 			                <asp:Literal id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Literal>
@@ -60,7 +60,7 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
 		                <asp:Panel ID="pnlAuthor" runat="server" CssClass="itemAuthor">
-		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Author") %>'></asp:Literal>
+		                    <asp:Literal id="lblAuthor" runat="server" Text='<%# GetAuthor(DataBinder.Eval(Container.DataItem, "Author"), DataBinder.Eval(Container.DataItem, "AuthorUserId"), PortalId) %>'></asp:Literal>
 		                </asp:Panel>
 		                <asp:Panel ID="pnlDate" runat="server" CssClass="itemDate">
 			                <asp:Literal id="lblDate" runat="server" Text='<%# FormatDate(DataBinder.Eval(Container.DataItem, "StartDate")) %>'></asp:Literal>
