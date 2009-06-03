@@ -10,12 +10,12 @@
 <table class="PublishEditTable Normal">
     <tr>
         <td class="editTableLabelColumn nowrap">
-            <dnn:label ID="lblName" ResourceKey="lblName" runat="server" class="title"/>
+            <dnn:label ID="lblName" ResourceKey="lblName" runat="server" cssclass="title"/>
         </td><td class="fullWidth">
             <asp:TextBox ID="txtName" runat="server" CssClass="txtName" />
             <asp:CheckBox ID="chkDisplayAsHyperlink" runat="server" />
             
-            <dnn:label ID="lblDisplayAsHyperlink" ResourceKey="lblDisplayAsHyperlink" runat="server" class="title" />
+            <dnn:label ID="lblDisplayAsHyperlink" ResourceKey="lblDisplayAsHyperlink" runat="server" cssclass="title" />
             
         </td>
     </tr>
@@ -100,12 +100,12 @@
             </td><td class="fullWidth">
                 <table class="Normal fullWidth"><tr>
                     <td>
-                        <dnn:label ID="lblStartDate" ResourceKey="lblStartDate" runat="server" class="title"/>
+                        <dnn:label ID="lblStartDate" ResourceKey="lblStartDate" runat="server" CssClass="title"/>
                         <asp:TextBox ID="txtStartDate" runat="server"/>&nbsp;<asp:Image ID="imgStartCalendarIcon" runat="server" ImageUrl="~/desktopModules/EngagePublish/images/calendar.png" />
                         <ajaxToolkit:CalendarExtender ID="calendarStart" runat="server" TargetControlID="txtStartDate" PopupButtonID="imgStartCalendarIcon" />
 
                     </td><td>
-                        <dnn:label ID="lblEndDate" ResourceKey="lblEndDate" runat="server" class="title"/>
+                        <dnn:label ID="lblEndDate" ResourceKey="lblEndDate" runat="server" cssclass="title"/>
                         <asp:TextBox ID="txtEndDate" runat="server"/>&nbsp;<asp:Image ID="imgEndCalendarIcon" runat="server" ImageUrl="~/desktopModules/EngagePublish/images/calendar.png" />
                         <ajaxToolkit:CalendarExtender ID="calendarEnd" runat="server" TargetControlID="txtEndDate" PopupButtonID="imgEndCalendarIcon" />
                     </td>
@@ -126,15 +126,15 @@
                 <ContentTemplate>
                     <asp:Panel ID="pnlSearchEngine" runat="server" visible="false">
                         <div id="divSearchEngine"><%-- runat="server"--%>
-                            <dnn:label ID="lblMetaTitle" ResourceKey="lblMetaTitle" runat="server" class="title"/>
+                            <dnn:label ID="lblMetaTitle" ResourceKey="lblMetaTitle" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaTitle" runat="server" TextMode="SingleLine" Columns="50" Rows="1"/>
                             <br />
                             <br />
-                            <dnn:label ID="lblMetaKeywords" ResourceKey="lblMetaKeywords" runat="server" class="title"/>
+                            <dnn:label ID="lblMetaKeywords" ResourceKey="lblMetaKeywords" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaKeywords" runat="server" TextMode="MultiLine" Columns="50" Rows="3"/>
                             <br />
                             <br />
-                            <dnn:label ID="lblMetaDescription" ResourceKey="lblMetaDescription" runat="server" class="title"/>
+                            <dnn:label ID="lblMetaDescription" ResourceKey="lblMetaDescription" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaDescription" runat="server" TextMode="MultiLine" Columns="50" Rows="3"/>
                         </div>
                     </asp:Panel>

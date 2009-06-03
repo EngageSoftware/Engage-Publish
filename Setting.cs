@@ -22,6 +22,7 @@ namespace Engage.Dnn.Publish
         public static readonly Setting UseApprovals = new Setting("chkUseApprovals", "Checked");//, "If checked, approval workflow is disabled for this item.");
         public static readonly Setting UseSimpleGalleryAlbum = new Setting("ddlSimpleGalleryAlbum", "SelectedValue");
         public static readonly Setting UseUltraMediaGalleryAlbum = new Setting("ddlUltraMediaGalleryAlbum", "SelectedValue");
+        public static readonly Setting ArticleAttachment = new Setting("ArticleSettings", "ArticleAttachment");
 
         //Categories Settings
         public static readonly Setting CategorySettingsCurrentDisplay = new Setting("CategorySettings", "DisplayOnCurrentPage");

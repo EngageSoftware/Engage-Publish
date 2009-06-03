@@ -76,6 +76,13 @@ namespace Engage.Dnn.Publish.ArticleControls
             LoadControlType();
             base.OnInit(e);
             LoadSharedResources();
+            //ctlUrlSelection.Url = 
+            ItemVersionSetting attachmentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSettings", "ArticleAttachment", PortalId);
+            if (attachmentSetting != null)
+            {
+                ctlUrlSelection.Url = attachmentSetting.PropertyValue;
+            }
+
         }
 
         private void LoadSharedResources()
@@ -214,6 +221,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 rowTagEntry.Visible = false;
             }
+
 
         }
 
@@ -415,6 +423,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     LoadPhotoGalleryDropDown(av);
                     LoadDisplayTabDropDown();
+
+                    //load the article attachement settings
+
+
                 }
                 else
                 {
@@ -427,6 +439,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                     av.VersionDescription = this.txtVersionDescription.Text;
                     av.ArticleText = this.teArticleText.Text;
                 }
+
+                            //load the article attachement settings
+            
+            //ctlUrlSelection.Url = 
+
             }
             catch (Exception exc)
             {
@@ -1085,6 +1102,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
 
+            //article attachment
+            setting = Setting.ArticleAttachment;
+            setting.PropertyValue = ctlUrlSelection.Url;
+            itemVersionSetting = new ItemVersionSetting(setting);
+            av.VersionSettings.Add(itemVersionSetting);
+
         }
 
         private void LocalizeCollapsePanels()
@@ -1093,10 +1116,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
             clpExtended.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
             clpExtended.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-
         }
-
-     
+    
     }
 }
 

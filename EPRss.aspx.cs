@@ -25,6 +25,7 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.UI.Utilities;
     using Util;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
 
     public partial class EPRss : PageBase
     {
@@ -319,18 +320,6 @@ namespace Engage.Dnn.Publish
                     if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), this.PortalId))
                     {
                         wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, this.PortalId));
-
-                        //if (ModuleBase.IsShortLinkEnabledForPortal(this.PortalId))
-                        //{
-                        //    wr.WriteElementString("link", "http://" + this.Request.Url.Authority + ApplicationUrl + "/itemlink.aspx?itemId=" + childItemId);
-                        //}
-                        //else
-                        //{
-                        //    wr.WriteElementString(
-                        //        "link",
-                        //        "http://" + this.Request.Url.Authority + ApplicationUrl + ModuleBase.DesktopModuleFolderName + "itemlink.aspx?itemId="
-                        //        + childItemId);
-                        //}
                     }
 
                     //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
@@ -342,10 +331,33 @@ namespace Engage.Dnn.Publish
                     wr.WriteElementString("dc:creator", author);
 
                     wr.WriteElementString("pubDate", startDate.ToUniversalTime().ToString("r", CultureInfo.InvariantCulture));
+
+                    //file attachment enclosure
+                    ItemVersionSetting attachmentSetting = ItemVersionSetting.GetItemVersionSetting(Convert.ToInt32(r["ItemVersionId"].ToString()), "ArticleSettings", "ArticleAttachment", PortalId);
+                    if (attachmentSetting != null)
+                    {
+                        if (attachmentSetting.PropertyValue.Length > 7)
+                        {
+                            FileController fileController = new FileController();
+                            int fileId = Convert.ToInt32(attachmentSetting.PropertyValue.Substring(7));
+                            DotNetNuke.Services.FileSystem.FileInfo fi = fileController.GetFileById(fileId, PortalId);
+                            string fileurl = "http://" + PortalSettings.PortalAlias.HTTPAlias + PortalSettings.HomeDirectory + fi.Folder + fi.FileName;
+                            wr.WriteStartElement("enclosure");
+                            wr.WriteAttributeString("url", fileurl);
+                            wr.WriteAttributeString("length",fi.Size.ToString());
+                            wr.WriteAttributeString("type", fi.ContentType);
+                            wr.WriteEndElement();
+                        }
+                    }
+
                     wr.WriteStartElement("guid");
+
                     wr.WriteAttributeString("isPermaLink", "false");
+
                     wr.WriteString(guid);
                     //wr.WriteString(itemVersionId);
+
+                    
                     wr.WriteEndElement();
 
                     wr.WriteEndElement();

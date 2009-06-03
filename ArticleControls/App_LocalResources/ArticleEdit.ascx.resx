@@ -449,4 +449,7 @@ When you are done defining the content for your article at the bottom of the pag
   <data name="NewArticle.Text" xml:space="preserve">
     <value>New article</value>
   </data>
+  <data name="lblArticleAttachment.Text" xml:space="preserve">
+    <value>Article Attachment</value>
+  </data>
 </root>
