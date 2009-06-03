@@ -492,7 +492,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 else
                 {
                     string urlText = txtUrlComment.Text;
-                    if (urlText.Trim().Length > 0 && urlText.ToUpperInvariant().IndexOf("http://") < 0 && urlText.ToUpperInvariant().IndexOf("HTTPS://") < 0)
+                    if (urlText.Trim().Length > 0 && !urlText.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !urlText.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                     {
                         urlText = "http://" + urlText;
                     }
