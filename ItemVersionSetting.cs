@@ -26,7 +26,7 @@ namespace Engage.Dnn.Publish
 	/// Summary description for ItemInfo.
 	/// </summary>
     [XmlRootAttribute(ElementName = "itemversionsetting", IsNullable = false)]
-	public class ItemVersionSetting : TransportableElement
+	public class ItemVersionSetting : TransportableElement, IEquatable<ItemVersionSetting>
     {
 		#region "Public Properties"
 
@@ -323,5 +323,33 @@ namespace Engage.Dnn.Publish
 
         #endregion
 
+        public bool Equals(ItemVersionSetting other)
+        {
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (other == null) 
+            {
+                return false;
+            }
+
+            return this._itemVersionId.Equals(other._itemVersionId)
+                && this._propertyName.Equals(other._propertyName, StringComparison.OrdinalIgnoreCase)
+                && this._controlName.Equals(other._controlName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as ItemVersionSetting);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._itemVersionId.GetHashCode()
+                ^ this._propertyName.GetHashCode() * 37
+                ^ this._controlName.GetHashCode() * 37;
+        }
     }
 }

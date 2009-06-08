@@ -10,29 +10,39 @@
 
 using System.Collections;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace Engage.Dnn.Publish
 {
 	/// <summary>
 	/// Summary description for ItemRelationshipCollection.
 	/// </summary>
-    public class ItemVersionSettingCollection : CollectionBase
+    public class ItemVersionSettingCollection : Collection<ItemVersionSetting>
 	{
-		public void Add(ItemVersionSetting r)
-		{
-			Debug.Assert(r != null, "r cannot be null");
-			base.InnerList.Add(r);
-		}
+        //public void Add(ItemVersionSetting r)
+        //{
+        //    Debug.Assert(r != null, "r cannot be null");
+        //    base.InnerList.Add(r);
+        //}
 
-        //public void Remove(ItemRelationship r)
+        //public void Remove(ItemVersionSetting r)
         //{
         //    base.InnerList.Remove(r);
         //}
 
-        public ItemVersionSetting this[int index]
-		{
-            get { return (ItemVersionSetting)base.InnerList[index]; }
-		}
+        //public ItemVersionSetting this[int index]
+        //{
+        //    get { return (ItemVersionSetting)base.InnerList[index]; }
+        //}
+
+        public ItemVersionSetting this[ItemVersionSetting index]
+        {
+            get
+            {
+                int settingIndex = this.IndexOf(index);
+                return this[settingIndex];
+            }
+        }
 	}
 }
 

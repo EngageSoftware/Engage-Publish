@@ -125,9 +125,9 @@ namespace Engage.Dnn.Publish.TextHtml
                                 
                 //force display on specific page
                 Setting setting = Setting.ArticleSettingForceDisplay;
-                setting.PropertyValue = "true";
                 ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
-                a.VersionSettings.Add(itemVersionSetting);
+                a.VersionSettings[itemVersionSetting].PropertyValue = "true";
+
                 a.ModuleId = ModuleId;
 
                 if (UseApprovals)
@@ -149,9 +149,9 @@ namespace Engage.Dnn.Publish.TextHtml
 
                 //force display on specific page
                 Setting setting = Setting.ArticleSettingForceDisplay;
-                setting.PropertyValue = "true";
+                
                 ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
-                a.VersionSettings.Add(itemVersionSetting);
+                a.VersionSettings[itemVersionSetting].PropertyValue = "true";
 
                 a.ModuleId = ModuleId; 
                 if (UseApprovals)

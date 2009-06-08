@@ -95,6 +95,7 @@ namespace Engage.Dnn.Publish.Controls
                 //int itemVersionId = 
                 //int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
 
+
                 string href = string.Empty;
                 href = GetItemVersionLinkUrl(view["ItemVersionId"]);
 
