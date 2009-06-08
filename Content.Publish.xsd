@@ -117,7 +117,7 @@
               <xs:annotation>
                 <xs:documentation>A article with relationships.ItemIdentifier and ItemVersionIdentifier are UniqueIdentifier data types (GUIDS) to uniquely identify this category.</xs:documentation>
               </xs:annotation>
-              <xs:element name="article"  maxOccurs="unbounded" nillable="true">
+              <xs:element name="article" maxOccurs="unbounded" nillable="true" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="ModuleId" type="xs:int" />
@@ -173,7 +173,7 @@
         <xs:element name="relationships" nillable="true" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="relationship" maxOccurs="unbounded">
+              <xs:element name="relationship" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="ItemRelationshipId" type="xs:int" />
@@ -215,7 +215,7 @@
         <xs:element name="tags" nillable="true" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="tag" maxOccurs="unbounded">
+              <xs:element name="tag" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="TagId" type="xs:int" />
@@ -236,7 +236,7 @@
         <xs:element name="comments" nillable="true" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="comment" maxOccurs="unbounded">
+              <xs:element name="comment" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="CommentId" type="xs:int" />
@@ -260,7 +260,7 @@
         <xs:element name="itemversionsettings" nillable="true" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="itemversionsetting" maxOccurs="unbounded">
+              <xs:element name="itemversionsetting" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="SettingsId" type="xs:int" />
@@ -269,6 +269,20 @@
                     <xs:element name="ControlName" type="xs:string" />
                     <xs:element name="PropertyName" type="xs:string" />
                     <xs:element name="PropertyValue" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="modulesettings" nillable="true" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tabmodulesetting" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Key" type="xs:string" />
+                    <xs:element name="Value" type="xs:string" />
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>

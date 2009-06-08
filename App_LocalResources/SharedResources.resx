@@ -171,4 +171,7 @@
   <data name="ClearCache.Text" xml:space="preserve">
     <value>Clear Publish Cache</value>
   </data>
+  <data name="ExportAll.Text" xml:space="preserve">
+    <value>Export All Content</value>
+  </data>
 </root>

@@ -38,10 +38,16 @@ namespace Engage.Dnn.Publish
             {
                 if (action.Title == title)
                 {
+                    //todo: duplicate the action to allow for exporting all content, or just local
+                    ModuleAction ma = new ModuleAction(GetNextActionID(), action.Title,action.CommandName, action.CommandArgument,action.Icon,action.Url,action.ClientScript,action.UseActionEvent,action.Secure,action.Visible,action.NewWindow);
                     action.Url = action.Url + "?all=1";
+                    action.Title = Localization.GetString("ExportAll", LocalSharedResourceFile);
+
+                    Actions.Insert(action.ID-1,ma);
                     break;
                 }
             }
+
         }
 
         #endregion

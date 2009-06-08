@@ -174,11 +174,11 @@ namespace Engage.Dnn.Publish
         {
             return Utility.GetValueFromCache(this.PortalId, Utility.CacheKeyPublishForceDisplayOn + this.itemVersionId.ToString(CultureInfo.InvariantCulture),
                 delegate
-                    {
-                        ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-                        ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", this.portalId);
-                        return cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
-                    });
+                {
+                    ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", this.portalId);
+                    return cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+                });
         }
 
         /// <summary>
@@ -628,7 +628,7 @@ namespace Engage.Dnn.Publish
         public string StartDate
         {
             get { return startDate; }
-            set 
+            set
             {
                 this.startDate = Utility.HasValue(value) ? value : null;
             }
@@ -638,7 +638,7 @@ namespace Engage.Dnn.Publish
         public string EndDate
         {
             get { return endDate; }
-            set 
+            set
             {
                 this.endDate = Utility.HasValue(value) ? value : null;
             }
@@ -691,20 +691,25 @@ namespace Engage.Dnn.Publish
 
 
                 ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", PortalId);
-                if (auNameSetting != null && auNameSetting.ToString().Trim().Length>0)
+                if (auNameSetting != null && auNameSetting.ToString().Trim().Length > 0)
                 {
                     originalAuthor = auNameSetting.PropertyValue.ToString();
                 }
                 else
                 {
                     UserController uc = new UserController();
-                    originalAuthor = uc.GetUser(portalId, authorUserId).DisplayName;
+                    UserInfo ui = uc.GetUser(portalId, authorUserId);
+                    if (ui != null)
+                    {
+                        originalAuthor = ui.DisplayName;
+                    }
                 }
 
                 return originalAuthor;
             }
-            set {               
-                    originalAuthor = value;
+            set
+            {
+                originalAuthor = value;
             }
         }
 
@@ -722,7 +727,7 @@ namespace Engage.Dnn.Publish
             {
                 return ApprovalStatus.GetFromId(approvalStatusId, typeof(ApprovalStatus)).Name;
             }
-            set {  }
+            set { }
         }
 
         [XmlElement(Order = 23)]
@@ -960,11 +965,11 @@ namespace Engage.Dnn.Publish
                     IDataReader dr = DataProvider.Instance().GetItem(itemId, portalId, isCurrent);
                     ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
-                    i = (Item)CBO.FillObject(dr, it.GetItemType);                   
+                    i = (Item)CBO.FillObject(dr, it.GetItemType);
                 }
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if (i != null)
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     i.CorrectDates();
                     DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));

@@ -227,6 +227,7 @@ namespace Engage.Dnn.Publish.Util
 
         public const string CacheKeyPublishTopLevelCategories = "CacheKeyPublishTopLevelCategories_";
         public const string DnnFriendlyModuleName = "Engage: Publish";
+        public const string DnnFriendlyModuleNameTextHTML = "Engage: Text/HTML";
 
         public const string DnnTagsFriendlyModuleName = "Engage: Publish Tag Cloud";
         public const string MediaFileTypes = "jpg,jpeg,jpe,gif,bmp,png,swf";

@@ -20,10 +20,14 @@ namespace Engage.Dnn.Publish.Portability
             if (transporter == null) throw new ArgumentNullException("transporter");
 
             transporter.BuildRootNode();
-            transporter.BuildCategories(exportAll);
+            //transporter.BuildCategories(exportAll);
+            transporter.BuildCategories(true);
             transporter.BuildArticles(exportAll);
             transporter.BuildRelationships(exportAll);
             transporter.BuildItemVersionSettings(exportAll);
+            transporter.BuildModuleSettings();
+
+            //TODO: we need to export module settings
         }
 
         public static void Deconstruct(XmlTransporter transporter, IXPathNavigable doc)
@@ -35,6 +39,9 @@ namespace Engage.Dnn.Publish.Portability
             transporter.ImportArticles(doc);
             transporter.ImportRelationships(doc);
             transporter.ImportItemVersionSettings(doc);
+            transporter.ImportModuleSettings(doc);
+
+            //TODO: we need to import module settings
            
         }
     }

@@ -18,7 +18,7 @@ namespace Engage.Dnn.Publish.TextHTML
     /// <summary>
     /// Features Controller Class supports IPortable currently.
     /// </summary>
-    public class FeaturesController : ISearchable
+    public class FeaturesController : ISearchable, IPortable
     {
 
         public FeaturesController()
@@ -156,6 +156,8 @@ namespace Engage.Dnn.Publish.TextHTML
             stream = new MemoryStream(Encoding.UTF8.GetBytes(Content));
             XPathDocument doc = new XPathDocument(stream);
             XmlTransporter builder = new XmlTransporter(ModuleID);
+
+            //TODO: we need to set the ItemID setting to be this recently imported article
 
             try
             {

@@ -16,6 +16,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using DotNetNuke.Entities.Modules;
+using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Portability
 {
@@ -24,6 +26,7 @@ namespace Engage.Dnn.Publish.Portability
         private XmlDocument _doc;
         private readonly int _moduleId = -1;
         private readonly int _portalId = -1;
+        private readonly int _tabId = -1;
         //private string _version = string.Empty;
 
         public XmlTransporter(int moduleId)
@@ -36,6 +39,7 @@ namespace Engage.Dnn.Publish.Portability
                 {
                     //This might/should be CurrentPortalId????
                     _portalId = (int)dr["PortalID"];
+                    _tabId = (int)dr["TabID"];
                     //_version = dr["Version"].ToString();
                 }
             }
@@ -79,9 +83,23 @@ namespace Engage.Dnn.Publish.Portability
         {
             XmlNode publishNode = _doc.SelectSingleNode("publish");
             XmlNode categoriesNode = _doc.CreateElement("categories");
+            //TODO: if we're exporting Text/HTML we at least need to pull the text/html defined category
+            ModuleController mc = new ModuleController();
+            ModuleInfo mi = mc.GetModule(this._moduleId, this._tabId);
 
-            DataTable dt = exportAll ? Category.GetCategoriesByPortalId(this._portalId) : Category.GetCategoriesByModuleId(this._moduleId);
+            DataTable dt;
 
+            if (mi.FriendlyName == Utility.DnnFriendlyModuleNameTextHTML)
+            {
+                //if we're dealing with the text/html module we need to get all categories always
+                //TODO: in the future configure it so we can only get one category.
+                dt = Category.GetCategoriesByPortalId(this._portalId);
+            }
+            else
+            {
+                dt = exportAll ? Category.GetCategoriesByPortalId(this._portalId) : Category.GetCategoriesByModuleId(this._moduleId);
+            }
+            
             try
             {
                 foreach (DataRow row in dt.Rows)
@@ -211,6 +229,38 @@ namespace Engage.Dnn.Publish.Portability
 
             publishNode.AppendChild(_doc.ImportNode(settingsNode, true));
         }
+
+        public void BuildModuleSettings()
+        {
+            XmlNode publishNode = _doc.SelectSingleNode("publish");
+            XmlNode settingsNode = _doc.CreateElement("modulesettings");
+
+            //TODO: get a list of module settings, parse through the list and generate XMl
+            ModuleController mc = new ModuleController();
+            //we aren't using modulesettings in Publish, only tabmodulesettings
+            //System.Collections.Hashtable moduleSettings = mc.GetModuleSettings(_moduleId);
+            ModuleInfo mi = mc.GetModule(_moduleId, _tabId);
+            System.Collections.Hashtable tabModuleSettings = mc.GetTabModuleSettings(mi.TabModuleID);
+
+            foreach (string key in tabModuleSettings.Keys)
+            {
+                XmlNode settingNode = _doc.CreateElement("tabmodulesetting");
+                settingNode.Attributes.Remove(settingNode.Attributes["xmlns:xsd"]);
+                settingNode.Attributes.Remove(settingNode.Attributes["xmlns:xsi"]);
+
+                settingsNode.AppendChild(settingNode);
+
+                XmlNode keyNode = _doc.CreateElement("Key");
+                keyNode.AppendChild(_doc.CreateTextNode(key));
+                settingNode.AppendChild(keyNode);
+                XmlNode valueNode = _doc.CreateElement("Value");
+                valueNode.AppendChild(_doc.CreateTextNode(tabModuleSettings[key].ToString()));
+                settingNode.AppendChild(valueNode);
+                settingsNode.AppendChild(_doc.ImportNode(settingNode, true));                                
+            }
+            publishNode.AppendChild(_doc.ImportNode(settingsNode, true));
+        }
+
         
         #endregion
 
@@ -311,6 +361,29 @@ namespace Engage.Dnn.Publish.Portability
                 s.Import(_moduleId, _portalId);
             }
         }
+
+        internal void ImportModuleSettings(IXPathNavigable doc)
+        {
+            // parse settings
+            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator settingsNode = navigator.SelectSingleNode("//publish/modulesettings");
+            foreach (XPathNavigator settingNode in settingsNode.Select("//tabmodulesetting"))
+            {
+                XmlDocument tempDoc = new XmlDocument();
+                tempDoc.LoadXml(settingNode.OuterXml);
+
+
+                XmlNode keyNode = tempDoc.SelectSingleNode("//tabmodulesetting/Key");
+
+                XmlNode valueNode = tempDoc.SelectSingleNode("//tabmodulesetting/Value");
+                ModuleController mc = new ModuleController();
+                ModuleInfo mi = mc.GetModule(_moduleId, _tabId);
+                //update the module setting.
+                mc.UpdateTabModuleSetting(mi.TabModuleID, keyNode.InnerText, valueNode.InnerText);
+
+            }
+        }
+        
 
         #endregion
 
