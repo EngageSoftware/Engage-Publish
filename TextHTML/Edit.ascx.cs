@@ -121,7 +121,6 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.Description = articleDescription;
                 //trim the content entered for a description
                 
-
                 a.DisplayTabId = TabId;
                                 
                 //force display on specific page
@@ -163,8 +162,8 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.Save(UserId);             
                 mc.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
                 mc.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
-            }           
-            
+            }
+
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
     }

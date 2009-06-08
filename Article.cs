@@ -191,6 +191,7 @@ namespace Engage.Dnn.Publish
             try
             {
                 SaveInfo(trans, revisingUserId);
+                UpdateItem(trans, ItemId, ModuleId);
                 UpdateApprovalStatus(trans);
 
                 //update article version now

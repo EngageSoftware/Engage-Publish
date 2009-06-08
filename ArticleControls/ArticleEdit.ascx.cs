@@ -82,12 +82,11 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 ctlUrlSelection.Url = attachmentSetting.PropertyValue;
             }
-
         }
 
         private void LoadSharedResources()
         {
-            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
+            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable.Text", LocalSharedResourceFile);
         }
 
         private void InitializeComponent()
@@ -432,7 +431,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     if (ddlDisplayTabId.SelectedIndex > 0 && ddlDisplayTabId.Enabled)
                     {
-                        av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);                      
+                        av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                     }
 
                     av.VersionNumber = this.txtVersionNumber.Text;
@@ -590,7 +589,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 av.VersionNumber = txtVersionNumber.Text;
                 av.Description = itemEditControl.DescriptionText;
                 //TODO: we need to look at making moduleid be configurable at anytime, not just on item creation, this makes previewing items impossible
-                if (av.IsNew)
+                //if (av.IsNew)
                     VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
                 //                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
 
@@ -665,7 +664,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                     av.MetaDescription = Utility.TrimDescription(399, description);
                 }
 
-
                 //Save the ItemVersionSettings
                 SaveSettings();
 
@@ -673,11 +671,6 @@ namespace Engage.Dnn.Publish.ArticleControls
                 av.ApprovalStatusId = chkUseApprovals.Checked && UseApprovals ? itemApprovalStatus.ApprovalStatusId : ApprovalStatus.Approved.GetId();
 
                 VersionInfoObject.Save(UserId);
-
-
-                //remove all the cache items for this publish item
-                //DataCache.RemoveCache(Utility.CacheKeyPublishArticle + VersionInfoObject.ItemId.ToString(CultureInfo.InvariantCulture));
-                
 
                 string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
                 if (!Utility.HasValue(returnUrl))

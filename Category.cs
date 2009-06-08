@@ -106,6 +106,7 @@ namespace Engage.Dnn.Publish
             try
             {
                 SaveInfo(trans, authorId);
+                UpdateItem(trans, ItemId, ModuleId);
                 //TODO: only do the following if admin
                 UpdateApprovalStatus(trans);
                 //update category version now

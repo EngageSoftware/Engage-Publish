@@ -1550,6 +1550,11 @@ namespace Engage.Dnn.Publish.Data
             SqlHelper.ExecuteNonQuery((SqlTransaction)trans, NamePrefix + "spUpdateItemVersion", itemId, itemVersionId, approvalStatusId, userId, approvalComments);
         }
 
+        public override void UpdateItem(IDbTransaction trans, int itemId, int moduleId)
+        {
+            SqlHelper.ExecuteNonQuery((SqlTransaction)trans, NamePrefix + "spUpdateItem", itemId, moduleId);
+        }
+
 
         public override void UpdateVenexusBraindump(int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl)
         {

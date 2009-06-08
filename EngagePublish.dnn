@@ -318,7 +318,10 @@
           <path>Providers\DataProviders\SqlDataProvider</path>
           <name>05.03.08.SqlDataProvider</name>
         </file>
-
+        <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>05.03.09.SqlDataProvider</name>
+        </file>
         <file>
           <name>ReadMe.txt</name>
         </file>

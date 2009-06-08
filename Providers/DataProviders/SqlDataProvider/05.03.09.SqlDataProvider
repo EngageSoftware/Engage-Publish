@@ -1,0 +1,19 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spUpdateItem]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spUpdateItem]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateItem]
+(
+	@ItemId [int]
+	, @ModuleId [int]
+
+)
+AS 
+
+UPDATE {databaseOwner}[{objectQualifier}Publish_Item] 	
+	SET  
+		 [ModuleId]	 = @ModuleId
+	WHERE 
+		([ItemId]	 = @ItemId)
+GO
+

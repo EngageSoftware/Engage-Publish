@@ -78,8 +78,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void LoadSharedResources()
         {
-            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
-            lblPublishOverrideableChild.Text = Localization.GetString("lblPublishOverrideable", LocalSharedResourceFile);
+            lblPublishOverrideable.Text = Localization.GetString("lblPublishOverrideable.Text", LocalSharedResourceFile);
+            lblPublishOverrideableChild.Text = Localization.GetString("lblPublishOverrideable.Text", LocalSharedResourceFile);
         }
         private void InitializeComponent()
         {

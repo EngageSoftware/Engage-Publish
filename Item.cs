@@ -339,6 +339,8 @@ namespace Engage.Dnn.Publish
             if (!string.IsNullOrEmpty(this.LastUpdated)) this.LastUpdated = Convert.ToDateTime(this.LastUpdated, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
         }
 
+        public static void UpdateItem(IDbTransaction trans, int itemId, int moduleId)
+        { DataProvider.Instance().UpdateItem(trans, itemId, moduleId); }
 
         public static void UpdateItemVersion(IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
         { DataProvider.Instance().UpdateItemVersion(trans, itemId, itemVersionId, approvalStatusId, userId, approvalComments); }

@@ -227,7 +227,10 @@ namespace Engage.Dnn.Publish.Data
 
         #region "Update Methods"
 
+        public abstract void UpdateItem(IDbTransaction trans, int itemId, int moduleId);
+
         public abstract void UpdateItemVersion(IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments);
+
         public abstract void UpdateVenexusBraindump(int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl);
 
         public abstract void UpdateDescription(int itemVersionId, string description, string metaDescription);
