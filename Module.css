@@ -638,8 +638,9 @@ Module CSS
 
 .Publish_ApprovalComments
 {
-	height:75px;
+	height:50px;
 	width:300px;
+	margin-bottom:5px;
 }
 
 .Publish_VersionComments

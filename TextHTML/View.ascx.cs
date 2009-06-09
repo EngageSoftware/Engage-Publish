@@ -121,6 +121,7 @@ namespace Engage.Dnn.Publish.TextHtml
                     //check if module id querystring is current moduleid
                     if ((IsAdmin && !VersionInfoObject.IsNew))
                     {
+                        divAdminMenuWrapper.Visible = true;
                         divPublishApprovals.Visible = true;
                         divApprovalStatus.Visible = true;
                         if (UseApprovals && Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
@@ -131,8 +132,15 @@ namespace Engage.Dnn.Publish.TextHtml
                         {
                             ddlApprovalStatus.Visible = false;
                         }
-
                     }
+                    else
+                    {
+                        
+                    }
+                }
+                else
+                {
+                    divAdminMenuWrapper.Visible = false;
                 }
             }
             }
