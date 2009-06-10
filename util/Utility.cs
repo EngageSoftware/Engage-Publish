@@ -1572,7 +1572,7 @@ namespace Engage.Dnn.Publish.Util
 
                 //string youTubeEmbed = "<span class=\"Publish_Video\"><object width=\"425\" height=\"355\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/" + youTubeId + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object></span>";
 
-                string youTubeEmbed = "<span class=\"Publish_Video\"><object type=\"application/x-shockwave-flash\" width=\"425\" height=\"355\" data=\"http://www.youtube.com/v/" + youTubeId + "\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\" />" + Localization.GetString("NoFlash", LocalSharedResourceFile).ToString() + "</object></span>";
+                string youTubeEmbed = "<span class=\"Publish_Video\"><object type=\"application/x-shockwave-flash\" width=\"560\" height=\"340\" data=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\" />" + Localization.GetString("NoFlash", LocalSharedResourceFile).ToString() + "</object></span>";
                 //<object type=\"application/x-shockwave-flash\" data=\"CONTENTHERE\" width=\"300\" height=\"120\"><param name=\"movie\" value=\"CONTENTHERE\" /><p>flash disabled</p></object>
                 string fullArticleText = replaceText.Substring(0, youTubeLocation);
                 fullArticleText += youTubeEmbed;
