@@ -1,5 +1,5 @@
 // <copyright file="PublishServices.asmx.cs" company="Engage Software">
-// Engage: Publish - http://www.engagemodules.com
+// Engage: Publish - http://www.engagesoftware.com
 // Copyright (c) 2004-2009
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
@@ -24,7 +24,7 @@ namespace Engage.Dnn.Publish.Services
     /// <summary>
     /// A web service that provides access to the Engage: Publish module on this site
     /// </summary>
-    [WebService(Namespace = "http://www.engagemodules.com/")]
+    [WebService(Namespace = "http://www.engagesoftware.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ScriptService]
     public class PublishServices : WebService

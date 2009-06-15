@@ -184,7 +184,7 @@
     <value>Settings</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>For help please visit &lt;A href="http://www.engagemodules.com/Modules/EngagePublish/PublishWiki/tabid/66/Default.aspx" target=_blank&gt;EngageModules.com&lt;/a&gt;</value>
+    <value>For help please visit &lt;A href="http://www.engagesoftware.com/Modules/EngagePublish/PublishWiki/tabid/66/Default.aspx" target=_blank&gt;EngageSoftware.com&lt;/a&gt;</value>
   </data>
   <data name="lblAjaxError.Text" xml:space="preserve">
     <value>Your server doesn't have Ajax Installed</value>

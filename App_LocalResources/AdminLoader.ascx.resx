@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>For help please visit &lt;A href="http://www.engagemodules.com/Modules/EngagePublish/PublishWiki/tabid/66/Default.aspx" target=_blank&gt;EngageModules.com&lt;/a&gt;</value>
+    <value>For help please visit &lt;A href="http://www.engagesoftware.com/Modules/EngagePublish/PublishWiki/tabid/66/Default.aspx" target=_blank&gt;EngageSoftware.com&lt;/a&gt;</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Manage Content</value>
