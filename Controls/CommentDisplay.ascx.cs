@@ -61,25 +61,6 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-        ///// <summary>
-        ///// Gets the number of comments per page, if comments are paged.
-        ///// </summary>
-        ///// <value>The number of comments per page.  Defaults to 1 if no setting is defined.</value>
-        //private int CommentsPerPage
-        //{
-        //    get
-        //    {
-        //        object o = Settings["adCommentsPerPage"];
-        //        int commentsPerPage = 1;
-
-        //        if (o != null)
-        //        {
-        //            int.TryParse(o.ToString(), out commentsPerPage);
-        //        }
-        //        return commentsPerPage;
-        //    }
-        //}
-
         /// <summary>
         /// Gets or sets a value indicating whether to display one comment at a time, in a random order.
         /// </summary>
@@ -265,13 +246,6 @@ namespace Engage.Dnn.Publish.Controls
         }
 
        
-        //TODO: should prev_click do anything?
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        //protected void btnPrevious_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnNext_Click(object sender, EventArgs e)
         {

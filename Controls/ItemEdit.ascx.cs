@@ -158,14 +158,6 @@ namespace Engage.Dnn.Publish.Controls
                     }
 					txtName.Text = VersionInfoObject.Name.ToString();
 
-                    ////TODO: check why this isn't working.
-                    //if (Utility.HasValue(VersionInfoObject.Url))
-                    //{
-                    //    this.ctlUrlSelection.Url = VersionInfoObject.Url;
-                    //    chkUrlSelection.Checked = true;
-                    //    pnlUrlSelection.Visible = true;
-                    //    UseUrls = true;
-                    //}
                     
                     thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
 				}

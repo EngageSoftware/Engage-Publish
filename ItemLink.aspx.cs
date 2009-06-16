@@ -20,7 +20,7 @@ using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
-    //TODO: Need to determine whether or not ItemLink.aspx should/can handle versions of an item. This
+    //Need to determine whether or not ItemLink.aspx should/can handle versions of an item. This
     //would help from the admin controls where we're previewing an old version of an article and that version
     //didn't have a display page set and we can't display it. ItemPreview.ascx can handle previewing it
     //if this page handled it correctly and passed the versionId along to the control. hk

@@ -303,7 +303,7 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        //TODO: we need to populate itemversionsettings if you get an item
+        
         protected void SaveItemVersionSettings(IDbTransaction trans)
         {
             for (int i = 0; i < VersionSettings.Count; i++)

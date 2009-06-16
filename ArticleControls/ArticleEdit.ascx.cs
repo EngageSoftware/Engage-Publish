@@ -565,6 +565,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture) > -1)
                 {
                     VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
+                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
                     //TODO: set module id here too
                 }
                 else
@@ -588,7 +589,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 av.VersionDescription = txtVersionDescription.Text;
                 av.VersionNumber = txtVersionNumber.Text;
                 av.Description = itemEditControl.DescriptionText;
-                //TODO: we need to look at making moduleid be configurable at anytime, not just on item creation, this makes previewing items impossible
+                //we need to look at making moduleid be configurable at anytime, not just on item creation, this makes previewing items impossible
                 //if (av.IsNew)
                     VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
                 //                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);

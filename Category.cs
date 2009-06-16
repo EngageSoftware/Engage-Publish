@@ -688,20 +688,6 @@ namespace Engage.Dnn.Publish
                 displayOnCurrentPageSetting.PropertyValue = false.ToString(CultureInfo.InvariantCulture);
                 childItem.VersionSettings.Add(new ItemVersionSetting(displayOnCurrentPageSetting));
 
-                ////// TODO: I shouldn't have to re-add relationships
-                ////foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(itemId, childItem.ItemVersionId, RelationshipType.ItemToParentCategory.GetId(), true))
-                ////{
-                ////    // TODO: I _definitely_ shouldn't have to correct the relationship dates
-                ////    relationship.CorrectDates();
-                ////    childItem.Relationships.Add(relationship);
-                ////}
-
-                ////// TODO: I shouldn't have to re-add tags
-                ////foreach (ItemTag tag in ItemTag.GetItemTags(childItem.ItemVersionId))
-                ////{
-                ////    childItem.Tags.Add(tag);
-                ////}
-
                 childItem.Save(revisingUser);
                 count++;
             }

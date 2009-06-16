@@ -55,7 +55,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     FillDropDown();
                     BindData();
                 }
-                //TODO: see if this works as expected.
+                
                 if (IsAdmin)
                     cmdApprove.Visible = cmdArchive.Visible = cmdDelete.Visible = true;
                 else cmdApprove.Visible = cmdArchive.Visible = cmdDelete.Visible = false;
