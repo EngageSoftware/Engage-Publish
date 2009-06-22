@@ -8,12 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Framework;
 
 namespace Engage.Dnn.Publish.Forum
 {
+    using System;
+    using System.Collections.Generic;
+    using DotNetNuke.Framework;
+
     /// <summary>
     /// Defines the relationship between Publish and a forums module used to create discussion threads for articles (in place of comments).
     /// Inheritors of <see cref="ForumProvider"/> must provide a constructor that takes a portalId as an <see cref="int"/> parameter.
@@ -22,7 +23,7 @@ namespace Engage.Dnn.Publish.Forum
     {
         #region  Static Members
 
-        private static readonly Dictionary<int, ForumProvider> _providers = new Dictionary<int, ForumProvider>();
+        private static readonly Dictionary<int, ForumProvider> Providers = new Dictionary<int, ForumProvider>();
 
         /// <summary>
         /// Gets the <see cref="ForumProvider"/> instance for this <paramref name="portalId"/>.
@@ -31,14 +32,14 @@ namespace Engage.Dnn.Publish.Forum
         /// <returns>A concrete representation of the given portal's <see cref="ForumProvider"/></returns>
         public static ForumProvider GetInstance(int portalId)
         {
-            if (!_providers.ContainsKey(portalId))
+            if (!Providers.ContainsKey(portalId))
             {
                 Type concreteType = Reflection.CreateType(ModuleBase.ForumProviderTypeForPortal(portalId));
-                    _providers.Add(portalId, concreteType != null ?
+                    Providers.Add(portalId, concreteType != null ?
                         (ForumProvider)concreteType.InvokeMember("", System.Reflection.BindingFlags.CreateInstance, null, null, new object[] {portalId}, null) :
                         null);
             }
-            return _providers[portalId];
+            return Providers[portalId];
         }
 
         #endregion
@@ -74,6 +75,7 @@ namespace Engage.Dnn.Publish.Forum
         /// <param name="linkUrl">A URL pointing to the article.</param>
         /// <param name="commentText">The comment text.</param>
         /// <param name="commentUserId">The user ID of the person creating the comment.</param>
+        /// <param name="commentUserIPAddress">The IP address of the user posting a comment.</param>
         /// <returns>The ID of the created forum thread</returns>
         public abstract int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIPAddress);
 
