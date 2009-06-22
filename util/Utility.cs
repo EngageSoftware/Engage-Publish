@@ -1078,15 +1078,17 @@ namespace Engage.Dnn.Publish.Util
             {
                 tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
             }
-
-            if (tabInfo.IsDeleted)
+            if (tabInfo != null)
             {
-                tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
-            }
-            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
-            if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
-            {
-                return Globals.NavigateURL(tabInfo.TabID);
+                if (tabInfo.IsDeleted)
+                {
+                    tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+                }
+                //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
+                if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
+                {
+                    return Globals.NavigateURL(tabInfo.TabID);
+                }
             }
 
             string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
