@@ -8,36 +8,39 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-using System;
-using DotNetNuke.Services.Localization;
+
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using System.Collections;
+    using DotNetNuke.Services.Localization;
+
 	public partial class AdminTools : ModuleBase
 	{
-        private static IDictionary idict;
+        private static IDictionary Idict;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a property")]
         public static IDictionary GetDictionary()
         {
-            if (idict == null)
+            if (Idict == null)
             {
                 FillDictionary();
             }
-            return idict;
+            return Idict;
         }
 
         private static void FillDictionary()
         {
-            Hashtable ht = new Hashtable();
+            var ht = new Hashtable
+                         {
+                                 {"DESCRIPTIONREPLACE", "tools/DescriptionReplace.ascx"},
+                                 {"DASHBOARD", "tools/Dashboard.ascx"},
+                                 {"ITEMVIEWREPORT", "tools/ItemViewReport.ascx"},
+                                 {"RESETDISPLAYPAGE", "tools/ResetDisplayPage.ascx"}
+                         };
 
-            ht.Add("DESCRIPTIONREPLACE", "tools/DescriptionReplace.ascx");
-            ht.Add("DASHBOARD", "tools/Dashboard.ascx");
-            ht.Add("ITEMVIEWREPORT", "tools/ItemViewReport.ascx");
-            ht.Add("RESETDISPLAYPAGE", "tools/ResetDisplayPage.ascx");
-            
-            idict = ht;
+            Idict = ht;
         }
 
 
@@ -71,21 +74,13 @@ namespace Engage.Dnn.Publish.Admin
             IDictionary returnDict = GetDictionary();
             object o = Request.Params["tool"];
 
-            if (o != null)
-            {
-                controlToLoad = returnDict[o.ToString().ToUpperInvariant()].ToString();
-            }
-            else
-            {
-                controlToLoad = returnDict["DASHBOARD"].ToString();
-
-            }
+            this.controlToLoad = o != null ? returnDict[o.ToString().ToUpperInvariant()].ToString() : returnDict["DASHBOARD"].ToString();
 
         }
 
         private void LoadControlType()
         {
-            ModuleBase amb = (ModuleBase)LoadControl(controlToLoad);
+            var amb = (ModuleBase)LoadControl(controlToLoad);
             amb.ModuleConfiguration = ModuleConfiguration;
             amb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
             phAdminTools.Controls.Add(amb);

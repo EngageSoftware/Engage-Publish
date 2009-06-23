@@ -8,25 +8,27 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Entities.Tabs;
+
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Publish;
+    using Util;
+
     public partial class AdminSettings : ModuleBase
     {
-        protected PlaceHolder phSettingsTable;
+        protected PlaceHolder SettingsTablePlaceHolder;
 
         #region Event Handlers
         override protected void OnInit(EventArgs e)
@@ -41,7 +43,7 @@ namespace Engage.Dnn.Publish.Admin
             this.lnkUpdate.Click += this.lnkUpdate_Click;
         }
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -75,7 +77,7 @@ namespace Engage.Dnn.Publish.Admin
         {
             if (Page.IsValid)
             {
-                HostSettingsController objHostSettings = new HostSettingsController();
+                var objHostSettings = new HostSettingsController();
 
                 objHostSettings.UpdateHostSetting(Utility.PublishSetup + PortalId.ToString(CultureInfo.InvariantCulture), "true");
                 objHostSettings.UpdateHostSetting(Utility.PublishEmail + PortalId.ToString(CultureInfo.InvariantCulture), chkEmailNotification.Checked.ToString(CultureInfo.InvariantCulture));
@@ -219,7 +221,7 @@ namespace Engage.Dnn.Publish.Admin
             if (args != null)
             {
                 int max;
-                args.IsValid = int.TryParse(args.Value.ToString(), out max);
+                args.IsValid = int.TryParse(args.Value, out max);
             }
         }
 
@@ -248,7 +250,7 @@ namespace Engage.Dnn.Publish.Admin
             txtItemDescriptionHeight.Text = Utility.GetStringPortalSetting(Utility.PublishDescriptionEditHeight, PortalId, "300");
             txtItemDescriptionWidth.Text = Utility.GetStringPortalSetting(Utility.PublishDescriptionEditWidth, PortalId, "500");
             txtThumbnailSubdirectory.Text = Utility.GetStringPortalSetting(Utility.PublishThumbnailSubdirectory, PortalId, "PublishThumbnails/");
-            txtMaximumRating.Text = Utility.GetStringPortalSetting(Utility.PublishRatingMaximum, PortalId, Rating.DefaultMaximumRating.ToString(CultureInfo.CurrentCulture));
+            txtMaximumRating.Text = Utility.GetStringPortalSetting(Utility.PublishRatingMaximum, PortalId, UserFeedback.Rating.DefaultMaximumRating.ToString(CultureInfo.CurrentCulture));
             txtPingServers.Text = Utility.GetStringPortalSetting(Utility.PublishPingServers, PortalId, Localization.GetString("DefaultPingServers", LocalResourceFile));
             txtPingChangedUrl.Text = Utility.GetStringPortalSetting(Utility.PublishPingChangedUrl, PortalId);
 
@@ -409,21 +411,16 @@ namespace Engage.Dnn.Publish.Admin
             }
         }
 
-        private void LoadLinkFormat()
-        {
-
-        }
-
         private void LoadDisplayTabDropDown()
         {
-            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
+            var modules = new[] { Utility.DnnFriendlyModuleName };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
             this.ddlDefaultDisplay.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
             foreach (DataRow dr in dt.Rows)
             {
-                ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+                var li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
                 this.ddlDefaultDisplay.Items.Add(li);
             }
         }
@@ -431,7 +428,7 @@ namespace Engage.Dnn.Publish.Admin
         private void LoadDefaultTextHtmlCategoryDropDown()
         {
             ItemRelationship.DisplayCategoryHierarchy(ddlDefaultTextHtmlCategory, -1, PortalId, false);
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
+            var li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
             this.ddlDefaultTextHtmlCategory.Items.Insert(0, li);
 
         }
@@ -439,8 +436,8 @@ namespace Engage.Dnn.Publish.Admin
 
         private void LoadTagDropDown()
         {
-            ModuleController mc = new ModuleController();
-            TabController tc = new TabController();
+            var mc = new ModuleController();
+            var tc = new TabController();
             ArrayList al = mc.GetModulesByDefinition(PortalId, Utility.DnnTagsFriendlyModuleName);
 
             this.ddlTagList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
@@ -448,7 +445,7 @@ namespace Engage.Dnn.Publish.Admin
             foreach (ModuleInfo mi in al)
             {
                 TabInfo ti = tc.GetTab(mi.TabID, mi.PortalID, false);
-                ListItem li = new ListItem(ti.TabName + " (" + ti.TabID + ")", ti.TabID.ToString(CultureInfo.InvariantCulture));
+                var li = new ListItem(ti.TabName + " (" + ti.TabID + ")", ti.TabID.ToString(CultureInfo.InvariantCulture));
                 this.ddlTagList.Items.Add(li);
             }
         }
@@ -456,8 +453,8 @@ namespace Engage.Dnn.Publish.Admin
         private void LocalizeCollapsePanels()
         {
 
-            string expandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-            string collapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            string expandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            string collapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
 
             clpTagSettings.CollapsedText = Localization.GetString("clpTagSettings.CollapsedText", LocalResourceFile);
             clpTagSettings.ExpandedText = Localization.GetString("clpTagSettings.ExpandedText", LocalResourceFile);
@@ -493,7 +490,7 @@ namespace Engage.Dnn.Publish.Admin
             DefaultRichTextDescriptions();
         }
 
-        private void DefaultRichTextDescriptions()
+        private new void DefaultRichTextDescriptions()
         {
             if (chkAllowRichTextDescriptions.Checked)
             {

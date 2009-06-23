@@ -8,28 +8,32 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.UserControls;
-using Engage.Dnn.Publish;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using Engage.Dnn.Publish.Controls;
 
 
 namespace Engage.Dnn.Publish.Admin
 {
+
+    using System;
+    using System.Globalization;
+    using System.Web.UI;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.UserControls;
+    using Publish;
+    using Controls;
+    using Data;
+    using Util;
+
+
 	public partial class CommentEdit :  ModuleBase, IActionable
 	{
         private UserFeedback.Comment thisComment;
-        protected ItemApproval ias;
-    	protected TextEditor teArticleText;
-		private const string approvalControlToLoad = "../controls/ItemApproval.ascx";
+        protected ItemApproval Ias;
+    	protected TextEditor TeArticleText;
+		private const string ApprovalControlToLoad = "../controls/ItemApproval.ascx";
 
 		override protected void OnInit(EventArgs e)
 		{
@@ -51,31 +55,31 @@ namespace Engage.Dnn.Publish.Admin
 
 		private void LoadControls()
 		{
-            thisComment = Comment.GetComment(CommentId, Data.DataProvider.ModuleQualifier);	
+            thisComment = UserFeedback.Comment.GetComment(CommentId, DataProvider.ModuleQualifier);	
             this.cmdDelete.Visible = IsAdmin;
 
 			//load text editor entries
-		    LabelControl l1 = (DotNetNuke.UI.UserControls.LabelControl)LoadControl("~/controls/LabelControl.ascx");
+		    var l1 = (LabelControl)LoadControl("~/controls/LabelControl.ascx");
             l1.ResourceKey = "CommentText";
 			this.phCommentText.Controls.Add(l1);
-			teArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
-			teArticleText.HtmlEncode = false;
-			teArticleText.TextRenderMode = "Raw";
-			teArticleText.Width = 700;
-			teArticleText.Height = 400;
-			teArticleText.ChooseMode = false;
-			this.phCommentText.Controls.Add(teArticleText);
+			this.TeArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
+			this.TeArticleText.HtmlEncode = false;
+			this.TeArticleText.TextRenderMode = "Raw";
+			this.TeArticleText.Width = 700;
+			this.TeArticleText.Height = 400;
+			this.TeArticleText.ChooseMode = false;
+			this.phCommentText.Controls.Add(this.TeArticleText);
 
 			//load approval status
-			ias = (ItemApproval) LoadControl(approvalControlToLoad);
-			ias.ModuleConfiguration = ModuleConfiguration;
-			ias.ID = System.IO.Path.GetFileNameWithoutExtension(approvalControlToLoad);
-			this.phApproval.Controls.Add(ias);
+			this.Ias = (ItemApproval) LoadControl(ApprovalControlToLoad);
+			this.Ias.ModuleConfiguration = ModuleConfiguration;
+			this.Ias.ID = System.IO.Path.GetFileNameWithoutExtension(ApprovalControlToLoad);
+			this.phApproval.Controls.Add(this.Ias);
 		}
 
 		#region Event Handlers
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{	
 			try 
 			{
@@ -88,8 +92,8 @@ namespace Engage.Dnn.Publish.Admin
                     this.txtFirstName.Text = thisComment.FirstName;
                     this.txtLastName.Text = thisComment.LastName;
                     this.txtEmailAddress.Text = thisComment.EmailAddress;
-					this.teArticleText.Text = thisComment.CommentText;
-                    this.ias.ApprovalStatusId = thisComment.ApprovalStatusId;
+					this.TeArticleText.Text = thisComment.CommentText;
+                    this.Ias.ApprovalStatusId = thisComment.ApprovalStatusId;
 
                     this.txtUrl.Text = thisComment.Url;
 
@@ -104,29 +108,29 @@ namespace Engage.Dnn.Publish.Admin
 			}
 		}
 
-		private void cmdCancel_Click(object sender, System.EventArgs e)
+		private void cmdCancel_Click(object sender, EventArgs e)
 		{
 			Response.Redirect(Globals.NavigateURL());
 		}
 
-		private void cmdUpdate_Click(object sender, System.EventArgs e)
+		private void cmdUpdate_Click(object sender, EventArgs e)
 		{
 			try
 			{			
 				this.txtMessage.Text = string.Empty;
 
-				if (!this.ias.IsValid)
+				if (!this.Ias.IsValid)
 				{
                     this.txtMessage.Text += Localization.GetString("ErrorApprovalStatus.Text", LocalResourceFile); 
 					this.txtMessage.Visible = true;
 					return;
 				}
 
-                thisComment.CommentText = teArticleText.Text;
+                thisComment.CommentText = this.TeArticleText.Text;
                 thisComment.FirstName = txtFirstName.Text;
                 thisComment.LastName = txtLastName.Text;
                 thisComment.EmailAddress = txtEmailAddress.Text;
-                thisComment.ApprovalStatusId = ias.ApprovalStatusId;
+                thisComment.ApprovalStatusId = this.Ias.ApprovalStatusId;
                 thisComment.Url = txtUrl.Text.Trim();
 
                 thisComment.Save(DataProvider.ModuleQualifier);
@@ -165,13 +169,21 @@ namespace Engage.Dnn.Publish.Admin
 
 		#region Optional Interfaces
 
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+		public ModuleActionCollection ModuleActions 
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+			                               this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 

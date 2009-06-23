@@ -8,15 +8,15 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
+
     public partial class QuickStats : ModuleBase
 	{
 
@@ -41,7 +41,7 @@ namespace Engage.Dnn.Publish.Admin
                         //Admin specific stats
                         if (UseApprovals)
                         {
-                            lnkWaitingForApproval.Text = String.Format(Localization.GetString("lnkWaitingForApproval", LocalResourceFile), DataProvider.Instance().WaitingForApprovalCount(PortalId).ToString());
+                            lnkWaitingForApproval.Text = String.Format(Localization.GetString("lnkWaitingForApproval", LocalResourceFile), DataProvider.Instance().WaitingForApprovalCount(this.PortalId));
                             lnkWaitingForApproval.Visible = true;
                             lnkWaitingForApproval.NavigateUrl = EditUrl(Utility.AdminContainer);
                         }
@@ -52,7 +52,7 @@ namespace Engage.Dnn.Publish.Admin
                         //Comments always require approval
                         if (IsCommentsEnabled && IsPublishCommentTypeForPortal(PortalId))
                         {
-                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), Comment.CommentsWaitingForApprovalCount(PortalId, UserId).ToString());
+                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), Comment.CommentsWaitingForApprovalCount(this.PortalId, this.UserId));
                             lnkCommentsForApproval.Visible = true;
                             lnkCommentsForApproval.NavigateUrl = EditUrl("","",Utility.AdminContainer, "&adminType=commentList");
                         }

@@ -8,18 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
+
 
 namespace Engage.Dnn.Publish.Admin
 {
     using System.Web;
     using System.Web.UI;
+    using System;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
 
     public partial class AdminMenu : ModuleBase
     {
@@ -38,7 +40,7 @@ namespace Engage.Dnn.Publish.Admin
             this.Load += this.Page_Load;
         }
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             int itemId = ItemId;
             if (itemId != -1 && !VersionInfoObject.IsNew)
@@ -55,15 +57,15 @@ namespace Engage.Dnn.Publish.Admin
                     {
                         if (UseApprovals && Item.GetItemType(itemId,PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                         {
-                            //ddlApprovalStatus.Attributes.Clear();
-                            //ddlApprovalStatus.Attributes.Add("onchange", "javascript:if (!confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteConfirmation", LocalResourceFile)) + "')) resetDDLIndex(); else ");
+                            //ApprovalStatusDropDownList.Attributes.Clear();
+                            //ApprovalStatusDropDownList.Attributes.Add("onchange", "javascript:if (!confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteConfirmation", LocalResourceFile)) + "')) resetDDLIndex(); else ");
 
-                            //ClientAPI.AddButtonConfirm(ddlApprovalStatus, Localization.GetString("DeleteConfirmation", LocalResourceFile));
+                            //ClientAPI.AddButtonConfirm(ApprovalStatusDropDownList, Localization.GetString("DeleteConfirmation", LocalResourceFile));
                             FillDropDownList();
                         }
                         else
                         {
-                            ddlApprovalStatus.Visible = false;
+                            this.ApprovalStatusDropDownList.Visible = false;
                         }
                     }
                 }
@@ -142,12 +144,12 @@ namespace Engage.Dnn.Publish.Admin
         private void FillDropDownList()
         {
             
-            ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
-            ddlApprovalStatus.DataValueField = "ApprovalStatusID";
-            ddlApprovalStatus.DataTextField = "ApprovalStatusName";
-            ddlApprovalStatus.DataBind();
+            this.ApprovalStatusDropDownList.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId);
+            this.ApprovalStatusDropDownList.DataValueField = "ApprovalStatusID";
+            this.ApprovalStatusDropDownList.DataTextField = "ApprovalStatusName";
+            this.ApprovalStatusDropDownList.DataBind();
             //set the current approval status
-            ListItem li = ddlApprovalStatus.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
+            ListItem li = this.ApprovalStatusDropDownList.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
             if (li != null)
             {
                 li.Selected = true;
@@ -185,30 +187,27 @@ namespace Engage.Dnn.Publish.Admin
 
         public string BuildAddArticleUrl()
         {
-            if (ItemId > -1)
-            {
-                int parentCategoryId = -1;
-
-                if (!VersionInfoObject.IsNew)
-                {
-                    if (VersionInfoObject.ItemTypeId == ItemType.Category.GetId())
-                    {
-                        parentCategoryId = VersionInfoObject.ItemId;
-                    }
-                    else
-                    {
-                        parentCategoryId = VersionInfoObject.GetParentCategoryId();
-                    }
-                }
-
-                return DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "ctl=" + Utility.AdminContainer,
-                    "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), "adminType=articleedit",
-                    "parentId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture), "returnUrl=" + HttpUtility.UrlEncode(Request.RawUrl));
-            }
-            else
+            if (this.ItemId <= -1)
             {
                 return string.Empty;
             }
+            int parentCategoryId = -1;
+
+            if (!this.VersionInfoObject.IsNew)
+            {
+                parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId()
+                                           ? this.VersionInfoObject.ItemId
+                                           : this.VersionInfoObject.GetParentCategoryId();
+            }
+
+            return DotNetNuke.Common.Globals.NavigateURL(
+                    this.TabId,
+                    string.Empty,
+                    "ctl=" + Utility.AdminContainer,
+                    "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture),
+                    "adminType=articleedit",
+                    "parentId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture),
+                    "returnUrl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
         }
 
 
@@ -222,15 +221,7 @@ namespace Engage.Dnn.Publish.Admin
 
                 if (!VersionInfoObject.IsNew)
                 {
-                    if (VersionInfoObject.ItemTypeId == ItemType.Category.GetId())
-                    {
-                        parentCategoryId = VersionInfoObject.ItemId;
-                    }
-                    else
-                    {
-                        //find the parent category ID from an item
-                        parentCategoryId = Category.GetParentCategory(VersionInfoObject.ItemId, PortalId);
-                    }
+                    parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ? this.VersionInfoObject.ItemId : Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
                 }
 
                 //string currentItemType = Item.GetItemType(ItemId,PortalId);
@@ -238,20 +229,16 @@ namespace Engage.Dnn.Publish.Admin
                     "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), "adminType=articlelist",
                     "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
-
 
         #endregion
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void ddlApprovalStatus_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            CallUpdateApprovalStatus();
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        //protected void ddlApprovalStatus_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    CallUpdateApprovalStatus();
+        //}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.ITextControl.set_Text(System.String)", Justification = "Literal, '-', does not change by locale")]
         private void ConfigureMenus()
@@ -266,7 +253,7 @@ namespace Engage.Dnn.Publish.Admin
             // TODO: hide this if necessary
             phStats.Visible = true;
             const string pathToStatsControl = "QuickStats.ascx";
-            ModuleBase statsControl = (ModuleBase)LoadControl(pathToStatsControl);
+            var statsControl = (ModuleBase)LoadControl(pathToStatsControl);
             statsControl.ModuleConfiguration = ModuleConfiguration;
             statsControl.ID = System.IO.Path.GetFileNameWithoutExtension(pathToStatsControl);
             phStats.Controls.Add(statsControl);
@@ -281,7 +268,7 @@ namespace Engage.Dnn.Publish.Admin
             else
             {
                 //Hide the phAdminControl placeholder for the admin controls.
-                PlaceHolder container = (PlaceHolder)this.Parent;
+                var container = (PlaceHolder)this.Parent;
                 container.Visible = false;
             }
         }
@@ -317,9 +304,7 @@ namespace Engage.Dnn.Publish.Admin
         {
             this.phLink.Controls.Add(new LiteralControl("<li>"));
 
-            HyperLink menuLink = new HyperLink();
-            menuLink.NavigateUrl = navigateUrl;
-            menuLink.Text = text;
+            var menuLink = new HyperLink {NavigateUrl = navigateUrl, Text = text};
             this.phLink.Controls.Add(menuLink);
 
             this.phLink.Controls.Add(new LiteralControl("</li>"));
@@ -334,15 +319,8 @@ namespace Engage.Dnn.Publish.Admin
         {
             if (!VersionInfoObject.IsNew)
             {
-                VersionInfoObject.ApprovalStatusId = Convert.ToInt32(ddlApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
-                if (txtApprovalComments.Text.Trim().Length > 0)
-                {
-                    VersionInfoObject.ApprovalComments = txtApprovalComments.Text.Trim();
-                }
-                else
-                {
-                    VersionInfoObject.ApprovalComments = Localization.GetString("DefaultApprovalComment", LocalResourceFile);
-                }
+                VersionInfoObject.ApprovalStatusId = Convert.ToInt32(this.ApprovalStatusDropDownList.SelectedValue, CultureInfo.InvariantCulture);
+                this.VersionInfoObject.ApprovalComments = this.txtApprovalComments.Text.Trim().Length > 0 ? this.txtApprovalComments.Text.Trim() : Localization.GetString("DefaultApprovalComment", this.LocalResourceFile);
                 VersionInfoObject.UpdateApprovalStatus();
 
                 //Utility.ClearPublishCache(PortalId);
@@ -355,8 +333,11 @@ namespace Engage.Dnn.Publish.Admin
 
         protected void lnkUpdateStatus_Click(object sender, EventArgs e)
         {
-            divApprovalStatus.Visible = true;
-            
+            if (this.divApprovalStatus != null)
+            {
+                this.divApprovalStatus.Visible = true;
+            }
+
             //check if we're editing an article, if so show version comments
             if (Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
             {

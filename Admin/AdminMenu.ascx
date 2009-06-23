@@ -26,7 +26,7 @@
             <dnn:label ID="lblApprovalComments" runat="server" />
             
             <asp:TextBox ID="txtApprovalComments" runat="server" CssClass="Publish_ApprovalComments" ></asp:TextBox><br />
-            <asp:DropDownList ID="ddlApprovalStatus" Runat="server" CssClass="Normal" />
+            <asp:DropDownList ID="ApprovalStatusDropDownList" Runat="server" CssClass="Normal" />
             <br />
             <asp:LinkButton ID="lnkSaveApprovalStatus" runat="server" resourcekey="lnkSaveApprovalStatus" OnClick="lnkSaveApprovalStatus_Click"></asp:LinkButton>   
             <asp:LinkButton ID="lnkSaveApprovalStatusCancel" runat="server" resourcekey="lnkSaveApprovalStatusCancel" OnClick="lnkSaveApprovalStatusCancel_Click"></asp:LinkButton>   

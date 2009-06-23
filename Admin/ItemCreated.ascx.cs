@@ -8,13 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using System.Globalization;
+    using DotNetNuke.Services.Exceptions;
+    using Util;
+
 	public partial class ItemCreated : ModuleBase
 	{
 		override protected void OnInit(EventArgs e)
@@ -29,7 +30,7 @@ namespace Engage.Dnn.Publish.Admin
 			this.Load += this.Page_Load;
 		}
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
 			try 
 			{

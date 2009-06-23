@@ -8,21 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+
 	public partial class DeleteItem :  ModuleBase, IActionable
 	{
 		protected System.Web.UI.WebControls.Label lblItemCreated;
@@ -57,7 +52,7 @@ namespace Engage.Dnn.Publish.Admin
 
 		#region Event Handlers
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
 			try 
 			{
@@ -67,11 +62,6 @@ namespace Engage.Dnn.Publish.Admin
 					//ItemId
 					ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirmation", LocalResourceFile));
 				}
-				else
-				{
-
-				}
-				
 			} 
 			catch (Exception exc) 
 			{
@@ -83,19 +73,27 @@ namespace Engage.Dnn.Publish.Admin
 
 		#region Optional Interfaces
 
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+		public ModuleActionCollection ModuleActions 
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return Actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+			                               this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 
 		#endregion
 
-        private void cmdDelete_Click(object sender, System.EventArgs e)
+        private void cmdDelete_Click(object sender, EventArgs e)
 		{
             int itemId;
             bool success = false;
@@ -112,15 +110,7 @@ namespace Engage.Dnn.Publish.Admin
             }
 
             lblResults.Visible = true;
-            if (success)
-            {
-                lblResults.Text = Localization.GetString("Success", LocalResourceFile);
-                
-            }
-            else
-            {
-                lblResults.Text = Localization.GetString("Failure", LocalResourceFile);
-            }
+            this.lblResults.Text = success ? Localization.GetString("Success", this.LocalResourceFile) : Localization.GetString("Failure", this.LocalResourceFile);
 		}
 
 	}

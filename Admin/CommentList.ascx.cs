@@ -8,20 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
 	public partial class CommentList :  ModuleBase, IActionable
 	{
 		#region Event Handlers
@@ -69,8 +70,8 @@ namespace Engage.Dnn.Publish.Admin
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    Label commentId = (Label)gvr.FindControl("lblCommentId");
-                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    var commentId = (Label)gvr.FindControl("lblCommentId");
+                    var cb = (CheckBox)gvr.FindControl("chkSelect");
                     if (commentId != null && cb!=null && cb.Checked)
                     {
                         //approve
@@ -104,8 +105,8 @@ namespace Engage.Dnn.Publish.Admin
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    Label lblCommentId = (Label)gvr.FindControl("lblCommentId");
-                    CheckBox chkSelect = (CheckBox)gvr.FindControl("chkSelect");
+                    var lblCommentId = (Label)gvr.FindControl("lblCommentId");
+                    var chkSelect = (CheckBox)gvr.FindControl("chkSelect");
                     if (lblCommentId != null && chkSelect != null && chkSelect.Checked)
                     {
                         //approve
@@ -144,7 +145,7 @@ namespace Engage.Dnn.Publish.Admin
 
             ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
 
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            var li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
             this.cboCategories.Items.Insert(0, li);
 
             li = cboCategories.Items.FindByValue(CategoryId.ToString(CultureInfo.InvariantCulture));
@@ -175,14 +176,14 @@ namespace Engage.Dnn.Publish.Admin
             
             if (txtArticleSearch.Text.Trim() != string.Empty)
             {
-                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                var objSecurity = new DotNetNuke.Security.PortalSecurity();
                 articleSearch = objSecurity.InputFilter(txtArticleSearch.Text.Trim(),DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
             }
 
 			DataSet ds = DataProvider.Instance().GetAdminCommentListing(categoryId, Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture), PortalId, authorUserId, articleSearch);
             if (ds.Tables[0].Rows.Count == 0)
             {
-                this.lblMessage.Text = Localization.GetString("NoCommentsFound", LocalResourceFile) + " " + cboCategories.SelectedItem.ToString();
+                this.lblMessage.Text = Localization.GetString("NoCommentsFound", LocalResourceFile) + " " + this.cboCategories.SelectedItem;
                 dgItems.Visible = false;
                 lblMessage.Visible = true;
             }
@@ -239,7 +240,7 @@ namespace Engage.Dnn.Publish.Admin
         protected string GetCommentEditUrl(object commentId)
         {
             return commentId != null ? 
-                BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=commentEdit&commentid=" + commentId.ToString()) : 
+                BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=commentEdit&commentid=" + commentId) : 
                 string.Empty;
         }
 
@@ -251,7 +252,7 @@ namespace Engage.Dnn.Publish.Admin
 
         protected string BuildName(object firstName, object lastName)
         {
-            return String.Format(CultureInfo.CurrentCulture, Localization.GetString("NameFormat", LocalResourceFile), firstName.ToString(), lastName.ToString());
+            return String.Format(CultureInfo.CurrentCulture, Localization.GetString("NameFormat", LocalResourceFile), firstName, lastName);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
@@ -268,9 +269,17 @@ namespace Engage.Dnn.Publish.Admin
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString(
+                                           ModuleActionType.AddContent, this.LocalResourceFile),
+                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
+                                           "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
+                                           false
+                                           }
+                           };
             }
         }
 

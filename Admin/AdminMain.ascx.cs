@@ -8,13 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
 
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Exceptions;
+
     public partial class AdminMain : ModuleBase, IActionable
 	{
 
