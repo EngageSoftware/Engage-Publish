@@ -8,26 +8,27 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using Microsoft.ApplicationBlocks.Data;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Security.Roles;
-using Engage.Dnn.Publish.Security;
-using Engage.Dnn.Publish.Util;
-using System.IO;
-using System.Xml;
 
 namespace Engage.Dnn.Publish.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Security.Roles;
+    using Security;
+    using Util;
+    using Microsoft.ApplicationBlocks.Data;
+
     public class SqlDataProvider : DataProvider
     {
         private const string ProviderType = "data";
@@ -45,7 +46,7 @@ namespace Engage.Dnn.Publish.Data
         #region Constructors
         public SqlDataProvider()
         {
-            Provider provider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
+            var provider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
 
             this.connectionString = Config.GetConnectionString();
 
@@ -125,7 +126,7 @@ namespace Engage.Dnn.Publish.Data
         //TODO: Parameterize all dynamic SQL
         public override DataTable GetItemTypes()
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select name, itemTypeId ");
             sql.Append("from ");
@@ -142,7 +143,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetApprovalStatusTypes(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ApprovalStatusID, ApprovalStatusName, ResourceKey ");
             sql.Append("from ");
@@ -156,7 +157,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetApprovalStatusTypesForAuthors(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select ApprovalStatusID, ApprovalStatusName, ResourceKey ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -170,7 +171,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override string GetApprovalStatusTypeName(int approvalStatusId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select ApprovalStatusName ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -183,7 +184,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override string GetItemTypeName(int itemTypeId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select [Name] ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -216,7 +217,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItems(int itemTypeId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, Author, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
             sql.Append(NamePrefix);
             sql.Append("vwItems vi join ");
@@ -274,7 +275,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append(" select ");
             sql.Append(" c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.ItemTypeId, c.CreatedDate, c.LastUpdated, c.Thumbnail, c.StartDate, c.AuthorUserId, u.DisplayName, c.Author, c.RevisingUserId, c.ApprovedItemVersionID ");
@@ -314,7 +315,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetParentItems(int itemId, int portalId, int relationshipTypeId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append(" select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid, i.author ");
             sql.Append("from  ");
@@ -348,7 +349,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItem(int itemId, int portalId, bool isCurrent)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ApprovedItemVersionID, Author ");
             sql.Append("from  ");
@@ -368,7 +369,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetCategories(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select c.itemId ");
             sql.Append(", (select count(ParentItemId) from ");
@@ -397,7 +398,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetCategoriesByPortalId(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -422,7 +423,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetCategoriesByModuleId(int moduleId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -453,7 +454,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetAllChildrenNLevels(int parentCategoryId, int nLevels, int mItems, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select gcil.ChildItemId 'ItemId', gcil.ParentItemId,  gcil.[level], vi.[Name] 'Name', vpar.[Name] 'ParentName' from ");
             sql.Append(NamePrefix);
             sql.Append("fnGetChildItemsLevel(");
@@ -483,7 +484,7 @@ namespace Engage.Dnn.Publish.Data
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
             DataTable dt = ds.Tables[0];
 
-            DataColumn[] keys = new DataColumn[2];
+            var keys = new DataColumn[2];
             keys[0] = dt.Columns[0];
             dt.PrimaryKey = keys;
 
@@ -495,7 +496,7 @@ namespace Engage.Dnn.Publish.Data
         [Obsolete("This method is not used")]
         public override IDataReader GetCategories(int itemTypeId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select c.itemId ");
             sql.Append(", (select count(ParentItemId) from ");
@@ -528,7 +529,7 @@ namespace Engage.Dnn.Publish.Data
         public override DataSet GetTopLevelCategories(int portalId)
         {
             //this needs parentitemid to fix the heirechy of the itemrelationship control
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.SortOrder, c.ChildDisplayTabId ");
             sql.Append(", (select count(ParentItemId) from ");
             sql.Append(NamePrefix);
@@ -555,7 +556,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetParentCategory(int childItemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select top 1 vp.itemid from ");
             sql.Append(NamePrefix);
             sql.Append("vwParentItems vp join ");
@@ -580,7 +581,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetChildCategories(int parentItemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ");
             sql.Append("c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
@@ -621,7 +622,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetChildCategories(int parentItemId, int portalId, int itemTypeId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ");
             sql.Append("c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
@@ -666,7 +667,7 @@ namespace Engage.Dnn.Publish.Data
         //TODO: does this need to return only categories?
         public override DataTable GetAllChildCategories(int parentItemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ");
             sql.Append("iv.[Name], iv.[Description], gc.ChildItemId as ItemId ");
@@ -698,7 +699,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetCategoryVersion(int itemVersionId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId   ");
             sql.Append("from ");
@@ -718,7 +719,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetCategoryItemId(string categoryName, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select itemId from ");
             sql.Append(NamePrefix);
             sql.Append("vwCategories ");
@@ -733,7 +734,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetCategory(int itemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
             sql.Append("from ");
@@ -750,7 +751,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetCategory(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select  SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
@@ -766,7 +767,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetParentCategories(int articleId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(512);
+            var sql = new StringBuilder(512);
 
             sql.Append("select ");
             sql.Append("c.ItemId as ArticleId, cat.[Name] as RoleName ");
@@ -794,7 +795,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetOldCategoryId(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select newItemId ");
             sql.Append("from ");
@@ -840,7 +841,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetAdminCommentListing(int categoryId, int approvalStatusId, int portalId, int authorUserId, string articleSearch)
         {
-            StringBuilder sql = new StringBuilder(723);
+            var sql = new StringBuilder(723);
             sql.Append("select comment.commentId,  ");
             sql.Append(" comment.commentText,  ");
             sql.Append(" comment.approvalStatusId,  ");
@@ -883,16 +884,16 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and vi.PortalId = @portalId ");
             sql.Append(" order by vi.lastUpdated, vi.Name, vi.itemId, comment.lastUpdated ");
 
-            SqlParameter sqlCategoryId = new SqlParameter("@categoryId", categoryId);
-            SqlParameter sqlApprovalStatusId = new SqlParameter("@approvalStatusId", approvalStatusId);
-            SqlParameter sqlPortalId = new SqlParameter("@portalId", portalId);
+            var sqlCategoryId = new SqlParameter("@categoryId", categoryId);
+            var sqlApprovalStatusId = new SqlParameter("@approvalStatusId", approvalStatusId);
+            var sqlPortalId = new SqlParameter("@portalId", portalId);
 
             return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), sqlCategoryId, sqlApprovalStatusId, sqlPortalId);
         }
 
         public override DataSet GetItemVersions(int itemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ItemVersionId, DisplayTabId, Name, Description, AuthorUserId, RevisingUserId, approvalStatusId, StartDate, EndDate, adminType, VersionNumber, ItemVersionDate, ModuleId ");
             sql.Append("from ");
@@ -909,7 +910,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetItemIdFromVersion(int itemVersionId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select itemId ");
             sql.Append("from ");
@@ -926,7 +927,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetItemIdFromVersion(int itemVersionId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select itemId ");
             sql.Append("from ");
@@ -949,7 +950,7 @@ namespace Engage.Dnn.Publish.Data
 
             //TODO: we're not checking to see if the child items are using the proper start dates.
 
-            StringBuilder sql = new StringBuilder(521);
+            var sql = new StringBuilder(521);
 
             sql.Append("select ");
             sql.Append(" r.ChildItemId, r.ChildItemVersionId, r.ParentItemId, r.StartDate, r.EndDate, r.RelationshipTypeId, r.SortOrder, rt.RelationshipName ");
@@ -996,7 +997,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetItemRelationshipByItemRelationshipId(int itemRelationshipId)
         {
-            StringBuilder sql = new StringBuilder(521);
+            var sql = new StringBuilder(521);
 
             sql.Append("select r.itemrelationshipid, r.parentitemid, r.childitemid as 'itemid', r.relationshiptypeid, r.startdate, r.enddate, r.sortorder, child.Name  ");
             sql.Append(" from ");
@@ -1048,7 +1049,7 @@ namespace Engage.Dnn.Publish.Data
         [Obsolete("This method is not used.")]
         public override DataSet GetChildren(int parentId, int relationshipTypeId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select itemId ");
             sql.Append("from ");
@@ -1070,7 +1071,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override string GetItemName(int itemId)
         {
-            StringBuilder sql = new StringBuilder(100);
+            var sql = new StringBuilder(100);
             sql.Append("select [Name] from ");
             sql.Append(NamePrefix);
             sql.Append("Item i join ");
@@ -1086,7 +1087,7 @@ namespace Engage.Dnn.Publish.Data
         #region "article functions"
         public override IDataReader GetArticleVersion(int itemVersionId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
             sql.Append("from ");
@@ -1102,7 +1103,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticles(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier ");
             sql.Append("from ");
@@ -1120,7 +1121,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticlesByPortalId(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, ItemIdentifier, ItemIdentifier, ItemVersionId, PortalId ");
             sql.Append("from ");
@@ -1137,7 +1138,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticlesByModuleId(int moduleId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
             sql.Append("from ");
@@ -1153,7 +1154,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticlesSearchIndexingUpdated(int portalId, int moduleDefId, int displayTabId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select * from ");
             sql.Append(NamePrefix);
@@ -1172,7 +1173,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticlesSearchIndexingNew(int portalId, int displayTabId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select 	name, va.itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, va.Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, va.PortalId ");
             sql.Append("from ");
@@ -1198,7 +1199,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetArticles(int parentItemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ");
             sql.Append("c.[Name], c.[Description], c.ItemId, c.ItemVersionId ");
@@ -1227,7 +1228,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetArticle(int itemId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
@@ -1244,7 +1245,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetArticle(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow  ");
             sql.Append("from ");
@@ -1258,7 +1259,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetOldArticleId(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select newItemId ");
             sql.Append("from ");
@@ -1276,7 +1277,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetRelationshipType(string relationshipName)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select RelationshipTypeID ");
             sql.Append("from ");
@@ -1290,7 +1291,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetPermissionType(string permissionName)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select PermissionId ");
             sql.Append("from ");
@@ -1305,7 +1306,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemType(string itemName)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select ItemTypeID, Name, Description ");
             sql.Append("from ");
@@ -1319,7 +1320,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetTopLevelCategoryItem(string itemName)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select i.ItemId, iv.[Name], iv.[Description]  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -1335,7 +1336,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetApprovalStatusId(string itemName)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select a.ApprovalStatusId, a.ApprovalStatusName, a.ResourceKey  ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -1347,7 +1348,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override string GetItemType(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select [Name] ");
             sql.Append("from ");
@@ -1364,7 +1365,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int GetItemTypeId(int itemId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select [ItemTypeId]");
             sql.Append("from ");
@@ -1384,7 +1385,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override string GetItemTypeFromVersion(int itemVersionId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select it.[Name]");
             sql.Append("from ");
@@ -1407,7 +1408,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersionSettings(int itemVersionId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select [settingsid], [controlName], [propertyName], [propertyValue] from ");
             sql.Append(NamePrefix);
             sql.Append("ItemVersionSettings where itemVersionId = ");
@@ -1425,7 +1426,7 @@ namespace Engage.Dnn.Publish.Data
                 controlName = string.Empty;
             }
 
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select [settingsid], [controlName], [propertyName], [propertyValue] from ");
             sql.Append(NamePrefix);
             sql.Append("ItemVersionSettings where itemVersionId = ");
@@ -1448,7 +1449,7 @@ namespace Engage.Dnn.Publish.Data
                 propertyName = string.Empty;
             }
 
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append("select [settingsid], [controlName], [propertyName], [propertyValue] from ");
             sql.Append(NamePrefix);
             sql.Append("ItemVersionSettings where itemVersionId = ");
@@ -1602,7 +1603,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetCategoryItems(int categoryId, int itemTypeId, int approvalStatusId, SearchSortOption sort)
         {
-            StringBuilder sql = new StringBuilder(512);
+            var sql = new StringBuilder(512);
 
             sql.Append("select ");
             sql.Append("childItemId ItemId, ChildItemVersionId ItemVersionId, iv.DisplayTabId, iv.[Name] 'Name', ItemVersionDate, it.[Name] 'ItemType' ");
@@ -1648,7 +1649,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataSet GetAdminKeywordSearch(string searchString, int itemTypeId, int approvalStatusId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append(" select i.itemId, i.itemVersionId, i.DisplayTabId,  i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
             sql.Append(" from ");
             sql.Append(NamePrefix);
@@ -1669,15 +1670,15 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(approvalStatusId);
             sql.Append(" and isCurrentVersion =1 order by i.[name]");
 
-            SqlParameter partialSearchString = new SqlParameter("@partialSearchString", "%" + searchString + "%");
-            SqlParameter exactSearchString = new SqlParameter("@exactSearchString", searchString);
+            var partialSearchString = new SqlParameter("@partialSearchString", "%" + searchString + "%");
+            var exactSearchString = new SqlParameter("@exactSearchString", searchString);
 
             return SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString(), partialSearchString, exactSearchString);
         }
 
         public override DataSet GetAdminKeywordSearch(string searchString, int itemTypeId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
             sql.Append(" select i.itemId, i.itemVersionId, i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
             sql.Append(" from ");
             sql.Append(NamePrefix);
@@ -1714,7 +1715,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDictionary GetViewableCategoryIds(int permissionId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("SELECT ");
             sql.Append("rp.CategoryId ");
@@ -1756,7 +1757,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDictionary GetViewableArticleIds(int permissionId)
         {
-            StringBuilder sql = new StringBuilder(512);
+            var sql = new StringBuilder(512);
 
             sql.Append("SELECT ");
             sql.Append("distinct ci.ItemId ArticleId ");
@@ -1806,10 +1807,10 @@ namespace Engage.Dnn.Publish.Data
         {
             if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                StringBuilder sb = new StringBuilder(128);
+                var sb = new StringBuilder(128);
 
                 UserInfo ui = UserController.GetCurrentUserInfo();
-                RoleController rc = new RoleController();
+                var rc = new RoleController();
                 //Not sure why DNN methods that return roles don't consistently return RoleInfo objects. hk
                 if (ui.IsSuperUser)
                 {
@@ -1842,7 +1843,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetAssignedRoles(int categoryId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("SELECT ");
             sql.Append("r.RoleId, RoleName ");
@@ -1865,7 +1866,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override void InsertPermission(int categoryId, int roleId, int permissionId, int userId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("insert ");
             sql.Append(NamePrefix);
@@ -1886,7 +1887,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override void DeletePermissions(int categoryId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("delete ");
             sql.Append(NamePrefix);
@@ -1905,7 +1906,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetChildrenInCategory(int categoryId, int childTypeId, int maxItems, int portalId, string sortOrder)
         {
-            StringBuilder sql = new StringBuilder();
+            var sql = new StringBuilder();
 
             sql.Append("select ");
             if (maxItems > -1)
@@ -1975,7 +1976,7 @@ namespace Engage.Dnn.Publish.Data
             //remove rows over the limit
             if (maxItems != -1)
             {
-                ArrayList al = new ArrayList();
+                var al = new ArrayList();
                 for (int i = maxItems; i < dt.Rows.Count; i++)
                 {
                     al.Add(dt.Rows[i]);
@@ -1990,7 +1991,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetMostPopular(int categoryId, int childTypeId, int maxItems, int portalId)
         {
-            StringBuilder sql = new StringBuilder();
+            var sql = new StringBuilder();
 
             sql.Append("select ");
             if (maxItems > -1)
@@ -2044,7 +2045,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetMostRecent(int childTypeId, int maxItems, int portalId)
         {
-            StringBuilder sql = new StringBuilder();
+            var sql = new StringBuilder();
 
             sql.Append("select ");
             if (maxItems > -1)
@@ -2102,7 +2103,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetMostRecentByCategoryId(int categoryId, int childTypeId, int maxItems, int portalId)
         {
-            StringBuilder sql = new StringBuilder(741);
+            var sql = new StringBuilder(741);
             sql.Append("select ");
             if (maxItems > -1)
             {
@@ -2145,7 +2146,7 @@ namespace Engage.Dnn.Publish.Data
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new char[] { '.' }));
+                version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new[] { '.' }));
             }
             catch (FormatException)
             {
@@ -2159,7 +2160,7 @@ namespace Engage.Dnn.Publish.Data
                 const bool showPublicOnly = false;
 
                 object[] parameters;
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] {2, 3, 8})))
+                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] {2, 3, 8})))
                 {
                     // 0 = Ventrian.SimpleGallery.Common.AlbumSortType.Caption, 1 = CreateDate, 2 = Custom, 3 = Random
                     const int sortBy = 0;
@@ -2169,7 +2170,7 @@ namespace Engage.Dnn.Publish.Data
 
                     parameters = new object[] {moduleId, parentAlbumId, showPublicOnly, showChildren, sortBy, sortOrder};
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] {2, 3, 3})))
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] {2, 3, 3})))
                 {
                     parameters = new object[] {moduleId, parentAlbumId, showPublicOnly, showChildren};
                 }
@@ -2216,7 +2217,7 @@ namespace Engage.Dnn.Publish.Data
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new char[] { '.' }));
+                version = Utility.ParseIntegerList(GetSimpleGalleryVersion().Split(new[] { '.' }));
             }
             catch (FormatException)
             {
@@ -2226,7 +2227,7 @@ namespace Engage.Dnn.Publish.Data
             if (version != null)
             {
                 object[] parameters;
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 2, 2, 0 })))
+                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 2, 0 })))
                 {
                     int? tagId = null;
                     const string batchId = null;
@@ -2234,19 +2235,19 @@ namespace Engage.Dnn.Publish.Data
                     const int sortOrder = 1;//0=desc, 1=asc
                     parameters = new object[] { moduleId, albumId, isApproved, maxCount, showAll, tagId, batchId, sortBy, sortOrder };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 1, 8, 2 })))
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 2 })))
                 {
                     parameters = new object[] { moduleId, albumId, isApproved, maxCount, showAll };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 1, 8, 1 })))
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 1 })))
                 {
                     parameters = new object[] { moduleId, albumId, isApproved, maxCount };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 1, 8, 0 })))
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 0 })))
                 {
                     parameters = new object[] { albumId, isApproved };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 1, 2, 0 })))
+                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 2, 0 })))
                 {
                     parameters = new object[] { albumId };
                 }
@@ -2314,7 +2315,7 @@ namespace Engage.Dnn.Publish.Data
         #region "find items"
         public override int FindItemId(string name, int authorUserId)
         {
-            StringBuilder sql = new StringBuilder(741);
+            var sql = new StringBuilder(741);
             sql.Append("select itemId ");
             sql.Append(" from ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " {0}vwItems il ", NamePrefix);
@@ -2323,9 +2324,9 @@ namespace Engage.Dnn.Publish.Data
             //TODO: this replace function below should be put into a larger utility of wildcard escapes
             name = name.Trim().Replace("[", "[[]");
             name = name.Trim().Replace("'", "''");
-            SqlParameter sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
+            var sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
 
-            SqlParameter sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
+            var sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
             
             object o = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString(), sqlName, sqlAuthorUserId);
             if (o != null)
@@ -2337,7 +2338,7 @@ namespace Engage.Dnn.Publish.Data
         }
         public override int FindItemId(string name, int authorUserId, int categoryId)
         {
-            StringBuilder sql = new StringBuilder(741);
+            var sql = new StringBuilder(741);
             sql.Append("select itemId ");
             sql.Append(" from ");
             sql.AppendFormat(CultureInfo.InvariantCulture, " {0}vwChildItems il ", NamePrefix);
@@ -2350,10 +2351,10 @@ namespace Engage.Dnn.Publish.Data
             //TODO: we need to escape '
             name = name.Trim().Replace("[", "[[]");
             name = name.Trim().Replace("'", "%");
-            SqlParameter sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
+            var sqlName = new SqlParameter("@Name", '%' + name.Trim() + '%');
 
-            SqlParameter sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
-            SqlParameter sqlCategoryId = new SqlParameter("@CategoryId", categoryId);
+            var sqlAuthorUserId = new SqlParameter("@AuthorUserId", authorUserId);
+            var sqlCategoryId = new SqlParameter("@CategoryId", categoryId);
 
             object o = SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql.ToString(), sqlName, sqlAuthorUserId, sqlCategoryId);
             if (o != null)
@@ -2372,13 +2373,13 @@ namespace Engage.Dnn.Publish.Data
         //Get number of items waiting for approval
         public override int WaitingForApprovalCount(int portalId)
         {
-            string sql = String.Format(CultureInfo.InvariantCulture, "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId().ToString());
+            string sql = String.Format(CultureInfo.InvariantCulture, "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId());
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
         }
 
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
-            string sql = String.Format(CultureInfo.InvariantCulture, "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId().ToString());
+            string sql = String.Format(CultureInfo.InvariantCulture, "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", ObjectQualifier + ModuleQualifier, ApprovalStatus.Waiting.GetId());
             
             //select count(*) from dnn_publish_comment pc join dnn_publish_vwitems vi on (vi.itemversionId = pc.itemversionid) where pc.approvalstatusid != 3 and portalId =0 and vi.authoruserid = 1
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId), Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));
@@ -2404,7 +2405,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetTags(int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             sql.Append("select tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
             sql.Append("from ");
             sql.Append(NamePrefix);
@@ -2419,7 +2420,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetTagsByString(string partialTag, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             sql.Append("select  ");
             sql.Append(" tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
             sql.Append("from ");
@@ -2445,7 +2446,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetTag(int tagId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             sql.Append("select  ");
             sql.Append(" tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
             sql.Append("from ");
@@ -2526,7 +2527,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemTags(int itemVersionId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select ");
             sql.Append(" t.tagId, t.name, t.description, t.totalItems, t.mostRecentDate, t.languageid, t.datecreated ");
@@ -2546,7 +2547,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override void AddItemTag(int itemVersionId, int tagId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             sql.Append("insert into ");
             sql.Append(NamePrefix);
             sql.Append("itemversiontags (ItemVersionId, TagId) Values(");
@@ -2560,7 +2561,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override void AddItemTag(IDbTransaction trans, int itemVersionId, int tagId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             sql.Append("insert into ");
             sql.Append(NamePrefix);
             sql.Append("itemversiontags (ItemVersionId, TagId) Values (");
@@ -2596,7 +2597,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int CheckItemTag(IDbTransaction trans, int itemId, int tagId)
         {
-            StringBuilder sql = new StringBuilder(250);
+            var sql = new StringBuilder(250);
             sql.Append("select top 1 itemversionid from ");
             sql.Append(NamePrefix);
             sql.Append("itemversiontags ivt ");
@@ -2611,7 +2612,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int CheckItemTag(int itemId, int tagId)
         {
-            StringBuilder sql = new StringBuilder(250);
+            var sql = new StringBuilder(250);
             sql.Append("select top 1 itemversionid from ");
             sql.Append(NamePrefix);
             sql.Append("itemversiontags ivt ");
@@ -2632,8 +2633,8 @@ namespace Engage.Dnn.Publish.Data
             {
                 return DBNull.Value;
             }
-            StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-            XmlTextWriter xtw = new XmlTextWriter(sw);
+            var sw = new StringWriter(CultureInfo.InvariantCulture);
+            var xtw = new XmlTextWriter(sw);
             xtw.WriteStartElement("Tags");
 
             foreach (int tagId in tagIds)
@@ -2667,7 +2668,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetModuleInfo(int moduleId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2681,7 +2682,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetPublishTabName(int tabId, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2700,7 +2701,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetPublishTabId(string tabName, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2716,7 +2717,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetPublishModuleId(string moduleTitle, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2732,7 +2733,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersionInfo(int itemVersionId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select ");
             sql.Append(" * ");
@@ -2751,7 +2752,7 @@ namespace Engage.Dnn.Publish.Data
         /// <returns></returns>
         public override IDataReader GetAllRelationships(int moduleId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
             
             sql.Append("select * ");
             sql.Append("from ");
@@ -2766,7 +2767,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetAllRelationshipsByPortalId(int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2782,7 +2783,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersion(Guid guid, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select * ");
             sql.Append("from ");
@@ -2804,7 +2805,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersionSettingsByPortalId(int portalId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select vs.*, ModuleId, ItemVersionIdentifier from ");
             sql.Append(NamePrefix);
@@ -2820,7 +2821,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersionSettingsByModuleId(int moduleId)
         {
-            StringBuilder sql = new StringBuilder(256);
+            var sql = new StringBuilder(256);
 
             sql.Append("select vs.*, ModuleId, ItemVersionIdentifier from ");
             sql.Append(NamePrefix);

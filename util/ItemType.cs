@@ -8,15 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using Engage.Dnn.Publish.Data;
-using DotNetNuke.Common.Utilities;
+
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+    using DotNetNuke.Common.Utilities;
+    using Data;
+
     /// <summary>
     /// Summary description for RelationshipType.
     /// </summary>
@@ -73,7 +75,7 @@ namespace Engage.Dnn.Publish.Util
                 foreach (FieldInfo f in fi)
                 {
                     Object o = f.GetValue(type);
-                    ItemType cot = o as ItemType;
+                    var cot = o as ItemType;
                     if (cot != null)
                     {
                         //this prevents old, bogus classes defined in the code from killing the app

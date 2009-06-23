@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using DotNetNuke.Entities.Portals;
-using System.Globalization;
-using Engage.Dnn.Publish.Util;
-using System.Text;
+﻿
 
 namespace Engage.Dnn.Publish.Services
 {
-    public partial class publishrsd : System.Web.UI.Page
+    using System;
+    using System.Globalization;
+    using System.Text;
+    using DotNetNuke.Entities.Portals;
+    using Util;
+
+    public partial class Publishrsd : System.Web.UI.Page
     {
         public string EngineName;
         public string EngineUrl;
@@ -31,10 +24,7 @@ namespace Engage.Dnn.Publish.Services
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -54,11 +44,11 @@ namespace Engage.Dnn.Publish.Services
             {
                 EngineName = "EngagePublish";
                 EngineUrl = "http://www.engagesoftware.com/modules/engagepublish.aspx";
-                ApiLink = "http://" + ps.PortalAlias.HTTPAlias  + Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/Metaweblog.ashx";
+                ApiLink = "http://" + ps.PortalAlias.HTTPAlias  + ModuleBase.DesktopModuleFolderName + "services/Metaweblog.ashx";
                 
                 HomePageUrl = o.ToString();
             }
-            StringBuilder responseStream = new StringBuilder(1000);
+            var responseStream = new StringBuilder(1000);
             responseStream.Append("<?xml version=\"1.0\"  encoding=\"utf-8\" ?><rsd version=\"1.0\" xmlns=\"http://archipelago.phrasewise.com/rsd\">");
             responseStream.Append("<service><engineName>");
             responseStream.Append(EngineName);

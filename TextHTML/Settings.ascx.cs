@@ -8,31 +8,26 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using System.Globalization;
 
 namespace Engage.Dnn.Publish.TextHtml
 {
-    public partial class Settings : ModuleSettingsBase
-    {   
-        private ModuleSettingsBase currentSettingsBase;
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
 
+    public partial class Settings : ModuleSettingsBase
+    {
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.Load += ItemDisplayOptions_Load;
+            Load += this.ItemDisplayOptionsLoad;
             if (DotNetNuke.Framework.AJAX.IsInstalled())
             {
                 DotNetNuke.Framework.AJAX.RegisterScriptManager();
             }
         }
 
-        protected void ItemDisplayOptions_Load(object sender, EventArgs e)
+        protected void ItemDisplayOptionsLoad(object sender, EventArgs e)
         {
             try
             {
@@ -49,7 +44,7 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             try
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                     modules.UpdateTabModuleSetting(this.TabModuleId, "Template", txtTemplate.Text.Trim());
             }
             catch (Exception exc)

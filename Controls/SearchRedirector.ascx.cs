@@ -8,23 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using Util;
+
 	public partial class SearchRedirector :  ModuleBase, IActionable, ISearchable
 	{
 
@@ -52,7 +43,7 @@ namespace Engage.Dnn.Publish.Controls
 
 		#region Event Handlers
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load(object sender, EventArgs e)
 		{
 			try 
 			{
@@ -75,14 +66,14 @@ namespace Engage.Dnn.Publish.Controls
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				return Actions;
+				var actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+				return actions;
 			}
 		}
 
         
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ModInfo", Justification = "Interface implementation")]
-		public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
+		public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
 		{
 			// included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
 			return null;

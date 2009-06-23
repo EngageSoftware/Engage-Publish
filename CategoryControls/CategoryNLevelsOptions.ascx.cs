@@ -8,28 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.UserControls;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.CategoryControls
 {
+
+    using System;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class CategoryNLevelsOptions : ModuleSettingsBase
     {
         #region Event Handlers
@@ -122,9 +111,9 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public override void UpdateSettings()
         {
-            ModuleController modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "nCategoryId", this.ddlCategoryList.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "nLevels", this.txtNLevels.Text.ToString());
+            var modules = new ModuleController();
+            modules.UpdateTabModuleSetting(this.TabModuleId, "nCategoryId", this.ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "nLevels", this.txtNLevels.Text);
             //modules.UpdateTabModuleSetting(this.TabModuleId, "mItems", this.txtMItems.Text.ToString());
             modules.UpdateTabModuleSetting(this.TabModuleId, "HighlightCurrentItem", this.chkHighlightCurrentItem.Checked.ToString());
             modules.UpdateTabModuleSetting(this.TabModuleId, "ShowParentItem", this.chkShowParentItem.Checked.ToString());

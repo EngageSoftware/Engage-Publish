@@ -8,12 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Diagnostics;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System.Collections;
+    using System.Diagnostics;
+
 	/// <summary>
 	/// Summary description for ItemRelationshipCollection.
 	/// </summary>
@@ -22,7 +23,7 @@ namespace Engage.Dnn.Publish
 		public void Add(ItemRelationship r)
 		{
 			Debug.Assert(r != null, "r cannot be null");
-			base.InnerList.Add(r);
+			InnerList.Add(r);
 		}
 
         //public void Remove(ItemRelationship r)
@@ -32,7 +33,7 @@ namespace Engage.Dnn.Publish
 
 		public ItemRelationship this[int index]
 		{
-			get {return (ItemRelationship) base.InnerList[index];}
+			get {return (ItemRelationship) InnerList[index];}
 		}
 	}
 }

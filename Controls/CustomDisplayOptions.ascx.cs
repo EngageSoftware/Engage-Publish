@@ -8,17 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class CustomDisplayOptions : ModuleSettingsBase
     {
 
@@ -40,24 +40,24 @@ namespace Engage.Dnn.Publish.Controls
                 ListItem li = ddlItemTypeList.Items.FindByValue(customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture));
                 li.Selected = true;
 
-                li = new ListItem(Localization.GetString(DisplayOption.Title.ToString(), LocalResourceFile), DisplayOption.Title.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionTitle;
+                li = new ListItem(Localization.GetString(DisplayOption.Title.ToString(), LocalResourceFile), DisplayOption.Title.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionTitle};
                 chkDisplayOptions.Items.Add(li);
-                li = new ListItem(Localization.GetString(DisplayOption.Author.ToString(), LocalResourceFile), DisplayOption.Author.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionAuthor;
+                li = new ListItem(Localization.GetString(DisplayOption.Author.ToString(), LocalResourceFile), DisplayOption.Author.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionAuthor};
                 chkDisplayOptions.Items.Add(li);
-                li = new ListItem(Localization.GetString(DisplayOption.Date.ToString(), LocalResourceFile), DisplayOption.Date.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionDate;
+                li = new ListItem(Localization.GetString(DisplayOption.Date.ToString(), LocalResourceFile), DisplayOption.Date.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionDate};
                 chkDisplayOptions.Items.Add(li);
 
-                li = new ListItem(Localization.GetString(DisplayOption.Abstract.ToString(), LocalResourceFile), DisplayOption.Abstract.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionAbstract;
+                li = new ListItem(Localization.GetString(DisplayOption.Abstract.ToString(), LocalResourceFile), DisplayOption.Abstract.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionAbstract};
                 chkDisplayOptions.Items.Add(li);
-                li = new ListItem(Localization.GetString(DisplayOption.Thumbnail.ToString(), LocalResourceFile), DisplayOption.Thumbnail.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionThumbnail;
+                li = new ListItem(Localization.GetString(DisplayOption.Thumbnail.ToString(), LocalResourceFile), DisplayOption.Thumbnail.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionThumbnail};
                 chkDisplayOptions.Items.Add(li);
-                li = new ListItem(Localization.GetString(DisplayOption.ReadMore.ToString(), LocalResourceFile), DisplayOption.ReadMore.ToString());
-                li.Selected = customDisplaySettings.DisplayOptionReadMore;
+                li = new ListItem(Localization.GetString(DisplayOption.ReadMore.ToString(), LocalResourceFile), DisplayOption.ReadMore.ToString())
+                         {Selected = this.customDisplaySettings.DisplayOptionReadMore};
                 chkDisplayOptions.Items.Add(li);
 
                 int maxItems = customDisplaySettings.MaxDisplayItems;
@@ -241,7 +241,7 @@ namespace Engage.Dnn.Publish.Controls
                 lblShowParentDescription.Visible = true;
             }
 
-            QueryStringParameters qsp = new QueryStringParameters();
+            var qsp = new QueryStringParameters();
             qsp.ClearKeys();
             qsp.Add("ctl", Utility.AdminContainer);
             qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));
@@ -254,7 +254,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private string BuildSortUrl()
         {
-            QueryStringParameters qsp = new QueryStringParameters();
+            var qsp = new QueryStringParameters();
             qsp.ClearKeys();
             qsp.Add("ctl", Utility.AdminContainer);
             qsp.Add("mid", ModuleId.ToString(CultureInfo.InvariantCulture));

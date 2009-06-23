@@ -8,14 +8,15 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Text;
 
-using DotNetNuke.Entities.Modules;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Globalization;
+    using System.Text;
+
+    using DotNetNuke.Entities.Modules;
     /// <summary>
     /// Summary description for Version.
     /// </summary>
@@ -50,11 +51,13 @@ namespace Engage.Dnn.Publish.Util
         {
             string[] versionInfo = versionString.Split('.');
 
-            Version version = new Version();
+            var version = new Version
+                              {
+                                      major = Convert.ToInt32(versionInfo[0], provider),
+                                      minor = Convert.ToInt32(versionInfo[1], provider),
+                                      build = Convert.ToInt32(versionInfo[2], provider)
+                              };
 
-            version.major = Convert.ToInt32(versionInfo[0], provider);
-            version.minor = Convert.ToInt32(versionInfo[1], provider);
-            version.build = Convert.ToInt32(versionInfo[2], provider);
             //v.build = (int)dr["Build"];
 
             return version;

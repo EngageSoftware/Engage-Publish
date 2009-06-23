@@ -11,7 +11,6 @@
 namespace Engage.Dnn.Publish
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
@@ -378,10 +377,9 @@ namespace Engage.Dnn.Publish
             get { return Utility.IsPingEnabledForPortal(this.PortalId); }
         }
 
-
-        public bool IsWLWEnabled
+        public bool IsWlwEnabled
         {
-            get { return GetWLWSupportForPortal(this.PortalId); }
+            get { return this.GetWlwSupportForPortal(this.PortalId); }
         }
 
 
@@ -442,7 +440,7 @@ namespace Engage.Dnn.Publish
                     }
                 }
 
-                ItemManager manager = new ItemManager(this);
+                var manager = new ItemManager(this);
 
                 //Check if there's a moduleid
 
@@ -525,16 +523,13 @@ namespace Engage.Dnn.Publish
             {
                 string s = this.Request.QueryString["VersionId"];
                 if (s == null) return -1;
-                else
+                object o = this.Request.Params["modid"];
+                if (o != null)
                 {
-                    object o = this.Request.Params["modid"];
-                    if (o != null)
-                    {
-                        //check to see if we're on the right module id, otherwise return -1
-                        if (Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture) == ModuleId) 
-                            return Convert.ToInt32(s, CultureInfo.InvariantCulture);
-                        else return -1;
-                    }
+                    //check to see if we're on the right module id, otherwise return -1
+                    if (Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture) == this.ModuleId) 
+                        return Convert.ToInt32(s, CultureInfo.InvariantCulture);
+                    return -1;
                 }
 
                 return (s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture));
@@ -878,7 +873,7 @@ namespace Engage.Dnn.Publish
             return string.IsNullOrEmpty(HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture)));
         }
 
-        public bool GetWLWSupportForPortal(int portalId)
+        public bool GetWlwSupportForPortal(int portalId)
         {
             if (this.Settings.Contains("SupportWLW"))
             {
@@ -994,10 +989,7 @@ namespace Engage.Dnn.Publish
                 {
                     return "_blank";
                 }
-                else
-                {
-                    return "_self";
-                }
+                return "_self";
             }
             return "_self";
             //return string.Empty;
@@ -1020,7 +1012,7 @@ namespace Engage.Dnn.Publish
 
         public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)
         {
-            StringBuilder url = new StringBuilder(128);
+            var url = new StringBuilder(128);
 
             url.Append(ApplicationUrl);
             url.Append(DesktopModuleFolderName);
@@ -1040,7 +1032,7 @@ namespace Engage.Dnn.Publish
 
         public static string GetRssLinkUrl(int portalId, string displayType, string tags)
         {
-            StringBuilder url = new StringBuilder(128);
+            var url = new StringBuilder(128);
 
             url.Append(ApplicationUrl);
             url.Append(DesktopModuleFolderName);
@@ -1060,7 +1052,7 @@ namespace Engage.Dnn.Publish
             //TODO: should we also allow for setting the module title here?
             if (this.AllowTitleUpdate)
             {
-                CDefault tp = (CDefault)this.Page;
+                var tp = (CDefault)this.Page;
                 tp.Title = Utility.HasValue(this.VersionInfoObject.MetaTitle) ? this.versionInfoObject.MetaTitle : this.versionInfoObject.Name;
 
                 if (this.LogBreadcrumb)
@@ -1084,35 +1076,35 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        public void SetWLWSupport()
+        public void SetWlwSupport()
         {
-            if (this.IsWLWEnabled)
+            if (this.IsWlwEnabled)
             {
 
-                CDefault tp = (CDefault)this.Page;
+                var tp = (CDefault)this.Page;
                 if (tp != null)
                 {
 
-                    LiteralControl lc = new LiteralControl();
-                    LiteralControl lcrsd = new LiteralControl();
-                    StringBuilder sb = new StringBuilder(400);
+                    var lc = new LiteralControl();
+                    var lcrsd = new LiteralControl();
+                    var sb = new StringBuilder(400);
                     sb.Append("<link rel=\"wlwmanifest\" type=\"application/wlwmanifest+xml\" href=\"");
                     //manifesturl
-                    string manifestUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/wlwmanifest.xml";
+                    string manifestUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias + DesktopModuleFolderName + "services/wlwmanifest.xml";
 
-                    sb.Append(manifestUrl.ToString());
+                    sb.Append(manifestUrl);
                     sb.Append("\" />");
                     lc.Text = sb.ToString();
 
                     tp.Header.Controls.Add(lc);
 
-                    StringBuilder rsd = new StringBuilder(400);
+                    var rsd = new StringBuilder(400);
                     rsd.Append("<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"");
 
                     string rsdUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias +
-                        Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName + "services/publishrsd.aspx?portalid=" + PortalId.ToString() + "&amp;HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
+                        DesktopModuleFolderName + "services/Publishrsd.aspx?portalid=" + this.PortalId + "&amp;HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
 
-                    rsd.Append(rsdUrl.ToString());
+                    rsd.Append(rsdUrl);
                     rsd.Append("\" />");
                     lcrsd.Text = rsd.ToString();
 
@@ -1126,8 +1118,8 @@ namespace Engage.Dnn.Publish
             if (rssUrl != null && rssTitle != null)
             {
 
-                LiteralControl lc = new LiteralControl();
-                StringBuilder sb = new StringBuilder(400);
+                var lc = new LiteralControl();
+                var sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
                 sb.Append(HttpUtility.HtmlAttributeEncode(rssUrl));
                 sb.Append("\" title=\"");
@@ -1135,7 +1127,7 @@ namespace Engage.Dnn.Publish
                 sb.Append("\" />");
                 lc.Text = sb.ToString();
 
-                CDefault tp = (CDefault)this.Page;
+                var tp = (CDefault)this.Page;
                 if (tp != null)
                 {
                     tp.Header.Controls.Add(lc);
@@ -1147,8 +1139,8 @@ namespace Engage.Dnn.Publish
         {
             if (rssUrl != null && rssTitle != null)
             {
-                LiteralControl lc = new LiteralControl();
-                StringBuilder sb = new StringBuilder(400);
+                var lc = new LiteralControl();
+                var sb = new StringBuilder(400);
                 sb.Append("<link rel=\"alternate\" type=\"application/rss+xml\" href=\"");
                 sb.Append(rssUrl);
                 sb.Append("\" title=\"");
@@ -1156,7 +1148,7 @@ namespace Engage.Dnn.Publish
                 sb.Append("\" />");
                 lc.Text = sb.ToString();
 
-                CDefault tp = (CDefault)this.Page;
+                var tp = (CDefault)this.Page;
                 if (tp != null)
                 {
                     tp.Header.Controls.Add(lc);
@@ -1317,15 +1309,7 @@ namespace Engage.Dnn.Publish
 
             if (!this.VersionInfoObject.IsNew)
             {
-                if (this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId())
-                {
-                    parentCategoryId = this.VersionInfoObject.ItemId;
-                }
-                else
-                {
-                    //find the parent category ID from an item
-                    parentCategoryId = Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
-                }
+                parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ? this.VersionInfoObject.ItemId : Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
             }
 
             return Globals.NavigateURL(
@@ -1417,21 +1401,15 @@ namespace Engage.Dnn.Publish
             //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
             if (this.ItemId > -1)
             {
-                //string currentItemType = Item.GetItemType(ItemId,PortalId);
-                int itemId = -1;
-                if (!this.VersionInfoObject.IsNew)
-                {
-                    itemId = this.VersionInfoObject.ItemId;
-                }
-                return DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + ItemId.ToString(CultureInfo.InvariantCulture));
+                ////string currentItemType = Item.GetItemType(ItemId,PortalId);
+                //int itemId = -1;
+                //if (!this.VersionInfoObject.IsNew)
+                //{
+                //    itemId = this.VersionInfoObject.ItemId;
+                //}
+                return Globals.NavigateURL(this.TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + ItemId.ToString(CultureInfo.InvariantCulture));
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
-
-
-
     }
 }

@@ -8,24 +8,18 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Data;
+
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Globalization;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+
 	public partial class ItemApproval :  ModuleBase, IActionable
 	{
 		#region Event Handlers
@@ -37,7 +31,7 @@ namespace Engage.Dnn.Publish.Controls
 		
 		private void InitializeComponent()
 		{
-			this.Load += new EventHandler(this.Page_Load);
+			this.Load += this.Page_Load;
 		}
 
 		private void Page_Load(object sender, EventArgs e)
@@ -96,7 +90,7 @@ namespace Engage.Dnn.Publish.Controls
 
 		private void LoadApprovalTypes()
 		{
-			if (IsAdmin == true)
+			if (this.IsAdmin)
 			{
 				radApprovalStatus.DataSource= DataProvider.Instance().GetApprovalStatusTypes(PortalId);
 			}
@@ -133,9 +127,15 @@ namespace Engage.Dnn.Publish.Controls
 		{
 			get 
 			{
-				ModuleActionCollection Actions = new ModuleActionCollection();
-				Actions.Add(GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return Actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 

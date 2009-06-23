@@ -8,17 +8,18 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-using System.Data;
-using System.Diagnostics;
-using DotNetNuke.Common.Utilities;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using System;
-using System.Globalization;
 
 namespace Engage.Dnn.Publish
 {
+
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using DotNetNuke.Common.Utilities;
+    using Data;
+    using Util;
 	/// <summary>
 	/// Summary description for ItemRelationship.
 	/// </summary>
@@ -27,23 +28,23 @@ namespace Engage.Dnn.Publish
 		#region Properties
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private int _itemVersionId = -1;
+		private int itemVersionId = -1;
 		public int ItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return this._itemVersionId; }
+            get { return this.itemVersionId; }
             [DebuggerStepThrough]
-            set { this._itemVersionId = value; }
+            set { this.itemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _tagId = -1;
+        private int tagId = -1;
 		public int TagId 
 		{
             [DebuggerStepThrough]
-			get {return this._tagId;}
+			get {return this.tagId;}
             [DebuggerStepThrough]
-            set { this._tagId = value; }
+            set { this.tagId = value; }
 		}
 
 		#endregion
@@ -56,10 +57,10 @@ namespace Engage.Dnn.Publish
 		public static ArrayList GetItemTags(int itemVersionId, int portalId)
 		{
             string cacheKey = Utility.CacheKeyPublishArticleTags + itemVersionId.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
-            ArrayList al = null;
+            ArrayList al;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                var o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     al = (ArrayList)o;
@@ -82,12 +83,7 @@ namespace Engage.Dnn.Publish
             //return CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
         }
 
-		public ItemTag()
-		{
-			//this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-		}
-
-        public static ItemTag Create()
+	    public static ItemTag Create()
 		{
 			return new ItemTag();
 		}

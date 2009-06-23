@@ -8,59 +8,60 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework.Providers;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Data
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.Providers;
+    using Util;
+
     public abstract class DataProvider
     {
         public const string ModuleQualifier = "Publish_";
 
         #region Shared/Static Methods
         // singleton reference to the instantiated object 
-        //private static DataProvider provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
+        //private static DataProvider Provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
 
-        private static DataProvider provider;
+        private static DataProvider Provider;
 
-        // return the provider
+        // return the Provider
         public static DataProvider Instance()
         {
-            if (provider == null)
+            if (Provider == null)
             {
                 const string assembly = "Engage.Dnn.Publish.Data.SqlDataprovider,EngagePublish";
                 Type objectType = Type.GetType(assembly, true, true);
 
-                provider = (DataProvider)Activator.CreateInstance(objectType);
-                DataCache.SetCache(objectType.FullName, provider);
+                Provider = (DataProvider)Activator.CreateInstance(objectType);
+                DataCache.SetCache(objectType.FullName, Provider);
             }
 
-            return provider;
+            return Provider;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
         public static IDbConnection GetConnection()
         {
             const string providerType = "data";
-            ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(providerType);
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(providerType);
 
-            Provider objProvider = ((Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
-            string _connectionString;
+            var objProvider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
+            string connectionString;
             if (!String.IsNullOrEmpty(objProvider.Attributes["connectionStringName"]) && !String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings[objProvider.Attributes["connectionStringName"]]))
             {
-                _connectionString = System.Configuration.ConfigurationManager.AppSettings[objProvider.Attributes["connectionStringName"]];
+                connectionString = System.Configuration.ConfigurationManager.AppSettings[objProvider.Attributes["connectionStringName"]];
             }
             else
             {
-                _connectionString = objProvider.Attributes["connectionString"];
+                connectionString = objProvider.Attributes["connectionString"];
             }
 
-            IDbConnection newConnection = new System.Data.SqlClient.SqlConnection();
-            newConnection.ConnectionString = _connectionString;
+            IDbConnection newConnection;
+            newConnection = new System.Data.SqlClient.SqlConnection {ConnectionString = connectionString};
             newConnection.Open();
             return newConnection;
         }

@@ -28,7 +28,7 @@ namespace Engage.Dnn.Publish
         {
             base.OnInit(e);
             CheckClearCache();
-            SetWLWSupport();
+            this.SetWlwSupport();
             ReadItemType();
             LoadControlType();
 
@@ -212,7 +212,7 @@ namespace Engage.Dnn.Publish
         {
             try
             {
-                ModuleBase mb = (ModuleBase)LoadControl(controlToLoad);
+                var mb = (ModuleBase)LoadControl(controlToLoad);
                 mb.ModuleConfiguration = ModuleConfiguration;
                 mb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
                 phControls.Controls.Add(mb);
@@ -232,7 +232,7 @@ namespace Engage.Dnn.Publish
                     if (displayType != "CategorySearch" && displayType != "ItemListing" && displayType != "CategoryNLevels")
                     {
                         const string adminControlToLoad = "Admin/AdminMenu.ascx";
-                        ModuleBase mbl = (ModuleBase)LoadControl(adminControlToLoad);
+                        var mbl = (ModuleBase)LoadControl(adminControlToLoad);
                         mbl.ModuleConfiguration = ModuleConfiguration;
                         mbl.ID = System.IO.Path.GetFileNameWithoutExtension(adminControlToLoad);
                         phAdminControls.Controls.Add(mbl);
@@ -280,8 +280,15 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Administration", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
+                var actions = new ModuleActionCollection
+                                  {
+                                          {
+                                                  this.GetNextActionID(),
+                                                  Localization.GetString("Administration", this.LocalSharedResourceFile)
+                                                  , "", "", "", this.EditUrl(Utility.AdminContainer), false,
+                                                  SecurityAccessLevel.Edit, true, false
+                                                  }
+                                  };
                 //actions.Add(GetNextActionID(), Localization.GetString("ClearCache", LocalSharedResourceFile), "", "", "", EditUrl(Utility.AdminContainer), false, SecurityAccessLevel.Edit, true, false);
                 if (IsAdmin)
                 {

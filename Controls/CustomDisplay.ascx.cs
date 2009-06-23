@@ -8,57 +8,58 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Entities.Users;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
     public partial class CustomDisplay : ModuleBase, IActionable
     {
         private CustomDisplaySettings customDisplaySettings;
 
-        protected Boolean visibility;
-        protected string editText;
+        protected Boolean Visibility;
+        protected string EditText;
         private int categoryId;
         private string qsTags;
         private ArrayList tagQuery;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _usePaging;// = false;
+        private bool usePaging;// = false;
         public bool UsePaging
         {
             [DebuggerStepThrough]
-            get { return _usePaging; }
+            get { return this.usePaging; }
             [DebuggerStepThrough]
-            set { _usePaging = value; }
+            set { this.usePaging = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _useCustomSort;// = false;
+        private bool useCustomSort;// = false;
         public bool UseCustomSort
         {
             [DebuggerStepThrough]
-            get { return _useCustomSort; }
+            get { return this.useCustomSort; }
             [DebuggerStepThrough]
-            set { _useCustomSort = value; }
+            set { this.useCustomSort = value; }
         }
 
 
@@ -148,7 +149,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
                     lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
-                    SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                    SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                 }
                 else
                 {
@@ -157,14 +158,14 @@ namespace Engage.Dnn.Publish.Controls
                     if (rssSetting != null && rssSetting.PropertyValue!=string.Empty)
                     {
                         lnkRss.NavigateUrl = rssSetting.PropertyValue;
-                        SetExternalRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                        SetExternalRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                         
                     }
                     else
                     {
                         //TODO: configure the # of items for an RSS feed
                         lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
-                        SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssAlt", LocalResourceFile));
+                        SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                     }
 
                 }
@@ -174,19 +175,19 @@ namespace Engage.Dnn.Publish.Controls
             //store the URL into session for the return to list options
             if (UseSessionForReturnToList(PortalId))
             {
-                Session["PublishListLink"] = Request.Url.PathAndQuery.ToString();
+                Session["PublishListLink"] = this.Request.Url.PathAndQuery;
             }
 
             //check if admin, enable edit links
             if ((IsAdmin || IsAuthor) && IsEditable)
             {
-                visibility = true;
-                editText = Localization.GetString("EditText", LocalResourceFile);
+                this.Visibility = true;
+                this.EditText = Localization.GetString("EditText", LocalResourceFile);
             }
             else
             {
-                visibility = false;
-                editText = string.Empty;
+                this.Visibility = false;
+                this.EditText = string.Empty;
             }
 
             try
@@ -234,15 +235,15 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (e != null)
             {
-                Panel pnlThumbnail = (Panel)e.Item.FindControl("pnlThumbnail");
+                var pnlThumbnail = (Panel)e.Item.FindControl("pnlThumbnail");
                 //Panel pnlCategory = (Panel)e.Item.FindControl("pnlCategory");
-                Panel pnlTitle = (Panel)e.Item.FindControl("pnlTitle");
-                Panel pnlDate = (Panel)e.Item.FindControl("pnlDate");
+                var pnlTitle = (Panel)e.Item.FindControl("pnlTitle");
+                var pnlDate = (Panel)e.Item.FindControl("pnlDate");
 
-                Panel pnlAuthor = (Panel)e.Item.FindControl("pnlAuthor");
-                Panel pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
-                Panel pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
-                HyperLink lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
+                var pnlAuthor = (Panel)e.Item.FindControl("pnlAuthor");
+                var pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
+                var pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
+                var lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
                 //Label lblDate = (Label)e.Item.FindControl("lblDate");
 
                 if (pnlThumbnail != null)
@@ -280,7 +281,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
                     DataRow dr = ((DataRowView)e.Item.DataItem).Row;
-                    int childItemId = (int)dr["ChildItemId"];
+                    var childItemId = (int)dr["ChildItemId"];
 
                     if (Utility.IsDisabled(childItemId, PortalId))
                     {
@@ -330,9 +331,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 return SortTable(dt);
             }
-            else
-                return dt;
-            
+            return dt;
         }
 
 
@@ -361,7 +360,7 @@ namespace Engage.Dnn.Publish.Controls
 
                 queryString = new NameValueCollection(queryString);
                 queryString["catpageid"] = linkedPageId.ToString(CultureInfo.InvariantCulture);
-                List<string> additionalParameters = new List<string>(queryString.Count);
+                var additionalParameters = new List<string>(queryString.Count);
 
                 for (int i = 0; i < queryString.Count; i++)
                 {
@@ -398,7 +397,7 @@ namespace Engage.Dnn.Publish.Controls
                         + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture)
                         + "ItemType" + customDisplaySettings.ItemTypeId
                         + "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
+            var dt = DataCache.GetCache(cacheKey) as DataTable;
             //check for tags
             if (AllowTags && tagQuery != null && tagQuery.Count > 0)
             {
@@ -604,7 +603,7 @@ namespace Engage.Dnn.Publish.Controls
                 string url = string.Empty;
                 if (HttpContext.Current.Request.RawUrl != null)
                 {
-                    url = HttpContext.Current.Request.RawUrl.ToString();
+                    url = HttpContext.Current.Request.RawUrl;
                 }
                 
                 this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
@@ -623,9 +622,15 @@ namespace Engage.Dnn.Publish.Controls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, string.Empty, string.Empty, EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, string.Empty, string.Empty,
+                                           this.EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
@@ -637,12 +642,12 @@ namespace Engage.Dnn.Publish.Controls
             return Utility.BuildEditUrl(itemId, tabId, moduleId, portalId);
         }
 
-        protected static string GetAuthor(object author, object authorUserId, int PortalId)
+        protected static string GetAuthor(object author, object authorUserId, int portalId)
         {
             if (author.ToString().Trim().Length > 0)
                 return author.ToString();
-            UserController uc = new UserController();
-            return uc.GetUser(PortalId, Convert.ToInt32(authorUserId)).DisplayName;
+            var uc = new UserController();
+            return uc.GetUser(portalId, Convert.ToInt32(authorUserId)).DisplayName;
                 
 
         }

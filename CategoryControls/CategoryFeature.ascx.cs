@@ -8,33 +8,24 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Text;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class CategoryFeature : ModuleBase, IActionable
     {
-        private int setCategoryId;
         #region Web Form Designer generated code
 
         override protected void OnInit(EventArgs e)
@@ -117,7 +108,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #region Event Handlers
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -157,20 +148,19 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     lnkRss.ImageUrl = ApplicationUrl + rssImage; //"/images/xml.gif";
                     lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
-                    StringBuilder rssUrl = new StringBuilder();
+                    var rssUrl = new StringBuilder();
                     rssUrl.Append(ApplicationUrl);
                     rssUrl.Append(DesktopModuleFolderName);
                     rssUrl.Append("epRss.aspx?");
                     rssUrl.AppendFormat("ItemId={0}", VersionInfoObject.ItemId);
                     rssUrl.AppendFormat("&RelationshipTypeId={0}&PortalId={1}&DisplayType=CategoryFeature", relationshipTypeId, PortalId);
                     lnkRss.NavigateUrl = rssUrl.ToString();
-                    SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssText", LocalResourceFile));
+                    SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
                 }
 
                 //get initial data set
-                DataView dv = new DataView();
                 string cacheKey = Utility.CacheKeyPublishCategoryFeature + VersionInfoObject.ItemId.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                dv = DataCache.GetCache(cacheKey) as DataView;
+                var dv = DataCache.GetCache(cacheKey) as DataView;
 
                 if (dv == null)
                 {
@@ -183,12 +173,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                 }
 
-                if (RandomArticle)
-                {
-                    //randomly pick one.        
-                    dlItems.DataSource = Utility.GetRandomItem(dv);
-                }
-                else dlItems.DataSource = dv;
+                this.dlItems.DataSource = this.RandomArticle ? Utility.GetRandomItem(dv) : dv;
                 dlItems.DataBind();
             }
             if (VersionInfoObject.IsNew && IsAdmin)
@@ -227,9 +212,15 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
@@ -289,12 +280,9 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public int SetCategoryId
         {
-            get {return this.setCategoryId;}
-            set {this.setCategoryId = value;}
+            get;
+            set;
         }
-
-
-
     }
 }
 

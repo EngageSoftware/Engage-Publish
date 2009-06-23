@@ -1,14 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using DotNetNuke.Common.Utilities;
+    using Data;
+    using Util;
     /// <summary>
     /// A comment on an item, possibly tied to a <see cref="Rating"/>.
     /// </summary>
@@ -31,6 +32,7 @@ namespace Engage.Dnn.Publish
         /// <param name="firstName">First name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="lastName">Last name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="emailAddress">Email address of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.EmailAddressSizeLimit"/>.</param>
+        /// <param name="url">URL of the commenter</param>
         private Comment(int commentId, int itemVersionId, int? userId, string commentText, int approvalStatusId, DateTime createdDate, DateTime lastUpdated, int? ratingId, string firstName, string lastName, string emailAddress, string url)
             : base(commentId, itemVersionId, userId, commentText, approvalStatusId, createdDate, lastUpdated, ratingId, firstName,  lastName, emailAddress, url)
         {
@@ -47,6 +49,7 @@ namespace Engage.Dnn.Publish
         /// <param name="firstName">First name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="lastName">Last name of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.NameSizeLimit"/>.</param>
         /// <param name="emailAddress">Email address of the commenter.  Will be truncated if longer than <see cref="UserFeedback.Comment.EmailAddressSizeLimit"/>.</param>
+        /// <param name="url">URL of the commenter</param>
         public Comment(int itemVersionId, int? userId, string commentText, int approvalStatusId, int? ratingId, string firstName, string lastName, string emailAddress, string url)
             : base(itemVersionId, userId, commentText, approvalStatusId, ratingId, firstName, lastName, emailAddress, url)
         {
@@ -56,7 +59,6 @@ namespace Engage.Dnn.Publish
         /// Initializes a new instance of the <see cref="Comment"/> class.
         /// </summary>
         public Comment()
-            : base()
         {
         }
         
@@ -73,7 +75,7 @@ namespace Engage.Dnn.Publish
         public static List<UserFeedback.Comment> GetCommentsByItemId(int itemId, int approvalStatusId)
         {
             IDataReader dr = DataProvider.Instance().GetComments(itemId, approvalStatusId);
-            List<UserFeedback.Comment> comments = new List<UserFeedback.Comment>();
+            var comments = new List<UserFeedback.Comment>();
 
             while (dr.Read())
             {
@@ -130,8 +132,8 @@ namespace Engage.Dnn.Publish
         public static int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
             //cache this
-            int commentCount = 0;
-            string cacheKey = Utility.CacheKeyPublishAuthorCommentCount + authorUserId.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString();
+            int commentCount;
+            string cacheKey = Utility.CacheKeyPublishAuthorCommentCount + authorUserId.ToString(CultureInfo.InvariantCulture) + "_" + portalId;
             if (ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);

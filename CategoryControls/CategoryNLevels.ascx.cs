@@ -8,33 +8,31 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Globalization;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class CategoryNLevels : ModuleBase, IActionable
     {
         //private category id set from display loader
         private const string HighlightCssClass = "NLevelCurrentItem";
-        private int setCategoryId;
-        
+
         private int nLevels = -1;
         //private int mItems = -1;
         private bool highlightCurrentItem;// = false;
         private bool showParentItem = true;
-        private bool showAll;// = false;
 
         #region Event Handlers
 
@@ -53,7 +51,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             this.Load += this.Page_Load;
         }
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -74,10 +72,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
            //ToDO: figure out how to get the treeview to use the sorted datatable
 
-            System.Windows.Forms.TreeNode root;
-
             string cacheKey = Utility.CacheKeyPublishCategoryNLevels + ItemId; // +"PageId";
-            root = DataCache.GetCache(cacheKey) as System.Windows.Forms.TreeNode;
+            var root = DataCache.GetCache(cacheKey) as System.Windows.Forms.TreeNode;
 
 
             if (root == null)
@@ -121,7 +117,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     phNLevels.Controls.Add(new LiteralControl("<ul>"));
                     phNLevels.Controls.Add(new LiteralControl("<li>"));
 
-                    HyperLink hlParent = new HyperLink();
+                    var hlParent = new HyperLink();
 
                     if (parentItem.Disabled == false)
                     {
@@ -173,7 +169,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 System.Windows.Forms.TreeNode child = root.Nodes[i];
                 if (child.Text.Length > 0)
                 {
-                    HyperLink hl = new HyperLink();
+                    var hl = new HyperLink();
                     int itemId = Convert.ToInt32(child.Tag, CultureInfo.InvariantCulture);
 
                     if (!Utility.IsDisabled(itemId, PortalId))
@@ -219,9 +215,15 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
@@ -278,7 +280,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 string url = string.Empty;
                 if (HttpContext.Current.Request.RawUrl != null)
                 {
-                    url = HttpContext.Current.Request.RawUrl.ToString();
+                    url = HttpContext.Current.Request.RawUrl;
                 }
 
                 
@@ -288,32 +290,19 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public int SetCategoryId
         {
-            get
-            {
-                return this.setCategoryId;
-            }
-            set
-            {
-                this.setCategoryId = value;
-            }
+            get;
+            set;
         }
 
-                /// <summary>
+        /// <summary>
         /// This method is exclusively used for cases where there is no "context" for the Category that a user has 
         /// linked to. If this is set to true, when the control loads both child categories and child articles are displayed. hk
         /// </summary>
         public bool ShowAll
         {
-            get
-            {
-                return showAll;
-            }
-            set
-            {
-                this.showAll = value;
-            }
+            get;
+            set;
         }
-       
     }
 }
 

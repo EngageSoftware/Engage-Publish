@@ -8,16 +8,11 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-using System.Text;
-using System.Collections;
-using System.Web.SessionState;
-using DotNetNuke.Services.Localization;
+
 
 namespace Engage.Dnn.Publish.Util
 {
-    using System;
-
+    using System.Collections;
     /// <summary>
 	/// Summary description for Breadcrumb.
 	/// </summary>
@@ -25,22 +20,18 @@ namespace Engage.Dnn.Publish.Util
 	{
 		public void InsertBeginning(string pageName, string pageUrl)
 		{            
-			BreadcrumbItem bci = new BreadcrumbItem();
-			bci.PageName = pageName;
-			bci.PageUrl= pageUrl;
-            base.InnerList.Insert(0,bci);
+			var bci = new BreadcrumbItem {PageName = pageName, PageUrl = pageUrl};
+		    InnerList.Insert(0,bci);
 		}
         public void Add(string pageName, string pageUrl)
         {
-            BreadcrumbItem bci = new BreadcrumbItem();
-            bci.PageName = pageName;
-            bci.PageUrl = pageUrl;
-            base.InnerList.Add(bci);
+            var bci = new BreadcrumbItem {PageName = pageName, PageUrl = pageUrl};
+            InnerList.Add(bci);
         }
 
         public BreadcrumbItem this[int index]
         {
-            get { return (BreadcrumbItem)base.InnerList[index]; }
+            get { return (BreadcrumbItem)InnerList[index]; }
         }
 
 	}

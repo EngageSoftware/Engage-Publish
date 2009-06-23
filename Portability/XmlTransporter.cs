@@ -8,22 +8,23 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.XPath;
-using DotNetNuke.Entities.Modules;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Portability
 {
+
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using System.Xml.XPath;
+    using DotNetNuke.Entities.Modules;
+    using Util;
     public class XmlTransporter
     {
-        private XmlDocument _doc;
+        private XmlDocument doc;
         private readonly int _moduleId = -1;
         private readonly int _portalId = -1;
         private readonly int _tabId = -1;
@@ -49,13 +50,13 @@ namespace Engage.Dnn.Publish.Portability
 
         public void BuildRootNode()
         {
-            _doc = new XmlDocument();
+            this.doc = new XmlDocument();
 
-            const string xsiNS = "http://www.w3.org/2001/XMLSchema-instance";
-            XmlElement element = _doc.CreateElement("publish");
-            element.SetAttribute("xmlns:xsi", xsiNS);
-            element.SetAttribute("noNamespaceSchemaLocation", xsiNS, "Content.Publish.xsd");
-            _doc.AppendChild(element);
+            const string xsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+            XmlElement element = this.doc.CreateElement("publish");
+            element.SetAttribute("xmlns:xsi", xsiNamespace);
+            element.SetAttribute("noNamespaceSchemaLocation", xsiNamespace, "Content.Publish.xsd");
+            this.doc.AppendChild(element);
         }
 
         [Obsolete("Not implemented")]
@@ -81,10 +82,10 @@ namespace Engage.Dnn.Publish.Portability
 
         public void BuildCategories(bool exportAll)
         {
-            XmlNode publishNode = _doc.SelectSingleNode("publish");
-            XmlNode categoriesNode = _doc.CreateElement("categories");
+            XmlNode publishNode = this.doc.SelectSingleNode("publish");
+            XmlNode categoriesNode = this.doc.CreateElement("categories");
             //TODO: if we're exporting Text/HTML we at least need to pull the text/html defined category
-            ModuleController mc = new ModuleController();
+            var mc = new ModuleController();
             ModuleInfo mi = mc.GetModule(this._moduleId, this._tabId);
 
             DataTable dt;
@@ -104,12 +105,12 @@ namespace Engage.Dnn.Publish.Portability
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    int itemVersionId = (int)row["itemVersionId"];
+                    var itemVersionId = (int)row["itemVersionId"];
                     int portalId = Convert.ToInt32(row["PortalId"], CultureInfo.InvariantCulture);
                     Category c = Category.GetCategoryVersion(itemVersionId, portalId);
 
                     string xml = c.SerializeObjectToXml();
-                    XmlDocument categoryDoc = new XmlDocument();
+                    var categoryDoc = new XmlDocument();
                     categoryDoc.LoadXml(xml);
 
                     //strip off namespace and schema
@@ -117,10 +118,10 @@ namespace Engage.Dnn.Publish.Portability
                     node.Attributes.Remove(node.Attributes["xmlns:xsd"]);
                     node.Attributes.Remove(node.Attributes["xmlns:xsi"]);
 
-                    categoriesNode.AppendChild(_doc.ImportNode(node, true));
+                    categoriesNode.AppendChild(this.doc.ImportNode(node, true));
                 }
 
-                publishNode.AppendChild(_doc.ImportNode(categoriesNode, true));
+                publishNode.AppendChild(this.doc.ImportNode(categoriesNode, true));
 
             }
             catch (Exception e)
@@ -132,21 +133,21 @@ namespace Engage.Dnn.Publish.Portability
 
         public void BuildArticles(bool exportAll)
         {
-            XmlNode publishNode = _doc.SelectSingleNode("publish");
-            XmlNode articlesNode = _doc.CreateElement("articles");
+            XmlNode publishNode = this.doc.SelectSingleNode("publish");
+            XmlNode articlesNode = this.doc.CreateElement("articles");
 
             DataTable dt = exportAll ? Article.GetArticlesByPortalId(this._portalId) : Article.GetArticlesByModuleId(this._moduleId);
 
 
             foreach (DataRow row in dt.Rows)
             {
-                int itemVersionId = (int)row["itemVersionId"];
+                var itemVersionId = (int)row["itemVersionId"];
                 int portalId = Convert.ToInt32(row["PortalId"], CultureInfo.InvariantCulture);
 
                 Article a = Article.GetArticleVersion(itemVersionId, portalId);
 
                 string xml = a.SerializeObjectToXml();
-                XmlDocument articleDoc = new XmlDocument();
+                var articleDoc = new XmlDocument();
                 articleDoc.LoadXml(xml);
 
                 //strip off namespace and schema
@@ -154,16 +155,16 @@ namespace Engage.Dnn.Publish.Portability
                 node.Attributes.Remove(node.Attributes["xmlns:xsd"]);
                 node.Attributes.Remove(node.Attributes["xmlns:xsi"]);
 
-                articlesNode.AppendChild(_doc.ImportNode(node, true));
+                articlesNode.AppendChild(this.doc.ImportNode(node, true));
             }
 
-            publishNode.AppendChild(_doc.ImportNode(articlesNode, true));
+            publishNode.AppendChild(this.doc.ImportNode(articlesNode, true));
         }
 
         public void BuildRelationships(bool exportAll)
         {
-            XmlNode publishNode = _doc.SelectSingleNode("publish");
-            XmlNode relationshipsNode = _doc.CreateElement("relationships");
+            XmlNode publishNode = this.doc.SelectSingleNode("publish");
+            XmlNode relationshipsNode = this.doc.CreateElement("relationships");
 
             List<ItemRelationship> relationships = exportAll ? ItemRelationship.GetAllRelationshipsByPortalId(this._portalId) : ItemRelationship.GetAllRelationships(this._moduleId);
 
@@ -171,18 +172,18 @@ namespace Engage.Dnn.Publish.Portability
             {
                 relationship.CorrectDates();
                 string xml = relationship.SerializeObjectToXml();
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(xml);
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xml);
 
                 //strip off namespace and schema
-                XmlNode node = doc.SelectSingleNode("relationship");
+                XmlNode node = xmlDoc.SelectSingleNode("relationship");
                 node.Attributes.Remove(node.Attributes["xmlns:xsd"]);
                 node.Attributes.Remove(node.Attributes["xmlns:xsi"]);
 
-                relationshipsNode.AppendChild(_doc.ImportNode(node, true));
+                relationshipsNode.AppendChild(this.doc.ImportNode(node, true));
             }
 
-            publishNode.AppendChild(_doc.ImportNode(relationshipsNode, true));
+            publishNode.AppendChild(this.doc.ImportNode(relationshipsNode, true));
         }
 
         [Obsolete("Not implemented")]
@@ -208,35 +209,35 @@ namespace Engage.Dnn.Publish.Portability
 
         public void BuildItemVersionSettings(bool exportAll)
         {
-            XmlNode publishNode = _doc.SelectSingleNode("publish");
-            XmlNode settingsNode = _doc.CreateElement("itemversionsettings");
+            XmlNode publishNode = this.doc.SelectSingleNode("publish");
+            XmlNode settingsNode = this.doc.CreateElement("itemversionsettings");
 
             List<ItemVersionSetting> settings = exportAll ? ItemVersionSetting.GetItemVersionSettingsByPortalId(this._portalId) : ItemVersionSetting.GetItemVersionSettingsByModuleId(this._moduleId, this._portalId);
 
             foreach (ItemVersionSetting setting in settings)
             {
                 string xml = setting.SerializeObjectToXml();
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(xml);
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xml);
 
                 //strip off namespace and schema
-                XmlNode node = doc.SelectSingleNode("itemversionsetting");
+                XmlNode node = xmlDoc.SelectSingleNode("itemversionsetting");
                 node.Attributes.Remove(node.Attributes["xmlns:xsd"]);
                 node.Attributes.Remove(node.Attributes["xmlns:xsi"]);
 
-                settingsNode.AppendChild(_doc.ImportNode(node, true));
+                settingsNode.AppendChild(this.doc.ImportNode(node, true));
             }
 
-            publishNode.AppendChild(_doc.ImportNode(settingsNode, true));
+            publishNode.AppendChild(this.doc.ImportNode(settingsNode, true));
         }
 
         public void BuildModuleSettings()
         {
-            XmlNode publishNode = _doc.SelectSingleNode("publish");
-            XmlNode settingsNode = _doc.CreateElement("modulesettings");
+            XmlNode publishNode = this.doc.SelectSingleNode("publish");
+            XmlNode settingsNode = this.doc.CreateElement("modulesettings");
 
             //TODO: get a list of module settings, parse through the list and generate XMl
-            ModuleController mc = new ModuleController();
+            var mc = new ModuleController();
             //we aren't using modulesettings in Publish, only tabmodulesettings
             //System.Collections.Hashtable moduleSettings = mc.GetModuleSettings(_moduleId);
             ModuleInfo mi = mc.GetModule(_moduleId, _tabId);
@@ -244,21 +245,21 @@ namespace Engage.Dnn.Publish.Portability
 
             foreach (string key in tabModuleSettings.Keys)
             {
-                XmlNode settingNode = _doc.CreateElement("tabmodulesetting");
+                XmlNode settingNode = this.doc.CreateElement("tabmodulesetting");
                 settingNode.Attributes.Remove(settingNode.Attributes["xmlns:xsd"]);
                 settingNode.Attributes.Remove(settingNode.Attributes["xmlns:xsi"]);
 
                 settingsNode.AppendChild(settingNode);
 
-                XmlNode keyNode = _doc.CreateElement("Key");
-                keyNode.AppendChild(_doc.CreateTextNode(key));
+                XmlNode keyNode = this.doc.CreateElement("Key");
+                keyNode.AppendChild(this.doc.CreateTextNode(key));
                 settingNode.AppendChild(keyNode);
-                XmlNode valueNode = _doc.CreateElement("Value");
-                valueNode.AppendChild(_doc.CreateTextNode(tabModuleSettings[key].ToString()));
+                XmlNode valueNode = this.doc.CreateElement("Value");
+                valueNode.AppendChild(this.doc.CreateTextNode(tabModuleSettings[key].ToString()));
                 settingNode.AppendChild(valueNode);
-                settingsNode.AppendChild(_doc.ImportNode(settingNode, true));                                
+                settingsNode.AppendChild(this.doc.ImportNode(settingNode, true));                                
             }
-            publishNode.AppendChild(_doc.ImportNode(settingsNode, true));
+            publishNode.AppendChild(this.doc.ImportNode(settingsNode, true));
         }
 
         
@@ -266,55 +267,55 @@ namespace Engage.Dnn.Publish.Portability
 
         #region Deconstruct Methods
 
-        internal void ImportCategories(IXPathNavigable doc)
+        internal void ImportCategories(IXPathNavigable xmlDoc)
         {
             // parse categories
-            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = xmlDoc.CreateNavigator();
             XPathNavigator categoriesNode = navigator.SelectSingleNode("//publish/categories");
 
             foreach (XPathNavigator categoryNode in categoriesNode.Select("//category"))
             {
                 // Create an instance of the XmlSerializer specifying type.
-                XmlSerializer serializer = new XmlSerializer(typeof(Category));
-                StringReader reader = new StringReader(categoryNode.OuterXml);
+                var serializer = new XmlSerializer(typeof(Category));
+                var reader = new StringReader(categoryNode.OuterXml);
 
                 // Use the Deserialize method to restore the object's state.
-                Category c = (Category)serializer.Deserialize(reader);
+                var c = (Category)serializer.Deserialize(reader);
                 c.Import(_moduleId, _portalId);
             }
         }
 
-        internal void ImportArticles(IXPathNavigable doc)
+        internal void ImportArticles(IXPathNavigable xmlDoc)
         {
             // parse categories
-            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = xmlDoc.CreateNavigator();
             XPathNavigator articlesNode = navigator.SelectSingleNode("//publish/articles");
             foreach (XPathNavigator articleNode in articlesNode.Select("//article"))
             {
                 // Create an instance of the XmlSerializer specifying type.
-                XmlSerializer serializer = new XmlSerializer(typeof(Article));
-                StringReader reader = new StringReader(articleNode.OuterXml);
+                var serializer = new XmlSerializer(typeof(Article));
+                var reader = new StringReader(articleNode.OuterXml);
 
                 // Use the Deserialize method to restore the object's state.
-                Article a = (Article)serializer.Deserialize(reader);
+                var a = (Article)serializer.Deserialize(reader);
                 a.Import(_moduleId, _portalId);
             }
         }
 
-        internal void ImportRelationships(IXPathNavigable doc)
+        internal void ImportRelationships(IXPathNavigable xmlDoc)
         {
 
             // parse relationships
-            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = xmlDoc.CreateNavigator();
             XPathNavigator relationshipsNode = navigator.SelectSingleNode("//publish/relationships");
             foreach (XPathNavigator relationshipNode in relationshipsNode.Select("//relationship"))
             {
                 // Create an instance of the XmlSerializer specifying type.
-                XmlSerializer serializer = new XmlSerializer(typeof(ItemRelationship));
-                StringReader reader = new StringReader(relationshipNode.OuterXml);
+                var serializer = new XmlSerializer(typeof(ItemRelationship));
+                var reader = new StringReader(relationshipNode.OuterXml);
 
                 // Use the Deserialize method to restore the object's state.
-                ItemRelationship r = (ItemRelationship) serializer.Deserialize(reader);
+                var r = (ItemRelationship) serializer.Deserialize(reader);
                 r.Import(_moduleId, _portalId);
             }
         }
@@ -345,38 +346,38 @@ namespace Engage.Dnn.Publish.Portability
         //    }
         //}
 
-        internal void ImportItemVersionSettings(IXPathNavigable doc)
+        internal void ImportItemVersionSettings(IXPathNavigable xmlDoc)
         {
             // parse settings
-            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = xmlDoc.CreateNavigator();
             XPathNavigator settingsNode = navigator.SelectSingleNode("//publish/itemversionsettings");
             foreach (XPathNavigator settingNode in settingsNode.Select("//itemversionsetting"))
             {
                 // Create an instance of the XmlSerializer specifying type.
-                XmlSerializer serializer = new XmlSerializer(typeof(ItemVersionSetting));
-                StringReader reader = new StringReader(settingNode.OuterXml);
+                var serializer = new XmlSerializer(typeof(ItemVersionSetting));
+                var reader = new StringReader(settingNode.OuterXml);
 
                 // Use the Deserialize method to restore the object's state.
-                ItemVersionSetting s = (ItemVersionSetting) serializer.Deserialize(reader);
+                var s = (ItemVersionSetting) serializer.Deserialize(reader);
                 s.Import(_moduleId, _portalId);
             }
         }
 
-        internal void ImportModuleSettings(IXPathNavigable doc)
+        internal void ImportModuleSettings(IXPathNavigable xmlDoc)
         {
             // parse settings
-            XPathNavigator navigator = doc.CreateNavigator();
+            XPathNavigator navigator = xmlDoc.CreateNavigator();
             XPathNavigator settingsNode = navigator.SelectSingleNode("//publish/modulesettings");
             foreach (XPathNavigator settingNode in settingsNode.Select("//tabmodulesetting"))
             {
-                XmlDocument tempDoc = new XmlDocument();
+                var tempDoc = new XmlDocument();
                 tempDoc.LoadXml(settingNode.OuterXml);
 
 
                 XmlNode keyNode = tempDoc.SelectSingleNode("//tabmodulesetting/Key");
 
                 XmlNode valueNode = tempDoc.SelectSingleNode("//tabmodulesetting/Value");
-                ModuleController mc = new ModuleController();
+                var mc = new ModuleController();
                 ModuleInfo mi = mc.GetModule(_moduleId, _tabId);
                 //update the module setting.
                 mc.UpdateTabModuleSetting(mi.TabModuleID, keyNode.InnerText, valueNode.InnerText);
@@ -390,7 +391,7 @@ namespace Engage.Dnn.Publish.Portability
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode", Justification="Need access to OuterXml property of XmlDocument")]
         public XmlDocument Document
         {
-            get { return this._doc; }
+            get { return this.doc; }
         }
     }
 }

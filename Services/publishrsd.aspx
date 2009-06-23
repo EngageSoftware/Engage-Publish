@@ -1,3 +1,3 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="publishrsd.aspx.cs" Inherits="Engage.Dnn.Publish.Services.publishrsd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Publishrsd.aspx.cs" Inherits="Engage.Dnn.Publish.Services.Publishrsd" %>
 
 

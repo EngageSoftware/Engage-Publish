@@ -8,24 +8,26 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
+
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using Data;
+    using Util;
+
     public partial class ItemRelationships : ModuleBase, IActionable
     {
         #region Protected Members
@@ -36,46 +38,46 @@ namespace Engage.Dnn.Publish.Controls
 
         #region Public Properties
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _flatView;// = false;
+        private bool flatView;// = false;
 		public bool FlatView
         {
             [DebuggerStepThrough]
-            get { return _flatView; }
+            get { return this.flatView; }
             [DebuggerStepThrough]
-            set { _flatView = value; }
+            set { this.flatView = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool _allowSearch;// = false;
+        private bool allowSearch;// = false;
         public bool AllowSearch
         {
             [DebuggerStepThrough]
-            get { return _allowSearch; }
+            get { return this.allowSearch; }
             [DebuggerStepThrough]
-            set { _allowSearch = value; }
+            set { this.allowSearch = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _itemTypeId = -1;
+        private int itemTypeId = -1;
         public int ItemTypeId
         {
             [DebuggerStepThrough]
-            get { return _itemTypeId; }
+            get { return this.itemTypeId; }
             set
             {
-                _itemTypeId = value;
+                this.itemTypeId = value;
                 UpdateAvailableItems();
             }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _createRelationshipTypeId;
+        private int createRelationshipTypeId;
         public int CreateRelationshipTypeId
         {
             [DebuggerStepThrough]
-            get { return _createRelationshipTypeId; }
+            get { return this.createRelationshipTypeId; }
             [DebuggerStepThrough]
-            set { _createRelationshipTypeId = value; }
+            set { this.createRelationshipTypeId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -229,7 +231,7 @@ namespace Engage.Dnn.Publish.Controls
                         trUpImage.Visible = true;
                         trDownImage.Visible = true;
 					}
-					if (this._allowSearch)
+					if (this.allowSearch)
 					{
 						pnlItemSearch.Visible = true;
 					}
@@ -394,7 +396,7 @@ namespace Engage.Dnn.Publish.Controls
 			//GetAdminKeywordSearch
 
             // check for 's 
-			DataSet ds = DataProvider.Instance().GetAdminKeywordSearch(txtItemSearch.Text.Trim(),_itemTypeId, ApprovalStatus.Approved.GetId(), PortalId); 
+			DataSet ds = DataProvider.Instance().GetAdminKeywordSearch(txtItemSearch.Text.Trim(),this.itemTypeId, ApprovalStatus.Approved.GetId(), PortalId); 
 			lstItems.DataSource=ds.Tables[0];
 			this.lstItems.DataTextField = "listName";
 			this.lstItems.DataValueField = "itemId";
@@ -432,12 +434,12 @@ namespace Engage.Dnn.Publish.Controls
 		public void UpdateAvailableItems()
 		{
 			//am I looking for children or items
-			if (!this._allowSearch)
+			if (!this.allowSearch)
 			{
-				if (this._flatView && this._allowSearch)
+				if (this.flatView && this.allowSearch)
 				{//get all item types
 					//this.itemTypeId
-					this.lstItems.DataSource = Item.GetItems(this._itemTypeId, PortalId);
+					this.lstItems.DataSource = Item.GetItems(this.itemTypeId, PortalId);
 					this.lstItems.DataTextField = "listName";
 					this.lstItems.DataValueField = "itemId";
 					this.DataBind();
@@ -451,7 +453,7 @@ namespace Engage.Dnn.Publish.Controls
 
                     ItemRelationship ir = new ItemRelationship();
 					ir.ParentItemId = this._parentItemId;
-					ir.ItemTypeId = this._itemTypeId;
+					ir.ItemTypeId = this.itemTypeId;
 					ir.RelationshipTypeId = this._listRelationshipTypeId;
 					ir.DisplayChildren(this.lstItems, PortalId, ExcludeCircularRelationships ? this.VersionInfoObject.ItemId : (int?)null);
 

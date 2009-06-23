@@ -8,15 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
 
 
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     [Obsolete("This class is currently not in use.", false)]
     public partial class ArticleCategoryListing : ModuleBase, IActionable
     {
@@ -60,7 +62,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             //{
             //    VersionInfoObject = Category.GetCategory(ItemId, PortalId);
             //}
-            base.BindItemData();
+            BindItemData();
         }
 
         #region Event Handlers
@@ -129,14 +131,21 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         #region Optional Interfaces
 
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public ModuleActionCollection ModuleActions
         {
             get
             {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
                 //Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
+                                           "", this.EditUrl("Settings"), false,
+                                           DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 

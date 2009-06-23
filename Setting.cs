@@ -1,8 +1,18 @@
-using System.Diagnostics;
-using System.Text;
+//Engage: Publish - http://www.engagesoftware.com
+//Copyright (c) 2004-2009
+//by Engage Software ( http://www.engagesoftware.com )
+
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//DEALINGS IN THE SOFTWARE.
+
 
 namespace Engage.Dnn.Publish
 {
+    using System.Diagnostics;
+    using System.Text;
     public class Setting
     {
         //Article Settings - NOTE: Some are shared i.e. UseApprovals. hk
@@ -40,7 +50,7 @@ namespace Engage.Dnn.Publish
         #region Public Properties
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _controlName = string.Empty;
+        private readonly string _controlName = string.Empty;
         public string ControlName
         {
             [DebuggerStepThrough]
@@ -48,7 +58,7 @@ namespace Engage.Dnn.Publish
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _propertyName = string.Empty;
+        private readonly string _propertyName = string.Empty;
         public string PropertyName
         {
             [DebuggerStepThrough]
@@ -56,13 +66,13 @@ namespace Engage.Dnn.Publish
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _propertyValue = string.Empty;
+        private string propertyValue = string.Empty;
         public string PropertyValue
         {
             [DebuggerStepThrough]
-            get { return _propertyValue; }
+            get { return this.propertyValue; }
             [DebuggerStepThrough]
-            set { _propertyValue = value; }
+            set { this.propertyValue = value; }
         }
 
         //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -105,14 +115,14 @@ namespace Engage.Dnn.Publish
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(128);
+            var builder = new StringBuilder(128);
 
             builder.Append("Control Name: ");
             builder.Append(_controlName);
             builder.Append(" Property Name: ");
             builder.Append(_propertyName);
             builder.Append(" Property Value: ");
-            builder.Append(_propertyValue);
+            builder.Append(this.propertyValue);
 
             return builder.ToString();
         }

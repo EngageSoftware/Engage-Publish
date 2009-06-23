@@ -8,16 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Text;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using System.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.Controls
 {
+
+    using System;
+    using System.Text;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class Breadcrumb : ModuleBase, IActionable
     {
         //		protected System.Web.UI.WebControls.Label lblBreadcrumb;
@@ -72,9 +73,9 @@ namespace Engage.Dnn.Publish.Controls
                 //if itemid<=5 then we're dealing with a toplevelitemtype, ignore for breadcrumb
                 if (!Page.IsPostBack && ItemId>5)
                 {
-                    StringBuilder sb = new StringBuilder(100);
-                    loadParents(ItemId);
-                    loadSelf(ItemId);
+                    var sb = new StringBuilder(100);
+                    this.LoadParents(ItemId);
+                    this.LoadSelf(ItemId);
 
                     sb.Append(LoadBreadcrumb());
 
@@ -87,10 +88,6 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         lblYouAreHere.Text = Localization.GetString("lblYouAreHere", LocalSharedResourceFile);
                     }
-                }
-                else
-                {
-
                 }
             }
             catch (Exception exc)
@@ -106,7 +103,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (bci.Count > 0)
             {
-                StringBuilder sb = new StringBuilder(20);
+                var sb = new StringBuilder(20);
                 string separator = Localization.GetString("BreadCrumbSeparator", LocalSharedResourceFile);
                 //we use levels+1 because the name of the current item is here, we handle that separately
                 if ((bci.Count > levels + 1) && (levels>0))
@@ -134,30 +131,30 @@ namespace Engage.Dnn.Publish.Controls
             return string.Empty;
         }
 
-        private void loadParents(int itemId)
+        private void LoadParents(int itemId)
         {
             if (itemId > -1)
             {
                 int parentId = Category.GetParentCategory(itemId, PortalId);
+                
                 if (parentId > 0)
                 {
-                    StringBuilder resultSet = new StringBuilder();
-                    Item i = Item.GetItem(parentId, PortalId, Engage.Dnn.Publish.Util.ItemType.Category.GetId(), true);
-                    string categoryUrl = Engage.Dnn.Publish.Util.Utility.GetItemLinkUrl(i);
+                    Item i = Item.GetItem(parentId, PortalId, ItemType.Category.GetId(), true);
+                    string categoryUrl = Utility.GetItemLinkUrl(i);
                     bci.InsertBeginning(i.Name, categoryUrl);
-                    loadParents(i.ItemId);
+                    this.LoadParents(i.ItemId);
                 }
             }
         }
 
-        private void loadSelf(int itemId)
+        private void LoadSelf(int itemId)
         {
             if (itemId > -1)
             {
                 Item i = Item.GetItem(itemId, PortalId, Item.GetItemTypeId(itemId), true);
                 if (i != null)
                 {
-                    string linkUrl = Engage.Dnn.Publish.Util.Utility.GetItemLinkUrl(i);
+                    string linkUrl = Utility.GetItemLinkUrl(i);
                     bci.Add(i.Name, linkUrl);
                 }
             }
@@ -168,13 +165,22 @@ namespace Engage.Dnn.Publish.Controls
 
         #region Optional Interfaces
 
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public ModuleActionCollection ModuleActions
         {
             get
             {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString(
+                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+                                           this.LocalResourceFile),
+                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
+                                           "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
+                                           false
+                                           }
+                           };
             }
         }
 

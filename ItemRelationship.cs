@@ -8,23 +8,25 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using System.Xml.Serialization;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Portability;
-using Engage.Dnn.Publish.Util;
-using TreeNode=System.Windows.Forms.TreeNode;
-using TreeView=System.Windows.Forms.TreeView;
-using DotNetNuke.Common.Utilities;
 
 namespace Engage.Dnn.Publish
 {
+
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using System.Xml.Serialization;
+    using Data;
+    using Portability;
+    using Util;
+    using TreeNode = System.Windows.Forms.TreeNode;
+    using TreeView = System.Windows.Forms.TreeView;
+    using DotNetNuke.Common.Utilities;
+
 	/// <summary>
 	/// Summary description for ItemRelationship.
 	/// </summary>
@@ -34,181 +36,167 @@ namespace Engage.Dnn.Publish
 	{
         public ItemRelationship()
         {
-            this._startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 	    
         #region Public Properties
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _itemRelationshipId = -1;
+        private int itemRelationshipId = -1;
         [XmlElement(Order = 1)]
         public int ItemRelationshipId
         {
             [DebuggerStepThrough]
-            get { return _itemRelationshipId; }
+            get { return this.itemRelationshipId; }
             [DebuggerStepThrough]
-            set { _itemRelationshipId = value; }
+            set { this.itemRelationshipId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _childItemId = -1;
+        private int childItemId = -1;
         [XmlElement(Order = 2)]
         public int ChildItemId
         {
             [DebuggerStepThrough]
-            get { return _childItemId; }
+            get { return this.childItemId; }
             [DebuggerStepThrough]
-            set { _childItemId = value; }
+            set { this.childItemId = value; }
         }
 
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid _childItemIdentifier;
+        private Guid childItemIdentifier;
         [XmlElement(Order = 3)]
         public Guid ChildItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return _childItemIdentifier; }
+            get { return this.childItemIdentifier; }
             [DebuggerStepThrough]
-            set { _childItemIdentifier = value; }
+            set { this.childItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _childItemVersionId = -1;
+        private int childItemVersionId = -1;
         [XmlElement(Order = 4)]
 		public int ChildItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return _childItemVersionId; }
+            get { return this.childItemVersionId; }
             [DebuggerStepThrough]
-            set { _childItemVersionId = value; }
+            set { this.childItemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid _childItemVersionIdentifier;
+        private Guid childItemVersionIdentifier;
         [XmlElement(Order = 5)]
         public Guid ChildItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return _childItemVersionIdentifier; }
+            get { return this.childItemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { _childItemVersionIdentifier = value; }
+            set { this.childItemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _parentItemId = -1;
+        private int parentItemId = -1;
         [XmlElement(Order = 6)]
         public int ParentItemId
         {
             [DebuggerStepThrough]
-            get { return _parentItemId; }
+            get { return this.parentItemId; }
             [DebuggerStepThrough]
-            set { _parentItemId = value; }
+            set { this.parentItemId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid _parentItemIdentifier;
+        private Guid parentItemIdentifier;
         [XmlElement(Order = 7)]
         public Guid ParentItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return _parentItemIdentifier; }
+            get { return this.parentItemIdentifier; }
             [DebuggerStepThrough]
-            set { _parentItemIdentifier = value; }
+            set { this.parentItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _relationshipTypeId = -1;
+        private int relationshipTypeId = -1;
         [XmlElement(Order = 8)]
         public int RelationshipTypeId
         {
             [DebuggerStepThrough]
-            get { return _relationshipTypeId; }
+            get { return this.relationshipTypeId; }
             [DebuggerStepThrough]
-            set { _relationshipTypeId = value; }
+            set { this.relationshipTypeId = value; }
         }
 
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _relationshipTypeName;
+        private string relationshipTypeName;
         [XmlElement(Order = 9)]
         public string RelationshipTypeName
         {
             [DebuggerStepThrough]
-            get { return _relationshipTypeName; }
+            get { return this.relationshipTypeName; }
             [DebuggerStepThrough]
-            set { _relationshipTypeName = value; }
+            set { this.relationshipTypeName = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _itemTypeId = -1;
+        private int itemTypeId = -1;
         [XmlIgnore]
 		public int ItemTypeId 
 		{
             [DebuggerStepThrough]
-            get { return this._itemTypeId; }
+            get { return this.itemTypeId; }
             [DebuggerStepThrough]
-            set { this._itemTypeId = value; }
+            set { this.itemTypeId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _startDate;
+        private string startDate;
         [XmlElement(Order = 10)]
         public string StartDate 
 		{
             [DebuggerStepThrough]
-			get {return this._startDate;}
+			get {return this.startDate;}
             [DebuggerStepThrough]
-			set 
+			set
             {
-                if (Utility.HasValue(value))
-                {
-                    _startDate = value;
-                }
-                else
-                {
-                    _startDate = null;
-                } 
-			}
+                this.startDate = Utility.HasValue(value) ? value : null;
+            }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _endDate;
+        private string endDate;
         [XmlElement(Order = 11)]
         public string EndDate
         {
             [DebuggerStepThrough]
-			get {return this._endDate;}
+			get {return this.endDate;}
             [DebuggerStepThrough]
             set
             {
-                if (Utility.HasValue(value))
-                {
-                    _endDate = value;
-                }
-                else
-                {
-                    _endDate = null;
-                }
+                this.endDate = Utility.HasValue(value) ? value : null;
             }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int? _sortOrder;
+        private int? sortOrder;
         [XmlElement(Order = 12)]
 		public int SortOrder
 		{
             [DebuggerStepThrough]
-            get { return this._sortOrder ?? 0; }
+            get { return this.sortOrder ?? 0; }
             [DebuggerStepThrough]
-            set { this._sortOrder = value; }
+            set { this.sortOrder = value; }
 		}
 	    [XmlIgnore]
 	    public bool HasSortOrderBeenSet
 	    {
 	        get
 	        {
-	            return this._sortOrder.HasValue;
+	            return this.sortOrder.HasValue;
 	        }
 	    }
 
@@ -396,8 +384,8 @@ namespace Engage.Dnn.Publish
                         continue;
                     }
                     int paddingWidth = (level - 3) * 2;
-                    string padding = new string('-', paddingWidth);
-                    ListItem li = new ListItem(padding + child.Text, itemId.ToString(CultureInfo.InvariantCulture));
+                    var padding = new string('-', paddingWidth);
+                    var li = new ListItem(padding + child.Text, itemId.ToString(CultureInfo.InvariantCulture));
                     lc.Items.Add(li);
                 }
 
@@ -426,9 +414,8 @@ namespace Engage.Dnn.Publish
                     }
                     else
                     {
-                        parent = new TreeNode();
+                        parent = new TreeNode {Tag = parentId};
                         //parent.Tag = parentId;
-                        parent.Tag = parentId;
                         nodes.Add(parentId, parent);
                     }
 
@@ -440,21 +427,20 @@ namespace Engage.Dnn.Publish
                     }
                     else
                     {
-                        child = new TreeNode(text);
+                        child = new TreeNode(text) {Tag = childId};
                         //child.Tag = childId;
-                        child.Tag = childId;
                         nodes.Add(childId, child);
                     }
 
                     parent.Nodes.Add(child);
                 }
 
-                TreeNode root = new TreeNode("Root");
+                var root = new TreeNode("Root");
 
                 IEnumerator ie = nodes.Keys.GetEnumerator();
                 while (ie.MoveNext())
                 {
-                    TreeNode n = (TreeNode)nodes[ie.Current];
+                    var n = (TreeNode)nodes[ie.Current];
                     if (n.Parent == null)
                     {
                         root.Nodes.Add(n);
@@ -465,7 +451,7 @@ namespace Engage.Dnn.Publish
                     }
                 }
 
-                using (TreeView tv = new TreeView())
+                using (var tv = new TreeView())
                 {
                     //tv.Sorted = true;
                     tv.Nodes.Add(root);
@@ -507,13 +493,13 @@ namespace Engage.Dnn.Publish
 	    {
 			DataTable dt;
 			DataSet ds;
-			if (this._parentItemId < 1)
+			if (this.parentItemId < 1)
 			{
 				dt = Category.GetCategoriesHierarchy(portalId);
 			}
 			else
 			{
-				ds = Item.GetAllChildren(this._parentItemId, this._relationshipTypeId, portalId);
+				ds = Item.GetAllChildren(this.parentItemId, this.relationshipTypeId, portalId);
 				dt = ds.Tables[0];
 			}
 
@@ -571,7 +557,7 @@ namespace Engage.Dnn.Publish
             try
             {
                 RelationshipType type = RelationshipType.GetFromName(RelationshipTypeName, typeof(RelationshipType));
-                _relationshipTypeId = type.GetId();
+                this.relationshipTypeId = type.GetId();
 
                 //Does this exist in my db?
                 using (IDataReader dr = DataProvider.Instance().GetItemRelationshipByIdentifiers(ParentItemIdentifier, ChildItemVersionIdentifier, portalId))
@@ -587,9 +573,9 @@ namespace Engage.Dnn.Publish
                         }
                         else
                         {
-                            _childItemId = (int)dr["ChildItemId"];
-                            _childItemVersionId = (int)dr["ChildItemVersionId"];
-                            _parentItemId = (int)dr["ParentItemId"];
+                            this.childItemId = (int)dr["ChildItemId"];
+                            this.childItemVersionId = (int)dr["ChildItemVersionId"];
+                            this.parentItemId = (int)dr["ParentItemId"];
                             AddItemRelationship(ChildItemId, ChildItemVersionId, ParentItemId, RelationshipTypeId, StartDate, EndDate, SortOrder);
                         }
                     }

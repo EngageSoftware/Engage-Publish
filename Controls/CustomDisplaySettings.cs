@@ -1,10 +1,12 @@
-using System;
-using System.Collections;
-using System.Globalization;
-using DotNetNuke.Entities.Modules;
+
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Globalization;
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
     /// This class is used as a representation for the Settings of the Custom Display control. It contains strongly 
     /// typed names for each of the required settings.  The reason it exists
@@ -34,7 +36,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "ItemTypeId", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -49,7 +51,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "CategoryId", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -65,7 +67,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "ShowParent", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -80,7 +82,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "ShowParentDescription", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -97,7 +99,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "AllowPaging", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -112,7 +114,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "UseCustomSort", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -129,7 +131,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "GetParentFromQueryString", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -144,7 +146,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "GetRelatedChildren", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -160,7 +162,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "EnableRss", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -176,7 +178,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "MaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -191,12 +193,12 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "SortOption", value);
             }
             get
             {
-                string setting = CustomDisplaySettings.StartDateSort;
+                string setting = StartDateSort;
                 object o = settings["SortOption"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
@@ -211,7 +213,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "SortDirection", value);
             }
             get
@@ -231,7 +233,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionTitle", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -246,7 +248,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionAbstract", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -261,7 +263,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionThumbnail", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -276,7 +278,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionDate", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -291,7 +293,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionReadMore", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -306,7 +308,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionAuthor", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -322,7 +324,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(tabModuleId, "DateFormat", value);
             }
 

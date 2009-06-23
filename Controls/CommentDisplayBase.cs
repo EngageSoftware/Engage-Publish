@@ -8,14 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using Engage.Dnn.Publish.Util;
+
 
 namespace Engage.Dnn.Publish.Controls
 {
     /// <summary>
     /// CommentDisplayBase is a base class so we can reference the CommentDisplay control in other controls.
     /// </summary>
-    public abstract class CommentDisplayBase : Engage.Dnn.Publish.ModuleBase
+    public abstract class CommentDisplayBase : ModuleBase
     {
         public abstract int ArticleId { get; set; }
         //public abstract CommentDisplayOptions CommentDisplayOption { get; set; }

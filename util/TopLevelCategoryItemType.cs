@@ -8,19 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using Engage.Dnn.Publish.Data;
-using System.Globalization;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using Data;
+
 	/// <summary>
 	/// Summary description for RelationshipType.
 	/// </summary>
 	public class TopLevelCategoryItemType
 	{
-		private string name = string.Empty;
+		private readonly string name = string.Empty;
 		private int id = -1;
 
 

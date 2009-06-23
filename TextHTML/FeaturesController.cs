@@ -1,38 +1,32 @@
-using System;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Xml.XPath;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Portability;
-using DotNetNuke.Services.Search;
-using System.Data;
-using DotNetNuke.Common.Utilities;
-using Engage.Dnn.Publish.Util;
-using System.Globalization;
+
 
 namespace Engage.Dnn.Publish.TextHTML
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+    using System.Xml.XPath;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Search;
+    using Portability;
+    using Util;
 
     /// <summary>
     /// Features Controller Class supports IPortable currently.
     /// </summary>
     public class FeaturesController : ISearchable, IPortable
     {
-
-        public FeaturesController()
-        {
-
-        }
-
-
         #region ISearchable Members
 
-        public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
+        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
         {
-            SearchItemInfoCollection items = new SearchItemInfoCollection();
-            AddArticleSearchItems(items, ModInfo);
+            var items = new SearchItemInfoCollection();
+            AddArticleSearchItems(items, modInfo);
             return items;
         }
 
@@ -54,7 +48,7 @@ namespace Engage.Dnn.Publish.TextHTML
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow row = dt.Rows[i];
-                StringBuilder searchedContent = new StringBuilder(8192);
+                var searchedContent = new StringBuilder(8192);
                 //article name
                 string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
 
@@ -104,14 +98,18 @@ namespace Engage.Dnn.Publish.TextHTML
                 }
 
                 string itemId = row["ItemId"].ToString();
-                SearchItemInfo item = new SearchItemInfo();
-                item.Title = name;
-                item.Description = HtmlUtils.Clean(description, false);
-                item.Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture);
-                item.PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture);
-                item.ModuleId = modInfo.ModuleID;
-                item.SearchKey = "Article-" + itemId;
-                item.Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true);
+                var item = new SearchItemInfo
+                               {
+                                       Title = name,
+                                       Description = HtmlUtils.Clean(description, false),
+                                       Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
+                                       PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
+                                       ModuleId = modInfo.ModuleID,
+                                       SearchKey = "Article-" + itemId,
+                                       Content =
+                                               HtmlUtils.StripWhiteSpace(
+                                               HtmlUtils.Clean(searchedContent.ToString(), false), true)
+                               };
                 //because we're indexing the Text/HTML module we aren't worried about the ItemID querystring parameter
                 //item.GUID = "itemid=" + itemId;
 
@@ -123,7 +121,7 @@ namespace Engage.Dnn.Publish.TextHTML
                     string indexUrl = Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
 
                     //UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
-                    Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false).ToString(), modInfo.PortalID, indexUrl);
+                    Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
                 }
                 //}
             }
@@ -133,29 +131,29 @@ namespace Engage.Dnn.Publish.TextHTML
         #region IPortable Members
 
         /// <summary>
-        /// Method is invoked when portal template is imported or user selects Import Content from menu.
+        /// Method is invoked when portal template is imported or user selects Import content from menu.
         /// </summary>
-        /// <param name="ModuleID"></param>
-        /// <param name="Content"></param>
-        /// <param name="Version"></param>
-        /// <param name="UserID"></param>
-        public void ImportModule(int ModuleID, string Content, string Version, int UserID)
+        /// <param name="moduleId"></param>
+        /// <param name="content"></param>
+        /// <param name="version"></param>
+        /// <param name="userId"></param>
+        public void ImportModule(int moduleId, string content, string version, int userId)
         {
             //TODO: implement Import for Text/HTML modules
-            TransportableXmlValidator validator = new TransportableXmlValidator();
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(Content));
+            var validator = new TransportableXmlValidator();
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
             if (validator.Validate(stream) == false)
             {
-                Exception invalidXml = new Exception("Unable to import publish content due to incompatible XML file. Error: " + validator.Errors[0].ToString());
+                var invalidXml = new Exception("Unable to import publish content due to incompatible XML file. Error: " + validator.Errors[0]);
                 Exceptions.LogException(invalidXml);
                 throw invalidXml;
             }
 
             //The DNN ValidatorBase closes the stream? Must re-create. hk
-            stream = new MemoryStream(Encoding.UTF8.GetBytes(Content));
-            XPathDocument doc = new XPathDocument(stream);
-            XmlTransporter builder = new XmlTransporter(ModuleID);
+            stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+            var doc = new XPathDocument(stream);
+            var builder = new XmlTransporter(moduleId);
 
             //TODO: we need to set the ItemID setting to be this recently imported article
 
@@ -174,9 +172,9 @@ namespace Engage.Dnn.Publish.TextHTML
         /// <summary>
         /// Method is invoked when portal template is created or user selects Export Content from menu.
         /// </summary>
-        /// <param name="ModuleID"></param>
+        /// <param name="moduleId"></param>
         /// <returns></returns>
-        public string ExportModule(int ModuleID)
+        public string ExportModule(int moduleId)
         {
             bool exportAll = false;
 
@@ -185,10 +183,10 @@ namespace Engage.Dnn.Publish.TextHTML
             {
                 exportAll = true;
             }
-            XmlTransporter builder = null;
+            XmlTransporter builder;
             try
             {
-                builder = new XmlTransporter(ModuleID);
+                builder = new XmlTransporter(moduleId);
                 XmlDirector.Construct(builder, exportAll);
             }
             catch (Exception e)

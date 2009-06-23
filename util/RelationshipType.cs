@@ -7,20 +7,21 @@
 //THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
-using System;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using Engage.Dnn.Publish.Data;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+    using Data;
+
 	/// <summary>
 	/// Summary description for RelationshipType.
 	/// </summary>
 	public class RelationshipType
 	{
-		private string name = string.Empty;
+		private readonly string name = string.Empty;
 		private int id = -1;
 
 		public static readonly RelationshipType ItemToParentCategory = new RelationshipType("Item To Parent Category");
@@ -80,7 +81,7 @@ namespace Engage.Dnn.Publish.Util
 
                 foreach (FieldInfo f in fi)
                 {
-                    RelationshipType cot = f.GetValue(type) as RelationshipType;
+                    var cot = f.GetValue(type) as RelationshipType;
                     if (cot != null)
                     {
                         //this prevents old, bogus classes defined in the code from killing the app
@@ -93,7 +94,7 @@ namespace Engage.Dnn.Publish.Util
                             }
                         }
 
-                        catch (Exception)
+                        catch
                         {
                             //drive on
                         }
@@ -118,7 +119,7 @@ namespace Engage.Dnn.Publish.Util
 
                 foreach (FieldInfo f in fi)
                 {
-                    RelationshipType cot = f.GetValue(type) as RelationshipType;
+                    var cot = f.GetValue(type) as RelationshipType;
                     if (cot != null)
                     {
                         //this prevents old, bogus classes defined in the code from killing the app
@@ -130,7 +131,7 @@ namespace Engage.Dnn.Publish.Util
                                 return cot;
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                             //drive on
                         }

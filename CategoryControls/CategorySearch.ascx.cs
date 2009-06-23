@@ -8,20 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search;
+    using Util;
+
     public partial class CategorySearch : ModuleBase, IActionable
     {
         #region Event Handlers
@@ -94,9 +95,15 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
@@ -107,21 +114,17 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void BindData()
         {
             object o;
-            SearchResultsInfoCollection results = new SearchResultsInfoCollection();
+            var results = new SearchResultsInfoCollection();
             if (ddlCategoryList.SelectedIndex == 0)
             {
                 o = Settings["csCategoryId"];
                 if (o != null)
                 {
-                    int CategoryOption;
-                    if (int.TryParse(o.ToString(), out CategoryOption))
+                    int categoryOption;
+                    if (int.TryParse(o.ToString(), out categoryOption))
                     {
-                        results = Search(CategoryOption, txtCategorySearch.Text.Trim());
+                        results = Search(categoryOption, txtCategorySearch.Text.Trim());
                     }
-                }
-                else
-                {
-                    //else this module hasn't been setup yet?
                 }
             }
             else
@@ -129,8 +132,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 results = Search(Convert.ToInt32(ddlCategoryList.SelectedValue, CultureInfo.InvariantCulture), txtCategorySearch.Text.Trim());
             }
 
-            DataTable dt = new DataTable();
-            dt.Locale = CultureInfo.InvariantCulture;
+            var dt = new DataTable {Locale = CultureInfo.InvariantCulture};
             //DataColumn dc = new DataColumn("TabId");
             dt.Columns.Add(new DataColumn("TabId", typeof(int)));
             dt.Columns.Add(new DataColumn("Guid", typeof(string)));
@@ -212,7 +214,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 dt.Rows.Add(dr);
             }
 
-            using (DataView dv = new DataView(dt))
+            using (var dv = new DataView(dt))
             {
                 dv.Sort = "Relevance DESC";
                 if (itemsPage < 1)
@@ -265,7 +267,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 //now filter out anything not in the list of articles beneath the given category
-                ArrayList al = new ArrayList();
+                var al = new ArrayList();
                 foreach (SearchResultsInfo result in results)
                 {
                     int articleId = Utility.GetArticleId(result);
@@ -292,18 +294,9 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public static string FormatUrl(int tabId, string link)
         {
-            string strURL;
-            if (String.IsNullOrEmpty(link))
-            {
-                strURL = DotNetNuke.Common.Globals.NavigateURL(tabId);
-            }
-            else
-            {
-                strURL = DotNetNuke.Common.Globals.NavigateURL(tabId, "", link);
-            }
+            string strURL = String.IsNullOrEmpty(link) ? DotNetNuke.Common.Globals.NavigateURL(tabId) : DotNetNuke.Common.Globals.NavigateURL(tabId, "", link);
             return strURL;
         }
-
 
 
         public bool ShowDescription()
@@ -341,11 +334,11 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
-                DataRowView row = e.Item.DataItem as DataRowView;
+                var row = e.Item.DataItem as DataRowView;
                 if (row != null)
                 {
                     int itemId;
-                    HyperLink lnkTitle = e.Item.FindControl("lnkTitle") as HyperLink;
+                    var lnkTitle = e.Item.FindControl("lnkTitle") as HyperLink;
 
                     string guid = row["Guid"].ToString();
                     int guidLocation = guid.IndexOf("itemid=", StringComparison.Ordinal);

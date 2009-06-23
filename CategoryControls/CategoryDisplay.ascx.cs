@@ -8,31 +8,25 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using System.Text;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class CategoryDisplay : ModuleBase, IActionable
     {
         //private category id set from display loader
-        private int setCategoryId;
         private ArticleViewOption displayOption;
         private string sortOption = string.Empty;
         private int itemTypeId = ItemType.Article.GetId();
@@ -71,16 +65,16 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #region Event Handlers
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 RecordView();
 
                     //default to category in case no Module setting exists.
-                    int relationshipTypeId = Util.RelationshipType.ItemToParentCategory.GetId();
+                    int relationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
                 
-                int otherRelationshipTypeId = Util.RelationshipType.ItemToRelatedCategory.GetId();
+                int otherRelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
 
                 //N Levels M Items
 
@@ -122,11 +116,11 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void dlCategories_ItemDataBound(Object sender, DataListItemEventArgs e)
         {
             DataRow dr = ((DataRowView)e.Item.DataItem).Row;
-            int itemId = (int)dr["ItemId"];
+            var itemId = (int)dr["ItemId"];
             Category c = Category.GetCategory(itemId, PortalId);
             if (c != null)
             {
-                HyperLink lnkName = (HyperLink)e.Item.FindControl("lnkName");
+                var lnkName = (HyperLink)e.Item.FindControl("lnkName");
                 if (lnkName != null)
                 {
                     if (!c.Disabled)
@@ -136,7 +130,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                  }
 
-                HyperLink lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
+                var lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
                 if (lnkThumbnail != null)
                 {
                     //if (!Utility.HasValue(c.Thumbnail))
@@ -152,7 +146,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                 }
 
-                DataList dlChildItems = (DataList)e.Item.FindControl("dlChildItems");
+                var dlChildItems = (DataList)e.Item.FindControl("dlChildItems");
                 if (dlChildItems != null)
                 {
                     DataTable dsp = Article.GetArticles(itemId, PortalId);
@@ -174,18 +168,11 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             Item a = Item.GetItem((int)dr["ItemId"], PortalId, Item.GetItemTypeId((int)dr["ItemID"], PortalId), true);
             
-            HyperLink lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
-            HyperLink lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
-            Literal lblDescription = (Literal)e.Item.FindControl("lblDescription");
+            var lnkThumbnail = (HyperLink)e.Item.FindControl("lnkThumbnail");
+            var lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
+            var lblDescription = (Literal)e.Item.FindControl("lblDescription");
 
-            if (a.ItemTypeId == Util.ItemType.Category.GetId())
-            {
-                e.Item.CssClass = "categoryDisplayCategory";
-            }
-            else
-            {
-                e.Item.CssClass = "categoryDisplayArticle";
-            }
+            e.Item.CssClass = a.ItemTypeId == ItemType.Category.GetId() ? "categoryDisplayCategory" : "categoryDisplayArticle";
             
             if (lnkThumbnail != null)
             {
@@ -226,14 +213,20 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ModInfo", Justification = "Interface implementation")]
-        public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
+        public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
         {
             // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
             return null;
@@ -294,7 +287,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 string url = string.Empty;
                 if (HttpContext.Current.Request.RawUrl != null)
                 {
-                    url = HttpContext.Current.Request.RawUrl.ToString();
+                    url = HttpContext.Current.Request.RawUrl;
                 }
                 this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
             }
@@ -302,14 +295,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public int SetCategoryId
         {
-            get
-            {
-                return this.setCategoryId;
-            }
-            set
-            {
-                this.setCategoryId = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -329,7 +316,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         }
         private string GetSortOrder()
         {
-            string sort = string.Empty;
+            string sort;
 
             if (sortOption == "Alpha Descending")
             {
@@ -362,7 +349,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void DisplayItems(int relationshipTypeId, int otherRelationshipTypeId)
         {
-            DataSet dsp = null;
+            DataSet dsp;
             if (!VersionInfoObject.IsNew)
             {
                 DataView dv = null;
@@ -373,14 +360,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 
                 if (dv == null)
                 {
-                    if (itemTypeId > -1)
-                    {
-                        dsp = Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, itemTypeId);
-                    }
-                    else
-                    {
-                        dsp = Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
-                    }
+                    dsp = this.itemTypeId > -1 ? Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, this.itemTypeId) : Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
 
                     dv = dsp.Tables[0].DefaultView;
                     
@@ -390,8 +370,11 @@ namespace Engage.Dnn.Publish.CategoryControls
                         Utility.AddCacheKey(cacheKey, PortalId);
                     }
                 }
-                dv.Sort = GetSortOrder();
-                dlItems.DataSource = dv;
+                if (dv != null)
+                {
+                    dv.Sort = this.GetSortOrder();
+                    this.dlItems.DataSource = dv;
+                }
                 dlItems.DataBind();
             }
 
@@ -407,7 +390,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void DisplayNoConfigurationView(int relationshipTypeId, int otherRelationshipTypeId)
         {
-            DataSet dsp = null;
+            DataSet dsp;
 
             DataView dv = null;
 
@@ -416,14 +399,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (dv == null)
             {
-                if (itemTypeId > -1)
-                {
-                    dsp = Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, itemTypeId);
-                }
-                else
-                {
-                    dsp = Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
-                }
+                dsp = this.itemTypeId > -1 ? Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, this.itemTypeId) : Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
                dv = dsp.Tables[0].DefaultView;
                
 
@@ -433,15 +409,18 @@ namespace Engage.Dnn.Publish.CategoryControls
                    Utility.AddCacheKey(cacheKey, PortalId);
                }
             }
-            dv.Sort = GetSortOrder();
+            if (dv != null)
+            {
+                dv.Sort = this.GetSortOrder();
 
-            dlItems.DataSource = dv;
+                this.dlItems.DataSource = dv;
+            }
             dlItems.DataBind();
         }
 
         private void DisplayChildCategories()
         {
-            DataTable dsc = null;
+            DataTable dsc;
             DataView dv = null;
 
             string cacheKey = Utility.CacheKeyPublishCategory + "CategoryDisplayChildren" + VersionInfoObject.ItemId; // +"PageId";
@@ -449,14 +428,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (dv == null)
             {
-                if (itemTypeId > -1)
-                {
-                    dsc = Category.GetChildCategories(VersionInfoObject.ItemId, PortalId, itemTypeId);
-                }
-                else
-                {
-                    dsc = Category.GetChildCategories(VersionInfoObject.ItemId, PortalId);
-                }
+                dsc = this.itemTypeId > -1 ? Category.GetChildCategories(this.VersionInfoObject.ItemId, this.PortalId, this.itemTypeId) : Category.GetChildCategories(this.VersionInfoObject.ItemId, this.PortalId);
                 dv = dsc.DefaultView;
 
                 
@@ -468,8 +440,11 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
             }
-            dv.Sort = GetSortOrder();
-            dlCategories.DataSource = dv;
+            if (dv != null)
+            {
+                dv.Sort = this.GetSortOrder();
+                this.dlCategories.DataSource = dv;
+            }
             dlCategories.DataBind();
 
         }
@@ -485,8 +460,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             DisplayItems(relationshipTypeId, relationshipTypeId);
             DisplayItems(relationshipTypeId, otherRelationshipTypeId);
 
-            DataView categories = (DataView)dlCategories.DataSource;
-            DataView articles = (DataView)dlItems.DataSource;
+            var categories = (DataView)dlCategories.DataSource;
+            var articles = (DataView)dlItems.DataSource;
 
             if ((categories.Table.Rows.Count == 0) && (articles.Table.Rows.Count == 0))
             {

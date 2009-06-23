@@ -8,22 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 namespace Engage.Dnn.Publish.Controls
 {
+
     /// <summary>
     /// RelatedArticleLinksBase allows inheriting RelatedArticleLinks by other controls
     /// </summary>
-    public class RelatedArticleLinksBase : Engage.Dnn.Publish.ModuleBase
+    public class RelatedArticleLinksBase : ModuleBase
     {
         public RelatedArticleLinksBase()
         {

@@ -8,20 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Entities.Users;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Security
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Web;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Search;
+    using Util;
+
 	/// <summary>
 	/// Summary description for SecurityFilter.
 	/// </summary>
@@ -37,23 +37,20 @@ namespace Engage.Dnn.Publish.Security
         //TODO: should this still exist?
 		private static bool IsAdmin
 		{
-			get 
+			get
 			{
-				if (HttpContext.Current.Request.IsAuthenticated)
+			    if (HttpContext.Current.Request.IsAuthenticated)
 				{
 					return (UserController.GetCurrentUserInfo().IsSuperUser || IsUserInRole("Administrators"));
 				}
-				else
-				{
-					return false;
-				}
+			    return false;
 			}
 		}
 
 		private static bool IsUserInRole(string roleName)
 		{
 			UserInfo ui = UserController.GetCurrentUserInfo();
-			RoleController rc = new RoleController();
+			var rc = new RoleController();
 			string[] roles = rc.GetRolesByUser(ui.UserID, ui.PortalID);
 			foreach (string role in roles)
 			{
@@ -127,7 +124,7 @@ namespace Engage.Dnn.Publish.Security
 
 		public static void EnableSecurity(bool enabled, int portalId)
 		{
-			HostSettingsController c = new HostSettingsController();
+			var c = new HostSettingsController();
 			c.UpdateHostSetting(SecuritySettingName + portalId, enabled.ToString());
 
 			//PortalSettings.UpdatePortalSetting(portalId, SecuritySettingName, enabled.ToString());

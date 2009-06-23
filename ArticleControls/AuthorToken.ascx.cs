@@ -8,15 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Entities.Users;
-using System.Text;
+
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using DotNetNuke.Entities.Users;
+
     public partial class AuthorToken : ModuleBase
 	{
 		#region Event Handlers
@@ -34,15 +32,15 @@ namespace Engage.Dnn.Publish.ArticleControls
 #endregion
         private void LoadAuthorInfo()
         {
-            UserController uc = new UserController();
+            var uc = new UserController();
             UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
 
             //configure author link
             lblAuthorLink.NavigateUrl = ui.Profile.Website;
             lblAuthorLink.Text = ui.DisplayName;
             
-            StringBuilder sb = new StringBuilder(500);
-            lblAuthorInfo.Text = ui.Profile.GetPropertyValue("Bio").ToString();        
+            
+            lblAuthorInfo.Text = ui.Profile.GetPropertyValue("Bio");        
 
         }
 

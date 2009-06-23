@@ -315,13 +315,13 @@ namespace Engage.Dnn.Publish.Util
 
         //cache keys for Categories
 
-        private static readonly object cacheLock = new object();
-        private static readonly char[] tagSeparators = { ';', ',' };
+        private static readonly object CacheLock = new object();
+        private static readonly char[] TagSeparators = { ';', ',' };
         public static string DesktopModuleFolderName
         {
             get
             {
-                StringBuilder sb = new StringBuilder(128);
+                var sb = new StringBuilder(128);
                 sb.Append("/DesktopModules/");
                 sb.Append(Globals.GetDesktopModuleByName(DnnFriendlyModuleName).FolderName);
                 sb.Append("/");
@@ -332,7 +332,7 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                DesktopModuleController desktopModules = new DesktopModuleController();
+                var desktopModules = new DesktopModuleController();
                 //return desktopModules.GetDesktopModuleByFriendlyName(SimpleGalleryFriendlyName) != null;
                 return desktopModules.GetDesktopModuleByModuleName(SimpleGalleryDefinitionModuleName) != null;
             }
@@ -342,7 +342,7 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                DesktopModuleController desktopModules = new DesktopModuleController();
+                var desktopModules = new DesktopModuleController();
                 //return desktopModules.GetDesktopModuleByFriendlyName(UltraMediaGalleryDefinitionFriendlyName) != null;
                 return desktopModules.GetDesktopModuleByModuleName(UltraMediaGalleryDefinitionModuleName) != null;
             }
@@ -366,7 +366,7 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                StringBuilder url = new StringBuilder();
+                var url = new StringBuilder();
                 if (HttpContext.Current != null)
                 {
                     url.Append(HttpContext.Current.Request.Url.Scheme);
@@ -394,7 +394,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static char[] GetTagSeparators()
         {
-            return (char[])tagSeparators.Clone();
+            return (char[])TagSeparators.Clone();
         }
 
         public static bool HasValue(string value)
@@ -407,7 +407,7 @@ namespace Engage.Dnn.Publish.Util
         {
             string cacheKey = PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
 
-            lock (cacheLock)
+            lock (CacheLock)
             {
                 List<string> cacheList = DataCache.GetCache(cacheKey) as List<string> ?? new List<string>();
                 if (!cacheList.Contains(keyName))
@@ -422,10 +422,10 @@ namespace Engage.Dnn.Publish.Util
         {
             string cacheKey = PublishCacheKeys + portalId.ToString(CultureInfo.InvariantCulture);
 
-            lock (cacheLock)
+            lock (CacheLock)
             {
                 //ArrayList al = DataCache.GetCache(cacheKey) as ArrayList;
-                List<string> cacheList = DataCache.GetCache(cacheKey) as List<string>;
+                var cacheList = DataCache.GetCache(cacheKey) as List<string>;
                 if (cacheList != null)
                 {
                     foreach (string s in cacheList)
@@ -444,7 +444,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static Uri GetThumbnailLibraryMapPath(int portalId)
         {
-            Uri path = new Uri(
+            var path = new Uri(
                 Path.Combine(GetPortalSettings(portalId).HomeDirectoryMapPath, ModuleBase.ThumbnailSubdirectoryForPortal(portalId)), UriKind.Absolute);
 
             //make sure it exists before we tell people about it.  BD
@@ -462,8 +462,8 @@ namespace Engage.Dnn.Publish.Util
 
             int portalId = UserController.GetCurrentUserInfo().PortalID;
 
-            ModuleController mc = new ModuleController();
-            TabController tc = new TabController();
+            var mc = new ModuleController();
+            var tc = new TabController();
             ArrayList al; // = null;
 
             //only want a unique list of ItemIds
@@ -513,8 +513,7 @@ namespace Engage.Dnn.Publish.Util
 
             al.Sort(new TabInfoNameComparer(true));
 
-            DataTable dt = new DataTable();
-            dt.Locale = CultureInfo.InvariantCulture;
+            var dt = new DataTable {Locale = CultureInfo.InvariantCulture};
             dt.Columns.Add("TabId", typeof(int));
             dt.Columns.Add("TabName", typeof(string));
 
@@ -535,8 +534,8 @@ namespace Engage.Dnn.Publish.Util
             //TODO: this should be cached.
             int portalId = UserController.GetCurrentUserInfo().PortalID;
 
-            ModuleController mc = new ModuleController();
-            TabController tc = new TabController();
+            var mc = new ModuleController();
+            var tc = new TabController();
             ArrayList al; // = null;
 
             //only want a unique list of ItemIds
@@ -570,8 +569,7 @@ namespace Engage.Dnn.Publish.Util
 
             al.Sort(new TabInfoNameComparer(true));
 
-            DataTable dt = new DataTable();
-            dt.Locale = CultureInfo.InvariantCulture;
+            var dt = new DataTable {Locale = CultureInfo.InvariantCulture};
             dt.Columns.Add("TabId", typeof(int));
             dt.Columns.Add("TabName", typeof(string));
 
@@ -590,13 +588,12 @@ namespace Engage.Dnn.Publish.Util
         public static int GetModuleIdFromDisplayTabId(int displayTabId, int portalId, string modules)
         {
 
-            ModuleController mc = new ModuleController();
-            ArrayList al; // = null;
+            var mc = new ModuleController();
             int modid = -1;
-            al = mc.GetModulesByDefinition(portalId, modules);
+            ArrayList al = mc.GetModulesByDefinition(portalId, modules);
             foreach (ModuleInfo mi in al)
             {
-                TabController tc = new TabController();
+                var tc = new TabController();
                 TabInfo ti = tc.GetTab(mi.TabID, mi.PortalID, false);
                 if (ti != null && ti.TabID == displayTabId)
                 {
@@ -651,7 +648,7 @@ namespace Engage.Dnn.Publish.Util
 
             input = input.Trim();
             int length = input.Length;
-            StringBuilder returnString = new StringBuilder();
+            var returnString = new StringBuilder();
 
             for (int i = 0; i < length; i++)
             {
@@ -668,7 +665,7 @@ namespace Engage.Dnn.Publish.Util
 
         private static bool IsAlphaNumeric(string testString)
         {
-            Regex objAlphaPattern = new Regex("[^0-9a-zA-Z ]");
+            var objAlphaPattern = new Regex("[^0-9a-zA-Z ]");
 
             return !objAlphaPattern.IsMatch(testString);
         }
@@ -705,7 +702,7 @@ namespace Engage.Dnn.Publish.Util
                 return view;
             }
             int seed = GetRandomSeed();
-            Random random = new Random(seed);
+            var random = new Random(seed);
 
             while (view.Count > 1)
             {
@@ -725,10 +722,10 @@ namespace Engage.Dnn.Publish.Util
         {
             // Use a 4-byte array to fill it with random bytes and convert it then
             // to an integer value.
-            byte[] randomBytes = new byte[4];
+            var randomBytes = new byte[4];
 
             // Generate 4 random bytes.
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            var rng = new RNGCryptoServiceProvider();
             rng.GetBytes(randomBytes);
 
             // Convert 4 bytes into a 32-bit integer value.
@@ -810,7 +807,7 @@ namespace Engage.Dnn.Publish.Util
             int typeId = Item.GetItemTypeId(id);
             ItemType type = ItemType.GetFromId(typeId, typeof(ItemType));
             Item i;
-            ModuleController controller = new ModuleController();
+            var controller = new ModuleController();
             int portalId = controller.GetModule(moduleId, tabId).PortalID;
             if (type.Name == ItemType.Article.Name)
             {
@@ -873,8 +870,8 @@ namespace Engage.Dnn.Publish.Util
             //int portalId = UserController.GetCurrentUserInfo().PortalID;
             try
             {
-                ModuleController mc = new ModuleController();
-                TabController tc = new TabController();
+                var mc = new ModuleController();
+                var tc = new TabController();
                 TabInfo tab = tc.GetTab(displayTabId, portalId, false);
                 if (tab.IsDeleted) //The tab is in the recycle bin.
                 {
@@ -923,13 +920,13 @@ namespace Engage.Dnn.Publish.Util
             //    }
             //}
 
-            ModuleController mc = new ModuleController();
+            var mc = new ModuleController();
             ModuleInfo info = null;
             using (IDataReader dr = DataProvider.Instance().GetModuleInfo(moduleId))
             {
                 if (dr.Read())
                 {
-                    int tabId = (int)dr["Tabid"];
+                    var tabId = (int)dr["Tabid"];
                     info = mc.GetModule(moduleId, tabId);
                 }
             }
@@ -967,12 +964,16 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemLinkUrl(Item item)
         {
-            if (item != null && item.IsLinkable() && item.ApprovalStatusId != Util.ApprovalStatus.Approved.GetId())
+            if (item != null && item.IsLinkable() && item.ApprovalStatusId != ApprovalStatus.Approved.GetId())
             {
-                return Utility.GetItemVersionLinkUrl(item);// Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
+                return GetItemVersionLinkUrl(item);// Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
             }
 
-            return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
+            if (item != null)
+            {
+                return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
+            }
+            return "";
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId)
@@ -1028,9 +1029,9 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemVersionLinkUrl(Item item)
         {
-            string returnUrl = String.Empty;
+            string returnUrl;
 
-            returnUrl = Globals.NavigateURL(item.DisplayTabId, "", "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId.ToString());
+            returnUrl = Globals.NavigateURL(item.DisplayTabId, "", "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
 
             return returnUrl;
         }
@@ -1052,10 +1053,10 @@ namespace Engage.Dnn.Publish.Util
             //check to see if the Page has an overrideable module on it, if not do a normal DNN link to the page.
 
             TabInfo tabInfo;
-            TabController tabController = new TabController();
+            var tabController = new TabController();
             int? queryStringModuleId = null;
             int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
-            string pageName = GetFriendlyPageName(item.Name);
+            //string pageName = GetFriendlyPageName(item.Name);
 
             // if the setting to "force display on this page" is set, be sure to send them there.
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
@@ -1122,7 +1123,7 @@ namespace Engage.Dnn.Publish.Util
         private static string GetFriendlyItemLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId, string cultureName)
         {
             TabInfo tabInfo;
-            TabController tabController = new TabController();
+            var tabController = new TabController();
             int? queryStringModuleId = null;
             int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
             string pageName = GetFriendlyPageName(item.Name);
@@ -1190,7 +1191,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns></returns>
         private static string ConvertParametersToFriendly(NameValueCollection queryStringParameters)
         {
-            StringBuilder friendlyParameters = new StringBuilder();
+            var friendlyParameters = new StringBuilder();
 
             for (int i = 0; i < queryStringParameters.Count; i++)
             {
@@ -1226,7 +1227,8 @@ namespace Engage.Dnn.Publish.Util
         /// </returns>
         private static NameValueCollection CreateParametersForQueryString(int itemId, int? tabId, int? moduleId, int pageId, int portalId, string cultureName)
         {
-            NameValueCollection queryStringParameters = new NameValueCollection(5);
+            NameValueCollection queryStringParameters;
+            queryStringParameters = new NameValueCollection(5);
             queryStringParameters.Add("itemId", itemId.ToString(CultureInfo.InvariantCulture));
 
             if (tabId.HasValue)
@@ -1299,7 +1301,7 @@ namespace Engage.Dnn.Publish.Util
             {
                 if (dr.Read())
                 {
-                    int tabModuleId = (int)dr["TabModuleId"];
+                    var tabModuleId = (int)dr["TabModuleId"];
                     object value = (new ModuleController()).GetTabModuleSettings(tabModuleId)[settingName];
                     if (value != null)
                     {
@@ -1317,7 +1319,7 @@ namespace Engage.Dnn.Publish.Util
                 if (dr.Read())
                 {
                     int value;
-                    int tabModuleId = (int)dr["TabModuleId"];
+                    var tabModuleId = (int)dr["TabModuleId"];
                     object valueObj = (new ModuleController()).GetTabModuleSettings(tabModuleId)[settingName];
                     if (valueObj != null && int.TryParse(valueObj.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
                     {
@@ -1336,7 +1338,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A <see cref="List{T}"/> of the values in <paramref name="splitIntegers"/> parsed as <see cref="int"/>s.</returns>
         public static List<int> ParseIntegerList(string[] splitIntegers)
         {
-            List<int> integers = new List<int>(splitIntegers.Length);
+            var integers = new List<int>(splitIntegers.Length);
             foreach (string integer in splitIntegers)
             {
                 if (HasValue(integer))
@@ -1403,28 +1405,28 @@ namespace Engage.Dnn.Publish.Util
             DataRow[] foundRows = dt.Select(null, sort); // Sort with Column name 
             for (int i = 0; i < rowCount; i++)
             {
-                object[] arr = new object[dt.Columns.Count];
+                var arr = new object[dt.Columns.Count];
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
                     arr[j] = foundRows[i][j];
                 }
-                DataRow data_row = newDT.NewRow();
-                data_row.ItemArray = arr;
-                newDT.Rows.Add(data_row);
+                DataRow dataRow = newDT.NewRow();
+                dataRow.ItemArray = arr;
+                newDT.Rows.Add(dataRow);
             }
 
             //clear the incoming dt 
             dt.Rows.Clear();
 
+            DataRow data_row = dt.NewRow();
             for (int i = 0; i < newDT.Rows.Count; i++)
             {
-                object[] arr = new object[dt.Columns.Count];
+                var arr = new object[dt.Columns.Count];
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
                     arr[j] = newDT.Rows[i][j];
                 }
 
-                DataRow data_row = dt.NewRow();
                 data_row.ItemArray = arr;
                 dt.Rows.Add(data_row);
             }
@@ -1457,7 +1459,7 @@ namespace Engage.Dnn.Publish.Util
                     column.AccessibleHeaderText = Localization.GetString(column.AccessibleHeaderText + ".Header", resourceFile);
                 }
 
-                ButtonField buttonField = column as ButtonField;
+                var buttonField = column as ButtonField;
                 if (buttonField != null)
                 {
                     if (String.IsNullOrEmpty(buttonField.Text))
@@ -1467,7 +1469,7 @@ namespace Engage.Dnn.Publish.Util
                 }
                 else
                 {
-                    CheckBoxField checkboxField = column as CheckBoxField;
+                    var checkboxField = column as CheckBoxField;
                     if (checkboxField != null)
                     {
                         if (!String.IsNullOrEmpty(checkboxField.Text))
@@ -1477,7 +1479,7 @@ namespace Engage.Dnn.Publish.Util
                     }
                     else
                     {
-                        CommandField commands = column as CommandField;
+                        var commands = column as CommandField;
                         if (commands != null)
                         {
                             if (!String.IsNullOrEmpty(commands.CancelText))
@@ -1511,7 +1513,7 @@ namespace Engage.Dnn.Publish.Util
                         }
                         else
                         {
-                            HyperLinkField hyperLinkfield = column as HyperLinkField;
+                            var hyperLinkfield = column as HyperLinkField;
                             if (hyperLinkfield != null)
                             {
                                 if (!String.IsNullOrEmpty(hyperLinkfield.Text))
@@ -1521,7 +1523,7 @@ namespace Engage.Dnn.Publish.Util
                             }
                             else
                             {
-                                ImageField imageField = column as ImageField;
+                                var imageField = column as ImageField;
                                 if (imageField != null)
                                 {
                                     if (!String.IsNullOrEmpty(imageField.AlternateText))
@@ -1575,7 +1577,7 @@ namespace Engage.Dnn.Publish.Util
 
                 //string youTubeEmbed = "<span class=\"Publish_Video\"><object width=\"425\" height=\"355\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/" + youTubeId + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"355\"></embed></object></span>";
 
-                string youTubeEmbed = "<span class=\"Publish_Video\"><object type=\"application/x-shockwave-flash\" width=\"560\" height=\"340\" data=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\" />" + Localization.GetString("NoFlash", LocalSharedResourceFile).ToString() + "</object></span>";
+                string youTubeEmbed = "<span class=\"Publish_Video\"><object type=\"application/x-shockwave-flash\" width=\"560\" height=\"340\" data=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\"><param name=\"movie\" value=\"http://www.youtube.com/v/" + youTubeId + "&hd=1\" />" + Localization.GetString("NoFlash", LocalSharedResourceFile) + "</object></span>";
                 //<object type=\"application/x-shockwave-flash\" data=\"CONTENTHERE\" width=\"300\" height=\"120\"><param name=\"movie\" value=\"CONTENTHERE\" /><p>flash disabled</p></object>
                 string fullArticleText = replaceText.Substring(0, youTubeLocation);
                 fullArticleText += youTubeEmbed;
@@ -1670,7 +1672,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A SqlParameter with the correct value, type, and capacity.</returns>
         public static SqlParameter CreateVarcharParam(string parameterName, string value, int size)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.VarChar, size);
+            var param = new SqlParameter(parameterName, SqlDbType.VarChar, size);
             if (value == null)
             {
                 param.Value = DBNull.Value;
@@ -1696,7 +1698,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A SqlParameter with the correct value, type, and capacity.</returns>
         public static SqlParameter CreateNvarcharParam(string parameterName, string value, int size)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.NVarChar, size);
+            var param = new SqlParameter(parameterName, SqlDbType.NVarChar, size);
             if (value == null)
             {
                 param.Value = DBNull.Value;
@@ -1714,8 +1716,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static SqlParameter CreateNtextParam(string parameterName, string value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.NText);
-            param.Value = value ?? (object)DBNull.Value;
+            var param = new SqlParameter(parameterName, SqlDbType.NText) {Value = value ?? (object)DBNull.Value};
             return param;
         }
 
@@ -1729,7 +1730,7 @@ namespace Engage.Dnn.Publish.Util
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateGuidParam(string parameterName, Guid? value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.UniqueIdentifier);
+            var param = new SqlParameter(parameterName, SqlDbType.UniqueIdentifier);
             if (!value.HasValue || value.Equals(Null.NullGuid) || value.Equals(Guid.Empty))
             {
                 param.Value = DBNull.Value;
@@ -1751,7 +1752,7 @@ namespace Engage.Dnn.Publish.Util
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateDateTimeParam(string parameterName, DateTime? value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.DateTime);
+            var param = new SqlParameter(parameterName, SqlDbType.DateTime);
             if (!value.HasValue || value.Equals(Null.NullDate) || value.Equals(new DateTime()) || value.Equals(DateTime.MaxValue)
                 || value.Equals(DateTime.MinValue))
             {
@@ -1773,7 +1774,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A SqlParameter with the correct value and type.</returns>
         public static SqlParameter CreateDateTimeParam(string parameterName, string value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.DateTime);
+            var param = new SqlParameter(parameterName, SqlDbType.DateTime);
             if (!HasValue(value))
             {
                 param.Value = DBNull.Value;
@@ -1794,7 +1795,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A SqlParameter with the correct value and type.</returns>
         public static SqlParameter CreateIntegerParam(string parameterName, int? value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.Int);
+            var param = new SqlParameter(parameterName, SqlDbType.Int);
             if (!value.HasValue || value.Equals(int.MaxValue) || value.Equals(int.MinValue))
             {
                 param.Value = DBNull.Value;
@@ -1814,8 +1815,7 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>A SqlParameter with the correct value and type.</returns>
         public static SqlParameter CreateBitParam(string parameterName, bool? value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.Bit);
-            param.Value = value;
+            var param = new SqlParameter(parameterName, SqlDbType.Bit) {Value = value};
             return param;
         }
 
@@ -1829,7 +1829,7 @@ namespace Engage.Dnn.Publish.Util
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Private API, could be used in the future")]
         public static SqlParameter CreateDoubleParam(string parameterName, double? value)
         {
-            SqlParameter param = new SqlParameter(parameterName, SqlDbType.Float);
+            var param = new SqlParameter(parameterName, SqlDbType.Float);
             if (!value.HasValue || value.Equals(Null.NullDouble) || value.Equals(Double.MaxValue) || value.Equals(Double.MinValue))
             {
                 param.Value = DBNull.Value;

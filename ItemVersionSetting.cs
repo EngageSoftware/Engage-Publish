@@ -8,19 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Portability;
-using Engage.Dnn.Publish.Util;
-using System.Globalization;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using DotNetNuke.Common.Utilities;
+    using Data;
+    using Portability;
+    using Util;
 
 	/// <summary>
 	/// Summary description for ItemInfo.
@@ -31,69 +32,69 @@ namespace Engage.Dnn.Publish
 		#region "Public Properties"
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _settingsId = -1;
+        private int settingsId = -1;
         [XmlElement(Order = 1)]
         public int SettingsId 
 		{
             [DebuggerStepThrough]
-            get { return _settingsId; }
+            get { return this.settingsId; }
             [DebuggerStepThrough]
-            set { _settingsId = value; }
+            set { this.settingsId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _itemVersionId = -1;
+        private int itemVersionId = -1;
         [XmlElement(Order = 2)]
 		public int ItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return _itemVersionId; }
+            get { return this.itemVersionId; }
             [DebuggerStepThrough]
-            set { _itemVersionId = value; }
+            set { this.itemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid _itemVersionIdentifier;
+        private Guid itemVersionIdentifier;
         [XmlElement(Order = 3)]
         public Guid ItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return _itemVersionIdentifier; }
+            get { return this.itemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { _itemVersionIdentifier = value; }
+            set { this.itemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _controlName = string.Empty;
+        private string controlName = string.Empty;
         [XmlElement(Order = 4)]
         public string ControlName 
 		{
             [DebuggerStepThrough]
-            get { return _controlName; }
+            get { return this.controlName; }
             [DebuggerStepThrough]
-            set { _controlName = value; }
+            set { this.controlName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _propertyName = string.Empty;
+        private string propertyName = string.Empty;
         [XmlElement(Order = 5)]
         public string PropertyName 
 		{
             [DebuggerStepThrough]
-            get { return _propertyName; }
+            get { return this.propertyName; }
             [DebuggerStepThrough]
-            set { _propertyName = value; }
+            set { this.propertyName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _propertyValue = string.Empty;
+        private string propertyValue = string.Empty;
         [XmlElement(Order = 6)]
         public string PropertyValue
 		{
             [DebuggerStepThrough]
-            get { return _propertyValue; }
+            get { return this.propertyValue; }
             [DebuggerStepThrough]
-            set { _propertyValue = value; }
+            set { this.propertyValue = value; }
 		}
 
 
@@ -108,16 +109,16 @@ namespace Engage.Dnn.Publish
 
         public ItemVersionSetting(Setting setting)
         {
-            this._propertyName = setting.PropertyName;
-            this._propertyValue = setting.PropertyValue;
-            this._controlName = setting.ControlName;
+            this.propertyName = setting.PropertyName;
+            this.propertyValue = setting.PropertyValue;
+            this.controlName = setting.ControlName;
         }
 
         public void Save()
         {//used for adding an itemversionsetting to an existing article
             IDbConnection newConnection = DataProvider.GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
-            ItemVersionSetting.AddItemVersionSetting(trans, this.ItemVersionId, this.ControlName, this.PropertyName, this.PropertyValue);
+            AddItemVersionSetting(trans, this.ItemVersionId, this.ControlName, this.PropertyName, this.PropertyValue);
             trans.Commit();
         }
 
@@ -149,14 +150,14 @@ namespace Engage.Dnn.Publish
 
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                var o = DataCache.GetCache(cacheKey);
                 if (o != null && o.ToString() != "-1")
                 {
                     ivs = (ItemVersionSetting)o;
                 }
                 else
                 {
-                    ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
+                    ivs = GetItemVersionSetting(itemVersionId, controlName, propertyName);
                     if(ivs==null)
                     {             
                         //for settings we don't have a value for in the DB we should set the cache to -1 so we don't always make requests to the DB
@@ -172,7 +173,7 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                ivs = ItemVersionSetting.GetItemVersionSetting(itemVersionId, controlName, propertyName);
+                ivs = GetItemVersionSetting(itemVersionId, controlName, propertyName);
             }
             return ivs;
         }
@@ -195,14 +196,14 @@ namespace Engage.Dnn.Publish
 
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                var o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     ivs = (List<ItemVersionSetting>)o;
                 }
                 else
                 {
-                    ivs = ItemVersionSetting.GetItemVersionSettings(itemVersionId, controlName);
+                    ivs = GetItemVersionSettings(itemVersionId, controlName);
                 }
                 if (ivs != null)
                 {
@@ -212,18 +213,18 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-                ivs = ItemVersionSetting.GetItemVersionSettings(itemVersionId, controlName);
+                ivs = GetItemVersionSettings(itemVersionId, controlName);
             }
             return ivs;
         }
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByPortalId(int portalId)
         {
-            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByPortalId + portalId.ToString();
+            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByPortalId + portalId;
             List<ItemVersionSetting> settings;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                var o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     settings = (List<ItemVersionSetting>)o;
@@ -256,11 +257,11 @@ namespace Engage.Dnn.Publish
 
         public static List<ItemVersionSetting> GetItemVersionSettingsByModuleId(int moduleId, int portalId)
         {
-            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByModuleId + moduleId.ToString();
+            string cacheKey = Utility.CacheKeyPublishItemVersionSettingsByModuleId + moduleId;
             List<ItemVersionSetting> settings;
             if (ModuleBase.UseCachePortal(portalId))
             {
-                object o = DataCache.GetCache(cacheKey) as object;
+                var o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
                     settings = (List<ItemVersionSetting>)o;
@@ -308,12 +309,12 @@ namespace Engage.Dnn.Publish
         public override void Import(int currentModuleId, int portalId)
         {
             //Does this exist in my db?
-            int itemVersionId = GetItemVersionSettingByIdentifier(ItemVersionIdentifier, portalId);
-            if (itemVersionId > 0)
+            int localVersionId = GetItemVersionSettingByIdentifier(ItemVersionIdentifier, portalId);
+            if (localVersionId > 0)
             {
                 //this version does not exist.
-                _itemVersionId = itemVersionId;
-                AddItemVersionSetting(_itemVersionId, _controlName, _propertyName, _propertyValue);
+                this.itemVersionId = localVersionId;
+                AddItemVersionSetting(this.itemVersionId, this.controlName, this.propertyName, this.propertyValue);
             }
             else
             {
@@ -325,7 +326,7 @@ namespace Engage.Dnn.Publish
 
         public bool Equals(ItemVersionSetting other)
         {
-            if (Object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -335,9 +336,9 @@ namespace Engage.Dnn.Publish
                 return false;
             }
 
-            return this._itemVersionId.Equals(other._itemVersionId)
-                && this._propertyName.Equals(other._propertyName, StringComparison.OrdinalIgnoreCase)
-                && this._controlName.Equals(other._controlName, StringComparison.OrdinalIgnoreCase);
+            return this.itemVersionId.Equals(other.itemVersionId)
+                && this.propertyName.Equals(other.propertyName, StringComparison.OrdinalIgnoreCase)
+                && this.controlName.Equals(other.controlName, StringComparison.OrdinalIgnoreCase);
         }
 
         public override bool Equals(object obj)
@@ -347,9 +348,9 @@ namespace Engage.Dnn.Publish
 
         public override int GetHashCode()
         {
-            return this._itemVersionId.GetHashCode()
-                ^ this._propertyName.GetHashCode() * 37
-                ^ this._controlName.GetHashCode() * 37;
+            return this.itemVersionId.GetHashCode()
+                ^ this.propertyName.GetHashCode() * 37
+                ^ this.controlName.GetHashCode() * 37;
         }
     }
 }

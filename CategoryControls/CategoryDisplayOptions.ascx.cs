@@ -8,27 +8,17 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.UserControls;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+    using DotNetNuke.Entities.Modules.Actions;
+
+
     public partial class CategoryDisplayOptions : ModuleSettingsBase
     {
         #region Event Handlers
@@ -124,32 +114,31 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #region Optional Interfaces
 
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public ModuleActionCollection ModuleActions
         {
             get
             {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return Actions;
+                new ModuleActionCollection().Add(this.GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, this.LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+                return new ModuleActionCollection();
             }
         }
 
 
         #endregion
 
-        private void save()
+        private void Save()
         {
-            ModuleController modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdItemTypeId", this.ddlItemTypeList.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdCategoryId", this.ddlCategoryList.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdDisplayOption", this.ddlViewOptions.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdChildDisplayOption", this.ddlChildDisplay.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdSortOption", this.ddlSortOption.SelectedValue.ToString());
+            var modules = new ModuleController();
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cdItemTypeId", this.ddlItemTypeList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cdCategoryId", this.ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cdDisplayOption", this.ddlViewOptions.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cdChildDisplayOption", this.ddlChildDisplay.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cdSortOption", this.ddlSortOption.SelectedValue);
 
         }
         public override void UpdateSettings()
         {
-            save();
+            this.Save();
         }
     }
 }

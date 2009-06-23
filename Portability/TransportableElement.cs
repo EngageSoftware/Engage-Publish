@@ -8,13 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Xml.Serialization;
-
 namespace Engage.Dnn.Publish.Portability
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Xml.Serialization;
+
+
     public abstract class TransportableElement
     {
 
@@ -26,8 +27,8 @@ namespace Engage.Dnn.Publish.Portability
         {
             try
             {
-                XmlSerializer xs = new XmlSerializer(this.GetType());
-                StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
+                var xs = new XmlSerializer(this.GetType());
+                var writer = new StringWriter(CultureInfo.InvariantCulture);
                 xs.Serialize(writer, this);
 
                 return writer.GetStringBuilder().ToString();

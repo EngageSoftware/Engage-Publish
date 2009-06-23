@@ -1,18 +1,12 @@
-﻿using System;
-using System.Data;
-using System.Configuration;
-
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-
-using CookComputing.XmlRpc;
-
+﻿
 namespace Engage.Dnn.Publish.Services
 {
+    using System;
+
+
+    using CookComputing.XmlRpc;
+
+
     #region Structs
 
     public struct BlogInfo

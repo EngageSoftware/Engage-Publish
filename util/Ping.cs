@@ -8,26 +8,26 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Xml;
-using System.Net;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Entities.Host;
+
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Collections;
+    using System.Globalization;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Xml;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Exceptions;
     public static class Ping
     {
-
         public static void SendPing(string name, string url, string changesUrl, int portalId)
         {
             try
             {
-                ArrayList listToPing = new ArrayList();
+                var listToPing = new ArrayList();
                 string s = HostSettings.GetHostSetting(Utility.PublishPingServers + portalId.ToString(CultureInfo.InvariantCulture));
                 if (Utility.HasValue(s))
                 {
@@ -47,13 +47,13 @@ namespace Engage.Dnn.Publish.Util
 
                 for (int i = 0; i < listToPing.Count; i++)
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(listToPing[i].ToString());
+                    var request = (HttpWebRequest)WebRequest.Create(listToPing[i].ToString());
                     request.Method = "POST";
                     request.ContentType = "text/xml";
 
                     Stream stream = request.GetRequestStream();
 
-                    using (XmlTextWriter xml = new XmlTextWriter(stream, Encoding.UTF8))
+                    using (var xml = new XmlTextWriter(stream, Encoding.UTF8))
                     {
                         xml.WriteStartDocument();
                         xml.WriteStartElement("methodCall");
@@ -78,9 +78,9 @@ namespace Engage.Dnn.Publish.Util
                         xml.Close();
                     }
 
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (var response = (HttpWebResponse)request.GetResponse())
                     {
-                        using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                        using (var sr = new StreamReader(response.GetResponseStream()))
                         {
                             //string result = sr.ReadToEnd();
                             sr.ReadToEnd();

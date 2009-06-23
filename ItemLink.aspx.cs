@@ -8,15 +8,6 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
@@ -24,6 +15,15 @@ namespace Engage.Dnn.Publish
     //would help from the admin controls where we're previewing an old version of an article and that version
     //didn't have a display page set and we can't display it. ItemPreview.ascx can handle previewing it
     //if this page handled it correctly and passed the versionId along to the control. hk
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using Util;
 
     public partial class ItemLink : PageBase
     {
@@ -135,7 +135,6 @@ namespace Engage.Dnn.Publish
 
         private void DisplayItem(Item item)
         {
-
             //check if item.URL is populated, if so figure out where to redirect.
             if (Utility.HasValue(item.Url))
             {
@@ -183,7 +182,7 @@ namespace Engage.Dnn.Publish
                             DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
 
 
-                            TabController tc = new TabController();
+                            var tc = new TabController();
                             TabInfo ti;
 
                             //if the setting to "force display on this page" is set, be sure to send them there.
@@ -238,7 +237,7 @@ namespace Engage.Dnn.Publish
                         else
                         {
                             //we need to check for ForceOnCurrentPage
-                            TabController tc = new TabController();
+                            var tc = new TabController();
                             TabInfo ti;
                             DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
                             //if we are passing in a TabId use it
@@ -392,9 +391,9 @@ namespace Engage.Dnn.Publish
             string tabId = Request.UrlReferrer.PathAndQuery.Substring(start, (end - start)).ToUpperInvariant();
 
             //DotNetNuke.Entities.Portals.PortalSettings ps = Util.Utility.GetPortalSettings(item.PortalId);
-            TabController tc = new TabController();
+            var tc = new TabController();
             TabInfo ti = tc.GetTab(Convert.ToInt32(tabId, CultureInfo.InvariantCulture), item.PortalId, false);
-            ModuleController mc = new ModuleController();
+            var mc = new ModuleController();
             Dictionary<int, ModuleInfo> list = mc.GetTabModules(ti.TabID);
             ModuleInfo mi = null;
             foreach (ModuleInfo info in list.Values)

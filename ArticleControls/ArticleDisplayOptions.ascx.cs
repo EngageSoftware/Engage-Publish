@@ -19,11 +19,13 @@ namespace Engage.Dnn.Publish.ArticleControls
     using DotNetNuke.Services.Localization;
     using Util;
 
+    
     /// <summary>
     /// A control for setting the settings of the Article Display type
     /// </summary>
     public partial class ArticleDisplayOptions : ModuleSettingsBase
     {
+
         private int? ArticleId
         {
             set

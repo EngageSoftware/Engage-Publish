@@ -8,20 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
+
     public partial class ItemListing : ModuleBase, IActionable
     {
         #region Event Handlers
@@ -59,8 +60,8 @@ namespace Engage.Dnn.Publish.Controls
             int itemId = ItemId;  //Since figuring out the Item ID is so expensive, do it only once.
             //this obviously needs refactoring
 
-            string cacheKey = Utility.CacheKeyPublishCategory + "ItemListing_" + DataType.ToString().Replace(" ", "") + CategoryId; // +"PageId";
-            DataTable dt = DataCache.GetCache(cacheKey) as DataTable;
+            string cacheKey = Utility.CacheKeyPublishCategory + "ItemListing_" + this.DataType.Replace(" ", "") + CategoryId; // +"PageId";
+            var dt = DataCache.GetCache(cacheKey) as DataTable;
 
             if (dt == null)
             {
@@ -94,16 +95,9 @@ namespace Engage.Dnn.Publish.Controls
                             lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
                             lnkRss.NavigateUrl = GetRssLinkUrl(itemId, MaxDisplayItems, ItemTypeId, PortalId, "ItemListing");
 
-                            SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssText", LocalResourceFile));
+                            SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
                         }
-                        if (itemId > -1)
-                        {
-                            dt = DataProvider.Instance().GetMostRecentByCategoryId(itemId, ItemTypeId, MaxDisplayItems, PortalId);
-                        }
-                        else
-                        {
-                            dt = DataProvider.Instance().GetMostRecent(ItemTypeId, MaxDisplayItems, PortalId);
-                        }
+                        dt = itemId > -1 ? DataProvider.Instance().GetMostRecentByCategoryId(itemId, this.ItemTypeId, this.MaxDisplayItems, this.PortalId) : DataProvider.Instance().GetMostRecent(this.ItemTypeId, this.MaxDisplayItems, this.PortalId);
                         break;
                     default:
                         dt = DataProvider.Instance().GetChildrenInCategory(CategoryId, ItemTypeId, MaxDisplayItems, PortalId);
@@ -130,7 +124,7 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
                 lnkRss.NavigateUrl = GetRssLinkUrl(itemId, MaxDisplayItems, ItemTypeId, PortalId, "ItemListing");
 
-                SetRssUrl(lnkRss.NavigateUrl.ToString(), Localization.GetString("rssText", LocalResourceFile));
+                SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
             }
 
             return dt;
@@ -138,8 +132,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private static DataTable FormatDataTable(DataTable dt)
         {
-            DataTable newDataTable = new DataTable(dt.TableName, dt.Namespace);
-            newDataTable.Locale = CultureInfo.InvariantCulture;
+            var newDataTable = new DataTable(dt.TableName, dt.Namespace) {Locale = CultureInfo.InvariantCulture};
             newDataTable.Columns.Add("CategoryName", typeof(string), "");
             newDataTable.Columns.Add("Thumbnail");
             newDataTable.Columns.Add("ChildName");
@@ -222,14 +215,20 @@ namespace Engage.Dnn.Publish.Controls
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), ModuleActionType.AddContent, "", "", EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "ModInfo", Justification = "Interface implementation")]
-        public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
+        public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
         {
             // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
             return null;
@@ -240,14 +239,9 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 object o = Settings["ilDataDisplayFormat"];
-                if (Enum.IsDefined(typeof(ArticleViewOption), o))
-                {
-                    return (ArticleViewOption)Enum.Parse(typeof(ArticleViewOption), o.ToString(), true);
-                }
-                else
-                {
-                    return ArticleViewOption.Abstract;
-                }
+                return Enum.IsDefined(typeof(ArticleViewOption), o)
+                               ? (ArticleViewOption)Enum.Parse(typeof(ArticleViewOption), o.ToString(), true)
+                               : ArticleViewOption.Abstract;
             }
         }
 
@@ -265,12 +259,12 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (e != null)
             {
-                Panel pnlThumbnail = (Panel)e.Item.FindControl("pnlThumbnail");
-                Panel pnlCategory = (Panel)e.Item.FindControl("pnlCategory");
+                var pnlThumbnail = (Panel)e.Item.FindControl("pnlThumbnail");
+                var pnlCategory = (Panel)e.Item.FindControl("pnlCategory");
                 //Panel pnlTitle = (Panel)e.Item.FindControl("pnlTitle");
-                Panel pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
-                Panel pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
-                HyperLink lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
+                var pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
+                var pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
+                var lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
 
                 if (pnlThumbnail != null)
                 {
@@ -293,7 +287,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
                     DataRow dr = ((DataRowView)e.Item.DataItem).Row;
-                    int childItemId = (int)dr["ChildItemId"];
+                    var childItemId = (int)dr["ChildItemId"];
 
                     if (Utility.IsDisabled(childItemId, PortalId))
                     {

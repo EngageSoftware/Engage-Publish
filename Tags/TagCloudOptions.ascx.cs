@@ -8,13 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
 
 namespace Engage.Dnn.Publish.Tags
 {
+    using System;
+    using System.Globalization;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+
     public partial class TagCloudOptions : ModuleSettingsBase
     {
         #region Event Handlers
@@ -45,7 +46,7 @@ namespace Engage.Dnn.Publish.Tags
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "tcPopularTagBool", value.ToString(CultureInfo.InvariantCulture));
             }
 

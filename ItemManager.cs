@@ -7,26 +7,20 @@
 //THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
-using System;
-using System.Configuration;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using DotNetNuke.Entities.Modules;
 
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Globalization;
+    using System.Web;
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
     /// Summary description for ItemManager
     /// </summary>
     public sealed class ItemManager
     {
-        private PortalModuleBase module;
+        private readonly PortalModuleBase module;
 
         public ItemManager(PortalModuleBase module)
         {
@@ -64,7 +58,7 @@ namespace Engage.Dnn.Publish
 
         private static string GetDisplayTypePrefix(string displayType)
         {
-            string prefix = string.Empty;
+            string prefix;
 
             switch (displayType)
             {
@@ -83,8 +77,6 @@ namespace Engage.Dnn.Publish
                 case "CustomDisplay":
                     prefix = "";
                     break;
-                    
-                case "CategoryDisplay":
                 default:
                     prefix = "cd";
                     break;

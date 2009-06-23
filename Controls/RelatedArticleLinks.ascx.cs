@@ -8,25 +8,15 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using System.Globalization;
-using System.Collections.Generic;
-
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+
 	public partial class RelatedArticleLinks :  RelatedArticleLinksBase, IActionable
 	{
 		#region Event Handlers
@@ -40,32 +30,29 @@ namespace Engage.Dnn.Publish.Controls
 		
 		private void InitializeComponent()
 		{
-			this.btnShowRelatedItem.Click += new System.EventHandler(this.btnShowRelatedItem_Click);
-			this.Load += new System.EventHandler(this.Page_Load);
+			this.btnShowRelatedItem.Click += this.btnShowRelatedItem_Click;
+			this.Load += this.Page_Load;
 		}
 
-        private bool linksPopulated;
-        public bool LinksPopulated
-        {
-            get
-            {
-                return linksPopulated;
-            }
-            set
-            {
-                linksPopulated = value;
-            }
-        }
+	    public bool LinksPopulated
+	    {
+	        get;
+	        set;
+	    }
 
 
-		private void Page_Load(object sender, System.EventArgs e)
-		{
-			try 
+	    private void Page_Load(object sender, EventArgs e)
+	    {
+	        if (e == null)
+	        {
+	            throw new ArgumentNullException("e");
+	        }
+	        try 
 			{
 				btnShowRelatedItem.Visible = false;
 				divRelatedLinks.Visible = false;
 				
-				List<Article> related = new List<Article>(VersionInfoObject.GetRelatedArticles(PortalId));
+				var related = new List<Article>(VersionInfoObject.GetRelatedArticles(PortalId));
 
                 ItemVersionSetting parentRelationshipSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "ArticleSettings", "IncludeParentCategoryArticles", PortalId);
                 if (parentRelationshipSetting != null && Convert.ToBoolean(parentRelationshipSetting.PropertyValue, CultureInfo.InvariantCulture))
@@ -75,10 +62,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         //get all articles in the same category, then removes this current article from that list.  BD
                         List<Article> categoryArticles = Category.GetCategoryArticles(parentCategoryId, PortalId);
-                        categoryArticles.RemoveAll(delegate(Article a)
-                            {
-                                return a.ItemId == VersionInfoObject.ItemId;
-                            });
+                        categoryArticles.RemoveAll(a => a.ItemId == this.VersionInfoObject.ItemId);
                         related.AddRange(categoryArticles);
                     }
                 }
@@ -101,9 +85,9 @@ namespace Engage.Dnn.Publish.Controls
 			{
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
-		}
+	    }
 
-		#endregion
+	    #endregion
 
 		#region Optional Interfaces
 
@@ -111,15 +95,15 @@ namespace Engage.Dnn.Publish.Controls
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				return Actions;
+				var actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+				return actions;
 			}
 		}
 
 
 		#endregion
 
-		private void btnShowRelatedItem_Click(object sender, System.EventArgs e)
+		private void btnShowRelatedItem_Click(object sender, EventArgs e)
 		{
 			divRelatedLinks.Visible=true;
 		
@@ -140,15 +124,15 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (e != null)
             {
-                HyperLink lnkRelatedArticle = (HyperLink)e.Item.FindControl("lnkRelatedArticle");
+                var lnkRelatedArticle = (HyperLink)e.Item.FindControl("lnkRelatedArticle");
 
                 ////This code makes sure that an article that is disabled does not get a link.
                 if (e.Item.ItemType == ListItemType.Item)
                 {
-                    Article a = (Article)e.Item.DataItem;
+                    var a = (Article)e.Item.DataItem;
                     int linkedItemId = a.ItemId;
 
-                    if (Engage.Dnn.Publish.Util.Utility.IsDisabled(linkedItemId, PortalId))
+                    if (Util.Utility.IsDisabled(linkedItemId, PortalId))
                     {
                         lnkRelatedArticle.NavigateUrl = "";
 

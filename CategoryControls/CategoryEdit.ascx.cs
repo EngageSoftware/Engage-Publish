@@ -8,26 +8,25 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Forum;
-using Engage.Dnn.Publish.Security;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Controls;
+    using Forum;
+    using Security;
+    using Util;
+
     public partial class CategoryEdit : ModuleBase
     {
         #region Controls
@@ -41,8 +40,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #region Private Const
         private readonly string ItemRelationshipResourceFile = "~" + DesktopModuleFolderName + "Controls/App_LocalResources/ItemRelationships";
-        private const string approvalControlToLoad = "../controls/ItemApproval.ascx";
-        private const string itemControlToLoad = "../Controls/itemEdit.ascx";
+        private const string ApprovalControlToLoad = "../controls/ItemApproval.ascx";
+        private const string ItemControlToLoad = "../Controls/itemEdit.ascx";
         #endregion
 
         #region Properties
@@ -101,9 +100,9 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
 
             //Item Edit
-            itemEditControl = (ItemEdit)LoadControl(itemControlToLoad);
+            itemEditControl = (ItemEdit)LoadControl(ItemControlToLoad);
             itemEditControl.ModuleConfiguration = ModuleConfiguration;
-            itemEditControl.ID = Path.GetFileNameWithoutExtension(itemControlToLoad);
+            itemEditControl.ID = Path.GetFileNameWithoutExtension(ItemControlToLoad);
             itemEditControl.VersionInfoObject = VersionInfoObject;
             this.phItemEdit.Controls.Add(itemEditControl);
 
@@ -159,14 +158,14 @@ namespace Engage.Dnn.Publish.CategoryControls
             this.phFeaturedArticles.Controls.Add(this.featuredArticlesRelationships);
 
             //load approval status
-            itemApprovalStatus = (ItemApproval)LoadControl(approvalControlToLoad);
+            itemApprovalStatus = (ItemApproval)LoadControl(ApprovalControlToLoad);
             itemApprovalStatus.ModuleConfiguration = ModuleConfiguration;
-            itemApprovalStatus.ID = System.IO.Path.GetFileNameWithoutExtension(approvalControlToLoad);
+            itemApprovalStatus.ID = Path.GetFileNameWithoutExtension(ApprovalControlToLoad);
             itemApprovalStatus.VersionInfoObject = VersionInfoObject;
             this.phApproval.Controls.Add(itemApprovalStatus);
         }
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -175,7 +174,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 //because we're in the Edit options turn off caching
                 DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
-                Category cv = (Category)VersionInfoObject;
+                var cv = (Category)VersionInfoObject;
 
                 if (!Page.IsPostBack)
                 {
@@ -283,7 +282,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         }
 
 
-        private void cmdUpdate_Click(object sender, System.EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             try
             {
@@ -291,8 +290,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 bool error = false;
 
                 //create a relationship
-                ItemRelationship irel = new ItemRelationship();
-                irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+                var irel = new ItemRelationship {RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId()};
                 int[] ids = this.parentCategoryRelationships.GetSelectedItemIds();
 
                 //check for parent category, if none then add a relationship for Top Level Item
@@ -364,10 +362,12 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 foreach (int i in this.featuredArticlesRelationships.GetSelectedItemIds())
                 {
-                    ItemRelationship irArticleso = new ItemRelationship();
-                    irArticleso.RelationshipTypeId = RelationshipType.ItemToFeaturedItem.GetId();
-                    irArticleso.ParentItemId = i;
-                    
+                    var irArticleso = new ItemRelationship
+                                          {
+                                                  RelationshipTypeId = RelationshipType.ItemToFeaturedItem.GetId(),
+                                                  ParentItemId = i
+                                          };
+
                     if (Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture))))
                     {
                         irArticleso.StartDate = this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture));
@@ -424,7 +424,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
         }
 
-        private void cmdCancel_Click(object sender, System.EventArgs e)
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
             string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
             if (!Utility.HasValue(returnUrl))
@@ -461,7 +461,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                     else
                     {
-                        StringBuilder errorMessage = new StringBuilder();
+                        var errorMessage = new StringBuilder();
                         errorMessage.AppendFormat("{0}{1}", Localization.GetString("DeleteFailureHasChildren", LocalResourceFile), Environment.NewLine);
 
                         foreach (DataRow row in children.Tables[0].Rows)
@@ -544,7 +544,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void LoadCommentForumsDropDown()
         {
-            if (base.IsCommentsEnabled && !base.IsPublishCommentType)
+            if (IsCommentsEnabled && !IsPublishCommentType)
             {
                 ddlCommentForum.Items.Clear();
                 foreach (KeyValuePair<int, string> pair in ForumProvider.GetInstance(PortalId).GetForums())
@@ -569,8 +569,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             ddlDisplayTabId.Items.Clear();
 
-            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
-            DataTable dt = Utility.GetDisplayTabIds(modules);
+            var modules = new[] { Utility.DnnFriendlyModuleName };
 
             //ListItem l = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
             //this.ddlDisplayTabId.Items.Insert(0, l);
@@ -580,7 +579,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
             //    this.ddlDisplayTabId.Items.Add(li);
             //}
-            dt = Utility.GetDisplayTabIds(modules);
+            DataTable dt = Utility.GetDisplayTabIds(modules);
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
@@ -645,8 +644,8 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
 
             ddlChildDisplayTabId.Items.Clear();
-            Category cv = (Category)VersionInfoObject;
-            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
+            var cv = (Category)VersionInfoObject;
+            var modules = new[] { Utility.DnnFriendlyModuleName };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
 
@@ -681,7 +680,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             //use approvals
             Setting setting = Setting.UseApprovals;
             setting.PropertyValue = chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture);
-            ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+            var itemVersionSetting = new ItemVersionSetting(setting);
             //useApprovalSetting.ControlName = "chkUseApprovals";
             //useApprovalSetting.PropertyName = "Checked";
             //useApprovalSetting.PropertyValue = chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture);
@@ -727,8 +726,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             clpExtended.CollapsedText = Localization.GetString("clpExtended.CollapsedText", LocalResourceFile);
             clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
 
-            clpExtended.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-            clpExtended.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpExtended.ExpandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpExtended.CollapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
 
         }
 

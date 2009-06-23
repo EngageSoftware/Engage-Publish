@@ -8,15 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-using System.Text;
-using System.Collections;
-using System.Web.SessionState;
-using DotNetNuke.Services.Localization;
+
 
 namespace Engage.Dnn.Publish.Util
 {
     using System;
+    using System.Collections;
+    using System.Text;
+    using System.Web;
+    using System.Web.SessionState;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
 	/// Summary description for Breadcrumb.
@@ -28,11 +29,9 @@ namespace Engage.Dnn.Publish.Util
 		public static void Add(string pageName, string pageUrl)
 		{
 			ArrayList q = GetBreadCrumbs();
-			BreadcrumbItem bci = new BreadcrumbItem();
-			bci.PageName = pageName;
-			bci.PageUrl= pageUrl;
+			var bci = new BreadcrumbItem {PageName = pageName, PageUrl = pageUrl};
 
-			q.Remove(bci);
+		    q.Remove(bci);
 			q.Add(bci);
 
 			if (q.Count > MaxBreadCrumbs) q.RemoveAt(0);
@@ -45,7 +44,7 @@ namespace Engage.Dnn.Publish.Util
 		{
             //TODO: Deal with potential for HttpContext.Current to be null
 			HttpSessionState session = HttpContext.Current.Session;
-			ArrayList q = (ArrayList) session["breadCrumbs"];
+			var q = (ArrayList) session["breadCrumbs"];
 			if (q == null)
 			{
 				q = new ArrayList(MaxBreadCrumbs);
@@ -58,7 +57,7 @@ namespace Engage.Dnn.Publish.Util
 		public new static string ToString()
 		{
 			ArrayList q = GetBreadCrumbs();
-			StringBuilder sb = new StringBuilder(q.Count * 100);
+			var sb = new StringBuilder(q.Count * 100);
         
             //TODO: breadcrumb text is hardcoded!
 
@@ -69,7 +68,7 @@ namespace Engage.Dnn.Publish.Util
 			IEnumerator ie = q.GetEnumerator();
 			while (ie.MoveNext())
 			{
-				BreadcrumbItem bci = (BreadcrumbItem) ie.Current;
+				var bci = (BreadcrumbItem) ie.Current;
 				sb.Append("&gt;&gt; <a href=\"");
 				sb.Append(bci.PageUrl);
 				sb.Append("\" class=\"RecentPagesLink\">");
@@ -101,7 +100,7 @@ namespace Engage.Dnn.Publish.Util
 
 		public override bool Equals(object obj)
 		{
-			BreadcrumbItem bci = obj as BreadcrumbItem;
+			var bci = obj as BreadcrumbItem;
 			if (bci == null)
 			{
 				return false;

@@ -69,7 +69,7 @@ namespace Engage.Dnn.Publish.Controls
             }
 
             this.Load += this.Page_Load;
-            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownList_SelectedIndexChanged;
+            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownListSelectedIndexChanged;
             this.LocalResourceFile = this.AppRelativeTemplateSourceDirectory + Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.TemplateControl.AppRelativeVirtualPath);
             base.OnInit(e);
         }
@@ -101,7 +101,7 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void CategoriesDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+        private void CategoriesDropDownListSelectedIndexChanged(object sender, EventArgs e)
         {
             this.FillArticlesDropDown();
             this.SelectArticle();

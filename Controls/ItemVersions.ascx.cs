@@ -8,19 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
 
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
 	public partial class ItemVersions :  ModuleBase, IActionable
 	{
 
@@ -66,13 +67,21 @@ namespace Engage.Dnn.Publish.Controls
 
 		#region Optional Interfaces
 
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+		public ModuleActionCollection ModuleActions 
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+			                               this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 
@@ -83,7 +92,7 @@ namespace Engage.Dnn.Publish.Controls
 
             if (row != null)
             {
-                DataRowView view = (DataRowView)row;
+                var view = (DataRowView)row;
 
                 
                 //call GetItemLinkUrl() and it will figure out where to send the user AND if the display 
@@ -95,9 +104,7 @@ namespace Engage.Dnn.Publish.Controls
                 //int itemVersionId = 
                 //int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
 
-
-                string href = string.Empty;
-                href = GetItemVersionLinkUrl(view["ItemVersionId"]);
+                string href = this.GetItemVersionLinkUrl(view["ItemVersionId"]);
 
                 return href;
             }
@@ -108,9 +115,9 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (row != null)
             {
-                DataRowView view = (DataRowView)row;
+                var view = (DataRowView)row;
                 string description;
-                if (base.TypeOfItem == ItemType.Article)
+                if (TypeOfItem == ItemType.Article)
                 {
                     Article a = Article.GetArticleVersion(Convert.ToInt32(view["ItemVersionId"], CultureInfo.InvariantCulture), PortalId);
                     description = HtmlUtils.Shorten(HtmlUtils.Clean(a.VersionDescription, true), 200, string.Empty) + "&nbsp;";
@@ -128,9 +135,9 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (row != null)
             {
-                DataRowView view = (DataRowView)row;
+                var view = (DataRowView)row;
                 string description;
-                if (base.TypeOfItem == ItemType.Article)
+                if (TypeOfItem == ItemType.Article)
                 {
                     Article a = Article.GetArticleVersion(Convert.ToInt32(view["ItemVersionId"], CultureInfo.InvariantCulture), PortalId);
                     description = a.VersionDescription;
@@ -154,11 +161,11 @@ namespace Engage.Dnn.Publish.Controls
             if (authorId != null)
             {
                 string author = string.Empty;
-                DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
+                var uc = new DotNetNuke.Entities.Users.UserController();
                 DotNetNuke.Entities.Users.UserInfo ui = uc.GetUser(PortalId, Convert.ToInt32(authorId, CultureInfo.InvariantCulture));
                 if (ui != null)
                 {
-                    author = (authorId is DBNull ? string.Empty : ui.Username.ToString());
+                    author = (authorId is DBNull ? string.Empty : ui.Username);
                 }
                 return author;
             }
@@ -169,7 +176,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (row != null)
             {
-                DataRowView view = (DataRowView)row;
+                var view = (DataRowView)row;
 
                 object start = view["StartDate"];
                 string dates = (start is DBNull ? string.Empty : Convert.ToDateTime(start, CultureInfo.CurrentCulture).ToShortDateString() + "-");
@@ -204,8 +211,8 @@ namespace Engage.Dnn.Publish.Controls
 
         protected string GetVersionEditUrl(object row)
         {
-            DataRowView view = (DataRowView) row;
-            QueryStringParameters qsp = new QueryStringParameters();
+            var view = (DataRowView) row;
+            var qsp = new QueryStringParameters();
 
             qsp.ClearKeys();
             qsp.Add("ctl", Utility.AdminContainer);

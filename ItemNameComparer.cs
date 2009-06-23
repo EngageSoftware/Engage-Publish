@@ -8,11 +8,12 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-
 namespace Engage.Dnn.Publish
 {
+
+    using System;
+    using System.Collections;
+
 	public class ItemNameComparer : IComparer
 	{
 		private readonly bool _descending;
@@ -40,8 +41,8 @@ namespace Engage.Dnn.Publish
 		{
 			if (x == null && y == null) return 0;
 
-			Item i1 = x as Item;
-			Item i2 = y as Item;
+			var i1 = x as Item;
+			var i2 = y as Item;
 
 			if (i1 == null) throw new ArgumentException("item is not an instance of Item", "x");
 			if (i2 == null) throw new ArgumentException("item is not an instance of Item", "y");

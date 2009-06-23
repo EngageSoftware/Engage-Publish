@@ -8,27 +8,15 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.UserControls;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public partial class CategorySearchOptions : ModuleSettingsBase
     {
         public override void LoadSettings()
@@ -102,13 +90,13 @@ namespace Engage.Dnn.Publish.CategoryControls
         public override void UpdateSettings()
         {
             //save the new setting
-            ModuleController modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csMaxResults", this.txtResults.Text.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csPerPage", this.txtPage.Text.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csTitleLength", this.txtTitle.Text.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csDescriptionLength", this.txtDescription.Text.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csCategoryId", this.ddlCategorySearchList.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csSearchEmptyRedirectUrl", this.txtSearchUrl.Text.ToString().Trim());
+            var modules = new ModuleController();
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csMaxResults", this.txtResults.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csPerPage", this.txtPage.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csTitleLength", this.txtTitle.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csDescriptionLength", this.txtDescription.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csCategoryId", this.ddlCategorySearchList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csSearchEmptyRedirectUrl", this.txtSearchUrl.Text.Trim());
             modules.UpdateTabModuleSetting(this.TabModuleId, "csShowDescription", (chkDescription.Checked ? "Y" : "N"));
             modules.UpdateTabModuleSetting(this.TabModuleId, "csAllowCategorySelection", (chkAllowCategorySelection.Checked ? "Y" : "N"));
         }

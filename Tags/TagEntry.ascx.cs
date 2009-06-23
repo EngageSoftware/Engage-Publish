@@ -8,13 +8,15 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
 
 namespace Engage.Dnn.Publish.Tags
 {
+    using System;
+    using System.Globalization;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
 	public partial class TagEntry :  ModuleBase
 	{
 		#region Event Handlers
@@ -44,19 +46,27 @@ namespace Engage.Dnn.Publish.Tags
 
         public string TagList
         {
-            get { return this.txtTags.Text.Trim().ToString(); }
+            get { return this.txtTags.Text.Trim(); }
             set { this.txtTags.Text = value; }
         }
 
 		#region Optional Interfaces
 
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+		public ModuleActionCollection ModuleActions 
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+			                               this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 		#endregion

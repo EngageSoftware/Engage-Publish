@@ -8,11 +8,12 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-using System.Diagnostics;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System.Collections;
+    using System.Diagnostics;
 	/// <summary>
     /// Summary description for ItemTagCollection.
 	/// </summary>
@@ -21,12 +22,12 @@ namespace Engage.Dnn.Publish
 		public void Add(ItemTag r)
 		{
 			Debug.Assert(r != null, "r cannot be null");
-			base.InnerList.Add(r);
+			InnerList.Add(r);
 		}
 
         public ItemTag this[int index]
 		{
-			get {return (ItemTag) base.InnerList[index];}
+			get {return (ItemTag) InnerList[index];}
 		}
 	}
 }

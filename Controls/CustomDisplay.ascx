@@ -21,7 +21,7 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlTitle" runat="server" cssclass="itemTitle">
 		                <asp:Panel ID="pnlEditLink" runat="server" cssclass="itemEditLink">
-		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId, PortalId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
+		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId, PortalId) %>' Text='<%# this.EditText.ToString() %>' Visible='<%# this.Visibility %>'/>
 		                </asp:Panel>
 		                <h2>
 		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
@@ -52,7 +52,7 @@
 		            </asp:Panel>
 		            <asp:Panel ID="pnlTitle" runat="server" cssclass="itemTitle">
 		                <asp:Panel ID="pnlEditLink" runat="server" cssclass="itemEditLink">
-		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId, PortalId) %>' Text='<%# editText.ToString() %>' Visible='<%# visibility %>'/>
+		                    <asp:HyperLink runat="server" ID="lnkEdit" NavigateUrl='<%# BuildEditUrl(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ChildItemId")), TabId, ModuleId, PortalId) %>' Text='<%# this.EditText.ToString() %>' Visible='<%# this.Visibility %>'/>
 		                </asp:Panel>
 		                <h2>
 		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'  target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>

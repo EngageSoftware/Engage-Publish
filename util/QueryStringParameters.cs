@@ -8,20 +8,22 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Text;
+
+
 	/// <summary>
 	/// Summary description for QueryStringParameters.
 	/// </summary>
 	public class QueryStringParameters
 	{
-		private StringDictionary values;
+		private readonly StringDictionary values;
 		private const string ValueDelimiter = "&";
 
 

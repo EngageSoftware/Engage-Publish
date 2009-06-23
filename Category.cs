@@ -201,8 +201,7 @@ namespace Engage.Dnn.Publish
 
         public static Category Create(int portalId)
         {
-            Category i = new Category();
-            i.PortalId = portalId;
+            var i = new Category {PortalId = portalId};
             return i;
         }
 
@@ -219,16 +218,14 @@ namespace Engage.Dnn.Publish
 
         public static Category Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
         {
-            Category c = new Category();
-            c.Name = name;
-            c.Description = description;
-            c.AuthorUserId = authorUserId;
+            var c = new Category {Name = name, Description = description, AuthorUserId = authorUserId};
 
             //default to the top level item type of category
-            ItemRelationship irel = new ItemRelationship();
-            irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-
-            irel.ParentItemId = TopLevelCategoryItemType.Category.GetId();
+            var irel = new ItemRelationship
+                           {
+                                   RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId(),
+                                   ParentItemId = TopLevelCategoryItemType.Category.GetId()
+                           };
 
             c.Relationships.Add(irel);
             c.StartDate = c.LastUpdated = c.CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -254,7 +251,7 @@ namespace Engage.Dnn.Publish
         [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
         public static Category CreateCategory(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
         {
-            Category c = Category.Create(name, description, authorUserId, moduleId, portalId, displayTabId);
+            Category c = Create(name, description, authorUserId, moduleId, portalId, displayTabId);
             return c;
         }
 
@@ -479,7 +476,7 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
         {
-            Category c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+            var c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
                 c.CorrectDates();
@@ -575,7 +572,7 @@ namespace Engage.Dnn.Publish
         public static List<Article> GetCategoryArticles(int itemId, int portalId)
         {
             DataTable children = GetAllChildren(ItemType.Article.GetId(), itemId, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), portalId).Tables[0];
-            List<Article> articles = new List<Article>(children.Rows.Count);
+            var articles = new List<Article>(children.Rows.Count);
 
             foreach (DataRow row in children.Rows)
             {
@@ -624,10 +621,12 @@ namespace Engage.Dnn.Publish
             // they have no way of knowing what the top level category GUIDS are nor to include the entries in the 
             // relationships section of the file. Note, the stored procedure verifies the relationship doesn't exist
             // before inserting a new row.
-            ItemRelationship relationship = new ItemRelationship();
+            var relationship = new ItemRelationship
+                                   {
+                                           RelationshipTypeId = RelationshipType.CategoryToTopLevelCategory.GetId(),
+                                           ParentItemId = TopLevelCategoryItemType.Category.GetId()
+                                   };
 
-            relationship.RelationshipTypeId = RelationshipType.CategoryToTopLevelCategory.GetId();
-            relationship.ParentItemId = TopLevelCategoryItemType.Category.GetId();
             this.Relationships.Add(relationship);
             bool save = false;
 
@@ -666,7 +665,7 @@ namespace Engage.Dnn.Publish
             foreach (DataRow itemRow in GetAllChildren(this.ItemId, RelationshipType.ItemToParentCategory.GetId(), this.PortalId).Tables[0].Rows)
             {
                 Item childItem;
-                int itemId = (int)itemRow["itemId"];
+                var itemId = (int)itemRow["itemId"];
                 if (GetItemTypeId(itemId) == ItemType.Article.GetId())
                 {
                     childItem = Article.GetArticle(itemId, this.PortalId, true, true, true);
@@ -678,7 +677,7 @@ namespace Engage.Dnn.Publish
 
                 childItem.DisplayTabId = this.ChildDisplayTabId;
 
-                Category childCategory = childItem as Category;
+                var childCategory = childItem as Category;
                 if (childCategory != null)
                 {
                     childCategory.ChildDisplayTabId = this.ChildDisplayTabId;

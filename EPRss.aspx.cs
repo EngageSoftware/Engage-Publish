@@ -24,10 +24,9 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.Framework;
     using DotNetNuke.UI.Utilities;
     using Util;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
-    public partial class EPRss : PageBase
+    public partial class EpRss : PageBase
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string itemType;
@@ -55,10 +54,7 @@ namespace Engage.Dnn.Publish
                     this.ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture), PortalId).ToUpperInvariant();
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -71,10 +67,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -87,10 +80,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -103,10 +93,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -119,10 +106,7 @@ namespace Engage.Dnn.Publish
                 {
                     return i;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
         }
 
@@ -135,10 +119,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -183,8 +164,8 @@ namespace Engage.Dnn.Publish
             this.Response.ContentType = "text/xml";
             this.Response.ContentEncoding = Encoding.UTF8;
 
-            StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-            XmlTextWriter wr = new XmlTextWriter(sw);
+            var sw = new StringWriter(CultureInfo.InvariantCulture);
+            var wr = new XmlTextWriter(sw);
 
             wr.WriteStartElement("rss");
             wr.WriteAttributeString("version", "2.0");
@@ -207,18 +188,10 @@ namespace Engage.Dnn.Publish
             wr.WriteElementString("ttl", "120");
 
             //TODO: look into options for how to display the "Title" of the RSS feed
-            DataTable dt = new DataTable();
-            dt.Locale = CultureInfo.InvariantCulture;
+            var dt = new DataTable {Locale = CultureInfo.InvariantCulture};
             if (this.DisplayType == "ItemListing" || this.DisplayType == null)
             {
-                if (this.ItemId == -1)
-                {
-                    dt = DataProvider.Instance().GetMostRecent(this.ItemTypeId, this.NumberOfItems, this.PortalId);
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetMostRecentByCategoryId(this.ItemId, this.ItemTypeId, this.NumberOfItems, this.PortalId);
-                }
+                dt = this.ItemId == -1 ? DataProvider.Instance().GetMostRecent(this.ItemTypeId, this.NumberOfItems, this.PortalId) : DataProvider.Instance().GetMostRecentByCategoryId(this.ItemId, this.ItemTypeId, this.NumberOfItems, this.PortalId);
             }
             else if (this.DisplayType == "CategoryFeature")
             {
@@ -310,7 +283,7 @@ namespace Engage.Dnn.Publish
 
                     if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute) && thumbnail!=string.Empty)
                     {
-                        Uri thumnailLink = new Uri(this.Request.Url, ps.HomeDirectory + thumbnail);
+                        var thumnailLink = new Uri(this.Request.Url, ps.HomeDirectory + thumbnail);
                         thumbnail = thumnailLink.ToString();
                     }
 
@@ -338,7 +311,7 @@ namespace Engage.Dnn.Publish
                     {
                         if (attachmentSetting.PropertyValue.Length > 7)
                         {
-                            FileController fileController = new FileController();
+                            var fileController = new FileController();
                             int fileId = Convert.ToInt32(attachmentSetting.PropertyValue.Substring(7));
                             DotNetNuke.Services.FileSystem.FileInfo fi = fileController.GetFileById(fileId, PortalId);
                             string fileurl = "http://" + PortalSettings.PortalAlias.HTTPAlias + PortalSettings.HomeDirectory + fi.Folder + fi.FileName;

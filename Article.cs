@@ -11,7 +11,6 @@
 namespace Engage.Dnn.Publish
 {
     using System;
-    using System.Collections;
     using System.Data;
     using System.Globalization;
     using System.Xml.Serialization;
@@ -44,8 +43,7 @@ namespace Engage.Dnn.Publish
 
         public static Article Create(int portalId)
         {
-            Article a = new Article();
-            a.PortalId = portalId;
+            var a = new Article {PortalId = portalId};
             return a;
         }
 
@@ -62,16 +60,20 @@ namespace Engage.Dnn.Publish
         /// <returns>A <see cref="Article" /> with the assigned values.</returns>
         public static Article Create(string name, string description, string articleText, int authorUserId, int parentCategoryId, int moduleId, int portalId)
         {
-            Article a = new Article();
-            a.Name = name;
+            var a = new Article
+                        {
+                                Name = name,
+                                Description = description.Replace("<br>", "<br />"),
+                                articleText = articleText.Replace("<br>", "<br />"),
+                                AuthorUserId = authorUserId
+                        };
             //should we strip <br> tags now?
-            a.Description = description.Replace("<br>", "<br />"); ;
 
-            a.articleText = articleText.Replace("<br>","<br />");
-            a.AuthorUserId = authorUserId;
-            ItemRelationship irel = new ItemRelationship();
-            irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            irel.ParentItemId = parentCategoryId;
+            var irel = new ItemRelationship
+                           {
+                                   RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId(),
+                                   ParentItemId = parentCategoryId
+                           };
             a.Relationships.Add(irel);
             a.StartDate = a.LastUpdated = a.CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             a.PortalId = portalId;
@@ -100,7 +102,7 @@ namespace Engage.Dnn.Publish
             string hostPrinterFriendlySetting = HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + PortalId.ToString(CultureInfo.InvariantCulture));
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture).ToString();
-            ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+            var itemVersionSetting = new ItemVersionSetting(setting);
             this.VersionSettings.Add(itemVersionSetting);
 
             //Email A Friend
@@ -244,7 +246,7 @@ namespace Engage.Dnn.Publish
                         PortalSettings ps = Utility.GetPortalSettings(PortalId);
 
                         //ping
-                        Ping.SendPing(ps.PortalName.ToString(), ps.PortalAlias.ToString(), changedUrl, PortalId);
+                        Ping.SendPing(ps.PortalName, ps.PortalAlias.ToString(), changedUrl, PortalId);
                     }
                 }
             }
@@ -469,7 +471,7 @@ namespace Engage.Dnn.Publish
         public static Article GetArticle(int itemId)
         {
             IDataReader dr = DataProvider.Instance().GetArticle(itemId);
-            Article a = (Article)CBO.FillObject(dr, typeof(Article));
+            var a = (Article)CBO.FillObject(dr, typeof(Article));
             if (a != null)
             {
                 a.CorrectDates();

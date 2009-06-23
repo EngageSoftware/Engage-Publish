@@ -78,7 +78,7 @@ namespace Engage.Dnn.Publish
         {
             try
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 if (this.ddlChooseDisplayType.SelectedIndex > 0)
                 {
                     modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", this.ddlChooseDisplayType.SelectedValue);
@@ -101,7 +101,7 @@ namespace Engage.Dnn.Publish
 
                 if (this.divArticleDisplay.Visible && this.divArticleDisplay.Controls.Count > 0)
                 {
-                    ModuleSettingsBase articleOverrideSettings = this.divArticleDisplay.Controls[0] as ModuleSettingsBase;
+                    var articleOverrideSettings = this.divArticleDisplay.Controls[0] as ModuleSettingsBase;
                     if (articleOverrideSettings != null)
                     {
                         articleOverrideSettings.UpdateSettings();
@@ -110,7 +110,7 @@ namespace Engage.Dnn.Publish
 
                 if (this.divCategoryDisplay.Visible && this.divCategoryDisplay.Controls.Count > 0)
                 {
-                    ModuleSettingsBase categoryOverrideSettings = this.divCategoryDisplay.Controls[0] as ModuleSettingsBase;
+                    var categoryOverrideSettings = this.divCategoryDisplay.Controls[0] as ModuleSettingsBase;
                     if (categoryOverrideSettings != null)
                     {
                         categoryOverrideSettings.UpdateSettings();
@@ -250,10 +250,10 @@ namespace Engage.Dnn.Publish
             o = this.Settings["SupportWLW"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
-                bool supportWLW;
-                if (bool.TryParse(this.Settings["SupportWLW"].ToString(), out supportWLW))
+                bool supportWlw;
+                if (bool.TryParse(this.Settings["SupportWLW"].ToString(), out supportWlw))
                 {
-                    this.chkEnableWLWSupport.Checked = supportWLW;
+                    this.chkEnableWLWSupport.Checked = supportWlw;
                 }
             }
             else
@@ -357,7 +357,7 @@ namespace Engage.Dnn.Publish
 
         private ModuleSettingsBase CreateSettingsControl(string controlName)
         {
-            ModuleSettingsBase settingsControl = (ModuleSettingsBase)this.LoadControl(controlName);
+            var settingsControl = (ModuleSettingsBase)this.LoadControl(controlName);
             settingsControl.ModuleConfiguration = new ModuleController().GetModule(this.ModuleId, this.TabId);
 
             settingsControl.ModuleId = this.ModuleId;

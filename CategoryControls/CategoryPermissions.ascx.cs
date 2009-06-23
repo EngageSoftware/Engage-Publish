@@ -7,26 +7,19 @@
 //THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Security.Roles;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Security;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using Data;
+    using Security;
+
     public partial class CategoryPermissions : ModuleBase
     {
         private int categoryId;
@@ -53,7 +46,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         #region Event Handlers
 
-        private void Page_Load(object sender, System.EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             try
             {
@@ -83,9 +76,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                     //					if (this.enableSortOrder) {
                     //						tdSortOrderControls.Visible = true;
                     //					}
-                }
-                else
-                {
                 }
             }
             catch (Exception exc)
@@ -142,7 +132,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 if (sl.Selected && !RoleIdExists(sl.Value))
                 {
                     //get the item selected
-                    ListItem selected = new ListItem(sl.Text, sl.Value);
+                    var selected = new ListItem(sl.Text, sl.Value);
                     this.lstSelectedItems.Items.Add(selected);
                 }
             }
@@ -161,7 +151,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void imgRemove_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            ListItemCollection lc = new ListItemCollection();
+            var lc = new ListItemCollection();
             foreach (ListItem sl in this.lstSelectedItems.Items)
             {
                 if (sl.Selected) lc.Add(sl);
@@ -190,14 +180,14 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void LoadAllRoles()
         {
-            RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+            var rc = new RoleController();
             ArrayList roles = rc.GetRoles();
 
             foreach (RoleInfo role in roles)
             {
                 if (role.PortalID == PortalId)
                 {
-                    ListItem li = new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture));
+                    var li = new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture));
                     this.lstItems.Items.Add(li);
                 }
             }
@@ -211,7 +201,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 DataTable dt = DataProvider.Instance().GetAssignedRoles(this.categoryId);
                 foreach (DataRow row in dt.Rows)
                 {
-                    ListItem li = new ListItem(row["RoleName"].ToString(), row["RoleId"].ToString());
+                    var li = new ListItem(row["RoleName"].ToString(), row["RoleId"].ToString());
                     this.lstSelectedItems.Items.Add(li);
                 }
             }

@@ -8,21 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
+
+
     public partial class ArticleList : ModuleBase
     {
 
@@ -90,7 +90,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             ItemRelationship.DisplayCategoryHierarchy(cboCategories, -1, PortalId, false);
 
-            ListItem li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
+            var li = new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1");
             this.cboCategories.Items.Insert(0, li);
 
             li = cboCategories.Items.FindByValue(CategoryId.ToString(CultureInfo.InvariantCulture));
@@ -154,10 +154,10 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             dgItems.DataSourceID = string.Empty;
-            DataSet ds = new DataSet();
+            DataSet ds;
             if (txtArticleSearch.Text.Trim() != string.Empty)
             {
-                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                var objSecurity = new DotNetNuke.Security.PortalSecurity();
                 string searchKey = objSecurity.InputFilter(txtArticleSearch.Text.Trim(), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
                 //
                 ds = DataProvider.Instance().GetAdminItemListingSearchKey(categoryId, ItemType.Article.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId);
@@ -185,14 +185,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
             if (dgItems.Rows.Count < 1)
             {
-                if (UseApprovals)
-                {
-                    this.lblMessage.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("NoArticlesFound", LocalResourceFile), cboCategories.SelectedItem.ToString(), cboWorkflow.SelectedItem.ToString());
-                }
-                else
-                {
-                    this.lblMessage.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("NoArticlesFoundNoApproval", LocalResourceFile), cboCategories.SelectedItem.ToString());
-                }
+                this.lblMessage.Text = this.UseApprovals ? String.Format(CultureInfo.CurrentCulture, Localization.GetString("NoArticlesFound", this.LocalResourceFile), this.cboCategories.SelectedItem, this.cboWorkflow.SelectedItem) : String.Format(CultureInfo.CurrentCulture, Localization.GetString("NoArticlesFoundNoApproval", this.LocalResourceFile), this.cboCategories.SelectedItem);
 
                 dgItems.Visible = false;
                 lblMessage.Visible = true;
@@ -266,24 +259,14 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             if (dataTable != null)
             {
-                DataView dataView = new DataView(dataTable);
+                var dataView = new DataView(dataTable);
                 if (!string.IsNullOrEmpty(GridViewSortExpression))
                 {
-                    if (isPageIndexChanging)
-                    {
-                        dataView.Sort = string.Format(CultureInfo.InvariantCulture, "{0} {1}", GridViewSortExpression, GridViewSortDirection);
-                    }
-                    else
-                    {
-                        dataView.Sort = string.Format(CultureInfo.InvariantCulture, "{0} {1}", GridViewSortExpression, GetSortDirection());
-                    }
+                    dataView.Sort = isPageIndexChanging ? string.Format(CultureInfo.InvariantCulture, "{0} {1}", this.GridViewSortExpression, this.GridViewSortDirection) : string.Format(CultureInfo.InvariantCulture, "{0} {1}", this.GridViewSortExpression, this.GetSortDirection());
                 }
                 return dataView;
             }
-            else
-            {
-                return new DataView();
-            }
+            return new DataView();
         }
 
 
@@ -311,7 +294,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (itemId != null)
             {
                 string categoryId = this.cboCategories.SelectedValue.ToString(CultureInfo.InvariantCulture);
-                return BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=versionslist&itemid=" + itemId.ToString() + "&categoryid=" + categoryId);
+                return BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=versionslist&itemid=" + itemId + "&categoryid=" + categoryId);
             }
             return string.Empty;
         }
@@ -320,7 +303,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             if (itemVersionId != null)
             {
-                return BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=articleEdit&versionid=" + itemVersionId.ToString());
+                return BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=articleEdit&versionid=" + itemVersionId);
             }
             return string.Empty;
         }
@@ -346,12 +329,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    Label lblItemVersionId = (Label)gvr.FindControl("lblItemVersionId");
-                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    var lblItemVersionId = (Label)gvr.FindControl("lblItemVersionId");
+                    var cb = (CheckBox)gvr.FindControl("chkSelect");
                     if (lblItemVersionId != null && cb != null && cb.Checked)
                     {
                         //approve
-                        Article a = (Article)Article.GetArticleVersion(Convert.ToInt32(lblItemVersionId.Text), PortalId);
+                        var a = Article.GetArticleVersion(Convert.ToInt32(lblItemVersionId.Text), this.PortalId);
                         a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         a.UpdateApprovalStatus();
                     }
@@ -375,8 +358,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
-                    CheckBox chkSelect = (CheckBox)gvr.FindControl("chkSelect");
+                    var hlId = (HyperLink)gvr.FindControl("hlId");
+                    var chkSelect = (CheckBox)gvr.FindControl("chkSelect");
                     if (hlId != null && chkSelect != null && chkSelect.Checked)
                     {
                         Item.DeleteItem(Convert.ToInt32(hlId.Text, CultureInfo.CurrentCulture), PortalId);
@@ -402,12 +385,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (GridViewRow gvr in dgItems.Rows)
                 {
-                    HyperLink hlId = (HyperLink)gvr.FindControl("hlId");
-                    CheckBox cb = (CheckBox)gvr.FindControl("chkSelect");
+                    var hlId = (HyperLink)gvr.FindControl("hlId");
+                    var cb = (CheckBox)gvr.FindControl("chkSelect");
                     if (hlId != null && cb != null && cb.Checked)
                     {
                         //approve
-                        Article a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);
+                        var a = (Article)Item.GetItem(Convert.ToInt32(hlId.Text), PortalId, ItemType.Article.GetId(), false);
                         a.ApprovalStatusId = ApprovalStatus.Archived.GetId();
                         a.UpdateApprovalStatus();
                     }

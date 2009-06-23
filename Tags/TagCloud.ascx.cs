@@ -8,21 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Tags
 {
+
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Text;
+    using System.Web;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
 
     public partial class TagCloud : ModuleBase
     {
@@ -32,7 +32,7 @@ namespace Engage.Dnn.Publish.Tags
         private int mostPopularTagCount;
         private int leastPopularTagCount;
 
-        private bool popularTagCount
+        private bool UsePopularTags
         {
             get
             {
@@ -70,8 +70,8 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (AllowTitleUpdate)
             {
-                DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;
-                tp.Title += " " + qsTags.ToString();
+                var tp = (DotNetNuke.Framework.CDefault)this.Page;
+                tp.Title += " " + this.qsTags;
             }
         }
 
@@ -79,10 +79,10 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (popularTagsTotal > 0)
             {
-                //string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + popularTagCount.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                //DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
+                //string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + UsePopularTags.ToString(CultureInfo.InvariantCulture); // +"PageId";
+                //DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, UsePopularTags);
 
-                DataTable dt = Tag.GetPopularTags(PortalId, tagQuery, popularTagCount);
+                DataTable dt = Tag.GetPopularTags(PortalId, tagQuery, this.UsePopularTags);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -105,10 +105,10 @@ namespace Engage.Dnn.Publish.Tags
                     string itemsWithTag = Localization.GetString("ItemsWithTag", LocalResourceFile);
                     foreach (DataRow dr in dt.DefaultView.Table.Rows)
                     {
-                        int totalItems = (int)dr["TotalItems"];
-                        string tagName = (string)dr["Name"];
-                        Literal lnkTag = new Literal();
-                        StringBuilder sb = new StringBuilder(255);
+                        var totalItems = (int)dr["TotalItems"];
+                        var tagName = (string)dr["Name"];
+                        var lnkTag = new Literal();
+                        var sb = new StringBuilder(255);
                         sb.Append("<li class=\"");
                         sb.Append(this.GetTagSizeClass(totalItems));
                         sb.Append("\"><span>");
@@ -176,7 +176,7 @@ namespace Engage.Dnn.Publish.Tags
             string existingTags;
             if (o != null && useExisting)
             {
-                existingTags = o.ToString() + "-";
+                existingTags = o + "-";
             }
             else
             {
@@ -208,7 +208,7 @@ namespace Engage.Dnn.Publish.Tags
                         //add the seperator in first
                         phTagFilters.Controls.Add(new LiteralControl(Localization.GetString("TagSeperator.Text", LocalResourceFile)));
 
-                        StringBuilder sb = new StringBuilder(255);
+                        var sb = new StringBuilder(255);
                         sb.Append("<li class=\"PublishFilterList");
                         sb.Append("\">");
                         sb.Append("<a href=\"");

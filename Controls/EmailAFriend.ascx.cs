@@ -8,13 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+
 	public partial class EmailAFriend :  ModuleBase
 	{
 		#region Event Handlers
@@ -51,7 +52,7 @@ namespace Engage.Dnn.Publish.Controls
                 string subject = Localization.GetString("EmailAFriendSubject", LocalResourceFile);
                 subject = subject.Replace("[Engage:Portal]", PortalSettings.PortalName);
 
-                Mail.SendMail(PortalSettings.Email.ToString(), txtTo.Text.Trim(), "", subject, message, "", "HTML", "", "", "", "");
+                Mail.SendMail(this.PortalSettings.Email, txtTo.Text.Trim(), "", subject, message, "", "HTML", "", "", "", "");
                 ClearCommentInput();
                 mpeEmailAFriend.Hide();
                 

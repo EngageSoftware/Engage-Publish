@@ -8,38 +8,38 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.UserControls;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Tags;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Entities.Tabs;
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.UserControls;
+    using Controls;
+    using Data;
+    using Tags;
+    using Util;
+
+
     public partial class ArticleEdit : ModuleBase
     {
         //the relationship controls don't have ID's set in the code below because they will fail if you set them all to the same id.
         //The local resource file for each of the relationship controls is set in the code below.
 
         #region Controls
-        protected TextEditor teArticleText;
+        protected TextEditor TeArticleText;
         private ItemRelationships parentCategoryRelationship; // item parent category
         private ItemRelationships relatedCategoryRelationships; // item related categories
         private ItemRelationships relatedArticlesRelationships; //related articles 
@@ -52,10 +52,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         #region Private Const
         private readonly string ItemrelationshipResourceFile = "~" + DesktopModuleFolderName + "Controls/App_LocalResources/ItemRelationships";
-        private const string approvalControlToLoad = "../controls/ItemApproval.ascx";
-        private const string itemControlToLoad = "../Controls/itemEdit.ascx";
+        private const string ApprovalControlToLoad = "../controls/ItemApproval.ascx";
+        private const string ItemControlToLoad = "../Controls/itemEdit.ascx";
 
-        private const string tagControlToLoad = "../Tags/TagEntry.ascx";
+        private const string TagControlToLoad = "../Tags/TagEntry.ascx";
         #endregion
 
         #region Properties
@@ -113,24 +113,24 @@ namespace Engage.Dnn.Publish.ArticleControls
                 this.cmdDelete.Visible = IsAdmin;
             }
 
-            Article av = (Article)VersionInfoObject;
+            var av = (Article)VersionInfoObject;
 
             //Item Edit
-            itemEditControl = (ItemEdit)LoadControl(itemControlToLoad);
+            itemEditControl = (ItemEdit)LoadControl(ItemControlToLoad);
             itemEditControl.ModuleConfiguration = ModuleConfiguration;
-            itemEditControl.ID = Path.GetFileNameWithoutExtension(itemControlToLoad);
+            itemEditControl.ID = Path.GetFileNameWithoutExtension(ItemControlToLoad);
             itemEditControl.VersionInfoObject = VersionInfoObject;
             this.phControls.Controls.Add(itemEditControl);
 
             //Article Text Editor
-            teArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
-            teArticleText.HtmlEncode = false;
-            teArticleText.TextRenderMode = "Raw";
-            teArticleText.Width = ArticleEditWidth; //default values for the editor
-            teArticleText.Height = ArticleEditHeight; //default values for the editor
-            teArticleText.ChooseMode = true;
-            this.phArticleText.Controls.Add(teArticleText);
-            teArticleText.Text = av.ArticleText;
+            this.TeArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
+            this.TeArticleText.HtmlEncode = false;
+            this.TeArticleText.TextRenderMode = "Raw";
+            this.TeArticleText.Width = ArticleEditWidth; //default values for the editor
+            this.TeArticleText.Height = ArticleEditHeight; //default values for the editor
+            this.TeArticleText.ChooseMode = true;
+            this.phArticleText.Controls.Add(this.TeArticleText);
+            this.TeArticleText.Text = av.ArticleText;
 
             //Parent Category Relationship
             this.parentCategoryRelationship = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
@@ -190,9 +190,9 @@ namespace Engage.Dnn.Publish.ArticleControls
             this.phEmbeddedArticle.Controls.Add(this.embeddedArticlesRelationships);
 
             //load approval status
-            itemApprovalStatus = (ItemApproval)LoadControl(approvalControlToLoad);
+            itemApprovalStatus = (ItemApproval)LoadControl(ApprovalControlToLoad);
             itemApprovalStatus.ModuleConfiguration = ModuleConfiguration;
-            itemApprovalStatus.ID = Path.GetFileNameWithoutExtension(approvalControlToLoad);
+            itemApprovalStatus.ID = Path.GetFileNameWithoutExtension(ApprovalControlToLoad);
             itemApprovalStatus.VersionInfoObject = VersionInfoObject;
             this.phApproval.Controls.Add(itemApprovalStatus);
 
@@ -200,16 +200,16 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (AllowTags)
             {
                 rowTagEntry.Visible = true;
-                StringBuilder tagList = new StringBuilder(255);
+                var tagList = new StringBuilder(255);
                 foreach (ItemTag it in VersionInfoObject.Tags)
                 {
                     tagList.Append(Tag.GetTag(it.TagId,PortalId).Name);
                     tagList.Append(";");
                 }
 
-                tagEntryControl = (TagEntry)LoadControl(tagControlToLoad);
+                tagEntryControl = (TagEntry)LoadControl(TagControlToLoad);
                 tagEntryControl.ModuleConfiguration = ModuleConfiguration;
-                tagEntryControl.ID = Path.GetFileNameWithoutExtension(tagControlToLoad);
+                tagEntryControl.ID = Path.GetFileNameWithoutExtension(TagControlToLoad);
 
 
                 tagEntryControl.TagList = tagList.ToString();
@@ -234,7 +234,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 LocalizeCollapsePanels();
 
                 DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirm", LocalResourceFile));
-                Article av = (Article)VersionInfoObject;
+                var av = (Article)VersionInfoObject;
                 if (!Page.IsPostBack)
                 {
                     //check to see if we're dealing with a new Item, if so set the parentid based on the querystring
@@ -249,12 +249,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     trArticleId.Visible = ShowItemIds;
 
-                    if (VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture) == "-1")
-                        this.txtArticleId.Text = Localization.GetString("NewArticle", LocalResourceFile);
-                    else
-                        this.txtArticleId.Text = VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
+                    this.txtArticleId.Text = this.VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture) == "-1" ? Localization.GetString("NewArticle", this.LocalResourceFile) : this.VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
                     this.txtVersionNumber.Text = av.VersionNumber;
-                    this.teArticleText.Text = av.ArticleText;
+                    this.TeArticleText.Text = av.ArticleText;
                     this.txtPreviousVersionDescription.Text = av.VersionDescription;
 
                     this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("CurrentPage", LocalResourceFile), true.ToString(CultureInfo.InvariantCulture)));
@@ -436,7 +433,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                     av.VersionNumber = this.txtVersionNumber.Text;
                     av.VersionDescription = this.txtVersionDescription.Text;
-                    av.ArticleText = this.teArticleText.Text;
+                    av.ArticleText = this.TeArticleText.Text;
                 }
 
                             //load the article attachement settings
@@ -527,7 +524,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             try
             {
-                Article av = (Article)VersionInfoObject;
+                var av = (Article)VersionInfoObject;
 
                 this.txtMessage.Text = string.Empty;
                 bool error = false;
@@ -585,7 +582,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 
 
-                av.ArticleText = teArticleText.Text;
+                av.ArticleText = this.TeArticleText.Text;
                 av.VersionDescription = txtVersionDescription.Text;
                 av.VersionNumber = txtVersionNumber.Text;
                 av.Description = itemEditControl.DescriptionText;
@@ -595,8 +592,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 //                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
 
                 //create a relationship
-                ItemRelationship irel = new ItemRelationship();
-                irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+                var irel = new ItemRelationship {RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId()};
                 int[] ids = this.parentCategoryRelationship.GetSelectedItemIds();
 
                 //check for parent category, if none then add a relationship for Top Level Item
@@ -608,25 +604,31 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 foreach (int i in this.relatedCategoryRelationships.GetSelectedItemIds())
                 {
-                    ItemRelationship irco = new ItemRelationship();
-                    irco.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
-                    irco.ParentItemId = i;
+                    var irco = new ItemRelationship
+                                   {
+                                           RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId(),
+                                           ParentItemId = i
+                                   };
                     av.Relationships.Add(irco);
                 }
 
                 foreach (int i in this.relatedArticlesRelationships.GetSelectedItemIds())
                 {
-                    ItemRelationship irArticleso = new ItemRelationship();
-                    irArticleso.RelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId();
-                    irArticleso.ParentItemId = i;
+                    var irArticleso = new ItemRelationship
+                                          {
+                                                  RelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId(),
+                                                  ParentItemId = i
+                                          };
                     av.Relationships.Add(irArticleso);
                 }
 
                 foreach (int i in this.embeddedArticlesRelationships.GetSelectedItemIds())
                 {
-                    ItemRelationship irLinksso = new ItemRelationship();
-                    irLinksso.RelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId();
-                    irLinksso.ParentItemId = i;
+                    var irLinksso = new ItemRelationship
+                                        {
+                                                RelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId(),
+                                                ParentItemId = i
+                                        };
                     av.Relationships.Add(irLinksso);
                 }
 
@@ -634,7 +636,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     av.Tags.Clear();
                     //Add the tags to the ItemTagCollection
-                    foreach (Tag t in Tag.ParseTags(tagEntryControl.TagList.ToString(), PortalId))
+                    foreach (Tag t in Tag.ParseTags(this.tagEntryControl.TagList, PortalId))
                     {
                         ItemTag it = ItemTag.Create();
                         it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
@@ -704,8 +706,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     itemExists = true;
                     bool inUse = false;
-                    StringBuilder modulesInUse = new StringBuilder();
-                    ModuleController mc = new ModuleController();
+                    var modulesInUse = new StringBuilder();
+                    var mc = new ModuleController();
                     ArrayList modules = mc.GetModulesByDefinition(PortalId, Utility.DnnFriendlyModuleName);
 
                     foreach (ModuleInfo module in modules)
@@ -739,7 +741,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     else
                     {
-                        StringBuilder errorMessage = new StringBuilder();
+                        var errorMessage = new StringBuilder();
 
                         if (inUse)
                         {
@@ -779,9 +781,8 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             ddlDisplayTabId.Items.Clear();
 
-            string[] modules = new string[] { Utility.DnnFriendlyModuleName };
-            DataTable dt = new DataTable();
-            dt.Locale = CultureInfo.InvariantCulture;
+            var modules = new[] { Utility.DnnFriendlyModuleName };
+            DataTable dt;
             //we're going to get all pages no matter if they have a Publish module on them or not. We'll only highlight Overrideable ones later
             //if (chkForceDisplayTab.Checked)
             //{
@@ -812,7 +813,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             //check if the DisplayTabId should be set.
-            Article av = (Article)VersionInfoObject;
+            var av = (Article)VersionInfoObject;
             if (!VersionInfoObject.IsNew)
             {
                 ListItem li = ddlDisplayTabId.Items.FindByValue(av.DisplayTabId.ToString(CultureInfo.InvariantCulture));
@@ -902,9 +903,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void FillPhotoGalleryDropDown()
         {
-            ModuleController modules = new ModuleController();
+            var modules = new ModuleController();
 
-            SortedList<string, ListItem> simpleGalleryAlbums = new SortedList<string, ListItem>(StringComparer.CurrentCultureIgnoreCase);
+            var simpleGalleryAlbums = new SortedList<string, ListItem>(StringComparer.CurrentCultureIgnoreCase);
             if (AllowSimpleGalleryIntegration)
             {
                 foreach (ModuleInfo module in modules.GetModulesByDefinition(PortalId, Utility.SimpleGalleryFriendlyName))
@@ -919,13 +920,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                             {
                                 caption += i.ToString(CultureInfo.InvariantCulture);
                             }
-                            simpleGalleryAlbums.Add(caption, new ListItem(dr["Caption"].ToString(), "s" + dr["AlbumId"].ToString()));
+                            simpleGalleryAlbums.Add(caption, new ListItem(dr["Caption"].ToString(), "s" + dr["AlbumId"]));
                         }
                     }
                 }
             }
 
-            SortedList<string, ListItem> ultaMediaGalleryAlbums = new SortedList<string, ListItem>(StringComparer.CurrentCultureIgnoreCase);
+            var ultaMediaGalleryAlbums = new SortedList<string, ListItem>(StringComparer.CurrentCultureIgnoreCase);
             if (AllowUltraMediaGalleryIntegration)
             {
                 foreach (ModuleInfo module in modules.GetModulesByDefinition(PortalId, Utility.UltraMediaGalleryFriendlyName))
@@ -940,7 +941,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                             {
                                 title += i.ToString(CultureInfo.InvariantCulture);
                             }
-                            ultaMediaGalleryAlbums.Add(title, new ListItem(dr["Title"].ToString(), "u" + dr["ItemId"].ToString()));
+                            ultaMediaGalleryAlbums.Add(title, new ListItem(dr["Title"].ToString(), "u" + dr["ItemId"]));
                         }
                     }
                 }
@@ -993,13 +994,13 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void SaveSettings()
         {
-            Article av = (Article)VersionInfoObject;
+            var av = (Article)VersionInfoObject;
             
             av.VersionSettings.Clear();
             //Printer Friendly
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = chkPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture);
-            ItemVersionSetting itemVersionSetting = new ItemVersionSetting(setting);
+            var itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
 
             //AuthorName setting
@@ -1108,8 +1109,8 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             clpExtended.CollapsedText = Localization.GetString("clpExtended.CollapsedText", LocalResourceFile);
             clpExtended.ExpandedText = Localization.GetString("clpExtended.ExpandedText", LocalResourceFile);
-            clpExtended.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-            clpExtended.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpExtended.ExpandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpExtended.CollapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
         }
     
     }

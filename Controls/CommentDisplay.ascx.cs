@@ -8,21 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web.UI;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Utilities;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-using Engage.Dnn.UserFeedback;
-using DotNetNuke.Services.Localization;
+
 
 //TODO: add last updated date
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using Util;
     public partial class CommentDisplay : CommentDisplayBase
     {
         private int articleId = -1;
@@ -114,14 +113,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         if (ItemId == -1)
                         {
-                            if (ItemVersionId > 0)
-                            {
-                                VersionInfoObject = Article.GetArticleVersion(ItemVersionId, PortalId);
-                            }
-                            else
-                            {
-                                VersionInfoObject = Article.Create(PortalId);
-                            }
+                            this.VersionInfoObject = this.ItemVersionId > 0 ? Article.GetArticleVersion(this.ItemVersionId, this.PortalId) : Article.Create(this.PortalId);
                         }
                         else
                         {
@@ -163,7 +155,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             //get cache
             string cacheKey = Utility.CacheKeyPublishArticleComments + ItemId.ToString(CultureInfo.InvariantCulture);
-            List<UserFeedback.Comment> comments = DataCache.GetCache(cacheKey) as List<UserFeedback.Comment>;
+            var comments = DataCache.GetCache(cacheKey) as List<UserFeedback.Comment>;
             if (comments == null)
             {
                 comments = Comment.GetCommentsByItemId(ArticleId, ApprovalStatus.Approved.GetId());
@@ -214,13 +206,17 @@ namespace Engage.Dnn.Publish.Controls
         {
             string sComment;
             string sUrl = string.Empty;
+            if (sUrl == null)
+            {
+                throw new NotImplementedException();
+            }
             string sName = string.Empty;
             
             if (firstName != null)
                 sName += firstName.ToString();
 
             if (lastName!= null)
-                sName += " " + lastName.ToString();
+                sName += " " + lastName;
 
             if (url != null && url.ToString().Trim() != string.Empty)
             {
@@ -252,9 +248,6 @@ namespace Engage.Dnn.Publish.Controls
             if (DisplayRandomComment)
             {
                 dlCommentText.DataSource = Utility.GetRandomItem(Comment.GetCommentsByItemId(ArticleId, ApprovalStatus.Approved.GetId()));
-            }
-            else
-            {
             }
             dlCommentText.DataBind();
         }

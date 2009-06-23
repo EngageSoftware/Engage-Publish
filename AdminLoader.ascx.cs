@@ -8,60 +8,55 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Data;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Admin;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish
 {
+
+    using System;
+    using System.Collections.Specialized;
+    using System.Data;
+    using DotNetNuke.Services.Localization;
+    using Admin;
+    using Util;
+
     public partial class AdminLoader : ModuleBase
     {
-        private static StringDictionary _adminControlKeys;
+        private static StringDictionary AdminControlKeys;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a property")]
         public static StringDictionary GetAdminControlKeys()
         {
-            if (_adminControlKeys == null)
+            if (AdminControlKeys == null)
             {
                 FillAdminControlKeys();
             }
-            return _adminControlKeys;
+            return AdminControlKeys;
         }
 
         private static void FillAdminControlKeys()
         {
-            StringDictionary adminControlKeys = new StringDictionary();
+            var adminControlKeys = new StringDictionary
+                                       {
+                                               {"CATEGORYLIST", "categorycontrols/CategoryList.ascx"},
+                                               {"CATEGORYLISTING", "categorycontrols/CategoryListing.ascx"},
+                                               {"CATEGORYSORT", "categorycontrols/CategorySort.ascx"},
+                                               {"CATEGORYEDIT", "categorycontrols/CategoryEdit.ascx"},
+                                               {"VERSIONSLIST", "controls/ItemVersions.ascx"},
+                                               {"HELP", "admin/AdminInstructions.ascx"},
+                                               {"ARTICLELIST", "articlecontrols/ArticleList.ascx"},
+                                               {"ARTICLEEDIT", "articlecontrols/ArticleEdit.ascx"},
+                                               {"ADMINMAIN", "Admin/AdminMain.ascx"},
+                                               {"ADMINTOOLS", "Admin/AdminTools.ascx"},
+                                               {"COMMENTLIST", "Admin/CommentList.ascx"},
+                                               {"COMMENTEDIT", "Admin/CommentEdit.ascx"},
+                                               {"ITEMCREATED", "Admin/ItemCreated.ascx"},
+                                               {"AMSSETTINGS", "Admin/AdminSettings.ascx"},
+                                               {"DELETEITEM", "Admin/DeleteItem.ascx"},
+                                               {"SYNDICATION", "Admin/Syndication.ascx"},
+                                               {"DEFAULT", "Admin/AdminMain.ascx"}
+                                       };
 
-            adminControlKeys.Add("CATEGORYLIST", "categorycontrols/CategoryList.ascx");
-            adminControlKeys.Add("CATEGORYLISTING", "categorycontrols/CategoryListing.ascx");
-
-            adminControlKeys.Add("CATEGORYSORT", "categorycontrols/CategorySort.ascx");
-
-            adminControlKeys.Add("CATEGORYEDIT", "categorycontrols/CategoryEdit.ascx");
-
-            adminControlKeys.Add("VERSIONSLIST", "controls/ItemVersions.ascx");
-            adminControlKeys.Add("HELP", "admin/AdminInstructions.ascx");
-
-            adminControlKeys.Add("ARTICLELIST", "articlecontrols/ArticleList.ascx");
-            adminControlKeys.Add("ARTICLEEDIT", "articlecontrols/ArticleEdit.ascx");
-
-            adminControlKeys.Add("ADMINMAIN", "Admin/AdminMain.ascx");
-            adminControlKeys.Add("ADMINTOOLS", "Admin/AdminTools.ascx");
-
-            adminControlKeys.Add("COMMENTLIST", "Admin/CommentList.ascx");
-            adminControlKeys.Add("COMMENTEDIT", "Admin/CommentEdit.ascx");
-
-            adminControlKeys.Add("ITEMCREATED", "Admin/ItemCreated.ascx");
-            adminControlKeys.Add("AMSSETTINGS", "Admin/AdminSettings.ascx");
-            adminControlKeys.Add("DELETEITEM", "Admin/DeleteItem.ascx");
-            adminControlKeys.Add("SYNDICATION", "Admin/Syndication.ascx");
-            adminControlKeys.Add("DEFAULT", "Admin/AdminMain.ascx");
-
-            _adminControlKeys = adminControlKeys;
+            AdminControlKeys = adminControlKeys;
         }
 
         #region Event Handlers
@@ -101,17 +96,9 @@ namespace Engage.Dnn.Publish
             }
             else
             {
-
                 //check to see if there are any categories, if not display an instructions control
                 DataTable dt = Category.GetCategories(PortalId);
-                if (dt.Rows.Count < 1)
-                {
-                    controlToLoad = "Admin/AdminInstructions.ascx";
-                }
-                else
-                {
-                    controlToLoad = "articlecontrols/ArticleList.ascx";
-                }
+                this.controlToLoad = dt.Rows.Count < 1 ? "Admin/AdminInstructions.ascx" : "articlecontrols/ArticleList.ascx";
             }
 
             if (!IsSetup)
@@ -123,14 +110,13 @@ namespace Engage.Dnn.Publish
         private void LoadControlType()
         {
 
-            AdminMain mb = (AdminMain)LoadControl("Admin/AdminMain.ascx");
+            var mb = (AdminMain)LoadControl("Admin/AdminMain.ascx");
             mb.ModuleConfiguration = ModuleConfiguration;
 
             mb.ID = System.IO.Path.GetFileNameWithoutExtension("Admin/AdminMain.ascx");
             phAdminControls.Controls.Add(mb);
 
-            ModuleBase amb;
-            amb = (ModuleBase)LoadControl(controlToLoad);
+            var amb = (ModuleBase)this.LoadControl(this.controlToLoad);
             amb.ModuleConfiguration = ModuleConfiguration;
             amb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
             phControls.Controls.Add(amb);

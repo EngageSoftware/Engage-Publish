@@ -8,14 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke.Services.Search;
-using System;
-using System.Collections;
-using System.Data;
-using System.Diagnostics;
 
 namespace Engage.Dnn.Publish.Security
 {
+    using System.Data;
+    using System.Diagnostics;
+    using DotNetNuke.Services.Search;
+
 	/// <summary>
 	/// Summary description for NullSecurityFilter.
 	/// </summary>

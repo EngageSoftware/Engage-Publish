@@ -18,7 +18,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Dnn", Scope = "namespace", Target = "Engage.Dnn.Publish.Util")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Util", Scope = "namespace", Target = "Engage.Dnn.Publish.Util")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA2210:AssembliesShouldHaveValidStrongNames")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Rss", Scope = "type", Target = "Engage.Dnn.Publish.EPRss")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Rss", Scope = "type", Target = "Engage.Dnn.Publish.EpRss")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "upnl", Scope = "member", Target = "Engage.Dnn.Publish.ItemDisplay.#upnlPublish")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "btn", Scope = "member", Target = "Engage.Dnn.Publish.ItemDisplayOptions.#btnConfigure")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "btn", Scope = "member", Target = "Engage.Dnn.Publish.ItemDisplayOptions.#btnConfigure_Click(System.Object,System.EventArgs)")]

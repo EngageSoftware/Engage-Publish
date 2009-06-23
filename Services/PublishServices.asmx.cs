@@ -39,11 +39,11 @@ namespace Engage.Dnn.Publish.Services
         [WebMethod][ScriptMethod]
         public string[] GetTagsCompletionList(string prefixText, int count, string contextKey)
         {
-            PortalSecurity objSecurity = new PortalSecurity();
+            var objSecurity = new PortalSecurity();
 
             DataTable dt = Tag.GetTagsByString(objSecurity.InputFilter(HttpUtility.UrlDecode(prefixText), PortalSecurity.FilterFlag.NoSQL), Convert.ToInt32(contextKey, CultureInfo.InvariantCulture));
 
-            string[] returnTags = new string[dt.Rows.Count];
+            var returnTags = new string[dt.Rows.Count];
             foreach (DataRow dr in dt.Rows)
             {
                 returnTags[0] = dr["name"].ToString();
@@ -60,7 +60,7 @@ namespace Engage.Dnn.Publish.Services
         [WebMethod][ScriptMethod]
         public Pair[] GetArticlesByCategory(int categoryId)
         {
-            List<Pair> articles = new List<Pair>();
+            var articles = new List<Pair>();
             Publish.Category category = Publish.Category.GetCategory(categoryId);
             if (category != null)
             {

@@ -8,27 +8,29 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Controls;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Forum;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Services.Mail;
+
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using Controls;
+    using Data;
+    using Forum;
+    using Util;
 
     public partial class ArticleDisplay : ModuleBase, IActionable
     {
@@ -37,19 +39,21 @@ namespace Engage.Dnn.Publish.ArticleControls
         private PrinterFriendlyButton pf;
         private RelatedArticleLinksBase ral;
         private ArticleDisplay ad;
-        private bool displayPrinterFriendly = true;
-        private bool displayEmailAFriend = true;
-        private bool displayRelatedLinks = true;
-        private bool displayRelatedArticle = true;
-        private bool displayTitle = true;
-        private bool showAuthor;// = false;
-        private bool showTags;// = false;
 
-        private const string commentsControlToLoad = "../Controls/CommentDisplay.ascx";
-        private const string emailControlToLoad = "../Controls/EmailAFriend.ascx";
-        private const string printerControlToLoad = "../Controls/PrinterFriendlyButton.ascx";
-        private const string relatedArticlesControlToLoad = "../Controls/RelatedArticleLinks.ascx";
-        private const string articleControlToLoad = "articleDisplay.ascx";
+        public ArticleDisplay()
+        {
+            this.DisplayPrinterFriendly = true;
+            this.DisplayRelatedLinks = true;
+            this.DisplayRelatedArticle = true;
+            this.DisplayEmailAFriend = true;
+            this.DisplayTitle = true;
+        }
+
+        private const string CommentsControlToLoad = "../Controls/CommentDisplay.ascx";
+        private const string EmailControlToLoad = "../Controls/EmailAFriend.ascx";
+        private const string PrinterControlToLoad = "../Controls/PrinterFriendlyButton.ascx";
+        private const string RelatedArticlesControlToLoad = "../Controls/RelatedArticleLinks.ascx";
+        private const string ArticleControlToLoad = "articleDisplay.ascx";
 
         override protected void OnInit(EventArgs e)
         {
@@ -66,44 +70,44 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         public bool DisplayPrinterFriendly
         {
-            get { return this.displayPrinterFriendly; }
-            set { this.displayPrinterFriendly = value; }
+            get;
+            set;
         }
 
         public bool DisplayRelatedLinks
         {
-            get { return this.displayRelatedLinks; }
-            set { this.displayRelatedLinks = value; }
+            get;
+            set;
         }
 
         public bool DisplayRelatedArticle
         {
-            get { return this.displayRelatedArticle; }
-            set { this.displayRelatedArticle = value; }
+            get;
+            set;
         }
 
         public bool DisplayEmailAFriend
         {
-            get { return this.displayEmailAFriend; }
-            set { this.displayEmailAFriend = value; }
+            get;
+            set;
         }
 
         public bool DisplayTitle
         {
-            get { return this.displayTitle; }
-            set { this.displayTitle = value; }
+            get;
+            set;
         }
 
         public bool ShowAuthor
         {
-            get { return this.showAuthor; }
-            set { this.showAuthor = value; }
+            get;
+            set;
         }
 
         public bool ShowTags
         {
-            get { return this.showTags; }
-            set { this.showTags = value; }
+            get;
+            set;
         }
 
 
@@ -262,14 +266,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     //else { o = true; }
 
-                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId);
-                    if (forumCommentSetting == null)
-                    {
-                        forumCommentSetting = new ItemVersionSetting();
-                        forumCommentSetting.ControlName = "chkForumComments";
-                        forumCommentSetting.PropertyName = "Checked";
-                        forumCommentSetting.PropertyValue = false.ToString();
-                    }
+                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(this.VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", this.PortalId)
+                                                             ?? new ItemVersionSetting
+                                                                                                                                                                                       {
+                                                                                                                                                                                               ControlName = "chkForumComments",
+                                                                                                                                                                                               PropertyName = "Checked",
+                                                                                                                                                                                               PropertyValue = false.ToString()
+                                                                                                                                                                                       };
 
                     return IsPublishCommentType || !Convert.ToBoolean(forumCommentSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
@@ -458,7 +461,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void ajaxRating_Changed(object sender, AjaxControlToolkit.RatingEventArgs e)
         {
-            Article article = (Article)VersionInfoObject;
+            var article = (Article)VersionInfoObject;
             article.AddRating(int.Parse(e.Value, CultureInfo.InvariantCulture), UserId == -1 ? null : (int?)UserId);
             ajaxRating.ReadOnly = true;
         }
@@ -469,7 +472,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (Page.IsValid)
             {
                 //TODO: we're allowing anonymous comments, we should have a setting for this.
-                DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
+                var objSecurity = new DotNetNuke.Security.PortalSecurity();
                 if (UseForumComments)
                 {
                     int? categoryForumId = GetCategoryForumId();
@@ -480,9 +483,11 @@ namespace Engage.Dnn.Publish.ArticleControls
                             objSecurity.InputFilter(txtComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting), UserId,
                             Request.UserHostAddress);
 
-                        ItemVersionSetting threadIdSetting = new ItemVersionSetting(Setting.CommentForumThreadId);
-                        threadIdSetting.PropertyValue = threadId.ToString(CultureInfo.InvariantCulture);
-                        threadIdSetting.ItemVersionId = VersionInfoObject.ItemVersionId;
+                        var threadIdSetting = new ItemVersionSetting(Setting.CommentForumThreadId)
+                                                  {
+                                                          PropertyValue = threadId.ToString(CultureInfo.InvariantCulture),
+                                                          ItemVersionId = this.VersionInfoObject.ItemVersionId
+                                                  };
                         threadIdSetting.Save();
                         //VersionInfoObject.VersionSettings.Add(threadIdSetting);
                         //VersionInfoObject.Save(VersionInfoObject.AuthorUserId);
@@ -514,7 +519,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     //see if comment notification is turned on. Notify the ItemVersion.Author
                     if (IsCommentAuthorNotificationEnabled)
                     {
-                        UserController uc = new UserController();
+                        var uc = new UserController();
 
                         UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
 
@@ -567,10 +572,10 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             if (e != null && (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item))
             {
-                AjaxControlToolkit.PopupControlExtender pceArticleThumbnail = e.Item.FindControl("pceArticleThumbnail") as AjaxControlToolkit.PopupControlExtender;
-                Panel pnlLargeImage = e.Item.FindControl("pnlLargeImage") as Panel;
-                Panel pnlSmallImage = e.Item.FindControl("pnlSmallImage") as Panel;
-                HtmlImage imgThumbnail = e.Item.FindControl("imgThumbnail") as HtmlImage;
+                var pceArticleThumbnail = e.Item.FindControl("pceArticleThumbnail") as AjaxControlToolkit.PopupControlExtender;
+                var pnlLargeImage = e.Item.FindControl("pnlLargeImage") as Panel;
+                var pnlSmallImage = e.Item.FindControl("pnlSmallImage") as Panel;
+                var imgThumbnail = e.Item.FindControl("imgThumbnail") as HtmlImage;
 
                 if (pceArticleThumbnail != null)
                 {
@@ -680,37 +685,37 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (VersionInfoObject.IsNew) return;
 
             //check if items are enabled.
-            if (displayEmailAFriend && VersionInfoObject.IsNew == false)
+            if (this.DisplayEmailAFriend && VersionInfoObject.IsNew == false)
             {
-                ea = (EmailAFriend)LoadControl(emailControlToLoad);
+                ea = (EmailAFriend)LoadControl(EmailControlToLoad);
                 ea.ModuleConfiguration = ModuleConfiguration;
-                ea.ID = Path.GetFileNameWithoutExtension(emailControlToLoad);
+                ea.ID = Path.GetFileNameWithoutExtension(EmailControlToLoad);
                 this.phEmailAFriend.Controls.Add(ea);
             }
-            if (displayPrinterFriendly && VersionInfoObject.IsNew == false)
+            if (this.DisplayPrinterFriendly && VersionInfoObject.IsNew == false)
             {
-                pf = (PrinterFriendlyButton)LoadControl(printerControlToLoad);
+                pf = (PrinterFriendlyButton)LoadControl(PrinterControlToLoad);
                 pf.ModuleConfiguration = ModuleConfiguration;
-                pf.ID = Path.GetFileNameWithoutExtension(printerControlToLoad);
+                pf.ID = Path.GetFileNameWithoutExtension(PrinterControlToLoad);
                 this.phPrinterFriendly.Controls.Add(pf);
             }
 
-            if (displayRelatedLinks)
+            if (this.DisplayRelatedLinks)
             {
-                ral = (RelatedArticleLinksBase)LoadControl(relatedArticlesControlToLoad);
+                ral = (RelatedArticleLinksBase)LoadControl(RelatedArticlesControlToLoad);
                 ral.ModuleConfiguration = ModuleConfiguration;
-                ral.ID = Path.GetFileNameWithoutExtension(relatedArticlesControlToLoad);
+                ral.ID = Path.GetFileNameWithoutExtension(RelatedArticlesControlToLoad);
                 this.phRelatedArticles.Controls.Add(ral);
             }
 
-            if (displayRelatedArticle)
+            if (this.DisplayRelatedArticle)
             {
                 Article a = VersionInfoObject.GetRelatedArticle(PortalId);
                 if (a != null)
                 {
-                    ad = (ArticleDisplay)LoadControl(articleControlToLoad);
+                    ad = (ArticleDisplay)LoadControl(ArticleControlToLoad);
                     ad.ModuleConfiguration = ModuleConfiguration;
-                    ad.ID = Path.GetFileNameWithoutExtension(articleControlToLoad);
+                    ad.ID = Path.GetFileNameWithoutExtension(ArticleControlToLoad);
                     ad.Overrideable = false;
                     ad.UseCache = true;
                     ad.DisplayPrinterFriendly = false;
@@ -745,7 +750,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     lblRatingMessage.Visible = true;
                     ajaxRating.MaxRating = MaximumRating;
 
-                    int avgRating = (int)Math.Round(((Article)VersionInfoObject).AverageRating);
+                    var avgRating = (int)Math.Round(((Article)VersionInfoObject).AverageRating);
                     ajaxRating.CurrentRating = (avgRating > MaximumRating ? MaximumRating : (avgRating < 0 ? 0 : avgRating));
 
                     ajaxRating.ReadOnly = RatingDisplayOption.Equals(RatingDisplayOption.ReadOnly);
@@ -758,9 +763,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (!UseForumComments || (DisplayPublishComments && !VersionInfoObject.IsNew))
                 {
                     pnlComments.Visible = pnlCommentDisplay.Visible = true;
-                    commentDisplay = (CommentDisplayBase)LoadControl(commentsControlToLoad);
+                    commentDisplay = (CommentDisplayBase)LoadControl(CommentsControlToLoad);
                     commentDisplay.ModuleConfiguration = ModuleConfiguration;
-                    commentDisplay.ID = Path.GetFileNameWithoutExtension(commentsControlToLoad);
+                    commentDisplay.ID = Path.GetFileNameWithoutExtension(CommentsControlToLoad);
                     commentDisplay.ArticleId = VersionInfoObject.ItemId;
                     this.phCommentsDisplay.Controls.Add(commentDisplay);
                 }
@@ -854,8 +859,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 UseCache = true;
 
-                Article article = (Article)VersionInfoObject;
-                if (displayTitle)
+                var article = (Article)VersionInfoObject;
+                if (this.DisplayTitle)
                 {
                     SetPageTitle();
                     lblArticleTitle.Text = article.Name;
@@ -895,7 +900,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     lblAuthor.Text = article.Author;
                     if (lblAuthor.Text.Trim().Length < 1)
                     {
-                        UserController uc = new UserController();
+                        var uc = new UserController();
                         UserInfo ui = uc.GetUser(PortalId, article.AuthorUserId);
                         lblAuthor.Text = ui.DisplayName;
                     }
@@ -958,16 +963,15 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void PopulateTagList()
         {
-            Article article = (Article)VersionInfoObject;
+            var article = (Article)VersionInfoObject;
             foreach (ItemTag t in article.Tags)
             {
-                HyperLink hl = new HyperLink();
+                var hl = new HyperLink();
                 Tag tag = Tag.GetTag(t.TagId, PortalId);
                 hl.Text = tag.Name;
                 hl.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, string.Empty, "&tags=" + tag.Name);
                 hl.Attributes.Add("rel", "tag");
-                Literal li = new Literal();
-                li.Text = ", ";
+                var li = new Literal {Text = ", "};
 
                 phTags.Controls.Add(hl);
                 phTags.Controls.Add(li);
@@ -1083,7 +1087,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         #region Photo Gallery Helper Functions
         protected string GetPhotoPath(object dataItem)
         {
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
@@ -1098,7 +1102,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected string GetThumbPhotoPath(object dataItem)
         {
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
@@ -1115,7 +1119,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             //string clickToView = Localization.GetString("ClickToView", LocalResourceFile);
 
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
                 //SimpleGallery uses Name, UltraMedia uses Title
@@ -1138,7 +1142,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private static int GetPhotoWidth(object dataItem)
         {
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
                 if (row.DataView.Table.Columns.Contains("TnWidth"))
@@ -1152,8 +1156,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    int actualHeight = (int)row["Height"];
-                    int actualWidth = (int)row["Width"];
+                    var actualHeight = (int)row["Height"];
+                    var actualWidth = (int)row["Width"];
                     int maxThumbnailWidth = GetMaxThumbnailWidth((int)row["ModuleId"]);
                     int maxThumbnailHeight = GetMaxThumbnailHeight((int)row["ModuleId"]);
                     int thumbnailWidth = actualWidth > maxThumbnailWidth ? maxThumbnailWidth : actualWidth;
@@ -1170,7 +1174,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private static int GetPhotoHeight(object dataItem)
         {
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
                 if (row.DataView.Table.Columns.Contains("TnHeight"))
@@ -1185,8 +1189,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    int actualHeight = (int)row["Height"];
-                    int actualWidth = (int)row["Width"];
+                    var actualHeight = (int)row["Height"];
+                    var actualWidth = (int)row["Width"];
                     int maxThumbnailWidth = GetMaxThumbnailWidth((int)row["ModuleId"]);
                     int maxThumbnailHeight = GetMaxThumbnailHeight((int)row["ModuleId"]);
                     int thumbnailWidth = actualWidth > maxThumbnailWidth ? maxThumbnailWidth : actualWidth;
@@ -1204,10 +1208,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected string GetPhotoLink(object dataItem)
         {
-            DataRowView row = dataItem as DataRowView;
+            var row = dataItem as DataRowView;
             if (row != null)
             {
-                int moduleId = (int)row["ModuleId"];
+                var moduleId = (int)row["ModuleId"];
                 int? albumId = GetUltraMediaGalleryAlbumId();
 
                 if (albumId.HasValue) //ultra media
@@ -1334,14 +1338,14 @@ namespace Engage.Dnn.Publish.ArticleControls
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new char[] { '.' }));
+                version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new[] { '.' }));
             }
             //if we can't get the version, just swallow the exception. BD
             catch (FormatException) { }
 
             if (version != null)
             {
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 2, 2, 0 })))
+                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 2, 0 })))
                 {
                     defaultValue = "0";//0=name, 3=fileName, 1=dateCreated, 2=dateApproved
                 }
@@ -1355,14 +1359,14 @@ namespace Engage.Dnn.Publish.ArticleControls
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new char[] { '.' }));
+                version = Utility.ParseIntegerList(DataProvider.Instance().GetSimpleGalleryVersion().Split(new[] { '.' }));
             }
             //if we can't get the version, just swallow the exception. BD
             catch (FormatException) { }
 
             if (version != null)
             {
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new int[] { 2, 2, 0 })))
+                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 2, 0 })))
                 {
                     defaultValue = "1";//0=desc, 1=asc
                 }
@@ -1383,13 +1387,20 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         #region Optional Interfaces
 
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public ModuleActionCollection ModuleActions
         {
             get
             {
-                DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-                actions.Add(GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, string.Empty, string.Empty, EditUrl("Settings"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-                return actions;
+                return new ModuleActionCollection
+                           {
+                                   {
+                                           this.GetNextActionID(),
+                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+                                           string.Empty, string.Empty, this.EditUrl("Settings"), false,
+                                           DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+                                           }
+                           };
             }
         }
 

@@ -8,12 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using DotNetNuke.Entities.Tabs;
+
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Collections;
+    using DotNetNuke.Entities.Tabs;
 	/// <summary>
 	/// Summary description for TabInfoNameComparer.
 	/// </summary>
@@ -44,8 +45,8 @@ namespace Engage.Dnn.Publish.Util
 		{
 			if (x == null && y == null) return 0;
 
-			TabInfo t1 = x as TabInfo;
-			TabInfo t2 = y as TabInfo;
+			var t1 = x as TabInfo;
+			var t2 = y as TabInfo;
 
             if (t1 == null)
             {

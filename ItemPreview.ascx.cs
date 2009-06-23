@@ -8,29 +8,18 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.ArticleControls;
-using Engage.Dnn.Publish.CategoryControls;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish
 {
+
+    using System;
+    using System.Globalization;
+    using System.IO;
+
+    using DotNetNuke.Services.Localization;
+    using ArticleControls;
+    using CategoryControls;
+    using Util;
+
     public partial class ItemPreview : ModuleBase
 	{
 
@@ -94,12 +83,12 @@ namespace Engage.Dnn.Publish
             if (TypeOfItem == ItemType.Article)
             {
                 string articleControlToLoad = "~" + DesktopModuleFolderName + "ArticleControls/articleDisplay.ascx";
-                Article a = Article.GetArticle(base.ItemId, PortalId);
+                Article a = Article.GetArticle(ItemId, PortalId);
                 if (a == null)
                 {
                     throw new InvalidOperationException("Article not found");
                 }
-                ArticleDisplay ad = (ArticleDisplay)LoadControl(articleControlToLoad);
+                var ad = (ArticleDisplay)LoadControl(articleControlToLoad);
                 ad.ModuleConfiguration = ModuleConfiguration;
                 ad.ID = Path.GetFileNameWithoutExtension(articleControlToLoad);
                 ad.Overrideable = true;
@@ -113,12 +102,12 @@ namespace Engage.Dnn.Publish
             else if (TypeOfItem == ItemType.Category)
             {
                 string categoryControlToLoad = "~" + DesktopModuleFolderName + "CategoryControls/CategoryDisplay.ascx";
-                Category category = Category.GetCategory(base.ItemId, PortalId);
+                Category category = Category.GetCategory(ItemId, PortalId);
                 if (category == null)
                 {
                     throw new InvalidOperationException("Category not found");
                 }
-                CategoryDisplay cd = (CategoryDisplay)LoadControl(categoryControlToLoad);
+                var cd = (CategoryDisplay)LoadControl(categoryControlToLoad);
                 cd.ModuleConfiguration = ModuleConfiguration;
                 cd.ID = Path.GetFileNameWithoutExtension(categoryControlToLoad);
                 cd.Overrideable = true;

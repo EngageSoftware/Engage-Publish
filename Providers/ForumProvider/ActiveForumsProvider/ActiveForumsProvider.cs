@@ -50,7 +50,7 @@ namespace Engage.Dnn.Publish.Forum
 
         public ActiveForumsProvider(int portalId) : base(portalId)
         {
-            Provider provider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
+            var provider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
             this.connectionString = Config.GetConnectionString();
 
@@ -72,7 +72,7 @@ namespace Engage.Dnn.Publish.Forum
             }
         }
 
-        public override int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIPAddress)
+        public override int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIpAddress)
         {
             Debug.Assert(authorUserId != Null.NullInteger);
 
@@ -85,7 +85,7 @@ namespace Engage.Dnn.Publish.Forum
             bool commenterIsSuperUser = commenterInfo != null ? commenterInfo.IsSuperUser : false;
             string body = string.Format(CultureInfo.InvariantCulture, Localization.GetString("PostBody", LocalResourceFile), description, linkUrl, title);
 
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
                 using (SqlTransaction transaction = connection.BeginTransaction())
@@ -109,7 +109,7 @@ namespace Engage.Dnn.Publish.Forum
 
                     if (moduleId.HasValue)
                     {
-                        List<int> potentialMatchingTopicIds = new List<int>();
+                        var potentialMatchingTopicIds = new List<int>();
                         using (
                             SqlDataReader searchReader = SqlHelper.ExecuteReader(
                                 this.connectionString,
@@ -214,7 +214,7 @@ namespace Engage.Dnn.Publish.Forum
                             Utility.CreateDateTimeParam("@DateUpdated", DateTime.Now),
                             Utility.CreateIntegerParam("@AuthorId", commentUserId),
                             Utility.CreateNvarcharParam("@AuthorName", commenterDisplayName, 150), 
-                            Utility.CreateNvarcharParam("@IPAddress", commentUserIPAddress, 50));
+                            Utility.CreateNvarcharParam("@IPAddress", commentUserIpAddress, 50));
 
                     transaction.Commit();
                 }
@@ -224,7 +224,7 @@ namespace Engage.Dnn.Publish.Forum
 
         public override Dictionary<int, string> GetForums()
         {
-            Dictionary<int, string> forums = new Dictionary<int, string>();
+            var forums = new Dictionary<int, string>();
             foreach (ModuleInfo activeForumsModule in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName))
             {
                 using (IDataReader forumsReader = SqlHelper.ExecuteReader(

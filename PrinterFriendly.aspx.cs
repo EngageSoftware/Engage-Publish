@@ -8,28 +8,29 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Security;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using Util;
+    using DotNetNuke.Security;
     public partial class PrinterFriendly : PageBase
     {
-        public string cssStyle = "module.css";
+        public string CssStyle = "module.css";
 
         public static string ApplicationUrl
         {
             get
             {
-                return HttpContext.Current.Request.ApplicationPath.ToString() == "/" ? "" : HttpContext.Current.Request.ApplicationPath.ToString();
+                return HttpContext.Current.Request.ApplicationPath == "/" ? "" : HttpContext.Current.Request.ApplicationPath;
             }
         }
 
@@ -44,10 +45,7 @@ namespace Engage.Dnn.Publish
                     ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture)).ToUpperInvariant();
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -60,10 +58,7 @@ namespace Engage.Dnn.Publish
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -77,18 +72,14 @@ namespace Engage.Dnn.Publish
                 {
                     return tabId;
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
-        private string _itemType;
         public string ItemType
         {
-            get { return _itemType; }
-            set { _itemType = value; }
+            get;
+            set;
         }
 
         override protected void OnInit(EventArgs e)
@@ -117,10 +108,10 @@ namespace Engage.Dnn.Publish
                     //}
 
 
-                    lnkPortalLogo.NavigateUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias.ToString();
+                    lnkPortalLogo.NavigateUrl = "http://" + this.PortalSettings.PortalAlias.HTTPAlias;
                     lnkPortalLogo.ImageUrl = PortalSettings.HomeDirectory + PortalSettings.LogoFile;
 
-                    cssStyle = PortalSettings.ActiveTab.SkinPath + "skin.css";
+                    this.CssStyle = PortalSettings.ActiveTab.SkinPath + "skin.css";
                 }
                 else
                 {
@@ -135,7 +126,7 @@ namespace Engage.Dnn.Publish
 
         private bool UserHasRights(int tabId)
         {
-            ModuleController modules = new ModuleController();
+            var modules = new ModuleController();
             Dictionary<int, ModuleInfo> tabModules = modules.GetTabModules(tabId);
 
             foreach (ModuleInfo module in tabModules.Values)
@@ -157,12 +148,12 @@ namespace Engage.Dnn.Publish
             return false;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Method has side effect of setting public member cssStyle")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Method has side effect of setting public member CssStyle")]
         protected string GetCssStyle()
         {
-            PortalSettings ps = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            cssStyle = ps.ActiveTab.SkinPath + "skin.css";
-            return cssStyle;
+            var ps = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            this.CssStyle = ps.ActiveTab.SkinPath + "skin.css";
+            return this.CssStyle;
         }
     }
 }

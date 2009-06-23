@@ -8,20 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-using Engage.Dnn.Publish.Util;
-using System.Web.UI.WebControls;
-using System.Collections;
-using DotNetNuke.Entities.Users;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Diagnostics;
+    using System.Globalization;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using Util;
+
 	public partial class ItemEdit :  ModuleBase, IActionable
 	{
 		#region Event Handlers
@@ -63,8 +64,8 @@ namespace Engage.Dnn.Publish.Controls
         {
             clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", LocalResourceFile);
             clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", LocalResourceFile);
-            clpAdvanced.ExpandedImage = ApplicationUrl.ToString() + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-            clpAdvanced.CollapsedImage = ApplicationUrl.ToString() + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpAdvanced.ExpandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            clpAdvanced.CollapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
         }
  
 		private void Page_Load(object sender, EventArgs e)
@@ -80,26 +81,14 @@ namespace Engage.Dnn.Publish.Controls
 
                     LoadAuthorsList();
                     //set author
-                    if (VersionInfoObject.AuthorUserId > 0)
-                    {
-                        ddlAuthor.SelectedValue = VersionInfoObject.AuthorUserId.ToString();
-                    }
-                    else
-                    {
-                        ddlAuthor.SelectedValue = UserId.ToString();
-                    }
+				    this.ddlAuthor.SelectedValue = this.VersionInfoObject.AuthorUserId > 0
+				                                           ? this.VersionInfoObject.AuthorUserId.ToString()
+				                                           : this.UserId.ToString();
 
-                    //configure the author name (Text) if defined
+				    //configure the author name (Text) if defined
                     //chkShowAuthor
                     ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "lblAuthorName", "Text", PortalId);
-                    if (auNameSetting != null)
-                    {
-                        txtAuthorName.Text = auNameSetting.PropertyValue.ToString();
-                    }
-                    else
-                    {
-                        txtAuthorName.Text = ddlAuthor.SelectedItem.Text.Trim().ToString();
-                    }
+                    this.txtAuthorName.Text = auNameSetting != null ? auNameSetting.PropertyValue : this.ddlAuthor.SelectedItem.Text.Trim();
                     
 
                     if (AllowRichTextDescriptions)
@@ -156,7 +145,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         txtEndDate.Text = Utility.GetCurrentCultureDateTime(VersionInfoObject.EndDate);
                     }
-					txtName.Text = VersionInfoObject.Name.ToString();
+					txtName.Text = this.VersionInfoObject.Name;
 
                     
                     thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
@@ -243,10 +232,10 @@ namespace Engage.Dnn.Publish.Controls
         protected void chkUrlSelection_CheckedChanged(object sender, EventArgs e)
         {
             pnlUrlSelection.Visible = chkUrlSelection.Checked;
-            changeParentPage();
+            this.ChangeParentPage();
         }
 
-        protected void changeParentPage()
+        protected void ChangeParentPage()
         {
             //TODO: what should we do here?
             //switch(typeof(this.Page))
@@ -266,7 +255,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             //load authors role
             //load admins role
-            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+            var rc = new DotNetNuke.Security.Roles.RoleController();
             ArrayList al = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId));
             ArrayList alAdmin = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId));
 
@@ -368,20 +357,28 @@ namespace Engage.Dnn.Publish.Controls
         #endregion
 
         #region Optional Interfaces
-        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+        public ModuleActionCollection ModuleActions 
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return actions;
+			    return new ModuleActionCollection
+			               {
+			                       {
+			                               this.GetNextActionID(),
+			                               Localization.GetString(
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+			                               this.LocalResourceFile),
+			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
+			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+			                               }
+			               };
 			}
 		}
 		#endregion
 
         protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtAuthorName.Text = ddlAuthor.SelectedItem.Text.ToString();
+            txtAuthorName.Text = this.ddlAuthor.SelectedItem.Text;
         }
 	}
 }

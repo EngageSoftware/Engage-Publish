@@ -8,25 +8,27 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Xml.Serialization;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Mail;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Portability;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Entities.Tabs;
+
 
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Mail;
+    using Data;
+    using Portability;
+    using Util;
+
     /// <summary>
     /// Summary description for ItemInfo.
     /// </summary>
@@ -70,8 +72,7 @@ namespace Engage.Dnn.Publish
         private readonly ItemTagCollection tags;
         private readonly ItemVersionSettingCollection versionSettings;
         private string createdDate = string.Empty;
-        private int viewCount = 0;
-        private int commentCount = 0;
+
         #endregion
 
         #region "Public Methods"
@@ -221,8 +222,8 @@ namespace Engage.Dnn.Publish
             //if we aren't populating the meta description we should use the VersionInfoObject.Description                                       
             if (this.metaDescription.Trim() == string.Empty && this.description.Trim() != string.Empty)
             {
-                string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(this.description.Trim(), false);
-                this.metaDescription = Utility.TrimDescription(399, description);
+                string itemDescription = HtmlUtils.StripTags(this.description.Trim(), false);
+                this.metaDescription = Utility.TrimDescription(399, itemDescription);
             }
 
 
@@ -369,12 +370,12 @@ namespace Engage.Dnn.Publish
             //string toAddress = string.Empty;
             int edittabid = -1;
             int editModuleId = -1;
-            ModuleController objModules = new ModuleController();
+            var objModules = new ModuleController();
             foreach (ModuleInfo mi in objModules.GetModulesByDefinition(PortalId, Utility.DnnFriendlyModuleName))
             {
                 if (!mi.IsDeleted)
                 {
-                    TabController objTabs = new TabController();
+                    var objTabs = new TabController();
                     if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
                     {
                         edittabid = mi.TabID;
@@ -388,12 +389,12 @@ namespace Engage.Dnn.Publish
             UserInfo ui = UserController.GetCurrentUserInfo();
             if (ui.Username != null)
             {
-                RoleController rc = new RoleController();
+                var rc = new RoleController();
 
                 ArrayList users = rc.GetUsersByRoleName(ui.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + PortalId));
 
                 DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.moduleId.ToString());
+                string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.moduleId);
                 string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
 
                 //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
@@ -416,12 +417,12 @@ namespace Engage.Dnn.Publish
             //string toAddress = string.Empty;
             int edittabid = -1;
             int editModuleId = -1;
-            ModuleController objModules = new ModuleController();
+            var objModules = new ModuleController();
             foreach (ModuleInfo mi in objModules.GetModulesByDefinition(PortalId, Utility.DnnFriendlyModuleName))
             {
                 if (!mi.IsDeleted && mi.TabID != -1)
                 {
-                    TabController objTabs = new TabController();
+                    var objTabs = new TabController();
                     if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
                     {
                         edittabid = mi.TabID;
@@ -443,7 +444,7 @@ namespace Engage.Dnn.Publish
                 {
                     DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
                     //string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
-                    string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.ModuleId.ToString());
+                    string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.ModuleId);
                     //href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
 
                     string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
@@ -695,11 +696,11 @@ namespace Engage.Dnn.Publish
                 ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", PortalId);
                 if (auNameSetting != null && auNameSetting.ToString().Trim().Length > 0)
                 {
-                    originalAuthor = auNameSetting.PropertyValue.ToString();
+                    originalAuthor = auNameSetting.PropertyValue;
                 }
                 else
                 {
-                    UserController uc = new UserController();
+                    var uc = new UserController();
                     UserInfo ui = uc.GetUser(portalId, authorUserId);
                     if (ui != null)
                     {
@@ -911,14 +912,15 @@ namespace Engage.Dnn.Publish
         [XmlIgnore]
         public int ViewCount
         {
-            set { this.viewCount = value; }
-            get { return this.viewCount; }
+            set;
+            get;
         }
+
         [XmlIgnore]
         public int CommentCount
         {
-            set { this.commentCount = value; }
-            get { return this.commentCount; }
+            set;
+            get;
         }
 
 
@@ -1228,7 +1230,7 @@ namespace Engage.Dnn.Publish
         {
             ArrayList al = ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, RelationshipType.ItemToRelatedArticle.GetId(), true, portalId);
 
-            ArrayList m = new ArrayList();
+            var m = new ArrayList();
             foreach (ItemRelationship ir in al)
             {
                 m.Add(Article.GetArticle(ir.ParentItemId, articlePortalId));

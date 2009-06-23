@@ -75,9 +75,9 @@ namespace Engage.Dnn.Publish.Forum
         /// <param name="linkUrl">A URL pointing to the article.</param>
         /// <param name="commentText">The comment text.</param>
         /// <param name="commentUserId">The user ID of the person creating the comment.</param>
-        /// <param name="commentUserIPAddress">The IP address of the user posting a comment.</param>
+        /// <param name="commentUserIpAddress">The IP address of the user posting a comment.</param>
         /// <returns>The ID of the created forum thread</returns>
-        public abstract int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIPAddress);
+        public abstract int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIpAddress);
 
         /// <summary>
         /// Gets a URL to the forum thread which holds discussions for an article.

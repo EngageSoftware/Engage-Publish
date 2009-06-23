@@ -8,18 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Diagnostics;
-using System.Text;
-using System.Web;
-using DotNetNuke.Services.Search;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Security
 {
+    using System.Collections;
+    using System.Data;
+    using System.Diagnostics;
+    using DotNetNuke.Services.Search;
+    using Data;
+    using Util;
+
 	/// <summary>
 	/// Summary description for RoleBasedSecurityFilter.
 	/// </summary>
@@ -46,7 +44,7 @@ namespace Engage.Dnn.Publish.Security
 
 			IDictionary d = DataProvider.Instance().GetViewableCategoryIds(PermissionType.View.GetId());
 
-			ArrayList al = new ArrayList();
+			var al = new ArrayList();
 			foreach (DataRow r in data.Rows)
 			{
 				if (d.Contains(r["ItemId"]) == false)
@@ -73,7 +71,7 @@ namespace Engage.Dnn.Publish.Security
 
 			IDictionary viewableIds = DataProvider.Instance().GetViewableArticleIds(PermissionType.View.GetId());
 
-			ArrayList al = new ArrayList();
+			var al = new ArrayList();
 			foreach (SearchResultsInfo result in data)
 			{
 				int articleId = Utility.GetArticleId(result);

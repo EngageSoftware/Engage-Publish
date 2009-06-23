@@ -8,20 +8,21 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using Engage.Dnn.Publish.Data;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+    using Data;
+
 	/// <summary>
     /// Summary description for ApprovalStatus.
 	/// </summary>
 	public class ApprovalStatus
 	{
-		private string name = string.Empty;
+		private readonly string name = string.Empty;
 		private int id = -1;
 
         public static readonly ApprovalStatus Edit = new ApprovalStatus("Edit");
@@ -75,7 +76,7 @@ namespace Engage.Dnn.Publish.Util
 
                 foreach (FieldInfo f in fi)
                 {
-                    ApprovalStatus cot = f.GetValue(type) as ApprovalStatus;
+                    var cot = f.GetValue(type) as ApprovalStatus;
                     if (cot != null)
                     {
                         //this prevents old, bogus classes defined in the code from killing the app
@@ -88,7 +89,7 @@ namespace Engage.Dnn.Publish.Util
                             }
                         }
 
-                        catch (Exception)
+                        catch
                         {
                             //drive on
                         }
@@ -113,7 +114,7 @@ namespace Engage.Dnn.Publish.Util
 
                 foreach (FieldInfo f in fi)
                 {
-                    ApprovalStatus cot = f.GetValue(type) as ApprovalStatus;
+                    var cot = f.GetValue(type) as ApprovalStatus;
                     if (cot != null)
                     {
                         //this prevents old, bogus classes defined in the code from killing the app
@@ -125,7 +126,7 @@ namespace Engage.Dnn.Publish.Util
                                 return cot;
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                             //drive on
                         }

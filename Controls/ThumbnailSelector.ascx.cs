@@ -8,18 +8,19 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Util;
+
     public partial class ThumbnailSelector : ModuleBase
 	{
 		#region Event Handlers
@@ -71,7 +72,7 @@ namespace Engage.Dnn.Publish.Controls
             rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.Internal.ToString(), LocalResourceFile), ThumbnailImageType.Internal.ToString()));
             rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.External.ToString(), LocalResourceFile), ThumbnailImageType.External.ToString()));
 
-            StringCollection files = new StringCollection();
+            var files = new StringCollection();
             foreach (string file in Directory.GetFiles(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath))
 	        {
                 files.Add(Path.GetFileName(file));		 
@@ -82,18 +83,18 @@ namespace Engage.Dnn.Publish.Controls
             ddlThumbnailLibrary.DataBind();
             ddlThumbnailLibrary.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), string.Empty));
 
-            if (!Utility.HasValue(_thumbnailUrl))
+            if (!Utility.HasValue(this.thumbnailUrl))
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.Upload.ToString();
             }
             //HACK: replace with a System.Uri comparison or Path.GetFullPath to prevent against canonicalization attacks.  BD
-            else if (Utility.HasValue(ThumbnailSubdirectory) && _thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
+            else if (Utility.HasValue(ThumbnailSubdirectory) && this.thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.Internal.ToString();
 
-                if (ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(_thumbnailUrl))))
+                if (ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(this.thumbnailUrl))))
                 {
-                    ddlThumbnailLibrary.SelectedValue = Path.GetFileName(_thumbnailUrl);
+                    ddlThumbnailLibrary.SelectedValue = Path.GetFileName(this.thumbnailUrl);
                     mvThumbnailImage.SetActiveView(vwInternal);
                 }
                 else
@@ -104,7 +105,7 @@ namespace Engage.Dnn.Publish.Controls
             else
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.External.ToString();
-                txtThumbnailUrl.Text = _thumbnailUrl;
+                txtThumbnailUrl.Text = this.thumbnailUrl;
                 mvThumbnailImage.SetActiveView(vwExternal);
             }
         }
@@ -150,7 +151,7 @@ namespace Engage.Dnn.Publish.Controls
 
                 fileThumbnail.PostedFile.SaveAs(Path.Combine(path, filename + extension));
 
-                _thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), filename + extension);
+                this.thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), filename + extension);
 
                 InitializeThumbnailControl();
             }
@@ -190,7 +191,7 @@ namespace Engage.Dnn.Publish.Controls
 		#endregion
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _thumbnailUrl;
+        private string thumbnailUrl;
         public string ThumbnailUrl
         {
             get
@@ -201,23 +202,15 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     return ctlMediaFile.Url;
                 }
-                else
+                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
                 {
-                    if (rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
-                    {
-                        return Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), ddlThumbnailLibrary.SelectedValue);
-                    }
-                    else if (rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
-                    {
-                        return txtThumbnailUrl.Text;
-                    }
-                    else //ThumbnailImageType.Upload.ToString(CultureInfo.InvariantCulture)
-                    {
-                        return null;
-                    }
+                    return Path.Combine(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), this.ddlThumbnailLibrary.SelectedValue);
                 }
-
-                
+                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
+                {
+                    return this.txtThumbnailUrl.Text;
+                }
+                return null;
             }
             [DebuggerStepThrough]
             set
@@ -231,7 +224,7 @@ namespace Engage.Dnn.Publish.Controls
                 }
                 else
                 {
-                    _thumbnailUrl = value;
+                    this.thumbnailUrl = value;
                 }
                 
             }

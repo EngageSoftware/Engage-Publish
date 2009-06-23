@@ -8,25 +8,20 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish.TextHtml
 {
-    using System.Web.UI;
-    using DotNetNuke.Entities.Modules.Actions;
+
+    using System;
+    using System.Globalization;
+    using System.Web;
+    using System.Web.UI.WebControls;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Security;
-    using Engage.Dnn.Publish.Data;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Data;
+    using Util;
 
     public partial class View : ModuleBase, IActionable
     {
@@ -87,7 +82,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
         private void LoadArticle()
         {
-            Article a = (Article)VersionInfoObject;
+            var a = (Article)VersionInfoObject;
             if (a != null)
             {
                 //VersionInfoObject.IsNew = false;
@@ -103,10 +98,11 @@ namespace Engage.Dnn.Publish.TextHtml
 
                     articleText = Utility.ReplaceTokens(articleText);
 
-                    DotNetNuke.Services.Tokens.TokenReplace tr = new DotNetNuke.Services.Tokens.TokenReplace();
-                    tr.AccessingUser = UserInfo;
-                    tr.DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview();
-
+                    var tr = new DotNetNuke.Services.Tokens.TokenReplace
+                                 {
+                                         AccessingUser = this.UserInfo,
+                                         DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview()
+                                 };
 
                     articleText = tr.ReplaceEnvironmentTokens(articleText);
                     lblArticleText.Text = articleText;
@@ -133,10 +129,6 @@ namespace Engage.Dnn.Publish.TextHtml
                             ddlApprovalStatus.Visible = false;
                         }
                     }
-                    else
-                    {
-                        
-                    }
                 }
                 else
                 {
@@ -154,7 +146,7 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             get
             {
-                ModuleActionCollection actions = new ModuleActionCollection();
+                var actions = new ModuleActionCollection();
                 if (DefaultTextHtmlCategory > 0)
                 {
                     actions.Add(GetNextActionID(), Localization.GetString("Edit", LocalSharedResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
@@ -178,14 +170,7 @@ namespace Engage.Dnn.Publish.TextHtml
             if (!VersionInfoObject.IsNew)
             {
                 VersionInfoObject.ApprovalStatusId = Convert.ToInt32(ddlApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
-                if (txtApprovalComments.Text.Trim().Length > 0)
-                {
-                    VersionInfoObject.ApprovalComments = txtApprovalComments.Text.Trim();
-                }
-                else
-                {
-                    VersionInfoObject.ApprovalComments = Localization.GetString("DefaultApprovalComment", LocalResourceFile);
-                }
+                this.VersionInfoObject.ApprovalComments = this.txtApprovalComments.Text.Trim().Length > 0 ? this.txtApprovalComments.Text.Trim() : Localization.GetString("DefaultApprovalComment", this.LocalResourceFile);
                 VersionInfoObject.UpdateApprovalStatus();
                 Response.Redirect(BuildVersionsUrl(), false);
             }
@@ -206,7 +191,7 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             if (!Page.IsPostBack)
             {
-                ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId); ;
+                ddlApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId);
                 ddlApprovalStatus.DataValueField = "ApprovalStatusID";
                 ddlApprovalStatus.DataTextField = "ApprovalStatusName";
                 ddlApprovalStatus.DataBind();

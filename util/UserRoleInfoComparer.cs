@@ -8,12 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using DotNetNuke.Entities.Users;
 
 namespace Engage.Dnn.Publish.Util
 {
+    using System;
+    using System.Collections;
+    using DotNetNuke.Entities.Users;
+
 	/// <summary>
     /// Summary description for UserRoleInfoComparer.
 	/// </summary>
@@ -44,7 +45,7 @@ namespace Engage.Dnn.Publish.Util
 		{
 			if (x == null && y == null) return 0;
 
-            UserRoleInfo t1 = x as UserRoleInfo;
+            var t1 = x as UserRoleInfo;
             UserRoleInfo t2 = y as UserRoleInfo;
 
             if (t1 == null)

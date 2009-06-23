@@ -8,21 +8,23 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Services.Search;
+
 
 
 namespace Engage.Dnn.Publish.Security
 {
+    using System.Collections;
+    using DotNetNuke.Services.Search;
+    using Util;
+
 	/// <summary>
 	/// Summary description for SecureSearchDataStore.
 	/// </summary>
     public class SecureSearchDataStore : SearchDataStore
 	{
-		public override SearchResultsInfoCollection GetSearchResults(int PortalID, string Criteria)
+		public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
 		{
-			SearchResultsInfoCollection results = base.GetSearchResults(PortalID, Criteria);
+			SearchResultsInfoCollection results = base.GetSearchResults(portalId, criteria);
 
 			SecurityFilter sf = SecurityFilter.Instance;
 			sf.FilterArticles(results);
@@ -30,11 +32,11 @@ namespace Engage.Dnn.Publish.Security
 			return results;
 		}
 
-		public override SearchResultsInfoCollection GetSearchItems(int PortalID, int TabID, int ModuleID)
+		public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)
 		{
 			//TODO: need to filter this also?
 			//how is this invoked? do we need to filter?
-            SearchResultsInfoCollection results = base.GetSearchItems(PortalID, TabID, ModuleID);
+            SearchResultsInfoCollection results = base.GetSearchItems(portalId, tabId, moduleId);
 			//SecurityFilter sf = SecurityFilter.Instance;
 			//return sf.FilterArticles(results);
 
@@ -50,7 +52,7 @@ namespace Engage.Dnn.Publish.Security
 
 			IDictionary d = new Hashtable();
 
-			ArrayList al = new ArrayList();
+			var al = new ArrayList();
 			foreach (SearchResultsInfo result in data)
 			{
                 //IDictionary listOfIds = GetSearchArticleIds(data);

@@ -8,15 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Util;
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Exceptions;
+    using Util;
+
     public partial class CategoryFeatureOptions : ModuleSettingsBase
     {
         public override void LoadSettings()
@@ -73,9 +74,9 @@ namespace Engage.Dnn.Publish.CategoryControls
         public override void UpdateSettings()
         {
             //save the new setting
-            ModuleController modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfCategoryId", this.ddlCategoryList.SelectedValue.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfDisplayOption", this.ddlViewOptions.SelectedValue.ToString());
+            var modules = new ModuleController();
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfCategoryId", this.ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfDisplayOption", this.ddlViewOptions.SelectedValue);
             modules.UpdateTabModuleSetting(this.TabModuleId, "cfEnableRss", this.chkEnableRss.Checked.ToString());
             modules.UpdateTabModuleSetting(this.TabModuleId, "cfRandomize", this.chkRandomize.Checked.ToString());
         }

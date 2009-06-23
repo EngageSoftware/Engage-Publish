@@ -8,33 +8,29 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Data;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Search;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Entities.Tabs;
 
 namespace Engage.Dnn.Publish.Search
 {
-	/// <summary>
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Text;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Search;
+    using Util;
+
+    /// <summary>
 	/// Summary description for SearchProvider.
 	/// </summary>
 	public class SearchProvider// : ISearchable
 	{
 		#region ISearchable Members
 
-		public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
+		public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
 		{
-			SearchItemInfoCollection items = new SearchItemInfoCollection();
-			AddArticleSearchItems(items, ModInfo);
+			var items = new SearchItemInfoCollection();
+			AddArticleSearchItems(items, modInfo);
 			return items;
 		}
 
@@ -56,7 +52,7 @@ namespace Engage.Dnn.Publish.Search
             for (int i = 0; i < dt.Rows.Count; i++) 
             {
                 DataRow row = dt.Rows[i];
-                    StringBuilder searchedContent = new StringBuilder(8192);
+                    var searchedContent = new StringBuilder(8192);
                     //article name
                     string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
 
@@ -106,17 +102,21 @@ namespace Engage.Dnn.Publish.Search
                     }
 
                     string itemId = row["ItemId"].ToString();
-                    SearchItemInfo item = new SearchItemInfo();
-                    item.Title = name;
-                    item.Description = HtmlUtils.Clean(description, false);
-                    item.Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture);
-                    item.PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture);
-                    item.ModuleId = modInfo.ModuleID;
-                    item.SearchKey = "Article-" + itemId;
-                    item.Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true);
-                    item.GUID = "itemid=" + itemId;
-                    
-                    items.Add(item);
+                    var item = new SearchItemInfo
+                                   {
+                                           Title = name,
+                                           Description = HtmlUtils.Clean(description, false),
+                                           Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
+                                           PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
+                                           ModuleId = modInfo.ModuleID,
+                                           SearchKey = "Article-" + itemId,
+                                           Content =
+                                                   HtmlUtils.StripWhiteSpace(
+                                                   HtmlUtils.Clean(searchedContent.ToString(), false), true),
+                                           GUID = "itemid=" + itemId
+                                   };
+
+                items.Add(item);
 
                     //Check if the Portal is setup to enable venexus indexing
                     if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
@@ -124,7 +124,7 @@ namespace Engage.Dnn.Publish.Search
                         string indexUrl = Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
 
                         //UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
-                        Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false).ToString(), modInfo.PortalID, indexUrl);
+                        Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
                     }
                 //}
             } 

@@ -8,16 +8,18 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Globalization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Exceptions;
-using Engage.Dnn.Publish.Util;
+
 
 namespace Engage.Dnn.Publish.Controls
 {
+    using System;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Exceptions;
+    using Util;
+
     public partial class ItemListingOptions : ModuleSettingsBase
     {
         #region Event Handlers
@@ -146,7 +148,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilItemTypeId", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -161,7 +163,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilCategoryId", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -176,7 +178,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilEnableRss", value.ToString());
             }
 
@@ -191,7 +193,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilShowParent", value.ToString());
             }
 
@@ -206,7 +208,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilMaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
             }
 
@@ -237,7 +239,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilDataDisplayFormat", value);
             }
 
@@ -252,7 +254,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             set
             {
-                ModuleController modules = new ModuleController();
+                var modules = new ModuleController();
                 modules.UpdateTabModuleSetting(TabModuleId, "ilDataType", value);
             }
 
@@ -269,7 +271,7 @@ namespace Engage.Dnn.Publish.Controls
             if (args != null)
             {
                 int max;
-                args.IsValid = int.TryParse(args.Value.ToString(), out max);
+                args.IsValid = int.TryParse(args.Value, out max);
             }
         }
 
