@@ -1078,36 +1078,35 @@ namespace Engage.Dnn.Publish.Util
             {
                 tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
             }
-            if (tabInfo != null)
+
+            if (tabInfo == null || tabInfo.IsDeleted)
             {
-                if (tabInfo.IsDeleted)
-                {
-                    tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
-                }
-                //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
-                if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
-                {
-                    return Globals.NavigateURL(tabInfo.TabID);
-                }
+                tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
+            }
+
+            // if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
+            if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
+            {
+                return Globals.NavigateURL(tabInfo.TabID);
             }
 
             string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
             return Globals.NavigateURL(tabInfo.TabID, portalSettings, String.Empty, queryStringParameters);
 
-            //below is the original version of this
-            //int displayTabId = item.DisplayTabId;
-            //int? queryStringModuleId = null;
-            //if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
-            //{
-            //    displayTabId = tabId;
-            //    if (moduleId > 0)
-            //    {
-            //        queryStringModuleId = moduleId;
-            //    }
-            //}
+            ////below is the original version of this
+            ////int displayTabId = item.DisplayTabId;
+            ////int? queryStringModuleId = null;
+            ////if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
+            ////{
+            ////    displayTabId = tabId;
+            ////    if (moduleId > 0)
+            ////    {
+            ////        queryStringModuleId = moduleId;
+            ////    }
+            ////}
 
-            //string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
-            //return Globals.NavigateURL(displayTabId, portalSettings, String.Empty, queryStringParameters);
+            ////string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
+            ////return Globals.NavigateURL(displayTabId, portalSettings, String.Empty, queryStringParameters);
         }
 
         /// <summary>
@@ -1132,12 +1131,14 @@ namespace Engage.Dnn.Publish.Util
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
             {
                 if (!IsPageOverrideable(item.PortalId, tabId))
-                {//not overrideable, send them to default tab id
+                {
+                    // not overrideable, send them to default tab id
                     tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
                 }
                 else
                 {
                     tabInfo = tabController.GetTab(tabId, item.PortalId, false);
+
                     // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
                     if (moduleId > 0)
                     {
@@ -1150,12 +1151,12 @@ namespace Engage.Dnn.Publish.Util
                 tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
             }
 
-            if (tabInfo.IsDeleted)
+            if (tabInfo == null || tabInfo.IsDeleted)
             {
                 tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
             }
 
-            //if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
+            // if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
             if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
             {
                 return Globals.NavigateURL(tabInfo.TabID);
