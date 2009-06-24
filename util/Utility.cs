@@ -1418,7 +1418,7 @@ namespace Engage.Dnn.Publish.Util
             //clear the incoming dt 
             dt.Rows.Clear();
 
-            DataRow data_row = dt.NewRow();
+
             for (int i = 0; i < newDT.Rows.Count; i++)
             {
                 var arr = new object[dt.Columns.Count];
@@ -1426,9 +1426,9 @@ namespace Engage.Dnn.Publish.Util
                 {
                     arr[j] = newDT.Rows[i][j];
                 }
-
-                data_row.ItemArray = arr;
-                dt.Rows.Add(data_row);
+                DataRow dataRow = dt.NewRow();
+                dataRow.ItemArray = arr;
+                dt.Rows.Add(dataRow);
             }
         }
 
