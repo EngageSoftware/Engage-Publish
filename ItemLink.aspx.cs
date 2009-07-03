@@ -347,12 +347,13 @@ namespace Engage.Dnn.Publish
 
         private void LocalizeControls()
         {
-            lblFooter.Text = Localization.GetString("lblFooter", "app_localResources/ItemLink.aspx.resx");
-            lblMessage.Text = Localization.GetString("lblMessage", "app_localResources/ItemLink.aspx.resx");
-            lblPossible.Text = Localization.GetString("lblPossible", "app_localResources/ItemLink.aspx.resx");
-            lblPossibleA.Text = Localization.GetString("lblPossibleA", "app_localResources/ItemLink.aspx.resx");
-            lblPossibleB.Text = Localization.GetString("lblPossibleB", "app_localResources/ItemLink.aspx.resx");
-            lblTitle.Text = Localization.GetString("lblTitle", "app_localResources/ItemLink.aspx.resx");
+            //todo: why are these not working properly in DNN5.1?
+            //lblFooter.Text = Localization.GetString("lblFooter", "app_localResources/ItemLink.aspx.resx");
+            //lblMessage.Text = Localization.GetString("lblMessage", "app_localResources/ItemLink.aspx.resx");
+            //lblPossible.Text = Localization.GetString("lblPossible", "app_localResources/ItemLink.aspx.resx");
+            //lblPossibleA.Text = Localization.GetString("lblPossibleA", "app_localResources/ItemLink.aspx.resx");
+            //lblPossibleB.Text = Localization.GetString("lblPossibleB", "app_localResources/ItemLink.aspx.resx");
+            //lblTitle.Text = Localization.GetString("lblTitle", "app_localResources/ItemLink.aspx.resx");
         }
 
         private void DisplayBrokenLinkMessage(Item item)
