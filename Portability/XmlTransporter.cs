@@ -133,10 +133,10 @@ namespace Engage.Dnn.Publish.Portability
 
         public void BuildArticles(bool exportAll)
         {
-            XmlNode publishNode = this.doc.SelectSingleNode("publish");
-            XmlNode articlesNode = this.doc.CreateElement("articles");
+            XmlNode publishNode = doc.SelectSingleNode("publish");
+            XmlNode articlesNode = doc.CreateElement("articles");
 
-            DataTable dt = exportAll ? Article.GetArticlesByPortalId(this._portalId) : Article.GetArticlesByModuleId(this._moduleId);
+            DataTable dt = exportAll ? Article.GetArticlesByPortalId(_portalId) : Article.GetArticlesByModuleId(_moduleId, false);
 
 
             foreach (DataRow row in dt.Rows)

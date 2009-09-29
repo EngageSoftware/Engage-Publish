@@ -38,7 +38,7 @@ namespace Engage.Dnn.Publish.TextHTML
             //DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
 
             //TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
-            DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID);
+            DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID, true);
             SearchArticleIndex(dt, items, modInfo);
 
         }
@@ -48,6 +48,7 @@ namespace Engage.Dnn.Publish.TextHTML
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow row = dt.Rows[i];
+
                 var searchedContent = new StringBuilder(8192);
                 //article name
                 string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
@@ -100,15 +101,19 @@ namespace Engage.Dnn.Publish.TextHTML
                 string itemId = row["ItemId"].ToString();
                 var item = new SearchItemInfo
                                {
-                                       Title = name,
-                                       Description = HtmlUtils.Clean(description, false),
-                                       Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
-                                       PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
-                                       ModuleId = modInfo.ModuleID,
-                                       SearchKey = "Article-" + itemId,
-                                       Content =
-                                               HtmlUtils.StripWhiteSpace(
-                                               HtmlUtils.Clean(searchedContent.ToString(), false), true)
+                                   Title = name,
+                                   Description = HtmlUtils.Clean(description, false),
+                                   Author =
+                                       Convert.ToInt32(row["AuthorUserId"],
+                                                       CultureInfo.InvariantCulture),
+                                   PubDate =
+                                       Convert.ToDateTime(row["LastUpdated"],
+                                                          CultureInfo.InvariantCulture),
+                                   ModuleId = modInfo.ModuleID,
+                                   SearchKey = "Article-" + itemId,
+                                   Content =
+                                       HtmlUtils.StripWhiteSpace(
+                                       HtmlUtils.Clean(searchedContent.ToString(), false), true)
                                };
                 //because we're indexing the Text/HTML module we aren't worried about the ItemID querystring parameter
                 //item.GUID = "itemid=" + itemId;
@@ -118,15 +123,21 @@ namespace Engage.Dnn.Publish.TextHTML
                 //Check if the Portal is setup to enable venexus indexing
                 if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
                 {
-                    string indexUrl = Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
+                    string indexUrl =
+                        Utility.GetItemLinkUrl(
+                            Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID,
+                            modInfo.TabID, modInfo.ModuleID);
 
                     //UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
-                    Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
+                    Data.DataProvider.Instance().UpdateVenexusBraindump(
+                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText,
+                        HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
                 }
-                //}
+
+                
             }
         }
- 
+
 
         #region IPortable Members
 

@@ -47,9 +47,9 @@ namespace Engage.Dnn.Publish.Controls
         public bool UsePaging
         {
             [DebuggerStepThrough]
-            get { return this.usePaging; }
+            get { return usePaging; }
             [DebuggerStepThrough]
-            set { this.usePaging = value; }
+            set { usePaging = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -57,34 +57,34 @@ namespace Engage.Dnn.Publish.Controls
         public bool UseCustomSort
         {
             [DebuggerStepThrough]
-            get { return this.useCustomSort; }
+            get { return useCustomSort; }
             [DebuggerStepThrough]
-            set { this.useCustomSort = value; }
+            set { useCustomSort = value; }
         }
 
 
         #region Event Handlers
         override protected void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             base.OnInit(e);
 
-            this.BindItemData();
+            BindItemData();
 
             //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
-            if (this.AllowTags && this.Overrideable)
+            if (AllowTags && Overrideable)
             {
                 string tags = Request.QueryString["Tags"];
                 if (tags != null)
                 {
-                    this.qsTags = tags;
+                    qsTags = tags;
                     char[] seperator = { '-' };
-                    ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
-                    this.tagQuery = new ArrayList(tagList.Count);
+                    ArrayList tagList = Tag.ParseTags(qsTags, PortalId, seperator, false);
+                    tagQuery = new ArrayList(tagList.Count);
                     foreach (Tag tg in tagList)
                     {
                         //create a list of tagids to query the database
-                        this.tagQuery.Add(tg.TagId);
+                        tagQuery.Add(tg.TagId);
                     }
                 }
             }
@@ -92,7 +92,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -149,7 +149,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (AllowTags && tagQuery != null && tagQuery.Count > 0)
                 {
                     lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
-                    SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
+                    SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                 }
                 else
                 {
@@ -158,14 +158,14 @@ namespace Engage.Dnn.Publish.Controls
                     if (rssSetting != null && rssSetting.PropertyValue!=string.Empty)
                     {
                         lnkRss.NavigateUrl = rssSetting.PropertyValue;
-                        SetExternalRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
+                        SetExternalRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                         
                     }
                     else
                     {
                         //TODO: configure the # of items for an RSS feed
                         lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
-                        SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
+                        SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                     }
 
                 }
@@ -175,31 +175,31 @@ namespace Engage.Dnn.Publish.Controls
             //store the URL into session for the return to list options
             if (UseSessionForReturnToList(PortalId))
             {
-                Session["PublishListLink"] = this.Request.Url.PathAndQuery;
+                Session["PublishListLink"] = Request.Url.PathAndQuery;
             }
 
             //check if admin, enable edit links
             if ((IsAdmin || IsAuthor) && IsEditable)
             {
-                this.Visibility = true;
-                this.EditText = Localization.GetString("EditText", LocalResourceFile);
+                Visibility = true;
+                EditText = Localization.GetString("EditText", LocalResourceFile);
             }
             else
             {
-                this.Visibility = false;
-                this.EditText = string.Empty;
+                Visibility = false;
+                EditText = string.Empty;
             }
 
             try
             {
                 if (customDisplaySettings.ItemTypeId == -2)
                 {
-                    this.lblMessage.Text = Localization.GetString("SetupItemType", LocalResourceFile);
+                    lblMessage.Text = Localization.GetString("SetupItemType", LocalResourceFile);
                     return;
                 }
 
-                this.lstItems.DataSource = GetData();
-                this.lstItems.DataBind();
+                lstItems.DataSource = GetData();
+                lstItems.DataBind();
 
                 if ((customDisplaySettings.ShowParent || customDisplaySettings.ShowParentDescription) && categoryId != -1)
                 {
@@ -244,6 +244,7 @@ namespace Engage.Dnn.Publish.Controls
                 var pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
                 var pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
                 var lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
+                var lblTitle = (Label)e.Item.FindControl("lblTitle");
                 //Label lblDate = (Label)e.Item.FindControl("lblDate");
 
                 if (pnlThumbnail != null)
@@ -269,7 +270,9 @@ namespace Engage.Dnn.Publish.Controls
 
                 if (pnlTitle != null)
                 {
+                    
                     pnlTitle.Visible = customDisplaySettings.DisplayOptionTitle;
+                   
                 }
                 //if (pnlCategory != null)
                 //{
@@ -286,10 +289,20 @@ namespace Engage.Dnn.Publish.Controls
                     if (Utility.IsDisabled(childItemId, PortalId))
                     {
                         lnkTitle.NavigateUrl = string.Empty;
+                        lblTitle.Visible = true;
+                        lnkTitle.Visible = false;
+
                         if (pnlReadMore != null)
                         {
                             pnlReadMore.Visible = false;
                         }
+
+                    }
+                    else
+                    {
+                        lblTitle.Visible = false;
+                        lnkTitle.Visible = true;
+
                     }
 
                     if (pnlThumbnail != null && (dr["Thumbnail"] == null || !Utility.HasValue(dr["Thumbnail"].ToString())))
@@ -606,7 +619,7 @@ namespace Engage.Dnn.Publish.Controls
                     url = HttpContext.Current.Request.RawUrl;
                 }
                 
-                this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
+                VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
             }
         }
 
@@ -625,10 +638,10 @@ namespace Engage.Dnn.Publish.Controls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
                                            ModuleActionType.AddContent, string.Empty, string.Empty,
-                                           this.EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false
+                                           EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false
                                            }
                            };
             }

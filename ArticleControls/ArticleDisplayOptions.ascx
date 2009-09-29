@@ -90,5 +90,6 @@
             <td class="subhead"><dnn:label ID="lblDisplayComments" runat="server" /></td>
 	        <td><asp:DropDownList ID="ddlDisplayComments" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
+        
     </table>
 </asp:Panel>

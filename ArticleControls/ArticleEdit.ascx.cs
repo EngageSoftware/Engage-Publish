@@ -47,7 +47,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private ItemApproval itemApprovalStatus; //item approval status
         private ItemEdit itemEditControl; //item edit control
         private TagEntry tagEntryControl; //tag entry control
-                
+
         #endregion
 
         #region Private Const
@@ -91,10 +91,10 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void InitializeComponent()
         {
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.Load += this.Page_Load;
-            this.PreRender += this.Page_PreRender;
+            cmdUpdate.Click += cmdUpdate_Click;
+            cmdCancel.Click += cmdCancel_Click;
+            Load += Page_Load;
+            PreRender += Page_PreRender;
         }
 
         private void LoadControlType()
@@ -104,13 +104,13 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (ItemVersionId == -1)
             {
                 BindItemData(true);
-                this.trArticleId.Visible = false;
-                this.cmdDelete.Visible = false;
+                trArticleId.Visible = false;
+                cmdDelete.Visible = false;
             }
             else
             {
                 BindItemData();
-                this.cmdDelete.Visible = IsAdmin;
+                cmdDelete.Visible = IsAdmin;
             }
 
             var av = (Article)VersionInfoObject;
@@ -120,81 +120,81 @@ namespace Engage.Dnn.Publish.ArticleControls
             itemEditControl.ModuleConfiguration = ModuleConfiguration;
             itemEditControl.ID = Path.GetFileNameWithoutExtension(ItemControlToLoad);
             itemEditControl.VersionInfoObject = VersionInfoObject;
-            this.phControls.Controls.Add(itemEditControl);
+            phControls.Controls.Add(itemEditControl);
 
             //Article Text Editor
-            this.TeArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
-            this.TeArticleText.HtmlEncode = false;
-            this.TeArticleText.TextRenderMode = "Raw";
-            this.TeArticleText.Width = ArticleEditWidth; //default values for the editor
-            this.TeArticleText.Height = ArticleEditHeight; //default values for the editor
-            this.TeArticleText.ChooseMode = true;
-            this.phArticleText.Controls.Add(this.TeArticleText);
-            this.TeArticleText.Text = av.ArticleText;
+            TeArticleText = (TextEditor)LoadControl("~/controls/TextEditor.ascx");
+            TeArticleText.HtmlEncode = false;
+            TeArticleText.TextRenderMode = "Raw";
+            TeArticleText.Width = ArticleEditWidth; //default values for the editor
+            TeArticleText.Height = ArticleEditHeight; //default values for the editor
+            TeArticleText.ChooseMode = true;
+            phArticleText.Controls.Add(TeArticleText);
+            TeArticleText.Text = av.ArticleText;
 
             //Parent Category Relationship
-            this.parentCategoryRelationship = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.parentCategoryRelationship.ModuleConfiguration = ModuleConfiguration;
-            
-            this.parentCategoryRelationship.LocalResourceFile = ItemrelationshipResourceFile;
-            this.parentCategoryRelationship.VersionInfoObject = VersionInfoObject;
-            this.parentCategoryRelationship.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.parentCategoryRelationship.CreateRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.parentCategoryRelationship.AvailableSelectionMode = ListSelectionMode.Single;
-            this.parentCategoryRelationship.IsRequired = true;
-            this.parentCategoryRelationship.FlatView = true;
-            this.parentCategoryRelationship.ItemTypeId = ItemType.Category.GetId();
-            this.phParentCategory.Controls.Add(this.parentCategoryRelationship);
+            parentCategoryRelationship = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            parentCategoryRelationship.ModuleConfiguration = ModuleConfiguration;
+
+            parentCategoryRelationship.LocalResourceFile = ItemrelationshipResourceFile;
+            parentCategoryRelationship.VersionInfoObject = VersionInfoObject;
+            parentCategoryRelationship.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            parentCategoryRelationship.CreateRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            parentCategoryRelationship.AvailableSelectionMode = ListSelectionMode.Single;
+            parentCategoryRelationship.IsRequired = true;
+            parentCategoryRelationship.FlatView = true;
+            parentCategoryRelationship.ItemTypeId = ItemType.Category.GetId();
+            phParentCategory.Controls.Add(parentCategoryRelationship);
 
             //Related Category Relationship
-            this.relatedCategoryRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.relatedCategoryRelationships.ModuleConfiguration = ModuleConfiguration;
-            this.relatedCategoryRelationships.LocalResourceFile = ItemrelationshipResourceFile;
-            this.relatedCategoryRelationships.VersionInfoObject = VersionInfoObject;
-            this.relatedCategoryRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.relatedCategoryRelationships.CreateRelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
-            this.relatedCategoryRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
-            this.relatedCategoryRelationships.IsRequired = false;
-            this.relatedCategoryRelationships.FlatView = true;
-            this.relatedCategoryRelationships.ItemTypeId = ItemType.Category.GetId();
-            this.phRelatedCategories.Controls.Add(this.relatedCategoryRelationships);
+            relatedCategoryRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            relatedCategoryRelationships.ModuleConfiguration = ModuleConfiguration;
+            relatedCategoryRelationships.LocalResourceFile = ItemrelationshipResourceFile;
+            relatedCategoryRelationships.VersionInfoObject = VersionInfoObject;
+            relatedCategoryRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            relatedCategoryRelationships.CreateRelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
+            relatedCategoryRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
+            relatedCategoryRelationships.IsRequired = false;
+            relatedCategoryRelationships.FlatView = true;
+            relatedCategoryRelationships.ItemTypeId = ItemType.Category.GetId();
+            phRelatedCategories.Controls.Add(relatedCategoryRelationships);
 
             //Related Articles Relationship
-            this.relatedArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.relatedArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
-            this.relatedArticlesRelationships.VersionInfoObject = VersionInfoObject;
-            this.relatedArticlesRelationships.LocalResourceFile = ItemrelationshipResourceFile;
-            this.relatedArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.relatedArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId();
-            this.relatedArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
-            this.relatedArticlesRelationships.FlatView = true;
-            this.relatedArticlesRelationships.EnableDates = false;
-            this.relatedArticlesRelationships.AllowSearch = true;
-            this.relatedArticlesRelationships.EnableSortOrder = true;
-            this.relatedArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
-            this.phRelatedArticles.Controls.Add(this.relatedArticlesRelationships);
+            relatedArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            relatedArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
+            relatedArticlesRelationships.VersionInfoObject = VersionInfoObject;
+            relatedArticlesRelationships.LocalResourceFile = ItemrelationshipResourceFile;
+            relatedArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            relatedArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId();
+            relatedArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
+            relatedArticlesRelationships.FlatView = true;
+            relatedArticlesRelationships.EnableDates = false;
+            relatedArticlesRelationships.AllowSearch = true;
+            relatedArticlesRelationships.EnableSortOrder = true;
+            relatedArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
+            phRelatedArticles.Controls.Add(relatedArticlesRelationships);
 
             //Embedded Articles Relationship
-            this.embeddedArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.embeddedArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
-            this.embeddedArticlesRelationships.VersionInfoObject = VersionInfoObject;
-            this.embeddedArticlesRelationships.LocalResourceFile = ItemrelationshipResourceFile;
-            this.embeddedArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.embeddedArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId();
-            this.embeddedArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Single;
-            this.embeddedArticlesRelationships.FlatView = true;
-            this.embeddedArticlesRelationships.EnableDates = false;
-            this.embeddedArticlesRelationships.AllowSearch = true;
-            this.embeddedArticlesRelationships.EnableSortOrder = false;
-            this.embeddedArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
-            this.phEmbeddedArticle.Controls.Add(this.embeddedArticlesRelationships);
+            embeddedArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            embeddedArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
+            embeddedArticlesRelationships.VersionInfoObject = VersionInfoObject;
+            embeddedArticlesRelationships.LocalResourceFile = ItemrelationshipResourceFile;
+            embeddedArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            embeddedArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId();
+            embeddedArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Single;
+            embeddedArticlesRelationships.FlatView = true;
+            embeddedArticlesRelationships.EnableDates = false;
+            embeddedArticlesRelationships.AllowSearch = true;
+            embeddedArticlesRelationships.EnableSortOrder = false;
+            embeddedArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
+            phEmbeddedArticle.Controls.Add(embeddedArticlesRelationships);
 
             //load approval status
             itemApprovalStatus = (ItemApproval)LoadControl(ApprovalControlToLoad);
             itemApprovalStatus.ModuleConfiguration = ModuleConfiguration;
             itemApprovalStatus.ID = Path.GetFileNameWithoutExtension(ApprovalControlToLoad);
             itemApprovalStatus.VersionInfoObject = VersionInfoObject;
-            this.phApproval.Controls.Add(itemApprovalStatus);
+            phApproval.Controls.Add(itemApprovalStatus);
 
 
             if (AllowTags)
@@ -203,7 +203,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 var tagList = new StringBuilder(255);
                 foreach (ItemTag it in VersionInfoObject.Tags)
                 {
-                    tagList.Append(Tag.GetTag(it.TagId,PortalId).Name);
+                    tagList.Append(Tag.GetTag(it.TagId, PortalId).Name);
                     tagList.Append(";");
                 }
 
@@ -213,7 +213,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
 
                 tagEntryControl.TagList = tagList.ToString();
-                this.phTagEntry.Controls.Add(tagEntryControl);
+                phTagEntry.Controls.Add(tagEntryControl);
 
             }
             else
@@ -224,7 +224,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         }
 
-       
+
 
         private void Page_Load(object sender, EventArgs e)
         {
@@ -243,19 +243,19 @@ namespace Engage.Dnn.Publish.ArticleControls
                         if (ParentId != -1)
                         {
                             Category parent = Category.GetCategory(ParentId, PortalId);// = null;
-                            this.parentCategoryRelationship.AddToSelectedItems(parent);
+                            parentCategoryRelationship.AddToSelectedItems(parent);
                         }
                     }
 
                     trArticleId.Visible = ShowItemIds;
 
-                    this.txtArticleId.Text = this.VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture) == "-1" ? Localization.GetString("NewArticle", this.LocalResourceFile) : this.VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
-                    this.txtVersionNumber.Text = av.VersionNumber;
-                    this.TeArticleText.Text = av.ArticleText;
-                    this.txtPreviousVersionDescription.Text = av.VersionDescription;
+                    txtArticleId.Text = VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture) == "-1" ? Localization.GetString("NewArticle", LocalResourceFile) : VersionInfoObject.ItemId.ToString(CultureInfo.CurrentCulture);
+                    txtVersionNumber.Text = av.VersionNumber;
+                    TeArticleText.Text = av.ArticleText;
+                    txtPreviousVersionDescription.Text = av.VersionDescription;
 
-                    this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("CurrentPage", LocalResourceFile), true.ToString(CultureInfo.InvariantCulture)));
-                    this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("SpecificPage", LocalResourceFile), false.ToString(CultureInfo.InvariantCulture)));
+                    rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("CurrentPage", LocalResourceFile), true.ToString(CultureInfo.InvariantCulture)));
+                    rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("SpecificPage", LocalResourceFile), false.ToString(CultureInfo.InvariantCulture)));
 
                     //get the pnlPrinterFriendly setting
                     ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(av.ItemVersionId, "pnlPrinterFriendly", "Visible", PortalId);
@@ -431,14 +431,14 @@ namespace Engage.Dnn.Publish.ArticleControls
                         av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                     }
 
-                    av.VersionNumber = this.txtVersionNumber.Text;
-                    av.VersionDescription = this.txtVersionDescription.Text;
-                    av.ArticleText = this.TeArticleText.Text;
+                    av.VersionNumber = txtVersionNumber.Text;
+                    av.VersionDescription = txtVersionDescription.Text;
+                    av.ArticleText = TeArticleText.Text;
                 }
 
-                            //load the article attachement settings
-            
-            //ctlUrlSelection.Url = 
+                //load the article attachement settings
+
+                //ctlUrlSelection.Url = 
 
             }
             catch (Exception exc)
@@ -449,7 +449,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void Page_PreRender(object sender, EventArgs e)
         {
-            
+
             //the ItemRelationships control doesn't bind until after this Page_Load,
             //so we need to use the PreRender to see whether there are articles
             bool thereAreRelatedArticles = relatedArticlesRelationships.GetSelectedItemIds().Length > 0;
@@ -526,108 +526,115 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 var av = (Article)VersionInfoObject;
 
-                this.txtMessage.Text = string.Empty;
+                txtMessage.Text = string.Empty;
                 bool error = false;
 
                 //Removed the check for the Item Description length as we no longer have a restriction on this
-                
+
                 //if (TextBoxMaxLengthExceeded(this.itemEditControl.DescriptionText, "Article Description", 4000))
                 //{
                 //    error = true;
                 //}
 
-                if (TextBoxMaxLengthExceeded(this.txtVersionDescription.Text, "Version Description", 8000))
+                if (TextBoxMaxLengthExceeded(txtVersionDescription.Text, "Version Description", 8000))
                 {
                     error = true;
                 }
 
-                if (!this.parentCategoryRelationship.IsValid)
+                if (!parentCategoryRelationship.IsValid)
                 {
                     error = true;
-                    this.txtMessage.Text += Localization.GetString("ErrorSelectCategory.Text", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ErrorSelectCategory.Text", LocalResourceFile);
                 }
 
-                if (!this.itemApprovalStatus.IsValid && this.itemApprovalStatus.Visible)
+                if (!itemApprovalStatus.IsValid && itemApprovalStatus.Visible)
                 {
                     error = true;
-                    this.txtMessage.Text += Localization.GetString("ErrorApprovalStatus.Text", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ErrorApprovalStatus.Text", LocalResourceFile);
                 }
 
-                if (!this.itemEditControl.IsValid)
+                if (!itemEditControl.IsValid)
                 {
                     error = true;
-                    this.txtMessage.Text += this.itemEditControl.ErrorMessage;
+                    txtMessage.Text += itemEditControl.ErrorMessage;
                 }
 
                 if (Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture) > -1)
                 {
                     VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
-                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
-                    //TODO: set module id here too
                 }
                 else
                 {
                     error = true;
-                    this.txtMessage.Text += Localization.GetString("ErrorDisplayPage.Text", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ErrorDisplayPage.Text", LocalResourceFile);
                 }
 
-                
+
 
 
                 if (error)
                 {
-                    this.txtMessage.Visible = true;
+                    txtMessage.Visible = true;
                     return;
                 }
-
                 
-
-                av.ArticleText = this.TeArticleText.Text;
+                av.ArticleText = TeArticleText.Text;
                 av.VersionDescription = txtVersionDescription.Text;
                 av.VersionNumber = txtVersionNumber.Text;
                 av.Description = itemEditControl.DescriptionText;
                 //we need to look at making moduleid be configurable at anytime, not just on item creation, this makes previewing items impossible
                 //if (av.IsNew)
-                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
-                //                    VersionInfoObject.ModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
+                int newModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleName);
+                if (newModuleId > 0)
+                {
+                    VersionInfoObject.ModuleId = newModuleId;
+                }
+                else
+                {
+                    newModuleId = Utility.GetModuleIdFromDisplayTabId(VersionInfoObject.DisplayTabId, PortalId, Utility.DnnFriendlyModuleNameTextHTML);
+                    if (newModuleId > 0)
+                    {
+                        VersionInfoObject.ModuleId = newModuleId;
+                    }
+                }
 
                 //create a relationship
-                var irel = new ItemRelationship {RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId()};
-                int[] ids = this.parentCategoryRelationship.GetSelectedItemIds();
+                var irel = new ItemRelationship { RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId() };
+                int[] ids = parentCategoryRelationship.GetSelectedItemIds();
 
                 //check for parent category, if none then add a relationship for Top Level Item
-                if (ids.Length >0)
+                if (ids.Length > 0)
                 {
                     irel.ParentItemId = ids[0];
                     VersionInfoObject.Relationships.Add(irel);
                 }
 
-                foreach (int i in this.relatedCategoryRelationships.GetSelectedItemIds())
+                foreach (int i in relatedCategoryRelationships.GetSelectedItemIds())
                 {
                     var irco = new ItemRelationship
                                    {
-                                           RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId(),
-                                           ParentItemId = i
+                                       RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId(),
+                                       ParentItemId = i
                                    };
                     av.Relationships.Add(irco);
                 }
 
-                foreach (int i in this.relatedArticlesRelationships.GetSelectedItemIds())
+                foreach (int i in relatedArticlesRelationships.GetSelectedItemIds())
                 {
                     var irArticleso = new ItemRelationship
                                           {
-                                                  RelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId(),
-                                                  ParentItemId = i
+                                              RelationshipTypeId = RelationshipType.ItemToRelatedArticle.GetId(),
+                                              ParentItemId = i
                                           };
                     av.Relationships.Add(irArticleso);
                 }
 
-                foreach (int i in this.embeddedArticlesRelationships.GetSelectedItemIds())
+                foreach (int i in embeddedArticlesRelationships.GetSelectedItemIds())
                 {
                     var irLinksso = new ItemRelationship
                                         {
-                                                RelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId(),
-                                                ParentItemId = i
+                                            RelationshipTypeId = RelationshipType.ItemToArticleLinks.GetId(),
+                                            ParentItemId = i
                                         };
                     av.Relationships.Add(irLinksso);
                 }
@@ -636,7 +643,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     av.Tags.Clear();
                     //Add the tags to the ItemTagCollection
-                    foreach (Tag t in Tag.ParseTags(this.tagEntryControl.TagList, PortalId))
+                    foreach (Tag t in Tag.ParseTags(tagEntryControl.TagList, PortalId))
                     {
                         ItemTag it = ItemTag.Create();
                         it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
@@ -644,21 +651,21 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                 }
 
-                
-                
+
+
 
                 if (av.Description == string.Empty)
                 {
                     //trim article text to populate description
-                    
+
                     if (!Utility.HasValue(av.Description) || !Utility.HasValue(av.MetaDescription))
                     {
-                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.ArticleText, false);        
+                        string description = DotNetNuke.Common.Utilities.HtmlUtils.StripTags(av.ArticleText, false);
                         if (!Utility.HasValue(av.Description))
                             av.Description = Utility.TrimDescription(3997, description) + "...";// description + "...";
                     }
                 }
-                
+
 
                 //auto populate the meta description if it's not populated already
                 if (!Utility.HasValue(av.MetaDescription))
@@ -696,7 +703,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
-            this.txtMessage.Visible = true;
+            txtMessage.Visible = true;
             bool itemExists = false;
 
             if (ItemId > -1)
@@ -735,7 +742,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     if (!inUse && !isFeatured)
                     {
                         //Item.DeleteItem(ItemId);
-                        Item.DeleteItem(ItemId,PortalId);
+                        Item.DeleteItem(ItemId, PortalId);
                         txtMessage.Text = Localization.GetString("DeleteSuccess", LocalResourceFile);
 
                     }
@@ -764,7 +771,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
             if (!itemExists)
             {
-                this.txtMessage.Text = Localization.GetString("DeleteFailure", LocalResourceFile);
+                txtMessage.Text = Localization.GetString("DeleteFailure", LocalResourceFile);
             }
             ShowOnlyMessage();
         }
@@ -801,15 +808,15 @@ namespace Engage.Dnn.Publish.ArticleControls
             dt = Utility.GetDisplayTabIds(modules);
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
-            this.ddlDisplayTabId.DataBind();
+
+            ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
+            ddlDisplayTabId.DataBind();
             foreach (DataRow dr in dt.Rows)
             {
                 if (ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()) != null)
                     ddlDisplayTabId.Items.FindByValue(dr["TabID"].ToString()).Text += Localization.GetString("PublishOverrideable", LocalSharedResourceFile);
-            //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
-            //    this.ddlDisplayTabId.Items.Add(li);
+                //    ListItem li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
+                //    this.ddlDisplayTabId.Items.Add(li);
             }
 
             //check if the DisplayTabId should be set.
@@ -853,7 +860,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         ddlDisplayTabId.Items.FindByValue(parent.ChildDisplayTabId.ToString(CultureInfo.InvariantCulture)).Selected = true;
                     }
                 }
-                
+
                 else
                 {
                     //load the default display tab
@@ -974,8 +981,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             bool b = (text.Length > length);
             if (b)
             {
-                this.txtMessage.Text += String.Format(CultureInfo.CurrentCulture, Localization.GetString("MaximumLength", LocalResourceFile), controlName, length.ToString(CultureInfo.CurrentCulture), text.Length);
-                this.txtMessage.Visible = true;
+                txtMessage.Text += String.Format(CultureInfo.CurrentCulture, Localization.GetString("MaximumLength", LocalResourceFile), controlName, length.ToString(CultureInfo.CurrentCulture), text.Length);
+                txtMessage.Visible = true;
             }
 
             return b;
@@ -983,19 +990,19 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void ShowOnlyMessage()
         {
-            foreach (Control cntl in this.Controls)
+            foreach (Control cntl in Controls)
             {
                 cntl.Visible = false;
             }
 
-            this.txtMessage.Visible = true;
-            this.txtMessage.Parent.Visible = true;
+            txtMessage.Visible = true;
+            txtMessage.Parent.Visible = true;
         }
 
         private void SaveSettings()
         {
             var av = (Article)VersionInfoObject;
-            
+
             av.VersionSettings.Clear();
             //Printer Friendly
             Setting setting = Setting.PrinterFriendly;
@@ -1065,7 +1072,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             setting.PropertyValue = chkReturnList.Checked.ToString(CultureInfo.InvariantCulture);
             itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
-            
+
             //show author
             setting = Setting.Author;
             setting.PropertyValue = chkShowAuthor.Checked.ToString(CultureInfo.InvariantCulture);
@@ -1077,8 +1084,8 @@ namespace Engage.Dnn.Publish.ArticleControls
             setting.PropertyValue = chkTags.Checked.ToString(CultureInfo.InvariantCulture);
             itemVersionSetting = new ItemVersionSetting(setting);
             av.VersionSettings.Add(itemVersionSetting);
-            
-            
+
+
             //use approvals
             setting = Setting.UseApprovals;
             setting.PropertyValue = chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture);
@@ -1112,7 +1119,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             clpExtended.ExpandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
             clpExtended.CollapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
         }
-    
+
     }
 }
 

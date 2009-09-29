@@ -66,52 +66,56 @@ namespace Engage.Dnn.Publish
         public bool UseUrls
         {
             [DebuggerStepThrough]
-            get { return this.useUrls; }
+            get { return useUrls; }
             [DebuggerStepThrough]
-            set { this.useUrls = value; }
+            set
+            {
+                useUrls = value;
+            }
         }
 
         public Item VersionInfoObject
         {
             [DebuggerStepThrough]
-            get { return this.versionInfoObject; }
+            get { return 
+                versionInfoObject; }
             [DebuggerStepThrough]
-            set { this.versionInfoObject = value; }
+            set { versionInfoObject = value; }
         }
 
         public bool LogBreadcrumb
         {
             [DebuggerStepThrough]
-            get { return this.logBreadcrumb; }
+            get { return logBreadcrumb; }
             [DebuggerStepThrough]
-            set { this.logBreadcrumb = value; }
+            set { logBreadcrumb = value; }
         }
 
         public bool Overrideable
         {
             [DebuggerStepThrough]
-            get { return this.overrideable; }
+            get { return overrideable; }
             [DebuggerStepThrough]
-            set { this.overrideable = value; }
+            set { overrideable = value; }
         }
 
         public bool UseCache
         {
-            get { return this.useCache && this.CacheTime > 0; }
+            get { return useCache && CacheTime > 0; }
             [DebuggerStepThrough]
-            set { this.useCache = value; }
+            set { useCache = value; }
         }
 
         public bool AllowTitleUpdate
         {
             get
             {
-                object o = this.Settings["AllowTitleUpdate"];
-                if (o == null || !bool.TryParse(o.ToString(), out this.allowTitleUpdate))
+                object o = Settings["AllowTitleUpdate"];
+                if (o == null || !bool.TryParse(o.ToString(), out allowTitleUpdate))
                 {
-                    this.allowTitleUpdate = true;
+                    allowTitleUpdate = true;
                 }
-                return this.allowTitleUpdate;
+                return allowTitleUpdate;
             }
         }
 
@@ -119,26 +123,26 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                this.pageId = 1;
-                if (this.versionInfoObject != null)
+                pageId = 1;
+                if (versionInfoObject != null)
                 {
                     //TODO: this needs changed. We need to know what we're loading in the querystring first, check the ItemID
-                    object o = this.Request.QueryString["pageid"];
-                    object c = this.Request.QueryString["catpageid"];
+                    object o = Request.QueryString["pageid"];
+                    object c = Request.QueryString["catpageid"];
 
-                    if (o != null && this.versionInfoObject.ItemTypeId == ItemType.Article.GetId())
+                    if (o != null && versionInfoObject.ItemTypeId == ItemType.Article.GetId())
                     {
-                        this.pageId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
+                        pageId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                     }
                     else if (c != null
                              &&
-                             (this.versionInfoObject.ItemTypeId == ItemType.Category.GetId()
-                              || this.versionInfoObject.ItemTypeId == ItemType.TopLevelCategory.GetId()))
+                             (versionInfoObject.ItemTypeId == ItemType.Category.GetId()
+                              || versionInfoObject.ItemTypeId == ItemType.TopLevelCategory.GetId()))
                     {
-                        this.pageId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
+                        pageId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
                     }
                 }
-                return this.pageId;
+                return pageId;
             }
         }
 
@@ -148,8 +152,8 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishSetup + this.PortalId);
-                string d = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + this.PortalId);
+                string s = HostSettings.GetHostSetting(Utility.PublishSetup + PortalId);
+                string d = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + PortalId);
                 return !String.IsNullOrEmpty(s) && !String.IsNullOrEmpty(d);
             }
         }
@@ -167,7 +171,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditWidth + this.PortalId);
+                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditWidth + PortalId);
                 if (Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -180,7 +184,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditHeight + this.PortalId);
+                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditHeight + PortalId);
                 if (Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -193,7 +197,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditHeight + this.PortalId);
+                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditHeight + PortalId);
                 if (Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -206,7 +210,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditWidth + this.PortalId);
+                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditWidth + PortalId);
                 if (Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -217,187 +221,187 @@ namespace Engage.Dnn.Publish
 
         public bool IsCommentsEnabled
         {
-            get { return IsCommentsEnabledForPortal(this.PortalId); }
+            get { return IsCommentsEnabledForPortal(PortalId); }
         }
 
         public bool IsCommentAuthorNotificationEnabled
         {
-            get { return IsCommentAuthorNotificationEnabledForPortal(this.PortalId); }
+            get { return IsCommentAuthorNotificationEnabledForPortal(PortalId); }
         }
 
         public bool AllowAnonymousComments
         {
-            get { return AllowAnonymousCommentsForPortal(this.PortalId); }
+            get { return AllowAnonymousCommentsForPortal(PortalId); }
         }
 
         public bool AreCommentsModerated
         {
-            get { return AreCommentsModeratedForPortal(this.PortalId); }
+            get { return AreCommentsModeratedForPortal(PortalId); }
         }
 
         public bool AutoApproveComments
         {
-            get { return AutoApproveCommentsForPortal(this.PortalId); }
+            get { return AutoApproveCommentsForPortal(PortalId); }
         }
 
         public bool AreRatingsEnabled
         {
-            get { return AreRatingsEnabledForPortal(this.PortalId); }
+            get { return AreRatingsEnabledForPortal(PortalId); }
         }
 
         public bool AllowAnonymousRatings
         {
-            get { return AllowAnonymousRatingsForPortal(this.PortalId); }
+            get { return AllowAnonymousRatingsForPortal(PortalId); }
         }
 
         public bool IsViewTrackingEnabled
         {
-            get { return IsViewTrackingEnabledForPortal(this.PortalId); }
+            get { return IsViewTrackingEnabledForPortal(PortalId); }
         }
 
         public bool EnablePublishFriendlyUrls
         {
-            get { return EnablePublishFriendlyUrlsForPortal(this.PortalId); }
+            get { return EnablePublishFriendlyUrlsForPortal(PortalId); }
         }
 
         public bool AllowArticlePaging
         {
-            get { return AllowArticlePagingForPortal(this.PortalId); }
+            get { return AllowArticlePagingForPortal(PortalId); }
         }
 
         public bool AllowVenexusSearch
         {
-            get { return AllowVenexusSearchForPortal(this.PortalId); }
+            get { return AllowVenexusSearchForPortal(PortalId); }
         }
 
         public bool AllowSimpleGalleryIntegration
         {
-            get { return AllowSimpleGalleryIntegrationForPortal(this.PortalId); }
+            get { return AllowSimpleGalleryIntegrationForPortal(PortalId); }
         }
 
         public bool AllowUltraMediaGalleryIntegration
         {
-            get { return AllowUltraMediaGalleryIntegrationForPortal(this.PortalId); }
+            get { return AllowUltraMediaGalleryIntegrationForPortal(PortalId); }
         }
 
         public bool EnableDisplayNameAsHyperlink
         {
-            get { return EnableDisplayNameAsHyperlinkForPortal(this.PortalId); }
+            get { return EnableDisplayNameAsHyperlinkForPortal(PortalId); }
         }
 
         public bool AllowTags
         {
-            get { return AllowTagsForPortal(this.PortalId); }
+            get { return AllowTagsForPortal(PortalId); }
         }
 
         public int PopularTagCount
         {
-            get { return PopularTagCountForPortal(this.PortalId); }
+            get { return PopularTagCountForPortal(PortalId); }
         }
 
         public int DefaultDisplayTabId
         {
-            get { return DefaultDisplayTabIdForPortal(this.PortalId); }
+            get { return DefaultDisplayTabIdForPortal(PortalId); }
         }
 
         public int DefaultTagDisplayTabId
         {
-            get { return DefaultTagDisplayTabIdForPortal(this.PortalId); }
+            get { return DefaultTagDisplayTabIdForPortal(PortalId); }
         }
 
         public int DefaultTextHtmlCategory
         {
-            get { return DefaultTextHtmlCategoryForPortal(this.PortalId); }
+            get { return DefaultTextHtmlCategoryForPortal(PortalId); }
         }
 
 
 
         public bool AllowRichTextDescriptions
         {
-            get { return AllowRichTextDescriptionsForPortal(this.PortalId); }
+            get { return AllowRichTextDescriptionsForPortal(PortalId); }
         }
 
         public bool DefaultRichTextDescriptions
         {
-            get { return DefaultRichTextDescriptionsForPortal(this.PortalId); }
+            get { return DefaultRichTextDescriptionsForPortal(PortalId); }
         }
 
 
         public bool UseApprovals
         {
-            get { return UseApprovalsForPortal(this.PortalId); }
+            get { return UseApprovalsForPortal(PortalId); }
         }
 
         public bool UseEmbeddedArticles
         {
-            get { return UseEmbeddedArticlesForPortal(this.PortalId); }
+            get { return UseEmbeddedArticlesForPortal(PortalId); }
         }
 
         public bool ShowItemIds
         {
-            get { return ShowItemIdsForPortal(this.PortalId); }
+            get { return ShowItemIdsForPortal(PortalId); }
         }
 
         public string ThumbnailSubdirectory
         {
-            get { return ThumbnailSubdirectoryForPortal(this.PortalId); }
+            get { return ThumbnailSubdirectoryForPortal(PortalId); }
         }
 
         public string ThumbnailSelectionOption
         {
-            get { return ThumbnailSelectionOptionForPortal(this.PortalId); }
+            get { return ThumbnailSelectionOptionForPortal(PortalId); }
         }
 
         public int MaximumRating
         {
-            get { return MaximumRatingForPortal(this.PortalId); }
+            get { return MaximumRatingForPortal(PortalId); }
         }
 
         public bool IsAdmin
         {
             get 
             {
-                return this.Request.IsAuthenticated
-                       && (PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId)) || this.UserInfo.IsSuperUser);
+                return Request.IsAuthenticated
+                       && (PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId)) || UserInfo.IsSuperUser);
             }
         }
 
         public bool IsConfigured
         {
-            get { return this.Settings.Contains("DisplayType"); }
+            get { return Settings.Contains("DisplayType"); }
         }
 
         public bool IsAuthor
         {
-            get { return this.Request.IsAuthenticated && PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId)); }
+            get { return Request.IsAuthenticated && PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId)); }
         }
 
         public bool IsPingEnabled
         {
-            get { return Utility.IsPingEnabledForPortal(this.PortalId); }
+            get { return Utility.IsPingEnabledForPortal(PortalId); }
         }
 
         public bool IsWlwEnabled
         {
-            get { return this.GetWlwSupportForPortal(this.PortalId); }
+            get { return GetWlwSupportForPortal(PortalId); }
         }
 
 
         public bool IsPublishCommentType
         {
-            get { return IsPublishCommentTypeForPortal(this.PortalId); }
+            get { return IsPublishCommentTypeForPortal(PortalId); }
         }
 
         public string ForumProviderType
         {
-            get { return ForumProviderTypeForPortal(this.PortalId); }
+            get { return ForumProviderTypeForPortal(PortalId); }
         }
 
         public ItemType TypeOfItem
         {
             get
             {
-                int typeId = Item.GetItemTypeId(this.ItemId, this.PortalId);
+                int typeId = Item.GetItemTypeId(ItemId, PortalId);
 
                 return ItemType.GetFromId(typeId, typeof(ItemType));
             }
@@ -408,20 +412,20 @@ namespace Engage.Dnn.Publish
             get
             {
                 //someone called the public method and set the ItemID (externally).
-                if (this.externallySetItemId > 0)
+                if (externallySetItemId > 0)
                 {
-                    return this.externallySetItemId;
+                    return externallySetItemId;
                 }
                 //ItemId has not been set externally now we need to look at settings.
 
                 //if the querystring has the ItemId on it and the settings are to override				
-                string i = this.Request.QueryString["itemId"];
+                string i = Request.QueryString["itemId"];
                 //we need to look if we're in admin mode, if so forget the reference about IsOverridable, it's always overridable.
-                string ctl = this.Request.QueryString["ctl"];
+                string ctl = Request.QueryString["ctl"];
 
                 int modid = -1;
 
-                 object o = this.Request.Params["modid"];
+                 object o = Request.Params["modid"];
                  if (o != null)
                  {
                      modid = Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
@@ -434,9 +438,9 @@ namespace Engage.Dnn.Publish
                     {
                         return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                     }
-                    if (this.ItemVersionId > 0)
+                    if (ItemVersionId > 0)
                     {
-                        return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
+                        return Item.GetItemIdFromVersion(ItemVersionId, PortalId);
                     }
                 }
 
@@ -446,7 +450,7 @@ namespace Engage.Dnn.Publish
 
                 if (modid >0)
                 {
-                    if ((Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId || Overrideable))
+                    if ((Convert.ToInt32(o, CultureInfo.InvariantCulture) == ModuleId || Overrideable))
                     {
                         //if we found the moduleid in the querystring we are trying to force the article here.                      
                         if (!String.IsNullOrEmpty(i))
@@ -454,9 +458,9 @@ namespace Engage.Dnn.Publish
                             return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                         }
                         //The local variable ItemVersionId is set so resolve the ItemVersionid to an Itemid
-                        if (this.ItemVersionId > 0 )
+                        if (ItemVersionId > 0 )
                         {
-                            return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
+                            return Item.GetItemIdFromVersion(ItemVersionId, PortalId);
                         }
                         return manager.ResolveId();
                     }
@@ -470,9 +474,9 @@ namespace Engage.Dnn.Publish
                 }
 
                 //The local variable ItemVersionId is set so resolve the ItemVersionid to an Itemid
-                if (manager.IsOverrideable && this.ItemVersionId > 0 && modid == ModuleId)
+                if (manager.IsOverrideable && ItemVersionId > 0 && modid == ModuleId)
                 {
-                    return Item.GetItemIdFromVersion(this.ItemVersionId, this.PortalId);
+                    return Item.GetItemIdFromVersion(ItemVersionId, PortalId);
                 }
 
                 //none of the above have scenarios have been met, need to ask the Manager class to 
@@ -487,14 +491,14 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                object o = this.Settings["CacheTime"];
+                object o = Settings["CacheTime"];
                 if (o != null)
                 {
                     return Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
                 }
-                if (GetDefaultCacheSetting(this.PortalId) > 0)
+                if (GetDefaultCacheSetting(PortalId) > 0)
                 {
-                    return GetDefaultCacheSetting(this.PortalId);
+                    return GetDefaultCacheSetting(PortalId);
                 }
                 return 0;
             }
@@ -502,7 +506,7 @@ namespace Engage.Dnn.Publish
 
         public int DefaultAdminPagingSize
         {
-            get { return GetAdminDefaultPagingSize(this.PortalId); }
+            get { return GetAdminDefaultPagingSize(PortalId); }
         }
 
         public static string ApplicationUrl
@@ -521,13 +525,13 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = this.Request.QueryString["VersionId"];
+                string s = Request.QueryString["VersionId"];
                 if (s == null) return -1;
-                object o = this.Request.Params["modid"];
+                object o = Request.Params["modid"];
                 if (o != null)
                 {
                     //check to see if we're on the right module id, otherwise return -1
-                    if (Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture) == this.ModuleId) 
+                    if (Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture) == ModuleId) 
                         return Convert.ToInt32(s, CultureInfo.InvariantCulture);
                     return -1;
                 }
@@ -540,7 +544,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = this.Request.QueryString["CommentId"];
+                string s = Request.QueryString["CommentId"];
                 return (s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture));
             }
         }
@@ -875,9 +879,9 @@ namespace Engage.Dnn.Publish
 
         public bool GetWlwSupportForPortal(int portalId)
         {
-            if (this.Settings.Contains("SupportWLW"))
+            if (Settings.Contains("SupportWLW"))
             {
-                string supportwlw = this.Settings["SupportWLW"].ToString();
+                string supportwlw = Settings["SupportWLW"].ToString();
                 return Convert.ToBoolean(supportwlw);
             }
             return false;            
@@ -928,7 +932,7 @@ namespace Engage.Dnn.Publish
 
         public string BuildLinkUrl(string qsParameters)
         {
-            return Globals.NavigateURL(this.TabId, string.Empty, qsParameters);
+            return Globals.NavigateURL(TabId, string.Empty, qsParameters);
         }
 
         public string GetItemLinkUrl(object itemId)
@@ -942,9 +946,9 @@ namespace Engage.Dnn.Publish
                 //check to see if the link we're building is for the current item, or another item, if another item we want to use Pageid=1
 
                 int correctPageId =1;
-                if(Convert.ToInt32(itemId) == this.ItemId)
-                    correctPageId = this.pageId;
-                return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.PortalId, this.TabId, this.ModuleId, correctPageId, this.GetCultureName());
+                if(Convert.ToInt32(itemId) == ItemId)
+                    correctPageId = pageId;
+                return Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), PortalId, TabId, ModuleId, correctPageId, GetCultureName());
             }
 
             return string.Empty;
@@ -975,7 +979,7 @@ namespace Engage.Dnn.Publish
 
         public void SetItemId(int value)
         {
-            this.externallySetItemId = value;
+            externallySetItemId = value;
         }
 
         public string GetItemLinkTarget(object itemId)
@@ -984,7 +988,7 @@ namespace Engage.Dnn.Publish
             Int32.TryParse(itemId.ToString(), out curItemId);
             if (curItemId > 0)
             {
-                Item i = this.BindItemData(curItemId);
+                Item i = BindItemData(curItemId);
                 if (i.NewWindow)
                 {
                     return "_blank";
@@ -997,7 +1001,7 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrl(object itemId, int portalId)
         {
-            return Utility.IsDisabled(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), portalId) ? string.Empty : this.GetItemLinkUrl((itemId));
+            return Utility.IsDisabled(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), portalId) ? string.Empty : GetItemLinkUrl((itemId));
         }
 
         public string GetItemLinkUrlExternal(object itemId)
@@ -1050,38 +1054,38 @@ namespace Engage.Dnn.Publish
         public void SetPageTitle()
         {
             //TODO: should we also allow for setting the module title here?
-            if (this.AllowTitleUpdate)
+            if (AllowTitleUpdate)
             {
-                var tp = (CDefault)this.Page;
-                tp.Title = Utility.HasValue(this.VersionInfoObject.MetaTitle) ? this.versionInfoObject.MetaTitle : this.versionInfoObject.Name;
+                var tp = (CDefault)Page;
+                tp.Title = Utility.HasValue(VersionInfoObject.MetaTitle) ? versionInfoObject.MetaTitle : versionInfoObject.Name;
 
-                if (this.LogBreadcrumb)
+                if (LogBreadcrumb)
                 {
-                    this.AddBreadcrumb(this.versionInfoObject.Name);
+                    AddBreadcrumb(versionInfoObject.Name);
                 }
 
                 //do meta tag settings as well
-                if (!String.IsNullOrEmpty(this.VersionInfoObject.MetaDescription))
+                if (!String.IsNullOrEmpty(VersionInfoObject.MetaDescription))
                 {
-                    tp.Description = this.VersionInfoObject.MetaDescription;
+                    tp.Description = VersionInfoObject.MetaDescription;
                 }
 
-                if (!String.IsNullOrEmpty(this.VersionInfoObject.MetaKeywords))
+                if (!String.IsNullOrEmpty(VersionInfoObject.MetaKeywords))
                 {
-                    tp.KeyWords = this.VersionInfoObject.MetaKeywords;
+                    tp.KeyWords = VersionInfoObject.MetaKeywords;
                 }
 
                 //tp.SmartNavigation = true;
-                this.Page.SetFocus(tp.ClientID);
+                Page.SetFocus(tp.ClientID);
             }
         }
 
         public void SetWlwSupport()
         {
-            if (this.IsWlwEnabled)
+            if (IsWlwEnabled)
             {
 
-                var tp = (CDefault)this.Page;
+                var tp = (CDefault)Page;
                 if (tp != null)
                 {
 
@@ -1102,7 +1106,7 @@ namespace Engage.Dnn.Publish
                     rsd.Append("<link rel=\"EditURI\" type=\"application/rsd+xml\" title=\"RSD\" href=\"");
 
                     string rsdUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias +
-                        DesktopModuleFolderName + "services/Publishrsd.aspx?portalid=" + this.PortalId + "&amp;HomePageUrl=" + HttpUtility.UrlEncode(this.Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
+                        DesktopModuleFolderName + "services/Publishrsd.aspx?portalid=" + PortalId + "&amp;HomePageUrl=" + HttpUtility.UrlEncode(Request.Url.Scheme + "://" + Request.Url.Host + Request.RawUrl);
 
                     rsd.Append(rsdUrl);
                     rsd.Append("\" />");
@@ -1127,7 +1131,7 @@ namespace Engage.Dnn.Publish
                 sb.Append("\" />");
                 lc.Text = sb.ToString();
 
-                var tp = (CDefault)this.Page;
+                var tp = (CDefault)Page;
                 if (tp != null)
                 {
                     tp.Header.Controls.Add(lc);
@@ -1148,7 +1152,7 @@ namespace Engage.Dnn.Publish
                 sb.Append("\" />");
                 lc.Text = sb.ToString();
 
-                var tp = (CDefault)this.Page;
+                var tp = (CDefault)Page;
                 if (tp != null)
                 {
                     tp.Header.Controls.Add(lc);
@@ -1166,39 +1170,43 @@ namespace Engage.Dnn.Publish
                 return ApplicationUrl + "/images/spacer.gif";
             }
             //check if we're storing another URL, if it doesn't start with a / then we have trouble brewing
-            if (fileName.StartsWith(this.ThumbnailSubdirectory, StringComparison.OrdinalIgnoreCase)
+            if (fileName.StartsWith(ThumbnailSubdirectory, StringComparison.OrdinalIgnoreCase)
                 || (!fileName.StartsWith("/", StringComparison.Ordinal) && !fileName.StartsWith("http", StringComparison.OrdinalIgnoreCase)))
             {
-                return this.GenerateLocalThumbnailUrl(fileName);
+                return GenerateLocalThumbnailUrl(fileName);
             }
             return fileName;
         }
 
         protected void AddBreadcrumb(string pageName)
         {
-            Breadcrumb.Add(pageName, this.GetItemLinkUrl(this.ItemId));
+            Breadcrumb.Add(pageName, GetItemLinkUrl(ItemId));
         }
 
         protected Item BindItemData(int itemId)
         {
             Item i = null;
-            string currentItemType = Item.GetItemType(itemId, this.PortalId);
+            string currentItemType = Item.GetItemType(itemId, PortalId);
             //bool getitem = true;
             if (itemId > 0)
             {
                 if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
                     //todo: should we check if allow tags is true?
-                    i = Article.GetArticle(itemId, this.PortalId, true, true, true);
-                    if (this.ItemVersionId > 0)
+                    
+                    if (ItemVersionId > 0)
                     {
-                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
+                        i = Article.GetArticleVersion(ItemVersionId, PortalId);
+                    }
+                    else
+                    {
+                        i = Article.GetArticle(itemId, PortalId, true, true, true);
                     }
                     if (i != null)
                     {
-                        if (this.AllowTags && i.Tags.Count < 1)
+                        if (AllowTags && i.Tags.Count < 1)
                         {
-                            foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, this.PortalId))
+                            foreach (ItemTag it in ItemTag.GetItemTags(i.ItemVersionId, PortalId))
                             {
                                 i.Tags.Add(it);
                             }
@@ -1208,51 +1216,55 @@ namespace Engage.Dnn.Publish
                     //If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                     if (i == null)
                     {
-                        i = Article.Create(this.PortalId);
+                        i = Article.Create(PortalId);
                     }
                 }
 
                 else if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    i = Category.GetCategory(itemId, true, true, true);
-                    if (this.ItemVersionId > 0)
+                    
+                    if (ItemVersionId > 0)
                     {
-                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId);
+                        i = Category.GetCategoryVersion(ItemVersionId, PortalId);
+                    }
+                    else
+                    {
+                        i = Category.GetCategory(itemId, PortalId, true, true, true);
                     }
                     //If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                     if (i == null)
                     {
-                        i = Category.Create(this.PortalId);
+                        i = Category.Create(PortalId);
                     }
                 }
 
                 else if (currentItemType.Equals("TOPLEVELCATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    i = Category.GetCategory(itemId, this.PortalId);
-                    if (this.ItemVersionId > 0)
+                    i = Category.GetCategory(itemId, PortalId);
+                    if (ItemVersionId > 0)
                     {
-                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId);
+                        i = Category.GetCategoryVersion(ItemVersionId, PortalId);
                     }
 
                     //If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                     if (i == null)
                     {
-                        i = Category.Create(this.PortalId);
+                        i = Category.Create(PortalId);
                     }
                 }
 
                 else
                 {
-                    i = Article.GetArticle(itemId, this.PortalId, true, true, true);
-                    if (this.ItemVersionId > 0)
+                    i = Article.GetArticle(itemId, PortalId, true, true, true);
+                    if (ItemVersionId > 0)
                     {
-                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
+                        i = Article.GetArticleVersion(ItemVersionId, PortalId);
                     }
 
                     //If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
                     if (i == null)
                     {
-                        i = Article.Create(this.PortalId);
+                        i = Article.Create(PortalId);
                     }
                 }
             }
@@ -1261,19 +1273,19 @@ namespace Engage.Dnn.Publish
 
         protected void BindItemData(bool createNew)
         {
-            if (createNew || this.ItemId < 1)
+            if (createNew || ItemId < 1)
             {
-                this.BindNewItem();
+                BindNewItem();
             }
             else
             {
-                this.BindCurrentItem();
+                BindCurrentItem();
             }
         }
 
         protected void BindItemData()
         {
-            this.BindItemData(false);
+            BindItemData(false);
         }
 
         /// <summary>
@@ -1283,13 +1295,13 @@ namespace Engage.Dnn.Publish
         protected string GetCultureName()
         {
             // add to this if necessary, currently we're only looking for language
-            string languageValue = this.Request.QueryString["language"];
+            string languageValue = Request.QueryString["language"];
             if (languageValue != null)
             {
                 // if languages are turned on we should pass the language querystring parameter
-                if (this.UserId > -1 && this.UserInfo.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
+                if (UserId > -1 && UserInfo.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
                 {
-                    return this.UserInfo.Profile.PreferredLocale;
+                    return UserInfo.Profile.PreferredLocale;
                 }
 
                 return languageValue;
@@ -1300,29 +1312,34 @@ namespace Engage.Dnn.Publish
 
         protected string GetEditUrl(string itemId)
         {
-            return this.EditUrl("itemId", itemId, "Edit");
+            return EditUrl("itemId", itemId, "Edit");
         }
 
         protected string BuildCategoryListUrl(ItemType type)
         {
             int parentCategoryId = -1;
 
-            if (!this.VersionInfoObject.IsNew)
+            if (!VersionInfoObject.IsNew)
             {
-                parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ? this.VersionInfoObject.ItemId : Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
+                parentCategoryId = VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ? VersionInfoObject.ItemId : Category.GetParentCategory(VersionInfoObject.ItemId, PortalId);
             }
 
             return Globals.NavigateURL(
-                this.TabId,
+                TabId,
                 string.Empty,
                 "ctl=" + Utility.AdminContainer,
-                "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture),
+                "mid=" + ModuleId.ToString(CultureInfo.InvariantCulture),
                 "adminType=" + type.Name + "list",
                 "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
         }
 
         protected override void OnInit(EventArgs e)
         {
+            // to quickly build a timebombed package uncomment the following three lines, change the date
+            //if(DateTime.Now.Date > Convert.ToDateTime("10/31/2009"))
+            //{
+            //    throw new Exception("Trial license expired");
+            //}
             base.OnInit(e);
             if (AJAX.IsInstalled())
             {
@@ -1332,58 +1349,58 @@ namespace Engage.Dnn.Publish
 
         private void BindNewItem()
         {
-            string editControl = this.Request.QueryString["adminType"];
+            string editControl = Request.QueryString["adminType"];
             if (editControl != null)
             {
                 //If the querystring contains a admintype on it then we need to check to see if it's article edit or
                 //categoryedit. The reason this is important, we can't use the ItemId property to determine the type of
                 //new object to create (article/category) because it looks as settings for the module if needed. So, if you
                 //click Add new Article on a Category Display you will get the wrong type of object created. hk
-                this.BindNewItemForEdit();
+                BindNewItemForEdit();
             }
             else
             {
-                this.BindNewItemByItemType();
+                BindNewItemByItemType();
             }
         }
 
         private void BindNewItemForEdit()
         {
             Item i; // = null;
-            string editControl = this.Request.QueryString["adminType"];
+            string editControl = Request.QueryString["adminType"];
             if (editControl.Equals("CATEGORYEDIT", StringComparison.OrdinalIgnoreCase))
             {
-                i = Category.Create(this.PortalId);
+                i = Category.Create(PortalId);
             }
             else
             {
-                i = Article.Create(this.PortalId);
+                i = Article.Create(PortalId);
             }
 
-            this.versionInfoObject = i;
+            versionInfoObject = i;
         }
 
         private void BindNewItemByItemType()
         {
             Item i; // = null;
-            string currentItemType = Item.GetItemType(this.ItemId, this.PortalId);
+            string currentItemType = Item.GetItemType(ItemId, PortalId);
             if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
             {
-                i = Category.Create(this.PortalId);
+                i = Category.Create(PortalId);
             }
             else
             {
-                i = Article.Create(this.PortalId);
+                i = Article.Create(PortalId);
             }
-            this.versionInfoObject = i;
+            versionInfoObject = i;
         }
 
         private void BindCurrentItem()
         {
             //check for version id
-            int itemId = this.ItemId;
-            this.versionInfoObject = this.BindItemData(itemId);
-            if (this.versionInfoObject.EndDate!=null && Convert.ToDateTime(this.versionInfoObject.EndDate) < DateTime.Now)
+            int itemId = ItemId;
+            versionInfoObject = BindItemData(itemId);
+            if (versionInfoObject.EndDate!=null && Convert.ToDateTime(versionInfoObject.EndDate) < DateTime.Now)
             {
                 BindNewItem();
             }
@@ -1392,14 +1409,14 @@ namespace Engage.Dnn.Publish
         private string GenerateLocalThumbnailUrl(string fileName)
         {
             //DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(portalId);
-            return this.Request.Url.Scheme + "://" + this.Request.Url.Host + this.PortalSettings.HomeDirectory + fileName;
+            return Request.Url.Scheme + "://" + Request.Url.Host + PortalSettings.HomeDirectory + fileName;
         }
 
         public string BuildVersionsUrl()
         {
             //find the location of the ams admin module on the site.
             //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
-            if (this.ItemId > -1)
+            if (ItemId > -1)
             {
                 ////string currentItemType = Item.GetItemType(ItemId,PortalId);
                 //int itemId = -1;
@@ -1407,7 +1424,7 @@ namespace Engage.Dnn.Publish
                 //{
                 //    itemId = this.VersionInfoObject.ItemId;
                 //}
-                return Globals.NavigateURL(this.TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + ItemId.ToString(CultureInfo.InvariantCulture));
+                return Globals.NavigateURL(TabId, string.Empty, "&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=VersionsList&itemId=" + ItemId.ToString(CultureInfo.InvariantCulture));
             }
             return string.Empty;
         }

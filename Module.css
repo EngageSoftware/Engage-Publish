@@ -825,7 +825,7 @@ Module CSS
 #commentCancel
 {
 }
-#CommentValue
+.CommentValue
 {
 	margin:1px;
 	width:95%;

@@ -25,6 +25,7 @@
 		                </asp:Panel>
 		                <h2>
 		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>' target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
+		                    <asp:Label runat="server" ID="lblTitle" Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
 		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">
@@ -56,6 +57,7 @@
 		                </asp:Panel>
 		                <h2>
 		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'  target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
+		                    <asp:Label runat="server" ID="lblTitle" Text='<%# DataBinder.Eval(Container.DataItem, "ChildName") %>'/>
 		                </h2>
 		            </asp:Panel>
 		            <asp:Panel ID="pnlAuthorDate" runat="server" CssClass="itemAuthorDate">

@@ -1152,6 +1152,22 @@ namespace Engage.Dnn.Publish.Data
             return ds.Tables[0];
         }
 
+        public override DataTable GetArticlesByModuleIdCurrent(int moduleId)
+        {
+            var sql = new StringBuilder(256);
+
+            sql.Append("select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
+            sql.Append("from ");
+            sql.Append(NamePrefix);
+            sql.Append("vwArticles ");
+            sql.Append("where ModuleId = ");
+            sql.Append(moduleId);
+            sql.Append(" and IsCurrentVersion=1 order by [Name]");
+
+            DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
+            return ds.Tables[0];
+        }
+
         public override DataTable GetArticlesSearchIndexingUpdated(int portalId, int moduleDefId, int displayTabId)
         {
             var sql = new StringBuilder(256);

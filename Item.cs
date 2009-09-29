@@ -79,29 +79,29 @@ namespace Engage.Dnn.Publish
 
         protected Item()
         {
-            this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            this.relationships = new ItemRelationshipCollection();
-            this.versionSettings = new ItemVersionSettingCollection();
-            this.tags = new ItemTagCollection();
+            startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            relationships = new ItemRelationshipCollection();
+            versionSettings = new ItemVersionSettingCollection();
+            tags = new ItemTagCollection();
         }
 
 
         [XmlIgnore]
         public ItemRelationshipCollection Relationships
         {
-            get { return this.relationships; }
+            get { return relationships; }
         }
 
         [XmlIgnore]
         public ItemTagCollection Tags
         {
-            get { return this.tags; }
+            get { return tags; }
         }
 
         [XmlIgnore]
         public ItemVersionSettingCollection VersionSettings
         {
-            get { return this.versionSettings; }
+            get { return versionSettings; }
         }
 
         public abstract void Save(int revisingUserId);
@@ -116,54 +116,75 @@ namespace Engage.Dnn.Publish
 
         public void UpdateDescription()
         {
-            DataProvider.Instance().UpdateDescription(this.itemVersionId, this.description, this.metaDescription);
+            DataProvider.Instance().UpdateDescription(itemVersionId, description, metaDescription);
             Utility.ClearPublishCache(PortalId);
         }
 
+        //public bool DisplayOnCurrentPage()
+        //{
+        //    //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
+
+        //    //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
+
+        //    //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
+        //    //if (cpSetting != null)
+        //    //{
+        //    //    return Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+        //    //}
+        //    //else
+        //    //{
+        //    //    return this.displayTabId < 0;
+        //    //}
+
+        //    ItemType type = ItemType.GetFromId(ItemTypeId, typeof(ItemType));
+        //    string cacheKey = Utility.CacheKeyPublishDisplayOnCurrentPage + itemVersionId.ToString(CultureInfo.InvariantCulture);
+        //    bool returnVal = false;
+
+        //    if (ModuleBase.UseCachePortal(PortalId))
+        //    {
+        //        object o = DataCache.GetCache(cacheKey);
+        //        if (o != null)
+        //        {
+        //            returnVal = (bool)o;
+        //        }
+        //        else
+        //        {
+        //            ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(ItemVersionId, type.Name + "Settings", "DisplayOnCurrentPage", portalId);
+        //            if (cpSetting != null)
+        //            {
+        //                returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
+        //            }
+        //            else
+        //            {
+        //                returnVal = displayTabId < 0;
+        //            }
+        //        }
+        //        DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+        //        Utility.AddCacheKey(cacheKey, portalId);
+        //    }
+        //    return returnVal;
+        //}
+
         public bool DisplayOnCurrentPage()
         {
-            //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayOnCurrentPage");
-
-            //ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-
-            //ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name.ToString() + "Settings", "DisplayOnCurrentPage", portalId);
-            //if (cpSetting != null)
-            //{
-            //    return Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
-            //}
-            //else
-            //{
-            //    return this.displayTabId < 0;
-            //}
-
-            ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-            string cacheKey = Utility.CacheKeyPublishDisplayOnCurrentPage + itemVersionId.ToString(CultureInfo.InvariantCulture);
-            bool returnVal = false;
-
-            if (ModuleBase.UseCachePortal(PortalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    returnVal = (bool)o;
-                }
-                else
-                {
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "DisplayOnCurrentPage", portalId);
-                    if (cpSetting != null)
-                    {
-                        returnVal = Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        returnVal = this.displayTabId < 0;
-                    }
-                }
-                DataCache.SetCache(cacheKey, returnVal, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
-            }
-            return returnVal;
+            return Utility.GetValueFromCache(PortalId,
+                                             Utility.CacheKeyPublishDisplayOnCurrentPage +
+                                             itemVersionId.ToString(CultureInfo.InvariantCulture),
+                                             delegate
+                                                 {
+                                                     ItemType type = ItemType.GetFromId(ItemTypeId, typeof (ItemType));
+                                                     ItemVersionSetting cpSetting =
+                                                         ItemVersionSetting.GetItemVersionSetting(ItemVersionId,
+                                                                                                  type.Name + "Settings",
+                                                                                                  "DisplayOnCurrentPage",
+                                                                                                  portalId);
+                                                     return cpSetting != null &&
+                                                            Convert.ToBoolean(cpSetting.PropertyValue,
+                                                                              CultureInfo.InvariantCulture);
+                                                 });
         }
+
+
 
         /// <summary>
         /// Determines whether this <see cref="Item"/> should be forced to always display on its assigned <see cref="DisplayTabId"/>, or whether it can display on any tab.
@@ -173,11 +194,11 @@ namespace Engage.Dnn.Publish
         /// </returns>
         public bool ForceDisplayOnPage()
         {
-            return Utility.GetValueFromCache(this.PortalId, Utility.CacheKeyPublishForceDisplayOn + this.itemVersionId.ToString(CultureInfo.InvariantCulture),
+            return Utility.GetValueFromCache(PortalId, Utility.CacheKeyPublishForceDisplayOn + itemVersionId.ToString(CultureInfo.InvariantCulture),
                 delegate
                 {
-                    ItemType type = ItemType.GetFromId(this.ItemTypeId, typeof(ItemType));
-                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", this.portalId);
+                    ItemType type = ItemType.GetFromId(ItemTypeId, typeof(ItemType));
+                    ItemVersionSetting cpSetting = ItemVersionSetting.GetItemVersionSetting(ItemVersionId, type.Name + "Settings", "ForceDisplayOnPage", portalId);
                     return cpSetting != null && Convert.ToBoolean(cpSetting.PropertyValue, CultureInfo.InvariantCulture);
                 });
         }
@@ -190,7 +211,7 @@ namespace Engage.Dnn.Publish
         /// <returns></returns>
         public bool IsLinkable()
         {
-            if (this.ForceDisplayOnPage())
+            if (ForceDisplayOnPage())
             {
                 return true;
             }
@@ -203,14 +224,14 @@ namespace Engage.Dnn.Publish
             //insert new version or not
             //AuthorUserId = authorId;
             RevisingUserId = revisingId;
-            if (this.IsNew)
+            if (IsNew)
             {
                 if (itemIdentifier == Guid.Empty) itemIdentifier = Guid.NewGuid();
-                this.itemId = AddItem(trans, this.itemTypeId, this.portalId, this.moduleId, itemIdentifier);
+                itemId = AddItem(trans, itemTypeId, portalId, moduleId, itemIdentifier);
 
             }
 
-            if (this.itemVersionId > 1 || ItemVersionIdentifier == Guid.Empty)
+            if (itemVersionId > 1 || ItemVersionIdentifier == Guid.Empty)
             {
                 itemVersionIdentifier = Guid.NewGuid();
             }
@@ -220,19 +241,19 @@ namespace Engage.Dnn.Publish
             }
 
             //if we aren't populating the meta description we should use the VersionInfoObject.Description                                       
-            if (this.metaDescription.Trim() == string.Empty && this.description.Trim() != string.Empty)
+            if (metaDescription.Trim() == string.Empty && description.Trim() != string.Empty)
             {
-                string itemDescription = HtmlUtils.StripTags(this.description.Trim(), false);
-                this.metaDescription = Utility.TrimDescription(399, itemDescription);
+                string itemDescription = HtmlUtils.StripTags(description.Trim(), false);
+                metaDescription = Utility.TrimDescription(399, itemDescription);
             }
 
 
-            int ivd = AddItemVersion(trans, this.itemId, this.originalItemVersionId,
-                this.Name, this.Description.Replace("<br>", "<br />"), this.startDate, this.endDate, this.languageId,
-                this.authorUserId, this.metaKeywords, this.metaDescription, this.metaTitle,
-                this.displayTabId, this.disabled, this.thumbnail, itemVersionIdentifier, url, newWindow, this.revisingUserId);
-            this.originalItemVersionId = this.ItemVersionId;
-            this.itemVersionId = ivd;
+            int ivd = AddItemVersion(trans, itemId, originalItemVersionId,
+                Name, Description.Replace("<br>", "<br />"), startDate, endDate, languageId,
+                authorUserId, metaKeywords, metaDescription, metaTitle,
+                displayTabId, disabled, thumbnail, itemVersionIdentifier, url, newWindow, revisingUserId);
+            originalItemVersionId = ItemVersionId;
+            itemVersionId = ivd;
         }
 
         protected void SaveRelationships(IDbTransaction trans)
@@ -240,8 +261,8 @@ namespace Engage.Dnn.Publish
             for (int i = 0; i < Relationships.Count; i++)
             {
                 ItemRelationship ir = Relationships[i];
-                ir.ChildItemId = this.ItemId;
-                ir.ChildItemVersionId = this.ItemVersionId;
+                ir.ChildItemId = ItemId;
+                ir.ChildItemVersionId = ItemVersionId;
                 if (ir.StartDate == null)
                 {
                     ir.StartDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
@@ -255,7 +276,7 @@ namespace Engage.Dnn.Publish
                 else
                 {
                     ItemRelationship.AddItemRelationshipWithOriginalSortOrder(trans, ir.ChildItemId, ir.ChildItemVersionId, ir.ParentItemId,
-                        ir.RelationshipTypeId, ir.StartDate, ir.EndDate, this.OriginalItemVersionId);
+                        ir.RelationshipTypeId, ir.StartDate, ir.EndDate, OriginalItemVersionId);
                 }
             }
         }
@@ -278,7 +299,7 @@ namespace Engage.Dnn.Publish
                 //    t.Save(trans);
                 //}
 
-                it.ItemVersionId = this.ItemVersionId;
+                it.ItemVersionId = ItemVersionId;
                 //ad the itemtag relationship
                 ItemTag.AddItemTag(trans, it.ItemVersionId, it.TagId);
             }
@@ -291,14 +312,14 @@ namespace Engage.Dnn.Publish
                 ItemTag it = Tags[i];
 
                 //if this item tag relationship already existed for another versionID don't increment the count;
-                if (!ItemTag.CheckItemTag(this.ItemId, it.TagId))
+                if (!ItemTag.CheckItemTag(ItemId, it.TagId))
                 {
                     Tag t = Tag.GetTag(it.TagId, PortalId);
                     t.TotalItems++;
                     t.Save();
                 }
 
-                it.ItemVersionId = this.ItemVersionId;
+                it.ItemVersionId = ItemVersionId;
                 //ad the itemtag relationship
                 ItemTag.AddItemTag(it.ItemVersionId, it.TagId);
             }
@@ -311,7 +332,7 @@ namespace Engage.Dnn.Publish
             {
                 ItemVersionSetting ir = VersionSettings[i];
 
-                ir.ItemVersionId = this.ItemVersionId;
+                ir.ItemVersionId = ItemVersionId;
 
                 ItemVersionSetting.AddItemVersionSetting(trans, ir.ItemVersionId, ir.ControlName, ir.PropertyName, ir.PropertyValue);
             }
@@ -323,7 +344,7 @@ namespace Engage.Dnn.Publish
             {
                 ItemVersionSetting ir = VersionSettings[i];
 
-                ir.ItemVersionId = this.ItemVersionId;
+                ir.ItemVersionId = ItemVersionId;
 
                 ItemVersionSetting.AddItemVersionSetting(ir.ItemVersionId, ir.ControlName, ir.PropertyName, ir.PropertyValue);
             }
@@ -332,12 +353,12 @@ namespace Engage.Dnn.Publish
         //knowing that all dates come from FillObject as localized turn them back into invariantculture
         public void CorrectDates()
         {
-            if (!string.IsNullOrEmpty(this.ApprovalDate)) this.ApprovalDate = Convert.ToDateTime(this.ApprovalDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.EndDate)) this.EndDate = Convert.ToDateTime(this.EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.StartDate)) this.StartDate = Convert.ToDateTime(this.StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.CreatedDate)) this.CreatedDate = Convert.ToDateTime(this.CreatedDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.ItemVersionDate)) this.ItemVersionDate = Convert.ToDateTime(this.ItemVersionDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.LastUpdated)) this.LastUpdated = Convert.ToDateTime(this.LastUpdated, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(ApprovalDate)) ApprovalDate = Convert.ToDateTime(ApprovalDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(EndDate)) EndDate = Convert.ToDateTime(EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(StartDate)) StartDate = Convert.ToDateTime(StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(CreatedDate)) CreatedDate = Convert.ToDateTime(CreatedDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(ItemVersionDate)) ItemVersionDate = Convert.ToDateTime(ItemVersionDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(LastUpdated)) LastUpdated = Convert.ToDateTime(LastUpdated, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
         }
 
         public static void UpdateItem(IDbTransaction trans, int itemId, int moduleId)
@@ -348,7 +369,7 @@ namespace Engage.Dnn.Publish
 
         protected void UpdateApprovalStatus(IDbTransaction trans)
         {
-            if (this.ApprovalStatusId == ApprovalStatus.Waiting.GetId())
+            if (ApprovalStatusId == ApprovalStatus.Waiting.GetId())
             {
                 if (ModuleBase.ApprovalEmailsEnabled(PortalId))
                 {
@@ -362,7 +383,7 @@ namespace Engage.Dnn.Publish
             {
                 SendStatusUpdateEmail();
             }
-            UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.revisingUserId, this.approvalComments);
+            UpdateItemVersion(trans, itemId, itemVersionId, approvalStatusId, revisingUserId, approvalComments);
         }
 
         private void SendApprovalEmail()
@@ -394,12 +415,12 @@ namespace Engage.Dnn.Publish
                 ArrayList users = rc.GetUsersByRoleName(ui.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + PortalId));
 
                 DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.moduleId);
-                string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
+                string linkUrl = Globals.NavigateURL(DisplayTabId, "", "VersionId=" + ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + moduleId);
+                string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + ItemId);
 
                 //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
                 string body = EmailApprovalBody;
-                body = body.Replace("[ENGAGEITEMNAME]", this.name);
+                body = body.Replace("[ENGAGEITEMNAME]", name);
                 body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
                 body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
 
@@ -437,28 +458,28 @@ namespace Engage.Dnn.Publish
             UserInfo ui = UserController.GetCurrentUserInfo();
             if (ui.Username != null)
             {
-                UserInfo versionAuthor = UserController.GetUser(PortalId, this.authorUserId, false);
+                UserInfo versionAuthor = UserController.GetUser(PortalId, authorUserId, false);
 
                 //if this is the same user, don't email them notification.
                 if (versionAuthor != null && versionAuthor.Email != ui.Email)
                 {
                     DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
                     //string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture));
-                    string linkUrl = Globals.NavigateURL(this.DisplayTabId, "", "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.ModuleId);
+                    string linkUrl = Globals.NavigateURL(DisplayTabId, "", "VersionId=" + ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + ModuleId);
                     //href = Globals.NavigateURL(displayTabId, "", "VersionId=" + itemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + version.ModuleId.ToString());
 
-                    string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + this.ItemId);
+                    string linksUrl = Globals.NavigateURL(edittabid, "", "&ctl=" + Utility.AdminContainer + "&mid=" + editModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=" + "VersionsList&itemId=" + ItemId);
 
                     //Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
                     string body = EmailStatusChangeBody;
-                    body = body.Replace("[ENGAGEITEMNAME]", this.name);
+                    body = body.Replace("[ENGAGEITEMNAME]", name);
                     body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
                     body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
 
                     body = body.Replace("[ADMINNAME]", ui.DisplayName);
-                    body = body.Replace("[ENGAGEITEMCOMMENTS]", this.approvalComments);
+                    body = body.Replace("[ENGAGEITEMCOMMENTS]", approvalComments);
 
-                    body = body.Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
+                    body = body.Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(ApprovalStatusId, typeof(ApprovalStatus)).Name);
 
                     string subject = EmailStatusChangeSubject;
 
@@ -537,13 +558,13 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                if (this.approvedItemVersionId == 0)
+                if (approvedItemVersionId == 0)
                 {
                     return ItemVersionIdentifier.ToString();
                 }
                 //must resolve id to guid
                 string approvedItemVersionIdentifier = string.Empty;
-                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(this.approvedItemVersionId))
+                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(approvedItemVersionId))
                 {
                     if (dr.Read())
                     {
@@ -594,7 +615,7 @@ namespace Engage.Dnn.Publish
                 }
                 //must resolve id to guid
                 string originalItemVersionIdentifier = string.Empty;
-                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(this.originalItemVersionId))
+                using (IDataReader dr = DataProvider.Instance().GetItemVersionInfo(originalItemVersionId))
                 {
                     if (dr.Read())
                     {
@@ -633,7 +654,7 @@ namespace Engage.Dnn.Publish
             get { return startDate; }
             set
             {
-                this.startDate = Utility.HasValue(value) ? value : null;
+                startDate = Utility.HasValue(value) ? value : null;
             }
         }
 
@@ -643,7 +664,7 @@ namespace Engage.Dnn.Publish
             get { return endDate; }
             set
             {
-                this.endDate = Utility.HasValue(value) ? value : null;
+                endDate = Utility.HasValue(value) ? value : null;
             }
         }
 
@@ -670,8 +691,8 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 19)]
         public int AuthorUserId
         {
-            set { this.authorUserId = value; }
-            get { return this.authorUserId; }
+            set { authorUserId = value; }
+            get { return authorUserId; }
         }
 
         private string originalAuthor = string.Empty;
@@ -693,7 +714,7 @@ namespace Engage.Dnn.Publish
                 //}
 
 
-                ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", PortalId);
+                ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(ItemVersionId, "lblAuthorName", "Text", PortalId);
                 if (auNameSetting != null && auNameSetting.ToString().Trim().Length > 0)
                 {
                     originalAuthor = auNameSetting.PropertyValue;
@@ -827,15 +848,15 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 33)]
         public bool Disabled
         {
-            get { return this.disabled; }
-            set { this.disabled = value; }
+            get { return disabled; }
+            set { disabled = value; }
         }
 
         [XmlElement(Order = 34)]
         public string Thumbnail
         {
-            get { return this.thumbnail; }
-            set { this.thumbnail = value; }
+            get { return thumbnail; }
+            set { thumbnail = value; }
         }
 
         [XmlElement(Order = 35)]
@@ -855,8 +876,8 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 38)]
         public int RevisingUserId
         {
-            set { this.revisingUserId = value; }
-            get { return this.revisingUserId; }
+            set { revisingUserId = value; }
+            get { return revisingUserId; }
         }
 
         private string originalRevisingUser = string.Empty;
@@ -888,16 +909,16 @@ namespace Engage.Dnn.Publish
             get
             {
                 string strUrl = string.Empty;
-                switch (Globals.GetURLType(this.url))
+                switch (Globals.GetURLType(url))
                 {
                     case TabType.Normal:
-                        strUrl = Globals.NavigateURL(this.displayTabId);
+                        strUrl = Globals.NavigateURL(displayTabId);
                         break;
                     case TabType.Tab:
                         strUrl = Globals.NavigateURL(Convert.ToInt32(url, CultureInfo.InvariantCulture));
                         break;
                     case TabType.File:
-                        strUrl = Globals.LinkClick(url, this.displayTabId, Null.NullInteger);
+                        strUrl = Globals.LinkClick(url, displayTabId, Null.NullInteger);
                         break;
                     case TabType.Url:
                         strUrl = url;
@@ -926,7 +947,7 @@ namespace Engage.Dnn.Publish
 
         public bool IsNew
         {
-            get { return this.itemId == -1; }
+            get { return itemId == -1; }
         }
 
         #endregion
@@ -937,6 +958,7 @@ namespace Engage.Dnn.Publish
             if (DataProvider.Instance().FindItemId(name, authorUserId) > 0) return true;
             return false;
         }
+
 
         /// <summary>
         /// Checks to see if an item exists by a specific name, from a specific author, in a specific category.
@@ -1002,9 +1024,9 @@ namespace Engage.Dnn.Publish
 
         public void AddView(int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
         {
-            if (ModuleBase.IsViewTrackingEnabledForPortal(this.PortalId))
+            if (ModuleBase.IsViewTrackingEnabledForPortal(PortalId))
             {
-                DataProvider.Instance().AddItemView(this.itemId, this.itemVersionId, userId, tabId, ipAddress, userAgent, httpReferrer, siteUrl);
+                DataProvider.Instance().AddItemView(itemId, itemVersionId, userId, tabId, ipAddress, userAgent, httpReferrer, siteUrl);
             }
         }
 
@@ -1218,7 +1240,7 @@ namespace Engage.Dnn.Publish
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
         public string GetApprovalStatusTypeName()
         {
-            return DataProvider.Instance().GetApprovalStatusTypeName(this.ApprovalStatusId);
+            return DataProvider.Instance().GetApprovalStatusTypeName(ApprovalStatusId);
         }
 
         /// <summary>
@@ -1246,7 +1268,7 @@ namespace Engage.Dnn.Publish
         /// <returns></returns>
         public Article GetRelatedArticle(int articlePortalId)
         {
-            ArrayList al = ItemRelationship.GetItemRelationships(this.itemId, this.itemVersionId, RelationshipType.ItemToArticleLinks.GetId(), true, portalId);
+            ArrayList al = ItemRelationship.GetItemRelationships(itemId, itemVersionId, RelationshipType.ItemToArticleLinks.GetId(), true, portalId);
             //ArrayList m = new ArrayList();
             Article a = null;
             foreach (ItemRelationship ir in al)
@@ -1260,7 +1282,7 @@ namespace Engage.Dnn.Publish
         public int GetParentCategoryId()
         {
             //find the parent category ID from an item
-            return Category.GetParentCategory(this.ItemId, PortalId);
+            return Category.GetParentCategory(ItemId, PortalId);
         }
 
         /// <summary>
@@ -1268,10 +1290,10 @@ namespace Engage.Dnn.Publish
         /// </summary>
         protected void LoadTags()
         {
-            this.Tags.Clear();
-            foreach (ItemTag tag in ItemTag.GetItemTags(this.ItemVersionId))
+            Tags.Clear();
+            foreach (ItemTag tag in ItemTag.GetItemTags(ItemVersionId))
             {
-                this.Tags.Add(tag);
+                Tags.Add(tag);
             }
         }
 
@@ -1280,20 +1302,20 @@ namespace Engage.Dnn.Publish
         /// </summary>
         protected void LoadRelationships()
         {
-            this.Relationships.Clear();
-            foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(this.ItemId, this.ItemVersionId, true))
+            Relationships.Clear();
+            foreach (ItemRelationship relationship in ItemRelationship.GetItemRelationships(ItemId, ItemVersionId, true))
             {
                 relationship.CorrectDates();
-                this.Relationships.Add(relationship);
+                Relationships.Add(relationship);
             }
         }
 
         protected void LoadItemVersionSettings()
         {
-            this.VersionSettings.Clear();
-            foreach (ItemVersionSetting ivr in ItemVersionSetting.GetItemVersionSettings(this.ItemVersionId))
+            VersionSettings.Clear();
+            foreach (ItemVersionSetting ivr in ItemVersionSetting.GetItemVersionSettings(ItemVersionId))
             {
-                this.VersionSettings.Add(ivr);
+                VersionSettings.Add(ivr);
             }
         }
 
@@ -1305,15 +1327,15 @@ namespace Engage.Dnn.Publish
             if (string.IsNullOrEmpty(StartDate)) StartDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
             UserInfo user = UserController.GetUserByName(portalId, Author);
-            this.authorUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
+            authorUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             //Revising user.
             user = UserController.GetUserByName(portalId, RevisingUser);
-            this.revisingUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
+            revisingUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             //Approving user.
             user = UserController.GetUserByName(portalId, ApprovalUser);
-            this.approvalUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
+            approvalUserId = user != null ? user.UserID : UserController.GetCurrentUserInfo().UserID;
 
             bool found = false;
             //display tab - try and resolve from name in XML file.

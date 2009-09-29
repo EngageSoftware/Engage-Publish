@@ -110,7 +110,7 @@ namespace Engage.Dnn.Publish
                 //TODO: only do the following if admin
                 UpdateApprovalStatus(trans);
                 //update category version now
-                AddCategoryVersion(trans, ItemVersionId, ItemId, this.SortOrder, this.ChildDisplayTabId);
+                AddCategoryVersion(trans, ItemVersionId, ItemId, SortOrder, ChildDisplayTabId);
                 SaveRelationships(trans);
                 trans.Commit();
             }
@@ -476,6 +476,7 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
         {
+            //cache?
             var c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             if (c != null)
             {
@@ -486,7 +487,7 @@ namespace Engage.Dnn.Publish
                     c.LoadRelationships();
                 }
 
-                if (loadTags)
+                if (loadTags && ModuleBase.AllowTagsForPortal(c.PortalId))
                 {
                     c.LoadTags();
                 }
@@ -497,6 +498,92 @@ namespace Engage.Dnn.Publish
             }
 
             return c;
+        }
+
+        public static Category GetCategory(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
+        {
+            //cache?
+            //var c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+            //if (c != null)
+            //{
+            //    c.CorrectDates();
+
+            //    if (loadRelationships)
+            //    {
+            //        c.LoadRelationships();
+            //    }
+
+            //    if (loadTags && ModuleBase.AllowTagsForPortal(c.PortalId))
+            //    {
+            //        c.LoadTags();
+            //    }
+            //    if (loadItemVersionSettings)
+            //    {
+            //        c.LoadItemVersionSettings();
+            //    }
+            //}
+            
+            string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture)
+                + "loadRelationships" +loadRelationships + "loadTags" + loadTags + "loadItemVersionSettings"+loadItemVersionSettings;
+            Category c;
+            if (ModuleBase.UseCachePortal(portalId))
+            {
+                object o = DataCache.GetCache(cacheKey);
+                if (o != null)
+                {
+                    c = (Category)o;
+                }
+                else
+                {
+                    c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                    if (c != null)
+                    {
+                        c.CorrectDates();
+
+                        if (loadRelationships)
+                        {
+                            c.LoadRelationships();
+                        }
+
+                        if (loadTags && ModuleBase.AllowTagsForPortal(c.PortalId))
+                        {
+                            c.LoadTags();
+                        }
+                        if (loadItemVersionSettings)
+                        {
+                            c.LoadItemVersionSettings();
+                        }
+
+                        DataCache.SetCache(cacheKey, c, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                        Utility.AddCacheKey(cacheKey, portalId);
+                    }
+                }
+            }
+            else
+            {
+                c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
+                if (c != null)
+                {
+                    c.CorrectDates();
+                    if (loadRelationships)
+                    {
+                        c.LoadRelationships();
+                    }
+
+                    if (loadTags && ModuleBase.AllowTagsForPortal(c.PortalId))
+                    {
+                        c.LoadTags();
+                    }
+                    if (loadItemVersionSettings)
+                    {
+                        c.LoadItemVersionSettings();
+                    }
+                }
+            }
+            return c;
+
+
+
         }
 
         public static Category GetCategory(int itemId, int portalId)
@@ -627,7 +714,7 @@ namespace Engage.Dnn.Publish
                                            ParentItemId = TopLevelCategoryItemType.Category.GetId()
                                    };
 
-            this.Relationships.Add(relationship);
+            Relationships.Add(relationship);
             bool save = false;
 
             //now the Unique Id's
@@ -649,7 +736,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            if (save) Save(this.RevisingUserId);
+            if (save) Save(RevisingUserId);
         }
 
         #endregion
@@ -662,25 +749,25 @@ namespace Engage.Dnn.Publish
         public int CascadeChildDisplayTab(int revisingUser)
         {
             int count = 0;
-            foreach (DataRow itemRow in GetAllChildren(this.ItemId, RelationshipType.ItemToParentCategory.GetId(), this.PortalId).Tables[0].Rows)
+            foreach (DataRow itemRow in GetAllChildren(ItemId, RelationshipType.ItemToParentCategory.GetId(), PortalId).Tables[0].Rows)
             {
                 Item childItem;
                 var itemId = (int)itemRow["itemId"];
                 if (GetItemTypeId(itemId) == ItemType.Article.GetId())
                 {
-                    childItem = Article.GetArticle(itemId, this.PortalId, true, true, true);
+                    childItem = Article.GetArticle(itemId, PortalId, true, true, true);
                 }
                 else
                 {
                     childItem = GetCategory(itemId, true, true);
                 }
 
-                childItem.DisplayTabId = this.ChildDisplayTabId;
+                childItem.DisplayTabId = ChildDisplayTabId;
 
                 var childCategory = childItem as Category;
                 if (childCategory != null)
                 {
-                    childCategory.ChildDisplayTabId = this.ChildDisplayTabId;
+                    childCategory.ChildDisplayTabId = ChildDisplayTabId;
                 }
 
                 Setting displayOnCurrentPageSetting = Setting.ArticleSettingCurrentDisplay;

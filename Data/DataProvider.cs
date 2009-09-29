@@ -172,6 +172,7 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataTable GetArticles(int portalId);
         public abstract DataTable GetArticlesByPortalId(int portalId);
         public abstract DataTable GetArticlesByModuleId(int moduleId);
+        public abstract DataTable GetArticlesByModuleIdCurrent(int moduleId);
         public abstract DataTable GetArticlesSearchIndexingUpdated(int portalId, int moduleDefId, int displayTabId);
         public abstract DataTable GetArticlesSearchIndexingNew(int portalId, int displayTabId);
 

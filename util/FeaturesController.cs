@@ -32,7 +32,7 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="userId"></param>
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
-     
+
             var validator = new TransportableXmlValidator();
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
@@ -108,7 +108,7 @@ namespace Engage.Dnn.Publish.Util
             //DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
 
             //TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
-            DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID);
+            DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID, true);
             SearchArticleIndex(dt, items, modInfo);
 
         }
@@ -118,10 +118,11 @@ namespace Engage.Dnn.Publish.Util
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow row = dt.Rows[i];
+
+
                 var searchedContent = new StringBuilder(8192);
                 //article name
                 string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
-
                 if (Utility.HasValue(name))
                 {
                     searchedContent.AppendFormat("{0}{1}", name, " ");
@@ -170,16 +171,16 @@ namespace Engage.Dnn.Publish.Util
                 string itemId = row["ItemId"].ToString();
                 var item = new SearchItemInfo
                                {
-                                       Title = name,
-                                       Description = HtmlUtils.Clean(description, false),
-                                       Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
-                                       PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
-                                       ModuleId = modInfo.ModuleID,
-                                       SearchKey = "Article-" + itemId,
-                                       Content =
-                                               HtmlUtils.StripWhiteSpace(
-                                               HtmlUtils.Clean(searchedContent.ToString(), false), true),
-                                       GUID = "itemid=" + itemId
+                                   Title = name,
+                                   Description = HtmlUtils.Clean(description, false),
+                                   Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
+                                   PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
+                                   ModuleId = modInfo.ModuleID,
+                                   SearchKey = "Article-" + itemId,
+                                   Content =
+                                           HtmlUtils.StripWhiteSpace(
+                                           HtmlUtils.Clean(searchedContent.ToString(), false), true),
+                                   GUID = "itemid=" + itemId
                                };
 
                 items.Add(item);
@@ -192,9 +193,11 @@ namespace Engage.Dnn.Publish.Util
                     //UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
                     Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
                 }
+
+
                 //}
             }
         }
- 
+
     }
 }

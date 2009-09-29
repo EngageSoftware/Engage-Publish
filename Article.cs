@@ -103,28 +103,28 @@ namespace Engage.Dnn.Publish
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture).ToString();
             var itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //Email A Friend
             string hostEmailFriendSetting = HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.EmailAFriend;
             setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //ratings
             string hostRatingSetting = HostSettings.GetHostSetting(Utility.PublishDefaultRatings + PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Rating;
             setting.PropertyValue = Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //comments
             string hostCommentSetting = HostSettings.GetHostSetting(Utility.PublishDefaultComments + PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Comments;
             setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             if (ModuleBase.IsPublishCommentTypeForPortal(PortalId))
             {
@@ -132,46 +132,46 @@ namespace Engage.Dnn.Publish
                 setting = Setting.ForumComments;
                 setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
                 itemVersionSetting = new ItemVersionSetting(setting);
-                this.VersionSettings.Add(itemVersionSetting);
+                VersionSettings.Add(itemVersionSetting);
             }
 
             //include all articles from the parent category
             setting = Setting.ArticleSettingIncludeCategories;
             setting.PropertyValue = false.ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //display on current page option
             setting = Setting.ArticleSettingCurrentDisplay;
             setting.PropertyValue = false.ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //force display on specific page
             setting = Setting.ArticleSettingForceDisplay;
             setting.PropertyValue = false.ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //display return to list
             setting = Setting.ArticleSettingReturnToList;
             setting.PropertyValue = false.ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //show author
             string hostAuthorSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Author;
             setting.PropertyValue = Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
             //show tags
             string hostTagsSetting = HostSettings.GetHostSetting(Utility.PublishDefaultShowTags + PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.ShowTags;
             setting.PropertyValue = Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
 
             //use approvals
@@ -179,7 +179,7 @@ namespace Engage.Dnn.Publish
             setting = Setting.UseApprovals;
             setting.PropertyValue = Convert.ToBoolean(hostUseApprovalsSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
-            this.VersionSettings.Add(itemVersionSetting);
+            VersionSettings.Add(itemVersionSetting);
 
         }
 
@@ -198,7 +198,7 @@ namespace Engage.Dnn.Publish
 
                 //update article version now
                 //replace <br> with <br />
-                AddArticleVersion(trans, ItemVersionId, ItemId, this.VersionNumber, this.VersionDescription, this.ArticleText.Replace("<br>","<br />"), this.ReferenceNumber);
+                AddArticleVersion(trans, ItemVersionId, ItemId, VersionNumber, VersionDescription, ArticleText.Replace("<br>","<br />"), ReferenceNumber);
                 //Save the Relationships
                 SaveRelationships(trans);
 
@@ -237,12 +237,12 @@ namespace Engage.Dnn.Publish
 
             try
             {
-                if (Utility.IsPingEnabledForPortal(this.PortalId))
+                if (Utility.IsPingEnabledForPortal(PortalId))
                 {
-                    if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
+                    if (ApprovalStatusId == ApprovalStatus.Approved.GetId())
                     {
                         string surl = HostSettings.GetHostSetting(Utility.PublishPingChangedUrl + PortalId.ToString(CultureInfo.InvariantCulture));
-                        string changedUrl = Utility.HasValue(surl) ? surl : DotNetNuke.Common.Globals.NavigateURL(this.DisplayTabId);
+                        string changedUrl = Utility.HasValue(surl) ? surl : DotNetNuke.Common.Globals.NavigateURL(DisplayTabId);
                         PortalSettings ps = Utility.GetPortalSettings(PortalId);
 
                         //ping
@@ -323,29 +323,29 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 39)]
         public string ArticleText
         {
-            get { return this.articleText; }
-            set { this.articleText = value; }
+            get { return articleText; }
+            set { articleText = value; }
         }
 
         [XmlElement(Order = 40)]
         public string VersionNumber
         {
-            get { return this.versionNumber; }
-            set { this.versionNumber = value; }
+            get { return versionNumber; }
+            set { versionNumber = value; }
         }
 
         [XmlElement(Order = 41)]
         public string VersionDescription
         {
-            get { return this.versionDescription; }
-            set { this.versionDescription = value; }
+            get { return versionDescription; }
+            set { versionDescription = value; }
         }
 
         [XmlElement(Order = 42)]
         public string ReferenceNumber
         {
-            get { return this.referenceNumber; }
-            set { this.referenceNumber = value; }
+            get { return referenceNumber; }
+            set { referenceNumber = value; }
         }
 
         /// <summary>
@@ -362,19 +362,19 @@ namespace Engage.Dnn.Publish
             set
             {
                 //if value is NULL in database, CBO fills it with MinValue
-                this.averageRating = value != float.MinValue ? value : 0;
+                averageRating = value != float.MinValue ? value : 0;
             }
         }
 
 
         public void AddRating(int rating, int? userId)
         {
-            UserFeedback.Rating.AddRating(this.ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
+            UserFeedback.Rating.AddRating(ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
         }
 
         public string GetPage(int pageId)
         {
-            string[] pageLocations = this.articleText.Split(pageSeperator, StringSplitOptions.None);
+            string[] pageLocations = articleText.Split(pageSeperator, StringSplitOptions.None);
 
             if (pageLocations.Length > pageId)
             {
@@ -390,7 +390,7 @@ namespace Engage.Dnn.Publish
             {
                 //string[] stringSeparators = new string[] { "[PAGE]" };
 
-                string[] pagelocations = this.articleText.Split(pageSeperator, StringSplitOptions.None);
+                string[] pagelocations = articleText.Split(pageSeperator, StringSplitOptions.None);
                 return pagelocations.Length;
             }
         }
@@ -447,8 +447,13 @@ namespace Engage.Dnn.Publish
             return DataProvider.Instance().GetArticlesByPortalId(portalId);
         }
 
-        public static DataTable GetArticlesByModuleId(int moduleId)
+        public static DataTable GetArticlesByModuleId(int moduleId, bool isCurrent)
         {
+            if(isCurrent)
+            {
+                return DataProvider.Instance().GetArticlesByModuleIdCurrent(moduleId);
+            }
+            
             return DataProvider.Instance().GetArticlesByModuleId(moduleId);
         }
 
@@ -486,7 +491,9 @@ namespace Engage.Dnn.Publish
 
         public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
         {
-            string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture)
+
+                + "loadRelationships" + loadRelationships + "loadTags" + loadTags + "loadItemVersionSettings" + loadItemVersionSettings; 
             Article a;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -498,9 +505,27 @@ namespace Engage.Dnn.Publish
                 else
                 {
                     a = GetArticle(itemId);
+                    if (a != null)
+                    {
+                        if (loadRelationships)
+                        {
+                            a.LoadRelationships();
+                        }
+                        //we don't need to get the tags if the portal doesn't allow it
+                        if (loadTags && ModuleBase.AllowTagsForPortal(portalId))
+                        {
+                            a.LoadTags();
+                        }
+                        if (loadItemVersionSettings)
+                        {
+                            a.LoadItemVersionSettings();
+                        }
+                    }
+
                 }
                 if (a != null)
                 {
+                    
                     DataCache.SetCache(cacheKey, a, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
                     Utility.AddCacheKey(cacheKey, portalId);
                 }
@@ -508,24 +533,25 @@ namespace Engage.Dnn.Publish
             else
             {
                 a = GetArticle(itemId);
-            }
-
-            if (a != null)
-            {
-                if (loadRelationships)
+                if (a != null)
                 {
-                    a.LoadRelationships();
+                    if (loadRelationships)
+                    {
+                        a.LoadRelationships();
+                    }
+                    //we don't need to get the tags if the portal doesn't allow it
+                    if (loadTags && ModuleBase.AllowTagsForPortal(portalId))
+                    {
+                        a.LoadTags();
+                    }
+                    if (loadItemVersionSettings)
+                    {
+                        a.LoadItemVersionSettings();
+                    }
                 }
 
-                if (loadTags)
-                {
-                    a.LoadTags();
-                }
-                if (loadItemVersionSettings)
-                {
-                    a.LoadItemVersionSettings();
-                }
             }
+
 
             return a;
         }
@@ -544,7 +570,7 @@ namespace Engage.Dnn.Publish
 
         public bool DisplayReturnToList()
         {
-            ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "ArticleSettings", "DisplayReturnToList", PortalId);
+            ItemVersionSetting rlSetting = ItemVersionSetting.GetItemVersionSetting(ItemVersionId, "ArticleSettings", "DisplayReturnToList", PortalId);
             if (rlSetting != null)
             {
                 return Convert.ToBoolean(rlSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -592,7 +618,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            if (save) Save(this.RevisingUserId);
+            if (save) Save(RevisingUserId);
         }
 
         #endregion
