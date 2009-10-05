@@ -32,13 +32,13 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                object o = this.Settings["CacheTime"];
+                object o = Settings["CacheTime"];
                 if (o != null)
                 {
                     return Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
                 }
 
-                int defaultCacheSetting = ModuleBase.GetDefaultCacheSetting(this.PortalId);
+                int defaultCacheSetting = ModuleBase.GetDefaultCacheSetting(PortalId);
                 if (defaultCacheSetting > 0)
                 {
                     return defaultCacheSetting;
@@ -53,19 +53,19 @@ namespace Engage.Dnn.Publish
             base.LoadSettings();
             try
             {
-                if (this.Page.IsPostBack == false)
+                if (Page.IsPostBack == false)
                 {
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CustomDisplay", this.LocalResourceFile), "CustomDisplay"));
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ArticleDisplay", this.LocalResourceFile), "ArticleDisplay"));
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryNLevels", this.LocalResourceFile), "CategoryNLevels"));
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategorySearch", this.LocalResourceFile), "CategorySearch"));
-                    this.ddlChooseDisplayType.Items.Add(
-                        new ListItem(Localization.GetString("CategoryFeatureDisplay", this.LocalResourceFile), "CategoryFeatureDisplay"));
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryDisplay", this.LocalResourceFile), "CategoryDisplay"));
-                    this.ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ItemListing", this.LocalResourceFile), "ItemListing"));
-                    this.ddlChooseDisplayType.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CustomDisplay", LocalResourceFile), "CustomDisplay"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ArticleDisplay", LocalResourceFile), "ArticleDisplay"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryNLevels", LocalResourceFile), "CategoryNLevels"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategorySearch", LocalResourceFile), "CategorySearch"));
+                    ddlChooseDisplayType.Items.Add(
+                        new ListItem(Localization.GetString("CategoryFeatureDisplay", LocalResourceFile), "CategoryFeatureDisplay"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("CategoryDisplay", LocalResourceFile), "CategoryDisplay"));
+                    ddlChooseDisplayType.Items.Add(new ListItem(Localization.GetString("ItemListing", LocalResourceFile), "ItemListing"));
+                    ddlChooseDisplayType.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), string.Empty));
 
-                    this.SetOptions();
+                    SetOptions();
                 }
             }
             catch (Exception exc)
@@ -79,38 +79,38 @@ namespace Engage.Dnn.Publish
             try
             {
                 var modules = new ModuleController();
-                if (this.ddlChooseDisplayType.SelectedIndex > 0)
+                if (ddlChooseDisplayType.SelectedIndex > 0)
                 {
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", this.ddlChooseDisplayType.SelectedValue);
+                    modules.UpdateTabModuleSetting(TabModuleId, "DisplayType", ddlChooseDisplayType.SelectedValue);
                 }
 
-                modules.UpdateTabModuleSetting(this.TabModuleId, "LogBreadCrumb", (this.chkLogBreadcrumb.Checked ? "true" : "false"));
-                modules.UpdateTabModuleSetting(this.TabModuleId, "Overrideable", (this.chkOverrideable.Checked ? "true" : "false"));
+                modules.UpdateTabModuleSetting(TabModuleId, "LogBreadCrumb", (chkLogBreadcrumb.Checked ? "true" : "false"));
+                modules.UpdateTabModuleSetting(TabModuleId, "Overrideable", (chkOverrideable.Checked ? "true" : "false"));
                 //// && ddlChooseDisplayType.SelectedValue != "ItemListing" ? "true" : "false"));
-                modules.UpdateTabModuleSetting(this.TabModuleId, "AllowTitleUpdate", (this.chkAllowTitleUpdate.Checked ? "true" : "false"));
-                modules.UpdateTabModuleSetting(this.TabModuleId, "CacheTime", this.txtCacheTime.Text.Trim());
+                modules.UpdateTabModuleSetting(TabModuleId, "AllowTitleUpdate", (chkAllowTitleUpdate.Checked ? "true" : "false"));
+                modules.UpdateTabModuleSetting(TabModuleId, "CacheTime", txtCacheTime.Text.Trim());
 
-                modules.UpdateTabModuleSetting(this.TabModuleId, "SupportWLW", (this.chkEnableWLWSupport.Checked ? "true" : "false"));
+                modules.UpdateTabModuleSetting(TabModuleId, "SupportWLW", (chkEnableWLWSupport.Checked ? "true" : "false"));
 
                 ////foreach (ModuleSettingsBase settingsControl in settingsChildren)
                 ////{
                 ////    settingsControl.UpdateSettings();
                 ////}
 
-                this.currentSettingsBase.UpdateSettings();
+                currentSettingsBase.UpdateSettings();
 
-                if (this.divArticleDisplay.Visible && this.divArticleDisplay.Controls.Count > 0)
+                if (divArticleDisplay.Visible && divArticleDisplay.Controls.Count > 0)
                 {
-                    var articleOverrideSettings = this.divArticleDisplay.Controls[0] as ModuleSettingsBase;
+                    var articleOverrideSettings = divArticleDisplay.Controls[0] as ModuleSettingsBase;
                     if (articleOverrideSettings != null)
                     {
                         articleOverrideSettings.UpdateSettings();
                     }
                 }
 
-                if (this.divCategoryDisplay.Visible && this.divCategoryDisplay.Controls.Count > 0)
+                if (divCategoryDisplay.Visible && divCategoryDisplay.Controls.Count > 0)
                 {
-                    var categoryOverrideSettings = this.divCategoryDisplay.Controls[0] as ModuleSettingsBase;
+                    var categoryOverrideSettings = divCategoryDisplay.Controls[0] as ModuleSettingsBase;
                     if (categoryOverrideSettings != null)
                     {
                         categoryOverrideSettings.UpdateSettings();
@@ -130,9 +130,9 @@ namespace Engage.Dnn.Publish
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.Load += this.Page_Load;
-            this.btnConfigure.Click += this.btnConfigure_Click;
-            this.ddlChooseDisplayType.SelectedIndexChanged += this.ddlChooseDisplayType_SelectedIndexChanged;
+            Load += Page_Load;
+            btnConfigure.Click += btnConfigure_Click;
+            ddlChooseDisplayType.SelectedIndexChanged += ddlChooseDisplayType_SelectedIndexChanged;
 
             if (AJAX.IsInstalled())
             {
@@ -164,7 +164,7 @@ namespace Engage.Dnn.Publish
             try
             {
                 // by now ViewState has been restored so we can set the Settings control.
-                this.DisplaySettingsControl();
+                DisplaySettingsControl();
             }
             catch (Exception exc)
             {
@@ -180,7 +180,7 @@ namespace Engage.Dnn.Publish
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         private void btnConfigure_Click(object sender, EventArgs e)
         {
-            this.pnlConfigureOverrideable.Visible = true;
+            pnlConfigureOverrideable.Visible = true;
         }
 
         /// <summary>
@@ -191,115 +191,115 @@ namespace Engage.Dnn.Publish
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         private void ddlChooseDisplayType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.DisplaySettingsControl();
+            DisplaySettingsControl();
         }
 
         private void SetOptions()
         {
-            object o = this.Settings["DisplayType"];
+            object o = Settings["DisplayType"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
-                ListItem li = this.ddlChooseDisplayType.Items.FindByValue(this.Settings["DisplayType"].ToString());
+                ListItem li = ddlChooseDisplayType.Items.FindByValue(Settings["DisplayType"].ToString());
                 if (li != null)
                 {
                     li.Selected = true;
                 }
             }
 
-            o = this.Settings["Overrideable"];
+            o = Settings["Overrideable"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
                 bool overrideable;
-                if (bool.TryParse(this.Settings["Overrideable"].ToString(), out overrideable))
+                if (bool.TryParse(Settings["Overrideable"].ToString(), out overrideable))
                 {
-                    this.chkOverrideable.Checked = overrideable;
+                    chkOverrideable.Checked = overrideable;
                 }
             }
             else
             {
                 // default to checked when not set.
-                this.chkOverrideable.Checked = true; 
+                chkOverrideable.Checked = true; 
             }
 
-            o = this.Settings["AllowTitleUpdate"];
+            o = Settings["AllowTitleUpdate"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
                 bool allowTitleUpdate;
-                if (bool.TryParse(this.Settings["AllowTitleUpdate"].ToString(), out allowTitleUpdate))
+                if (bool.TryParse(Settings["AllowTitleUpdate"].ToString(), out allowTitleUpdate))
                 {
-                    this.chkAllowTitleUpdate.Checked = allowTitleUpdate;
+                    chkAllowTitleUpdate.Checked = allowTitleUpdate;
                 }
             }
 
-            o = this.Settings["CacheTime"];
+            o = Settings["CacheTime"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
-                this.txtCacheTime.Text = o.ToString();
+                txtCacheTime.Text = o.ToString();
             }
             else
             {
-                this.txtCacheTime.Text = this.CacheTime.ToString(CultureInfo.InvariantCulture);
+                txtCacheTime.Text = CacheTime.ToString(CultureInfo.InvariantCulture);
             }
 
-            o = this.Settings["LogBreadCrumb"];
+            o = Settings["LogBreadCrumb"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
-                this.chkLogBreadcrumb.Checked = o.ToString().Equals("true");
+                chkLogBreadcrumb.Checked = o.ToString().Equals("true");
             }
 
-            o = this.Settings["SupportWLW"];
+            o = Settings["SupportWLW"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
                 bool supportWlw;
-                if (bool.TryParse(this.Settings["SupportWLW"].ToString(), out supportWlw))
+                if (bool.TryParse(Settings["SupportWLW"].ToString(), out supportWlw))
                 {
-                    this.chkEnableWLWSupport.Checked = supportWlw;
+                    chkEnableWLWSupport.Checked = supportWlw;
                 }
             }
             else
             {
                 // default to not checked when not set.
-                this.chkEnableWLWSupport.Checked = false; 
+                chkEnableWLWSupport.Checked = false; 
             }
         }
 
         private void DisplaySettingsControl()
         {
-            if (this.ddlChooseDisplayType.SelectedItem == null)
+            if (ddlChooseDisplayType.SelectedItem == null)
             {
                 return;
             }
 
-            if (this.phControls.Controls.Count > 0)
+            if (phControls.Controls.Count > 0)
             {
-                this.phControls.Controls.Clear();
+                phControls.Controls.Clear();
             }
 
-            string selectedDisplayType = this.ddlChooseDisplayType.SelectedValue;
+            string selectedDisplayType = ddlChooseDisplayType.SelectedValue;
             switch (selectedDisplayType)
             {
                 case "CustomDisplay":
-                    this.LoadSettingsControl("controls/CustomDisplayOptions.ascx" /*, "CustomDisplayOptions"*/);
+                    LoadSettingsControl("controls/CustomDisplayOptions.ascx" /*, "CustomDisplayOptions"*/);
                     break;
                 case "ArticleDisplay":
-                    this.LoadSettingsControl("articlecontrols/ArticleDisplayOptions.ascx" /*, "ArticleDisplayOptions"*/); 
+                    LoadSettingsControl("articlecontrols/ArticleDisplayOptions.ascx" /*, "ArticleDisplayOptions"*/); 
 
                     // configure ShowArticle=true
                     break;
                 case "CategoryDisplay":
-                    this.LoadSettingsControl("categorycontrols/CategoryDisplayOptions.ascx" /*, "CategoryDisplayOptions"*/);
+                    LoadSettingsControl("categorycontrols/CategoryDisplayOptions.ascx" /*, "CategoryDisplayOptions"*/);
                     break;
                 case "CategoryNLevels":
-                    this.LoadSettingsControl("categorycontrols/CategoryNLevelsOptions.ascx" /*, "CategoryNLevelsOptions"*/);
+                    LoadSettingsControl("categorycontrols/CategoryNLevelsOptions.ascx" /*, "CategoryNLevelsOptions"*/);
                     break;
                 case "CategoryFeatureDisplay":
-                    this.LoadSettingsControl("categorycontrols/CategoryFeatureOptions.ascx" /*, "CategoryFeatureOptions"*/);
+                    LoadSettingsControl("categorycontrols/CategoryFeatureOptions.ascx" /*, "CategoryFeatureOptions"*/);
                     break;
                 case "CategorySearch":
-                    this.LoadSettingsControl("categorycontrols/CategorySearchOptions.ascx" /*, "CategorySearchOptions"*/);
+                    LoadSettingsControl("categorycontrols/CategorySearchOptions.ascx" /*, "CategorySearchOptions"*/);
                     break;
                 case "ItemListing":
-                    this.LoadSettingsControl("controls/ItemListingOptions.ascx" /*, "ItemListingOptions"*/);
+                    LoadSettingsControl("controls/ItemListingOptions.ascx" /*, "ItemListingOptions"*/);
                     break;
                 default:
                     break;
@@ -307,61 +307,61 @@ namespace Engage.Dnn.Publish
 
             if (selectedDisplayType == "CustomDisplay")
             {
-                this.shCategoryDisplay.Visible = false;
-                this.shCategoryDisplay.IsExpanded = false;
-                this.divCategoryDisplay.Controls.Clear();
+                shCategoryDisplay.Visible = false;
+                shCategoryDisplay.IsExpanded = false;
+                divCategoryDisplay.Controls.Clear();
             }
             else
             {
-                this.shCategoryDisplay.Visible = true;
-                this.shCategoryDisplay.IsExpanded = true;
-                this.divCategoryDisplay.Controls.Clear();
-                this.divCategoryDisplay.Controls.Add(this.CreateSettingsControl("controls/CustomDisplayOptions.ascx"));
+                shCategoryDisplay.Visible = true;
+                shCategoryDisplay.IsExpanded = true;
+                divCategoryDisplay.Controls.Clear();
+                divCategoryDisplay.Controls.Add(CreateSettingsControl("controls/CustomDisplayOptions.ascx"));
             }
 
             if (selectedDisplayType == "ArticleDisplay")
             {
-                this.shArticleDisplay.Visible = false;
-                this.shArticleDisplay.IsExpanded = false;
-                this.divArticleDisplay.Controls.Clear();
+                shArticleDisplay.Visible = false;
+                shArticleDisplay.IsExpanded = false;
+                divArticleDisplay.Controls.Clear();
             }
             else
             {
-                this.shArticleDisplay.Visible = true;
+                shArticleDisplay.Visible = true;
 
                 // only expand one of the sections if both are displayed.  BD
                 // we are making Article Display the choice which is closed if both are shown, because article display doesn't do any callbacks (presently),
                 // so you don't have the problem of making a settings change and then the callback un-expands what you were working on.
-                this.shArticleDisplay.IsExpanded = !this.shCategoryDisplay.IsExpanded;
-                this.divArticleDisplay.Controls.Clear();
-                this.divArticleDisplay.Controls.Add(this.CreateSettingsControl("articlecontrols/ArticleDisplayOptions.ascx"));
+                shArticleDisplay.IsExpanded = !shCategoryDisplay.IsExpanded;
+                divArticleDisplay.Controls.Clear();
+                divArticleDisplay.Controls.Add(CreateSettingsControl("articlecontrols/ArticleDisplayOptions.ascx"));
             }
 
             // Currently on Article, Category and the new Custom Display (subject to change) allows override on querystring.
             bool supportsOverride = SupportsOverride(selectedDisplayType);
-            this.chkOverrideable.Enabled = supportsOverride;
+            chkOverrideable.Enabled = supportsOverride;
             if (!supportsOverride)
             {
-                this.chkOverrideable.Checked = false;
+                chkOverrideable.Checked = false;
             }
 
-            this.btnConfigure.Visible = supportsOverride;
+            btnConfigure.Visible = supportsOverride;
         }
 
         private void LoadSettingsControl(string controlName)
         {
-            this.phControls.EnableViewState = false;
-            this.currentSettingsBase = this.CreateSettingsControl(controlName);
-            this.phControls.Controls.Add(this.currentSettingsBase);
+            phControls.EnableViewState = false;
+            currentSettingsBase = CreateSettingsControl(controlName);
+            phControls.Controls.Add(currentSettingsBase);
         }
 
         private ModuleSettingsBase CreateSettingsControl(string controlName)
         {
-            var settingsControl = (ModuleSettingsBase)this.LoadControl(controlName);
-            settingsControl.ModuleConfiguration = new ModuleController().GetModule(this.ModuleId, this.TabId);
+            var settingsControl = (ModuleSettingsBase)LoadControl(controlName);
+            settingsControl.ModuleConfiguration = new ModuleController().GetModule(ModuleId, TabId);
 
-            settingsControl.ModuleId = this.ModuleId;
-            settingsControl.TabModuleId = this.TabModuleId;
+            settingsControl.ModuleId = ModuleId;
+            settingsControl.TabModuleId = TabModuleId;
 
             settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
             settingsControl.LoadSettings();

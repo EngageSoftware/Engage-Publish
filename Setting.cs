@@ -42,8 +42,8 @@ namespace Engage.Dnn.Publish
 
         private Setting(string controlName, string propertyName)//, string description)
         {
-            this._controlName = controlName;
-            this._propertyName = propertyName;
+            _controlName = controlName;
+            _propertyName = propertyName;
             //this._description = description;
         }
 
@@ -70,9 +70,9 @@ namespace Engage.Dnn.Publish
         public string PropertyValue
         {
             [DebuggerStepThrough]
-            get { return this.propertyValue; }
+            get { return propertyValue; }
             [DebuggerStepThrough]
-            set { this.propertyValue = value; }
+            set { propertyValue = value; }
         }
 
         //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -122,7 +122,7 @@ namespace Engage.Dnn.Publish
             builder.Append(" Property Name: ");
             builder.Append(_propertyName);
             builder.Append(" Property Value: ");
-            builder.Append(this.propertyValue);
+            builder.Append(propertyValue);
 
             return builder.ToString();
         }

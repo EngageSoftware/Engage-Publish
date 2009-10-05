@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-
 using DotNetNuke.Entities.Users;
 
 using CookComputing.XmlRpc;
@@ -17,12 +9,9 @@ using DotNetNuke.Services.Localization;
 using Engage.Dnn.Publish.Util;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Entities.Host;
-using System.Collections;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Common;
 using System.Globalization;
 using System.IO;
-using DotNetNuke.Security;
 
 namespace Engage.Dnn.Publish.Services
 {

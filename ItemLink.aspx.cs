@@ -22,7 +22,6 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
-    using DotNetNuke.Services.Localization;
     using Util;
 
     public partial class ItemLink : PageBase
@@ -156,8 +155,8 @@ namespace Engage.Dnn.Publish
                 string languageValue = string.Empty;
                 if (!string.IsNullOrEmpty(language))
                 {
-                    languageValue = "&language=" + this.language;
-                    friendlyLanguageValue = "/language/" + this.language + "/";
+                    languageValue = "&language=" + language;
+                    friendlyLanguageValue = "/language/" + language + "/";
                 }
 
                 if (item != null)
@@ -307,7 +306,7 @@ namespace Engage.Dnn.Publish
                     return "/pageid/" + pageid.ToString(CultureInfo.InvariantCulture);
                 }
                 
-                return "&pageid=" + this.pageid.ToString(CultureInfo.InvariantCulture);
+                return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
             }
             return string.Empty;
         }

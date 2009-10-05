@@ -38,7 +38,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                int settingIndex = this.IndexOf(index);
+                int settingIndex = IndexOf(index);
                 return this[settingIndex];
             }
         }

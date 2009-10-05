@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D7FCB9E3-4554-4B99-8E5B-15209F53151F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -607,7 +607,6 @@
     <Compile Include="util\Version.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="04.02.07.txt" />
     <Content Include="AdminLoader.ascx" />
     <Content Include="Admin\AdminInstructions.ascx" />
     <Content Include="Admin\AdminMain.ascx" />
@@ -979,6 +978,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.07.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.08.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.09.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.05.00.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -1002,7 +1002,6 @@
     <Content Include="Admin\App_LocalResources\QuickStats.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="05.01.07.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Tools\ResetDisplayPage.ascx" />
@@ -1029,7 +1028,6 @@
     <Content Include="TextHtml\Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.02.08.txt" />
     <Content Include="TextHtml\app_localresources\Settings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -1056,6 +1054,7 @@
     <Content Include="Admin\Tools\App_LocalResources\ResetItemStatistics.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="05.05.00.txt" />
     <EmbeddedResource Include="Scripts\ArticleSelector.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -1080,6 +1079,9 @@
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost/DotNetNuke_2</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

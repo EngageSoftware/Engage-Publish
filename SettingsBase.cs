@@ -10,19 +10,7 @@
 
 namespace Engage.Dnn.Publish
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
-    using System.Text;
-    using System.Web;
-    using System.Web.UI;
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Security;
     using Util;
 
     /// <summary>

@@ -36,7 +36,7 @@ namespace Engage.Dnn.Publish
 	{
         public ItemRelationship()
         {
-            this.startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 	    
         #region Public Properties
@@ -47,9 +47,9 @@ namespace Engage.Dnn.Publish
         public int ItemRelationshipId
         {
             [DebuggerStepThrough]
-            get { return this.itemRelationshipId; }
+            get { return itemRelationshipId; }
             [DebuggerStepThrough]
-            set { this.itemRelationshipId = value; }
+            set { itemRelationshipId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -58,9 +58,9 @@ namespace Engage.Dnn.Publish
         public int ChildItemId
         {
             [DebuggerStepThrough]
-            get { return this.childItemId; }
+            get { return childItemId; }
             [DebuggerStepThrough]
-            set { this.childItemId = value; }
+            set { childItemId = value; }
         }
 
         
@@ -70,9 +70,9 @@ namespace Engage.Dnn.Publish
         public Guid ChildItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return this.childItemIdentifier; }
+            get { return childItemIdentifier; }
             [DebuggerStepThrough]
-            set { this.childItemIdentifier = value; }
+            set { childItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -81,9 +81,9 @@ namespace Engage.Dnn.Publish
 		public int ChildItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return this.childItemVersionId; }
+            get { return childItemVersionId; }
             [DebuggerStepThrough]
-            set { this.childItemVersionId = value; }
+            set { childItemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -92,9 +92,9 @@ namespace Engage.Dnn.Publish
         public Guid ChildItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return this.childItemVersionIdentifier; }
+            get { return childItemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { this.childItemVersionIdentifier = value; }
+            set { childItemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -103,9 +103,9 @@ namespace Engage.Dnn.Publish
         public int ParentItemId
         {
             [DebuggerStepThrough]
-            get { return this.parentItemId; }
+            get { return parentItemId; }
             [DebuggerStepThrough]
-            set { this.parentItemId = value; }
+            set { parentItemId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -114,9 +114,9 @@ namespace Engage.Dnn.Publish
         public Guid ParentItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return this.parentItemIdentifier; }
+            get { return parentItemIdentifier; }
             [DebuggerStepThrough]
-            set { this.parentItemIdentifier = value; }
+            set { parentItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -125,9 +125,9 @@ namespace Engage.Dnn.Publish
         public int RelationshipTypeId
         {
             [DebuggerStepThrough]
-            get { return this.relationshipTypeId; }
+            get { return relationshipTypeId; }
             [DebuggerStepThrough]
-            set { this.relationshipTypeId = value; }
+            set { relationshipTypeId = value; }
         }
 
 
@@ -137,9 +137,9 @@ namespace Engage.Dnn.Publish
         public string RelationshipTypeName
         {
             [DebuggerStepThrough]
-            get { return this.relationshipTypeName; }
+            get { return relationshipTypeName; }
             [DebuggerStepThrough]
-            set { this.relationshipTypeName = value; }
+            set { relationshipTypeName = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -148,9 +148,9 @@ namespace Engage.Dnn.Publish
 		public int ItemTypeId 
 		{
             [DebuggerStepThrough]
-            get { return this.itemTypeId; }
+            get { return itemTypeId; }
             [DebuggerStepThrough]
-            set { this.itemTypeId = value; }
+            set { itemTypeId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -159,11 +159,11 @@ namespace Engage.Dnn.Publish
         public string StartDate 
 		{
             [DebuggerStepThrough]
-			get {return this.startDate;}
+			get {return startDate;}
             [DebuggerStepThrough]
 			set
             {
-                this.startDate = Utility.HasValue(value) ? value : null;
+                startDate = Utility.HasValue(value) ? value : null;
             }
 		}
 
@@ -173,11 +173,11 @@ namespace Engage.Dnn.Publish
         public string EndDate
         {
             [DebuggerStepThrough]
-			get {return this.endDate;}
+			get {return endDate;}
             [DebuggerStepThrough]
             set
             {
-                this.endDate = Utility.HasValue(value) ? value : null;
+                endDate = Utility.HasValue(value) ? value : null;
             }
         }
 
@@ -187,16 +187,16 @@ namespace Engage.Dnn.Publish
 		public int SortOrder
 		{
             [DebuggerStepThrough]
-            get { return this.sortOrder ?? 0; }
+            get { return sortOrder ?? 0; }
             [DebuggerStepThrough]
-            set { this.sortOrder = value; }
+            set { sortOrder = value; }
 		}
 	    [XmlIgnore]
 	    public bool HasSortOrderBeenSet
 	    {
 	        get
 	        {
-	            return this.sortOrder.HasValue;
+	            return sortOrder.HasValue;
 	        }
 	    }
 
@@ -493,13 +493,13 @@ namespace Engage.Dnn.Publish
 	    {
 			DataTable dt;
 			DataSet ds;
-			if (this.parentItemId < 1)
+			if (parentItemId < 1)
 			{
 				dt = Category.GetCategoriesHierarchy(portalId);
 			}
 			else
 			{
-				ds = Item.GetAllChildren(this.parentItemId, this.relationshipTypeId, portalId);
+				ds = Item.GetAllChildren(parentItemId, relationshipTypeId, portalId);
 				dt = ds.Tables[0];
 			}
 
@@ -541,8 +541,8 @@ namespace Engage.Dnn.Publish
 
         public void CorrectDates()
         {
-            if (!string.IsNullOrEmpty(this.StartDate)) this.StartDate = Convert.ToDateTime(this.StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
-            if (!string.IsNullOrEmpty(this.EndDate)) this.EndDate = Convert.ToDateTime(this.EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(StartDate)) StartDate = Convert.ToDateTime(StartDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(EndDate)) EndDate = Convert.ToDateTime(EndDate, CultureInfo.CurrentCulture).ToString(CultureInfo.InvariantCulture);
         }
 
 	    #region TransportableElement Methods

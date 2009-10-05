@@ -32,7 +32,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 int id = -1;
-                object o = this.module.Settings["ItemId"];
+                object o = module.Settings["ItemId"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
@@ -46,7 +46,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 string displayType = string.Empty;
-                Object o = this.module.Settings["DisplayType"];
+                Object o = module.Settings["DisplayType"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     displayType =  o.ToString();
@@ -90,7 +90,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 int id = -1;
-                object o = this.module.Settings["OldArticleId"];
+                object o = module.Settings["OldArticleId"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
@@ -106,7 +106,7 @@ namespace Engage.Dnn.Publish
             {
                 string displayOption = string.Empty;
                 string settingPrefix = GetDisplayTypePrefix(DisplayType);
-                object o = this.module.Settings[settingPrefix + "DisplayOption"];
+                object o = module.Settings[settingPrefix + "DisplayOption"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     displayOption = o.ToString();
@@ -121,7 +121,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 int id = -1;
-                object o = this.module.Settings["OldCategoryId"];
+                object o = module.Settings["OldCategoryId"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
@@ -136,7 +136,7 @@ namespace Engage.Dnn.Publish
             {
                 int id = -1;
                 string settingPrefix = GetDisplayTypePrefix(DisplayType);
-                object o = this.module.Settings[settingPrefix + "CategoryId"];
+                object o = module.Settings[settingPrefix + "CategoryId"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
@@ -151,7 +151,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 int id = -1;
-                object o = this.module.Settings["adArticleId"];
+                object o = module.Settings["adArticleId"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
@@ -165,7 +165,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                object o = this.module.Settings["Overrideable"];
+                object o = module.Settings["Overrideable"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     bool overrideable;

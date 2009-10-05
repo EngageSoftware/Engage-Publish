@@ -28,13 +28,13 @@ namespace Engage.Dnn.Publish
 		#region Properties
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private int itemVersionId = -1;
+		private int _itemVersionId = -1;
 		public int ItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return this.itemVersionId; }
+            get { return _itemVersionId; }
             [DebuggerStepThrough]
-            set { this.itemVersionId = value; }
+            set { _itemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -42,9 +42,9 @@ namespace Engage.Dnn.Publish
 		public int TagId 
 		{
             [DebuggerStepThrough]
-			get {return this.tagId;}
+			get {return tagId;}
             [DebuggerStepThrough]
-            set { this.tagId = value; }
+            set { tagId = value; }
 		}
 
 		#endregion
@@ -80,7 +80,7 @@ namespace Engage.Dnn.Publish
                 al = CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
             }
             return al;
-            //return CBO.FillCollection(DataProvider.Instance().GetItemTags(itemVersionId), typeof(ItemTag));
+            //return CBO.FillCollection(DataProvider.Instance().GetItemTags(_itemVersionId), typeof(ItemTag));
         }
 
 	    public static ItemTag Create()

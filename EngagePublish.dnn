@@ -6,7 +6,7 @@
       <foldername>EngagePublish</foldername>
       <modulename>Engage: Publish</modulename>
       <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
-      <version>05.04.01</version>
+      <version>05.05.00</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <resourcefile>Resources.zip</resourcefile>
@@ -323,13 +323,14 @@
           <name>05.03.09.SqlDataProvider</name>
         </file>
         <file>
+          <path>Providers\DataProviders\SqlDataProvider</path>
+          <name>05.05.00.SqlDataProvider</name>
+        </file>
+        <file>
           <name>ReadMe.txt</name>
         </file>
         <file>
-          <name>05.01.07.txt</name>
-        </file>
-        <file>
-          <name>05.02.08.txt</name>
+          <name>05.05.00.txt</name>
         </file>
         <file>
           <name>Uninstall.SqlDataProvider</name>
@@ -349,40 +350,12 @@
       </files>
     </folder>
     <folder>
-      <name>Engage: Publish Search Indexer</name>
-      <friendlyname>Engage: Publish Search Indexer</friendlyname>
-      <foldername>EngagePublish</foldername>
-      <modulename>Engage: Publish Search Indexer</modulename>
-      <description>The Search Indexer for the Engage: Publish module by Engage Software (www.engagesoftware.com). To use this module you should create a page that is visible to all users, but not shown in the menu. Install the Search Indexer as the ONLY module on this page. DNN will use this module in order to index your content, and search results will link through this page, though users will never land and stay on the page as they will be redirected to the appropriate page for an article or category.</description>
-      <version>05.04.01</version>
-      <businesscontrollerclass>Engage.Dnn.Publish.Search.SearchProvider</businesscontrollerclass>
-      <dependencies></dependencies>
-      <modules>
-        <module>
-          <friendlyname>Engage: Publish Search Indexer</friendlyname>
-          <cachetime>0</cachetime>
-          <controls>
-            <control>
-              <src>DesktopModules/EngagePublish/Controls/SearchRedirector.ascx</src>
-              <type>View</type>
-            </control>
-          </controls>
-        </module>
-      </modules>
-      <files>
-        <file>
-          <path>Controls</path>
-          <name>SearchRedirector.ascx</name>
-        </file>
-      </files>
-    </folder>
-    <folder>
       <name>Engage: Publish Tag Cloud</name>
       <friendlyname>Engage: Publish Tag Cloud</friendlyname>
       <foldername>EngagePublish/Tags</foldername>
       <modulename>Engage: Publish Tag Cloud</modulename>
       <description>The tag cloud for the Engage: Publish module.</description>
-      <version>05.04.01</version>
+      <version>05.05.00</version>
       <businesscontrollerclass>Engage.Dnn.Publish.Util.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>
@@ -414,7 +387,7 @@
       <foldername>EngagePublish/TextHTML</foldername>
       <modulename>Engage: Publish Text/HTML</modulename>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
-      <version>05.04.01</version>
+      <version>05.05.00</version>
       <businesscontrollerclass>Engage.Dnn.Publish.TextHTML.FeaturesController</businesscontrollerclass>
       <dependencies></dependencies>
       <modules>

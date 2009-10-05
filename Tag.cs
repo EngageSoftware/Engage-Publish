@@ -19,23 +19,23 @@ namespace Engage.Dnn.Publish
 
         #region Private Variables
         //attributes hide private members from debugger, so both properties and members aren't shown - BD
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int tagId;
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string name;
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string description;
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int totalItems;
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DateTime mostRecentDate;
 
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int languageId;
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private DateTime createdDate;
 
-        [DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int portalId;
 
         #endregion
@@ -369,7 +369,7 @@ namespace Engage.Dnn.Publish
         {
             //TODO: change tagList to a <List> of strings
             //string tags = string.Empty;
-            StringBuilder sb = new StringBuilder(50);
+            var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
 
             if (tagList != null)
@@ -381,7 +381,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTags + sb.ToString() + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishPopularTags + sb + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -411,7 +411,7 @@ namespace Engage.Dnn.Publish
         {
             //TODO: change tagList to a <List> of strings
             //string tags = string.Empty;
-            StringBuilder sb = new StringBuilder(50);
+            var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
 
             if (tagList != null)
@@ -423,7 +423,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb.ToString() + "_" + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb + "_" + selectTop.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             int tagCount;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -455,7 +455,7 @@ namespace Engage.Dnn.Publish
 
         public static ArrayList ParseTags(string tags, int portalId, char[] separators, bool add)
         {
-            ArrayList tagList = new ArrayList();
+            var tagList = new ArrayList();
             string[] splitList = tags.Trim().Split(separators);
             foreach (string sTag in splitList)
             {
@@ -482,7 +482,7 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {   //return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
-            StringBuilder sb = new StringBuilder(50);
+            var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
 
             if (tagList != null)
@@ -494,7 +494,7 @@ namespace Engage.Dnn.Publish
                 }
             }
             
-            string cacheKey = Utility.CacheKeyPublishItemsFromTags + sb.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishItemsFromTags + sb + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -524,7 +524,7 @@ namespace Engage.Dnn.Publish
         {
             //return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
 
-            StringBuilder sb = new StringBuilder(50);
+            var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
 
             if (tagList != null)
@@ -537,7 +537,7 @@ namespace Engage.Dnn.Publish
             }
 
 
-            string cacheKey = Utility.CacheKeyPublishItemsFromTagsPage + sb.ToString() + "_" + pageId.ToString() + "_" + portalId.ToString(CultureInfo.InvariantCulture);
+            string cacheKey = Utility.CacheKeyPublishItemsFromTagsPage + sb + "_" + pageId + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
             {
@@ -567,9 +567,9 @@ namespace Engage.Dnn.Publish
 
         public void Save()
         {
-            if (this.TagId == 0)
+            if (TagId == 0)
             {
-                this.tagId = DataProvider.Instance().AddTag(this);
+                tagId = DataProvider.Instance().AddTag(this);
             }
             else
             {
@@ -579,9 +579,9 @@ namespace Engage.Dnn.Publish
 
         public void Save(IDbTransaction trans)
         {
-            if (this.TagId == 0)
+            if (TagId == 0)
             {
-                this.tagId = DataProvider.Instance().AddTag(trans, this);
+                tagId = DataProvider.Instance().AddTag(trans, this);
             }
             else
             {

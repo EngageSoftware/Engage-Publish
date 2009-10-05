@@ -37,9 +37,9 @@ namespace Engage.Dnn.Publish
         public int SettingsId 
 		{
             [DebuggerStepThrough]
-            get { return this.settingsId; }
+            get { return settingsId; }
             [DebuggerStepThrough]
-            set { this.settingsId = value; }
+            set { settingsId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -48,9 +48,9 @@ namespace Engage.Dnn.Publish
 		public int ItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return this.itemVersionId; }
+            get { return itemVersionId; }
             [DebuggerStepThrough]
-            set { this.itemVersionId = value; }
+            set { itemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -59,9 +59,9 @@ namespace Engage.Dnn.Publish
         public Guid ItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return this.itemVersionIdentifier; }
+            get { return itemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { this.itemVersionIdentifier = value; }
+            set { itemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -70,9 +70,9 @@ namespace Engage.Dnn.Publish
         public string ControlName 
 		{
             [DebuggerStepThrough]
-            get { return this.controlName; }
+            get { return controlName; }
             [DebuggerStepThrough]
-            set { this.controlName = value; }
+            set { controlName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -81,9 +81,9 @@ namespace Engage.Dnn.Publish
         public string PropertyName 
 		{
             [DebuggerStepThrough]
-            get { return this.propertyName; }
+            get { return propertyName; }
             [DebuggerStepThrough]
-            set { this.propertyName = value; }
+            set { propertyName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -92,9 +92,9 @@ namespace Engage.Dnn.Publish
         public string PropertyValue
 		{
             [DebuggerStepThrough]
-            get { return this.propertyValue; }
+            get { return propertyValue; }
             [DebuggerStepThrough]
-            set { this.propertyValue = value; }
+            set { propertyValue = value; }
 		}
 
 
@@ -109,16 +109,16 @@ namespace Engage.Dnn.Publish
 
         public ItemVersionSetting(Setting setting)
         {
-            this.propertyName = setting.PropertyName;
-            this.propertyValue = setting.PropertyValue;
-            this.controlName = setting.ControlName;
+            propertyName = setting.PropertyName;
+            propertyValue = setting.PropertyValue;
+            controlName = setting.ControlName;
         }
 
         public void Save()
         {//used for adding an itemversionsetting to an existing article
             IDbConnection newConnection = DataProvider.GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
-            AddItemVersionSetting(trans, this.ItemVersionId, this.ControlName, this.PropertyName, this.PropertyValue);
+            AddItemVersionSetting(trans, ItemVersionId, ControlName, PropertyName, PropertyValue);
             trans.Commit();
         }
 
@@ -313,8 +313,8 @@ namespace Engage.Dnn.Publish
             if (localVersionId > 0)
             {
                 //this version does not exist.
-                this.itemVersionId = localVersionId;
-                AddItemVersionSetting(this.itemVersionId, this.controlName, this.propertyName, this.propertyValue);
+                itemVersionId = localVersionId;
+                AddItemVersionSetting(itemVersionId, controlName, propertyName, propertyValue);
             }
             else
             {
@@ -336,21 +336,21 @@ namespace Engage.Dnn.Publish
                 return false;
             }
 
-            return this.itemVersionId.Equals(other.itemVersionId)
-                && this.propertyName.Equals(other.propertyName, StringComparison.OrdinalIgnoreCase)
-                && this.controlName.Equals(other.controlName, StringComparison.OrdinalIgnoreCase);
+            return itemVersionId.Equals(other.itemVersionId)
+                && propertyName.Equals(other.propertyName, StringComparison.OrdinalIgnoreCase)
+                && controlName.Equals(other.controlName, StringComparison.OrdinalIgnoreCase);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ItemVersionSetting);
+            return Equals(obj as ItemVersionSetting);
         }
 
         public override int GetHashCode()
         {
-            return this.itemVersionId.GetHashCode()
-                ^ this.propertyName.GetHashCode() * 37
-                ^ this.controlName.GetHashCode() * 37;
+            return itemVersionId.GetHashCode()
+                ^ propertyName.GetHashCode() * 37
+                ^ controlName.GetHashCode() * 37;
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Engage.Dnn.Publish
             {
                 if (t.Name.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    this.controlToLoad = displayType == "ArticleDisplay" ? "ArticleControls/ArticleDisplay.ascx" : "ArticleControls/ArticleDisplay.ascx";
+                    controlToLoad = displayType == "ArticleDisplay" ? "ArticleControls/ArticleDisplay.ascx" : "ArticleControls/ArticleDisplay.ascx";
                 }
                 else if (t.Name.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
@@ -253,7 +253,7 @@ namespace Engage.Dnn.Publish
             if (VersionInfoObject != null)
             {
                 //check to see if this Item should be redirected to a different URL
-                if (Utility.HasValue(VersionInfoObject.Url) && (this.VersionInfoObject.Url != this.Request.Url.ToString()))
+                if (Utility.HasValue(VersionInfoObject.Url) && (VersionInfoObject.Url != Request.Url.ToString()))
                 {
                     //do our redirect now
                     Response.Status = "301 Moved Permanently";
@@ -283,9 +283,9 @@ namespace Engage.Dnn.Publish
                 var actions = new ModuleActionCollection
                                   {
                                           {
-                                                  this.GetNextActionID(),
-                                                  Localization.GetString("Administration", this.LocalSharedResourceFile)
-                                                  , "", "", "", this.EditUrl(Utility.AdminContainer), false,
+                                                  GetNextActionID(),
+                                                  Localization.GetString("Administration", LocalSharedResourceFile)
+                                                  , "", "", "", EditUrl(Utility.AdminContainer), false,
                                                   SecurityAccessLevel.Edit, true, false
                                                   }
                                   };

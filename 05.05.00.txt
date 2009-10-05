@@ -5,5 +5,5 @@ bin\DesktopModules.EngagePublish.CategoryControls.dll
 bin\DesktopModules.EngagePublish.Controls.dll
 bin\DesktopModules.EngagePublish.dll
 desktopmodules\engagepublish\test.aspx
-
-
+desktopmodules\engagepublish\app_globalresources\globalresources.resx
+desktopmodules\engagepublish\app_globalresources

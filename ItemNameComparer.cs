@@ -47,7 +47,7 @@ namespace Engage.Dnn.Publish
 			if (i1 == null) throw new ArgumentException("item is not an instance of Item", "x");
 			if (i2 == null) throw new ArgumentException("item is not an instance of Item", "y");
 
-			return this._descending ? string.Compare(i1.Name, i2.Name, _comparison) : string.Compare(i2.Name, i1.Name, _comparison);
+			return _descending ? string.Compare(i1.Name, i2.Name, _comparison) : string.Compare(i2.Name, i1.Name, _comparison);
 		}
 
 		#endregion
