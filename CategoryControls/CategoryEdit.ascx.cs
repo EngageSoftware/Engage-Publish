@@ -264,15 +264,8 @@ namespace Engage.Dnn.Publish.CategoryControls
                 else
                 {
                     cv.SortOrder = Convert.ToInt32(this.txtSortOrder.Text, CultureInfo.InvariantCulture);
-                    if (ddlDisplayTabId.SelectedIndex > 0)
-                    {
-                        VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
-                    }
-
-                    if (ddlChildDisplayTabId.SelectedIndex > 0)
-                    {
-                        cv.ChildDisplayTabId = Convert.ToInt32(ddlChildDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
-                    }
+                    VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
+                    cv.ChildDisplayTabId = Convert.ToInt32(ddlChildDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception exc)

@@ -426,7 +426,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
                 else
                 {
-                    if (ddlDisplayTabId.SelectedIndex > 0 && ddlDisplayTabId.Enabled)
+                    if (ddlDisplayTabId.Enabled)
                     {
                         av.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                     }
