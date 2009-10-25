@@ -243,21 +243,27 @@ namespace Engage.Dnn.Publish.Controls
                 var pnlAuthor = (Panel)e.Item.FindControl("pnlAuthor");
                 var pnlDescription = (Panel)e.Item.FindControl("pnlDescription");
                 var pnlReadMore = (Panel)e.Item.FindControl("pnlReadMore");
+                var pnlStats = (Panel)e.Item.FindControl("pnlStats");
                 var lnkTitle = (HyperLink)e.Item.FindControl("lnkTitle");
                 var lblTitle = (Label)e.Item.FindControl("lblTitle");
                 //Label lblDate = (Label)e.Item.FindControl("lblDate");
 
                 if (pnlThumbnail != null)
                 {
-                    pnlThumbnail.Visible = customDisplaySettings.DisplayOptionThumbnail; // (DataDisplayFormat == ArticleViewOption.Thumbnail || DataDisplayFormat == ArticleViewOption.TitleAndThumbnail);
+                    pnlThumbnail.Visible = customDisplaySettings.DisplayOptionThumbnail;
                 }
                 if (pnlDescription != null)
                 {
-                    pnlDescription.Visible = customDisplaySettings.DisplayOptionAbstract; //(DataDisplayFormat == ArticleViewOption.Thumbnail || DataDisplayFormat == ArticleViewOption.Abstract);
+                    pnlDescription.Visible = customDisplaySettings.DisplayOptionAbstract;
                 }
                 if (pnlReadMore != null)
                 {
-                    pnlReadMore.Visible = customDisplaySettings.DisplayOptionReadMore; //(DataDisplayFormat == ArticleViewOption.Thumbnail || DataDisplayFormat == ArticleViewOption.Abstract);
+                    pnlReadMore.Visible = customDisplaySettings.DisplayOptionReadMore;
+                }
+
+                if (pnlStats != null)
+                {
+                    pnlStats.Visible = customDisplaySettings.DisplayOptionStats; 
                 }
                 if (pnlDate != null)
                 {
@@ -600,6 +606,33 @@ namespace Engage.Dnn.Publish.Controls
             }
             return string.Empty;
         }
+          /// <summary>
+        /// Format Text currently just looks for the token 
+        /// </summary>
+        protected string DisplayItemCommentCount(object commentCount)
+        {
+            if (commentCount != null)
+            {
+                string result = commentCount.ToString();
+                return String.Format(Localization.GetString("CommentStats", LocalResourceFile),commentCount);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Format Text currently just looks for the token 
+        /// </summary>
+        protected string DisplayItemViewCount(object viewCount)
+        {
+            if (viewCount != null)
+            {
+                string result = viewCount.ToString();
+                return String.Format(Localization.GetString("ViewStats", LocalResourceFile), viewCount);
+            }
+            return string.Empty;
+        }
+        
+        
 
         /// <summary>
         /// Record a Viewing.

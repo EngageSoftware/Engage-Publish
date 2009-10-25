@@ -780,6 +780,16 @@ namespace Engage.Dnn.Publish
             return -1;
         }
 
+        public static int DefaultCategoryForPortal(int portalId)
+        {
+            string s = HostSettings.GetHostSetting(Utility.PublishDefaultCategory + portalId.ToString(CultureInfo.InvariantCulture));
+            if (Utility.HasValue(s))
+            {
+                return Convert.ToInt32(s, CultureInfo.InvariantCulture);
+            }
+            return -1;
+        }
+
 
         public static bool AllowRichTextDescriptionsForPortal(int portalId)
         {

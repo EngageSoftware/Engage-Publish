@@ -39,8 +39,8 @@ namespace Engage.Dnn.Publish.Admin
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
-            this.lnkUpdate.Click += this.lnkUpdate_Click;
+            Load += Page_Load;
+            lnkUpdate.Click += lnkUpdate_Click;
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -119,6 +119,9 @@ namespace Engage.Dnn.Publish.Admin
 
                 if(ddlDefaultTextHtmlCategory.SelectedIndex>0)
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultTextHtmlCategory+ PortalId.ToString(CultureInfo.InvariantCulture), ddlDefaultTextHtmlCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
+
+                if (ddlDefaultCategory.SelectedIndex > 0)
+                    objHostSettings.UpdateHostSetting(Utility.PublishDefaultCategory + PortalId.ToString(CultureInfo.InvariantCulture), ddlDefaultCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
                 objHostSettings.UpdateHostSetting(Utility.PublishDefaultTagPage + PortalId.ToString(CultureInfo.InvariantCulture), ddlTagList.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
@@ -239,6 +242,7 @@ namespace Engage.Dnn.Publish.Admin
             Utility.SetSettingListValue(Utility.PublishDefaultDisplayPage, PortalId, ddlDefaultDisplay);
 
             Utility.SetSettingListValue(Utility.PublishDefaultTextHtmlCategory, PortalId, ddlDefaultTextHtmlCategory);
+            Utility.SetSettingListValue(Utility.PublishDefaultCategory, PortalId, ddlDefaultCategory);
             
             Utility.SetSettingListValue(Utility.PublishForumProviderType, PortalId, ddlCommentsType);
 
@@ -379,6 +383,7 @@ namespace Engage.Dnn.Publish.Admin
             LoadThumbnailSelectionRadioButtonList();
 
             LoadDefaultTextHtmlCategoryDropDown();
+            LoadDefaultCategoryDropDown();
         }
 
         private void LoadAdminRolesDropDown(ArrayList portalRoles)
@@ -416,12 +421,12 @@ namespace Engage.Dnn.Publish.Admin
             var modules = new[] { Utility.DnnFriendlyModuleName };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
-            this.ddlDefaultDisplay.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
+            ddlDefaultDisplay.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
             foreach (DataRow dr in dt.Rows)
             {
                 var li = new ListItem(dr["TabName"] + " (" + dr["TabID"] + ")", dr["TabID"].ToString());
-                this.ddlDefaultDisplay.Items.Add(li);
+                ddlDefaultDisplay.Items.Add(li);
             }
         }
 
@@ -429,7 +434,15 @@ namespace Engage.Dnn.Publish.Admin
         {
             ItemRelationship.DisplayCategoryHierarchy(ddlDefaultTextHtmlCategory, -1, PortalId, false);
             var li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
-            this.ddlDefaultTextHtmlCategory.Items.Insert(0, li);
+            ddlDefaultTextHtmlCategory.Items.Insert(0, li);
+
+        }
+
+        private void LoadDefaultCategoryDropDown()
+        {
+            ItemRelationship.DisplayCategoryHierarchy(ddlDefaultCategory, -1, PortalId, false);
+            var li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
+            ddlDefaultCategory.Items.Insert(0, li);
 
         }
 
@@ -440,13 +453,13 @@ namespace Engage.Dnn.Publish.Admin
             var tc = new TabController();
             ArrayList al = mc.GetModulesByDefinition(PortalId, Utility.DnnTagsFriendlyModuleName);
 
-            this.ddlTagList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
+            ddlTagList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
             foreach (ModuleInfo mi in al)
             {
                 TabInfo ti = tc.GetTab(mi.TabID, mi.PortalID, false);
                 var li = new ListItem(ti.TabName + " (" + ti.TabID + ")", ti.TabID.ToString(CultureInfo.InvariantCulture));
-                this.ddlTagList.Items.Add(li);
+                ddlTagList.Items.Add(li);
             }
         }
 

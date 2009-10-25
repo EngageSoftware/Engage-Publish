@@ -2021,7 +2021,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(NamePrefix);
             sql.Append("itemview where itemid = il.childitemid ) TotalRows, ");
             sql.Append(" il.ItemId, il.CategoryName, il.ChildName, ");
-            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName, il.Author ");
+            sql.Append(" il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName, il.Author, i.ViewCount, i.CommentCount ");
 			sql.Append("from ");
 			sql.Append(NamePrefix);
             sql.Append("vwItemListing il");
@@ -2414,6 +2414,11 @@ namespace Engage.Dnn.Publish.Data
             SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
         }
 
+        public override void RunPublishStats()
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "spRunPublishStats");
+        }
+
 
         #endregion
 
@@ -2678,6 +2683,9 @@ namespace Engage.Dnn.Publish.Data
 
             return dt;
         }
+
+
+
         #endregion
 
         #region IPortable Methods

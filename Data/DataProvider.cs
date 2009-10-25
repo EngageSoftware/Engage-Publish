@@ -283,6 +283,8 @@ namespace Engage.Dnn.Publish.Data
         public abstract int CommentsWaitingForApprovalCount(int portalId, int authorUserId);
         public abstract void ClearItemsViewCount(int portalId);
         public abstract void ClearItemsCommentCount(int portalId);
+
+        public abstract void RunPublishStats();
         #endregion
 
         #region Publish Reports

@@ -50,6 +50,7 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
+                //TODO: we need a default category for users, then we can allow theme detection in WLW
                 List<Publish.Category> pc = new List<Engage.Dnn.Publish.Category>();
                 foreach (string s in post.categories)
                 {
@@ -57,10 +58,14 @@ namespace Engage.Dnn.Publish.Services
                     pc.Add(c);
                 }
                 //This only works for the first category, how should we handle other categories?
-                if (pc.Count > 0)
+                if (pc.Count < 1)
                 {
-
-                    //get description
+                    Publish.Category c = Publish.Category.GetCategory(ModuleBase.DefaultCategoryForPortal(PortalId), PortalId);
+                    pc.Add(c);   
+                }
+                 if (pc.Count > 0)
+                {
+                //get description
                     //string description = post.description.Substring(0,post.description.IndexOf("
                     //look for <!--pagebreak--> 
 

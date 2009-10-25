@@ -289,6 +289,21 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
+        internal bool DisplayOptionStats
+        {
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionStats", value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            get
+            {
+                object o = settings["DisplayOptionStats"];
+                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+            }
+        }
+
         internal bool DisplayOptionReadMore
         {
             set

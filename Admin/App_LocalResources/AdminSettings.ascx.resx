@@ -578,4 +578,10 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="plDefaultRichTextDescriptions.Text" xml:space="preserve">
     <value>Default to Rich-Text Descriptions</value>
   </data>
+  <data name="lblDefaultCategory.Help" xml:space="preserve">
+    <value>Default Category for posts using Windows Live Writer that get submitted without a category.</value>
+  </data>
+  <data name="lblDefaultCategory.Text" xml:space="preserve">
+    <value>Default Category</value>
+  </data>
 </root>

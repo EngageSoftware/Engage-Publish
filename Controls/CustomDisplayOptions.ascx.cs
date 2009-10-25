@@ -60,6 +60,11 @@ namespace Engage.Dnn.Publish.Controls
                          {Selected = this.customDisplaySettings.DisplayOptionReadMore};
                 chkDisplayOptions.Items.Add(li);
 
+                li = new ListItem(Localization.GetString(DisplayOption.Stats.ToString(), LocalResourceFile), DisplayOption.Stats.ToString())
+                    { Selected = this.customDisplaySettings.DisplayOptionStats };
+                chkDisplayOptions.Items.Add(li);
+
+
                 int maxItems = customDisplaySettings.MaxDisplayItems;
                 if (maxItems > -1)
                 {
@@ -187,6 +192,9 @@ namespace Engage.Dnn.Publish.Controls
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.ReadMore.ToString());
                 customDisplaySettings.DisplayOptionReadMore = li.Selected;
+
+                li = chkDisplayOptions.Items.FindByValue(DisplayOption.Stats.ToString());
+                customDisplaySettings.DisplayOptionStats = li.Selected;
 
                 //Direction to sort ASC or DESC
                 customDisplaySettings.SortDirection = rbSortDirection.SelectedValue;

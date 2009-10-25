@@ -138,4 +138,10 @@
   <data name="rssImage.Text" xml:space="preserve">
     <value>/images/rss.gif</value>
   </data>
+  <data name="CommentStats.Text" xml:space="preserve">
+    <value>Comments: {0}</value>
+  </data>
+  <data name="ViewStats.Text" xml:space="preserve">
+    <value>Views: {0}</value>
+  </data>
 </root>

@@ -71,7 +71,12 @@ namespace Engage.Dnn.Publish.Util
         /// <summary>
         /// Displays the Author name.
         /// </summary>
-        Author
+        Author,
+        /// <summary>
+        /// Displays the Stats name.
+        /// </summary>
+        Stats
+
     }
 
     public enum ArticleViewOption
@@ -260,6 +265,7 @@ namespace Engage.Dnn.Publish.Util
         public const string PublishEnableWlwSupport = "PublishEnableWLWSupport";
 
         public const string PublishDefaultTextHtmlCategory = "PublishDefaultTextHtmlCategory";
+        public const string PublishDefaultCategory = "PublishDefaultCategory";
 
         public const string PublishDefaultEmailAFriend = "PublishDefaultEmailAFriend";
         public const string PublishDefaultPrinterFriendly = "PublishDefaultPrinterFriendly";

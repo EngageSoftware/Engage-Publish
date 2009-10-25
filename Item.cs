@@ -1236,6 +1236,14 @@ namespace Engage.Dnn.Publish
             DataProvider.Instance().ClearItemsCommentCount(portalId);
         }
 
+        /// <summary>
+        /// Runs the stored procedure to calculate the views and comment counts for all items.
+        /// </summary>
+        /// <returns></returns>
+        public static void RunPublishStats()
+        {
+            DataProvider.Instance().RunPublishStats();
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
         public string GetApprovalStatusTypeName()

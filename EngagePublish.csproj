@@ -458,6 +458,7 @@
     <Compile Include="Controls\ThumbnailSelector.ascx.designer.cs">
       <DependentUpon>ThumbnailSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Services\PublishScheduledTasks.cs" />
     <Compile Include="SettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -979,6 +980,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.08.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.03.09.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.05.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.05.02.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -1054,7 +1056,7 @@
     <Content Include="Admin\Tools\App_LocalResources\ResetItemStatistics.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="05.05.00.txt" />
+    <Content Include="05.05.02.txt" />
     <EmbeddedResource Include="Scripts\ArticleSelector.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

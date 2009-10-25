@@ -42,6 +42,10 @@
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
 		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		            </asp:Panel>
+		            <asp:Panel ID="pnlStats" runat="server" CssClass="itemStats">
+		                <asp:Label ID="lblViews" runat="server" Text='<%#DisplayItemViewCount(DataBinder.Eval(Container.DataItem, "ViewCount")) %>' />
+		                <asp:Label ID="lblComments" runat="server" Text='<%#DisplayItemCommentCount(DataBinder.Eval(Container.DataItem, "CommentCount")) %>' />
+		            </asp:Panel>
 	            </div>
             </AlternatingItemTemplate>
             <itemtemplate>
@@ -74,6 +78,11 @@
 		            <asp:Panel ID="pnlReadMore" runat="server" cssclass="itemReadmore">
 		                <asp:HyperLink runat="server" ID="lnkReadMore" NavigateUrl='<%# GetItemLinkUrl(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>' Text="Read More..." ResourceKey="lnkReadMore" target='<%# GetItemLinkTarget(DataBinder.Eval(Container.DataItem, "ChildItemId")) %>'/>
 		            </asp:Panel>
+		            <asp:Panel ID="pnlStats" runat="server" CssClass="itemStats">
+		                <asp:Label ID="lblViews" runat="server" Text='<%#DisplayItemViewCount(DataBinder.Eval(Container.DataItem, "ViewCount")) %>' />
+		                <asp:Label ID="lblComments" runat="server" Text='<%#DisplayItemCommentCount(DataBinder.Eval(Container.DataItem, "CommentCount")) %>' />
+		            </asp:Panel>
+
 	            </div>
             </itemtemplate>
             <footertemplate/>

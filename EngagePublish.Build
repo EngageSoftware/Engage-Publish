@@ -160,7 +160,7 @@
         <exclude name="**/_sgbak/*" />
         <exclude name="**/thumbs.db" />
         <exclude name="**/*.zip" />
-        <exclude name="**/05.05.00.txt" />
+        <exclude name="**/05.05.02.txt" />
         <exclude name="**/ReadMe.txt" />
       </fileset>
     </copy>
@@ -195,7 +195,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.00.txt" />
+        <include name="**/05.05.02.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
@@ -228,7 +228,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.00.txt" />
+        <include name="**/05.05.02.txt" />
         <include name="**/ReadMe.txt" />        
         <include name="**/licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
@@ -261,7 +261,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.00.txt" />
+        <include name="**/05.05.02.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
@@ -296,7 +296,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.00.txt" />
+        <include name="**/05.05.02.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />

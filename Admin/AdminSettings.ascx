@@ -78,6 +78,14 @@
 				<asp:DropDownList ID="ddlDefaultDisplay" runat="server"></asp:DropDownList><asp:RequiredFieldValidator ID="rfvDefaultDisplayPage" runat="server" ControlToValidate="ddlDefaultDisplay" resourcekey="rfvDefaultDisplayPage" InitialValue="-1" Display="Dynamic"></asp:RequiredFieldValidator>
 			</td>
 		</tr>
+        <tr>
+			<td>
+				<dnn:label id="lblDefaultCategory" runat="server" controlname="lblDefaultCategory"></dnn:label>
+			</td>
+			<td>
+				<asp:DropDownList ID="ddlDefaultCategory" runat="server"></asp:DropDownList>
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<dnn:label id="plThumbnailSelection" runat="server" controlname="plThumbnailSelection" text="Thumbnail Selection Option:"></dnn:label>
