@@ -1346,7 +1346,8 @@ namespace Engage.Dnn.Publish
         protected override void OnInit(EventArgs e)
         {
             // to quickly build a timebombed package uncomment the following three lines, change the date
-            //if(DateTime.Now.Date > Convert.ToDateTime("10/31/2009"))
+            //DateTime di = new DateTime(2009,11,30);
+            //if (DateTime.Now.Date > di)
             //{
             //    throw new Exception("Trial license expired");
             //}
@@ -1407,10 +1408,13 @@ namespace Engage.Dnn.Publish
 
         private void BindCurrentItem()
         {
+
+            var editControl = Request.QueryString["adminType"];
+
             //check for version id
             int itemId = ItemId;
             versionInfoObject = BindItemData(itemId);
-            if (versionInfoObject.EndDate!=null && Convert.ToDateTime(versionInfoObject.EndDate) < DateTime.Now)
+            if (versionInfoObject.EndDate!=null && Convert.ToDateTime(versionInfoObject.EndDate, CultureInfo.InvariantCulture) < DateTime.Now && editControl==null)
             {
                 BindNewItem();
             }

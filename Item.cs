@@ -171,17 +171,17 @@ namespace Engage.Dnn.Publish
                                              Utility.CacheKeyPublishDisplayOnCurrentPage +
                                              itemVersionId.ToString(CultureInfo.InvariantCulture),
                                              delegate
-                                                 {
-                                                     ItemType type = ItemType.GetFromId(ItemTypeId, typeof (ItemType));
-                                                     ItemVersionSetting cpSetting =
-                                                         ItemVersionSetting.GetItemVersionSetting(ItemVersionId,
-                                                                                                  type.Name + "Settings",
-                                                                                                  "DisplayOnCurrentPage",
-                                                                                                  portalId);
-                                                     return cpSetting != null &&
-                                                            Convert.ToBoolean(cpSetting.PropertyValue,
-                                                                              CultureInfo.InvariantCulture);
-                                                 });
+                                             {
+                                                 ItemType type = ItemType.GetFromId(ItemTypeId, typeof(ItemType));
+                                                 ItemVersionSetting cpSetting =
+                                                     ItemVersionSetting.GetItemVersionSetting(ItemVersionId,
+                                                                                              type.Name + "Settings",
+                                                                                              "DisplayOnCurrentPage",
+                                                                                              portalId);
+                                                 return cpSetting != null &&
+                                                        Convert.ToBoolean(cpSetting.PropertyValue,
+                                                                          CultureInfo.InvariantCulture);
+                                             });
         }
 
 
@@ -325,7 +325,7 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        
+
         protected void SaveItemVersionSettings(IDbTransaction trans)
         {
             for (int i = 0; i < VersionSettings.Count; i++)
@@ -992,14 +992,15 @@ namespace Engage.Dnn.Publish
                     ItemType it = ItemType.GetFromId(itemTypeId, typeof(ItemType));
 
                     i = (Item)CBO.FillObject(dr, it.GetItemType);
-                }
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (i != null)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                {
-                    i.CorrectDates();
-                    DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
+
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                    if (i != null)
+                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                    {
+                        i.CorrectDates();
+                        DataCache.SetCache(cacheKey, i, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
+                        Utility.AddCacheKey(cacheKey, portalId);
+                    }
                 }
             }
             else
