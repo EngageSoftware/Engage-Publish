@@ -107,7 +107,7 @@ namespace Engage.Dnn.Publish.TextHtml
             //if the article id (itemid) already exists in the module settings let's update, otherwise create new
             if (Settings.Contains("ItemId"))
             {
-                Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId, true, true);
+                Article a = Article.GetArticle(Convert.ToInt32(Settings["ItemId"]), PortalId, true, true,true);
                 
                 a.ArticleText = teArticleText.Text;
                 a.Description = articleDescription;
