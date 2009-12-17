@@ -334,4 +334,22 @@ SET Transaction Isolation Level Read UNCOMMITTED
 GO
 
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwModuleInfo]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo]
+GO
+
+CREATE view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo] as
+
+select t.Tabname, tm.ModuleId, dm.DesktopModuleId,  Version, FolderName, md.FriendlyName, 
+ModuleName, md.ModuleDefId, m.ModuleTitle, t.PortalId, t.TabId
+From {databaseOwner}[{objectQualifier}desktopmodules] dm
+join {databaseOwner}[{objectQualifier}moduleDefinitions] md on (md.DesktopmoduleId =  dm.DesktopmoduleId)
+join {databaseOwner}[{objectQualifier}modules] m on (m.ModuleDefId = md.ModuledefId)
+join {databaseOwner}[{objectQualifier}tabModules] tm on (tm.ModuleId = m.ModuleId)
+join {databaseOwner}[{objectQualifier}tabs] t on (t.tabId = tm.Tabid)
+
+GO
+
+
+
 

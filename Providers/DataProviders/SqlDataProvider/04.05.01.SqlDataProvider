@@ -602,7 +602,7 @@ GO
 CREATE view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo] as
 
 select t.Tabname, tm.ModuleId, dm.DesktopModuleId,  Version, FolderName, md.FriendlyName, 
-ModuleName, md.ModuleDefId, ModuleTitle, t.PortalId, t.TabId
+ModuleName, md.ModuleDefId, m.ModuleTitle, t.PortalId, t.TabId
 From {databaseOwner}[{objectQualifier}desktopmodules] dm
 join {databaseOwner}[{objectQualifier}moduleDefinitions] md on (md.DesktopmoduleId =  dm.DesktopmoduleId)
 join {databaseOwner}[{objectQualifier}modules] m on (m.ModuleDefId = md.ModuledefId)
