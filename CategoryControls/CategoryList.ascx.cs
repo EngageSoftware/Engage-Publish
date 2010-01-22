@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -77,9 +77,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
+                                           GetNextActionID(),
                                            Localization.GetString(
-                                           ModuleActionType.AddContent, this.LocalResourceFile),
+                                           ModuleActionType.AddContent, LocalResourceFile),
                                            DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
                                            "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
                                            false
@@ -104,7 +104,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.ITextControl.set_Text(System.String)", Justification = "Literal is HTML"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.WebControls.TableCell.set_Text(System.String)", Justification = "Literal is HTML")]
         private void BindData()
         {
-            int itemId = Convert.ToInt32(this.cboItemType.SelectedValue, CultureInfo.InvariantCulture);
+            int itemId = Convert.ToInt32(cboItemType.SelectedValue, CultureInfo.InvariantCulture);
             if (CategoryId > -1)
             {
                 //user clicked on a subcategory.
@@ -115,7 +115,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (UseApprovals)
             {
-                approvalStatusId = Convert.ToInt32(this.cboWorkflow.SelectedValue, CultureInfo.InvariantCulture);
+                approvalStatusId = Convert.ToInt32(cboWorkflow.SelectedValue, CultureInfo.InvariantCulture);
             }
 
             var qsp = new QueryStringParameters();
@@ -126,11 +126,11 @@ namespace Engage.Dnn.Publish.CategoryControls
                 var objSecurity = new DotNetNuke.Security.PortalSecurity();
                 string searchKey = objSecurity.InputFilter(txtArticleSearch.Text.Trim(), DotNetNuke.Security.PortalSecurity.FilterFlag.NoSQL);
                 //
-                ds = itemId == -1 ? DataProvider.Instance().GetAdminItemListingSearchKey(TopLevelCategoryItemType.Category.GetId(), ItemType.Category.GetId(), RelationshipType.CategoryToTopLevelCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, this.PortalId) : DataProvider.Instance().GetAdminItemListingSearchKey(itemId, ItemType.Category.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, this.PortalId);
+                ds = itemId == -1 ? DataProvider.Instance().GetAdminItemListingSearchKey(TopLevelCategoryItemType.Category.GetId(), ItemType.Category.GetId(), RelationshipType.CategoryToTopLevelCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId) : DataProvider.Instance().GetAdminItemListingSearchKey(itemId, ItemType.Category.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, " vi.createddate desc ", searchKey, PortalId);
             }
             else
             {
-                ds = itemId == -1 ? DataProvider.Instance().GetAdminItemListing(TopLevelCategoryItemType.Category.GetId(), ItemType.Category.GetId(), RelationshipType.CategoryToTopLevelCategory.GetId(), approvalStatusId, this.PortalId) : DataProvider.Instance().GetAdminItemListing(itemId, ItemType.Category.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, this.PortalId);
+                ds = itemId == -1 ? DataProvider.Instance().GetAdminItemListing(TopLevelCategoryItemType.Category.GetId(), ItemType.Category.GetId(), RelationshipType.CategoryToTopLevelCategory.GetId(), approvalStatusId, PortalId) : DataProvider.Instance().GetAdminItemListing(itemId, ItemType.Category.GetId(), RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), approvalStatusId, PortalId);
             }
             DataTable dt = ds.Tables[0];
             if (dt.Rows.Count > 0)
@@ -227,7 +227,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                         qsp.Add("parentId", itemId);
                         if (TopLevelId == -1)
                         {
-                            qsp.Add("topLevelId", this.cboItemType.SelectedValue);
+                            qsp.Add("topLevelId", cboItemType.SelectedValue);
                         }
                         else
                         {
@@ -294,7 +294,8 @@ namespace Engage.Dnn.Publish.CategoryControls
                     qsp.Add("parentId", itemId);
                     if (TopLevelId == -1)
                     {
-                        qsp.Add("topLevelId", this.cboItemType.SelectedValue);
+                        qsp.Add("topLevelId", 
+                            cboItemType.SelectedValue);
                     }
                     else
                     {
@@ -305,11 +306,11 @@ namespace Engage.Dnn.Publish.CategoryControls
                     hl.Text = Localization.GetString("Edit", LocalResourceFile);
                 }
 
-                this.phList.Controls.Add(t);
+                phList.Controls.Add(t);
 
                 if (!cboItemType.SelectedValue.Equals("-1"))
                 {
-                    this.lblMessage.Text = Localization.GetString("SubCategoriesFor", LocalResourceFile) + " " + this.cboItemType.SelectedItem;
+                    lblMessage.Text = Localization.GetString("SubCategoriesFor", LocalResourceFile) + " " + cboItemType.SelectedItem;
                 }
             }
 
@@ -317,7 +318,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             {
                 if (!cboItemType.SelectedValue.Equals("-1"))
                 {
-                    this.lblMessage.Text = Localization.GetString("NoSubcategoriesFor", LocalResourceFile) + " " + this.cboItemType.SelectedItem;
+                    lblMessage.Text = Localization.GetString("NoSubcategoriesFor", LocalResourceFile) + " " + cboItemType.SelectedItem;
                 }
             }
 
@@ -355,7 +356,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             ItemRelationship.DisplayCategoryHierarchy(cboItemType, CategoryId, PortalId, false);
 
             var li = new ListItem(Localization.GetString("ChooseOne", LocalSharedResourceFile), "-1");
-            this.cboItemType.Items.Insert(0, li);
+            cboItemType.Items.Insert(0, li);
 
             cboWorkflow.Visible = UseApprovals;
             lblWorkflow.Visible = UseApprovals;
@@ -376,13 +377,13 @@ namespace Engage.Dnn.Publish.CategoryControls
             //has a top level been selected?
             if (TopLevelId == -1)
             {
-                string s = this.cboItemType.SelectedValue;
+                string s = cboItemType.SelectedValue;
                 int id = (Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1);
-                this.lnkAddNewCategory.NavigateUrl = id == -1 ? this.BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit") : this.BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + id.ToString(CultureInfo.InvariantCulture) + "&parentId=" + id.ToString(CultureInfo.InvariantCulture));
+                lnkAddNewCategory.NavigateUrl = id == -1 ? BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit") : BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + id.ToString(CultureInfo.InvariantCulture) + "&parentId=" + id.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                this.lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + TopLevelId.ToString(CultureInfo.InvariantCulture) + "&parentId=" + CategoryId.ToString(CultureInfo.InvariantCulture));
+                lnkAddNewCategory.NavigateUrl = BuildLinkUrl("&ctl=" + Utility.AdminContainer + "&mid=" + ModuleId.ToString(CultureInfo.InvariantCulture) + "&adminType=categoryEdit&topLevelId=" + TopLevelId.ToString(CultureInfo.InvariantCulture) + "&parentId=" + CategoryId.ToString(CultureInfo.InvariantCulture));
             }
         }
 

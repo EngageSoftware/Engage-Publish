@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -69,7 +69,7 @@ namespace Engage.Dnn.Publish.Controls
                     li.Selected = true;
                 }
 
-                this.txtMaxItems.Text = MaxDisplayItems.ToString(CultureInfo.CurrentCulture);
+                txtMaxItems.Text = MaxDisplayItems.ToString(CultureInfo.CurrentCulture);
 
                 ItemRelationship.DisplayCategoryHierarchy(ddlCategory, -1, PortalId, false);
                 ddlCategory.Items.Insert(0, new ListItem(Localization.GetString("NoCategory", LocalResourceFile), "-1"));
@@ -129,18 +129,18 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (Page.IsValid)
             {
-                ItemTypeId = Convert.ToInt32(this.ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
-                CategoryId = Convert.ToInt32(this.ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
+                ItemTypeId = Convert.ToInt32(ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
+                CategoryId = Convert.ToInt32(ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
                 MaxDisplayItems = 0;
-                if (Utility.HasValue(this.txtMaxItems.Text))
+                if (Utility.HasValue(txtMaxItems.Text))
                 {
-                    MaxDisplayItems = Convert.ToInt32(this.txtMaxItems.Text, CultureInfo.InvariantCulture);
+                    MaxDisplayItems = Convert.ToInt32(txtMaxItems.Text, CultureInfo.InvariantCulture);
                 }
                 //MaxDisplaySubItems = Convert.ToInt32(this.txtMaxSubItems.Text);
-                DataType = this.ddlDataType.SelectedValue;
-                DataDisplayFormat = this.ddlDisplayFormat.SelectedValue;
-                EnableRss = this.chkEnableRss.Checked;
-                ShowParent = this.chkShowParent.Checked;
+                DataType = ddlDataType.SelectedValue;
+                DataDisplayFormat = ddlDisplayFormat.SelectedValue;
+                EnableRss = chkEnableRss.Checked;
+                ShowParent = chkShowParent.Checked;
             }
         }
 

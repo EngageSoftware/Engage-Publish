@@ -1,6 +1,6 @@
 // <copyright file="ArticleSelector.ascx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-// Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -27,7 +27,7 @@ namespace Engage.Dnn.Publish.Controls
         /// <summary>
         /// Backing field for <see cref="ArticleId"/>
         /// </summary>
-        private int? articleId;
+        private int? _articleId;
 
         /// <summary>
         /// Gets or sets the ID of the selected article.
@@ -35,8 +35,8 @@ namespace Engage.Dnn.Publish.Controls
         /// <value>The ID of the selected article.</value>
         public int? ArticleId
         {
-            get { return this.articleId; }
-            set { this.articleId = value; }
+            get { return _articleId; }
+            set { _articleId = value; }
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 int categoryId;
-                if (int.TryParse(this.CategoriesDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out categoryId))
+                if (int.TryParse(CategoriesDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out categoryId))
                 {
                     return categoryId;
                 }
@@ -63,14 +63,14 @@ namespace Engage.Dnn.Publish.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            if (this.IsPostBack)
+            if (IsPostBack)
             {
-                this.ArticleId = this.GetArticleId();
+                ArticleId = GetArticleId();
             }
 
-            this.Load += this.Page_Load;
-            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownListSelectedIndexChanged;
-            this.LocalResourceFile = this.AppRelativeTemplateSourceDirectory + Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.TemplateControl.AppRelativeVirtualPath);
+            Load += Page_Load;
+            CategoriesDropDownList.SelectedIndexChanged += CategoriesDropDownListSelectedIndexChanged;
+            LocalResourceFile = AppRelativeTemplateSourceDirectory + Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(TemplateControl.AppRelativeVirtualPath);
             base.OnInit(e);
         }
 
@@ -81,16 +81,16 @@ namespace Engage.Dnn.Publish.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Page_Load(object sender, EventArgs e)
         {
-            this.FillCategoryDropDown();
-            if (!this.IsPostBack)
+            FillCategoryDropDown();
+            if (!IsPostBack)
             {
-                this.SelectCategory();
+                SelectCategory();
             }
 
-            this.FillArticlesDropDown();
-            if (!this.IsPostBack)
+            FillArticlesDropDown();
+            if (!IsPostBack)
             {
-                this.SelectArticle();
+                SelectArticle();
             }
 
             RegisterScripts();
@@ -103,8 +103,8 @@ namespace Engage.Dnn.Publish.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void CategoriesDropDownListSelectedIndexChanged(object sender, EventArgs e)
         {
-            this.FillArticlesDropDown();
-            this.SelectArticle();
+            FillArticlesDropDown();
+            SelectArticle();
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Engage.Dnn.Publish.Controls
         private int? GetArticleId()
         {
             int newArticleId;
-            if (int.TryParse(this.Request.Params[this.ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
+            if (int.TryParse(Request.Params[ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
             {
                 return newArticleId;
             }
@@ -127,9 +127,9 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void FillCategoryDropDown()
         {
-            this.CategoriesDropDownList.Items.Clear();
-            ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, this.PortalId, false);
-            this.CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), ""));
+            CategoriesDropDownList.Items.Clear();
+            ItemRelationship.DisplayCategoryHierarchy(CategoriesDropDownList, -1, PortalId, false);
+            CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), ""));
         }
 
         /// <summary>
@@ -137,10 +137,10 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void FillArticlesDropDown()
         {
-            if (this.CategoryId.HasValue)
+            if (CategoryId.HasValue)
             {
-                this.ArticlesDropDownList.DataSource = Article.GetArticles(this.CategoryId.Value, this.PortalId);
-                this.ArticlesDropDownList.DataBind();
+                ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
+                ArticlesDropDownList.DataBind();
             }
         }
 
@@ -149,12 +149,12 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void SelectCategory()
         {
-            if (this.articleId.HasValue)
+            if (_articleId.HasValue)
             {
-                Article article = Article.GetArticle(this.articleId.Value, this.PortalId);
+                Article article = Article.GetArticle(_articleId.Value, PortalId);
                 if (article != null)
                 {
-                    this.CategoriesDropDownList.SelectedValue = article.GetParentCategoryId().ToString(CultureInfo.InvariantCulture);
+                    CategoriesDropDownList.SelectedValue = article.GetParentCategoryId().ToString(CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -164,11 +164,11 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void SelectArticle()
         {
-            if (this.articleId.HasValue)
+            if (_articleId.HasValue)
             {
-                ListItem li = ArticlesDropDownList.Items.FindByValue(this.articleId.Value.ToString(CultureInfo.InvariantCulture));
+                ListItem li = ArticlesDropDownList.Items.FindByValue(_articleId.Value.ToString(CultureInfo.InvariantCulture));
                 if(li!=null)
-                    this.ArticlesDropDownList.SelectedValue = this.articleId.Value.ToString(CultureInfo.InvariantCulture);
+                    ArticlesDropDownList.SelectedValue = _articleId.Value.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -177,7 +177,7 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void RegisterScripts()
         {
-            string articleSelectorScriptControlIdsScript = string.Format(CultureInfo.InvariantCulture, "var CategoriesDropDownListId = '{0}'; var ArticlesDropDownListId = '{1}';", this.CategoriesDropDownList.ClientID, this.ArticlesDropDownList.ClientID);
+            string articleSelectorScriptControlIdsScript = string.Format(CultureInfo.InvariantCulture, "var CategoriesDropDownListId = '{0}'; var ArticlesDropDownListId = '{1}';", CategoriesDropDownList.ClientID, ArticlesDropDownList.ClientID);
             ScriptManager.RegisterStartupScript(this, typeof(ArticleSelector), "ArticleSelectorScriptControlIds", articleSelectorScriptControlIdsScript, true);
             ScriptManager.RegisterClientScriptResource(this, typeof(ArticleSelector), "Engage.Dnn.Publish.Scripts.ArticleSelector.js");
         }

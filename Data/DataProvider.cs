@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,23 +24,23 @@ namespace Engage.Dnn.Publish.Data
 
         #region Shared/Static Methods
         // singleton reference to the instantiated object 
-        //private static DataProvider Provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
+        //private static DataProvider _provider = ((DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.Publish.Data", ""));
 
-        private static DataProvider Provider;
+        private static DataProvider _provider;
 
-        // return the Provider
+        // return the _provider
         public static DataProvider Instance()
         {
-            if (Provider == null)
+            if (_provider == null)
             {
                 const string assembly = "Engage.Dnn.Publish.Data.SqlDataprovider,EngagePublish";
                 Type objectType = Type.GetType(assembly, true, true);
 
-                Provider = (DataProvider)Activator.CreateInstance(objectType);
-                DataCache.SetCache(objectType.FullName, Provider);
+                _provider = (DataProvider)Activator.CreateInstance(objectType);
+                DataCache.SetCache(objectType.FullName, _provider);
             }
 
-            return Provider;
+            return _provider;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
@@ -60,8 +60,7 @@ namespace Engage.Dnn.Publish.Data
                 connectionString = objProvider.Attributes["connectionString"];
             }
 
-            IDbConnection newConnection;
-            newConnection = new System.Data.SqlClient.SqlConnection {ConnectionString = connectionString};
+            IDbConnection newConnection = new System.Data.SqlClient.SqlConnection {ConnectionString = connectionString};
             newConnection.Open();
             return newConnection;
         }

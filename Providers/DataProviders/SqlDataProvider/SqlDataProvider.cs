@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -35,49 +35,50 @@ namespace Engage.Dnn.Publish.Data
 
         #region Private Members
 
-        private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-        private readonly string connectionString;
-        private readonly string providerPath;
-        private readonly string objectQualifier;
-        private readonly string databaseOwner;
+        private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+        private readonly string _connectionString;
+        private readonly string _providerPath;
+        private readonly string _objectQualifier;
+        private readonly string _databaseOwner;
 
         #endregion
 
         #region Constructors
         public SqlDataProvider()
         {
-            var provider = ((Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider]);
+            var provider = ((Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
 
-            this.connectionString = Config.GetConnectionString();
+            
+            _connectionString = Config.GetConnectionString();
 
-            if (String.IsNullOrEmpty(this.connectionString))
+            if (String.IsNullOrEmpty(_connectionString))
             {
-                this.connectionString = provider.Attributes["connectionString"];
+                _connectionString = provider.Attributes["connectionString"];
             }
 
             //if (provider.Attributes["connectionStringName"] != "" && ConfigurationManager.AppSettings[provider.Attributes["connectionStringName"]] != "") 
             //{
-            //    this.connectionString = ConfigurationManager.AppSettings[provider.Attributes["connectionStringName"]];
+            //    this._connectionString = ConfigurationManager.AppSettings[provider.Attributes["connectionStringName"]];
             //} 
             //else 
             //{
-            //    this.connectionString = provider.Attributes["connectionString"];
+            //    this._connectionString = provider.Attributes["_connectionString"];
             //}
 
-            this.providerPath = provider.Attributes["providerPath"];
+            _providerPath = provider.Attributes["providerPath"];
 
-            this.objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(this.objectQualifier) && this.objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
+            _objectQualifier = provider.Attributes["objectQualifier"];
+            if (!String.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
             {
-                this.objectQualifier += "_";
+                _objectQualifier += "_";
             }
 
-            //this.objectQualifier = "Publish_";
+            //this._objectQualifier = "Publish_";
 
-            this.databaseOwner = provider.Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(this.databaseOwner) && this.databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
+            _databaseOwner = provider.Attributes["databaseOwner"];
+            if (!String.IsNullOrEmpty(_databaseOwner) && _databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
             {
-                this.databaseOwner += ".";
+                _databaseOwner += ".";
             }
         }
 
@@ -86,27 +87,27 @@ namespace Engage.Dnn.Publish.Data
         #region Properties
         public string ConnectionString
         {
-            get { return this.connectionString; }
+            get { return _connectionString; }
         }
 
         public string ProviderPath
         {
-            get { return this.providerPath; }
+            get { return _providerPath; }
         }
 
         public string ObjectQualifier
         {
-            get { return this.objectQualifier; }
+            get { return _objectQualifier; }
         }
 
         public string DatabaseOwner
         {
-            get { return this.databaseOwner; }
+            get { return _databaseOwner; }
         }
 
         public string NamePrefix
         {
-            get { return this.databaseOwner + this.objectQualifier + ModuleQualifier; }
+            get { return _databaseOwner + _objectQualifier + ModuleQualifier; }
         }
 
 
@@ -221,8 +222,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, Author, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
             sql.Append(NamePrefix);
             sql.Append("vwItems vi join ");
-            sql.Append(databaseOwner);
-            sql.Append(objectQualifier);
+            sql.Append(_databaseOwner);
+            sql.Append(_objectQualifier);
             sql.Append("users u on (u.UserId = vi.AuthorUserId) ");
             sql.Append(" where iscurrentversion = 1 and portalId=");
             sql.Append(portalId);
@@ -282,8 +283,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" from ");
             sql.Append(NamePrefix);
             sql.Append("vwChildItems c  join ");
-            sql.Append(databaseOwner);
-            sql.Append(objectQualifier);
+            sql.Append(_databaseOwner);
+            sql.Append(_objectQualifier);
             sql.Append("users u on (u.UserId = c.AuthorUserId) ");
             sql.Append(" where ");
             sql.Append(" c.StartDate <= getdate() ");
@@ -888,7 +889,7 @@ namespace Engage.Dnn.Publish.Data
             var sqlApprovalStatusId = new SqlParameter("@approvalStatusId", approvalStatusId);
             var sqlPortalId = new SqlParameter("@portalId", portalId);
 
-            return SqlHelper.ExecuteDataset(connectionString, CommandType.Text, sql.ToString(), sqlCategoryId, sqlApprovalStatusId, sqlPortalId);
+            return SqlHelper.ExecuteDataset(_connectionString, CommandType.Text, sql.ToString(), sqlCategoryId, sqlApprovalStatusId, sqlPortalId);
         }
 
         public override DataSet GetItemVersions(int itemId, int portalId)
@@ -1017,7 +1018,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemChildRelationships(int parentItemId, int relationshipTypeId)
         {
-            return SqlHelper.ExecuteReader(this.ConnectionString, this.NamePrefix + "spGetItemChildRelationships", parentItemId, relationshipTypeId);
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetItemChildRelationships", parentItemId, relationshipTypeId);
         }
 
         public override DataSet GetAllChildren(int parentId, int relationshipTypeId, int portalId)
@@ -1936,8 +1937,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("join ");
             sql.Append(NamePrefix);
             sql.Append("vwItems i on (il.ChildItemId = i.ItemId) join ");
-            sql.Append(databaseOwner);
-            sql.Append(objectQualifier);
+            sql.Append(_databaseOwner);
+            sql.Append(_objectQualifier);
             sql.Append("users u on (u.UserId = il.AuthorUserId) ");
             sql.Append("where ");
             sql.Append("il.PortalId = ");
@@ -2029,7 +2030,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(NamePrefix);
             sql.Append("vwItems i on (il.ChildItemId = i.ItemId) ");
             sql.Append(" join ");
-            sql.Append(objectQualifier);
+            sql.Append(_objectQualifier);
             sql.Append("users u on (u.UserId = il.AuthorUserId) ");
             //sql.Append(" left join ");
             //sql.Append(NamePrefix);
@@ -2460,7 +2461,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetTag(string tag, int portalId)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetTag", portalId, Utility.CreateNvarcharParam("@TagName", tag, 256));
+            DataSet ds = SqlHelper.ExecuteDataset(_connectionString, NamePrefix + "spGetTag", portalId, Utility.CreateNvarcharParam("@TagName", tag, 256));
             return ds.Tables[0];
         }
 
@@ -2480,26 +2481,26 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetpopulartags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
+            DataSet ds = SqlHelper.ExecuteDataset(_connectionString, NamePrefix + "spGetpopulartags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
             return ds.Tables[0];
         }
 
         public override int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
-            object count = SqlHelper.ExecuteScalar(connectionString, NamePrefix + "spgetpopulartagscount", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
+            object count = SqlHelper.ExecuteScalar(_connectionString, NamePrefix + "spgetpopulartagscount", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), selectTop);
             return !string.IsNullOrEmpty(count.ToString()) ? Convert.ToInt32(count, CultureInfo.InvariantCulture) : 0;
         }
 
         
         public override DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)));
+            DataSet ds = SqlHelper.ExecuteDataset(_connectionString, NamePrefix + "spGetItemsForTags", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)));
             return ds.Tables[0];
         }
         //implement paging for GetItemsFromTags
         public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageIndex", pageId), Utility.CreateIntegerParam("@PageSize", maxItems), Utility.CreateNvarcharParam("@sortParameters", sortOrder, 400));
+            DataSet ds = SqlHelper.ExecuteDataset(_connectionString, NamePrefix + "spGetItemsForTagsPaging", portalId, (tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000)), Utility.CreateIntegerParam("@PageIndex", pageId), Utility.CreateIntegerParam("@PageSize", maxItems), Utility.CreateNvarcharParam("@sortParameters", sortOrder, 400));
             return ds.Tables[0];
         }
 
@@ -2510,8 +2511,8 @@ namespace Engage.Dnn.Publish.Data
         //    sql.Append(" from ");
         //    sql.Append(NamePrefix);
         //    sql.Append("vwItems vi join ");
-        //    sql.Append(databaseOwner);
-        //    sql.Append(objectQualifier);
+        //    sql.Append(_databaseOwner);
+        //    sql.Append(_objectQualifier);
         //    sql.Append("users u on (u.UserId = vi.AuthorUserId) ");
 
         //    sql.Append("join ");
@@ -2643,7 +2644,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(itemId);
             sql.Append(")and tagId = ");
             sql.Append(tagId);
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sql.ToString()), CultureInfo.InvariantCulture);
         }
 
 

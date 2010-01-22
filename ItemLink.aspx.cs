@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -26,13 +26,13 @@ namespace Engage.Dnn.Publish
 
     public partial class ItemLink : PageBase
     {
-        private int itemId;
-        private string itemType;
+        private int _itemId;
+        private string _itemType;
 
-        int tabid = -1;
-        int modid = -1;
-        int pageid = 1;
-        string language = "";
+        int _tabid = -1;
+        int _modid = -1;
+        int _pageid = 1;
+        string _language = "";
 
         #region Web Form Designer generated code
 
@@ -54,7 +54,7 @@ namespace Engage.Dnn.Publish
         /// </summary>
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
         #endregion
@@ -75,7 +75,7 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(m))
                 {
-                    modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
+                    _modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(pi))
                 {
-                    pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
+                    _pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(o))
                 {
-                    tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
+                    _tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
             }
 
@@ -99,34 +99,34 @@ namespace Engage.Dnn.Publish
             {
                 if (Utility.HasValue(lang))
                 {
-                    language = lang;
+                    _language = lang;
                 }
             }
 
             if (i != null)
             {
-                // look up the itemType if ItemId passed in.
-                itemId = Convert.ToInt32(i, CultureInfo.InvariantCulture);
-                itemType = Item.GetItemType(itemId).ToUpperInvariant();
+                // look up the _itemType if ItemId passed in.
+                _itemId = Convert.ToInt32(i, CultureInfo.InvariantCulture);
+                _itemType = Item.GetItemType(_itemId).ToUpperInvariant();
             }
             else if (a != null)
             {
-                itemType = ItemType.Article.Name.ToUpperInvariant();
-                itemId = Convert.ToInt32(a, CultureInfo.InvariantCulture);
+                _itemType = ItemType.Article.Name.ToUpperInvariant();
+                _itemId = Convert.ToInt32(a, CultureInfo.InvariantCulture);
             }
             else if (olda != null)
             {
-                itemType = "OLDARTICLE";
-                itemId = Convert.ToInt32(olda, CultureInfo.InvariantCulture);
+                _itemType = "OLDARTICLE";
+                _itemId = Convert.ToInt32(olda, CultureInfo.InvariantCulture);
             }
             else if (c != null)
             {
-                itemType = ItemType.Category.Name.ToUpperInvariant();
-                itemId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
+                _itemType = ItemType.Category.Name.ToUpperInvariant();
+                _itemId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
             }
             else
             {
-                itemId = -1;
+                _itemId = -1;
             }
         }
 
@@ -153,10 +153,10 @@ namespace Engage.Dnn.Publish
                 //build language parameter
                 string friendlyLanguageValue = string.Empty;
                 string languageValue = string.Empty;
-                if (!string.IsNullOrEmpty(language))
+                if (!string.IsNullOrEmpty(_language))
                 {
-                    languageValue = "&language=" + language;
-                    friendlyLanguageValue = "/language/" + language + "/";
+                    languageValue = "&language=" + _language;
+                    friendlyLanguageValue = "/language/" + _language + "/";
                 }
 
                 if (item != null)
@@ -201,20 +201,20 @@ namespace Engage.Dnn.Publish
                                      + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true), pageName, ps);
 
                             }
-                            else if (tabid > 0 && item.DisplayOnCurrentPage())
+                            else if (_tabid > 0 && item.DisplayOnCurrentPage())
                             {
 
-                                ti = tc.GetTab(tabid, item.PortalId, false);
+                                ti = tc.GetTab(_tabid, item.PortalId, false);
                                 if (ti.IsDeleted)
                                 {
                                     ti = tc.GetTab(defaultTabId, item.PortalId, false);
                                 }
                                 //check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                                if (modid > 0)
+                                if (_modid > 0)
                                 {
 
                                     Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + modid.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
+                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + _modid.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
                                 }
                                 else
                                 {
@@ -249,19 +249,19 @@ namespace Engage.Dnn.Publish
 
                             }
 
-                            if (tabid > 0)
+                            if (_tabid > 0)
                             {
 
-                                if (modid > 0)
+                                if (_modid > 0)
                                 {
                                     Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(tabid, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "&modid=" + modid.ToString(CultureInfo.InvariantCulture) + UsePageId(false) + languageValue);
+                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(_tabid, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "&modid=" + _modid.ToString(CultureInfo.InvariantCulture) + UsePageId(false) + languageValue);
 
                                 }
                                 else
                                 {
                                     Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(tabid, ps, "", "itemid=" + item.ItemId + UsePageId(false) + languageValue);
+                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(_tabid, ps, "", "itemid=" + item.ItemId + UsePageId(false) + languageValue);
                                 }
                             }
 
@@ -299,14 +299,14 @@ namespace Engage.Dnn.Publish
         private string UsePageId(bool friendly)
         {
             //we don't want to put Pageid in the URL if we're going for Page1
-            if (pageid > 1)
+            if (_pageid > 1)
             {
                 if (friendly)
                 {
-                    return "/pageid/" + pageid.ToString(CultureInfo.InvariantCulture);
+                    return "/pageid/" + _pageid.ToString(CultureInfo.InvariantCulture);
                 }
                 
-                return "&pageid=" + pageid.ToString(CultureInfo.InvariantCulture);
+                return "&pageid=" + _pageid.ToString(CultureInfo.InvariantCulture);
             }
             return string.Empty;
         }
@@ -316,23 +316,23 @@ namespace Engage.Dnn.Publish
             try
             {
                 LocalizeControls();
-                if (itemType != null)
+                if (_itemType != null)
                 {
                     //TODO: we need to figure out PortalID so we can get the folloing items from Cache
-                    if (itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
+                    if (_itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         //TODO: where can we get portalid from? NEED NEW METHOD - HK
-                        Category category = Category.GetCategory(itemId);
+                        Category category = Category.GetCategory(_itemId);
                         DisplayItem(category);
                     }
-                    else if (itemType.Equals(ItemType.Article.Name, StringComparison.OrdinalIgnoreCase))
+                    else if (_itemType.Equals(ItemType.Article.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        Article article = Article.GetArticle(itemId);
+                        Article article = Article.GetArticle(_itemId);
                         DisplayItem(article);
                     }
-                    else if (itemType.Equals("OLDARTICLE", StringComparison.OrdinalIgnoreCase))
+                    else if (_itemType.Equals("OLDARTICLE", StringComparison.OrdinalIgnoreCase))
                     {
-                        int newId = Article.GetOldArticleId(itemId);
+                        int newId = Article.GetOldArticleId(_itemId);
                         Article article = Article.GetArticle(newId);
                         DisplayItem(article);
                     }
@@ -405,7 +405,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string path = "/tabid/" + tabId + "/ctl/ItemPreview/itemid/" + itemId.ToString(CultureInfo.InvariantCulture) + "/";
+            string path = "/tabid/" + tabId + "/ctl/ItemPreview/itemid/" + _itemId.ToString(CultureInfo.InvariantCulture) + "/";
             if (mi != null)
             {
                 path += "mid/" + mi.ModuleID ;

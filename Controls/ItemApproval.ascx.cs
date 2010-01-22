@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -31,7 +31,7 @@ namespace Engage.Dnn.Publish.Controls
 		
 		private void InitializeComponent()
 		{
-			this.Load += this.Page_Load;
+			Load += Page_Load;
 		}
 
 		private void Page_Load(object sender, EventArgs e)
@@ -90,7 +90,7 @@ namespace Engage.Dnn.Publish.Controls
 
 		private void LoadApprovalTypes()
 		{
-			if (this.IsAdmin)
+			if (IsAdmin)
 			{
 				radApprovalStatus.DataSource= DataProvider.Instance().GetApprovalStatusTypes(PortalId);
 			}
@@ -130,8 +130,8 @@ namespace Engage.Dnn.Publish.Controls
 			    return new ModuleActionCollection
 			               {
 			                       {
-			                               this.GetNextActionID(),
-			                               Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+			                               GetNextActionID(),
+			                               Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
 			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
 			                               }

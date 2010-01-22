@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,11 +22,11 @@ namespace Engage.Dnn.Publish.Controls
     public partial class CustomDisplayOptions : ModuleSettingsBase
     {
 
-        private CustomDisplaySettings customDisplaySettings;
+        private CustomDisplaySettings _customDisplaySettings;
 
         public override void LoadSettings()
         {
-            customDisplaySettings = new CustomDisplaySettings(Settings, TabModuleId);
+            _customDisplaySettings = new CustomDisplaySettings(Settings, TabModuleId);
 
             try
             {
@@ -37,38 +37,38 @@ namespace Engage.Dnn.Publish.Controls
 
                 ddlItemTypeList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-2"));
                 ddlItemTypeList.Items.Insert(1, new ListItem(Localization.GetString("CategoriesAndArticles", LocalResourceFile), "-1"));
-                ListItem li = ddlItemTypeList.Items.FindByValue(customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture));
+                ListItem li = ddlItemTypeList.Items.FindByValue(_customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture));
                 li.Selected = true;
 
                 li = new ListItem(Localization.GetString(DisplayOption.Title.ToString(), LocalResourceFile), DisplayOption.Title.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionTitle};
+                         {Selected = _customDisplaySettings.DisplayOptionTitle};
                 chkDisplayOptions.Items.Add(li);
                 li = new ListItem(Localization.GetString(DisplayOption.Author.ToString(), LocalResourceFile), DisplayOption.Author.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionAuthor};
+                         {Selected = _customDisplaySettings.DisplayOptionAuthor};
                 chkDisplayOptions.Items.Add(li);
                 li = new ListItem(Localization.GetString(DisplayOption.Date.ToString(), LocalResourceFile), DisplayOption.Date.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionDate};
+                         {Selected = _customDisplaySettings.DisplayOptionDate};
                 chkDisplayOptions.Items.Add(li);
 
                 li = new ListItem(Localization.GetString(DisplayOption.Abstract.ToString(), LocalResourceFile), DisplayOption.Abstract.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionAbstract};
+                         {Selected = _customDisplaySettings.DisplayOptionAbstract};
                 chkDisplayOptions.Items.Add(li);
                 li = new ListItem(Localization.GetString(DisplayOption.Thumbnail.ToString(), LocalResourceFile), DisplayOption.Thumbnail.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionThumbnail};
+                         {Selected = _customDisplaySettings.DisplayOptionThumbnail};
                 chkDisplayOptions.Items.Add(li);
                 li = new ListItem(Localization.GetString(DisplayOption.ReadMore.ToString(), LocalResourceFile), DisplayOption.ReadMore.ToString())
-                         {Selected = this.customDisplaySettings.DisplayOptionReadMore};
+                         {Selected = _customDisplaySettings.DisplayOptionReadMore};
                 chkDisplayOptions.Items.Add(li);
 
                 li = new ListItem(Localization.GetString(DisplayOption.Stats.ToString(), LocalResourceFile), DisplayOption.Stats.ToString())
-                    { Selected = this.customDisplaySettings.DisplayOptionStats };
+                    { Selected = _customDisplaySettings.DisplayOptionStats };
                 chkDisplayOptions.Items.Add(li);
 
 
-                int maxItems = customDisplaySettings.MaxDisplayItems;
+                int maxItems = _customDisplaySettings.MaxDisplayItems;
                 if (maxItems > -1)
                 {
-                    this.txtMaxItems.Text = maxItems.ToString(CultureInfo.InvariantCulture);
+                    txtMaxItems.Text = maxItems.ToString(CultureInfo.InvariantCulture);
                 }
                 txtMaxItems.Enabled = (maxItems > -1);
                 chkShowAll.Checked = (maxItems == -1);
@@ -80,9 +80,9 @@ namespace Engage.Dnn.Publish.Controls
                     //ddlItemTypeList.Items.Insert(1, new ListItem(Localization.GetString("CategoriesAndArticles", LocalResourceFile), "-1"));
                 }
 
-                if (customDisplaySettings.CategoryId > 0)
+                if (_customDisplaySettings.CategoryId > 0)
                 {
-                    li = ddlCategory.Items.FindByValue(customDisplaySettings.CategoryId.ToString(CultureInfo.InvariantCulture));
+                    li = ddlCategory.Items.FindByValue(_customDisplaySettings.CategoryId.ToString(CultureInfo.InvariantCulture));
                     if (li != null)
                     {
                         li.Selected = true;
@@ -101,14 +101,14 @@ namespace Engage.Dnn.Publish.Controls
                     lblShowParent.Visible = true;
                     chkShowParent.Visible = true;
                 }
-                chkShowParent.Checked = customDisplaySettings.ShowParent;
-                chkShowParentDescription.Checked = customDisplaySettings.ShowParentDescription;
+                chkShowParent.Checked = _customDisplaySettings.ShowParent;
+                chkShowParentDescription.Checked = _customDisplaySettings.ShowParentDescription;
 
-                chkRelatedItem.Checked = customDisplaySettings.GetParentFromQueryString;
+                chkRelatedItem.Checked = _customDisplaySettings.GetParentFromQueryString;
 
-                chkRelatedItemLevel.Checked = customDisplaySettings.GetRelatedChildren;
+                chkRelatedItemLevel.Checked = _customDisplaySettings.GetRelatedChildren;
 
-                chkAllowPaging.Checked = customDisplaySettings.AllowPaging;
+                chkAllowPaging.Checked = _customDisplaySettings.AllowPaging;
 
                 ddlSortOption.Items.Add(new ListItem(Localization.GetString("TitleSort", LocalResourceFile), CustomDisplaySettings.TitleSort));
                 ddlSortOption.Items.Add(new ListItem(Localization.GetString("DateSort", LocalResourceFile), CustomDisplaySettings.DateSort));
@@ -120,22 +120,22 @@ namespace Engage.Dnn.Publish.Controls
                     ddlSortOption.Items.Add(new ListItem(Localization.GetString("MostPopularSort", LocalResourceFile), CustomDisplaySettings.MostPopularSort));
                 }
 
-                li = ddlSortOption.Items.FindByValue(customDisplaySettings.SortOption);
+                li = ddlSortOption.Items.FindByValue(_customDisplaySettings.SortOption);
                 if (li != null)
                 {
                     li.Selected = true;
                 }
 
-                li = rbSortDirection.Items.FindByValue(customDisplaySettings.SortDirection);
+                li = rbSortDirection.Items.FindByValue(_customDisplaySettings.SortDirection);
                 if (li != null)
                 {
                     li.Selected = true;
                 }
-                txtDateFormat.Text = customDisplaySettings.DateFormat;
+                txtDateFormat.Text = _customDisplaySettings.DateFormat;
 
-                chkEnableRss.Checked = customDisplaySettings.EnableRss;
+                chkEnableRss.Checked = _customDisplaySettings.EnableRss;
 
-                chkUseCustomSort.Checked = customDisplaySettings.UseCustomSort;
+                chkUseCustomSort.Checked = _customDisplaySettings.UseCustomSort;
 
                 lnkSortCategory.NavigateUrl = BuildSortUrl();
                 lnkSortCategory.Target = "_blank";
@@ -153,65 +153,65 @@ namespace Engage.Dnn.Publish.Controls
             if (Page.IsValid)
             {   
                 //Item type.
-                customDisplaySettings.ItemTypeId = Convert.ToInt32(this.ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
+                _customDisplaySettings.ItemTypeId = Convert.ToInt32(ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
                 
                 //Category to display
-                customDisplaySettings.CategoryId = Convert.ToInt32(this.ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
+                _customDisplaySettings.CategoryId = Convert.ToInt32(ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
 
                 //Max items to display
-                customDisplaySettings.MaxDisplayItems = 0;
+                _customDisplaySettings.MaxDisplayItems = 0;
                 if (chkShowAll.Checked)
                 {
-                    customDisplaySettings.MaxDisplayItems = -1;
+                    _customDisplaySettings.MaxDisplayItems = -1;
                 }
-                else if (Utility.HasValue(this.txtMaxItems.Text))
+                else if (Utility.HasValue(txtMaxItems.Text))
                 {
-                    customDisplaySettings.MaxDisplayItems = Convert.ToInt32(this.txtMaxItems.Text, CultureInfo.InvariantCulture);
+                    _customDisplaySettings.MaxDisplayItems = Convert.ToInt32(txtMaxItems.Text, CultureInfo.InvariantCulture);
                 }
 
                 //not sure if we need this. hk
-                customDisplaySettings.ShowParent = this.chkShowParent.Checked;
+                _customDisplaySettings.ShowParent = chkShowParent.Checked;
 
-                customDisplaySettings.ShowParentDescription = this.chkShowParentDescription.Checked;
+                _customDisplaySettings.ShowParentDescription = chkShowParentDescription.Checked;
 
                 //Display Options
                 ListItem li = chkDisplayOptions.Items.FindByValue(DisplayOption.Title.ToString());
-                customDisplaySettings.DisplayOptionTitle = li.Selected;
+                _customDisplaySettings.DisplayOptionTitle = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.Abstract.ToString());
-                customDisplaySettings.DisplayOptionAbstract = li.Selected;
+                _customDisplaySettings.DisplayOptionAbstract = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.Thumbnail.ToString());
-                customDisplaySettings.DisplayOptionThumbnail = li.Selected;
+                _customDisplaySettings.DisplayOptionThumbnail = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.Date.ToString());
-                customDisplaySettings.DisplayOptionDate = li.Selected;
+                _customDisplaySettings.DisplayOptionDate = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.Author.ToString());
-                customDisplaySettings.DisplayOptionAuthor = li.Selected;
+                _customDisplaySettings.DisplayOptionAuthor = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.ReadMore.ToString());
-                customDisplaySettings.DisplayOptionReadMore = li.Selected;
+                _customDisplaySettings.DisplayOptionReadMore = li.Selected;
 
                 li = chkDisplayOptions.Items.FindByValue(DisplayOption.Stats.ToString());
-                customDisplaySettings.DisplayOptionStats = li.Selected;
+                _customDisplaySettings.DisplayOptionStats = li.Selected;
 
                 //Direction to sort ASC or DESC
-                customDisplaySettings.SortDirection = rbSortDirection.SelectedValue;
+                _customDisplaySettings.SortDirection = rbSortDirection.SelectedValue;
 
-                customDisplaySettings.SortOption = ddlSortOption.SelectedValue;
+                _customDisplaySettings.SortOption = ddlSortOption.SelectedValue;
 
-                customDisplaySettings.DateFormat = txtDateFormat.Text;
+                _customDisplaySettings.DateFormat = txtDateFormat.Text;
 
-                customDisplaySettings.GetParentFromQueryString = chkRelatedItem.Checked;
+                _customDisplaySettings.GetParentFromQueryString = chkRelatedItem.Checked;
 
-                customDisplaySettings.GetRelatedChildren = chkRelatedItemLevel.Checked;
+                _customDisplaySettings.GetRelatedChildren = chkRelatedItemLevel.Checked;
 
-                customDisplaySettings.EnableRss = chkEnableRss.Checked;
+                _customDisplaySettings.EnableRss = chkEnableRss.Checked;
 
-                customDisplaySettings.AllowPaging = chkAllowPaging.Checked;
+                _customDisplaySettings.AllowPaging = chkAllowPaging.Checked;
 
-                customDisplaySettings.UseCustomSort = chkUseCustomSort.Checked;
+                _customDisplaySettings.UseCustomSort = chkUseCustomSort.Checked;
             }
         }
 

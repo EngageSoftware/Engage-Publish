@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -38,13 +38,13 @@ namespace Engage.Dnn.Publish
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int tagId = -1;
+        private int _tagId = -1;
 		public int TagId 
 		{
             [DebuggerStepThrough]
-			get {return tagId;}
+			get {return _tagId;}
             [DebuggerStepThrough]
-            set { tagId = value; }
+            set { _tagId = value; }
 		}
 
 		#endregion

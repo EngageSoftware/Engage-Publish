@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -42,11 +42,11 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         public ArticleDisplay()
         {
-            this.DisplayPrinterFriendly = true;
-            this.DisplayRelatedLinks = true;
-            this.DisplayRelatedArticle = true;
-            this.DisplayEmailAFriend = true;
-            this.DisplayTitle = true;
+            DisplayPrinterFriendly = true;
+            DisplayRelatedLinks = true;
+            DisplayRelatedArticle = true;
+            DisplayEmailAFriend = true;
+            DisplayTitle = true;
         }
 
         private const string CommentsControlToLoad = "../Controls/CommentDisplay.ascx";
@@ -64,8 +64,8 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
-            this.PreRender += this.Page_PreRender;
+            Load += Page_Load;
+            PreRender += Page_PreRender;
         }
 
         public bool DisplayPrinterFriendly
@@ -266,7 +266,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     //else { o = true; }
 
-                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(this.VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", this.PortalId)
+                    ItemVersionSetting forumCommentSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "chkForumComments", "Checked", PortalId)
                                                              ?? new ItemVersionSetting
                                                                                                                                                                                        {
                                                                                                                                                                                                ControlName = "chkForumComments",
@@ -486,7 +486,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         var threadIdSetting = new ItemVersionSetting(Setting.CommentForumThreadId)
                                                   {
                                                           PropertyValue = threadId.ToString(CultureInfo.InvariantCulture),
-                                                          ItemVersionId = this.VersionInfoObject.ItemVersionId
+                                                          ItemVersionId = VersionInfoObject.ItemVersionId
                                                   };
                         threadIdSetting.Save();
                         //VersionInfoObject.VersionSettings.Add(threadIdSetting);
@@ -528,7 +528,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                             string emailBody = Localization.GetString("CommentNotificationEmail.Text", LocalResourceFile);
                             emailBody = String.Format(emailBody
                                 , VersionInfoObject.Name
-                                , this.GetItemLinkUrlExternal(VersionInfoObject.ItemId)
+                                , GetItemLinkUrlExternal(VersionInfoObject.ItemId)
                                 , objSecurity.InputFilter(txtFirstNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
                                 , objSecurity.InputFilter(txtLastNameComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
                                 , objSecurity.InputFilter(txtEmailAddressComment.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting)
@@ -685,30 +685,30 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (VersionInfoObject.IsNew) return;
 
             //check if items are enabled.
-            if (this.DisplayEmailAFriend && VersionInfoObject.IsNew == false)
+            if (DisplayEmailAFriend && VersionInfoObject.IsNew == false)
             {
                 ea = (EmailAFriend)LoadControl(EmailControlToLoad);
                 ea.ModuleConfiguration = ModuleConfiguration;
                 ea.ID = Path.GetFileNameWithoutExtension(EmailControlToLoad);
-                this.phEmailAFriend.Controls.Add(ea);
+                phEmailAFriend.Controls.Add(ea);
             }
-            if (this.DisplayPrinterFriendly && VersionInfoObject.IsNew == false)
+            if (DisplayPrinterFriendly && VersionInfoObject.IsNew == false)
             {
                 pf = (PrinterFriendlyButton)LoadControl(PrinterControlToLoad);
                 pf.ModuleConfiguration = ModuleConfiguration;
                 pf.ID = Path.GetFileNameWithoutExtension(PrinterControlToLoad);
-                this.phPrinterFriendly.Controls.Add(pf);
+                phPrinterFriendly.Controls.Add(pf);
             }
 
-            if (this.DisplayRelatedLinks)
+            if (DisplayRelatedLinks)
             {
                 ral = (RelatedArticleLinksBase)LoadControl(RelatedArticlesControlToLoad);
                 ral.ModuleConfiguration = ModuleConfiguration;
                 ral.ID = Path.GetFileNameWithoutExtension(RelatedArticlesControlToLoad);
-                this.phRelatedArticles.Controls.Add(ral);
+                phRelatedArticles.Controls.Add(ral);
             }
 
-            if (this.DisplayRelatedArticle)
+            if (DisplayRelatedArticle)
             {
                 Article a = VersionInfoObject.GetRelatedArticle(PortalId);
                 if (a != null)
@@ -725,9 +725,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
 
 
-                    this.ad.SetItemId(a.ItemId);
+                    ad.SetItemId(a.ItemId);
                     ad.DisplayTitle = false;
-                    this.phRelatedArticle.Controls.Add(ad);
+                    phRelatedArticle.Controls.Add(ad);
                     divRelatedArticle.Visible = true;
                 }
                 else
@@ -767,7 +767,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     commentDisplay.ModuleConfiguration = ModuleConfiguration;
                     commentDisplay.ID = Path.GetFileNameWithoutExtension(CommentsControlToLoad);
                     commentDisplay.ArticleId = VersionInfoObject.ItemId;
-                    this.phCommentsDisplay.Controls.Add(commentDisplay);
+                    phCommentsDisplay.Controls.Add(commentDisplay);
                 }
 
                 if (UseForumComments)
@@ -822,7 +822,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 bool logBreadCrumb;
                 if (bool.TryParse(o.ToString(), out logBreadCrumb))
                 {
-                    this.LogBreadcrumb = logBreadCrumb;
+                    LogBreadcrumb = logBreadCrumb;
                 }
             }
         }
@@ -860,7 +860,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 UseCache = true;
 
                 var article = (Article)VersionInfoObject;
-                if (this.DisplayTitle)
+                if (DisplayTitle)
                 {
                     SetPageTitle();
                     lblArticleTitle.Text = article.Name;
@@ -990,33 +990,33 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void DisplayArticlePaging(Article article)
         {
             //check if we're using paging
-            if (this.AllowArticlePaging && (this.PageId > 0))
+            if (AllowArticlePaging && (PageId > 0))
             {
-                this.lblArticleText.Text = article.GetPage(this.PageId).Replace("[PAGE]", string.Empty);
+                lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", string.Empty);
 
                 //lblArticleText.Text = article.GetPage(PageId).Replace("[PAGE]", "");
 
                 //lnkPreviousPage
 
-                if (this.PageId > 1)
+                if (PageId > 1)
                 {
-                    this.lnkPreviousPage.Text = Localization.GetString("lnkPreviousPage", this.LocalResourceFile);
-                    this.lnkPreviousPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId - 1, this.GetCultureName());
-                    this.lnkNextPage.Attributes.Add("rel", "prev");
+                    lnkPreviousPage.Text = Localization.GetString("lnkPreviousPage", LocalResourceFile);
+                    lnkPreviousPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, PortalId, TabId, ModuleId, PageId - 1, GetCultureName());
+                    lnkNextPage.Attributes.Add("rel", "prev");
                 }
 
-                if (this.PageId < article.GetNumberOfPages)
+                if (PageId < article.GetNumberOfPages)
                 {
-                    this.lnkNextPage.Text = Localization.GetString("lnkNextPage", this.LocalResourceFile);
-                    this.lnkNextPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId + 1, this.GetCultureName());
-                    this.lnkNextPage.Attributes.Add("rel", "next");
+                    lnkNextPage.Text = Localization.GetString("lnkNextPage", LocalResourceFile);
+                    lnkNextPage.NavigateUrl = Utility.GetItemLinkUrl(article.ItemId, PortalId, TabId, ModuleId, PageId + 1, GetCultureName());
+                    lnkNextPage.Attributes.Add("rel", "next");
                 }
             }
             else
             {
-                this.lblArticleText.Text = article.ArticleText.Replace("[PAGE]", string.Empty);
-                this.lnkPreviousPage.Visible = false;
-                this.lnkNextPage.Visible = false;
+                lblArticleText.Text = article.ArticleText.Replace("[PAGE]", string.Empty);
+                lnkPreviousPage.Visible = false;
+                lnkNextPage.Visible = false;
             }
         }
 
@@ -1093,7 +1093,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
                 if (row.DataView.Table.Columns.Contains("HomeDirectory"))
                 {
-                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + row["Width"] + "&height=" + row["Height"] + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
+                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + row["Width"] + "&height=" + row["Height"] + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
                 }
                 return row["ImagePath"].ToString();
             }
@@ -1108,7 +1108,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 //SimpleGallery has HomeDirectory column, otherwise just point to the image path.
                 if (row.DataView.Table.Columns.Contains("HomeDirectory"))
                 {
-                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + GetPhotoWidth(row).ToString(CultureInfo.InvariantCulture) + "&height=" + GetPhotoHeight(row).ToString(CultureInfo.InvariantCulture) + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + this.Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
+                    return ResolveUrl("~/DesktopModules/SimpleGallery/ImageHandler.ashx?width=" + GetPhotoWidth(row).ToString(CultureInfo.InvariantCulture) + "&height=" + GetPhotoHeight(row).ToString(CultureInfo.InvariantCulture) + "&HomeDirectory=" + Server.UrlEncode(PortalSettings.HomeDirectory + row["HomeDirectory"]) + "&fileName=" + Server.UrlEncode(row["FileName"].ToString()) + "&portalid=" + PortalId.ToString(CultureInfo.InvariantCulture) + "&i=" + row["PhotoID"] + "&q=1");
                 }
                 return row["ImageThumbPath"].ToString();
             }
@@ -1394,10 +1394,10 @@ namespace Engage.Dnn.Publish.ArticleControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
                                            DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-                                           string.Empty, string.Empty, this.EditUrl("Settings"), false,
+                                           string.Empty, string.Empty, EditUrl("Settings"), false,
                                            DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
                                            }
                            };

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -82,9 +82,9 @@ namespace Engage.Dnn.Publish.CategoryControls
         }
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
+            Load += Page_Load;
+            cmdUpdate.Click += CmdUpdateClick;
+            cmdCancel.Click += CmdCancelClick;
         }
 
         private void LoadControlType()
@@ -104,30 +104,30 @@ namespace Engage.Dnn.Publish.CategoryControls
             itemEditControl.ModuleConfiguration = ModuleConfiguration;
             itemEditControl.ID = Path.GetFileNameWithoutExtension(ItemControlToLoad);
             itemEditControl.VersionInfoObject = VersionInfoObject;
-            this.phItemEdit.Controls.Add(itemEditControl);
+            phItemEdit.Controls.Add(itemEditControl);
 
             if (SecurityFilter.IsSecurityEnabled(PortalId))
             {
                 trCategoryPermissions.Visible = true;
 
-                this.categoryPermissions = (CategoryPermissions)LoadControl("../CategoryControls/CategoryPermissions.ascx");
-                this.categoryPermissions.CategoryId = VersionInfoObject.ItemId;
-                this.categoryPermissions.ModuleConfiguration = ModuleConfiguration;
-                this.phCategoryPermissions.Controls.Add(this.categoryPermissions);
+                categoryPermissions = (CategoryPermissions)LoadControl("../CategoryControls/CategoryPermissions.ascx");
+                categoryPermissions.CategoryId = VersionInfoObject.ItemId;
+                categoryPermissions.ModuleConfiguration = ModuleConfiguration;
+                phCategoryPermissions.Controls.Add(categoryPermissions);
             }
 
             //Parent Category
-            this.parentCategoryRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.parentCategoryRelationships.ExcludeCircularRelationships = true;
-            this.parentCategoryRelationships.ModuleConfiguration = ModuleConfiguration;
-            this.parentCategoryRelationships.LocalResourceFile = ItemRelationshipResourceFile;
-            this.parentCategoryRelationships.VersionInfoObject = VersionInfoObject;
-            this.parentCategoryRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.parentCategoryRelationships.CreateRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.parentCategoryRelationships.AvailableSelectionMode = ListSelectionMode.Single;
-            this.parentCategoryRelationships.FlatView = true;
-            this.parentCategoryRelationships.ItemTypeId = ItemType.Category.GetId();
-            this.phParentCategory.Controls.Add(this.parentCategoryRelationships);
+            parentCategoryRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            parentCategoryRelationships.ExcludeCircularRelationships = true;
+            parentCategoryRelationships.ModuleConfiguration = ModuleConfiguration;
+            parentCategoryRelationships.LocalResourceFile = ItemRelationshipResourceFile;
+            parentCategoryRelationships.VersionInfoObject = VersionInfoObject;
+            parentCategoryRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            parentCategoryRelationships.CreateRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            parentCategoryRelationships.AvailableSelectionMode = ListSelectionMode.Single;
+            parentCategoryRelationships.FlatView = true;
+            parentCategoryRelationships.ItemTypeId = ItemType.Category.GetId();
+            phParentCategory.Controls.Add(parentCategoryRelationships);
 
 
             //Related Categories
@@ -143,26 +143,26 @@ namespace Engage.Dnn.Publish.CategoryControls
             //this.phParentCategory.Controls.Add(this.irRelated);
 
             //Featured Articles
-            this.featuredArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
-            this.featuredArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
-            this.featuredArticlesRelationships.VersionInfoObject = VersionInfoObject;
-            this.featuredArticlesRelationships.LocalResourceFile = ItemRelationshipResourceFile;
-            this.featuredArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-            this.featuredArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToFeaturedItem.GetId();
-            this.featuredArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
-            this.featuredArticlesRelationships.FlatView = true;
-            this.featuredArticlesRelationships.EnableDates = true;
-            this.featuredArticlesRelationships.AllowSearch = true;
-            this.featuredArticlesRelationships.EnableSortOrder = true;
-            this.featuredArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
-            this.phFeaturedArticles.Controls.Add(this.featuredArticlesRelationships);
+            featuredArticlesRelationships = (ItemRelationships)LoadControl("../controls/ItemRelationships.ascx");
+            featuredArticlesRelationships.ModuleConfiguration = ModuleConfiguration;
+            featuredArticlesRelationships.VersionInfoObject = VersionInfoObject;
+            featuredArticlesRelationships.LocalResourceFile = ItemRelationshipResourceFile;
+            featuredArticlesRelationships.ListRelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
+            featuredArticlesRelationships.CreateRelationshipTypeId = RelationshipType.ItemToFeaturedItem.GetId();
+            featuredArticlesRelationships.AvailableSelectionMode = ListSelectionMode.Multiple;
+            featuredArticlesRelationships.FlatView = true;
+            featuredArticlesRelationships.EnableDates = true;
+            featuredArticlesRelationships.AllowSearch = true;
+            featuredArticlesRelationships.EnableSortOrder = true;
+            featuredArticlesRelationships.ItemTypeId = ItemType.Article.GetId();
+            phFeaturedArticles.Controls.Add(featuredArticlesRelationships);
 
             //load approval status
             itemApprovalStatus = (ItemApproval)LoadControl(ApprovalControlToLoad);
             itemApprovalStatus.ModuleConfiguration = ModuleConfiguration;
             itemApprovalStatus.ID = Path.GetFileNameWithoutExtension(ApprovalControlToLoad);
             itemApprovalStatus.VersionInfoObject = VersionInfoObject;
-            this.phApproval.Controls.Add(itemApprovalStatus);
+            phApproval.Controls.Add(itemApprovalStatus);
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -178,23 +178,23 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (!Page.IsPostBack)
                 {
-                    this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("CurrentPage", LocalResourceFile), true.ToString(CultureInfo.InvariantCulture)));
-                    this.rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("SpecificPage", LocalResourceFile), false.ToString(CultureInfo.InvariantCulture)));
+                    rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("CurrentPage", LocalResourceFile), true.ToString(CultureInfo.InvariantCulture)));
+                    rblDisplayOnCurrentPage.Items.Add(new ListItem(Localization.GetString("SpecificPage", LocalResourceFile), false.ToString(CultureInfo.InvariantCulture)));
 
-                    this.txtSortOrder.Text = cv.SortOrder.ToString(CultureInfo.CurrentCulture);
-                    this.txtCategoryId.Text = cv.ItemId.ToString(CultureInfo.CurrentCulture);
-                    this.cmdDelete.Visible = false;
+                    txtSortOrder.Text = cv.SortOrder.ToString(CultureInfo.CurrentCulture);
+                    txtCategoryId.Text = cv.ItemId.ToString(CultureInfo.CurrentCulture);
+                    cmdDelete.Visible = false;
 
                     //check if new or edit
                     if (VersionInfoObject.IsNew)
                     {
-                        this.txtCategoryId.Visible = false;
-                        this.lblCategoryId.Visible = false;
+                        txtCategoryId.Visible = false;
+                        lblCategoryId.Visible = false;
 
                         if (ParentId != -1)
                         {
                             Category parent = Category.GetCategory(ParentId, PortalId);
-                            this.parentCategoryRelationships.AddToSelectedItems(parent);
+                            parentCategoryRelationships.AddToSelectedItems(parent);
                         }
                     }
 
@@ -263,7 +263,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
                 else
                 {
-                    cv.SortOrder = Convert.ToInt32(this.txtSortOrder.Text, CultureInfo.InvariantCulture);
+                    cv.SortOrder = Convert.ToInt32(txtSortOrder.Text, CultureInfo.InvariantCulture);
                     VersionInfoObject.DisplayTabId = Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                     cv.ChildDisplayTabId = Convert.ToInt32(ddlChildDisplayTabId.SelectedValue, CultureInfo.InvariantCulture);
                 }
@@ -275,16 +275,16 @@ namespace Engage.Dnn.Publish.CategoryControls
         }
 
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdateClick(object sender, EventArgs e)
         {
             try
             {
-                this.txtMessage.Text = string.Empty;
+                txtMessage.Text = string.Empty;
                 bool error = false;
 
                 //create a relationship
                 var irel = new ItemRelationship {RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId()};
-                int[] ids = this.parentCategoryRelationships.GetSelectedItemIds();
+                int[] ids = parentCategoryRelationships.GetSelectedItemIds();
 
                 //check for parent category, if none then add a relationship for Top Level Item
                 if (ids.Length == 0)
@@ -309,33 +309,33 @@ namespace Engage.Dnn.Publish.CategoryControls
                 //    VersionInfoObject.Relationships.Add(irco);
                 //}
 
-                if (this.itemEditControl.IsValid == false)
+                if (itemEditControl.IsValid == false)
                 {
                     error = true;
-                    this.txtMessage.Text += this.itemEditControl.ErrorMessage;
+                    txtMessage.Text += itemEditControl.ErrorMessage;
                 }
 
                 if (Convert.ToInt32(ddlDisplayTabId.SelectedValue, CultureInfo.InvariantCulture) < -1)
                 {
                     error = true;
 
-                    this.txtMessage.Text += Localization.GetString("ChooseAPage", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ChooseAPage", LocalResourceFile);
                 }
 
                 if (Convert.ToInt32(ddlChildDisplayTabId.SelectedValue, CultureInfo.InvariantCulture) == -1)
                 {
                     error = true;
-                    this.txtMessage.Text += Localization.GetString("ChooseChildPage", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ChooseChildPage", LocalResourceFile);
                 }
 
-                if (!this.itemApprovalStatus.IsValid)
+                if (!itemApprovalStatus.IsValid)
                 {
-                    this.txtMessage.Text += Localization.GetString("ChooseApprovalStatus", LocalResourceFile);
+                    txtMessage.Text += Localization.GetString("ChooseApprovalStatus", LocalResourceFile);
                 }
 
                 if (error)
                 {
-                    this.txtMessage.Visible = true;
+                    txtMessage.Visible = true;
                     return;
                 }
                 VersionInfoObject.Description = itemEditControl.DescriptionText;
@@ -353,7 +353,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 int sortCount = 0;
 
-                foreach (int i in this.featuredArticlesRelationships.GetSelectedItemIds())
+                foreach (int i in featuredArticlesRelationships.GetSelectedItemIds())
                 {
                     var irArticleso = new ItemRelationship
                                           {
@@ -361,13 +361,13 @@ namespace Engage.Dnn.Publish.CategoryControls
                                                   ParentItemId = i
                                           };
 
-                    if (Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture))))
+                    if (Utility.HasValue(featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture))))
                     {
-                        irArticleso.StartDate = this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture));
+                        irArticleso.StartDate = featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture));
                     }
-                    if (Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture))))
+                    if (Utility.HasValue(featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture))))
                     {
-                        irArticleso.EndDate = this.featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture));
+                        irArticleso.EndDate = featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture));
                     }
                     irArticleso.SortOrder = sortCount;
 
@@ -391,13 +391,13 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (SecurityFilter.IsSecurityEnabled(PortalId))
                 {
-                    this.categoryPermissions.CategoryId = VersionInfoObject.ItemId;
-                    this.categoryPermissions.Save();
+                    categoryPermissions.CategoryId = VersionInfoObject.ItemId;
+                    categoryPermissions.Save();
                 }
 
                 if (chkResetChildDisplayTabs.Checked)
                 {
-                    ((Category)VersionInfoObject).CascadeChildDisplayTab(this.UserId);
+                    ((Category)VersionInfoObject).CascadeChildDisplayTab(UserId);
                 }
 
                 string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
@@ -417,7 +417,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancelClick(object sender, EventArgs e)
         {
             string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
             if (!Utility.HasValue(returnUrl))
@@ -526,12 +526,12 @@ namespace Engage.Dnn.Publish.CategoryControls
         /// </summary>
         private void ShowOnlyMessage()
         {
-            foreach (Control cntl in this.Controls)
+            foreach (Control cntl in Controls)
             {
                 cntl.Visible = false;
             }
-            this.txtMessage.Visible = true;
-            this.txtMessage.Parent.Visible = true;
+            txtMessage.Visible = true;
+            txtMessage.Parent.Visible = true;
 
         }
 
@@ -576,8 +576,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
-            this.ddlDisplayTabId.DataBind();
+            ddlDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
+            ddlDisplayTabId.DataBind();
 
 
 
@@ -607,7 +607,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 if (ParentId != -1)
                 {
                     parent = Category.GetCategory(ParentId, PortalId);
-                    this.parentCategoryRelationships.AddToSelectedItems(parent);
+                    parentCategoryRelationships.AddToSelectedItems(parent);
                 }
 
                 //look for display tab id
@@ -642,8 +642,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
 
-            this.ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
-            this.ddlChildDisplayTabId.DataBind();
+            ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(PortalSettings.DesktopTabs, false, true);
+            ddlChildDisplayTabId.DataBind();
 
             foreach (DataRow dr in dt.Rows)
             {

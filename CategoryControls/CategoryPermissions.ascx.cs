@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,7 +22,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
     public partial class CategoryPermissions : ModuleBase
     {
-        private int categoryId;
+        private int _categoryId;
         #region Web Form Designer generated code
 
         override protected void OnInit(EventArgs e)
@@ -127,13 +127,13 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void imgAdd_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             //check existing items, don't add again if already inserted.
-            foreach (ListItem sl in this.lstItems.Items)
+            foreach (ListItem sl in lstItems.Items)
             {
                 if (sl.Selected && !RoleIdExists(sl.Value))
                 {
                     //get the item selected
                     var selected = new ListItem(sl.Text, sl.Value);
-                    this.lstSelectedItems.Items.Add(selected);
+                    lstSelectedItems.Items.Add(selected);
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         //return true if item already in the list box
         private bool RoleIdExists(string itemId)
         {
-            foreach (ListItem i in this.lstSelectedItems.Items)
+            foreach (ListItem i in lstSelectedItems.Items)
             {
                 if (i.Value == itemId) return true;
             }
@@ -152,14 +152,14 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void imgRemove_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
             var lc = new ListItemCollection();
-            foreach (ListItem sl in this.lstSelectedItems.Items)
+            foreach (ListItem sl in lstSelectedItems.Items)
             {
                 if (sl.Selected) lc.Add(sl);
             }
 
             foreach (ListItem sl in lc)
             {
-                this.lstSelectedItems.Items.Remove(sl);
+                lstSelectedItems.Items.Remove(sl);
             }
         }
 
@@ -170,11 +170,11 @@ namespace Engage.Dnn.Publish.CategoryControls
 
 
             // should we just delete all, and then reinsert?, sounds easier
-            dp.DeletePermissions(this.categoryId);
+            dp.DeletePermissions(_categoryId);
 
-            foreach (ListItem li in this.lstSelectedItems.Items)
+            foreach (ListItem li in lstSelectedItems.Items)
             {
-                dp.InsertPermission(this.categoryId, Convert.ToInt32(li.Value, CultureInfo.InvariantCulture), permissionId, UserId);
+                dp.InsertPermission(_categoryId, Convert.ToInt32(li.Value, CultureInfo.InvariantCulture), permissionId, UserId);
             }
         }
 
@@ -188,7 +188,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 if (role.PortalID == PortalId)
                 {
                     var li = new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture));
-                    this.lstItems.Items.Add(li);
+                    lstItems.Items.Add(li);
                 }
             }
         }
@@ -196,13 +196,13 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void LoadAssignedRoles()
         {
             //no need to look for new categories
-            if (this.categoryId != -1)
+            if (_categoryId != -1)
             {
-                DataTable dt = DataProvider.Instance().GetAssignedRoles(this.categoryId);
+                DataTable dt = DataProvider.Instance().GetAssignedRoles(_categoryId);
                 foreach (DataRow row in dt.Rows)
                 {
                     var li = new ListItem(row["RoleName"].ToString(), row["RoleId"].ToString());
-                    this.lstSelectedItems.Items.Add(li);
+                    lstSelectedItems.Items.Add(li);
                 }
             }
         }
@@ -230,8 +230,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public int CategoryId
         {
-            get { return this.categoryId; }
-            set { this.categoryId = value; }
+            get { return _categoryId; }
+            set { _categoryId = value; }
         }
     }
 

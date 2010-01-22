@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -26,24 +26,24 @@ namespace Engage.Dnn.Publish.Tags
 
     public partial class TagCloud : ModuleBase
     {
-        private ArrayList tagQuery;
-        private string qsTags = string.Empty;
-        private int popularTagsTotal;
-        private int mostPopularTagCount;
-        private int leastPopularTagCount;
+        private ArrayList _tagQuery;
+        private string _qsTags = string.Empty;
+        private int _popularTagsTotal;
+        private int _mostPopularTagCount;
+        private int _leastPopularTagCount;
 
         private bool UsePopularTags
         {
             get
             {
-                object o = this.Settings["tcPopularTagBool"];
+                object o = Settings["tcPopularTagBool"];
                 return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
             }
         }
 
         override protected void OnInit(EventArgs e)
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
             LoadTagInfo();
         }
@@ -70,19 +70,19 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (AllowTitleUpdate)
             {
-                var tp = (DotNetNuke.Framework.CDefault)this.Page;
-                tp.Title += " " + this.qsTags;
+                var tp = (DotNetNuke.Framework.CDefault)Page;
+                tp.Title += " " + _qsTags;
             }
         }
 
         private void LoadTagList()
         {
-            if (popularTagsTotal > 0)
+            if (_popularTagsTotal > 0)
             {
-                //string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + qsTags + UsePopularTags.ToString(CultureInfo.InvariantCulture); // +"PageId";
-                //DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, tagQuery, UsePopularTags);
+                //string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) + _qsTags + UsePopularTags.ToString(CultureInfo.InvariantCulture); // +"PageId";
+                //DataTable dt = DataCache.GetCache(tagCacheKey) as DataTable ?? Tag.GetPopularTags(PortalId, _tagQuery, UsePopularTags);
 
-                DataTable dt = Tag.GetPopularTags(PortalId, tagQuery, this.UsePopularTags);
+                DataTable dt = Tag.GetPopularTags(PortalId, _tagQuery, UsePopularTags);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -90,8 +90,8 @@ namespace Engage.Dnn.Publish.Tags
                     //dt.DefaultView.Sort = "TotalItems DESC";
                     Utility.SortDataTableSingleParam(dt, "TotalItems desc");
                     //Get the most popular and lease popular tag totals
-                    mostPopularTagCount = Convert.ToInt32(dt.Rows[0]["TotalItems"].ToString());
-                    leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1]["TotalItems"].ToString());
+                    _mostPopularTagCount = Convert.ToInt32(dt.Rows[0]["TotalItems"].ToString());
+                    _leastPopularTagCount = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1]["TotalItems"].ToString());
                     
                     //this doesn't work
                     //dt.DefaultView.Sort = "Name ASC";
@@ -110,7 +110,7 @@ namespace Engage.Dnn.Publish.Tags
                         var lnkTag = new Literal();
                         var sb = new StringBuilder(255);
                         sb.Append("<li class=\"");
-                        sb.Append(this.GetTagSizeClass(totalItems));
+                        sb.Append(GetTagSizeClass(totalItems));
                         sb.Append("\"><span>");
                         sb.Append(totalItems.ToString(CultureInfo.CurrentCulture));
                         sb.Append(itemsWithTag);
@@ -139,7 +139,7 @@ namespace Engage.Dnn.Publish.Tags
 
         private string GetTagSizeClass(int itemCount)
         {
-            int tagCountSpread = mostPopularTagCount - leastPopularTagCount;
+            int tagCountSpread = _mostPopularTagCount - _leastPopularTagCount;
             double result = Convert.ToDouble(itemCount) / Convert.ToDouble(tagCountSpread);
 
             string resultString;
@@ -182,7 +182,7 @@ namespace Engage.Dnn.Publish.Tags
             {
                 existingTags = useOthers;
             }   
-            return DotNetNuke.Common.Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "tags=" + existingTags + HttpUtility.UrlEncode(name));
+            return DotNetNuke.Common.Globals.NavigateURL(DefaultTagDisplayTabId, string.Empty, "tags=" + existingTags + HttpUtility.UrlEncode(name));
         }
 
         private void LoadTagInfo()
@@ -192,18 +192,18 @@ namespace Engage.Dnn.Publish.Tags
                 string tags = Request.QueryString["Tags"];
                 if (tags != null)
                 {
-                    qsTags = tags;
+                    _qsTags = tags;
 
                     char[] seperator = { '-' };
-                    ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
-                    tagQuery = new ArrayList(tagList.Count);
+                    ArrayList tagList = Tag.ParseTags(_qsTags, PortalId, seperator, false);
+                    _tagQuery = new ArrayList(tagList.Count);
                     string useOthers = string.Empty;
 
                     //create a list of tagids to query the database
                     foreach (Tag tg in tagList)
                     {
                         //Add the tag to the filtered list
-                        tagQuery.Add(tg.TagId);
+                        _tagQuery.Add(tg.TagId);
 
                         //add the seperator in first
                         phTagFilters.Controls.Add(new LiteralControl(Localization.GetString("TagSeperator.Text", LocalResourceFile)));
@@ -222,7 +222,7 @@ namespace Engage.Dnn.Publish.Tags
                         useOthers += tg.Name + "-";
                     }
                 }
-                popularTagsTotal = Tag.GetPopularTagsCount(PortalId, tagQuery, true);
+                _popularTagsTotal = Tag.GetPopularTagsCount(PortalId, _tagQuery, true);
             }
         }
     }

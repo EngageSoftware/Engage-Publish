@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,7 +24,7 @@ namespace Engage.Dnn.Publish.Tags
         {
             try
             {
-                this.chkLimitTagCount.Checked = PopularTagCount;
+                chkLimitTagCount.Checked = PopularTagCount;
             }
             catch (Exception exc)
             {
@@ -38,7 +38,7 @@ namespace Engage.Dnn.Publish.Tags
         {
             if (Page.IsValid)
             {
-                    PopularTagCount = this.chkLimitTagCount.Checked;
+                    PopularTagCount = chkLimitTagCount.Checked;
             }
         }
 

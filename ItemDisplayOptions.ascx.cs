@@ -1,6 +1,6 @@
 // <copyright file="ItemDisplayOptions.ascx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-// Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -26,7 +26,7 @@ namespace Engage.Dnn.Publish
     /// </summary>
     public partial class ItemDisplayOptions : ModuleSettingsBase
     {
-        private ModuleSettingsBase currentSettingsBase;
+        private ModuleSettingsBase _currentSettingsBase;
 
         public int CacheTime
         {
@@ -97,7 +97,7 @@ namespace Engage.Dnn.Publish
                 ////    settingsControl.UpdateSettings();
                 ////}
 
-                currentSettingsBase.UpdateSettings();
+                _currentSettingsBase.UpdateSettings();
 
                 if (divArticleDisplay.Visible && divArticleDisplay.Controls.Count > 0)
                 {
@@ -131,8 +131,8 @@ namespace Engage.Dnn.Publish
         {
             base.OnInit(e);
             Load += Page_Load;
-            btnConfigure.Click += btnConfigure_Click;
-            ddlChooseDisplayType.SelectedIndexChanged += ddlChooseDisplayType_SelectedIndexChanged;
+            btnConfigure.Click += BtnConfigureClick;
+            ddlChooseDisplayType.SelectedIndexChanged += DdlChooseDisplayTypeSelectedIndexChanged;
 
             if (AJAX.IsInstalled())
             {
@@ -178,7 +178,7 @@ namespace Engage.Dnn.Publish
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        private void btnConfigure_Click(object sender, EventArgs e)
+        private void BtnConfigureClick(object sender, EventArgs e)
         {
             pnlConfigureOverrideable.Visible = true;
         }
@@ -189,7 +189,7 @@ namespace Engage.Dnn.Publish
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        private void ddlChooseDisplayType_SelectedIndexChanged(object sender, EventArgs e)
+        private void DdlChooseDisplayTypeSelectedIndexChanged(object sender, EventArgs e)
         {
             DisplaySettingsControl();
         }
@@ -351,8 +351,8 @@ namespace Engage.Dnn.Publish
         private void LoadSettingsControl(string controlName)
         {
             phControls.EnableViewState = false;
-            currentSettingsBase = CreateSettingsControl(controlName);
-            phControls.Controls.Add(currentSettingsBase);
+            _currentSettingsBase = CreateSettingsControl(controlName);
+            phControls.Controls.Add(_currentSettingsBase);
         }
 
         private ModuleSettingsBase CreateSettingsControl(string controlName)

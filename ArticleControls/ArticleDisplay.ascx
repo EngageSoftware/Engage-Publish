@@ -92,7 +92,16 @@
 	    <ContentTemplate>
             <div id="divRating" class="divRatingBefore">
                 <asp:Label ID="lblRatingMessage" runat="server" resourcekey="lblRatingMessage"></asp:Label>
-                <ajaxToolkit:Rating ID="ajaxRating" runat="server" MaxRating="5" StarCssClass="ratingStar" WaitingStarCssClass="savedRatingStar" FilledStarCssClass="filledRatingStar" EmptyStarCssClass="emptyRatingStar" OnChanged="ajaxRating_Changed" Visible="true"/>
+                <ajaxToolkit:Rating ID="ajaxRating" 
+                    runat="server" MaxRating="5" 
+                    StarCssClass="ratingStar" 
+                    WaitingStarCssClass="savedRatingStar" 
+                    FilledStarCssClass="filledRatingStar" 
+                    EmptyStarCssClass="emptyRatingStar" 
+                    OnChanged="ajaxRating_Changed" 
+                    Visible="true"
+                    AutoPostBack="true"
+                    />
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>

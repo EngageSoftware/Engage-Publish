@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -1035,9 +1035,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetItemVersionLinkUrl(Item item)
         {
-            string returnUrl;
-
-            returnUrl = Globals.NavigateURL(item.DisplayTabId, "", "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
+            string returnUrl = Globals.NavigateURL(item.DisplayTabId, "", "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
 
             return returnUrl;
         }
@@ -1233,8 +1231,7 @@ namespace Engage.Dnn.Publish.Util
         /// </returns>
         private static NameValueCollection CreateParametersForQueryString(int itemId, int? tabId, int? moduleId, int pageId, int portalId, string cultureName)
         {
-            NameValueCollection queryStringParameters;
-            queryStringParameters = new NameValueCollection(5);
+            NameValueCollection queryStringParameters = new NameValueCollection(5);
             queryStringParameters.Add("itemId", itemId.ToString(CultureInfo.InvariantCulture));
 
             if (tabId.HasValue)

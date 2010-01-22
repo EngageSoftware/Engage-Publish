@@ -20,29 +20,29 @@ namespace Engage.Dnn.Publish
         #region Private Variables
         //attributes hide private members from debugger, so both properties and members aren't shown - BD
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int tagId;
+        private int _tagId;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string name;
+        private string _name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string description;
+        private string _description;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int totalItems;
+        private int _totalItems;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private DateTime mostRecentDate;
+        private readonly DateTime _mostRecentDate;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int languageId;
+        private int _languageId;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private DateTime createdDate;
+        private readonly DateTime _createdDate;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int portalId;
+        private int _portalId;
 
         #endregion
 
         #region Public Properties
         /// <summary>
-        /// Gets the tagId of the tag
+        /// Gets the _tagId of the tag
         /// </summary>
         /// <value>The tag id of the tag.</value>
         public int? TagId
@@ -50,7 +50,7 @@ namespace Engage.Dnn.Publish
          [DebuggerStepThroughAttribute]
             get
             {
-                return tagId;
+                return _tagId;
             }
         }
 
@@ -63,12 +63,12 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThrough]
             get
             {
-                return name;
+                return _name;
             }
             [DebuggerStepThroughAttribute]
             set
             {
-                name = value;
+                _name = value;
             }
         }
 
@@ -81,12 +81,12 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return description;
+                return _description;
             }
             [DebuggerStepThroughAttribute]
             set
             {
-                description = value;
+                _description = value;
             }
         }
         
@@ -100,12 +100,12 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return totalItems;
+                return _totalItems;
             }
             [DebuggerStepThroughAttribute]
             set
             {
-                totalItems = value;
+                _totalItems = value;
             }
         }
 
@@ -118,7 +118,7 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return mostRecentDate;
+                return _mostRecentDate;
             }
         }
         
@@ -132,12 +132,12 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return languageId;
+                return _languageId;
             }
             [DebuggerStepThroughAttribute]
             set
             {
-                languageId = value;
+                _languageId = value;
             }
         }
 
@@ -151,7 +151,7 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return createdDate;
+                return _createdDate;
             }
         }
 
@@ -166,12 +166,12 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThroughAttribute]
             get
             {
-                return portalId;
+                return _portalId;
             }
             [DebuggerStepThroughAttribute]
             set
             {
-                portalId = value;
+                _portalId = value;
             }
         }
 
@@ -194,10 +194,10 @@ namespace Engage.Dnn.Publish
         /// <param name="tagTotalItems">The total items.</param>
         public Tag(string tagName, string tagDescription, int tagTotalItems)
         {
-            name = tagName;
-            description = tagDescription;
-            totalItems= tagTotalItems;
-            mostRecentDate = DateTime.Now;
+            _name = tagName;
+            _description = tagDescription;
+            _totalItems= tagTotalItems;
+            _mostRecentDate = DateTime.Now;
         }
 
 
@@ -210,13 +210,13 @@ namespace Engage.Dnn.Publish
             //Make sure that we have at least 1 row returned. If for some reason we have more than one we only use the first one.
             if (dt.Rows.Count > 0)
             {
-                tagId = Convert.ToInt32(dt.Rows[0]["tagId"], CultureInfo.InvariantCulture);
-                name = dt.Rows[0]["name"].ToString();
-                description = dt.Rows[0]["description"].ToString();
-                totalItems = Convert.ToInt32(dt.Rows[0]["totalItems"], CultureInfo.InvariantCulture);
-                mostRecentDate = Convert.ToDateTime(dt.Rows[0]["mostRecentDate"], CultureInfo.InvariantCulture);
-                languageId = Convert.ToInt32(dt.Rows[0]["languageid"], CultureInfo.InvariantCulture);
-                createdDate = Convert.ToDateTime(dt.Rows[0]["datecreated"], CultureInfo.InvariantCulture);
+                _tagId = Convert.ToInt32(dt.Rows[0]["tagId"], CultureInfo.InvariantCulture);
+                _name = dt.Rows[0]["name"].ToString();
+                _description = dt.Rows[0]["description"].ToString();
+                _totalItems = Convert.ToInt32(dt.Rows[0]["totalItems"], CultureInfo.InvariantCulture);
+                _mostRecentDate = Convert.ToDateTime(dt.Rows[0]["mostRecentDate"], CultureInfo.InvariantCulture);
+                _languageId = Convert.ToInt32(dt.Rows[0]["languageid"], CultureInfo.InvariantCulture);
+                _createdDate = Convert.ToDateTime(dt.Rows[0]["datecreated"], CultureInfo.InvariantCulture);
             }
         }
         #endregion
@@ -230,7 +230,7 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static Tag GetTag(string tag, int portalId)
         {
-            //return DataProvider.Instance().GetTag(tag, portalId);
+            //return DataProvider.Instance().GetTag(tag, _portalId);
 
             string cacheKey = Utility.CacheKeyPublishTag + tag.ToString(CultureInfo.InvariantCulture) + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
@@ -301,7 +301,7 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static DataTable GetTags(int portalId)
         {
-            //return DataProvider.Instance().GetTags(portalId);
+            //return DataProvider.Instance().GetTags(_portalId);
 
             string cacheKey = Utility.CacheKeyPublishGetTagsByPortal + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
@@ -338,7 +338,7 @@ namespace Engage.Dnn.Publish
         {
             //parse through the table and create each tag?
 
-            //return DataProvider.Instance().GetTagsByString(partialTag, portalId);
+            //return DataProvider.Instance().GetTagsByString(partialTag, _portalId);
             string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture) + "_" + portalId.ToString(CultureInfo.InvariantCulture);
             DataTable dt;
             if (ModuleBase.UseCachePortal(portalId))
@@ -462,7 +462,7 @@ namespace Engage.Dnn.Publish
                 if (sTag.Trim().Length > 0)
                 {
                     Tag t = GetTag(sTag.Trim(), portalId);
-                    if (t.tagId == 0 && add)
+                    if (t._tagId == 0 && add)
                     {
                         t.Name = HttpUtility.UrlDecode(sTag).Trim();
                         t.PortalId = portalId;
@@ -481,7 +481,7 @@ namespace Engage.Dnn.Publish
         }
 
         public static DataTable GetItemsFromTags(int portalId, ArrayList tagList)
-        {   //return DataProvider.Instance().GetItemsFromTags(portalId, tagList);
+        {   //return DataProvider.Instance().GetItemsFromTags(_portalId, tagList);
             var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
 
@@ -522,7 +522,7 @@ namespace Engage.Dnn.Publish
 
         public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
         {
-            //return DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId);
+            //return DataProvider.Instance().GetItemsFromTagsPaging(_portalId, tagList, maxItems, pageId);
 
             var sb = new StringBuilder(50);
             //if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
@@ -569,7 +569,7 @@ namespace Engage.Dnn.Publish
         {
             if (TagId == 0)
             {
-                tagId = DataProvider.Instance().AddTag(this);
+                _tagId = DataProvider.Instance().AddTag(this);
             }
             else
             {
@@ -581,7 +581,7 @@ namespace Engage.Dnn.Publish
         {
             if (TagId == 0)
             {
-                tagId = DataProvider.Instance().AddTag(trans, this);
+                _tagId = DataProvider.Instance().AddTag(trans, this);
             }
             else
             {
@@ -598,9 +598,9 @@ namespace Engage.Dnn.Publish
 //        /// <param name="userId">The user id, or <c>null</c> if the user is unauthenticated.</param>
 //        /// <param name="rating">The rating.</param>
 //        /// <returns></returns>
-//        public static int AddItemTag(int itemVersionId, int? tagId)
+//        public static int AddItemTag(int itemVersionId, int? _tagId)
 //        {
-//            return DataProvider.Instance().AddItemTag(itemVersionId, tagId);
+//            return DataProvider.Instance().AddItemTag(itemVersionId, _tagId);
 //        }
 
 //        /// <summary>

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -36,167 +36,167 @@ namespace Engage.Dnn.Publish
 	{
         public ItemRelationship()
         {
-            startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _startDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
 	    
         #region Public Properties
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int itemRelationshipId = -1;
+        private int _itemRelationshipId = -1;
         [XmlElement(Order = 1)]
         public int ItemRelationshipId
         {
             [DebuggerStepThrough]
-            get { return itemRelationshipId; }
+            get { return _itemRelationshipId; }
             [DebuggerStepThrough]
-            set { itemRelationshipId = value; }
+            set { _itemRelationshipId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int childItemId = -1;
+        private int _childItemId = -1;
         [XmlElement(Order = 2)]
         public int ChildItemId
         {
             [DebuggerStepThrough]
-            get { return childItemId; }
+            get { return _childItemId; }
             [DebuggerStepThrough]
-            set { childItemId = value; }
+            set { _childItemId = value; }
         }
 
         
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid childItemIdentifier;
+        private Guid _childItemIdentifier;
         [XmlElement(Order = 3)]
         public Guid ChildItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return childItemIdentifier; }
+            get { return _childItemIdentifier; }
             [DebuggerStepThrough]
-            set { childItemIdentifier = value; }
+            set { _childItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int childItemVersionId = -1;
+        private int _childItemVersionId = -1;
         [XmlElement(Order = 4)]
 		public int ChildItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return childItemVersionId; }
+            get { return _childItemVersionId; }
             [DebuggerStepThrough]
-            set { childItemVersionId = value; }
+            set { _childItemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid childItemVersionIdentifier;
+        private Guid _childItemVersionIdentifier;
         [XmlElement(Order = 5)]
         public Guid ChildItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return childItemVersionIdentifier; }
+            get { return _childItemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { childItemVersionIdentifier = value; }
+            set { _childItemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int parentItemId = -1;
+        private int _parentItemId = -1;
         [XmlElement(Order = 6)]
         public int ParentItemId
         {
             [DebuggerStepThrough]
-            get { return parentItemId; }
+            get { return _parentItemId; }
             [DebuggerStepThrough]
-            set { parentItemId = value; }
+            set { _parentItemId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid parentItemIdentifier;
+        private Guid _parentItemIdentifier;
         [XmlElement(Order = 7)]
         public Guid ParentItemIdentifier
         {
             [DebuggerStepThrough]
-            get { return parentItemIdentifier; }
+            get { return _parentItemIdentifier; }
             [DebuggerStepThrough]
-            set { parentItemIdentifier = value; }
+            set { _parentItemIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int relationshipTypeId = -1;
+        private int _relationshipTypeId = -1;
         [XmlElement(Order = 8)]
         public int RelationshipTypeId
         {
             [DebuggerStepThrough]
-            get { return relationshipTypeId; }
+            get { return _relationshipTypeId; }
             [DebuggerStepThrough]
-            set { relationshipTypeId = value; }
+            set { _relationshipTypeId = value; }
         }
 
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string relationshipTypeName;
+        private string _relationshipTypeName;
         [XmlElement(Order = 9)]
         public string RelationshipTypeName
         {
             [DebuggerStepThrough]
-            get { return relationshipTypeName; }
+            get { return _relationshipTypeName; }
             [DebuggerStepThrough]
-            set { relationshipTypeName = value; }
+            set { _relationshipTypeName = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int itemTypeId = -1;
+        private int _itemTypeId = -1;
         [XmlIgnore]
 		public int ItemTypeId 
 		{
             [DebuggerStepThrough]
-            get { return itemTypeId; }
+            get { return _itemTypeId; }
             [DebuggerStepThrough]
-            set { itemTypeId = value; }
+            set { _itemTypeId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string startDate;
+        private string _startDate;
         [XmlElement(Order = 10)]
         public string StartDate 
 		{
             [DebuggerStepThrough]
-			get {return startDate;}
+			get {return _startDate;}
             [DebuggerStepThrough]
 			set
             {
-                startDate = Utility.HasValue(value) ? value : null;
+                _startDate = Utility.HasValue(value) ? value : null;
             }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string endDate;
+        private string _endDate;
         [XmlElement(Order = 11)]
         public string EndDate
         {
             [DebuggerStepThrough]
-			get {return endDate;}
+			get {return _endDate;}
             [DebuggerStepThrough]
             set
             {
-                endDate = Utility.HasValue(value) ? value : null;
+                _endDate = Utility.HasValue(value) ? value : null;
             }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int? sortOrder;
+        private int? _sortOrder;
         [XmlElement(Order = 12)]
 		public int SortOrder
 		{
             [DebuggerStepThrough]
-            get { return sortOrder ?? 0; }
+            get { return _sortOrder ?? 0; }
             [DebuggerStepThrough]
-            set { sortOrder = value; }
+            set { _sortOrder = value; }
 		}
 	    [XmlIgnore]
 	    public bool HasSortOrderBeenSet
 	    {
 	        get
 	        {
-	            return sortOrder.HasValue;
+	            return _sortOrder.HasValue;
 	        }
 	    }
 
@@ -493,13 +493,13 @@ namespace Engage.Dnn.Publish
 	    {
 			DataTable dt;
 			DataSet ds;
-			if (parentItemId < 1)
+			if (_parentItemId < 1)
 			{
 				dt = Category.GetCategoriesHierarchy(portalId);
 			}
 			else
 			{
-				ds = Item.GetAllChildren(parentItemId, relationshipTypeId, portalId);
+				ds = Item.GetAllChildren(_parentItemId, _relationshipTypeId, portalId);
 				dt = ds.Tables[0];
 			}
 
@@ -557,7 +557,7 @@ namespace Engage.Dnn.Publish
             try
             {
                 RelationshipType type = RelationshipType.GetFromName(RelationshipTypeName, typeof(RelationshipType));
-                this.relationshipTypeId = type.GetId();
+                _relationshipTypeId = type.GetId();
 
                 //Does this exist in my db?
                 using (IDataReader dr = DataProvider.Instance().GetItemRelationshipByIdentifiers(ParentItemIdentifier, ChildItemVersionIdentifier, portalId))
@@ -573,9 +573,9 @@ namespace Engage.Dnn.Publish
                         }
                         else
                         {
-                            this.childItemId = (int)dr["ChildItemId"];
-                            this.childItemVersionId = (int)dr["ChildItemVersionId"];
-                            this.parentItemId = (int)dr["ParentItemId"];
+                            _childItemId = (int)dr["ChildItemId"];
+                            _childItemVersionId = (int)dr["ChildItemVersionId"];
+                            _parentItemId = (int)dr["ParentItemId"];
                             AddItemRelationship(ChildItemId, ChildItemVersionId, ParentItemId, RelationshipTypeId, StartDate, EndDate, SortOrder);
                         }
                     }

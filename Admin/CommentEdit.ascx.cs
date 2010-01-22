@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -50,7 +50,7 @@ namespace Engage.Dnn.Publish.Admin
 		{
 			this.cmdUpdate.Click += this.cmdUpdate_Click;
 			this.cmdCancel.Click += this.cmdCancel_Click;
-			this.Load += this.Page_Load;
+			Load += Page_Load;
 		}
 
 		private void LoadControls()

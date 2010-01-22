@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -83,19 +83,19 @@ namespace Engage.Dnn.Publish.Util
     [Serializable]
 	public class BreadcrumbItem
 	{
-		private string pageName;
-		private string pageUrl;
+		private string _pageName;
+		private string _pageUrl;
 
 		public string PageName
 		{
-			get {return (this.pageName ?? string.Empty);}
-			set {this.pageName = value;}
+			get {return (_pageName ?? string.Empty);}
+			set {_pageName = value;}
 		}
 
 		public string PageUrl
 		{
-			get {return (this.pageUrl ?? string.Empty);}
-			set {this.pageUrl = value;}
+			get {return (_pageUrl ?? string.Empty);}
+			set {_pageUrl = value;}
 		}
 
 		public override bool Equals(object obj)
@@ -105,12 +105,12 @@ namespace Engage.Dnn.Publish.Util
 			{
 				return false;
 			}
-		    return (bci.pageName == this.pageName && bci.pageUrl == this.pageUrl);
+		    return (bci._pageName == _pageName && bci._pageUrl == _pageUrl);
 		}
 
 		public override int GetHashCode()
 		{
-			return (this.pageName.GetHashCode() + this.pageUrl.GetHashCode());
+			return (_pageName.GetHashCode() + _pageUrl.GetHashCode());
 		}
 	}
 }

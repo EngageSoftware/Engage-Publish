@@ -1,5 +1,5 @@
 ﻿//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -27,7 +27,7 @@ namespace Engage.Dnn.Publish.Portability
         {
             try
             {
-                var xs = new XmlSerializer(this.GetType());
+                var xs = new XmlSerializer(GetType());
                 var writer = new StringWriter(CultureInfo.InvariantCulture);
                 xs.Serialize(writer, this);
 

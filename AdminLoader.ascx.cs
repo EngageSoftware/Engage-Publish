@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -21,16 +21,16 @@ namespace Engage.Dnn.Publish
 
     public partial class AdminLoader : ModuleBase
     {
-        private static StringDictionary AdminControlKeys;
+        private static StringDictionary _adminControlKeys;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a property")]
         public static StringDictionary GetAdminControlKeys()
         {
-            if (AdminControlKeys == null)
+            if (_adminControlKeys == null)
             {
                 FillAdminControlKeys();
             }
-            return AdminControlKeys;
+            return _adminControlKeys;
         }
 
         private static void FillAdminControlKeys()
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish
                                                {"DEFAULT", "Admin/AdminMain.ascx"}
                                        };
 
-            AdminControlKeys = adminControlKeys;
+            _adminControlKeys = adminControlKeys;
         }
 
         #region Event Handlers
@@ -80,7 +80,7 @@ namespace Engage.Dnn.Publish
         #endregion
 
         #region " Private Members "
-        private string controlToLoad;
+        private string _controlToLoad;
         #endregion
 
         #region " Private Methods "
@@ -92,18 +92,18 @@ namespace Engage.Dnn.Publish
 
             if (Utility.HasValue(adminTypeParam))
             {
-                controlToLoad = returnDict[adminTypeParam.ToUpperInvariant()];
+                _controlToLoad = returnDict[adminTypeParam.ToUpperInvariant()];
             }
             else
             {
                 //check to see if there are any categories, if not display an instructions control
                 DataTable dt = Category.GetCategories(PortalId);
-                this.controlToLoad = dt.Rows.Count < 1 ? "Admin/AdminInstructions.ascx" : "articlecontrols/ArticleList.ascx";
+                _controlToLoad = dt.Rows.Count < 1 ? "Admin/AdminInstructions.ascx" : "articlecontrols/ArticleList.ascx";
             }
 
             if (!IsSetup)
             {
-                controlToLoad = "Admin/AdminSettings.ascx";
+                _controlToLoad = "Admin/AdminSettings.ascx";
             }
         }
 
@@ -116,9 +116,9 @@ namespace Engage.Dnn.Publish
             mb.ID = System.IO.Path.GetFileNameWithoutExtension("Admin/AdminMain.ascx");
             phAdminControls.Controls.Add(mb);
 
-            var amb = (ModuleBase)this.LoadControl(this.controlToLoad);
+            var amb = (ModuleBase)LoadControl(_controlToLoad);
             amb.ModuleConfiguration = ModuleConfiguration;
-            amb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
+            amb.ID = System.IO.Path.GetFileNameWithoutExtension(_controlToLoad);
             phControls.Controls.Add(amb);
             //TODO: we need to be able to restrict which controls load, it's currently possible to get to the category edit page by changing the URL
         }

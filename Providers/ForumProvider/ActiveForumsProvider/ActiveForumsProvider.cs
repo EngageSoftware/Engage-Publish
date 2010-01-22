@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -35,40 +35,40 @@ namespace Engage.Dnn.Publish.Forum
         /// <remarks>
         /// Found in reflecting through Active.Modules.Forums.40 assembly.
         /// </remarks>
-        private readonly DateTime NullDate = new DateTime(1900, 1, 1);
+        private readonly DateTime _nullDate = new DateTime(1900, 1, 1);
         private const string ProviderType = "data";
-        private readonly string LocalResourceFile = "~" + Utility.DesktopModuleFolderName + "Providers/ForumProvider/ActiveForumsProvider/App_LocalResources/ActiveForumsProvider.resx";
+        private readonly string _localResourceFile = "~" + Utility.DesktopModuleFolderName + "Providers/ForumProvider/ActiveForumsProvider/App_LocalResources/ActiveForumsProvider.resx";
         private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-        private readonly string connectionString;
+        private readonly string _connectionString;
         private readonly string _objectQualifier;
         private readonly string _databaseOwner;
 
         public string NamePrefix
         {
-            get { return this._databaseOwner + this._objectQualifier; }
+            get { return _databaseOwner + _objectQualifier; }
         }
 
         public ActiveForumsProvider(int portalId) : base(portalId)
         {
             var provider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
-            this.connectionString = Config.GetConnectionString();
+            _connectionString = Config.GetConnectionString();
 
-            if (String.IsNullOrEmpty(this.connectionString))
+            if (String.IsNullOrEmpty(_connectionString))
             {
-                this.connectionString = provider.Attributes["connectionString"];
+                _connectionString = provider.Attributes["connectionString"];
             }
 
-            this._objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(this._objectQualifier) && this._objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
+            _objectQualifier = provider.Attributes["objectQualifier"];
+            if (!String.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
             {
-                this._objectQualifier += "_";
+                _objectQualifier += "_";
             }
 
-            this._databaseOwner = provider.Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(this._databaseOwner) && this._databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
+            _databaseOwner = provider.Attributes["databaseOwner"];
+            if (!String.IsNullOrEmpty(_databaseOwner) && _databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
             {
-                this._databaseOwner += ".";
+                _databaseOwner += ".";
             }
         }
 
@@ -83,9 +83,9 @@ namespace Engage.Dnn.Publish.Forum
             string authorDisplayName = authorInfo != null ?  authorInfo.DisplayName : string.Empty;
             string commenterDisplayName = commenterInfo != null ? commenterInfo.DisplayName : string.Empty;
             bool commenterIsSuperUser = commenterInfo != null ? commenterInfo.IsSuperUser : false;
-            string body = string.Format(CultureInfo.InvariantCulture, Localization.GetString("PostBody", LocalResourceFile), description, linkUrl, title);
+            string body = string.Format(CultureInfo.InvariantCulture, Localization.GetString("PostBody", _localResourceFile), description, linkUrl, title);
 
-            using (var connection = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 using (SqlTransaction transaction = connection.BeginTransaction())
@@ -93,10 +93,10 @@ namespace Engage.Dnn.Publish.Forum
                     int? moduleId = null;
                     using (
                         SqlDataReader forumReader = SqlHelper.ExecuteReader(
-                            this.connectionString,
+                            _connectionString,
                             CommandType.StoredProcedure,
                             NamePrefix + "ActiveForums_Forums_Get",
-                            Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                            Utility.CreateIntegerParam("@PortalId", PortalId),
                             Utility.CreateIntegerParam("@ModuleId", Null.NullInteger), // currently, this stored procedure doesn't use moduleId
                             Utility.CreateIntegerParam("@ForumId", forumId)))
                     {
@@ -112,10 +112,10 @@ namespace Engage.Dnn.Publish.Forum
                         var potentialMatchingTopicIds = new List<int>();
                         using (
                             SqlDataReader searchReader = SqlHelper.ExecuteReader(
-                                this.connectionString,
+                                _connectionString,
                                 CommandType.StoredProcedure,
                                 NamePrefix + "ActiveForums_Search_Standard",
-                                Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                                Utility.CreateIntegerParam("@PortalId", PortalId),
                                 Utility.CreateIntegerParam("@ModuleId", moduleId),
                                 Utility.CreateIntegerParam("@UserId", authorUserId),
                                 Utility.CreateIntegerParam("@ForumId", forumId),
@@ -137,10 +137,10 @@ namespace Engage.Dnn.Publish.Forum
                         foreach (int topicId in potentialMatchingTopicIds)
                         {
                             using (SqlDataReader topicReader = SqlHelper.ExecuteReader(
-                                this.connectionString, 
+                                _connectionString, 
                                 CommandType.StoredProcedure, 
                                 NamePrefix + "ActiveForums_Topics_Get",
-                                Utility.CreateIntegerParam("@PortalId", this.PortalId),
+                                Utility.CreateIntegerParam("@PortalId", PortalId),
                                 Utility.CreateIntegerParam("@ModuleId", moduleId),
                                 Utility.CreateIntegerParam("@TopicId", topicId),
                                 Utility.CreateIntegerParam("@ForumId", forumId)))
@@ -176,8 +176,8 @@ namespace Engage.Dnn.Publish.Forum
                             Utility.CreateBitParam("@IsDeleted", false),
                             Utility.CreateBitParam("@IsAnnounce", false),
                             Utility.CreateBitParam("@IsArchived", false),
-                            Utility.CreateDateTimeParam("@AnnounceStart", NullDate),
-                            Utility.CreateDateTimeParam("@AnnounceEnd", NullDate),
+                            Utility.CreateDateTimeParam("@AnnounceStart", _nullDate),
+                            Utility.CreateDateTimeParam("@AnnounceEnd", _nullDate),
                             Utility.CreateNvarcharParam("@Subject", title, 255),
                             Utility.CreateNtextParam("@Body", body),
                             Utility.CreateDateTimeParam("@DateCreated", DateTime.Now),
@@ -225,10 +225,10 @@ namespace Engage.Dnn.Publish.Forum
         public override Dictionary<int, string> GetForums()
         {
             var forums = new Dictionary<int, string>();
-            foreach (ModuleInfo activeForumsModule in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName))
+            foreach (ModuleInfo activeForumsModule in new ModuleController().GetModulesByDefinition(PortalId, Utility.ActiveForumsDefinitionModuleName))
             {
                 using (IDataReader forumsReader = SqlHelper.ExecuteReader(
-                    this.connectionString, 
+                    _connectionString, 
                     CommandType.StoredProcedure, 
                     NamePrefix + "ActiveForums_Forums_List",
                     Utility.CreateIntegerParam("@ModuleId", activeForumsModule.ModuleID),
@@ -252,9 +252,9 @@ namespace Engage.Dnn.Publish.Forum
             int? forumId = null;
             int? moduleId = null;
             using (SqlDataReader postReader = SqlHelper.ExecuteReader(
-                this.connectionString, 
+                _connectionString, 
                 CommandType.Text,
-                string.Format(CultureInfo.InvariantCulture, "SELECT ForumId, ModuleId FROM {0}vw_activeforums_ForumTopics WHERE TopicId = @TopicId", this.NamePrefix),
+                string.Format(CultureInfo.InvariantCulture, "SELECT ForumId, ModuleId FROM {0}vw_activeforums_ForumTopics WHERE TopicId = @TopicId", NamePrefix),
                 Utility.CreateIntegerParam("@TopicId", threadId)))
             {
                 if (postReader.Read())

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -32,69 +32,69 @@ namespace Engage.Dnn.Publish
 		#region "Public Properties"
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int settingsId = -1;
+        private int _settingsId = -1;
         [XmlElement(Order = 1)]
         public int SettingsId 
 		{
             [DebuggerStepThrough]
-            get { return settingsId; }
+            get { return _settingsId; }
             [DebuggerStepThrough]
-            set { settingsId = value; }
+            set { _settingsId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int itemVersionId = -1;
+        private int _itemVersionId = -1;
         [XmlElement(Order = 2)]
 		public int ItemVersionId 
 		{
             [DebuggerStepThrough]
-            get { return itemVersionId; }
+            get { return _itemVersionId; }
             [DebuggerStepThrough]
-            set { itemVersionId = value; }
+            set { _itemVersionId = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Guid itemVersionIdentifier;
+        private Guid _itemVersionIdentifier;
         [XmlElement(Order = 3)]
         public Guid ItemVersionIdentifier
         {
             [DebuggerStepThrough]
-            get { return itemVersionIdentifier; }
+            get { return _itemVersionIdentifier; }
             [DebuggerStepThrough]
-            set { itemVersionIdentifier = value; }
+            set { _itemVersionIdentifier = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string controlName = string.Empty;
+        private string _controlName = string.Empty;
         [XmlElement(Order = 4)]
         public string ControlName 
 		{
             [DebuggerStepThrough]
-            get { return controlName; }
+            get { return _controlName; }
             [DebuggerStepThrough]
-            set { controlName = value; }
+            set { _controlName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string propertyName = string.Empty;
+        private string _propertyName = string.Empty;
         [XmlElement(Order = 5)]
         public string PropertyName 
 		{
             [DebuggerStepThrough]
-            get { return propertyName; }
+            get { return _propertyName; }
             [DebuggerStepThrough]
-            set { propertyName = value; }
+            set { _propertyName = value; }
 		}
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string propertyValue = string.Empty;
+        private string _propertyValue = string.Empty;
         [XmlElement(Order = 6)]
         public string PropertyValue
 		{
             [DebuggerStepThrough]
-            get { return propertyValue; }
+            get { return _propertyValue; }
             [DebuggerStepThrough]
-            set { propertyValue = value; }
+            set { _propertyValue = value; }
 		}
 
 
@@ -109,9 +109,9 @@ namespace Engage.Dnn.Publish
 
         public ItemVersionSetting(Setting setting)
         {
-            propertyName = setting.PropertyName;
-            propertyValue = setting.PropertyValue;
-            controlName = setting.ControlName;
+            _propertyName = setting.PropertyName;
+            _propertyValue = setting.PropertyValue;
+            _controlName = setting.ControlName;
         }
 
         public void Save()
@@ -141,7 +141,7 @@ namespace Engage.Dnn.Publish
 
         public static ItemVersionSetting GetItemVersionSetting(int itemVersionId, string controlName, string propertyName, int portalId)
         {
-            //IDataReader dr = DataProvider.Instance().GetItemVersionSetting(itemVersionId, controlName, propertyName);
+            //IDataReader dr = DataProvider.Instance().GetItemVersionSetting(_itemVersionId, _controlName, _propertyName);
 
             //return (ItemVersionSetting)CBO.FillObject(dr, typeof(ItemVersionSetting));
 
@@ -313,8 +313,8 @@ namespace Engage.Dnn.Publish
             if (localVersionId > 0)
             {
                 //this version does not exist.
-                itemVersionId = localVersionId;
-                AddItemVersionSetting(itemVersionId, controlName, propertyName, propertyValue);
+                _itemVersionId = localVersionId;
+                AddItemVersionSetting(_itemVersionId, _controlName, _propertyName, _propertyValue);
             }
             else
             {
@@ -336,9 +336,9 @@ namespace Engage.Dnn.Publish
                 return false;
             }
 
-            return itemVersionId.Equals(other.itemVersionId)
-                && propertyName.Equals(other.propertyName, StringComparison.OrdinalIgnoreCase)
-                && controlName.Equals(other.controlName, StringComparison.OrdinalIgnoreCase);
+            return _itemVersionId.Equals(other._itemVersionId)
+                && _propertyName.Equals(other._propertyName, StringComparison.OrdinalIgnoreCase)
+                && _controlName.Equals(other._controlName, StringComparison.OrdinalIgnoreCase);
         }
 
         public override bool Equals(object obj)
@@ -348,9 +348,9 @@ namespace Engage.Dnn.Publish
 
         public override int GetHashCode()
         {
-            return itemVersionId.GetHashCode()
-                ^ propertyName.GetHashCode() * 37
-                ^ controlName.GetHashCode() * 37;
+            return _itemVersionId.GetHashCode()
+                ^ _propertyName.GetHashCode() * 37
+                ^ _controlName.GetHashCode() * 37;
         }
     }
 }

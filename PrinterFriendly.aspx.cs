@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -84,7 +84,7 @@ namespace Engage.Dnn.Publish
 
         override protected void OnInit(EventArgs e)
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
         }
 
@@ -108,10 +108,10 @@ namespace Engage.Dnn.Publish
                     //}
 
 
-                    lnkPortalLogo.NavigateUrl = "http://" + this.PortalSettings.PortalAlias.HTTPAlias;
+                    lnkPortalLogo.NavigateUrl = "http://" + PortalSettings.PortalAlias.HTTPAlias;
                     lnkPortalLogo.ImageUrl = PortalSettings.HomeDirectory + PortalSettings.LogoFile;
 
-                    this.CssStyle = PortalSettings.ActiveTab.SkinPath + "skin.css";
+                    CssStyle = PortalSettings.ActiveTab.SkinPath + "skin.css";
                 }
                 else
                 {
@@ -152,8 +152,8 @@ namespace Engage.Dnn.Publish
         protected string GetCssStyle()
         {
             var ps = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            this.CssStyle = ps.ActiveTab.SkinPath + "skin.css";
-            return this.CssStyle;
+            CssStyle = ps.ActiveTab.SkinPath + "skin.css";
+            return CssStyle;
         }
     }
 }

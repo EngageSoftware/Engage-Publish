@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -41,26 +41,26 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
 
         }
         #endregion
 
         private BreadcrumbCollection bci = new BreadcrumbCollection();
 
-        private int levels;
-        private bool includeCurrent = true;
+        private int _levels;
+        private bool _includeCurrent = true;
 
         public string Levels
         {
-            get { return levels.ToString(); }
-            set { levels = Convert.ToInt32(value); }
+            get { return _levels.ToString(); }
+            set { _levels = Convert.ToInt32(value); }
         }
 
         public string IncludeCurrent
         {
-            get { return includeCurrent.ToString(); }
-            set { includeCurrent = Convert.ToBoolean(value); }
+            get { return _includeCurrent.ToString(); }
+            set { _includeCurrent = Convert.ToBoolean(value); }
         }
 
         #region Event Handlers
@@ -74,8 +74,8 @@ namespace Engage.Dnn.Publish.Controls
                 if (!Page.IsPostBack && ItemId>5)
                 {
                     var sb = new StringBuilder(100);
-                    this.LoadParents(ItemId);
-                    this.LoadSelf(ItemId);
+                    LoadParents(ItemId);
+                    LoadSelf(ItemId);
 
                     sb.Append(LoadBreadcrumb());
 
@@ -105,14 +105,14 @@ namespace Engage.Dnn.Publish.Controls
             {
                 var sb = new StringBuilder(20);
                 string separator = Localization.GetString("BreadCrumbSeparator", LocalSharedResourceFile);
-                //we use levels+1 because the name of the current item is here, we handle that separately
-                if ((bci.Count > levels + 1) && (levels>0))
+                //we use _levels+1 because the name of the current item is here, we handle that separately
+                if ((bci.Count > _levels + 1) && (_levels>0))
                 {
-                    int removeNumber = bci.Count - (levels + 1);
+                    int removeNumber = bci.Count - (_levels + 1);
                     for (int i = 0; i < removeNumber; i++)
                         bci.RemoveAt(0);
                 }
-                if (!includeCurrent)
+                if (!_includeCurrent)
                 {
                     bci.RemoveAt(bci.Count - 1);
                 }
@@ -142,7 +142,7 @@ namespace Engage.Dnn.Publish.Controls
                     Item i = Item.GetItem(parentId, PortalId, ItemType.Category.GetId(), true);
                     string categoryUrl = Utility.GetItemLinkUrl(i);
                     bci.InsertBeginning(i.Name, categoryUrl);
-                    this.LoadParents(i.ItemId);
+                    LoadParents(i.ItemId);
                 }
             }
         }
@@ -172,10 +172,10 @@ namespace Engage.Dnn.Publish.Controls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
+                                           GetNextActionID(),
                                            Localization.GetString(
                                            DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-                                           this.LocalResourceFile),
+                                           LocalResourceFile),
                                            DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
                                            "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
                                            false

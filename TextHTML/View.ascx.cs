@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -30,7 +30,7 @@ namespace Engage.Dnn.Publish.TextHtml
         override protected void OnInit(EventArgs e)
         {
             SetItemId();
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
             BindItemData();
         }
@@ -76,7 +76,7 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             if (LocalItemId > 0)
             {
-                this.SetItemId(LocalItemId);
+                SetItemId(LocalItemId);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
                     var tr = new DotNetNuke.Services.Tokens.TokenReplace
                                  {
-                                         AccessingUser = this.UserInfo,
+                                         AccessingUser = UserInfo,
                                          DebugMessages = !DotNetNuke.Common.Globals.IsTabPreview()
                                  };
 
@@ -170,16 +170,16 @@ namespace Engage.Dnn.Publish.TextHtml
             if (!VersionInfoObject.IsNew)
             {
                 VersionInfoObject.ApprovalStatusId = Convert.ToInt32(ddlApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
-                this.VersionInfoObject.ApprovalComments = this.txtApprovalComments.Text.Trim().Length > 0 ? this.txtApprovalComments.Text.Trim() : Localization.GetString("DefaultApprovalComment", this.LocalResourceFile);
+                VersionInfoObject.ApprovalComments = txtApprovalComments.Text.Trim().Length > 0 ? txtApprovalComments.Text.Trim() : Localization.GetString("DefaultApprovalComment", LocalResourceFile);
                 VersionInfoObject.UpdateApprovalStatus();
                 Response.Redirect(BuildVersionsUrl(), false);
             }
         }
 
-        protected void lnkUpdateStatus_Click(object sender, EventArgs e)
+        protected void LnkUpdateStatusClick(object sender, EventArgs e)
         {
             divApprovalStatus.Visible = true;
-            txtApprovalComments.Text = this.VersionInfoObject.ApprovalComments;
+            txtApprovalComments.Text = VersionInfoObject.ApprovalComments;
         }
 
         protected void lnkSaveApprovalStatusCancel_Click(object sender, EventArgs e)

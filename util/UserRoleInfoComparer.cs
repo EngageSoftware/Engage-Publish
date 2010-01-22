@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -46,7 +46,7 @@ namespace Engage.Dnn.Publish.Util
 			if (x == null && y == null) return 0;
 
             var t1 = x as UserRoleInfo;
-            UserRoleInfo t2 = y as UserRoleInfo;
+            var t2 = y as UserRoleInfo;
 
             if (t1 == null)
             {
@@ -58,7 +58,7 @@ namespace Engage.Dnn.Publish.Util
             }
 
 			//compare the name of the TabInfo objects
-            return this._descending ? string.Compare(t1.FullName, t2.FullName, _comparison) : string.Compare(t2.FullName, t1.FullName, _comparison);
+            return _descending ? string.Compare(t1.FullName, t2.FullName, _comparison) : string.Compare(t2.FullName, t1.FullName, _comparison);
 		}
 
 		#endregion

@@ -1,5 +1,5 @@
 ﻿//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,10 +22,10 @@ namespace Engage.Dnn.Publish.Util
     /// </summary>
     public sealed class Version
     {
-        private int major;
-        private int minor;
+        private int _major;
+        private int _minor;
         //private int revision = 0;
-        private int build;
+        private int _build;
 
         public const string VersionSupportingIPortable = "04.05.01";
 
@@ -53,12 +53,12 @@ namespace Engage.Dnn.Publish.Util
 
             var version = new Version
                               {
-                                      major = Convert.ToInt32(versionInfo[0], provider),
-                                      minor = Convert.ToInt32(versionInfo[1], provider),
-                                      build = Convert.ToInt32(versionInfo[2], provider)
+                                      _major = Convert.ToInt32(versionInfo[0], provider),
+                                      _minor = Convert.ToInt32(versionInfo[1], provider),
+                                      _build = Convert.ToInt32(versionInfo[2], provider)
                               };
 
-            //v.build = (int)dr["Build"];
+            //v._build = (int)dr["Build"];
 
             return version;
         }
@@ -72,9 +72,9 @@ namespace Engage.Dnn.Publish.Util
         {
             Version v = ConvertToVersion(version, provider);
 
-            return this.major < v.Major ||
-                   (this.major == v.Major && this.minor < v.Minor) || 
-                   (this.major == v.Major && this.minor == v.Minor && this.build < v.build);
+            return _major < v.Major ||
+                   (_major == v.Major && _minor < v.Minor) || 
+                   (_major == v.Major && _minor == v.Minor && _build < v._build);
         }
 
         #region "Properties"
@@ -82,12 +82,12 @@ namespace Engage.Dnn.Publish.Util
 
         public int Major
         {
-            get { return this.major; }
+            get { return _major; }
         }
 
         public int Minor
         {
-            get { return this.minor; }
+            get { return _minor; }
         }
 
         //public int Revision
@@ -97,7 +97,7 @@ namespace Engage.Dnn.Publish.Util
 
         public int Build
         {
-            get { return this.build; }
+            get { return _build; }
         }
 
         #endregion
@@ -109,13 +109,13 @@ namespace Engage.Dnn.Publish.Util
 
         public string ToString(IFormatProvider provider)
         {
-            StringBuilder sb = new StringBuilder(8);
+            var sb = new StringBuilder(8);
 
-            sb.Append(this.major.ToString(provider));
+            sb.Append(_major.ToString(provider));
             sb.Append(".");
-            sb.Append(this.minor.ToString(provider));
+            sb.Append(_minor.ToString(provider));
             sb.Append(".");
-            sb.Append(this.build.ToString(provider));
+            sb.Append(_build.ToString(provider));
 
             return sb.ToString();
         }

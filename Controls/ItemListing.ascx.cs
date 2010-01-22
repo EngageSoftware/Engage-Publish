@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -29,7 +29,7 @@ namespace Engage.Dnn.Publish.Controls
 
         override protected void OnInit(EventArgs e)
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
         }
 
@@ -39,13 +39,13 @@ namespace Engage.Dnn.Publish.Controls
             //{
                 if (ItemTypeId == -1)
                 {
-                    this.lblMessage.Text = Localization.GetString("SetupItemType", LocalResourceFile);
-                    this.lblMessage.Visible = true;
+                    lblMessage.Text = Localization.GetString("SetupItemType", LocalResourceFile);
+                    lblMessage.Visible = true;
                     return;
                 }
 
-                this.lstItems.DataSource = GetData();
-                this.lstItems.DataBind();
+                lstItems.DataSource = GetData();
+                lstItems.DataBind();
             //}
             //catch (Exception exc)
             //{
@@ -60,7 +60,7 @@ namespace Engage.Dnn.Publish.Controls
             int itemId = ItemId;  //Since figuring out the Item ID is so expensive, do it only once.
             //this obviously needs refactoring
 
-            string cacheKey = Utility.CacheKeyPublishCategory + "ItemListing_" + this.DataType.Replace(" ", "") + CategoryId; // +"PageId";
+            string cacheKey = Utility.CacheKeyPublishCategory + "ItemListing_" + DataType.Replace(" ", "") + CategoryId; // +"PageId";
             var dt = DataCache.GetCache(cacheKey) as DataTable;
 
             if (dt == null)
@@ -95,9 +95,9 @@ namespace Engage.Dnn.Publish.Controls
                             lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
                             lnkRss.NavigateUrl = GetRssLinkUrl(itemId, MaxDisplayItems, ItemTypeId, PortalId, "ItemListing");
 
-                            SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
+                            SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
                         }
-                        dt = itemId > -1 ? DataProvider.Instance().GetMostRecentByCategoryId(itemId, this.ItemTypeId, this.MaxDisplayItems, this.PortalId) : DataProvider.Instance().GetMostRecent(this.ItemTypeId, this.MaxDisplayItems, this.PortalId);
+                        dt = itemId > -1 ? DataProvider.Instance().GetMostRecentByCategoryId(itemId, ItemTypeId, MaxDisplayItems, PortalId) : DataProvider.Instance().GetMostRecent(ItemTypeId, MaxDisplayItems, PortalId);
                         break;
                     default:
                         dt = DataProvider.Instance().GetChildrenInCategory(CategoryId, ItemTypeId, MaxDisplayItems, PortalId);
@@ -124,7 +124,7 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.Attributes.Add("alt", Localization.GetString("rssAlt", LocalResourceFile));
                 lnkRss.NavigateUrl = GetRssLinkUrl(itemId, MaxDisplayItems, ItemTypeId, PortalId, "ItemListing");
 
-                SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
+                SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
             }
 
             return dt;
@@ -218,9 +218,9 @@ namespace Engage.Dnn.Publish.Controls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
-                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", EditUrl("Settings"), false,
                                            SecurityAccessLevel.Edit, true, false
                                            }
                            };

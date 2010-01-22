@@ -1,4 +1,16 @@
-﻿using System;
+﻿// <copyright file="MetaWeblog.cs" company="Engage Software">
+// Engage: Publish - http://www.engagesoftware.com
+//Copyright (c) 2004-2010
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+
+
+using System;
 using System.Data;
 using System.Web;
 using DotNetNuke.Entities.Users;
@@ -23,20 +35,13 @@ namespace Engage.Dnn.Publish.Services
 
     public class MetaWeblog : XmlRpcService, IMetaWeblog
     {
-        #region Public Constructors
-
-        public MetaWeblog()
-        {
-        }
-
-        #endregion
 
         #region IMetaWeblog Members
 
         ///<summary>
         /// Add a new blog post
         /// </summary>
-        /// <param name="blogid">blogid</param>
+        /// <param name="blogid">Blogid</param>
         /// <param name="username">username</param>
         /// <param name="password">password</param>
         /// <param name="post">post</param>
@@ -51,10 +56,10 @@ namespace Engage.Dnn.Publish.Services
             if (ui != null)
             {
                 //TODO: we need a default category for users, then we can allow theme detection in WLW
-                List<Publish.Category> pc = new List<Engage.Dnn.Publish.Category>();
+                var pc = new List<Publish.Category>();
                 foreach (string s in post.categories)
                 {
-                    Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
+                    Publish.Category c = Publish.Category.GetCategory(s, PortalId);
                     pc.Add(c);
                 }
                 //This only works for the first category, how should we handle other categories?
@@ -70,8 +75,8 @@ namespace Engage.Dnn.Publish.Services
                     //look for <!--pagebreak--> 
 
 
-                    Article a = Article.Create(post.title.ToString(), post.description.ToString(),
-                        post.description.ToString(), ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
+                    Article a = Article.Create(post.title, post.description,
+                        post.description, ui.UserID, pc[0].ItemId, pc[0].ModuleId, pc[0].PortalId);
                     //TODO: check if dateCreated is a valid date
                     //TODO: date Created is coming in as UTC time
                     //TODO: re-enable Date created
@@ -82,9 +87,11 @@ namespace Engage.Dnn.Publish.Services
                     {
                         for (int i = 1; i < pc.Count; i++)
                         {
-                            ItemRelationship irel = new ItemRelationship();
-                            irel.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
-                            irel.ParentItemId = pc[i].ItemId;
+                            var irel = new ItemRelationship
+                                           {
+                                               RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId(),
+                                               ParentItemId = pc[i].ItemId
+                                           };
                             a.Relationships.Add(irel);
                         }
                     }
@@ -93,7 +100,7 @@ namespace Engage.Dnn.Publish.Services
                     if (post.mt_keywords!=null && post.mt_keywords.Trim() != string.Empty)
                     {
                         //split tags
-                        foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))
+                        foreach (Tag t in Tag.ParseTags(post.mt_keywords, _portalId))
                         {
                             ItemTag it = ItemTag.Create();
                             it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
@@ -106,13 +113,13 @@ namespace Engage.Dnn.Publish.Services
                     }
 
                     // handle approval process
-                    if (ModuleBase.UseApprovalsForPortal(portalId))
+                    if (ModuleBase.UseApprovalsForPortal(_portalId))
                     {
-                        if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + portalId)) || ui.IsSuperUser)
+                        if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
                         {
                             a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         }
-                        else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + portalId)))
+                        else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + _portalId)))
                         {
                             a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
                         }                        
@@ -133,19 +140,18 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                bool result = false;
-
-                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId);
+                
+                Article a = Article.GetArticle(Convert.ToInt32(postid), _portalId);
 
                 a.Description = post.description;
                 a.ArticleText = post.description;
                 a.Name = post.title;
                 a.VersionDescription = Localization.GetString("MetaBlogApi", LocalResourceFile);
 
-                List<Publish.Category> pc = new List<Engage.Dnn.Publish.Category>();
+                var pc = new List<Publish.Category>();
                 foreach (string s in post.categories)
                 {
-                    Publish.Category c = Publish.Category.GetCategory(s.ToString(), PortalId);
+                    Publish.Category c = Publish.Category.GetCategory(s, PortalId);
                     pc.Add(c);
                 }
                 //remove all existing categories
@@ -153,9 +159,11 @@ namespace Engage.Dnn.Publish.Services
                 //add the parent category
                 if (pc.Count > 0)
                 {
-                    ItemRelationship irel = new ItemRelationship();
-                    irel.RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId();
-                    irel.ParentItemId = pc[0].ItemId;
+                    var irel = new ItemRelationship
+                                   {
+                                       RelationshipTypeId = RelationshipType.ItemToParentCategory.GetId(),
+                                       ParentItemId = pc[0].ItemId
+                                   };
                     a.Relationships.Add(irel);
 
                 }
@@ -165,9 +173,11 @@ namespace Engage.Dnn.Publish.Services
                 {
                     for (int i = 1; i < pc.Count; i++)
                     {
-                        ItemRelationship irel = new ItemRelationship();
-                        irel.RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId();
-                        irel.ParentItemId = pc[i].ItemId;
+                        var irel = new ItemRelationship
+                                       {
+                                           RelationshipTypeId = RelationshipType.ItemToRelatedCategory.GetId(),
+                                           ParentItemId = pc[i].ItemId
+                                       };
                         a.Relationships.Add(irel);
                     }
                 }
@@ -179,7 +189,7 @@ namespace Engage.Dnn.Publish.Services
                 if (post.mt_keywords.Trim() != string.Empty)
                 {
                     //split tags
-                    foreach (Tag t in Tag.ParseTags(post.mt_keywords, portalId))
+                    foreach (Tag t in Tag.ParseTags(post.mt_keywords, _portalId))
                     {                        
                         ItemTag it = ItemTag.Create();
                         it.TagId = Convert.ToInt32(t.TagId, CultureInfo.InvariantCulture);
@@ -193,21 +203,21 @@ namespace Engage.Dnn.Publish.Services
                 }
 
                 // handle approval process
-                if (ModuleBase.UseApprovalsForPortal(portalId))
+                if (ModuleBase.UseApprovalsForPortal(_portalId))
                 {
-                    if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + portalId)) || ui.IsSuperUser)
+                    if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
                     {
                         a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                     }
-                    else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + portalId)))
+                    else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + _portalId)))
                     {
                         a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
                     }
                 }
                 
                 a.Save(ui.UserID);
-                result = true;
-                return result;
+                
+                return true;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedToUpdatePost.Text", LocalResourceFile));
         }
@@ -218,9 +228,9 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                Post post = new Post();
+                var post = new Post();
 
-                Article a = Article.GetArticle(Convert.ToInt32(postid), portalId, true, false);
+                Article a = Article.GetArticle(Convert.ToInt32(postid), _portalId, true, false);
 
                 post.description = a.ArticleText;
                 post.title = a.Name;
@@ -231,8 +241,7 @@ namespace Engage.Dnn.Publish.Services
                 int i = 0;
                 foreach (ItemRelationship ir in a.Relationships)
                 {
-                    Category c = new Category();
-                    c.categoryId = ir.ParentItemId.ToString();
+                    var c = new Category {categoryId = ir.ParentItemId.ToString()};
                     Publish.Category pcc = Publish.Category.GetCategory(ir.ParentItemId);
                     c.categoryName = pcc.Name;
                     post.categories[i] = c.ToString();
@@ -249,17 +258,23 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui != null)
             {
-                List<CategoryInfo> categoryInfos = new List<CategoryInfo>();
+                var categoryInfos = new List<CategoryInfo>();
 
                 DataTable dt = Publish.Category.GetCategoriesByPortalId(PortalId);
                 foreach (DataRow dr in dt.Rows)
                 {
-                    CategoryInfo ci = new CategoryInfo();
-                    ci.title = dr["Name"].ToString();
-                    ci.categoryid = dr["ItemId"].ToString();
-                    ci.description = dr["Description"].ToString();
-                    ci.htmlUrl = Utility.GetItemLinkUrl((int)dr["ItemId"], PortalId, (int)dr["DisplayTabId"], (int)dr["ModuleId"]);
-                    ci.rssUrl = ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(), PortalId, string.Empty);
+                    var ci = new CategoryInfo
+                                 {
+                                     title = dr["Name"].ToString(),
+                                     categoryid = dr["ItemId"].ToString(),
+                                     description = dr["Description"].ToString(),
+                                     htmlUrl =
+                                         Utility.GetItemLinkUrl((int) dr["ItemId"], PortalId, (int) dr["DisplayTabId"],
+                                                                (int) dr["ModuleId"]),
+                                     rssUrl =
+                                         ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(),
+                                                                  PortalId, string.Empty)
+                                 };
                     categoryInfos.Add(ci);
                 }
 
@@ -276,7 +291,7 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                List<Post> posts = new List<Post>();
+                var posts = new List<Post>();
 
                 // TODO: Implement your own logic to get posts and set the posts
                 //TODO: get a collection of posts for an author...
@@ -290,11 +305,11 @@ namespace Engage.Dnn.Publish.Services
         BloggerPost[] IMetaWeblog.GetRecentPosts(string key, string blogid, string username, string password, int numberOfPosts)
         {
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
+            var bp = new BloggerPost();
             if (ui.UserID > 0)
             {
-                List<BloggerPost> posts = new List<BloggerPost>();
+                var posts = new List<BloggerPost>();
 
-                BloggerPost bp = new BloggerPost();
                 bp.content = "test post";
                 bp.dateCreated = DateTime.Now;
                 bp.postid = "1";
@@ -315,11 +330,10 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                MediaObjectInfo objectInfo = new MediaObjectInfo();
+                var objectInfo = new MediaObjectInfo();
 
                 string name = mediaObject.name; //object name
-                string type = mediaObject.type; //object type
-                byte[] media = (byte[])mediaObject.bits;   //object body
+                var media = mediaObject.bits;   //object body
 
                 //Save media object to filesystem. Split name with '/' to extract filename (Windows Live Writer specific)
                 int index = name.LastIndexOf('/');
@@ -341,13 +355,10 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                bool result = false;
-
                 //Item.DeleteItem(Convert.ToInt32(postid));
-                Item.DeleteItem(Convert.ToInt32(postid), portalId);
-                result = true;
+                Item.DeleteItem(Convert.ToInt32(postid), _portalId);
 
-                return result;
+                return true;
             }
             throw new XmlRpcFaultException(0, Localization.GetString("FailedAuthentication.Text", LocalResourceFile));
         }
@@ -360,13 +371,12 @@ namespace Engage.Dnn.Publish.Services
             if (ui.UserID > 0)
             {
                 //todo: configure blog info for users
-                List<BlogInfo> infoList = new List<BlogInfo>();
-                BlogInfo bi = new BlogInfo();
-                bi.blogid = "0";
-                PortalAliasController pac = new PortalAliasController();
+                var infoList = new List<BlogInfo>();
+                var bi = new BlogInfo {blogid = "0"};
+                var pac = new PortalAliasController();
                 foreach (PortalAliasInfo api in pac.GetPortalAliasArrayByPortalID(PortalId))
                 {
-                    bi.url = "http://" + api.HTTPAlias.ToString();
+                    bi.url = "http://" + api.HTTPAlias;
                     break;
                 }
 
@@ -386,12 +396,14 @@ namespace Engage.Dnn.Publish.Services
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
-                UserInfo info = new UserInfo();
-                info.email = ui.Email;
-                info.firstname = ui.FirstName;
-                info.lastname = ui.LastName;
-                info.nickname = ui.DisplayName;
-                info.userid = ui.UserID.ToString();
+                var info = new UserInfo
+                               {
+                                   email = ui.Email,
+                                   firstname = ui.FirstName,
+                                   lastname = ui.LastName,
+                                   nickname = ui.DisplayName,
+                                   userid = ui.UserID.ToString()
+                               };
 
                 return info;
             }
@@ -406,8 +418,8 @@ namespace Engage.Dnn.Publish.Services
         //    {
         //        MTCategory mcat;
         //        mcat = cat[i];
-        //        Item iv = Item.GetItem(Convert.ToInt32(postid), portalId, ItemType.Article.GetId(), false);
-        //        Tag t = Tag.GetTag(mcat.categoryName, portalId);
+        //        Item iv = Item.GetItem(Convert.ToInt32(postid), _portalId, ItemType.Article.GetId(), false);
+        //        Tag t = Tag.GetTag(mcat.categoryName, _portalId);
  
                 
         //        //if this item tag relationship already existed for another versionID don't increment the count;
@@ -464,15 +476,10 @@ namespace Engage.Dnn.Publish.Services
         /// <param name="request">request</param>
         private void LocatePortal(HttpRequest request)
         {
-            string requestedPath = request.Url.AbsoluteUri;
-            string domainName = string.Empty;
-            string portalAlias = string.Empty;
+            string domainName = DotNetNuke.Common.Globals.GetDomainName(request, true);
 
-            domainName = DotNetNuke.Common.Globals.GetDomainName(request, true);
-
-            portalAlias = domainName;
-            PortalAliasInfo pai = new PortalAliasInfo();
-            pai = PortalSettings.GetPortalAliasInfo(portalAlias);
+            string portalAlias = domainName;
+            PortalAliasInfo pai = PortalSettings.GetPortalAliasInfo(portalAlias);
             if (pai != null)
             {
                 PortalId = pai.PortalID;
@@ -485,30 +492,22 @@ namespace Engage.Dnn.Publish.Services
 
         #endregion
         
-        private static int portalId;// = 0;
+        private static int _portalId;// = 0;
         public static int PortalId
         {
             get
             {
-                return portalId;
+                return _portalId;
             }
-            set { portalId = value; }
+            set { _portalId = value; }
         }
 
-        private static string portalPath;// = 0;
-        public static string PortalPath
-        {
-            get
-            {
-                return portalPath;
-            }
-            set { portalPath = value; }
-        }
+        public static string PortalPath { get; set; }
 
 
         public string LocalResourceFile
         {
-            get { return "~/desktopmodules/engagepublish/services/" + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/MetaWeblog.ashx.resx"; }
+            get { return "~/desktopmodules/engagepublish/services/" + Localization.LocalResourceDirectory + "/MetaWeblog.ashx.resx"; }
         }
 
 

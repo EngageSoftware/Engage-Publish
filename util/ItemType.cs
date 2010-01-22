@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -25,10 +25,10 @@ namespace Engage.Dnn.Publish.Util
     /// <remarks>This class should remain public, it is used by the Publish TreeView module</remarks>
     public class ItemType
     {
-        private readonly string name = string.Empty;
-        private readonly Type itemType;
+        private readonly string _name = string.Empty;
+        private readonly Type _itemType;
 
-        private int id = -1;
+        private int _id = -1;
 
         public static readonly ItemType Category = new ItemType("Category", typeof(Category));
         //public static readonly ItemType Product = new ItemType("Product", typeof(Product));
@@ -39,15 +39,15 @@ namespace Engage.Dnn.Publish.Util
 
         private ItemType(string name, Type itemType)
         {
-            this.itemType = itemType;
-            this.name = name;
+            _itemType = itemType;
+            _name = name;
         }
 
         public Type GetItemType
         {
             get
             {
-                return this.itemType;
+                return _itemType;
             }
         }
 
@@ -64,7 +64,7 @@ namespace Engage.Dnn.Publish.Util
             if (ct == null)
                 throw new ArgumentNullException("ct");
             if (id < 1)
-                //throw new ArgumentOutOfRangeException("id");
+                //throw new ArgumentOutOfRangeException("_id");
                 return null;
 
             Type type = ct;
@@ -116,7 +116,7 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                return this.name;
+                return _name;
             }
         }
 
@@ -124,24 +124,24 @@ namespace Engage.Dnn.Publish.Util
         public int GetId()
         {
             //cache this
-            if (this.id == -1)
+            if (_id == -1)
             {
-                string cacheKey = Utility.CacheKeyPublishItemTypeId + this.itemType;
+                string cacheKey = Utility.CacheKeyPublishItemTypeId + _itemType;
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)
                 {
-                    this.id = (int)o;
+                    _id = (int)o;
                 }
                 else
                 {
-                    using( IDataReader dr = DataProvider.Instance().GetItemType(this.name))
+                    using( IDataReader dr = DataProvider.Instance().GetItemType(_name))
                     {
                         if (dr.Read())
                         {
-                            this.id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
-                            if (this.id > 0)
+                            _id = Convert.ToInt32(dr["ItemTypeID"], CultureInfo.InvariantCulture);
+                            if (_id > 0)
                             {
-                                DataCache.SetCache(cacheKey, this.id, DateTime.Now.AddMinutes(15));
+                                DataCache.SetCache(cacheKey, _id, DateTime.Now.AddMinutes(15));
                                 Utility.AddCacheKey(cacheKey, 0);
                             }
                         }
@@ -149,7 +149,7 @@ namespace Engage.Dnn.Publish.Util
                 }
             }
 
-            return this.id;
+            return _id;
         }
     }
 }

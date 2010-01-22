@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -31,11 +31,11 @@ namespace Engage.Dnn.Publish
         //public string noNamespaceSchemaLocation = "Content.Publish.xsd";
 
         #region "Private Properties"
-        private int sortOrder = 5;
+        private int _sortOrder = 5;
 
-        private int childDisplayTabId = -1;
+        private int _childDisplayTabId = -1;
 
-        private string childDisplayTabName = string.Empty;
+        private string _childDisplayTabName = string.Empty;
 
         #endregion
 
@@ -43,36 +43,36 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 39)]
         public int SortOrder
         {
-            get { return sortOrder; }
-            set { sortOrder = value; }
+            get { return _sortOrder; }
+            set { _sortOrder = value; }
         }
 
         [XmlElement(Order = 40)]
         public int ChildDisplayTabId
         {
-            get { return childDisplayTabId; }
-            set { childDisplayTabId = value; }
+            get { return _childDisplayTabId; }
+            set { _childDisplayTabId = value; }
         }
         [XmlElement(Order = 41)]
         public string ChildDisplayTabName
         {
             get
             {
-                if (childDisplayTabName.Length == 0)
+                if (_childDisplayTabName.Length == 0)
                 {
-                    using (IDataReader dr = DataProvider.Instance().GetPublishTabName(childDisplayTabId, PortalId))
+                    using (IDataReader dr = DataProvider.Instance().GetPublishTabName(_childDisplayTabId, PortalId))
                     {
                         if (dr.Read())
                         {
-                            childDisplayTabName = dr["TabName"].ToString();
+                            _childDisplayTabName = dr["TabName"].ToString();
                         }
                     }
                 }
-                return childDisplayTabName;
+                return _childDisplayTabName;
             }
             set
             {
-                childDisplayTabName = value;
+                _childDisplayTabName = value;
             }
         }
 
@@ -693,14 +693,14 @@ namespace Engage.Dnn.Publish
             {
                 if (dr.Read())
                 {
-                    childDisplayTabId = (int)dr["TabId"];
+                    _childDisplayTabId = (int)dr["TabId"];
                 }
                 else
                 {
                     //Default to setting for module
                     string settingName = Utility.PublishDefaultDisplayPage + PortalId.ToString(CultureInfo.InvariantCulture);
                     string setting = HostSettings.GetHostSetting(settingName);
-                    childDisplayTabId = Convert.ToInt32(setting, CultureInfo.InvariantCulture);
+                    _childDisplayTabId = Convert.ToInt32(setting, CultureInfo.InvariantCulture);
                 }
             }
 

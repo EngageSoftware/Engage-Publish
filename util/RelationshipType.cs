@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -21,8 +21,8 @@ namespace Engage.Dnn.Publish.Util
 	/// </summary>
 	public class RelationshipType
 	{
-		private readonly string name = string.Empty;
-		private int id = -1;
+		private readonly string _name = string.Empty;
+		private int _id = -1;
 
 		public static readonly RelationshipType ItemToParentCategory = new RelationshipType("Item To Parent Category");
 		public static readonly RelationshipType CategoryToTopLevelCategory = new RelationshipType("Category To Top Level Category");
@@ -42,22 +42,22 @@ namespace Engage.Dnn.Publish.Util
 
 		private RelationshipType(string name)
 		{
-			this.name = name;
+			_name = name;
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
         public int GetId()
 		{
-			if (this.id == -1)
+			if (_id == -1)
 			{
 				IDataReader dr = null;
 
 				try
 				{
-					dr = DataProvider.Instance().GetRelationshipType(this.name);
+					dr = DataProvider.Instance().GetRelationshipType(_name);
 					if (dr.Read())
 					{
-						this.id = Convert.ToInt32(dr["RelationshipTypeID"], CultureInfo.InvariantCulture);
+						_id = Convert.ToInt32(dr["RelationshipTypeID"], CultureInfo.InvariantCulture);
 					}
 				}
 				finally
@@ -66,7 +66,7 @@ namespace Engage.Dnn.Publish.Util
 				}
 			}
 
-			return this.id;
+			return _id;
 		}
 
         public static RelationshipType GetFromId(int id, Type ct)
@@ -126,7 +126,7 @@ namespace Engage.Dnn.Publish.Util
                         //client needs to check the return value
                         try
                         {
-                            if (name.Equals(cot.name, StringComparison.OrdinalIgnoreCase))
+                            if (name.Equals(cot._name, StringComparison.OrdinalIgnoreCase))
                             {
                                 return cot;
                             }

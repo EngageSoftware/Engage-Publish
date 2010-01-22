@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -29,13 +29,13 @@ namespace Engage.Dnn.Publish
     public partial class EpRss : PageBase
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string itemType;
-        private string qsTags;
-        private ArrayList tagQuery;
+        private string _itemType;
+        private string _qsTags;
+        private ArrayList _tagQuery;
 
         public bool AllowTags
         {
-            get { return ModuleBase.AllowTagsForPortal(this.PortalId); }
+            get { return ModuleBase.AllowTagsForPortal(PortalId); }
         }
 
         public static string ApplicationUrl
@@ -47,11 +47,11 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["itemId"];
+                string i = Request.Params["itemId"];
                 if (i != null)
                 {
-                    // look up the itemType if ItemId passed in.
-                    this.ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture), PortalId).ToUpperInvariant();
+                    // look up the _itemType if ItemId passed in.
+                    ItemType = Item.GetItemType(Convert.ToInt32(i, CultureInfo.InvariantCulture), PortalId).ToUpperInvariant();
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
                 return -1;
@@ -62,7 +62,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["itemTypeId"];
+                string i = Request.Params["itemTypeId"];
                 if (i != null)
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
@@ -75,7 +75,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["numberOfItems"];
+                string i = Request.Params["numberOfItems"];
                 if (i != null)
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
@@ -88,7 +88,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["portalId"];
+                string i = Request.Params["portalId"];
                 if (i != null)
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
@@ -101,7 +101,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["DisplayType"];
+                string i = Request.Params["DisplayType"];
                 if (!string.IsNullOrEmpty(i))
                 {
                     return i;
@@ -114,7 +114,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string i = this.Request.Params["RelationshipTypeId"];
+                string i = Request.Params["RelationshipTypeId"];
                 if (!string.IsNullOrEmpty(i))
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
@@ -126,31 +126,31 @@ namespace Engage.Dnn.Publish
         public string ItemType
         {
             [DebuggerStepThrough]
-            get { return this.itemType; }
+            get { return _itemType; }
             [DebuggerStepThrough]
-            set { this.itemType = value; }
+            set { _itemType = value; }
         }
 
         protected override void OnInit(EventArgs e)
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
 
             // TODO: refactor this between here, CustomDisplay.OnInit, TagCloud.LoadTagInfo
-            //read the tags querystring parameter and see if we have any to store into the tagQuery arraylist
-            if (this.AllowTags)
+            //read the tags querystring parameter and see if we have any to store into the _tagQuery arraylist
+            if (AllowTags)
             {
-                string tags = this.Request.QueryString["Tags"];
+                string tags = Request.QueryString["Tags"];
                 if (tags != null)
                 {
-                    this.qsTags = HttpUtility.UrlDecode(tags);
+                    _qsTags = HttpUtility.UrlDecode(tags);
                     char[] seperator = {'-'};
-                    ArrayList tagList = Tag.ParseTags(this.qsTags, this.PortalId, seperator, false);
-                    this.tagQuery = new ArrayList(tagList.Count);
+                    ArrayList tagList = Tag.ParseTags(_qsTags, PortalId, seperator, false);
+                    _tagQuery = new ArrayList(tagList.Count);
                     foreach (Tag tg in tagList)
                     {
                         //create a list of tagids to query the database
-                        this.tagQuery.Add(tg.TagId);
+                        _tagQuery.Add(tg.TagId);
                     }
                 }
             }
@@ -159,10 +159,10 @@ namespace Engage.Dnn.Publish
         private void Page_Load(object sender, EventArgs e)
         {
             //PortalSettings ps = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            PortalSettings ps = Utility.GetPortalSettings(this.PortalId);
+            PortalSettings ps = Utility.GetPortalSettings(PortalId);
 
-            this.Response.ContentType = "text/xml";
-            this.Response.ContentEncoding = Encoding.UTF8;
+            Response.ContentType = "text/xml";
+            Response.ContentEncoding = Encoding.UTF8;
 
             var sw = new StringWriter(CultureInfo.InvariantCulture);
             var wr = new XmlTextWriter(sw);
@@ -189,30 +189,30 @@ namespace Engage.Dnn.Publish
 
             //TODO: look into options for how to display the "Title" of the RSS feed
             var dt = new DataTable {Locale = CultureInfo.InvariantCulture};
-            if (this.DisplayType == "ItemListing" || this.DisplayType == null)
+            if (DisplayType == "ItemListing" || DisplayType == null)
             {
-                dt = this.ItemId == -1 ? DataProvider.Instance().GetMostRecent(this.ItemTypeId, this.NumberOfItems, this.PortalId) : DataProvider.Instance().GetMostRecentByCategoryId(this.ItemId, this.ItemTypeId, this.NumberOfItems, this.PortalId);
+                dt = ItemId == -1 ? DataProvider.Instance().GetMostRecent(ItemTypeId, NumberOfItems, PortalId) : DataProvider.Instance().GetMostRecentByCategoryId(ItemId, ItemTypeId, NumberOfItems, PortalId);
             }
-            else if (this.DisplayType == "CategoryFeature")
+            else if (DisplayType == "CategoryFeature")
             {
-                DataSet ds = DataProvider.Instance().GetParentItems(this.ItemId, this.PortalId, this.RelationshipTypeId);
+                DataSet ds = DataProvider.Instance().GetParentItems(ItemId, PortalId, RelationshipTypeId);
                 dt = ds.Tables[0];
             }
-            else if (this.DisplayType == "TagFeed")
+            else if (DisplayType == "TagFeed")
             {
-                if (this.AllowTags && this.tagQuery != null && this.tagQuery.Count > 0)
+                if (AllowTags && _tagQuery != null && _tagQuery.Count > 0)
                 {
-                    string tagCacheKey = Utility.CacheKeyPublishTag + this.PortalId + this.ItemTypeId.ToString(CultureInfo.InvariantCulture) + this.qsTags;
+                    string tagCacheKey = Utility.CacheKeyPublishTag + PortalId + ItemTypeId.ToString(CultureInfo.InvariantCulture) + _qsTags;
                         // +"PageId";
                     dt = DataCache.GetCache(tagCacheKey) as DataTable;
                     if (dt == null)
                     {
                         //ToDo: we need to make getitemsfromtags use the numberofitems value
-                        dt = Tag.GetItemsFromTags(this.PortalId, this.tagQuery);
+                        dt = Tag.GetItemsFromTags(PortalId, _tagQuery);
                         //TODO: we should sort the tags 
                         //TODO: should we set a 5 minute cache on RSS? 
                         DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(5));
-                        Utility.AddCacheKey(tagCacheKey, this.PortalId);
+                        Utility.AddCacheKey(tagCacheKey, PortalId);
                     }
                 }
             }
@@ -249,8 +249,8 @@ namespace Engage.Dnn.Publish
 
                     DateTime startDate = DateTime.MinValue;
 
-                    if (this.DisplayType == null || string.Equals(this.DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(this.DisplayType, "TagFeed", StringComparison.OrdinalIgnoreCase))
+                    if (DisplayType == null || string.Equals(DisplayType, "ItemListing", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(DisplayType, "TagFeed", StringComparison.OrdinalIgnoreCase))
                     {
                         title = r["ChildName"].ToString();
                         description = r["ChildDescription"].ToString();
@@ -265,7 +265,7 @@ namespace Engage.Dnn.Publish
                         //if(ui!=null)
                         //author = ui.DisplayName;
                     }
-                    else if (string.Equals(this.DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
+                    else if (string.Equals(DisplayType, "CategoryFeature", StringComparison.OrdinalIgnoreCase))
                     {
                         title = r["Name"].ToString();
                         description = r["Description"].ToString();
@@ -283,21 +283,21 @@ namespace Engage.Dnn.Publish
 
                     if (!Uri.IsWellFormedUriString(thumbnail, UriKind.Absolute) && thumbnail!=string.Empty)
                     {
-                        var thumnailLink = new Uri(this.Request.Url, ps.HomeDirectory + thumbnail);
+                        var thumnailLink = new Uri(Request.Url, ps.HomeDirectory + thumbnail);
                         thumbnail = thumnailLink.ToString();
                     }
 
                     wr.WriteElementString("title", title);
 
                     //if the item isn't disabled add the link
-                    if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), this.PortalId))
+                    if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), PortalId))
                     {
-                        wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, this.PortalId));
+                        wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, PortalId));
                     }
 
                     //wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));
                     description = Utility.ReplaceTokens(description);
-                    wr.WriteElementString("description", this.Server.HtmlDecode(description));
+                    wr.WriteElementString("description", Server.HtmlDecode(description));
                     //wr.WriteElementString("author", Utility.StripTags(this.Server.HtmlDecode(author)));
                     wr.WriteElementString("thumbnail", thumbnail);
 
@@ -339,7 +339,7 @@ namespace Engage.Dnn.Publish
 
             wr.WriteEndElement();
             wr.WriteEndElement();
-            this.Response.Write(sw.ToString());
+            Response.Write(sw.ToString());
         }
     }
 }

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -20,7 +20,7 @@ namespace Engage.Dnn.Publish.TextHtml
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Load += this.ItemDisplayOptionsLoad;
+            Load += ItemDisplayOptionsLoad;
             if (DotNetNuke.Framework.AJAX.IsInstalled())
             {
                 DotNetNuke.Framework.AJAX.RegisterScriptManager();
@@ -45,7 +45,7 @@ namespace Engage.Dnn.Publish.TextHtml
             try
             {
                 var modules = new ModuleController();
-                    modules.UpdateTabModuleSetting(this.TabModuleId, "Template", txtTemplate.Text.Trim());
+                    modules.UpdateTabModuleSetting(TabModuleId, "Template", txtTemplate.Text.Trim());
             }
             catch (Exception exc)
             {

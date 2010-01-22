@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -155,7 +155,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     rssUrl.AppendFormat("ItemId={0}", VersionInfoObject.ItemId);
                     rssUrl.AppendFormat("&RelationshipTypeId={0}&PortalId={1}&DisplayType=CategoryFeature", relationshipTypeId, PortalId);
                     lnkRss.NavigateUrl = rssUrl.ToString();
-                    SetRssUrl(this.lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
+                    SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssText", LocalResourceFile));
                 }
 
                 //get initial data set
@@ -173,14 +173,14 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                 }
 
-                this.dlItems.DataSource = this.RandomArticle ? Utility.GetRandomItem(dv) : dv;
+                dlItems.DataSource = RandomArticle ? Utility.GetRandomItem(dv) : dv;
                 dlItems.DataBind();
             }
             if (VersionInfoObject.IsNew && IsAdmin)
             {
                 //based on the user display a message (admin only))
-                this.lblNoData.Text = Localization.GetString("NoApprovedVersion", LocalResourceFile);
-                this.lblNoData.Visible = true;
+                lblNoData.Text = Localization.GetString("NoApprovedVersion", LocalResourceFile);
+                lblNoData.Visible = true;
                 //this.dlCategories.Visible = false;
                 //this.dlItems.Visible = false;
             }
@@ -215,9 +215,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
-                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", EditUrl("Settings"), false,
                                            SecurityAccessLevel.Edit, true, false
                                            }
                            };

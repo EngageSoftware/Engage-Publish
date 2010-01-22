@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -28,7 +28,7 @@ namespace Engage.Dnn.Publish.Controls
 		#region Event Handlers
 		override protected void OnInit(EventArgs e)
 		{
-		    this.Load += this.Page_Load;
+		    Load += Page_Load;
 		    base.OnInit(e);
 		}
 
@@ -74,10 +74,10 @@ namespace Engage.Dnn.Publish.Controls
 			    return new ModuleActionCollection
 			               {
 			                       {
-			                               this.GetNextActionID(),
+			                               GetNextActionID(),
 			                               Localization.GetString(
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-			                               this.LocalResourceFile),
+			                               LocalResourceFile),
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
 			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
 			                               }
@@ -104,7 +104,7 @@ namespace Engage.Dnn.Publish.Controls
                 //int itemVersionId = 
                 //int displayTabId = Convert.ToInt32(view["DisplayTabId"], CultureInfo.InvariantCulture);
 
-                string href = this.GetItemVersionLinkUrl(view["ItemVersionId"]);
+                string href = GetItemVersionLinkUrl(view["ItemVersionId"]);
 
                 return href;
             }

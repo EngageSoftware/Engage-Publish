@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -28,13 +28,13 @@ namespace Engage.Dnn.Publish
     [XmlRootAttribute(ElementName = "article", IsNullable = false)]
     public class Article : Item
     {
-        private string articleText = "";
-        private string versionNumber = "";
-        private string versionDescription = "";
-        private string referenceNumber = "";
-        private float averageRating;
+        private string _articleText = "";
+        private string _versionNumber = "";
+        private string _versionDescription = "";
+        private string _referenceNumber = "";
+        private float _averageRating;
 
-        private readonly string[] pageSeperator = new[] { "[PAGE]" };
+        private readonly string[] _pageSeperator = new[] { "[PAGE]" };
 
         public Article()
         {
@@ -64,7 +64,7 @@ namespace Engage.Dnn.Publish
                         {
                                 Name = name,
                                 Description = description.Replace("<br>", "<br />"),
-                                articleText = articleText.Replace("<br>", "<br />"),
+                                _articleText = articleText.Replace("<br>", "<br />"),
                                 AuthorUserId = authorUserId
                         };
             //should we strip <br> tags now?
@@ -323,29 +323,29 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 39)]
         public string ArticleText
         {
-            get { return articleText; }
-            set { articleText = value; }
+            get { return _articleText; }
+            set { _articleText = value; }
         }
 
         [XmlElement(Order = 40)]
         public string VersionNumber
         {
-            get { return versionNumber; }
-            set { versionNumber = value; }
+            get { return _versionNumber; }
+            set { _versionNumber = value; }
         }
 
         [XmlElement(Order = 41)]
         public string VersionDescription
         {
-            get { return versionDescription; }
-            set { versionDescription = value; }
+            get { return _versionDescription; }
+            set { _versionDescription = value; }
         }
 
         [XmlElement(Order = 42)]
         public string ReferenceNumber
         {
-            get { return referenceNumber; }
-            set { referenceNumber = value; }
+            get { return _referenceNumber; }
+            set { _referenceNumber = value; }
         }
 
         /// <summary>
@@ -357,12 +357,12 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                return averageRating;
+                return _averageRating;
             }
             set
             {
                 //if value is NULL in database, CBO fills it with MinValue
-                averageRating = value != float.MinValue ? value : 0;
+                _averageRating = value != float.MinValue ? value : 0;
             }
         }
 
@@ -374,7 +374,7 @@ namespace Engage.Dnn.Publish
 
         public string GetPage(int pageId)
         {
-            string[] pageLocations = articleText.Split(pageSeperator, StringSplitOptions.None);
+            string[] pageLocations = _articleText.Split(_pageSeperator, StringSplitOptions.None);
 
             if (pageLocations.Length > pageId)
             {
@@ -390,7 +390,7 @@ namespace Engage.Dnn.Publish
             {
                 //string[] stringSeparators = new string[] { "[PAGE]" };
 
-                string[] pagelocations = articleText.Split(pageSeperator, StringSplitOptions.None);
+                string[] pagelocations = _articleText.Split(_pageSeperator, StringSplitOptions.None);
                 return pagelocations.Length;
             }
         }

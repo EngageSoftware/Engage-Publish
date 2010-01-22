@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -13,7 +13,7 @@ namespace Engage.Dnn.Publish.Controls
 {
     using DotNetNuke.Entities.Modules;
 
-    public partial class ItemSearch : ModuleBase, IActionable
+    public partial class ItemSearch : ModuleBase //, IActionable
 	{
 
 
@@ -44,19 +44,19 @@ namespace Engage.Dnn.Publish.Controls
         //}
         //#endregion
 
-		#region Optional Interfaces
+        //#region Optional Interfaces
 
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
-		{
-			get 
-			{
-				var Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				//Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return Actions;
-			}
-		}
+        //public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+        //{
+        //    get 
+        //    {
+        //        var actionCollection = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+        //        //Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+        //        return actionCollection;
+        //    }
+        //}
 
-		#endregion
+        //#endregion
 	}
 }
 

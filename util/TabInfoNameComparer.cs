@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -58,7 +58,7 @@ namespace Engage.Dnn.Publish.Util
             }
 
 			//compare the name of the TabInfo objects
-			return  this._descending ? string.Compare(t1.TabName, t2.TabName, _comparison) : string.Compare(t2.TabName, t1.TabName, _comparison);
+			return  _descending ? string.Compare(t1.TabName, t2.TabName, _comparison) : string.Compare(t2.TabName, t1.TabName, _comparison);
 		}
 
 		#endregion

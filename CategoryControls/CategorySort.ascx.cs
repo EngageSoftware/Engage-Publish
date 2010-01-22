@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,25 +24,25 @@ namespace Engage.Dnn.Publish.CategoryControls
     [Serializable]
     public class ItemRelationshipSort : IEquatable<ItemRelationshipSort>
     {
-        private int itemRelationshipId = -1;
+        private int _itemRelationshipId = -1;
         public int ItemRelationshipId
         {
-            get { return this.itemRelationshipId; }
-            set { this.itemRelationshipId = value; }
+            get { return _itemRelationshipId; }
+            set { _itemRelationshipId = value; }
         }
 
-        private string name;
+        private string _name;
         public string Name
         {
-            get { return this.name; }
-            set { this.name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
 
-        private int sortOrder;
+        private int _sortOrder;
         public int SortOrder
         {
-            get { return this.sortOrder; }
-            set { this.sortOrder = value; }
+            get { return _sortOrder; }
+            set { _sortOrder = value; }
         }
 
         #region IEquatable<ItemRelationshipSort> Members
@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             if (other != null)
             {
-                return this.ItemRelationshipId == other.ItemRelationshipId;
+                return ItemRelationshipId == other.ItemRelationshipId;
             }
             return false;
         }
@@ -63,7 +63,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public override int GetHashCode()
         {
-            return this.itemRelationshipId;
+            return _itemRelationshipId;
         }
 
         #endregion
@@ -85,18 +85,18 @@ namespace Engage.Dnn.Publish.CategoryControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
         #endregion
 
-        private bool windowClose;
+        private bool _windowClose;
 
         const string SortList = "SortList";
         const string UnSortedList = "UnSortedList";
 
-        private List<ItemRelationshipSort> sortItems = new List<ItemRelationshipSort>();
-        private List<ItemRelationshipSort> unsortedItems = new List<ItemRelationshipSort>();
+        private List<ItemRelationshipSort> _sortItems = new List<ItemRelationshipSort>();
+        private List<ItemRelationshipSort> _unsortedItems = new List<ItemRelationshipSort>();
 
         #region Event Handlers
 
@@ -107,7 +107,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 object o = Request.Params["windowclose"];
                 if (o != null)
                 {
-                    windowClose = Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture);
+                    _windowClose = Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture);
                 }
                 if (!Page.IsPostBack)
                 {
@@ -116,8 +116,8 @@ namespace Engage.Dnn.Publish.CategoryControls
                     {
                         lblCategory.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("lblCategory", LocalResourceFile),c.Name);
 
-                        Session[SortList] = this.sortItems;
-                        Session[UnSortedList] = this.unsortedItems;
+                        Session[SortList] = _sortItems;
+                        Session[UnSortedList] = _unsortedItems;
                         BindData();
                     }
                 }
@@ -140,9 +140,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
+                                           GetNextActionID(),
                                            Localization.GetString(
-                                           ModuleActionType.AddContent, this.LocalResourceFile),
+                                           ModuleActionType.AddContent, LocalResourceFile),
                                            DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
                                            "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
                                            false
@@ -208,18 +208,18 @@ namespace Engage.Dnn.Publish.CategoryControls
             //get the already sorted items for a category
             //dt = Session[DT_SortTable] as DataTable;
 
-            this.sortItems = FilterSortedItems(sorted);
+            _sortItems = FilterSortedItems(sorted);
 
-            rlCategorySort.DataSource = this.sortItems;
+            rlCategorySort.DataSource = _sortItems;
             rlCategorySort.DataBind();
 
-            Session[SortList] = this.sortItems;
+            Session[SortList] = _sortItems;
             
         }
 
         private List<ItemRelationshipSort> FilterSortedItems(DataTable dt)
         {
-            this.sortItems = new List<ItemRelationshipSort>();
+            _sortItems = new List<ItemRelationshipSort>();
             foreach(DataRow dr in dt.Rows)
             {                
                 int sortOrder;
@@ -232,18 +232,18 @@ namespace Engage.Dnn.Publish.CategoryControls
                                          SortOrder = sortOrder,
                                          Name = dr["ChildName"].ToString()
                                  };
-                    if (this.sortItems.Count > ir.SortOrder)
+                    if (_sortItems.Count > ir.SortOrder)
                     {
-                        this.sortItems.Insert(ir.SortOrder, ir);
+                        _sortItems.Insert(ir.SortOrder, ir);
                     }
                     else
                     {
-                        this.sortItems.Add(ir);
+                        _sortItems.Add(ir);
                     }
                 }
             }
-            Session[SortList] = this.sortItems;
-            return this.sortItems;
+            Session[SortList] = _sortItems;
+            return _sortItems;
         }
 
 
@@ -261,8 +261,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             //ReorderDataTable();
 
-            this.sortItems = Session[SortList] as List<ItemRelationshipSort>;
-            this.unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
+            _sortItems = Session[SortList] as List<ItemRelationshipSort>;
+            _unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
 
             DataTable selectedRelationship = ItemRelationship.GetItemRelationshipByItemRelationshipId(Convert.ToInt32(lbCategoryItems.SelectedValue, CultureInfo.InvariantCulture)).Tables[0];
 
@@ -276,13 +276,14 @@ namespace Engage.Dnn.Publish.CategoryControls
                                       Name = dr["Name"].ToString()
                               };
 
-                //If we've previously removed this from the sortItems list we need to remove it from our session list of UnSorted items
-                
-                if(this.unsortedItems.Contains(irs))
-                {
-                    this.unsortedItems.Remove(irs);
-                }
-                this.sortItems.Add(irs);
+                //If we've previously removed this from the _sortItems list we need to remove it from our session list of UnSorted items
+
+                if (_unsortedItems != null)
+                    if(_unsortedItems.Contains(irs))
+                    {
+                        _unsortedItems.Remove(irs);
+                    }
+                if (_sortItems != null) _sortItems.Add(irs);
                 //remove item from original list
                 
             }
@@ -293,13 +294,13 @@ namespace Engage.Dnn.Publish.CategoryControls
             //Util.Utility.SortDataTableSingleParam(dt, "SortOrder ASC");
 
             //get the already sorted items for a category
-            rlCategorySort.DataSource = this.sortItems;
+            rlCategorySort.DataSource = _sortItems;
             rlCategorySort.DataBind();
 
 
-            Session[UnSortedList] = this.unsortedItems;
+            Session[UnSortedList] = _unsortedItems;
 
-            Session[SortList] = this.sortItems;
+            Session[SortList] = _sortItems;
             
         }
 
@@ -307,16 +308,19 @@ namespace Engage.Dnn.Publish.CategoryControls
         protected void rlCategorySort_Reorder(object sender, ReorderListItemReorderEventArgs e)
         {
 
-            this.sortItems = Session[SortList] as List<ItemRelationshipSort>;
+            _sortItems = Session[SortList] as List<ItemRelationshipSort>;
 
-            ItemRelationshipSort irs = this.sortItems[e.OldIndex];
-            this.sortItems.Remove(irs);
-            this.sortItems.Insert(e.NewIndex, irs);
-            
-            rlCategorySort.DataSource = this.sortItems;
+            if (_sortItems != null)
+            {
+                ItemRelationshipSort irs = _sortItems[e.OldIndex];
+                _sortItems.Remove(irs);
+                _sortItems.Insert(e.NewIndex, irs);
+            }
+
+            rlCategorySort.DataSource = _sortItems;
             rlCategorySort.DataBind();
 
-            Session[SortList] = this.sortItems;
+            Session[SortList] = _sortItems;
 
         }
 
@@ -345,38 +349,40 @@ namespace Engage.Dnn.Publish.CategoryControls
         protected void lbSaveSort_Click(object sender, EventArgs e)
         {
             
-            this.sortItems = Session[SortList] as List<ItemRelationshipSort>;
-            this.unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
-            foreach (ItemRelationshipSort irs in this.sortItems)
-            {
-                //int itemRelationshipId, sortorder = 0;
-                ItemRelationship.UpdateItemRelationship(irs.ItemRelationshipId, this.sortItems.IndexOf(irs)+1);
-            }
-            
+            _sortItems = Session[SortList] as List<ItemRelationshipSort>;
+            _unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
+            if (_sortItems != null)
+                foreach (ItemRelationshipSort irs in _sortItems)
+                {
+                    //int itemRelationshipId, sortorder = 0;
+                    ItemRelationship.UpdateItemRelationship(irs.ItemRelationshipId, _sortItems.IndexOf(irs)+1);
+                }
+
             //modify the sort order of any items we've removed from the SortList
-            foreach (ItemRelationshipSort irs in this.unsortedItems)
-            {
-                //int itemRelationshipId, sortorder = 0;
-                ItemRelationship.UpdateItemRelationship(irs.ItemRelationshipId, 0);
-            }
-            
+            if (_unsortedItems != null)
+                foreach (ItemRelationshipSort irs in _unsortedItems)
+                {
+                    //int itemRelationshipId, sortorder = 0;
+                    ItemRelationship.UpdateItemRelationship(irs.ItemRelationshipId, 0);
+                }
+
             Session.Remove(SortList);
             Session.Remove(UnSortedList);
             
             lblMessage.Visible = true;
             lblMessage.Text = Localization.GetString("SaveSuccess", LocalResourceFile);
             pnlSortList.Visible = false;
-            if (windowClose)
+            if (_windowClose)
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "close window", "window.close();", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "close window", "window.close();", true);
             }
         }
 
         protected void lbCancel_Click(object sender, EventArgs e)
         {
-            if (windowClose)
+            if (_windowClose)
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "close window", "window.close();", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "close window", "window.close();", true);
                 //Response.Write("<script language='JavaScript'>window.close();</script>");
             }
             else
@@ -389,26 +395,28 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             //remove from the sorted list, add to the removeFromSorted list
 
-            this.sortItems = Session[SortList] as List<ItemRelationshipSort>;
-            this.unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
-            foreach (ItemRelationshipSort irs in this.sortItems)
+            _sortItems = Session[SortList] as List<ItemRelationshipSort>;
+            _unsortedItems = Session[UnSortedList] as List<ItemRelationshipSort>;
+            if (_sortItems != null)
             {
-                if (irs.ItemRelationshipId == Convert.ToInt32(e.CommandArgument, CultureInfo.InvariantCulture))
+                foreach (ItemRelationshipSort irs in _sortItems)
                 {
-                    this.sortItems.Remove(irs);                    
-                    this.unsortedItems.Add(irs);
+                    if (irs.ItemRelationshipId == Convert.ToInt32(e.CommandArgument, CultureInfo.InvariantCulture))
+                    {
+                        _sortItems.Remove(irs);
+                        if (_unsortedItems != null) _unsortedItems.Add(irs);
 
-                    var li = new ListItem(irs.Name, irs.ItemRelationshipId.ToString(CultureInfo.InvariantCulture));
-                    lbCategoryItems.Items.Add(li);
-                    break;
+                        var li = new ListItem(irs.Name, irs.ItemRelationshipId.ToString(CultureInfo.InvariantCulture));
+                        lbCategoryItems.Items.Add(li);
+                        break;
+                    }
                 }
+                rlCategorySort.DataSource = _sortItems;
             }
-
-            rlCategorySort.DataSource = this.sortItems;
             rlCategorySort.DataBind();
 
-            Session[SortList] = this.sortItems;
-            Session[UnSortedList] = this.unsortedItems;
+            Session[SortList] = _sortItems;
+            Session[UnSortedList] = _unsortedItems;
             //e.CommandArgument
             //add item to UnSortedList
         }

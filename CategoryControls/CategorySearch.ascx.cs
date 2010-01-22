@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -35,10 +35,10 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void InitializeComponent()
         {
-            this.btnCategorySearch.Click += this.btnCategorySearch_Click;
-            this.dgResults.PageIndexChanged += this.dgResults_PageIndexChanged;
-            this.dgResults.ItemDataBound += this.dgResults_ItemDataBound;
-            this.Load += this.Page_Load;
+            btnCategorySearch.Click += BtnCategorySearchClick;
+            dgResults.PageIndexChanged += DgResultsPageIndexChanged;
+            dgResults.ItemDataBound += DgResultsItemDataBound;
+            Load += Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -98,9 +98,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
-                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", EditUrl("Settings"), false,
                                            SecurityAccessLevel.Edit, true, false
                                            }
                            };
@@ -321,7 +321,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public string FormatRelevance(int relevance)
         {
-            return Localization.GetString("Relevance", this.LocalResourceFile) + relevance.ToString(CultureInfo.CurrentCulture);
+            return Localization.GetString("Relevance", LocalResourceFile) + relevance.ToString(CultureInfo.CurrentCulture);
         }
 
         [Obsolete("This method doesn't do anything")]
@@ -330,7 +330,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             return pubDate; //.ToString();
         }
 
-        private void dgResults_ItemDataBound(object source, DataGridItemEventArgs e)
+        private void DgResultsItemDataBound(object source, DataGridItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
@@ -352,13 +352,13 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
         }
 
-        private void dgResults_PageIndexChanged(object source, DataGridPageChangedEventArgs e)
+        private void DgResultsPageIndexChanged(object source, DataGridPageChangedEventArgs e)
         {
             dgResults.CurrentPageIndex = e.NewPageIndex;
             BindData();
         }
 
-        private void btnCategorySearch_Click(object sender, EventArgs e)
+        private void BtnCategorySearchClick(object sender, EventArgs e)
         {
             try
             {

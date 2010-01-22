@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -29,7 +29,7 @@ namespace Engage.Dnn.Publish.Admin
 		override protected void OnInit(EventArgs e)
 		{
 		    this.cboCategories.SelectedIndexChanged += this.cboCategories_SelectedIndexChanged;
-		    this.Load += this.Page_Load;
+		    Load += Page_Load;
 		    base.OnInit(e);
 		}
 

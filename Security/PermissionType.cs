@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,7 +22,7 @@ namespace Engage.Dnn.Publish.Security
 	public class PermissionType
 	{
 		private string name = string.Empty;
-		private int id = -1;
+		private int _id = -1;
 
 		public static readonly PermissionType View = new PermissionType("View");
 		public static readonly PermissionType Edit = new PermissionType("Edit");
@@ -35,22 +35,22 @@ namespace Engage.Dnn.Publish.Security
 
 		public string Name
 		{
-			get {return this.name;}
+			get {return name;}
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
         public int GetId()
 		{
-			if (this.id == -1)
+			if (_id == -1)
 			{
 				IDataReader dr = null;
 
 				try
 				{
-					dr = DataProvider.Instance().GetPermissionType(this.name);
+					dr = DataProvider.Instance().GetPermissionType(name);
 					if (dr.Read())
 					{
-						this.id = Convert.ToInt32(dr["PermissionId"], CultureInfo.InvariantCulture);
+						_id = Convert.ToInt32(dr["PermissionId"], CultureInfo.InvariantCulture);
 					}
 				}
 				finally
@@ -59,7 +59,7 @@ namespace Engage.Dnn.Publish.Security
 				}
 			}
 
-			return this.id;
+			return _id;
 		}
 	}
 }

@@ -1,5 +1,5 @@
     //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -78,7 +78,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 //N Levels M Items
 
-                if (this.showAll == false)
+                if (showAll == false)
                 {
                     if (!String.IsNullOrEmpty(categoryDisplayShowChild))
                     {
@@ -150,7 +150,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 if (dlChildItems != null)
                 {
                     DataTable dsp = Article.GetArticles(itemId, PortalId);
-                    dlChildItems.ItemDataBound += this.dlItems_ItemDataBound;
+                    dlChildItems.ItemDataBound += dlItems_ItemDataBound;
                     DataView dvp = dsp.DefaultView;
                     dvp.Sort = " Name ASC";
                     dlChildItems.DataSource = dvp;
@@ -216,9 +216,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
-                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", EditUrl("Settings"), false,
                                            SecurityAccessLevel.Edit, true, false
                                            }
                            };
@@ -289,7 +289,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 {
                     url = HttpContext.Current.Request.RawUrl;
                 }
-                this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
+                VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
             }
         }
 
@@ -311,7 +311,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
             set
             {
-                this.showAll = value;
+                showAll = value;
             }
         }
         private string GetSortOrder()
@@ -360,7 +360,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 
                 if (dv == null)
                 {
-                    dsp = this.itemTypeId > -1 ? Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, this.itemTypeId) : Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
+                    dsp = itemTypeId > -1 ? Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, itemTypeId) : Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
 
                     dv = dsp.Tables[0].DefaultView;
                     
@@ -372,8 +372,8 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
                 if (dv != null)
                 {
-                    dv.Sort = this.GetSortOrder();
-                    this.dlItems.DataSource = dv;
+                    dv.Sort = GetSortOrder();
+                    dlItems.DataSource = dv;
                 }
                 dlItems.DataBind();
             }
@@ -381,10 +381,10 @@ namespace Engage.Dnn.Publish.CategoryControls
             if (VersionInfoObject.IsNew && IsAdmin)
             {
                 //based on the user display a message (admin only))
-                this.lblNoData.Text = Localization.GetString("NoApprovedVersion", LocalResourceFile);
-                this.lblNoData.Visible = true;
-                this.dlCategories.Visible = false;
-                this.dlItems.Visible = false;
+                lblNoData.Text = Localization.GetString("NoApprovedVersion", LocalResourceFile);
+                lblNoData.Visible = true;
+                dlCategories.Visible = false;
+                dlItems.Visible = false;
             }
         }
 
@@ -399,7 +399,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (dv == null)
             {
-                dsp = this.itemTypeId > -1 ? Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, this.itemTypeId) : Item.GetItems(this.VersionInfoObject.ItemId, this.PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
+                dsp = itemTypeId > -1 ? Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, itemTypeId) : Item.GetItems(VersionInfoObject.ItemId, PortalId, relationshipTypeId, otherRelationshipTypeId, -1);
                dv = dsp.Tables[0].DefaultView;
                
 
@@ -411,9 +411,9 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
             if (dv != null)
             {
-                dv.Sort = this.GetSortOrder();
+                dv.Sort = GetSortOrder();
 
-                this.dlItems.DataSource = dv;
+                dlItems.DataSource = dv;
             }
             dlItems.DataBind();
         }
@@ -428,7 +428,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             if (dv == null)
             {
-                dsc = this.itemTypeId > -1 ? Category.GetChildCategories(this.VersionInfoObject.ItemId, this.PortalId, this.itemTypeId) : Category.GetChildCategories(this.VersionInfoObject.ItemId, this.PortalId);
+                dsc = itemTypeId > -1 ? Category.GetChildCategories(VersionInfoObject.ItemId, PortalId, itemTypeId) : Category.GetChildCategories(VersionInfoObject.ItemId, PortalId);
                 dv = dsc.DefaultView;
 
                 
@@ -442,8 +442,8 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
             if (dv != null)
             {
-                dv.Sort = this.GetSortOrder();
-                this.dlCategories.DataSource = dv;
+                dv.Sort = GetSortOrder();
+                dlCategories.DataSource = dv;
             }
             dlCategories.DataBind();
 

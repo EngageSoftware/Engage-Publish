@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,17 +24,17 @@ namespace Engage.Dnn.Publish.Controls
     using Util;
     public partial class CommentDisplay : CommentDisplayBase
     {
-        private int articleId = -1;
+        private int _articleId = -1;
   
         public override int ArticleId
         {
             get
             {
-                return this.articleId;
+                return _articleId;
             }
             set
             {
-                this.articleId = value;
+                _articleId = value;
             }
         }
 
@@ -92,20 +92,20 @@ namespace Engage.Dnn.Publish.Controls
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
         private void LoadArticle()
         {
             try
             {
-                if (articleId != -1)
+                if (_articleId != -1)
                 {
-                    SetItemId(this.articleId);
+                    SetItemId(_articleId);
                 }
                 else
                 {
-                    if (ItemVersionId > 0 && articleId == -1)
+                    if (ItemVersionId > 0 && _articleId == -1)
                     {
                         VersionInfoObject = Article.GetArticleVersion(ItemVersionId, PortalId);
                     }
@@ -113,7 +113,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         if (ItemId == -1)
                         {
-                            this.VersionInfoObject = this.ItemVersionId > 0 ? Article.GetArticleVersion(this.ItemVersionId, this.PortalId) : Article.Create(this.PortalId);
+                            VersionInfoObject = ItemVersionId > 0 ? Article.GetArticleVersion(ItemVersionId, PortalId) : Article.Create(PortalId);
                         }
                         else
                         {

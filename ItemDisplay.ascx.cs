@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -21,7 +21,7 @@ namespace Engage.Dnn.Publish
     public partial class ItemDisplay : ModuleBase, IActionable
     {
 
-        private string controlToLoad;
+        private string _controlToLoad;
 
         #region Web Form Designer generated code
         override protected void OnInit(EventArgs e)
@@ -102,37 +102,37 @@ namespace Engage.Dnn.Publish
             {
                 if (t.Name.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    controlToLoad = displayType == "ArticleDisplay" ? "ArticleControls/ArticleDisplay.ascx" : "ArticleControls/ArticleDisplay.ascx";
+                    _controlToLoad = displayType == "ArticleDisplay" ? "ArticleControls/ArticleDisplay.ascx" : "ArticleControls/ArticleDisplay.ascx";
                 }
                 else if (t.Name.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
                     if (displayType == "CustomDisplay")
                     {
-                        controlToLoad = "Controls/CustomDisplay.ascx";
+                        _controlToLoad = "Controls/CustomDisplay.ascx";
                     }
                     else if (displayType == "CategoryDisplay")
                     {
-                        controlToLoad = "CategoryControls/CategoryDisplay.ascx";
+                        _controlToLoad = "CategoryControls/CategoryDisplay.ascx";
                     }
                     else if (displayType == "CategoryFeatureDisplay")
                     {
-                        controlToLoad = "CategoryControls/CategoryFeature.ascx";
+                        _controlToLoad = "CategoryControls/CategoryFeature.ascx";
                     }
                     else if (displayType == "CategorySearch")
                     {
-                        controlToLoad = "CategoryControls/CategorySearch.ascx";
+                        _controlToLoad = "CategoryControls/CategorySearch.ascx";
                     }
                     else if (displayType == "ItemListing")
                     {
-                        controlToLoad = "Controls/ItemListing.ascx";
+                        _controlToLoad = "Controls/ItemListing.ascx";
                     }
                     else if (displayType == "CategoryNLevels")
                     {
-                        controlToLoad = "CategoryControls/CategoryNLevels.ascx";
+                        _controlToLoad = "CategoryControls/CategoryNLevels.ascx";
                     }
                     else
                     {
-                        controlToLoad = "Controls/CustomDisplay.ascx";
+                        _controlToLoad = "Controls/CustomDisplay.ascx";
                     }
                 }
 
@@ -140,50 +140,50 @@ namespace Engage.Dnn.Publish
                 {
                     if (displayType == "CustomDisplay")
                     {
-                        controlToLoad = "Controls/CustomDisplay.ascx";
+                        _controlToLoad = "Controls/CustomDisplay.ascx";
                     }
                     else if (displayType == "CategoryDisplay")
                     {
-                        controlToLoad = "CategoryControls/CategoryDisplay.ascx";
+                        _controlToLoad = "CategoryControls/CategoryDisplay.ascx";
                     }
                     else if (displayType == "CategoryFeatureDisplay")
                     {
-                        controlToLoad = "CategoryControls/CategoryFeature.ascx";
+                        _controlToLoad = "CategoryControls/CategoryFeature.ascx";
                     }
                     else if (displayType == "CategorySearch")
                     {
-                        controlToLoad = "CategoryControls/CategorySearch.ascx";
+                        _controlToLoad = "CategoryControls/CategorySearch.ascx";
                     }
                     else if (displayType == "ItemListing")
                     {
-                        controlToLoad = "Controls/ItemListing.ascx";
+                        _controlToLoad = "Controls/ItemListing.ascx";
                     }
                     else if (displayType == "CategoryNLevels")
                     {
-                        controlToLoad = "CategoryControls/CategoryNLevels.ascx";
+                        _controlToLoad = "CategoryControls/CategoryNLevels.ascx";
                     }
                     else
                     {
-                        controlToLoad = "CategoryControls/CategoryFeature.ascx";
+                        _controlToLoad = "CategoryControls/CategoryFeature.ascx";
                     }
                 }
                 else
                 {
                     if (displayType == "CustomDisplay")
                     {
-                        controlToLoad = "Controls/CustomDisplay.ascx";
+                        _controlToLoad = "Controls/CustomDisplay.ascx";
                     }
                     else if (displayType == "ItemListing")
                     {
-                        controlToLoad = "Controls/ItemListing.ascx";
+                        _controlToLoad = "Controls/ItemListing.ascx";
                     }
                     else if (displayType == "CategorySearch")
                     {
-                        controlToLoad = "CategoryControls/CategorySearch.ascx";
+                        _controlToLoad = "CategoryControls/CategorySearch.ascx";
                     }
                     else
                     {
-                        controlToLoad = "ArticleControls/ArticleDisplay.ascx";
+                        _controlToLoad = "ArticleControls/ArticleDisplay.ascx";
                     }
                 }
             }
@@ -191,19 +191,19 @@ namespace Engage.Dnn.Publish
             {
                 if (displayType == "CustomDisplay")
                 {
-                    controlToLoad = "Controls/CustomDisplay.ascx";
+                    _controlToLoad = "Controls/CustomDisplay.ascx";
                 }
                 else if (displayType == "ItemListing")
                 {
-                    controlToLoad = "Controls/ItemListing.ascx";
+                    _controlToLoad = "Controls/ItemListing.ascx";
                 }
                 else if (displayType == "CategorySearch")
                 {
-                    controlToLoad = "CategoryControls/CategorySearch.ascx";
+                    _controlToLoad = "CategoryControls/CategorySearch.ascx";
                 }
                 else
                 {
-                    controlToLoad = "ArticleControls/ArticleDisplay.ascx";
+                    _controlToLoad = "ArticleControls/ArticleDisplay.ascx";
                 }
             }
         }
@@ -212,9 +212,9 @@ namespace Engage.Dnn.Publish
         {
             try
             {
-                var mb = (ModuleBase)LoadControl(controlToLoad);
+                var mb = (ModuleBase)LoadControl(_controlToLoad);
                 mb.ModuleConfiguration = ModuleConfiguration;
-                mb.ID = System.IO.Path.GetFileNameWithoutExtension(controlToLoad);
+                mb.ID = System.IO.Path.GetFileNameWithoutExtension(_controlToLoad);
                 phControls.Controls.Add(mb);
 
                 //Don't show the menu if we're in VIEW mode

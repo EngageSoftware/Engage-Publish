@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -30,8 +30,8 @@ namespace Engage.Dnn.Publish.Controls
 		
 		private void InitializeComponent()
 		{
-			this.btnShowRelatedItem.Click += this.btnShowRelatedItem_Click;
-			this.Load += this.Page_Load;
+			btnShowRelatedItem.Click += BtnShowRelatedItemClick;
+			Load += Page_Load;
 		}
 
 	    public bool LinksPopulated
@@ -62,7 +62,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         //get all articles in the same category, then removes this current article from that list.  BD
                         List<Article> categoryArticles = Category.GetCategoryArticles(parentCategoryId, PortalId);
-                        categoryArticles.RemoveAll(a => a.ItemId == this.VersionInfoObject.ItemId);
+                        categoryArticles.RemoveAll(a => a.ItemId == VersionInfoObject.ItemId);
                         related.AddRange(categoryArticles);
                     }
                 }
@@ -103,7 +103,7 @@ namespace Engage.Dnn.Publish.Controls
 
 		#endregion
 
-		private void btnShowRelatedItem_Click(object sender, EventArgs e)
+		private void BtnShowRelatedItemClick(object sender, EventArgs e)
 		{
 			divRelatedLinks.Visible=true;
 		

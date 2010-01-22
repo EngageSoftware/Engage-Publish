@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,7 +22,7 @@ namespace Engage.Dnn.Publish.Tags
 		#region Event Handlers
 		override protected void OnInit(EventArgs e)
 		{
-		    this.Load += this.Page_Load;
+		    Load += Page_Load;
 		    base.OnInit(e);
 		}
 
@@ -46,8 +46,8 @@ namespace Engage.Dnn.Publish.Tags
 
         public string TagList
         {
-            get { return this.txtTags.Text.Trim(); }
-            set { this.txtTags.Text = value; }
+            get { return txtTags.Text.Trim(); }
+            set { txtTags.Text = value; }
         }
 
 		#region Optional Interfaces
@@ -59,10 +59,10 @@ namespace Engage.Dnn.Publish.Tags
 			    return new ModuleActionCollection
 			               {
 			                       {
-			                               this.GetNextActionID(),
+			                               GetNextActionID(),
 			                               Localization.GetString(
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-			                               this.LocalResourceFile),
+			                               LocalResourceFile),
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
 			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
 			                               }

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -66,13 +66,13 @@ namespace Engage.Dnn.Publish
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string propertyValue = string.Empty;
+        private string _propertyValue = string.Empty;
         public string PropertyValue
         {
             [DebuggerStepThrough]
-            get { return propertyValue; }
+            get { return _propertyValue; }
             [DebuggerStepThrough]
-            set { propertyValue = value; }
+            set { _propertyValue = value; }
         }
 
         //[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -122,7 +122,7 @@ namespace Engage.Dnn.Publish
             builder.Append(" Property Name: ");
             builder.Append(_propertyName);
             builder.Append(" Property Value: ");
-            builder.Append(propertyValue);
+            builder.Append(_propertyValue);
 
             return builder.ToString();
         }

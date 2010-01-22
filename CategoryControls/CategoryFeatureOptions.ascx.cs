@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -75,10 +75,10 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             //save the new setting
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfCategoryId", this.ddlCategoryList.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfDisplayOption", this.ddlViewOptions.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfEnableRss", this.chkEnableRss.Checked.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cfRandomize", this.chkRandomize.Checked.ToString());
+            modules.UpdateTabModuleSetting(TabModuleId, "cfCategoryId", ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cfDisplayOption", ddlViewOptions.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cfEnableRss", chkEnableRss.Checked.ToString());
+            modules.UpdateTabModuleSetting(TabModuleId, "cfRandomize", chkRandomize.Checked.ToString());
         }
     }
 }

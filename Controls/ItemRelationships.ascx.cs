@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -38,46 +38,46 @@ namespace Engage.Dnn.Publish.Controls
 
         #region Public Properties
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool flatView;// = false;
+        private bool _flatView;// = false;
 		public bool FlatView
         {
             [DebuggerStepThrough]
-            get { return this.flatView; }
+            get { return _flatView; }
             [DebuggerStepThrough]
-            set { this.flatView = value; }
+            set { _flatView = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool allowSearch;// = false;
+        private bool _allowSearch;// = false;
         public bool AllowSearch
         {
             [DebuggerStepThrough]
-            get { return this.allowSearch; }
+            get { return _allowSearch; }
             [DebuggerStepThrough]
-            set { this.allowSearch = value; }
+            set { _allowSearch = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int itemTypeId = -1;
+        private int _itemTypeId = -1;
         public int ItemTypeId
         {
             [DebuggerStepThrough]
-            get { return this.itemTypeId; }
+            get { return _itemTypeId; }
             set
             {
-                this.itemTypeId = value;
+                _itemTypeId = value;
                 UpdateAvailableItems();
             }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int createRelationshipTypeId;
+        private int _createRelationshipTypeId;
         public int CreateRelationshipTypeId
         {
             [DebuggerStepThrough]
-            get { return this.createRelationshipTypeId; }
+            get { return _createRelationshipTypeId; }
             [DebuggerStepThrough]
-            set { this.createRelationshipTypeId = value; }
+            set { _createRelationshipTypeId = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -183,20 +183,20 @@ namespace Engage.Dnn.Publish.Controls
 		
 		private void InitializeComponent()
 		{
-			this.btnItemSearch.Click += this.btnItemSearch_Click;
-			this.imgAdd.Click += this.imgAdd_Click;
-			this.imgRemove.Click += this.imgRemove_Click;
+			btnItemSearch.Click += BtnItemSearchClick;
+			imgAdd.Click += ImgAddClick;
+			imgRemove.Click += ImgRemoveClick;
 
-            if (this._enableDates)
+            if (_enableDates)
             {
-                this.lstSelectedItems.SelectedIndexChanged += this.lstSelectedItems_SelectedIndexChanged;
-                this.lstSelectedItems.AutoPostBack = true;
+                lstSelectedItems.SelectedIndexChanged += LstSelectedItemsSelectedIndexChanged;
+                lstSelectedItems.AutoPostBack = true;
             }
 			
-            this.imgUp.Click += this.imgUp_Click;
-			this.imgDown.Click += this.imgDown_Click;
-			this.btnStoreRelationshipDate.Click += this.btnStoreRelationshipDate_Click;
-			this.Load += this.Page_Load;
+            imgUp.Click += ImgUpClick;
+			imgDown.Click += ImgDownClick;
+			btnStoreRelationshipDate.Click += BtnStoreRelationshipDateClick;
+			Load += Page_Load;
 
             ClientAPI.RegisterKeyCapture(txtItemSearch, btnItemSearch, 13); //fire the search button if they hit enter while in the search box.
 		}
@@ -216,26 +216,26 @@ namespace Engage.Dnn.Publish.Controls
 					foreach (ItemRelationship ir in alItemRelationships)
 					{
 						string parentName = ItemType.GetItemName(ir.ParentItemId);										
-						if (this._enableDates)
+						if (_enableDates)
 						{
 							//add dates to the viewstate
                             SetAdditionalSetting("startDate", Utility.GetInvariantDateTime(ir.StartDate), ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
                             SetAdditionalSetting("endDate",  Utility.GetInvariantDateTime(ir.EndDate), ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
 						}
-                        ListItem li = new ListItem(ir.ParentItemId + "-" + parentName, ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
+                        var li = new ListItem(ir.ParentItemId + "-" + parentName, ir.ParentItemId.ToString(CultureInfo.InvariantCulture));
 						lstSelectedItems.Items.Add(li);
 					}
 
-					if (this._enableSortOrder) 
+					if (_enableSortOrder) 
 					{
                         trUpImage.Visible = true;
                         trDownImage.Visible = true;
 					}
-					if (this.allowSearch)
+					if (_allowSearch)
 					{
 						pnlItemSearch.Visible = true;
 					}
-					if (this.AvailableSelectionMode == ListSelectionMode.Single)
+					if (AvailableSelectionMode == ListSelectionMode.Single)
 					{
 						lstSelectedItems.Rows = 1;
                         lstSelectedItems.CssClass += " Publish_ParentCategory";
@@ -248,10 +248,10 @@ namespace Engage.Dnn.Publish.Controls
 			}
 		}
 
-		private void imgAdd_Click(object sender, ImageClickEventArgs e)
+		private void ImgAddClick(object sender, ImageClickEventArgs e)
 		{
-            List<ListItem> selectedItems = new List<ListItem>();
-            foreach (ListItem li in this.lstItems.Items)
+            var selectedItems = new List<ListItem>();
+            foreach (ListItem li in lstItems.Items)
             {
                 if (li.Selected)
                 {
@@ -260,17 +260,17 @@ namespace Engage.Dnn.Publish.Controls
             }
 
 			//check for single select mode
-			if (this.AvailableSelectionMode == ListSelectionMode.Single && selectedItems.Count > 1) //shouldn't ever happen, SelectMode should be Single. BD
+			if (AvailableSelectionMode == ListSelectionMode.Single && selectedItems.Count > 1) //shouldn't ever happen, SelectMode should be Single. BD
 			{
-                this.lblMessage.Text = Localization.GetString("ErrorOnlyOne", LocalResourceFile);
+                lblMessage.Text = Localization.GetString("ErrorOnlyOne", LocalResourceFile);
 			}
 			else
 			{
-                if (this.AvailableSelectionMode == ListSelectionMode.Single)
+                if (AvailableSelectionMode == ListSelectionMode.Single)
                 {
                     //just replace the current entry if we're in Single Select mode.  BD
-                    this.lstSelectedItems.Items.Clear();
-                    this.lstSelectedItems.Items.AddRange(selectedItems.ToArray());
+                    lstSelectedItems.Items.Clear();
+                    lstSelectedItems.Items.AddRange(selectedItems.ToArray());
                 }
                 else
                 {
@@ -280,7 +280,7 @@ namespace Engage.Dnn.Publish.Controls
                         if (!ItemIdExists(selectedItem.Value))
                         {
                             //add the selected item
-                            this.lstSelectedItems.Items.Add(new ListItem(selectedItem.Text, selectedItem.Value));
+                            lstSelectedItems.Items.Add(new ListItem(selectedItem.Text, selectedItem.Value));
                         }
                     }
                 }
@@ -289,7 +289,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected bool ItemIdExists(string itemId)
 		{
-			foreach (ListItem i in this.lstSelectedItems.Items)
+			foreach (ListItem i in lstSelectedItems.Items)
 			{
 				if (i.Value == itemId)
 				{
@@ -299,18 +299,18 @@ namespace Engage.Dnn.Publish.Controls
 			return false;
 		}
 
-		private void imgRemove_Click(object sender, ImageClickEventArgs e)
+		private void ImgRemoveClick(object sender, ImageClickEventArgs e)
 		{
             if (AvailableSelectionMode == ListSelectionMode.Single)
             {
                 //if it's single-selection mode, don't make them select it.  BD
-                this.lstSelectedItems.Items.Clear();
+                lstSelectedItems.Items.Clear();
             }
             else
             {
-                List<ListItem> selectedItems = new List<ListItem>();
+                var selectedItems = new List<ListItem>();
 
-                foreach (ListItem li in this.lstSelectedItems.Items)
+                foreach (ListItem li in lstSelectedItems.Items)
                 {
                     if (li.Selected)
                     {
@@ -320,33 +320,33 @@ namespace Engage.Dnn.Publish.Controls
 
                 foreach (ListItem selectedItem in selectedItems)
                 {
-                    this.lstSelectedItems.Items.Remove(selectedItem);
+                    lstSelectedItems.Items.Remove(selectedItem);
                 }
             }
 		}
 
-		private void imgUp_Click(object sender, ImageClickEventArgs e) 
+		private void ImgUpClick(object sender, ImageClickEventArgs e) 
 		{
-			int index = this.lstSelectedItems.SelectedIndex;
+			int index = lstSelectedItems.SelectedIndex;
 
 			if (index == 0) { return; }
 
-			ListItem li = this.lstSelectedItems.SelectedItem;
-			this.lstSelectedItems.Items.Remove(li);
-			this.lstSelectedItems.Items.Insert(index - 1, li);
+			ListItem li = lstSelectedItems.SelectedItem;
+			lstSelectedItems.Items.Remove(li);
+			lstSelectedItems.Items.Insert(index - 1, li);
 		}
 
-		private void imgDown_Click(object sender, ImageClickEventArgs e) 
+		private void ImgDownClick(object sender, ImageClickEventArgs e) 
 		{
-			int index = this.lstSelectedItems.SelectedIndex;
-			if (index == this.lstSelectedItems.Items.Count - 1) { return; }
+			int index = lstSelectedItems.SelectedIndex;
+			if (index == lstSelectedItems.Items.Count - 1) { return; }
 
-			ListItem li = this.lstSelectedItems.SelectedItem;
-			this.lstSelectedItems.Items.Remove(li);
-			this.lstSelectedItems.Items.Insert(index + 1, li);
+			ListItem li = lstSelectedItems.SelectedItem;
+			lstSelectedItems.Items.Remove(li);
+			lstSelectedItems.Items.Insert(index + 1, li);
 		}
 
-		private void lstSelectedItems_SelectedIndexChanged(object sender, EventArgs e)
+		private void LstSelectedItemsSelectedIndexChanged(object sender, EventArgs e)
 		{
 			//load the start date/end date controls	
 			if (EnableDates)
@@ -355,20 +355,13 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     txtStartDate.Text = Convert.ToDateTime(GetAdditionalSetting("startDate", lstSelectedItems.SelectedValue), CultureInfo.InvariantCulture).ToString(CultureInfo.CurrentCulture);
                 }
-                if (Utility.HasValue(GetAdditionalSetting("endDate", lstSelectedItems.SelectedValue)))
-                {
-                    txtEndDate.Text = Convert.ToDateTime(GetAdditionalSetting("endDate", lstSelectedItems.SelectedValue), CultureInfo.InvariantCulture).ToString(CultureInfo.CurrentCulture);
-                }
-                else
-                {
-                    txtEndDate.Text = string.Empty;
-                }
+                txtEndDate.Text = Utility.HasValue(GetAdditionalSetting("endDate", lstSelectedItems.SelectedValue)) ? Convert.ToDateTime(GetAdditionalSetting("endDate", lstSelectedItems.SelectedValue), CultureInfo.InvariantCulture).ToString(CultureInfo.CurrentCulture) : string.Empty;
 				divDateControls.Visible=true;
                 if (txtStartDate.Text.Length == 0) txtStartDate.Text = DateTime.Now.ToString(CultureInfo.CurrentCulture); 
 			}
 		}
 
-		private void btnStoreRelationshipDate_Click(object sender, EventArgs e)
+		private void BtnStoreRelationshipDateClick(object sender, EventArgs e)
 		{
 			//store the dates for the current item
             if (Utility.HasValue(txtStartDate.Text))
@@ -390,18 +383,18 @@ namespace Engage.Dnn.Publish.Controls
 			divDateControls.Visible=false;
 		}
 
-		private void btnItemSearch_Click(object sender, EventArgs e)
+		private void BtnItemSearchClick(object sender, EventArgs e)
 		{
 			//Filter the relationship list by the search item
 			//GetAdminKeywordSearch
 
             // check for 's 
-			DataSet ds = DataProvider.Instance().GetAdminKeywordSearch(txtItemSearch.Text.Trim(),this.itemTypeId, ApprovalStatus.Approved.GetId(), PortalId); 
+			DataSet ds = DataProvider.Instance().GetAdminKeywordSearch(txtItemSearch.Text.Trim(),_itemTypeId, ApprovalStatus.Approved.GetId(), PortalId); 
 			lstItems.DataSource=ds.Tables[0];
-			this.lstItems.DataTextField = "listName";
-			this.lstItems.DataValueField = "itemId";
+			lstItems.DataTextField = "listName";
+			lstItems.DataValueField = "itemId";
 			lstItems.DataBind();
-            ListItem li = this.lstItems.Items.FindByValue(ItemId.ToString(CultureInfo.InvariantCulture));
+            ListItem li = lstItems.Items.FindByValue(ItemId.ToString(CultureInfo.InvariantCulture));
             lstItems.Items.Remove(li);
 		}
 		#endregion
@@ -412,9 +405,17 @@ namespace Engage.Dnn.Publish.Controls
 		{
 			get 
 			{
-				DotNetNuke.Entities.Modules.Actions.ModuleActionCollection actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return actions;
+				var actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
+				                  {
+				                      {
+				                          GetNextActionID(),
+				                          Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
+				                                                 LocalResourceFile),
+				                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false,
+				                          DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
+				                          }
+				                  };
+			    return actions;
 			}
 		}
 
@@ -427,35 +428,37 @@ namespace Engage.Dnn.Publish.Controls
             {
                 return;
             }
-            ListItem li = new ListItem(item.ItemId.ToString(CultureInfo.InvariantCulture) + "-" + item.Name, item.ItemId.ToString(CultureInfo.InvariantCulture));
-			this.lstSelectedItems.Items.Add(li);
+            var li = new ListItem(item.ItemId.ToString(CultureInfo.InvariantCulture) + "-" + item.Name, item.ItemId.ToString(CultureInfo.InvariantCulture));
+			lstSelectedItems.Items.Add(li);
 		}
 
 		public void UpdateAvailableItems()
 		{
 			//am I looking for children or items
-			if (!this.allowSearch)
+			if (!_allowSearch)
 			{
-				if (this.flatView && this.allowSearch)
+				if (_flatView && _allowSearch)
 				{//get all item types
-					//this.itemTypeId
-					this.lstItems.DataSource = Item.GetItems(this.itemTypeId, PortalId);
-					this.lstItems.DataTextField = "listName";
-					this.lstItems.DataValueField = "itemId";
-					this.DataBind();
-                    ListItem li = this.lstItems.Items.FindByValue(ItemId.ToString(CultureInfo.InvariantCulture));
+					//this._itemTypeId
+					lstItems.DataSource = Item.GetItems(_itemTypeId, PortalId);
+					lstItems.DataTextField = "listName";
+					lstItems.DataValueField = "itemId";
+					DataBind();
+                    ListItem li = lstItems.Items.FindByValue(ItemId.ToString(CultureInfo.InvariantCulture));
                     lstItems.Items.Remove(li);
 
 				}
 				else
 				{
-					this.lstItems.Items.Clear();
+					lstItems.Items.Clear();
 
-                    ItemRelationship ir = new ItemRelationship();
-					ir.ParentItemId = this._parentItemId;
-					ir.ItemTypeId = this.itemTypeId;
-					ir.RelationshipTypeId = this._listRelationshipTypeId;
-					ir.DisplayChildren(this.lstItems, PortalId, ExcludeCircularRelationships ? this.VersionInfoObject.ItemId : (int?)null);
+                    var ir = new ItemRelationship
+                                 {
+                                     ParentItemId = _parentItemId,
+                                     ItemTypeId = _itemTypeId,
+                                     RelationshipTypeId = _listRelationshipTypeId
+                                 };
+				    ir.DisplayChildren(lstItems, PortalId, ExcludeCircularRelationships ? VersionInfoObject.ItemId : (int?)null);
 
 				}
 			}
@@ -472,7 +475,7 @@ namespace Engage.Dnn.Publish.Controls
 
         public string GetAdditionalSetting(object setting, string itemId)
 		{
-			IDictionary d = (IDictionary) ViewState[itemId];
+			var d = (IDictionary) ViewState[itemId];
 			if (d == null)
 			{
 				return string.Empty;
@@ -483,7 +486,7 @@ namespace Engage.Dnn.Publish.Controls
 
         public int[] GetSelectedItemIds()
         {
-            ArrayList al = new ArrayList();
+            var al = new ArrayList();
 
             for (int i = 0; i < lstSelectedItems.Items.Count; i++)
             {
@@ -503,17 +506,17 @@ namespace Engage.Dnn.Publish.Controls
 
 		private void LocalizeControl()
 		{
-			string localResourcePath =  this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/";
-			string ItemControlResourceFile = Path.Combine(localResourcePath, "itemrelationships");
-			btnItemSearch.Text = Localization.GetString("btnItemSearch.Text", ItemControlResourceFile);
-			lblEndDate.Text = Localization.GetString("lblEndDate.Text", ItemControlResourceFile);
-			lblStartDate.Text = Localization.GetString("lblStartDate.Text", ItemControlResourceFile);
-			btnStoreRelationshipDate.Text = Localization.GetString("btnStoreRelationshipDate.Text", ItemControlResourceFile);
+			string localResourcePath =  TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/";
+			string itemControlResourceFile = Path.Combine(localResourcePath, "itemrelationships");
+			btnItemSearch.Text = Localization.GetString("btnItemSearch.Text", itemControlResourceFile);
+			lblEndDate.Text = Localization.GetString("lblEndDate.Text", itemControlResourceFile);
+			lblStartDate.Text = Localization.GetString("lblStartDate.Text", itemControlResourceFile);
+			btnStoreRelationshipDate.Text = Localization.GetString("btnStoreRelationshipDate.Text", itemControlResourceFile);
 
-            imgAdd.AlternateText = Localization.GetString("imgAdd.AltText", ItemControlResourceFile);
-            imgRemove.AlternateText = Localization.GetString("imgRemove.AltText", ItemControlResourceFile);
-            imgUp.AlternateText = Localization.GetString("imgUp.AltText", ItemControlResourceFile);
-            imgDown.AlternateText = Localization.GetString("imgDown.AltText", ItemControlResourceFile);
+            imgAdd.AlternateText = Localization.GetString("imgAdd.AltText", itemControlResourceFile);
+            imgRemove.AlternateText = Localization.GetString("imgRemove.AltText", itemControlResourceFile);
+            imgUp.AlternateText = Localization.GetString("imgUp.AltText", itemControlResourceFile);
+            imgDown.AlternateText = Localization.GetString("imgDown.AltText", itemControlResourceFile);
 		}
     }
 }

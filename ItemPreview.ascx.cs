@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -78,7 +78,7 @@ namespace Engage.Dnn.Publish
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.InvalidOperationException.#ctor(System.String)", Justification = "Message is for internal use only"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Exception.#ctor(System.String)", Justification = "Message is for internal use only")]
         private void DisplayCurrentVersion()
         {
-            SetItemId(Convert.ToInt32(this.Request.QueryString["itemid"], CultureInfo.InvariantCulture));
+            SetItemId(Convert.ToInt32(Request.QueryString["itemid"], CultureInfo.InvariantCulture));
 
             if (TypeOfItem == ItemType.Article)
             {

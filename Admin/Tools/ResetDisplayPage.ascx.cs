@@ -1,6 +1,6 @@
 // <copyright file="ResetDisplayPage.ascx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-// Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             this.ParentCategoryDropDownList.SelectedIndexChanged += this.ParentCategoryDropDownList_SelectedIndexChanged;
             this.ResetButton.Click += this.ResetButton_Click;
         }

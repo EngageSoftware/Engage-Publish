@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -118,7 +118,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             get
             {
-                new ModuleActionCollection().Add(this.GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, this.LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+                new ModuleActionCollection().Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
                 return new ModuleActionCollection();
             }
         }
@@ -129,16 +129,16 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void Save()
         {
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdItemTypeId", this.ddlItemTypeList.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdCategoryId", this.ddlCategoryList.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdDisplayOption", this.ddlViewOptions.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdChildDisplayOption", this.ddlChildDisplay.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "cdSortOption", this.ddlSortOption.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cdItemTypeId", ddlItemTypeList.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cdCategoryId", ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cdDisplayOption", ddlViewOptions.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cdChildDisplayOption", ddlChildDisplay.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "cdSortOption", ddlSortOption.SelectedValue);
 
         }
         public override void UpdateSettings()
         {
-            this.Save();
+            Save();
         }
     }
 }

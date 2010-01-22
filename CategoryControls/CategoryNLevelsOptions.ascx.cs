@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -112,11 +112,11 @@ namespace Engage.Dnn.Publish.CategoryControls
         public override void UpdateSettings()
         {
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "nCategoryId", this.ddlCategoryList.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "nLevels", this.txtNLevels.Text);
+            modules.UpdateTabModuleSetting(TabModuleId, "nCategoryId", ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "nLevels", txtNLevels.Text);
             //modules.UpdateTabModuleSetting(this.TabModuleId, "mItems", this.txtMItems.Text.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "HighlightCurrentItem", this.chkHighlightCurrentItem.Checked.ToString());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "ShowParentItem", this.chkShowParentItem.Checked.ToString());
+            modules.UpdateTabModuleSetting(TabModuleId, "HighlightCurrentItem", chkHighlightCurrentItem.Checked.ToString());
+            modules.UpdateTabModuleSetting(TabModuleId, "ShowParentItem", chkShowParentItem.Checked.ToString());
 
             //create a sorted list of items in the listbox for use when displaying.
             //OrderString = BuildOrderList();
@@ -124,7 +124,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void ddlCategoryList_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DdlCategoryListSelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlCategoryList.SelectedValue == TopLevelCategoryItemType.Category.GetId().ToString(CultureInfo.InvariantCulture))
             {

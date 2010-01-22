@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -48,7 +48,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -74,38 +74,17 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             string cacheKey = Utility.CacheKeyPublishCategoryNLevels + ItemId; // +"PageId";
             var root = DataCache.GetCache(cacheKey) as System.Windows.Forms.TreeNode;
-
+            
 
             if (root == null)
             {
-                //if (Settings.Contains("nSortOrder"))
-                //{
-                //    if (!String.IsNullOrEmpty(Settings["nSortOrder"].ToString()))
-                //    {
-                //        DataTable dtchildren = ItemRelationship.GetAllChildrenNLevelsInDataTable(ItemId, nLevels, -1, PortalId);
-                //        DataTable dt = Utility.SortDataTable(dtchildren, Settings["nSortOrder"].ToString());
-                //        root = ItemRelationship.BuildHierarchy(dt);
-                //    }
-                //    else
-                //    {
-                //        root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
-                //    }
-                //}
-                //else
-                //{
-
-                    root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
-                //}
-
-                if (root != null)
+                root = ItemRelationship.GetAllChildrenNLevels(ItemId, nLevels, -1, PortalId);
+               if (root != null)
                 {
                     DataCache.SetCache(cacheKey, root, DateTime.Now.AddMinutes(CacheTime));
                     Utility.AddCacheKey(cacheKey, PortalId);
                 }
-
             }
-
-           
 
            //add the parent category to the list first.
            if (showParentItem)
@@ -165,22 +144,22 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             for (int i = 0; i < root.Nodes.Count; i++)
             {
-                
                 System.Windows.Forms.TreeNode child = root.Nodes[i];
                 if (child.Text.Length > 0)
                 {
                     var hl = new HyperLink();
                     int itemId = Convert.ToInt32(child.Tag, CultureInfo.InvariantCulture);
+                    var it = Item.GetItemType(itemId);
 
                     if (!Utility.IsDisabled(itemId, PortalId))
                     {
-                        Item curItem = this.BindItemData(itemId);
+                        Item curItem = BindItemData(itemId);
                         hl.NavigateUrl = GetItemLinkUrl(itemId);
                         if (curItem.NewWindow) hl.Target = "_blank";
                     }
                     hl.Text = child.Text;
 
-                    ph.Controls.Add(new LiteralControl("<li>"));
+                    ph.Controls.Add(new LiteralControl("<li class=\"" + it +"\">"));
 
                     //check if we should hightlight the current item, if so set the CSSClass
                     if (highlightCurrentItem)
@@ -195,12 +174,24 @@ namespace Engage.Dnn.Publish.CategoryControls
                             }
                         }
                     }
+
+                   
                     ph.Controls.Add(hl);
+
+                    if (child.Nodes.Count > 0)
+                    {
+                        ph.Controls.Add(new LiteralControl("<ul>"));
+                        FillNLevelList(child, ph);
+                        ph.Controls.Add(new LiteralControl("</ul>"));
+                        child.Nodes.Clear();
+                    }
+                
+
                     ph.Controls.Add(new LiteralControl("</li>"));
                 }
                 if (child.Nodes.Count > 0)
                 {
-                    ph.Controls.Add(new LiteralControl("<ul>"));
+                    ph.Controls.Add(new LiteralControl("<ul class=\"EP_N_UL\">"));
                     FillNLevelList(child, ph);
                     ph.Controls.Add(new LiteralControl("</ul>"));
                 }
@@ -218,9 +209,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                            {
                                    {
-                                           this.GetNextActionID(),
-                                           Localization.GetString("Settings", this.LocalResourceFile),
-                                           ModuleActionType.AddContent, "", "", this.EditUrl("Settings"), false,
+                                           GetNextActionID(),
+                                           Localization.GetString("Settings", LocalResourceFile),
+                                           ModuleActionType.AddContent, "", "", EditUrl("Settings"), false,
                                            SecurityAccessLevel.Edit, true, false
                                            }
                            };
@@ -284,7 +275,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 
-                this.VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
+                VersionInfoObject.AddView(UserId, TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
             }
         }
 

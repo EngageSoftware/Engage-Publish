@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -91,8 +91,8 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         private void InitializeComponent()
         {
-            cmdUpdate.Click += cmdUpdate_Click;
-            cmdCancel.Click += cmdCancel_Click;
+            cmdUpdate.Click += CmdUpdateClick;
+            cmdCancel.Click += CmdCancelClick;
             Load += Page_Load;
             PreRender += Page_PreRender;
         }
@@ -507,7 +507,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             LoadDisplayTabDropDown();
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancelClick(object sender, EventArgs e)
         {
             string returnUrl = Server.UrlDecode(Request.QueryString["returnUrl"]);
             if (!Utility.HasValue(returnUrl))
@@ -520,7 +520,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
         }
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdateClick(object sender, EventArgs e)
         {
             try
             {
@@ -789,7 +789,6 @@ namespace Engage.Dnn.Publish.ArticleControls
             ddlDisplayTabId.Items.Clear();
 
             var modules = new[] { Utility.DnnFriendlyModuleName };
-            DataTable dt;
             //we're going to get all pages no matter if they have a Publish module on them or not. We'll only highlight Overrideable ones later
             //if (chkForceDisplayTab.Checked)
             //{
@@ -805,7 +804,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             //        dt = Utility.GetDisplayTabIdsAll(modules);
             //    }
             //}
-            dt = Utility.GetDisplayTabIds(modules);
+            DataTable dt = Utility.GetDisplayTabIds(modules);
 
             //this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
 

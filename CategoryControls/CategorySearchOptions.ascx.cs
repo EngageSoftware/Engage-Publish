@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -91,14 +91,14 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             //save the new setting
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csMaxResults", this.txtResults.Text);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csPerPage", this.txtPage.Text);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csTitleLength", this.txtTitle.Text);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csDescriptionLength", this.txtDescription.Text);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csCategoryId", this.ddlCategorySearchList.SelectedValue);
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csSearchEmptyRedirectUrl", this.txtSearchUrl.Text.Trim());
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csShowDescription", (chkDescription.Checked ? "Y" : "N"));
-            modules.UpdateTabModuleSetting(this.TabModuleId, "csAllowCategorySelection", (chkAllowCategorySelection.Checked ? "Y" : "N"));
+            modules.UpdateTabModuleSetting(TabModuleId, "csMaxResults", txtResults.Text);
+            modules.UpdateTabModuleSetting(TabModuleId, "csPerPage", txtPage.Text);
+            modules.UpdateTabModuleSetting(TabModuleId, "csTitleLength", txtTitle.Text);
+            modules.UpdateTabModuleSetting(TabModuleId, "csDescriptionLength", txtDescription.Text);
+            modules.UpdateTabModuleSetting(TabModuleId, "csCategoryId", ddlCategorySearchList.SelectedValue);
+            modules.UpdateTabModuleSetting(TabModuleId, "csSearchEmptyRedirectUrl", txtSearchUrl.Text.Trim());
+            modules.UpdateTabModuleSetting(TabModuleId, "csShowDescription", (chkDescription.Checked ? "Y" : "N"));
+            modules.UpdateTabModuleSetting(TabModuleId, "csAllowCategorySelection", (chkAllowCategorySelection.Checked ? "Y" : "N"));
         }
 
         //#region Optional Interfaces

@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -34,7 +34,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private void InitializeComponent()
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
         }
 
 		protected void Page_Load(object sender, EventArgs e)
@@ -83,18 +83,18 @@ namespace Engage.Dnn.Publish.Controls
             ddlThumbnailLibrary.DataBind();
             ddlThumbnailLibrary.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), string.Empty));
 
-            if (!Utility.HasValue(this.thumbnailUrl))
+            if (!Utility.HasValue(_thumbnailUrl))
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.Upload.ToString();
             }
             //HACK: replace with a System.Uri comparison or Path.GetFullPath to prevent against canonicalization attacks.  BD
-            else if (Utility.HasValue(ThumbnailSubdirectory) && this.thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
+            else if (Utility.HasValue(ThumbnailSubdirectory) && _thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.Internal.ToString();
 
-                if (ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(this.thumbnailUrl))))
+                if (ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(_thumbnailUrl))))
                 {
-                    ddlThumbnailLibrary.SelectedValue = Path.GetFileName(this.thumbnailUrl);
+                    ddlThumbnailLibrary.SelectedValue = Path.GetFileName(_thumbnailUrl);
                     mvThumbnailImage.SetActiveView(vwInternal);
                 }
                 else
@@ -105,7 +105,7 @@ namespace Engage.Dnn.Publish.Controls
             else
             {
                 rblThumbnailImage.SelectedValue = ThumbnailImageType.External.ToString();
-                txtThumbnailUrl.Text = this.thumbnailUrl;
+                txtThumbnailUrl.Text = _thumbnailUrl;
                 mvThumbnailImage.SetActiveView(vwExternal);
             }
         }
@@ -151,7 +151,7 @@ namespace Engage.Dnn.Publish.Controls
 
                 fileThumbnail.PostedFile.SaveAs(Path.Combine(path, filename + extension));
 
-                this.thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), filename + extension);
+                _thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), filename + extension);
 
                 InitializeThumbnailControl();
             }
@@ -191,7 +191,7 @@ namespace Engage.Dnn.Publish.Controls
 		#endregion
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string thumbnailUrl;
+        private string _thumbnailUrl;
         public string ThumbnailUrl
         {
             get
@@ -202,13 +202,13 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     return ctlMediaFile.Url;
                 }
-                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
+                if (rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
                 {
-                    return Path.Combine(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), this.ddlThumbnailLibrary.SelectedValue);
+                    return Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), ddlThumbnailLibrary.SelectedValue);
                 }
-                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
+                if (rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
                 {
-                    return this.txtThumbnailUrl.Text;
+                    return txtThumbnailUrl.Text;
                 }
                 return null;
             }
@@ -224,7 +224,7 @@ namespace Engage.Dnn.Publish.Controls
                 }
                 else
                 {
-                    this.thumbnailUrl = value;
+                    _thumbnailUrl = value;
                 }
                 
             }

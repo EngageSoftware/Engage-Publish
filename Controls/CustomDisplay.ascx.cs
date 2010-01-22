@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -34,32 +34,32 @@ namespace Engage.Dnn.Publish.Controls
 
     public partial class CustomDisplay : ModuleBase, IActionable
     {
-        private CustomDisplaySettings customDisplaySettings;
+        private CustomDisplaySettings _customDisplaySettings;
 
         protected Boolean Visibility;
         protected string EditText;
-        private int categoryId;
-        private string qsTags;
-        private ArrayList tagQuery;
+        private int _categoryId;
+        private string _qsTags;
+        private ArrayList _tagQuery;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool usePaging;// = false;
+        private bool _usePaging;// = false;
         public bool UsePaging
         {
             [DebuggerStepThrough]
-            get { return usePaging; }
+            get { return _usePaging; }
             [DebuggerStepThrough]
-            set { usePaging = value; }
+            set { _usePaging = value; }
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool useCustomSort;// = false;
+        private bool _useCustomSort;// = false;
         public bool UseCustomSort
         {
             [DebuggerStepThrough]
-            get { return useCustomSort; }
+            get { return _useCustomSort; }
             [DebuggerStepThrough]
-            set { useCustomSort = value; }
+            set { _useCustomSort = value; }
         }
 
 
@@ -77,14 +77,14 @@ namespace Engage.Dnn.Publish.Controls
                 string tags = Request.QueryString["Tags"];
                 if (tags != null)
                 {
-                    qsTags = tags;
+                    _qsTags = tags;
                     char[] seperator = { '-' };
-                    ArrayList tagList = Tag.ParseTags(qsTags, PortalId, seperator, false);
-                    tagQuery = new ArrayList(tagList.Count);
+                    ArrayList tagList = Tag.ParseTags(_qsTags, PortalId, seperator, false);
+                    _tagQuery = new ArrayList(tagList.Count);
                     foreach (Tag tg in tagList)
                     {
                         //create a list of tagids to query the database
-                        tagQuery.Add(tg.TagId);
+                        _tagQuery.Add(tg.TagId);
                     }
                 }
             }
@@ -101,13 +101,13 @@ namespace Engage.Dnn.Publish.Controls
             RecordView();
 
             //SetPageTitle();
-            categoryId = ItemId;
-            customDisplaySettings = new CustomDisplaySettings(Settings, TabModuleId);
+            _categoryId = ItemId;
+            _customDisplaySettings = new CustomDisplaySettings(Settings, TabModuleId);
 
-            UsePaging = customDisplaySettings.AllowPaging;
-            UseCustomSort = customDisplaySettings.UseCustomSort;
+            UsePaging = _customDisplaySettings.AllowPaging;
+            UseCustomSort = _customDisplaySettings.UseCustomSort;
 
-            if (customDisplaySettings.GetParentFromQueryString)
+            if (_customDisplaySettings.GetParentFromQueryString)
             {
                 //CHECK IF THERE'S ANYTHING IN THE QS AND REACT
 
@@ -117,19 +117,19 @@ namespace Engage.Dnn.Publish.Controls
                     int itemId;
                     if (int.TryParse(o.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out itemId))
                     {
-                        //we need to load the children, rather than siblings if customDisplaySettings.GetRelatedChildren is enabled and the itemid is for a category, not an article
-                        if (customDisplaySettings.GetRelatedChildren && Item.GetItemType(itemId) == ItemType.Category.Name)
+                        //we need to load the children, rather than siblings if _customDisplaySettings.GetRelatedChildren is enabled and the itemid is for a category, not an article
+                        if (_customDisplaySettings.GetRelatedChildren && Item.GetItemType(itemId) == ItemType.Category.Name)
                         {
-                            categoryId = itemId;
+                            _categoryId = itemId;
                         }
                         //otherwise we're going to get the parent category for the itemid passed in. 
                         else
-                            categoryId = Category.GetParentCategory(itemId, PortalId);
+                            _categoryId = Category.GetParentCategory(itemId, PortalId);
                     }
                 }
             }
 
-            if (customDisplaySettings.EnableRss)
+            if (_customDisplaySettings.EnableRss)
             {
 
                 //TODO: replace the hyperlink control on the display side and insert our Link/IMAGE dynamically so we can set the alt text.
@@ -146,9 +146,9 @@ namespace Engage.Dnn.Publish.Controls
                 lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
                
 
-                if (AllowTags && tagQuery != null && tagQuery.Count > 0)
+                if (AllowTags && _tagQuery != null && _tagQuery.Count > 0)
                 {
-                    lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", qsTags);
+                    lnkRss.NavigateUrl = GetRssLinkUrl(PortalId, "TagFeed", _qsTags);
                     SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                 }
                 else
@@ -164,7 +164,7 @@ namespace Engage.Dnn.Publish.Controls
                     else
                     {
                         //TODO: configure the # of items for an RSS feed
-                        lnkRss.NavigateUrl = GetRssLinkUrl(categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
+                        lnkRss.NavigateUrl = GetRssLinkUrl(_categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
                         SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                     }
 
@@ -192,7 +192,7 @@ namespace Engage.Dnn.Publish.Controls
 
             try
             {
-                if (customDisplaySettings.ItemTypeId == -2)
+                if (_customDisplaySettings.ItemTypeId == -2)
                 {
                     lblMessage.Text = Localization.GetString("SetupItemType", LocalResourceFile);
                     return;
@@ -201,18 +201,18 @@ namespace Engage.Dnn.Publish.Controls
                 lstItems.DataSource = GetData();
                 lstItems.DataBind();
 
-                if ((customDisplaySettings.ShowParent || customDisplaySettings.ShowParentDescription) && categoryId != -1)
+                if ((_customDisplaySettings.ShowParent || _customDisplaySettings.ShowParentDescription) && _categoryId != -1)
                 {
                     
-                    Category parentCategory = Category.GetCategory(categoryId, PortalId);
-                    if (customDisplaySettings.ShowParent)
+                    Category parentCategory = Category.GetCategory(_categoryId, PortalId);
+                    if (_customDisplaySettings.ShowParent)
                     {
                         divParentCategoryName.Visible = true;
                         lblCategory.Text = parentCategory.Name;
                     }
 
                     //show the category description if enabled.
-                    if (customDisplaySettings.ShowParentDescription)
+                    if (_customDisplaySettings.ShowParentDescription)
                     {
                         divParentCategoryDescription.Visible = true;
                         lblCategoryDescription.Text = Utility.ReplaceTokens(parentCategory.Description);
@@ -250,34 +250,34 @@ namespace Engage.Dnn.Publish.Controls
 
                 if (pnlThumbnail != null)
                 {
-                    pnlThumbnail.Visible = customDisplaySettings.DisplayOptionThumbnail;
+                    pnlThumbnail.Visible = _customDisplaySettings.DisplayOptionThumbnail;
                 }
                 if (pnlDescription != null)
                 {
-                    pnlDescription.Visible = customDisplaySettings.DisplayOptionAbstract;
+                    pnlDescription.Visible = _customDisplaySettings.DisplayOptionAbstract;
                 }
                 if (pnlReadMore != null)
                 {
-                    pnlReadMore.Visible = customDisplaySettings.DisplayOptionReadMore;
+                    pnlReadMore.Visible = _customDisplaySettings.DisplayOptionReadMore;
                 }
 
                 if (pnlStats != null)
                 {
-                    pnlStats.Visible = customDisplaySettings.DisplayOptionStats; 
+                    pnlStats.Visible = _customDisplaySettings.DisplayOptionStats; 
                 }
                 if (pnlDate != null)
                 {
-                    pnlDate.Visible = customDisplaySettings.DisplayOptionDate; //(DataDisplayFormat == ArticleViewOption.Thumbnail || DataDisplayFormat == ArticleViewOption.Abstract);
+                    pnlDate.Visible = _customDisplaySettings.DisplayOptionDate; //(DataDisplayFormat == ArticleViewOption.Thumbnail || DataDisplayFormat == ArticleViewOption.Abstract);
                 }
                 if (pnlAuthor != null)
                 {
-                    pnlAuthor.Visible = customDisplaySettings.DisplayOptionAuthor;
+                    pnlAuthor.Visible = _customDisplaySettings.DisplayOptionAuthor;
                 }
 
                 if (pnlTitle != null)
                 {
                     
-                    pnlTitle.Visible = customDisplaySettings.DisplayOptionTitle;
+                    pnlTitle.Visible = _customDisplaySettings.DisplayOptionTitle;
                    
                 }
                 //if (pnlCategory != null)
@@ -324,17 +324,17 @@ namespace Engage.Dnn.Publish.Controls
         {
             DataTable dt = GetDataTable();
 
-            //customDisplaySettings.GetRelatedChildren
-            if (customDisplaySettings.GetParentFromQueryString)
+            //_customDisplaySettings.GetRelatedChildren
+            if (_customDisplaySettings.GetParentFromQueryString)
             {
                 if (dt.Rows.Count < 1)
                 {
                     //if we got here we have a category list that didn't return anything, instead of using the querystring's parent let's load the module setting
-                    categoryId = ItemId;
+                    _categoryId = ItemId;
                     dt = GetDataTable();
                 }
             }
-            if (UsePaging && tagQuery == null)
+            if (UsePaging && _tagQuery == null)
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -356,7 +356,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private void BuildPageList(int totalItems)
         {
-            float numberOfPages = totalItems / (float)customDisplaySettings.MaxDisplayItems;
+            float numberOfPages = totalItems / (float)_customDisplaySettings.MaxDisplayItems;
             int intNumberOfPages = Convert.ToInt32(numberOfPages);
             if (numberOfPages > intNumberOfPages)
             {
@@ -411,24 +411,24 @@ namespace Engage.Dnn.Publish.Controls
             //setup the caching for CustomDisplay
 
             string cacheKey = Utility.CacheKeyPublishCustomDisplay +
-                    customDisplaySettings.SortOption.Replace(" ", string.Empty).ToString(CultureInfo.InvariantCulture) +
-                        categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" 
-                        + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture)
-                        + "ItemType" + customDisplaySettings.ItemTypeId
+                    _customDisplaySettings.SortOption.Replace(" ", string.Empty).ToString(CultureInfo.InvariantCulture) +
+                        _categoryId.ToString(CultureInfo.InvariantCulture) + "PageSize" 
+                        + _customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture)
+                        + "ItemType" + _customDisplaySettings.ItemTypeId
                         + "PageId" + PageId.ToString(CultureInfo.InvariantCulture);
             var dt = DataCache.GetCache(cacheKey) as DataTable;
             //check for tags
-            if (AllowTags && tagQuery != null && tagQuery.Count > 0)
+            if (AllowTags && _tagQuery != null && _tagQuery.Count > 0)
             {
                 string tagCacheKey = Utility.CacheKeyPublishTag + PortalId.ToString(CultureInfo.InvariantCulture) 
-                    + customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture)
-                    + "PageSize" + customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) 
+                    + _customDisplaySettings.ItemTypeId.ToString(CultureInfo.InvariantCulture)
+                    + "PageSize" + _customDisplaySettings.MaxDisplayItems.ToString(CultureInfo.InvariantCulture) 
                     + "PageId" + PageId.ToString(CultureInfo.InvariantCulture)
-                    + qsTags; // +"PageId";
+                    + _qsTags; // +"PageId";
                 dt = DataCache.GetCache(tagCacheKey) as DataTable;
                 if (dt == null)
                 {
-                    dt = Tag.GetItemsFromTagsPaging(PortalId, tagQuery, customDisplaySettings.MaxDisplayItems, PageId - 1, SortOrder());
+                    dt = Tag.GetItemsFromTagsPaging(PortalId, _tagQuery, _customDisplaySettings.MaxDisplayItems, PageId - 1, SortOrder());
                     //dt = Tag.GetItemsFromTags(PortalId, tagQuery);
 
                     DataCache.SetCache(tagCacheKey, dt, DateTime.Now.AddMinutes(CacheTime));
@@ -438,26 +438,26 @@ namespace Engage.Dnn.Publish.Controls
 
             if (dt == null)
             {
-                if (customDisplaySettings.SortOption == CustomDisplaySettings.MostPopularSort)
+                if (_customDisplaySettings.SortOption == CustomDisplaySettings.MostPopularSort)
                 {
-                    dt = DataProvider.Instance().GetMostPopular(categoryId, customDisplaySettings.ItemTypeId, customDisplaySettings.MaxDisplayItems, PortalId);
+                    dt = DataProvider.Instance().GetMostPopular(_categoryId, _customDisplaySettings.ItemTypeId, _customDisplaySettings.MaxDisplayItems, PortalId);
                 }
-                else if (categoryId != -1 && categoryId != TopLevelCategoryItemType.Category.GetId())
+                else if (_categoryId != -1 && _categoryId != TopLevelCategoryItemType.Category.GetId())
                 {
-                    dt = Category.GetChildrenInCategoryPaging(categoryId, customDisplaySettings.ItemTypeId, customDisplaySettings.MaxDisplayItems, PortalId, UseCustomSort, true, SortOrder(), PageId - 1, customDisplaySettings.MaxDisplayItems);
+                    dt = Category.GetChildrenInCategoryPaging(_categoryId, _customDisplaySettings.ItemTypeId, _customDisplaySettings.MaxDisplayItems, PortalId, UseCustomSort, true, SortOrder(), PageId - 1, _customDisplaySettings.MaxDisplayItems);
                 }
                 else //top level category
                 {
-                    dt = Category.GetChildrenInCategoryPaging(TopLevelCategoryItemType.Category.GetId(), customDisplaySettings.ItemTypeId, customDisplaySettings.MaxDisplayItems, PortalId, customDisplaySettings.UseCustomSort, true, SortOrder(), PageId - 1, customDisplaySettings.MaxDisplayItems);
+                    dt = Category.GetChildrenInCategoryPaging(TopLevelCategoryItemType.Category.GetId(), _customDisplaySettings.ItemTypeId, _customDisplaySettings.MaxDisplayItems, PortalId, _customDisplaySettings.UseCustomSort, true, SortOrder(), PageId - 1, _customDisplaySettings.MaxDisplayItems);
                 }
 
-                //else if (categoryId != -1)
+                //else if (_categoryId != -1)
                 //{
-                //    dt = DataProvider.Instance().GetChildrenInCategory(categoryId, customDisplaySettings.ItemTypeId, customDisplaySettings.MaxDisplayItems, PortalId, SortOrder());
+                //    dt = DataProvider.Instance().GetChildrenInCategory(_categoryId, _customDisplaySettings.ItemTypeId, _customDisplaySettings.MaxDisplayItems, PortalId, SortOrder());
                 //}
                 //else //top level category
                 //{
-                //    DataSet ds = DataProvider.Instance().GetItems(TopLevelCategoryItemType.Category.GetId(), PortalId, RelationshipType.CategoryToTopLevelCategory.GetId(), customDisplaySettings.ItemTypeId);
+                //    DataSet ds = DataProvider.Instance().GetItems(TopLevelCategoryItemType.Category.GetId(), PortalId, RelationshipType.CategoryToTopLevelCategory.GetId(), _customDisplaySettings.ItemTypeId);
                 //    dt = ds.Tables[0];
                 //    dt = FormatDataTable(dt);
                 //}
@@ -476,13 +476,13 @@ namespace Engage.Dnn.Publish.Controls
         private DataTable SortTable(DataTable dt)
         {
             string sortDirection = "Asc";
-            if (customDisplaySettings.SortDirection == "1")
+            if (_customDisplaySettings.SortDirection == "1")
             {
                 sortDirection = "Desc";
             }
 
             string column;
-            switch (customDisplaySettings.SortOption)
+            switch (_customDisplaySettings.SortOption)
             {
                 case (CustomDisplaySettings.DateSort):
                     column = "CreatedDate";
@@ -510,13 +510,13 @@ namespace Engage.Dnn.Publish.Controls
         private string SortOrder()
         {
             string sortDirection = "Asc";
-            if (customDisplaySettings.SortDirection == "1")
+            if (_customDisplaySettings.SortDirection == "1")
             {
                 sortDirection = "Desc";
             }
 
             string column;
-            switch (customDisplaySettings.SortOption)
+            switch (_customDisplaySettings.SortOption)
             {
                 case (CustomDisplaySettings.DateSort):
                     column = "CreatedDate";
@@ -580,7 +580,7 @@ namespace Engage.Dnn.Publish.Controls
             if (date != null)
             {
                 DateTime dt = Convert.ToDateTime(date, CultureInfo.InvariantCulture);
-                return dt.ToString(customDisplaySettings.DateFormat, CultureInfo.CurrentCulture);
+                return dt.ToString(_customDisplaySettings.DateFormat, CultureInfo.CurrentCulture);
             }
             return string.Empty;
         }
@@ -613,10 +613,9 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (commentCount != null)
             {
-                string result = commentCount.ToString();
                 return String.Format(Localization.GetString("CommentStats", LocalResourceFile),commentCount);
             }
-            return string.Empty;
+              return string.Empty;
         }
 
         /// <summary>
@@ -626,7 +625,6 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (viewCount != null)
             {
-                string result = viewCount.ToString();
                 return String.Format(Localization.GetString("ViewStats", LocalResourceFile), viewCount);
             }
             return string.Empty;

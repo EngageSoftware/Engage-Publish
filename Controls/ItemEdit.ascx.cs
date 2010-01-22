@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -45,7 +45,7 @@ namespace Engage.Dnn.Publish.Controls
 
             if (Utility.HasValue(VersionInfoObject.Url))
             {
-                this.ctlUrlSelection.Url = VersionInfoObject.Url;
+                ctlUrlSelection.Url = VersionInfoObject.Url;
                 chkNewWindow.Checked    = VersionInfoObject.NewWindow;
                 pnlUrlSelection.Visible = true;
                 chkUrlSelection.Checked = true;
@@ -57,7 +57,7 @@ namespace Engage.Dnn.Publish.Controls
 
         private void InitializeComponent()
 		{
-			this.Load += this.Page_Load;
+			Load += Page_Load;
 		}
 
         private void LocalizeCollapsePanels()
@@ -81,14 +81,14 @@ namespace Engage.Dnn.Publish.Controls
 
                     LoadAuthorsList();
                     //set author
-				    this.ddlAuthor.SelectedValue = this.VersionInfoObject.AuthorUserId > 0
-				                                           ? this.VersionInfoObject.AuthorUserId.ToString()
-				                                           : this.UserId.ToString();
+				    ddlAuthor.SelectedValue = VersionInfoObject.AuthorUserId > 0
+				                                           ? VersionInfoObject.AuthorUserId.ToString()
+				                                           : UserId.ToString();
 
 				    //configure the author name (Text) if defined
                     //chkShowAuthor
                     ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "lblAuthorName", "Text", PortalId);
-                    this.txtAuthorName.Text = auNameSetting != null ? auNameSetting.PropertyValue : this.ddlAuthor.SelectedItem.Text.Trim();
+                    txtAuthorName.Text = auNameSetting != null ? auNameSetting.PropertyValue : ddlAuthor.SelectedItem.Text.Trim();
                     
 
                     if (AllowRichTextDescriptions)
@@ -145,7 +145,7 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         txtEndDate.Text = Utility.GetCurrentCultureDateTime(VersionInfoObject.EndDate);
                     }
-					txtName.Text = this.VersionInfoObject.Name;
+					txtName.Text = VersionInfoObject.Name;
 
                     
                     thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
@@ -158,7 +158,7 @@ namespace Engage.Dnn.Publish.Controls
                     VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
 
                     //define author's name to display
-                    authorName = txtAuthorName.Text.Trim();
+                    _authorName = txtAuthorName.Text.Trim();
 
                     VersionInfoObject.MetaKeywords = txtMetaKeywords.Text;
                     VersionInfoObject.MetaDescription = txtMetaDescription.Text;
@@ -232,7 +232,7 @@ namespace Engage.Dnn.Publish.Controls
         protected void chkUrlSelection_CheckedChanged(object sender, EventArgs e)
         {
             pnlUrlSelection.Visible = chkUrlSelection.Checked;
-            this.ChangeParentPage();
+            ChangeParentPage();
         }
 
         protected void ChangeParentPage()
@@ -297,7 +297,7 @@ namespace Engage.Dnn.Publish.Controls
                     returnVal = end > start;
                     ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
                 }
-                else if (start == DateTime.MinValue && Utility.HasValue(this.txtEndDate.Text))
+                else if (start == DateTime.MinValue && Utility.HasValue(txtEndDate.Text))
                 {
                     returnVal = false;
                     ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
@@ -313,18 +313,18 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string errorMessage = string.Empty;
+        private string _errorMessage = string.Empty;
         public string ErrorMessage
         {
             [DebuggerStepThrough]
             get
             {
-                return errorMessage;
+                return _errorMessage;
             }
             [DebuggerStepThrough]
             set
             {
-                errorMessage = value;
+                _errorMessage = value;
             }
         }
 
@@ -337,18 +337,18 @@ namespace Engage.Dnn.Publish.Controls
         }
 
 
-        private string authorName = string.Empty;
+        private string _authorName = string.Empty;
         public string AuthorName
         {
             [DebuggerStepThrough]
             get
             {
-                return authorName;
+                return _authorName;
             }
             [DebuggerStepThrough]
             set
             {
-                authorName = value;
+                _authorName = value;
             }
         }
 
@@ -364,10 +364,10 @@ namespace Engage.Dnn.Publish.Controls
 			    return new ModuleActionCollection
 			               {
 			                       {
-			                               this.GetNextActionID(),
+			                               GetNextActionID(),
 			                               Localization.GetString(
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-			                               this.LocalResourceFile),
+			                               LocalResourceFile),
 			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
 			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
 			                               }
@@ -378,7 +378,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtAuthorName.Text = this.ddlAuthor.SelectedItem.Text;
+            txtAuthorName.Text = ddlAuthor.SelectedItem.Text;
         }
 	}
 }

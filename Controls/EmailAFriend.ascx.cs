@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -21,7 +21,7 @@ namespace Engage.Dnn.Publish.Controls
 		#region Event Handlers
         protected override void OnInit(EventArgs e)
         {
-            this.Load += Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
         }
 
@@ -52,7 +52,7 @@ namespace Engage.Dnn.Publish.Controls
                 string subject = Localization.GetString("EmailAFriendSubject", LocalResourceFile);
                 subject = subject.Replace("[Engage:Portal]", PortalSettings.PortalName);
 
-                Mail.SendMail(this.PortalSettings.Email, txtTo.Text.Trim(), "", subject, message, "", "HTML", "", "", "", "");
+                Mail.SendMail(PortalSettings.Email, txtTo.Text.Trim(), "", subject, message, "", "HTML", "", "", "", "");
                 ClearCommentInput();
                 mpeEmailAFriend.Hide();
                 

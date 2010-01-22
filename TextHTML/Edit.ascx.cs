@@ -1,5 +1,5 @@
 //Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2009
+//Copyright (c) 2004-2010
 //by Engage Software ( http://www.engagesoftware.com )
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -24,7 +24,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
         override protected void OnInit(EventArgs e)
         {
-            this.Load += this.Page_Load;
+            Load += Page_Load;
             base.OnInit(e);
         }
 
@@ -70,7 +70,7 @@ namespace Engage.Dnn.Publish.TextHtml
 
                     //we need to fill the versioninfoobject because that's what the buildversionsurl needs to use
 
-                    VersionInfoObject = new Article {ItemId = this.ItemId};
+                    VersionInfoObject = new Article {ItemId = ItemId};
 
                     //there aren't any approved versions of this article, provide a link to the versions page.
                     publishTextHTMLEntry.Visible = false;
@@ -86,7 +86,7 @@ namespace Engage.Dnn.Publish.TextHtml
             
             //replace name with the Page Name and Module Name
             var mc = new ModuleController();
-            ModuleInfo mi = mc.GetModule(this.ModuleId, this.TabId);
+            ModuleInfo mi = mc.GetModule(ModuleId, TabId);
             articleName.Append(mi.ModuleTitle);
             
             if (articleName.Length < 1)
@@ -122,18 +122,18 @@ namespace Engage.Dnn.Publish.TextHtml
 
                 a.ModuleId = ModuleId;
 
-                a.ApprovalStatusId = this.UseApprovals ? this.epApprovals.ApprovalStatusId : ApprovalStatus.Approved.GetId();
+                a.ApprovalStatusId = UseApprovals ? epApprovals.ApprovalStatusId : ApprovalStatus.Approved.GetId();
 
                 a.Save(UserId);
                 
                 //this is likely unneccesary as we already have the itemid set in the settings
-                mc.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
+                mc.UpdateTabModuleSetting(TabModuleId, "ItemId", a.ItemId.ToString());
 
-                mc.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
+                mc.UpdateTabModuleSetting(TabModuleId, "DisplayType", "texthtml");
             }
             else
             {
-                Article a = Article.Create(articleName.ToString(), articleDescription, this.teArticleText.Text, UserId, DefaultTextHtmlCategory, ModuleId, PortalId);
+                Article a = Article.Create(articleName.ToString(), articleDescription, teArticleText.Text, UserId, DefaultTextHtmlCategory, ModuleId, PortalId);
                 a.DisplayTabId = TabId;
 
                 //force display on specific page
@@ -143,11 +143,11 @@ namespace Engage.Dnn.Publish.TextHtml
                 a.VersionSettings[itemVersionSetting].PropertyValue = "true";
 
                 a.ModuleId = ModuleId; 
-                a.ApprovalStatusId = this.UseApprovals ? this.epApprovals.ApprovalStatusId : ApprovalStatus.Approved.GetId();
+                a.ApprovalStatusId = UseApprovals ? epApprovals.ApprovalStatusId : ApprovalStatus.Approved.GetId();
 
                 a.Save(UserId);
-                mc.UpdateTabModuleSetting(this.TabModuleId, "ItemId", a.ItemId.ToString());
-                mc.UpdateTabModuleSetting(this.TabModuleId, "DisplayType", "texthtml");
+                mc.UpdateTabModuleSetting(TabModuleId, "ItemId", a.ItemId.ToString());
+                mc.UpdateTabModuleSetting(TabModuleId, "DisplayType", "texthtml");
             }
 
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
