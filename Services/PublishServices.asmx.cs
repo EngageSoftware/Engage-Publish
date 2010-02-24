@@ -9,6 +9,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
+using Engage.Dnn.Publish.Util;
+
 namespace Engage.Dnn.Publish.Services
 {
     using System;
@@ -64,12 +66,11 @@ namespace Engage.Dnn.Publish.Services
             Publish.Category category = Publish.Category.GetCategory(categoryId);
             if (category != null)
             {
-                foreach (DataRow articleRow in Article.GetArticles(category.ItemId, category.PortalId).Rows)
+                foreach (DataRow articleRow in Item.GetAllChildren(ItemType.Article.GetId(), category.ItemId, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), category.PortalId).Tables[0].Rows)//Article.GetArticles(category.ItemId, category.PortalId).Rows)
                 {
                     articles.Add(new Pair(articleRow["name"].ToString(), (int)articleRow["itemId"]));
                 }
             }
-
             return articles.ToArray();
         }
     }

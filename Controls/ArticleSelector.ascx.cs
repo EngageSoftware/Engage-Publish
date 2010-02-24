@@ -133,13 +133,14 @@ namespace Engage.Dnn.Publish.Controls
         }
 
         /// <summary>
-        /// Fills <see cref="ArticlesDropDownList"/> with the list of articles in the category selected in <see cref="CategoriesDropDownList"/>.
+        /// Fills <see cref="ArticlesDropDownList"/> with the list of articles in the category selected in <see cref="CategoriesDropDownList"/>. Only called on pageload, all other requests use the webservice.
         /// </summary>
         private void FillArticlesDropDown()
         {
             if (CategoryId.HasValue)
             {
-                ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
+                //ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
+                ArticlesDropDownList.DataSource = Item.GetAllChildren(ItemType.Article.GetId(), CategoryId.Value, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), PortalId);
                 ArticlesDropDownList.DataBind();
             }
         }

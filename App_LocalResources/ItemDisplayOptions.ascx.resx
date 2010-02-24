@@ -294,4 +294,7 @@
   <data name="lblEnableWLWSupport.Text" xml:space="preserve">
     <value>Enable Windows Live Writer Support:</value>
   </data>
+  <data name="Stats.Text" xml:space="preserve">
+    <value>Stats</value>
+  </data>
 </root>
