@@ -136,12 +136,13 @@ namespace Engage.Dnn.Publish.Services
         bool IMetaWeblog.UpdatePost(string postid, string username, string password,
             Post post, bool publish)
         {
+
             LocatePortal(Context.Request);
             DotNetNuke.Entities.Users.UserInfo ui = Authenticate(username, password);
             if (ui.UserID > 0)
             {
                 
-                Article a = Article.GetArticle(Convert.ToInt32(postid), _portalId);
+                Article a = Article.GetArticle(Convert.ToInt32(postid), _portalId, true, true,true);
 
                 a.Description = post.description;
                 a.ArticleText = post.description;

@@ -1,0 +1,15 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spRunPublishStats]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}Publish_spRunPublishStats]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spRunPublishStats]
+
+AS 
+
+update {databaseOwner}[{objectQualifier}publish_item]
+set commentcount = (select count(*) from {databaseOwner}[{objectQualifier}publish_vwcomments] vc where vc.itemid = pi.itemid and approvalStatusId = (select approvalStatusId from {databaseOwner}{objectQualifier}Publish_ApprovalStatusType where ApprovalStatusName='Approved'))
+, viewcount = (select count(itemid) from {databaseOwner}[{objectQualifier}publish_itemview] iv where iv.itemid = pi.itemid) 
+from {databaseOwner}[{objectQualifier}publish_item] pi
+
+GO
+

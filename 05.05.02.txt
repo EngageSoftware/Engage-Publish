@@ -1,9 +1,0 @@
-bin\App_SubCode_EngagePublish.dll
-bin\DesktopModules.EngagePublish.Admin.dll
-bin\DesktopModules.EngagePublish.ArticleControls.dll
-bin\DesktopModules.EngagePublish.CategoryControls.dll
-bin\DesktopModules.EngagePublish.Controls.dll
-bin\DesktopModules.EngagePublish.dll
-desktopmodules\engagepublish\test.aspx
-desktopmodules\engagepublish\app_globalresources\globalresources.resx
-desktopmodules\engagepublish\app_globalresources
