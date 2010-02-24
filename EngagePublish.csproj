@@ -1051,6 +1051,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="05.05.04.txt" />
     <Content Include="Admin\Tools\ResetItemStatistics.ascx" />
     <Content Include="Controls\App_LocalResources\ArticleSelector.ascx.resx">
       <SubType>Designer</SubType>
@@ -1058,7 +1059,6 @@
     <Content Include="Admin\Tools\App_LocalResources\ResetItemStatistics.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="05.05.04.txt" />
     <EmbeddedResource Include="Scripts\ArticleSelector.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
