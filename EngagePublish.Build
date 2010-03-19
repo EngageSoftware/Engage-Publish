@@ -3,8 +3,6 @@
 <!--EXTERNAL_PROPERTIES: sys.env.windir-->
 <project name="EngagePublish" default="BuildAndZip">
   <target name="init">
-    <property name="nant.settings.currentframework" value="net-2.0" />
-
     <!-- This is where your packaged zips will build to from within the module folder -->
     <property name="package.dir" value="package" overwrite="false" />
 
