@@ -493,12 +493,12 @@ drop table {databaseOwner}[{objectQualifier}Publish_RelationshipType]
 GO
 
 
-IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]
 GO
 
 
-IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spDeleteItem]') and OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spDeleteItem]
 GO
 

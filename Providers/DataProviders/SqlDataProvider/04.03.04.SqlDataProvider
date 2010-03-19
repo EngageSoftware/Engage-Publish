@@ -1,5 +1,5 @@
 ﻿
-IF  EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump]
 GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spUpdateVenexusBrainDump](@itemId int, @IndexTitle nvarchar(512), @IndexContent ntext, @IndexWashedContent ntext, @PortalId int, @IndexUrl varchar(1024)) AS
