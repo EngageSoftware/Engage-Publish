@@ -19,7 +19,7 @@ namespace Engage.Dnn.Publish.Controls
     using DotNetNuke.Services.Localization;
     using Util;
 
-    public partial class CustomDisplayOptions : ModuleSettingsBase
+    public partial class CustomDisplayOptions : OverrideableDisplayOptionsBase
     {
 
         private CustomDisplaySettings _customDisplaySettings;

@@ -22,7 +22,7 @@ namespace Engage.Dnn.Publish.ArticleControls
     /// <summary>
     /// A control for setting the settings of the Article Display type
     /// </summary>
-    public partial class ArticleDisplayOptions : ModuleSettingsBase
+    public partial class ArticleDisplayOptions : OverrideableDisplayOptionsBase
     {
         private bool AllowPhotoGalleryDisplay
         {
@@ -430,7 +430,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             this.FillDropDowns();
 
-            if (!this.IsPostBack)
+            if (!this.IsPostBack || this.ForceSetInitialValues)
             {
                 this.SetInitialValues();
             }

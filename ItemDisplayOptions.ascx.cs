@@ -1,6 +1,6 @@
 // <copyright file="ItemDisplayOptions.ascx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2010
+// Copyright (c) 2004-2010
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -357,13 +357,14 @@ namespace Engage.Dnn.Publish
 
         private ModuleSettingsBase CreateSettingsControl(string controlName)
         {
-            var settingsControl = (ModuleSettingsBase)LoadControl(controlName);
+            var settingsControl = (OverrideableDisplayOptionsBase)LoadControl(controlName);
             settingsControl.ModuleConfiguration = new ModuleController().GetModule(ModuleId, TabId);
 
             settingsControl.ModuleId = ModuleId;
             settingsControl.TabModuleId = TabModuleId;
 
             settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
+            settingsControl.ForceSetInitialValues = true;
             settingsControl.LoadSettings();
 
             return settingsControl;
