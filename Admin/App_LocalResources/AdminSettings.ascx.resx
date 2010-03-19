@@ -145,7 +145,7 @@
     <value>The role that will be emailed when a request for approval is made. This can be different than the Administrators Role, or can be set to the same role as admin.</value>
   </data>
   <data name="FirstTime.Text" xml:space="preserve">
-    <value>You'll need to configure some of the Engage: Publish options below in order to proceed &lt;br /&gt; For more information about Engage: Publish visit &lt;a href="http://www.engagesoftware.com" target=_blank&gt;EngageSoftare.com&lt;/a&gt;.&lt;br /&gt;</value>
+    <value>You'll need to configure some of the Engage: Publish options below in order to proceed &lt;br /&gt; For more information about Engage: Publish visit &lt;a href="http://www.engagesoftware.com" target=_blank&gt;EngageSoftware.com&lt;/a&gt;.&lt;br /&gt;</value>
   </data>
   <data name="lnkUpdate.Text" xml:space="preserve">
     <value>Save Settings</value>
