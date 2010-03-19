@@ -27,29 +27,6 @@ namespace Engage.Dnn.Publish.Data
 
         private static DataProvider _provider;
 
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
-        public static IDbConnection GetConnection()
-        {
-            const string ProviderType = "data";
-            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-
-            var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
-            string connectionString;
-            if (!string.IsNullOrEmpty(objProvider.Attributes["connectionStringName"])
-                && !string.IsNullOrEmpty(ConfigurationManager.AppSettings[objProvider.Attributes["connectionStringName"]]))
-            {
-                connectionString = ConfigurationManager.AppSettings[objProvider.Attributes["connectionStringName"]];
-            }
-            else
-            {
-                connectionString = objProvider.Attributes["connectionString"];
-            }
-
-            IDbConnection newConnection = new SqlConnection { ConnectionString = connectionString };
-            newConnection.Open();
-            return newConnection;
-        }
-
         public static DataProvider Instance()
         {
             if (_provider == null)
@@ -63,6 +40,9 @@ namespace Engage.Dnn.Publish.Data
 
             return _provider;
         }
+
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
+        public abstract IDbConnection GetConnection();
 
         public abstract void AddArticleVersion(
                 int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber);

@@ -14,6 +14,7 @@ namespace Engage.Dnn.Publish.Data
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
@@ -1660,6 +1661,14 @@ namespace Engage.Dnn.Publish.Data
         public override IDataReader GetComments(int itemId, int approvalStatusId)
         {
             return SqlHelper.ExecuteReader(this.ConnectionString, this.NamePrefix + "spGetComments", itemId, approvalStatusId);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
+        public override IDbConnection GetConnection()
+        {
+            var newConnection = new SqlConnection { ConnectionString = this.ConnectionString };
+            newConnection.Open();
+            return newConnection;
         }
 
         public override DataTable GetDataTable(string sql, int portalId)

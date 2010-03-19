@@ -96,7 +96,7 @@ namespace Engage.Dnn.Publish
 
         public override void Save(int authorId)
         {
-            IDbConnection newConnection = DataProvider.GetConnection();
+            IDbConnection newConnection = DataProvider.Instance().GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
 
             //int relationTypeId = RelationshipType.ItemToParentCategory.GetId();
@@ -137,7 +137,7 @@ namespace Engage.Dnn.Publish
 
         public override void UpdateApprovalStatus()
         {
-            IDbConnection newConnection = DataProvider.GetConnection();
+            IDbConnection newConnection = DataProvider.Instance().GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
             try
             {

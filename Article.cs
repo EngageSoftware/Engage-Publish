@@ -187,7 +187,7 @@ namespace Engage.Dnn.Publish
 
         public override void Save(int revisingUserId)
         {
-            IDbConnection newConnection = DataProvider.GetConnection();
+            IDbConnection newConnection = DataProvider.Instance().GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
 
             try
@@ -267,7 +267,7 @@ namespace Engage.Dnn.Publish
 
         public override void UpdateApprovalStatus()
         {
-            IDbConnection newConnection = DataProvider.GetConnection();
+            IDbConnection newConnection = DataProvider.Instance().GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
             try
             {

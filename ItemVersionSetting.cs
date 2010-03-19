@@ -116,7 +116,7 @@ namespace Engage.Dnn.Publish
 
         public void Save()
         {//used for adding an itemversionsetting to an existing article
-            IDbConnection newConnection = DataProvider.GetConnection();
+            IDbConnection newConnection = DataProvider.Instance().GetConnection();
             IDbTransaction trans = newConnection.BeginTransaction();
             AddItemVersionSetting(trans, ItemVersionId, ControlName, PropertyName, PropertyValue);
             trans.Commit();
