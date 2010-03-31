@@ -25,7 +25,7 @@ using System.Web.UI;
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyVersion("05.06.00.*")]
+[assembly: AssemblyVersion("05.06.01.*")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
