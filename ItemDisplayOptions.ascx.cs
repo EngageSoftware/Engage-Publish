@@ -357,14 +357,20 @@ namespace Engage.Dnn.Publish
 
         private ModuleSettingsBase CreateSettingsControl(string controlName)
         {
-            var settingsControl = (OverrideableDisplayOptionsBase)LoadControl(controlName);
+            var settingsControl = (ModuleSettingsBase)LoadControl(controlName);
             settingsControl.ModuleConfiguration = new ModuleController().GetModule(ModuleId, TabId);
 
             settingsControl.ModuleId = ModuleId;
             settingsControl.TabModuleId = TabModuleId;
 
             settingsControl.ID = Path.GetFileNameWithoutExtension(controlName);
-            settingsControl.ForceSetInitialValues = true;
+
+            var overrideableSettingsControl = settingsControl as OverrideableDisplayOptionsBase;
+            if (overrideableSettingsControl != null)
+            {
+                overrideableSettingsControl.ForceSetInitialValues = true;
+            }
+
             settingsControl.LoadSettings();
 
             return settingsControl;
