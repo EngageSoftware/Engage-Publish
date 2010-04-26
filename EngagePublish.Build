@@ -193,7 +193,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.02.txt" />
+        <include name="**/??.??.??.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Standard.txt" />
         <include name="**/*.dnn" />
@@ -226,7 +226,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.02.txt" />
+        <include name="**/??.??.??.txt" />
         <include name="**/ReadMe.txt" />        
         <include name="**/licenses/EULA-Professional.txt" />
         <include name="**/*.dnn" />
@@ -259,7 +259,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.02.txt" />
+        <include name="**/??.??.??.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
@@ -294,7 +294,7 @@
         <include name="**/SearchRedirector.ascx" />
         <include name="**/TagCloud.ascx" />
         <include name="**/View.ascx" />
-        <include name="**/05.05.02.txt" />
+        <include name="**/??.??.??.txt" />
         <include name="**/ReadMe.txt" />
         <include name="**/licenses/EULA-Enterprise.txt" />
         <include name="**/*.dnn" />
