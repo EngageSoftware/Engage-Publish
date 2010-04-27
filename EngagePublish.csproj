@@ -744,6 +744,11 @@
     <Content Include="ItemDisplayOptions.ascx" />
     <Content Include="ItemLink.aspx" />
     <Content Include="ItemPreview.ascx" />
+    <Content Include="Licenses\EULA-Trial.txt" />
+    <Content Include="Licenses\EULA-Trial.htm" />
+    <Content Include="Licenses\EULA-Standard.txt" />
+    <Content Include="Licenses\EULA-Professional.txt" />
+    <Content Include="Licenses\EULA-Enterprise.txt" />
     <Content Include="Licenses\EULA-Enterprise.htm" />
     <Content Include="Licenses\EULA-Professional.htm" />
     <Content Include="Licenses\EULA-Standard.htm" />

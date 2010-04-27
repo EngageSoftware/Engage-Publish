@@ -167,7 +167,7 @@
     </zip>
   </target>
   <target name="create-packages" description="For the given license and type, creates packages for DNN 4 and DNN 5">
-    <property name="licenseFile" value="EULA-${packageLicense}.htm"/>
+    <property name="licenseFile" value="EULA-${packageLicense}"/>
     <call target="switch-license"/>
 
     <foreach item="String" in="${versions}" delim="," property="dnnVersion">
@@ -177,17 +177,17 @@
   <target name="switch-license" description="Switches out the license file and updates the reference to it in the DNN 5 manifest file">
     <delete>
       <fileset>
-        <include name="${packageDirectory}/temp/package/EULA-*.htm"/>
+        <include name="${packageDirectory}/temp/package/EULA-*"/>
       </fileset>
     </delete>
     <copy todir="${packageDirectory}/temp/package" flatten="true">
       <fileset>
-        <include name="Licenses/${licenseFile}"/>
+        <include name="Licenses/${licenseFile}.*"/>
       </fileset>
     </copy>
 
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}" xpath="dotnetnuke/packages/package/license/@src"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src"/>
     </if>
   </target>
   <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
@@ -364,7 +364,7 @@
     <include name="**/*.xml" />
     <include name="**/*.xsd" />
     <include name="**/*.js" />
-    <exclude name="Licenses/EULA-*.htm"/>
+    <exclude name="Licenses/EULA-*"/>
     <exclude name="ReleaseNotes_*.htm"/>
     <exclude name="??.??.??.txt" />
     <exclude name="_ReSharper.*/**"/>
@@ -386,6 +386,9 @@
     <include name="**/*.dbml.layout"/>
     <include name="**/*.rpx"/>
     <include name="**/*.txt"/>
+    <include name="Licenses/EULA-*"/>
+    <include name="ReleaseNotes_*.htm"/>
+    <include name="??.??.??.txt" />
     <include name="MSBuild/*.dll"/>
     <include name="MSBuild/*.targets"/>
     <exclude name="**/obj/**"/>
