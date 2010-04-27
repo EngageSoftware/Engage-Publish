@@ -354,6 +354,12 @@
           <name>Engage.Dnn.UserFeedback.dll</name>
         </file>
         <file>
+          <name>Engage.Framework.dll</name>
+        </file>
+        <file>
+          <name>Engage.Dnn.Framework.dll</name>
+        </file>
+        <file>
           <name>AjaxControlToolkit.dll</name>
         </file> 
       </files>
