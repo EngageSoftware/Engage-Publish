@@ -30,6 +30,12 @@ namespace Engage.Dnn.Publish.Util
     /// </summary>
     public class FeaturesController : IPortable, ISearchable
     {
+#if TRIAL
+        /// <summary>
+        /// The license key for this module
+        /// </summary>
+        public static readonly Guid ModuleLicenseKey = new Guid("3520E5F9-EDBB-46EA-A377-107306B828C4");
+#endif
         #region IPortable Members
 
         /// <summary>

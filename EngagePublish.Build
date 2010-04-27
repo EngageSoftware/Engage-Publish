@@ -1,353 +1,394 @@
-<?xml version="1.0"?>
-<!-- targets to be executed, when omitted from command line default is run -->
-<!--EXTERNAL_PROPERTIES: sys.env.windir-->
-<project name="EngagePublish" default="BuildAndZip">
-  <target name="init">
-    <!-- This is where your packaged zips will build to from within the module folder -->
-    <property name="package.dir" value="package" overwrite="false" />
+<?xml version="1.0" encoding="utf-8" ?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Engage Build Script" basedir="." default="package">
+  <property name="projectName" value="Publish"/>
+  <property name="createTrialPackage" value="true"/>
+  <property name="trialPackageLicenseName" value="Trial"/>
+  <property name="versions" value="4,5"/>
+  <property name="licenses" value="Standard,Professional,Enterprise"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
+  <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
+  <property name="createSourcePackage" value="true"/>
+  <property name="sourcePackageLicenseName" value="Enterprise"/>
+  <property name="combineSourceWithInstallPackage" value="true"/>
+  <patternset id="dependencySourcePackages">
+    <include name="Engage.Framework_Source.zip"/>
+    <include name="Engage.Dnn.Framework_Source.zip"/>
+  </patternset>
+  <property name="projectDllName" value="Engage${projectName}.dll" />
+  <property name="solutionFile" value="Engage${projectName}_VS2008.sln"/>
+  <property name="binDirectory" value="..\..\bin" overwrite="false"/> <!-- binDirectory is readonly if set from the command line (i.e. during Team Build CI) -->
+  <property name="trialBinDirectory" value="${binDirectory}\..\trialBin"/>
+  <property name="currentBinDirectory" value="${binDirectory}"/>
+  <property name="projectDll" value="${binDirectory}\${projectDllName}"/>
+  <property name="trialProjectDll" value="${trialBinDirectory}\${projectDllName}"/>
+  <patternset id="projectAssemblies">
+    <include name="${projectDll}"/>
+  </patternset>
+  <patternset id="trialProjectAssemblies">
+    <include name="${trialProjectDll}"/>
+  </patternset>
+  
+  <property name="testBuild" value="true" overwrite="false"/> <!-- testBuild is true if building from Visual Studio, false from Team Build (CI) -->
+  <property name="buildTrial" value="false"/>
+  <property name="projectConfig" value="release"/>
+  <property name="projectConfig" value="Debug" if="${testBuild}"/>
+  <property name="zipLevel" value="9"/>
+  <property name="zipLevel" value="1" if="${testBuild}"/>
+  <property name="referencesDirectory" value="References"/>
+  <property name="packageDirectory" value="package"/>
+  <property name="packageName" value="Resources.zip"/>
 
-    <!-- This is where your resource.zip will be built so it can be zipped and distributed with the release install zips -->
-    <property name="resourcezip.dir" value="ResourceZip" />
-    <property name="bin.dir" value="../../bin" />
-    <property name="controls.dir" value="controls" />
-    <property name="localresource.dir" value="App_LocalResources" />
-    <property name="globalresource.dir" value="App_GlobalResources" />
+  <target name="package" description="Creates packages for this module, one for each value in the licenses and versions properties">
 
-    <property name="binZip" value="_Install" />
-    <property name="srcZip" value="_Source" />
+    <call target="build"/>
+    <call target="set-version"/>
+    <call target="clean-package-folder"/>
+    <call target="setup-package-files"/>
+    <call target="create-resources-zip"/>
 
-    <property name="rootWeb" value="http://localhost/" overwrite="false" />
-    <property name="webAlias" value="DotNetNuke_2" overwrite="false" />
-    <property name="verbose" value="false" overwrite="false" />
+    <property name="includeSource" value="false"/>
+    <foreach item="String" in="${licenses}" delim="," property="packageLicense">
+      <call target="create-packages"/>
+    </foreach>
 
-    <!-- ModuleName value should be set specific to the project -->
-    <property name="ModuleName" value="Publish"  overwrite="false"  />
-    <property name="subproject.name" value="Engage${ModuleName}"/>
-    <property name="module.dll" value="${bin.dir}/Engage${ModuleName}.dll" />
+    <if test="${createSourcePackage}">
+      <property name="includeSource" value="true"/>
+      <property name="packageLicense" value="${sourcePackageLicenseName}"/>
+      <call target="add-sources-to-resource-zip"/>
+      <call target="create-packages"/>
 
-    <property name="debug" value="false" overwrite="false" />
-    <property name="config" value="debug" if="${debug}" />
-    <property name="config" value="release" unless="${debug}" />
+      <call target="get-dependency-source"/>
 
-    <sysinfo failonerror="false" />
-
-    <if test="${verbose}">
-      <echo message="solutionName: ${subproject.name}" />
-      <echo message="debug:        ${debug}" />
-      <echo message="config:       ${config}" />
+      <if test="${combineSourceWithInstallPackage}">
+        <foreach item="String" in="${versions}" delim="," property="dnnVersion">
+          <call target="combine-source"/>
+        </foreach>
+      </if>
+    </if>
+    
+    <if test="${createTrialPackage}">
+      <property name="buildTrial" value="true"/>
+      <property name="includeSource" value="false"/>
+      <property name="projectConfig" value="Trial"/>
+      <property name="currentBinDirectory" value="${trialBinDirectory}"/>
+      <property name="packageLicense" value="${trialPackageLicenseName}"/>
+      <call target="build"/>
+      <call target="clean-package-folder"/>
+      <call target="setup-package-files"/>
+      <call target="create-resources-zip"/>
+      <call target="create-packages"/>
     </if>
 
+    <call target="project-specific-tasks"/>
+    <call target="cleanup"/>
   </target>
-
-  <target name="Compile" depends="init">
-    <exec program="${sys.env.windir}\Microsoft.NET\Framework\v3.5\msbuild.exe" failonerror="true">
-      <arg value="${subproject.name}_vs2008.sln" />
-      <arg value="/p:Configuration=Release" />
-      <arg value="/p:Platform=&quot;Any CPU&quot;" />
-    </exec>
+  <target name="set-version" description="Sets the projectVersion property to the first three numbers from the version of the assembly specified by the projectDll property">
+    <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(projectDll))}" />
+    <property name="projectVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
-
-  <!-- It is important that this target does not run before the Compile target since it will lock the assembly -->
-  <target name="VersionInfo" >
-    <property name="version" value="${assemblyname::get-version(assembly::get-name(assembly::load-from-file(module.dll)))}" />
-    <property name="shortVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
-
-    <if test="${verbose}">
-      <echo message="shortVersion: ${shortVersion}" />
-      <echo message="version: ${version}" />
+  <target name="build" description="Builds solutionFile">
+    <if test="${testBuild or buildTrial}">
+      <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+        <arg value="${solutionFile}" />
+        <arg value="/p:Configuration=${projectConfig}" />
+        <arg value="/p:Platform=&quot;Any CPU&quot;" />
+        <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
+        <arg value="/m" /> <!-- multicore -->
+      </exec>
     </if>
-
   </target>
-
-  <target name="CleanPackageBin" depends="init VersionInfo">
-    <delete file="${package.dir}/${ModuleName}_${shortVersion}${binZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${shortVersion}${binZip}.zip')}" />
+  <target name="clean-package-folder" description="Deletes all temporary files from package directory, then re-creates the folders to use">
+    <mkdir dir="${packageDirectory}" failonerror="false"/>
+    <delete dir="${packageDirectory}/temp/resources" failonerror="false"/>
+    <delete dir="${packageDirectory}/temp" failonerror="false"/>
+    <mkdir dir="${packageDirectory}/temp" failonerror="false" />
+    <mkdir dir="${packageDirectory}/temp/resources" failonerror="false" />
+    <mkdir dir="${packageDirectory}/temp/package" failonerror="false"/>
   </target>
-
-  <target name="CleanPackageSource" depends="init VersionInfo">
-    <delete file="${package.dir}/${ModuleName}_${shortVersion}${srcZip}.zip" if="${file::exists('${package.dir}/${ModuleName}_${shortVersion}${srcZip}.zip')}" />
-  </target>
-
-  <target name="CleanPackageAll" depends="init">
-    <delete dir="${package.dir}" if="${directory::exists(package.dir)}" />
-  </target>
-
-  <!-- check for resourcezip folder, delete it and its contents if it exists -->
-  <target name="CleanResourceZip" depends="init">
-    <delete dir="${resourcezip.dir}" if="${directory::exists(resourcezip.dir)}" />
-  </target>
-
-
-
-
-  <!-- Begin area for creating resourcezip for installable PA zips (should depend on target that clears where this will build zip file to)-->
-  <target name="CreateResourceZip" depends="CleanResourceZip">
-    <!-- create a flat directory to zip for install -->
-    <mkdir dir="temp" unless="${directory::exists('temp')}" />
-    <!-- DO NOT flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="false">
+  <target name="setup-package-files" description="Copies common package files to the temp/package directory, and sets version-dependent attributes in the DNN 4 and DNN 5 manifest files">
+    <property name="releaseNotesFile" value="ReleaseNotes_${projectVersion}.htm"/>
+    <copy todir="${packageDirectory}/temp/package" flatten="true">
       <fileset>
-        <!-- Tell nant what files to grab -->
-        <!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
-        <include name="**/images/*" />     
-        <include name="**/Docs/*.pdf" />
-        <include name="**/${localresource.dir}/*.resx" />
-        <include name="**/${globalresource.dir}/*.resx" />
-        <include name="**/${globalresource.dir}/*.xml" />
-        <include name="**/*.ascx" />
-        <include name="**/*.ashx" />
-        <include name="**/wlwmanifest.xml" />
-        <include name="**/*.js" />
-        <include name="**/*.css" />
-        <include name="**/*.aspx" />
-        <include name="**/*.ashx" />
-        <include name="**/*.asmx" />
-        <include name="**/*.xsd" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/Resources.zip" />
-        <exclude name="**/Install/**/*" />
-        <exclude name="**/_sgbak/*" />
-        <exclude name="**/thumbs.db" />
-        <exclude name="**/*.zip" />
-        <exclude name="**/docs/images/*" />
-        <exclude name="**/ReadMe.txt" />
+        <include name="${releaseNotesFile}"/>
+        <include name="??.??.??.txt" />
+        <include name="ReadMe.txt" />
+        <include name="**/*.SqlDataProvider"/>
+        <include name="**/*.4.dnn"/>
+        <include name="**/*.5.dnn"/>
+        <include name="**/View.ascx"/>
+        <include name="**/SearchRedirector.ascx"/>
+        <include name="**/TagCloud.ascx"/>
+      </fileset>
+    </copy>
+    <copy todir="${packageDirectory}/temp/package/bin" flatten="true">
+      <fileset>
+        <patternset refid="projectAssemblies" unless="${buildTrial}"/>
+        <patternset refid="trialProjectAssemblies" if="${buildTrial}"/>
+        <include name="${referencesDirectory}/*.dll"/>
+        <exclude name="${referencesDirectory}/DotNetNuke.dll"/>
+        <exclude name="${referencesDirectory}/DotNetNuke.WebUtility.dll"/>
+        <exclude name="${referencesDirectory}/DotNetNuke.WebControls.dll"/>
+        <exclude name="${referencesDirectory}/DotNetNuke.Search.DataStore.dll"/>
+        <exclude name="${referencesDirectory}/Microsoft.ApplicationBlocks.Data.dll"/>
+        <exclude name="${referencesDirectory}/System.Web.Extensions.dll"/>
+        <exclude name="${referencesDirectory}/*.Design.dll"/>
+        <exclude name="${referencesDirectory}/Telerik.Web.UI.dll"/>
       </fileset>
     </copy>
 
-    <mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
-    <zip zipfile="${resourcezip.dir}/Resources.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
-        <exclude name="**/*.dll" />
-
+    <attrib readonly="false">
+      <fileset basedir="${packageDirectory}/temp/package">
+        <include name="**"/>
       </fileset>
-    </zip>
+    </attrib>
 
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
-
+    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Script']/scripts/script[@type='UnInstall']/version"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[version='REPLACED BY NANT']/version"/>
+    </if>
+    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.4.dnn')}">
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="dotnetnuke/folders/folder/version"/>
+    </if>
   </target>
-  <!-- End area for resourcezip creation -->
-
-  <!-- Begin area for creating resourcezip for installable PA zips (should depend on target that clears where this will build zip file to)-->
-  <target name="CreateResourceSourceZip" depends="CleanResourceZip">
-    <!-- create a flat directory to zip for install -->
-    <mkdir dir="temp" unless="${directory::exists('temp')}" />
-    <!-- DO NOT flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="false">
+  <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
+    <copy todir="${packageDirectory}/temp/resources" flatten="false">
       <fileset>
-        <!-- Tell nant what files to grab -->
-        <!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
-        <include name="**/images/*" />
-        <include name="**/${localresource.dir}/*.resx" />
-        <include name="**/${globalresource.dir}/*.resx" />
-        <include name="**/${globalresource.dir}/*.xml" />
-        <include name="**/*.ascx" />
-        <include name="**/*.aspx" />
-        <include name="**/*.ashx" />
-        <include name="**/*.asmx" />
-        <include name="**/*.xsd" />
-        <include name="**/*.css" />
-        <include name="**/*.cs" />
-        <include name="**/*.sln" />
-        <include name="**/*.js" />
-        <include name="**/*.csproj" />
-        <include name="**/*.build" />
-        <include name="**/CookComputing.XmlRpcV2.dll" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/Install/**/*" />
-        <exclude name="**/_sgbak/*" />
-        <exclude name="**/thumbs.db" />
-        <exclude name="**/*.zip" />
-        <exclude name="**/05.05.02.txt" />
-        <exclude name="**/ReadMe.txt" />
+        <patternset refid="content.fileset"/>
+        <exclude name="${packageDirectory}/**"/>
       </fileset>
     </copy>
 
-    <mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
-    <zip zipfile="${resourcezip.dir}/Resources.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
-        <exclude name="**/*.dll" />
-
+    <zip zipfile="${packageDirectory}/temp/package/${packageName}" ziplevel="${zipLevel}">
+      <fileset basedir="${packageDirectory}/temp/resources">
+        <include name="**/*"/>
       </fileset>
     </zip>
-
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
-
   </target>
-  <!-- End area for resourceSourcezip creation -->
+  <target name="create-packages" description="For the given license and type, creates packages for DNN 4 and DNN 5">
+    <property name="licenseFile" value="EULA-${packageLicense}.htm"/>
+    <call target="switch-license"/>
 
-
-
-
-
-  <!-- Begin area for creating installable PA (should depend on target that clears where this will build zip file to AND resourcezip as this is part of installable PA)-->
-  <target name="CreateStdBinZip" depends="CleanPackageBin CreateResourceZip">
-    <!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="true">
+    <foreach item="String" in="${versions}" delim="," property="dnnVersion">
+      <call target="zip-package"/>
+    </foreach>
+  </target>
+  <target name="switch-license" description="Switches out the license file and updates the reference to it in the DNN 5 manifest file">
+    <delete>
       <fileset>
-        <include name="**${resourcezip.dir}/Resources.zip" />
-        <include name="../../bin/Engage${ModuleName}.dll" />
-        <include name="**/*.sqldataprovider" />
-        <include name="**/SearchRedirector.ascx" />
-        <include name="**/TagCloud.ascx" />
-        <include name="**/View.ascx" />
-        <include name="**/??.??.??.txt" />
-        <include name="**/ReadMe.txt" />
-        <include name="**/licenses/EULA-Standard.txt" />
-        <include name="**/*.dnn" />
-        <include name="**/CookComputing.XmlRpcV2.dll" />
-        <include name="**/Engage.Dnn.UserFeedback.dll" />
-        <include name="**/AjaxControlToolkit.dll" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/BuildSupport/**/*" />
+        <include name="${packageDirectory}/temp/package/EULA-*.htm"/>
+      </fileset>
+    </delete>
+    <copy todir="${packageDirectory}/temp/package" flatten="true">
+      <fileset>
+        <include name="Licenses/${licenseFile}"/>
       </fileset>
     </copy>
 
-    <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-    <zip zipfile="${package.dir}/${ModuleName}_Standard_${shortVersion}${binZip}.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
+    <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}" xpath="dotnetnuke/packages/package/license/@src"/>
+    </if>
+  </target>
+  <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
+    <property name="packageType" value="Install"/>
+    <property name="packageType" value="Source" if="${includeSource}"/>
+    <zip zipfile="${packageDirectory}/${packageFileNameTemplate}.zip">
+      <fileset basedir="${packageDirectory}/temp/package">
+        <include name="**/*"/>
+        <exclude name="**/*.4.dnn" if="${dnnVersion!='4'}"/>
+        <exclude name="**/*.5.dnn" if="${dnnVersion!='5'}"/>
       </fileset>
     </zip>
-
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
   </target>
-
-  <target name="CreateProBinZip" depends="CleanPackageBin CreateResourceZip">
-    <!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="true">
+  <target name="add-sources-to-resource-zip" description="Adds the files for the Source package to the Resources.zip file">
+    <copy todir="${packageDirectory}/temp/resources" flatten="false">
       <fileset>
-        <include name="**${resourcezip.dir}/Resources.zip" />
-        <include name="../../bin/Engage${ModuleName}.dll" />
-        <include name="**/*.sqldataprovider" />
-        <include name="**/SearchRedirector.ascx" />
-        <include name="**/TagCloud.ascx" />
-        <include name="**/View.ascx" />
-        <include name="**/??.??.??.txt" />
-        <include name="**/ReadMe.txt" />        
-        <include name="**/licenses/EULA-Professional.txt" />
-        <include name="**/*.dnn" />
-        <include name="**/CookComputing.XmlRpcV2.dll" />
-        <include name="**/Engage.Dnn.UserFeedback.dll" />
-        <include name="**/AjaxControlToolkit.dll" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/BuildSupport/**/*" />
+        <patternset refid="source.fileset"/>
+        <exclude name="${packageDirectory}/**"/>
       </fileset>
     </copy>
 
-    <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-    <zip zipfile="${package.dir}/${ModuleName}_Professional_${shortVersion}${binZip}.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
+    <zip zipfile="${packageDirectory}/temp/package/${packageName}" ziplevel="${zipLevel}">
+      <fileset basedir="${packageDirectory}/temp/resources">
+        <include name="**/*"/>
       </fileset>
     </zip>
-
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
   </target>
+  <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
+    <property name="buildDirectory" value="_0.0"/>
+    <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
+      <property name="buildDirectory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
+    </foreach>
 
-  <target name="CreateEntBinZip" depends="CleanPackageBin CreateResourceZip">
-    <!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="true">
-      <fileset>
-        <include name="**${resourcezip.dir}/Resources.zip" />
-        <include name="../../bin/Engage${ModuleName}.dll" />
-        <include name="**/*.sqldataprovider" />
-        <include name="**/SearchRedirector.ascx" />
-        <include name="**/TagCloud.ascx" />
-        <include name="**/View.ascx" />
-        <include name="**/??.??.??.txt" />
-        <include name="**/ReadMe.txt" />
-        <include name="**/licenses/EULA-Enterprise.txt" />
-        <include name="**/*.dnn" />
-        <include name="**/CookComputing.XmlRpcV2.dll" />
-        <include name="**/Engage.Dnn.UserFeedback.dll" />
-        <include name="**/AjaxControlToolkit.dll" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/BuildSupport/**/*" />
+    <property name="dependencyPackageDirectory" value="${packageDirectory}/temp/dependencies"/>
+    <copy todir="${dependencyPackageDirectory}">
+      <fileset basedir="${path::combine(buildDirectory, 'Release\')}">
+        <patternset refid="dependencySourcePackages"/>
       </fileset>
     </copy>
+    
+    <call target="get-project-specific-dependencies"/>
 
-    <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-    <zip zipfile="${package.dir}/${ModuleName}_Enterprise_${shortVersion}${binZip}.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
+    <zip zipfile="${packageDirectory}/${dependencySourcePackageFileNameTemplate}.zip" ziplevel="${zipLevel}">
+      <fileset basedir="${packageDirectory}/temp/dependencies">
+        <include name="**/*"/>
+      </fileset>
+    </zip>
+  </target>
+  <target name="combine-source" description="Combines the Install and Source packages with the same license into one .zip file">
+    <property name="packageType" value="Install"/>
+    <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
+    <property name="packageType" value="Source"/>
+    <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
+    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}.zip">
+      <fileset basedir="${packageDirectory}">
+        <include name="${installPackageFileName}.zip"/>
+        <include name="${sourcePackageFileName}.zip"/>
+        <include name="${dependencySourcePackageFileNameTemplate}.zip"/>
       </fileset>
     </zip>
 
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
+    <delete file="${packageDirectory}/${installPackageFileName}.zip" failonerror="false"/>
+    <delete file="${packageDirectory}/${sourcePackageFileName}.zip" failonerror="false"/>
   </target>
-  <!-- End area for installable PA -->
-
-  <!-- Begin area for distributable source code zip (should depend on target that clears where this will build zip file to)-->
-  <target name="CreateEntSrcZip" depends="CleanPackageSource CreateResourceSourceZip">
-    <!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="true">
-      <fileset>
-        <include name="**${resourcezip.dir}/Resources.zip" />
-        <include name="../../bin/Engage${ModuleName}.dll" />
-        <include name="**/*.sqldataprovider" />
-        <include name="**/SearchRedirector.ascx" />
-        <include name="**/TagCloud.ascx" />
-        <include name="**/View.ascx" />
-        <include name="**/??.??.??.txt" />
-        <include name="**/ReadMe.txt" />
-        <include name="**/licenses/EULA-Enterprise.txt" />
-        <include name="**/*.dnn" />
-        <include name="**/CookComputing.XmlRpcV2.dll" />
-        <include name="**/Engage.Dnn.UserFeedback.dll" />
-        <include name="**/AjaxControlToolkit.dll" />
-        <exclude name="**/DNNDebug.aspx" />
-        <exclude name="**/BuildSupport/**/*" />
-      </fileset>
-    </copy>
-
-    <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-    <zip zipfile="${package.dir}/${ModuleName}_Enterprise_${shortVersion}${srcZip}.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
-      </fileset>
-    </zip>
-
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
+  <target name="get-project-specific-dependencies" description="Puts source packages for any dependencies that can't be retrieved through the normal get-dependency-source target in dependencyPackageDirectory">
   </target>
-  <!-- End area for distributable source code zip -->
-
-  <!-- Begin area for Enterprise zip (containing Enterprise bin & src)-->
-  <target name="CreateEntZip" depends="CleanPackageSource CreateResourceSourceZip">
-    <!-- DO flatten this as we want to retain folder structure in this and ONLY this zip -->
-    <copy todir="temp" flatten="true">
-      <fileset>
-        <include name="${package.dir}/${ModuleName}_Enterprise_${shortVersion}${binZip}.zip" />
-        <include name="${package.dir}/${ModuleName}_Enterprise_${shortVersion}${srcZip}.zip" />
-      </fileset>
-    </copy>
-
-    <mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
-    <zip zipfile="${package.dir}/${ModuleName}_Enterprise_${shortVersion}.zip">
-      <fileset basedir="temp">
-        <include name="**/*" />
-      </fileset>
-    </zip>
-
-    <!--Delete temp directory -->
-    <delete dir="temp" failonerror="false" />
+  <target name="project-specific-tasks" description="Place tasks specific to the current project in this task">
   </target>
-  <!-- End area for Enterprise zip -->
+  <target name="cleanup" description="Deletes temporary files">
+    <delete file="${packageDirectory}\${projectName}_${sourcePackageLicenseName}_${projectVersion}_DependencySource.zip" failonerror="false"/>
+    <delete file="${packageDirectory}\${packageName}" failonerror="false"/>
+    <delete dir="${packageDirectory}\temp" failonerror="false"/>
+  </target>
+  <script language="C#" prefix="build-directory" >
+    <imports>
+      <import namespace="System"/>
+      <import namespace="System.Globalization"/>
+      <import namespace="System.Text.RegularExpressions"/>
+    </imports>
+    <code>
+      <![CDATA[
+              [Function("is-greater-than")]
+              public static bool IsGreaterThan(string lhs, string rhs) {
+                  
+                  return new BuildDirectory(lhs) > new BuildDirectory(rhs);
+              }
+              
+              private struct BuildDirectory
+              {
+                  private static readonly Regex buildDirectoryRegex = new Regex(@".*_(\d+\.\d+)", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+                  private Version buildNumber;
 
-  <!--  SYNTHETIC TASKS  -->
-  <target name="build" depends="Compile" description="This target compiles the application.
-	" />
+                  public BuildDirectory(string directoryName)
+                  {
+                      this.buildNumber = new Version(buildDirectoryRegex.Match(directoryName).Groups[1].Value);
+                  }
 
-  <target name="BuildAndZip" depends="build CreateEntBinZip CreateStdBinZip CreateProBinZip CreateEntSrcZip CreateEntZip" description="This target compiles the application and then creates two-three zip files: 
-	              - one that only contains the compiled code and runtime files 
-		      - one is the resourceszip for installable pa's
-	              - the other with compiled code and source code.
-	" />
+			            public Version BuildNumber
+			            {
+				              get { return this.buildNumber; }
+			            }
 
+			            public static bool operator ==(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left.Equals(right);
+			            }
+
+			            public static bool operator !=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !left.Equals(right);
+			            }
+
+			            public static bool operator <(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left.buildNumber < right.buildNumber;
+			            }
+
+			            public static bool operator <=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return left < right || left.Equals(right);
+			            }
+
+			            public static bool operator >(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !(left <= right);
+			            }
+
+			            public static bool operator >=(BuildDirectory left, BuildDirectory right)
+			            {
+				              return !(left < right);
+			            }
+
+			            public bool Equals(BuildDirectory other)
+			            {
+				              return other.buildNumber == this.buildNumber;
+			            }
+
+			            public override bool Equals(object obj)
+			            {
+				              if (ReferenceEquals(null, obj))
+				              {
+					                return false;
+				              }
+
+				              if (obj.GetType() != typeof(BuildDirectory))
+				              {
+					                return false;
+				              }
+
+				              return this.Equals((BuildDirectory)obj);
+			            }
+
+			            public override int GetHashCode()
+			            {
+					            return this.buildNumber.GetHashCode();
+			            }
+	            }
+            ]]>
+    </code>
+  </script>
+  <patternset id="content.fileset">
+    <include name="**/*.ascx" />
+    <include name="**/*.aspx" />
+    <include name="**/*.asmx" />
+    <include name="**/*.ashx" />
+    <include name="**/*.resx" />
+    <include name="**/*.html" />
+    <include name="**/*.htm" />
+    <include name="**/*.css" />
+    <include name="**/*.jpg" />
+    <include name="**/*.gif" />
+    <include name="**/*.png" />
+    <include name="**/*.pdf" />
+    <include name="**/*.xml" />
+    <include name="**/*.xsd" />
+    <include name="**/*.js" />
+    <exclude name="Licenses/EULA-*.htm"/>
+    <exclude name="ReleaseNotes_*.htm"/>
+    <exclude name="??.??.??.txt" />
+    <exclude name="_ReSharper.*/**"/>
+    <exclude name="**/obj/**"/>
+    <exclude name="${referencesDirectory}/**"/>
+  </patternset>
+  <patternset id="source.fileset">
+    <include name="**/*.js"/>
+    <include name="**/*.cs"/>
+    <include name="**/*.vb"/>
+    <include name="**/*.sln"/>
+    <include name="**/*.csproj"/>
+    <include name="**/*.vbproj"/>
+    <include name="**/*.build"/>
+    <include name="**/*.dnn"/>
+    <include name="**/*.docx"/>
+    <include name="**/*.config"/>
+    <include name="**/*.dbml"/>
+    <include name="**/*.dbml.layout"/>
+    <include name="**/*.rpx"/>
+    <include name="**/*.txt"/>
+    <include name="MSBuild/*.dll"/>
+    <include name="MSBuild/*.targets"/>
+    <exclude name="**/obj/**"/>
+    <exclude name="Release.txt"/>
+  </patternset>
 </project>

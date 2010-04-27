@@ -10,23 +10,23 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-using System;
-using System.Data;
-using System.Web;
-using DotNetNuke.Entities.Users;
-
-using CookComputing.XmlRpc;
-using System.Collections.Generic;
-using DotNetNuke.Services.Localization;
-using Engage.Dnn.Publish.Util;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using System.Globalization;
-using System.IO;
-
 namespace Engage.Dnn.Publish.Services
 {
+    using System;
+    using System.Data;
+    using System.Web;
+    using DotNetNuke.Entities.Users;
+
+    using CookComputing.XmlRpc;
+    using System.Collections.Generic;
+    using DotNetNuke.Services.Localization;
+    using Engage.Dnn.Publish.Util;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using System.Globalization;
+    using System.IO;
+
     //This code is written based off the article located at http://nayyeri.net/blog/implement-metaweblog-api-in-asp-net/
 
     //Right now we don't have any support for pulling a list of articles for a particular user, most likely not a big deal.

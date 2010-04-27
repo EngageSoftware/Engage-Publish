@@ -1,14 +1,13 @@
-using System;
-using System.Collections;
-using System.Data;
-using System.Globalization;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using Engage.Dnn.Publish.Data;
-using Engage.Dnn.Publish.Util;
-
 namespace Engage.Dnn.Publish
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Globalization;
+    using System.Xml.Serialization;
+    using DotNetNuke.Common.Utilities;
+    using Engage.Dnn.Publish.Data;
+    using Engage.Dnn.Publish.Util;
     using System.Diagnostics;
     using System.Web;
     using System.Text;

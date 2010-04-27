@@ -8,16 +8,14 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-using System;
-using System.Globalization;
-using DotNetNuke.Services.Localization;
-using System.Data;
-using Engage.Dnn.Publish.Util;
-
-
 namespace Engage.Dnn.Publish.Admin.Tools
 {
+    using System;
+    using System.Globalization;
+    using DotNetNuke.Services.Localization;
+    using System.Data;
+    using Utility = Engage.Dnn.Publish.Util.Utility;
+
     public partial class DescriptionReplace : ModuleBase
     {
         //#region Event Handlers

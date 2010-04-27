@@ -19,15 +19,20 @@ namespace Engage.Dnn.Publish
     using System.Web.UI;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
+#if TRIAL
+    using Engage.Licensing;
+#endif
+
+    using Utility = Util.Utility;
 
     /// <summary>
     /// 
     /// </summary>
-    public class ModuleBase : PortalModuleBase
+    public class ModuleBase : Framework.ModuleBase
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool allowTitleUpdate = true;
@@ -60,6 +65,14 @@ namespace Engage.Dnn.Publish
             get
             {
                 return "~" + DesktopModuleFolderName + DotNetNuke.Services.Localization.Localization.LocalResourceDirectory + "/" + DotNetNuke.Services.Localization.Localization.LocalSharedResourceFile;
+            }
+        }
+
+        public override string DesktopModuleName
+        {
+            get
+            {
+                return Utility.DnnFriendlyModuleName;
             }
         }
 
@@ -1343,20 +1356,18 @@ namespace Engage.Dnn.Publish
                 "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
         }
 
+#if TRIAL
+        /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            // to quickly build a timebombed package uncomment the following three lines, change the date
-            //DateTime di = new DateTime(2009,11,30);
-            //if (DateTime.Now.Date > di)
-            //{
-            //    throw new Exception("Trial license expired");
-            //}
+            this.LicenseProvider = new TrialLicenseProvider(FeaturesController.ModuleLicenseKey);
+
             base.OnInit(e);
-            if (AJAX.IsInstalled())
-            {
-                AJAX.RegisterScriptManager();
-            }
         }
+#endif
 
         private void BindNewItem()
         {
