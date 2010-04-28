@@ -338,8 +338,8 @@ namespace Engage.Dnn.Publish.Services
 
                 //Save media object to filesystem. Split name with '/' to extract filename (Windows Live Writer specific)
                 int index = name.LastIndexOf('/');
-                Directory.CreateDirectory(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath + name.Substring(0, index));
-                FileStream stream = File.Create(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath + name);
+                Directory.CreateDirectory(Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath + name.Substring(0, index));
+                FileStream stream = File.Create(Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath + name);
                 stream.Write(media, 0, media.Length);
                 stream.Flush();
                 stream.Close();

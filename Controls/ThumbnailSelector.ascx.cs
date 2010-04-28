@@ -73,7 +73,7 @@ namespace Engage.Dnn.Publish.Controls
             rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.External.ToString(), LocalResourceFile), ThumbnailImageType.External.ToString()));
 
             var files = new StringCollection();
-            foreach (string file in Directory.GetFiles(Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath))
+            foreach (string file in Directory.GetFiles(Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath))
 	        {
                 files.Add(Path.GetFileName(file));		 
 	        }
@@ -135,7 +135,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (IsUploadValid())
             {
-                string path = Utility.GetThumbnailLibraryMapPath(PortalId).AbsolutePath;
+                string path = Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath;
                 string filename = Path.GetFileNameWithoutExtension(fileThumbnail.PostedFile.FileName);
                 string extension = Path.GetExtension(fileThumbnail.PostedFile.FileName);
 

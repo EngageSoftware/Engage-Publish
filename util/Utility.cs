@@ -454,9 +454,9 @@ namespace Engage.Dnn.Publish.Util
                 Path.Combine(GetPortalSettings(portalId).HomeDirectoryMapPath, ModuleBase.ThumbnailSubdirectoryForPortal(portalId)), UriKind.Absolute);
 
             //make sure it exists before we tell people about it.  BD
-            if (!Directory.Exists(path.AbsolutePath))
+            if (!Directory.Exists(path.LocalPath))
             {
-                Directory.CreateDirectory(path.AbsolutePath);
+                Directory.CreateDirectory(path.LocalPath);
             }
 
             return path;
