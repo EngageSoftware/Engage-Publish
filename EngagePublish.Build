@@ -41,7 +41,11 @@
   <target name="package" description="Creates packages for this module, one for each value in the licenses and versions properties">
 
     <call target="build"/>
-    <call target="set-version"/>
+
+    <property name="assemblyFile" value="${projectDll}"/>
+    <call target="set-assemblyVersion"/>
+    <property name="projectVersion" value="${assemblyVersion}"/>
+
     <call target="clean-package-folder"/>
     <call target="setup-package-files"/>
     <call target="create-resources-zip"/>
@@ -82,9 +86,9 @@
     <call target="project-specific-tasks"/>
     <call target="cleanup"/>
   </target>
-  <target name="set-version" description="Sets the projectVersion property to the first three numbers from the version of the assembly specified by the projectDll property">
-    <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(projectDll))}" />
-    <property name="projectVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
+  <target name="set-assemblyVersion" description="Sets the assemblyVersion property to the first three numbers from the version of the assembly specified by the assemblyFile property">
+    <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(assemblyFile))}" />
+    <property name="assemblyVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
   </target>
   <target name="build" description="Builds solutionFile">
     <if test="${testBuild or buildTrial}">
@@ -145,11 +149,15 @@
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
       <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
       <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Script']/scripts/script[@type='UnInstall']/version"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[version='REPLACED BY NANT']/version"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      
+      <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
+        <call target="set-assemblyVersion"/>
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version"/>
+      </foreach>
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.4.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="dotnetnuke/folders/folder/version"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
     </if>
   </target>
   <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
