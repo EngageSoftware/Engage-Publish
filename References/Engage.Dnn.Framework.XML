@@ -889,18 +889,17 @@
             Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
             </summary>
             <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-            <exception cref="T:System.ComponentModel.LicenseException">If this module's <see cref="P:Engage.Dnn.Framework.ModuleBase.LicenseProvider"/> cannot validate its license.</exception>
         </member>
         <member name="M:Engage.Dnn.Framework.ModuleBase.Page_Load(System.Object,System.EventArgs)">
             <summary>
-            Handles the Load event of the Page control.
+            Handles the <see cref="E:System.Web.UI.Control.Load"/> event of this control.
             </summary>
             <param name="sender">The source of the event.</param>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:Engage.Dnn.Framework.ModuleBase.Page_PreRender(System.Object,System.EventArgs)">
             <summary>
-            Handles the <see cref="E:System.Web.UI.Control.PreRender"/> event of the Page control.
+            Handles the <see cref="E:System.Web.UI.Control.PreRender"/> event of this control.
             </summary>
             <param name="sender">The source of the event.</param>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
@@ -954,6 +953,12 @@
             </summary>
             <value>The template provider to use for providing templating functionality within this control</value>
             <exception cref="T:System.ArgumentNullException"><c>value</c> is null.</exception>
+        </member>
+        <member name="P:Engage.Dnn.Framework.ModuleBase.BasePage">
+            <summary>
+            Gets this control's page as the DNN Framework page.
+            </summary>
+            <value>The DNN Framework page on which this control sits, or <c>null</c> if it doesn't sit on the DNN Framework page.</value>
         </member>
         <member name="P:Engage.Dnn.Framework.ModuleBase.LicenseProvider">
             <summary>
@@ -2058,6 +2063,28 @@
             Also checks for duplicates, only adding the reference once regardless of how many times this method is called for the <paramref name="page"/>.
             </remarks>
             <param name="page">The page to which the reference will be added.</param>
+        </member>
+        <member name="M:Engage.Dnn.Utility.InjectJQueryLibrary(System.Web.UI.Page,System.Boolean)">
+            <summary>
+            Includes the jQuery library onto the page
+            </summary>
+            <remarks>Based on http://www.ifinity.com.au/Blog/EntryId/75/Include-jQuery-in-a-DotNetNuke-Module-with-version-independent-code</remarks>
+            <param name="page">Page object from calling page/control</param>
+            <param name="includeNoConflict">if <c>true</c>, includes the uncompressed libraries</param>
+        </member>
+        <member name="M:Engage.Dnn.Utility.SafeDnnVersion(System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Returns a version-safe set of version numbers for DNN
+            </summary>
+            <param name="major">out value of major version (i.e., 4,5 etc)</param>
+            <param name="minor">out value of minor version (i.e., 1 in 5.1 etc)</param>
+            <param name="revision">out value of revision (i.e., 3 in 5.1.3)</param>
+            <param name="build">out value of build number</param>
+            <remarks>
+            Based on http://www.ifinity.com.au/Blog/EntryId/75/Include-jQuery-in-a-DotNetNuke-Module-with-version-independent-code
+            DNN moved the version number during about the 4.9 version, 
+            which to [Bruce] was a bit frustrating and caused the need for this reflection method call</remarks>
+            <returns><c>true</c> if successful, <c>false</c> if not</returns>
         </member>
         <member name="M:Engage.Dnn.Utility.GetStringSetting(System.Collections.Hashtable,System.String)">
             <summary>
