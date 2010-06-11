@@ -13,9 +13,12 @@ namespace Engage.Dnn.Publish
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.Text;
+    using System.Web;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common;
@@ -1372,120 +1375,133 @@ namespace Engage.Dnn.Publish
             UpdateItemVersion(trans, this.itemId, this.itemVersionId, this.approvalStatusId, this.revisingUserId, this.approvalComments);
         }
 
-        private void SendApprovalEmail()
+        /// <summary>
+        /// Makes the URL absolute, based on the current request.
+        /// </summary>
+        /// <param name="url">The link URL.</param>
+        /// <returns>The given URL, rooted to the current request's website</returns>
+        private static string MakeUrlAbsolute(string url)
         {
-            // string toAddress = string.Empty;
-            int edittabid = -1;
-            int editModuleId = -1;
-            var objModules = new ModuleController();
-            foreach (ModuleInfo mi in objModules.GetModulesByDefinition(this.PortalId, Utility.DnnFriendlyModuleName))
+            if (HttpContext.Current != null)
             {
-                if (!mi.IsDeleted)
-                {
-                    var objTabs = new TabController();
-                    if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
-                    {
-                        edittabid = mi.TabID;
-                        editModuleId = mi.ModuleID;
-                        break;
-                    }
-
-                    continue;
-                }
+                return Engage.Utility.MakeUrlAbsolute(HttpContext.Current.Request.Url, url);
             }
 
-            UserInfo ui = UserController.GetCurrentUserInfo();
-            if (ui.Username != null)
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
-                var rc = new RoleController();
+                return url;
+            }
 
-                ArrayList users = rc.GetUsersByRoleName(
-                    ui.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + this.PortalId));
+            throw new InvalidOperationException(string.Format("Cannot make URL ({0}) absolute because there is no current request to base it on", url));
+        }
 
-                PortalSettings ps = PortalController.GetCurrentPortalSettings();
-                string linkUrl = Globals.NavigateURL(
-                    this.DisplayTabId, string.Empty, "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.moduleId);
-                string linksUrl = Globals.NavigateURL(
-                    edittabid,
-                    string.Empty,
-                    "ctl=" + Utility.AdminContainer,
-                    "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture),
-                    "adminType=VersionsList",
-                    "_itemId=" + this.ItemId);
+        /// <summary>
+        /// Sends an email to the users in the <see cref="Utility.PublishEmailNotificationRole"/> indicating that an item was approved.
+        /// </summary>
+        private void SendApprovalEmail()
+        {
+            UserInfo revisingUser = UserController.GetCurrentUserInfo();
+            if (revisingUser.Username != null)
+            {
+                ArrayList users = new RoleController().GetUsersByRoleName(
+                    revisingUser.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + this.PortalId));
 
-                // Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
-                string body = this.EmailApprovalBody;
-                body = body.Replace("[ENGAGEITEMNAME]", this.name);
-                body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
-                body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
-
-                string subject = this.EmailApprovalSubject;
-
-                foreach (UserInfo u in users)
-                {
-                    Mail.SendMail(ps.Email, u.Membership.Email, string.Empty, subject, body, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
-                }
+                this.SendTemplatedEmail(revisingUser, (UserInfo[])users.ToArray(typeof(UserInfo)), this.EmailApprovalBody, this.EmailApprovalSubject);
             }
         }
 
+        /// <summary>
+        /// Sends an email to the author of an item's version indicating that the version's status changed.
+        /// </summary>
         private void SendStatusUpdateEmail()
         {
-            // string toAddress = string.Empty;
-            int edittabid = -1;
-            int editModuleId = -1;
-            var objModules = new ModuleController();
-            foreach (ModuleInfo mi in objModules.GetModulesByDefinition(this.PortalId, Utility.DnnFriendlyModuleName))
-            {
-                if (!mi.IsDeleted && mi.TabID != -1)
-                {
-                    var objTabs = new TabController();
-                    if (!objTabs.GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
-                    {
-                        edittabid = mi.TabID;
-                        editModuleId = mi.ModuleID;
-                        break;
-                    }
-
-                    continue;
-                }
-            }
-
-            UserInfo ui = UserController.GetCurrentUserInfo();
-            if (ui.Username != null)
+            UserInfo revisingUser = UserController.GetCurrentUserInfo();
+            if (revisingUser.Username != null)
             {
                 UserInfo versionAuthor = UserController.GetUser(this.PortalId, this.authorUserId, false);
 
                 // if this is the same user, don't email them notification.
-                if (versionAuthor != null && versionAuthor.Email != ui.Email)
+                if (versionAuthor != null && versionAuthor.Email != revisingUser.Email)
                 {
-                    PortalSettings ps = PortalController.GetCurrentPortalSettings();
-                    string linkUrl = Globals.NavigateURL(
-                        this.DisplayTabId, string.Empty, "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + this.ModuleId);
-
-                    string linksUrl = Globals.NavigateURL(
-                        edittabid,
-                        string.Empty,
-                        "ctl=" + Utility.AdminContainer,
-                        "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture),
-                        "adminType=VersionsList",
-                        "_itemId=" + this.ItemId);
-
-                    // Now ask for the approriate subclass (which gets it from the correct resource file) the subject and body.
-                    string body = this.EmailStatusChangeBody;
-                    body = body.Replace("[ENGAGEITEMNAME]", this.name);
-                    body = body.Replace("[ENGAGEITEMLINK]", linkUrl);
-                    body = body.Replace("[ENGAGEITEMSLINK]", linksUrl);
-
-                    body = body.Replace("[ADMINNAME]", ui.DisplayName);
-                    body = body.Replace("[ENGAGEITEMCOMMENTS]", this.approvalComments);
-
-                    body = body.Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
-
-                    string subject = this.EmailStatusChangeSubject;
-
-                    Mail.SendMail(ps.Email, versionAuthor.Email, string.Empty, subject, body, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
+                    this.SendTemplatedEmail(revisingUser, new[] { versionAuthor }, this.EmailStatusChangeBody, this.EmailStatusChangeSubject);
                 }
             }
+        }
+
+        /// <summary>
+        /// Sends an email with a templated body to the given recipients' email.
+        /// </summary>
+        /// <param name="revisingUser">The revising user.</param>
+        /// <param name="emailRecipients">The email recipients.</param>
+        /// <param name="emailBodyTemplate">The email body template.</param>
+        /// <param name="emailSubject">The email subject.</param>
+        private void SendTemplatedEmail(UserInfo revisingUser, IEnumerable<UserInfo> emailRecipients, string emailBodyTemplate, string emailSubject)
+        {
+            int editModuleId = -1;
+            int editTabId = -1;
+            var editModule = this.GetAnyPublishModule();
+            if (editModule != null)
+            {
+                editModuleId = editModule.ModuleID;
+                editTabId = editModule.TabID;
+            }
+
+            string linkUrl = Globals.NavigateURL(
+                this.DisplayTabId, 
+                string.Empty, 
+                "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture),
+                "modid=" + this.ModuleId);
+
+            string linksUrl = Globals.NavigateURL(
+                editTabId,
+                string.Empty,
+                "ctl=" + Utility.AdminContainer,
+                "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture),
+                "adminType=VersionsList",
+                "_itemId=" + this.ItemId);
+
+            var emailBodyBuilder = new StringBuilder(emailBodyTemplate)
+                .Replace("[ENGAGEITEMNAME]", this.name)
+                .Replace("[ENGAGEITEMLINK]", MakeUrlAbsolute(linkUrl))
+                .Replace("[ENGAGEITEMSLINK]", MakeUrlAbsolute(linksUrl))
+                .Replace("[ADMINNAME]", revisingUser.DisplayName)
+                .Replace("[ENGAGEITEMCOMMENTS]", this.approvalComments)
+                .Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
+
+            foreach (var recipient in emailRecipients)
+            {
+                Mail.SendMail(
+                    PortalController.GetCurrentPortalSettings().Email,
+                    recipient.Email,
+                    string.Empty,
+                    emailSubject,
+                    emailBodyBuilder.ToString(),
+                    string.Empty,
+                    "HTML",
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty);
+             }
+       }
+
+        /// <summary>
+        /// Gets an instance of Engage: Publish within this item's portal.
+        /// </summary>
+        /// <returns>A <see cref="ModuleInfo"/> instance, or <c>null</c> if no Publish module exists in this portal</returns>
+        private ModuleInfo GetAnyPublishModule()
+        {
+            foreach (ModuleInfo mi in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.DnnFriendlyModuleName))
+            {
+                if (mi.IsDeleted || mi.TabID == -1 || new TabController().GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
+                {
+                    continue;
+                }
+
+                return mi;
+            }
+
+            return null;
         }
     }
 }
