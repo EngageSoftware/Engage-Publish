@@ -4673,6 +4673,31 @@
             <returns>The response from the given URL</returns>
             <exception cref="T:System.Exception">Unable to read HTML from the specified URL</exception>
         </member>
+        <member name="M:Engage.Utility.MakeUrlAbsolute(System.Uri,System.String)">
+            <summary>
+            Transforms the given <paramref name="url"/> into an absolute URL.
+            </summary>
+            <param name="baseUrl">The URL on which to base the absolute URL (probably <see cref="P:System.Web.HttpRequest.Url"/>).</param>
+            <param name="url">The URL to transform.</param>
+            <returns>An absolute URL</returns>
+        </member>
+        <member name="M:Engage.Utility.MakeUrlAbsolute(System.Web.UI.Page,System.String)">
+            <summary>
+            Transforms the given <paramref name="url"/> into an absolute URL.
+            </summary>
+            <param name="page">The page of the current request.</param>
+            <param name="url">The URL to transform.</param>
+            <returns>An absolute URL</returns>
+        </member>
+        <member name="M:Engage.Utility.MakeUrlAbsolute(System.Web.UI.Page,System.Uri,System.String)">
+            <summary>
+            Transforms the given <paramref name="url"/> into an absolute URL.
+            </summary>
+            <param name="page">The page of the current request.</param>
+            <param name="baseUrl">The URL on which to base the absolute URL (probably <see cref="P:System.Web.HttpRequest.Url"/>).</param>
+            <param name="url">The URL to transform.</param>
+            <returns>An absolute URL</returns>
+        </member>
         <member name="M:Engage.Utility.CombineHashCodes(System.Int32[])">
             <summary>
             Combines the given hash codes into a single unique hash value.
