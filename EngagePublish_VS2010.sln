@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngagePublish", "EngagePublish.csproj", "{D7FCB9E3-4554-4B99-8E5B-15209F53151F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E80DDD8A-37FE-436C-B58D-283DE4D24444}"
+	ProjectSection(SolutionItems) = preProject
+		EngagePublish.sln = EngagePublish.sln
+		EngagePublish_VS2008.sln = EngagePublish_VS2008.sln
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs2008.etg-inc.net:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = EngagePublish.csproj
+		SccLocalPath1 = .
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Engage Framework 3.0.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Trial|Any CPU = Trial|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Trial|Any CPU.ActiveCfg = Trial|Any CPU
+		{D7FCB9E3-4554-4B99-8E5B-15209F53151F}.Trial|Any CPU.Build.0 = Trial|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
