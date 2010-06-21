@@ -7,30 +7,30 @@
 	width:990px;
 }
 
- #publishTagCloud LI { display: inline; }
+ #publishTagCloud li { display: inline; }
 
 /*Publish Tag Sizes*/
-.size1
+#publishTagCloud .size1 a
 {
 	font-size:1em;
 }
-.size2
+#publishTagCloud .size2 a
 {
 	font-size:1.2em;
 }
-.size3
+#publishTagCloud .size3 a
 {
 	font-size:1.4em;
 }
-.size4
+#publishTagCloud .size4 a
 {
 	font-size:1.6em;
 }
-.size5
+#publishTagCloud .size5 a
 {
 	font-size:1.8em;
 }
-.size6
+#publishTagCloud .size6 a
 {
 	font-size:2.0em;
 }
