@@ -2338,9 +2338,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("(select count(*) TimesViewed from ");
             sql.Append(this.NamePrefix);
             sql.Append("itemview where itemid = il.childitemid ) TotalRows, ");
-            sql.Append(" il.ItemId, il.CategoryName, il.ChildName, ");
-            sql.Append(
-                    " il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, u.DisplayName, il.Author, i.ViewCount, i.CommentCount ");
+            sql.Append(" il.ItemId, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, ");
+            sql.Append(" u.DisplayName, i.ViewCount, i.CommentCount, i.Author ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItemListing il");
