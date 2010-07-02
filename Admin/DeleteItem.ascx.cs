@@ -8,111 +8,98 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Admin
 {
     using System;
+    using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
-	public partial class DeleteItem :  ModuleBase, IActionable
-	{
-		protected System.Web.UI.WebControls.Label lblItemCreated;
-		protected System.Web.UI.WebControls.Label lblItemId;
-		protected System.Web.UI.WebControls.Label lblItemIdValue;
-		protected System.Web.UI.WebControls.Label lblItemVersion;
-		protected System.Web.UI.WebControls.HyperLink lnkItemVersion;
-		
+    public partial class DeleteItem : ModuleBase, IActionable
+    {
+        protected Label lblItemCreated;
 
-		#region Web Form Designer generated code
-		override protected void OnInit(EventArgs e)
-		{
-			//
-			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-			//
-			InitializeComponent();
-			base.OnInit(e);
+        protected Label lblItemId;
 
-		}
-		
-		/// <summary>
-		///		Required method for Designer support - do not modify
-		///		the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.cmdDelete.Click += new System.EventHandler(this.cmdDelete_Click);
-			this.Load += new System.EventHandler(this.Page_Load);
+        protected Label lblItemIdValue;
 
-		}
-		#endregion
+        protected Label lblItemVersion;
 
-		#region Event Handlers
+        protected HyperLink lnkItemVersion;
 
-		private void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-				//check VI for null then set information
-				if (!Page.IsPostBack)
-				{
-					//ItemId
-					ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteConfirmation", LocalResourceFile));
-				}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                return new ModuleActionCollection
+                    {
+                        {
+                            this.GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile), 
+                            ModuleActionType.AddContent, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Edit, true, false
+                            }
+                    };
+            }
+        }
 
-		#endregion
+        protected override void OnInit(EventArgs e)
+        {
+            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
+            InitializeComponent();
+            base.OnInit(e);
+        }
 
-		#region Optional Interfaces
+        /// <summary>
+        ///		Required method for Designer support - do not modify
+        ///		the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.cmdDelete.Click += new EventHandler(this.cmdDelete_Click);
+            this.Load += new EventHandler(this.Page_Load);
+        }
 
-		public ModuleActionCollection ModuleActions 
-		{
-			get 
-			{
-			    return new ModuleActionCollection
-			               {
-			                       {
-			                               this.GetNextActionID(),
-			                               Localization.GetString(
-			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-			                               this.LocalResourceFile),
-			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
-			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
-			                               }
-			               };
-			}
-		}
-
-		#endregion
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // check VI for null then set information
+                if (!this.Page.IsPostBack)
+                {
+                    // ItemId
+                    ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteConfirmation", this.LocalResourceFile));
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
         private void cmdDelete_Click(object sender, EventArgs e)
-		{
+        {
             int itemId;
             bool success = false;
 
-            if (Int32.TryParse(txtItemId.Text, out itemId))
+            if (Int32.TryParse(this.txtItemId.Text, out itemId))
             {
-                //Need to figure out if the item exists, using GetItemTypeId since an Item must have a type
+                // Need to figure out if the item exists, using GetItemTypeId since an Item must have a type
                 if (Item.GetItemTypeId(itemId) != -1)
                 {
-                    //call the delete functionality.
-                    Item.DeleteItem(itemId, PortalId);
+                    // call the delete functionality.
+                    Item.DeleteItem(itemId, this.PortalId);
                     success = true;
                 }
             }
 
-            lblResults.Visible = true;
-            this.lblResults.Text = success ? Localization.GetString("Success", this.LocalResourceFile) : Localization.GetString("Failure", this.LocalResourceFile);
-		}
-
-	}
+            this.lblResults.Visible = true;
+            this.lblResults.Text = success
+                                       ? Localization.GetString("Success", this.LocalResourceFile)
+                                       : Localization.GetString("Failure", this.LocalResourceFile);
+        }
+    }
 }
-

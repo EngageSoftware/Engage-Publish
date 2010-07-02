@@ -10,57 +10,61 @@
 
 namespace Engage.Dnn.Publish.Security
 {
-
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using Data;
 
-	/// <summary>
-	/// Summary description for PermissionType.
-	/// </summary>
-	public class PermissionType
-	{
-		private string name = string.Empty;
-		private int _id = -1;
+    using Engage.Dnn.Publish.Data;
 
-		public static readonly PermissionType View = new PermissionType("View");
-		public static readonly PermissionType Edit = new PermissionType("Edit");
+    /// <summary>
+    /// Summary description for PermissionType.
+    /// </summary>
+    public class PermissionType
+    {
+        public static readonly PermissionType Edit = new PermissionType("Edit");
 
+        public static readonly PermissionType View = new PermissionType("View");
 
-		private PermissionType(string name)
-		{
-			this.name = name;
-		}
+        private readonly string name = string.Empty;
 
-		public string Name
-		{
-			get {return name;}
-		}
+        private int _id = -1;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
+        private PermissionType(string name)
+        {
+            this.name = name;
+        }
+
+        public string Name
+        {
+            get { return this.name; }
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
         public int GetId()
-		{
-			if (_id == -1)
-			{
-				IDataReader dr = null;
+        {
+            if (this._id == -1)
+            {
+                IDataReader dr = null;
 
-				try
-				{
-					dr = DataProvider.Instance().GetPermissionType(name);
-					if (dr.Read())
-					{
-						_id = Convert.ToInt32(dr["PermissionId"], CultureInfo.InvariantCulture);
-					}
-				}
-				finally
-				{
-					if (dr != null) dr.Close();
-				}
-			}
+                try
+                {
+                    dr = DataProvider.Instance().GetPermissionType(this.name);
+                    if (dr.Read())
+                    {
+                        this._id = Convert.ToInt32(dr["PermissionId"], CultureInfo.InvariantCulture);
+                    }
+                }
+                finally
+                {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                    }
+                }
+            }
 
-			return _id;
-		}
-	}
+            return this._id;
+        }
+    }
 }
-

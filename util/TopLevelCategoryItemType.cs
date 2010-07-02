@@ -8,58 +8,61 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Util
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using Data;
 
-	/// <summary>
-	/// Summary description for RelationshipType.
-	/// </summary>
-	public class TopLevelCategoryItemType
-	{
-		private readonly string _name = string.Empty;
-		private int _id = -1;
+    using Engage.Dnn.Publish.Data;
 
+    /// <summary>
+    /// Summary description for RelationshipType.
+    /// </summary>
+    public class TopLevelCategoryItemType
+    {
+        public static readonly TopLevelCategoryItemType Category = new TopLevelCategoryItemType("Category");
 
-		public static readonly TopLevelCategoryItemType Category = new TopLevelCategoryItemType("Category");
+        private readonly string _name = string.Empty;
 
-		private TopLevelCategoryItemType(string name)
-		{
-			_name = name;
-		}
+        private int _id = -1;
 
-		public string Name
-		{
-			get {return _name;}
-		}
+        private TopLevelCategoryItemType(string name)
+        {
+            this._name = name;
+        }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
+        public string Name
+        {
+            get { return this._name; }
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not a simple/cheap operation")]
         public int GetId()
-		{
-			if (_id == -1)
-			{
-				IDataReader dr = null;
+        {
+            if (this._id == -1)
+            {
+                IDataReader dr = null;
 
-				try
-				{
-					dr = DataProvider.Instance().GetTopLevelCategoryItem(_name);
-					if (dr.Read())
-					{
-						_id = Convert.ToInt32(dr["ItemId"], CultureInfo.InvariantCulture);
-					}
-				}
-				finally
-				{
-					if (dr != null) dr.Close();
-				}
-			}
+                try
+                {
+                    dr = DataProvider.Instance().GetTopLevelCategoryItem(this._name);
+                    if (dr.Read())
+                    {
+                        this._id = Convert.ToInt32(dr["ItemId"], CultureInfo.InvariantCulture);
+                    }
+                }
+                finally
+                {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                    }
+                }
+            }
 
-			return _id;
-		}
-	}
+            return this._id;
+        }
+    }
 }
-

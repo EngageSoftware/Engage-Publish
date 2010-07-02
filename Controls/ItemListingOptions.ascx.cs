@@ -8,100 +8,232 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Exceptions;
-    using Util;
+    using DotNetNuke.Services.Localization;
+
+    using Engage.Dnn.Publish.Util;
 
     public partial class ItemListingOptions : ModuleSettingsBase
     {
-        #region Event Handlers
+        private int CategoryId
+        {
+            get
+            {
+                object o = this.Settings["ilCategoryId"];
+                return o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilCategoryId", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        // private int MaxDisplaySubItems
+        // {
+        // set
+        // {
+        // ModuleController modules = new ModuleController();
+        // modules.UpdateTabModuleSetting(TabModuleId, "ilMaxDisplaySubItems", value.ToString());
+        // }
+
+        // get
+        // {
+        // object o = Settings["ilMaxDisplaySubItems"];
+        // return (o == null ? 10 : Convert.ToInt32(o));
+        // }
+        // }
+
+        // TODO: make this DisplayType like the rest of the modules
+        private string DataDisplayFormat
+        {
+            get
+            {
+                object o = this.Settings["ilDataDisplayFormat"];
+                return o == null ? ArticleViewOption.Abstract.ToString() : o.ToString();
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilDataDisplayFormat", value);
+            }
+        }
+
+        private string DataType
+        {
+            get
+            {
+                object o = this.Settings["ilDataType"];
+                return o == null ? "Item Listing" : o.ToString();
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilDataType", value);
+            }
+        }
+
+        private bool EnableRss
+        {
+            get
+            {
+                object o = this.Settings["ilEnableRss"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilEnableRss", value.ToString());
+            }
+        }
+
+        private int ItemTypeId
+        {
+            get
+            {
+                object o = this.Settings["ilItemTypeId"];
+                return o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilItemTypeId", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        private int MaxDisplayItems
+        {
+            get
+            {
+                object o = this.Settings["ilMaxDisplayItems"];
+                return o == null ? 10 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilMaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        private bool ShowParent
+        {
+            get
+            {
+                object o = this.Settings["ilShowParent"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "ilShowParent", value.ToString());
+            }
+        }
 
         public override void LoadSettings()
         {
             try
             {
-                //we want to allow for both articles and categories to be selected here, all the time CJH
-                //if (CategoryId != -1)
-                //{
-                    DataBindItemTypeList();
-                    ListItem li = ddlItemTypeList.Items.FindByValue(ItemTypeId.ToString(CultureInfo.InvariantCulture));
-                    if (li != null)
-                    {
-                        li.Selected = true;
-                    }
-                //}
+                // we want to allow for both articles and categories to be selected here, all the time CJH
+                // if (CategoryId != -1)
+                // {
+                this.DataBindItemTypeList();
+                ListItem li = this.ddlItemTypeList.Items.FindByValue(this.ItemTypeId.ToString(CultureInfo.InvariantCulture));
+                if (li != null)
+                {
+                    li.Selected = true;
+                }
+
+                // }
                 ////if the category is top level, only allow Category for the item type, there are only categories under top level. BD
-                //else
-                //{
-                //    ddlItemTypeList.Items.Add(new ListItem(ItemType.Category.Name, ItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
-                //}
+                // else
+                // {
+                // ddlItemTypeList.Items.Add(new ListItem(ItemType.Category.Name, ItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
+                // }
+                this.ddlDataType.Items.Add(new ListItem(Localization.GetString("ItemListing", this.LocalResourceFile), "Item Listing"));
 
-                ddlDataType.Items.Add(new ListItem(Localization.GetString("ItemListing", LocalResourceFile), "Item Listing"));
-
-                if (ModuleBase.IsViewTrackingEnabledForPortal(PortalId))
+                if (ModuleBase.IsViewTrackingEnabledForPortal(this.PortalId))
                 {
-                    ddlDataType.Items.Add(new ListItem(Localization.GetString("MostPopular", LocalResourceFile), "Most Popular"));
-                }               
-                ddlDataType.Items.Add(new ListItem(Localization.GetString("MostRecent", LocalResourceFile), "Most Recent"));
+                    this.ddlDataType.Items.Add(new ListItem(Localization.GetString("MostPopular", this.LocalResourceFile), "Most Popular"));
+                }
 
-                li = ddlDataType.Items.FindByValue(DataType);
+                this.ddlDataType.Items.Add(new ListItem(Localization.GetString("MostRecent", this.LocalResourceFile), "Most Recent"));
+
+                li = this.ddlDataType.Items.FindByValue(this.DataType);
                 if (li != null)
                 {
                     li.Selected = true;
                 }
 
-                ddlDisplayFormat.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Title.ToString(), LocalResourceFile), ArticleViewOption.Title.ToString()));
-                ddlDisplayFormat.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Abstract.ToString(), LocalResourceFile), ArticleViewOption.Abstract.ToString()));
-                ddlDisplayFormat.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.TitleAndThumbnail.ToString(), LocalResourceFile), ArticleViewOption.TitleAndThumbnail.ToString()));
-                ddlDisplayFormat.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Thumbnail.ToString(), LocalResourceFile), ArticleViewOption.Thumbnail.ToString()));
+                this.ddlDisplayFormat.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Title.ToString(), this.LocalResourceFile), ArticleViewOption.Title.ToString()));
+                this.ddlDisplayFormat.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Abstract.ToString(), this.LocalResourceFile), ArticleViewOption.Abstract.ToString()));
+                this.ddlDisplayFormat.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.TitleAndThumbnail.ToString(), this.LocalResourceFile), 
+                        ArticleViewOption.TitleAndThumbnail.ToString()));
+                this.ddlDisplayFormat.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Thumbnail.ToString(), this.LocalResourceFile), ArticleViewOption.Thumbnail.ToString()));
 
-                li = ddlDisplayFormat.Items.FindByValue(DataDisplayFormat);
+                li = this.ddlDisplayFormat.Items.FindByValue(this.DataDisplayFormat);
                 if (li != null)
                 {
                     li.Selected = true;
                 }
 
-                txtMaxItems.Text = MaxDisplayItems.ToString(CultureInfo.CurrentCulture);
+                this.txtMaxItems.Text = this.MaxDisplayItems.ToString(CultureInfo.CurrentCulture);
 
-                ItemRelationship.DisplayCategoryHierarchy(ddlCategory, -1, PortalId, false);
-                ddlCategory.Items.Insert(0, new ListItem(Localization.GetString("NoCategory", LocalResourceFile), "-1"));
-                ListItem liCat = ddlCategory.Items.FindByValue(CategoryId.ToString(CultureInfo.InvariantCulture));
+                ItemRelationship.DisplayCategoryHierarchy(this.ddlCategory, -1, this.PortalId, false);
+                this.ddlCategory.Items.Insert(0, new ListItem(Localization.GetString("NoCategory", this.LocalResourceFile), "-1"));
+                ListItem liCat = this.ddlCategory.Items.FindByValue(this.CategoryId.ToString(CultureInfo.InvariantCulture));
                 if (liCat != null)
                 {
                     liCat.Selected = true;
                 }
 
-                if (ddlDataType.SelectedValue == "Most Recent")
+                if (this.ddlDataType.SelectedValue == "Most Recent")
                 {
-                    chkEnableRss.Visible = true;
-                    lblEnableRss.Visible = true;
+                    this.chkEnableRss.Visible = true;
+                    this.lblEnableRss.Visible = true;
                 }
                 else
                 {
-                    chkEnableRss.Visible = false;
-                    lblEnableRss.Visible = false;
+                    this.chkEnableRss.Visible = false;
+                    this.lblEnableRss.Visible = false;
                 }
-                chkEnableRss.Checked = EnableRss;
 
-                if (ddlCategory.SelectedValue == "-1")
+                this.chkEnableRss.Checked = this.EnableRss;
+
+                if (this.ddlCategory.SelectedValue == "-1")
                 {
-                    lblShowParent.Visible = false;
-                    chkShowParent.Visible = false;
+                    this.lblShowParent.Visible = false;
+                    this.chkShowParent.Visible = false;
                 }
                 else
                 {
-                    lblShowParent.Visible = true;
-                    chkShowParent.Visible = true;
+                    this.lblShowParent.Visible = true;
+                    this.chkShowParent.Visible = true;
                 }
-                chkShowParent.Checked = ShowParent;
+
+                this.chkShowParent.Checked = this.ShowParent;
             }
             catch (Exception exc)
             {
@@ -109,163 +241,69 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-        /// <summary>
-        /// Binds all item types to the item type DropDownList, as well as a default "Choose One" option.
-        /// </summary>
-        private void DataBindItemTypeList()
-        {
-            ddlItemTypeList.DataTextField = "Name";
-            ddlItemTypeList.DataValueField = "ItemTypeId";
-            ddlItemTypeList.DataSource = Item.GetItemTypes(PortalId);
-            ddlItemTypeList.DataBind();
-            
-            //ddlItemTypeList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            //ddlItemTypeList.Items[0].Enabled = false;
-        }
-
-        #endregion
-
         public override void UpdateSettings()
         {
-            if (Page.IsValid)
+            if (this.Page.IsValid)
             {
-                ItemTypeId = Convert.ToInt32(ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
-                CategoryId = Convert.ToInt32(ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
-                MaxDisplayItems = 0;
-                if (Utility.HasValue(txtMaxItems.Text))
+                this.ItemTypeId = Convert.ToInt32(this.ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
+                this.CategoryId = Convert.ToInt32(this.ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
+                this.MaxDisplayItems = 0;
+                if (Utility.HasValue(this.txtMaxItems.Text))
                 {
-                    MaxDisplayItems = Convert.ToInt32(txtMaxItems.Text, CultureInfo.InvariantCulture);
+                    this.MaxDisplayItems = Convert.ToInt32(this.txtMaxItems.Text, CultureInfo.InvariantCulture);
                 }
-                //MaxDisplaySubItems = Convert.ToInt32(this.txtMaxSubItems.Text);
-                DataType = ddlDataType.SelectedValue;
-                DataDisplayFormat = ddlDisplayFormat.SelectedValue;
-                EnableRss = chkEnableRss.Checked;
-                ShowParent = chkShowParent.Checked;
+
+                // MaxDisplaySubItems = Convert.ToInt32(this.txtMaxSubItems.Text);
+                this.DataType = this.ddlDataType.SelectedValue;
+                this.DataDisplayFormat = this.ddlDisplayFormat.SelectedValue;
+                this.EnableRss = this.chkEnableRss.Checked;
+                this.ShowParent = this.chkShowParent.Checked;
             }
         }
 
-        private int ItemTypeId
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
+        protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            set
+            // there is no parent category to display for Top Level items - BD
+            if (this.ddlCategory.SelectedValue == "-1")
             {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilItemTypeId", value.ToString(CultureInfo.InvariantCulture));
-            }
+                this.lblShowParent.Visible = false;
+                this.chkShowParent.Visible = false;
 
-            get
+                this.ddlItemTypeList.Items.Clear();
+                this.ddlItemTypeList.Items.Add(new ListItem(ItemType.Category.Name, ItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
+            }
+            else
             {
-                object o = Settings["ilItemTypeId"];
-                return (o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
+                this.lblShowParent.Visible = true;
+                this.chkShowParent.Visible = true;
+
+                this.DataBindItemTypeList();
             }
         }
 
-        private int CategoryId
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
+        protected void ddlDataType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            set
+            if (this.ddlDataType.SelectedValue == "Most Recent")
             {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilCategoryId", value.ToString(CultureInfo.InvariantCulture));
+                this.chkEnableRss.Visible = true;
+                this.lblEnableRss.Visible = true;
             }
-
-            get
+            else
             {
-                object o = Settings["ilCategoryId"];
-                return (o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        private bool EnableRss
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilEnableRss", value.ToString());
-            }
-
-            get
-            {
-                object o = Settings["ilEnableRss"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                this.chkEnableRss.Visible = false;
+                this.lblEnableRss.Visible = false;
+                this.chkEnableRss.Checked = false;
             }
         }
 
-        private bool ShowParent
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilShowParent", value.ToString());
-            }
-
-            get
-            {
-                object o = Settings["ilShowParent"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        private int MaxDisplayItems
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilMaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = Settings["ilMaxDisplayItems"];
-                return (o == null ? 10 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        //private int MaxDisplaySubItems
-        //{
-        //    set
-        //    {
-        //        ModuleController modules = new ModuleController();
-        //        modules.UpdateTabModuleSetting(TabModuleId, "ilMaxDisplaySubItems", value.ToString());
-        //    }
-
-        //    get
-        //    {
-        //        object o = Settings["ilMaxDisplaySubItems"];
-        //        return (o == null ? 10 : Convert.ToInt32(o));
-        //    }
-        //}
-
-        //TODO: make this DisplayType like the rest of the modules
-        private string DataDisplayFormat
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilDataDisplayFormat", value);
-            }
-
-            get
-            {
-                object o = Settings["ilDataDisplayFormat"];
-                return (o == null ? ArticleViewOption.Abstract.ToString() : o.ToString());
-            }
-        }
-
-        private string DataType
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "ilDataType", value);
-            }
-
-            get
-            {
-                object o = Settings["ilDataType"];
-                return (o == null ? "Item Listing" : o.ToString());
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", Justification = "Controls use lower case prefix (Not an acronym)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", 
+            Justification = "Controls use lower case prefix (Not an acronym)")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
         protected void fvMaxItems_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (args != null)
@@ -275,42 +313,18 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void ddlDataType_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Binds all item types to the item type DropDownList, as well as a default "Choose One" option.
+        /// </summary>
+        private void DataBindItemTypeList()
         {
-            if (ddlDataType.SelectedValue == "Most Recent")
-            {
-                chkEnableRss.Visible = true;
-                lblEnableRss.Visible = true;
-            }
-            else
-            {
-                chkEnableRss.Visible = false;
-                lblEnableRss.Visible = false;
-                chkEnableRss.Checked = false;
-            }
-        }
+            this.ddlItemTypeList.DataTextField = "Name";
+            this.ddlItemTypeList.DataValueField = "ItemTypeId";
+            this.ddlItemTypeList.DataSource = Item.GetItemTypes(this.PortalId);
+            this.ddlItemTypeList.DataBind();
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //there is no parent category to display for Top Level items - BD
-            if (ddlCategory.SelectedValue == "-1")
-            {
-                lblShowParent.Visible = false;
-                chkShowParent.Visible = false;
-
-                ddlItemTypeList.Items.Clear();
-                ddlItemTypeList.Items.Add(new ListItem(ItemType.Category.Name, ItemType.Category.GetId().ToString(CultureInfo.InvariantCulture)));
-            }
-            else
-            {
-                lblShowParent.Visible = true;
-                chkShowParent.Visible = true;
-
-                DataBindItemTypeList();
-            }
+            // ddlItemTypeList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
+            // ddlItemTypeList.Items[0].Enabled = false;
         }
     }
 }
-

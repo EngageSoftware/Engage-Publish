@@ -8,136 +8,117 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
 
     public partial class ThumbnailSelector : ModuleBase
-	{
-		#region Event Handlers
-        override protected void OnInit(EventArgs e)
+    {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string _thumbnailUrl;
+
+        private enum ThumbnailImageType
         {
-            InitializeComponent();
-            //TODO: Once we upgrade to or past 4.5.3, include this statement so that there won't be problems if someone has wrapped Publish with an update panel.
-            //DotNetNuke.Framework.AJAX.RegisterPostBackControl(btnUploadThumbnail);
-            base.OnInit(e);
+            Upload, 
+            External, 
+            Internal
         }
 
-        private void InitializeComponent()
+        public string ThumbnailUrl
         {
-            Load += Page_Load;
-        }
-
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-				//check VI for null then set information
-				if (!Page.IsPostBack)
-				{
-
-                    if (ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
-                    {
-                        pnlDnnThumb.Visible = true;
-                        pnlEngageThumb.Visible = false;
-                    }
-                    else
-                    {
-                        pnlEngageThumb.Visible = true;
-                        pnlDnnThumb.Visible = false;
-                        InitializeThumbnailControl();
-                    }
-
-				}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-
-        private void InitializeThumbnailControl()
-        {
-            rblThumbnailImage.Items.Clear();
-            rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.Upload.ToString(), LocalResourceFile), ThumbnailImageType.Upload.ToString()));
-            rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.Internal.ToString(), LocalResourceFile), ThumbnailImageType.Internal.ToString()));
-            rblThumbnailImage.Items.Add(new ListItem(Localization.GetString(ThumbnailImageType.External.ToString(), LocalResourceFile), ThumbnailImageType.External.ToString()));
-
-            var files = new StringCollection();
-            foreach (string file in Directory.GetFiles(Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath))
-	        {
-                files.Add(Path.GetFileName(file));		 
-	        }
-
-            ddlThumbnailLibrary.Items.Clear();
-            ddlThumbnailLibrary.DataSource = files;
-            ddlThumbnailLibrary.DataBind();
-            ddlThumbnailLibrary.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), string.Empty));
-
-            if (!Utility.HasValue(_thumbnailUrl))
+            get
             {
-                rblThumbnailImage.SelectedValue = ThumbnailImageType.Upload.ToString();
-            }
-            //HACK: replace with a System.Uri comparison or Path.GetFullPath to prevent against canonicalization attacks.  BD
-            else if (Utility.HasValue(ThumbnailSubdirectory) && _thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                rblThumbnailImage.SelectedValue = ThumbnailImageType.Internal.ToString();
-
-                if (ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(_thumbnailUrl))))
+                // Check which tool
+                if (this.ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
                 {
-                    ddlThumbnailLibrary.SelectedValue = Path.GetFileName(_thumbnailUrl);
-                    mvThumbnailImage.SetActiveView(vwInternal);
+                    return this.ctlMediaFile.Url;
+                }
+
+                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
+                {
+                    return Path.Combine(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), this.ddlThumbnailLibrary.SelectedValue);
+                }
+
+                if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
+                {
+                    return this.txtThumbnailUrl.Text;
+                }
+
+                return null;
+            }
+
+            [DebuggerStepThrough]
+            set
+            {
+                // check option
+                if (this.ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
+                {
+                    this.ctlMediaFile.Url = value;
+                    this.ctlMediaFile.UrlType = "F";
+                    this.ctlMediaFile.FileFilter = Utility.MediaFileTypes;
                 }
                 else
                 {
-                    mvThumbnailImage.SetActiveView(vwUpload);
+                    this._thumbnailUrl = value;
                 }
             }
-            else
-            {
-                rblThumbnailImage.SelectedValue = ThumbnailImageType.External.ToString();
-                txtThumbnailUrl.Text = _thumbnailUrl;
-                mvThumbnailImage.SetActiveView(vwExternal);
-            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void rblThumbnailImage_SelectedIndexChanged(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            View activeView;// = null;
-            if (rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
-            {
-                activeView = vwInternal;
-            }
-            else if (rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
-            {
-                activeView = vwExternal;
-            }
-            else //ThumbnailImageType.Upload.ToString(CultureInfo.InvariantCulture)
-            {
-                activeView = vwUpload;
-            }
+            this.InitializeComponent();
 
-            mvThumbnailImage.SetActiveView(activeView);
+            // TODO: Once we upgrade to or past 4.5.3, include this statement so that there won't be problems if someone has wrapped Publish with an update panel.
+            // DotNetNuke.Framework.AJAX.RegisterPostBackControl(btnUploadThumbnail);
+            base.OnInit(e);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // check VI for null then set information
+                if (!this.Page.IsPostBack)
+                {
+                    if (this.ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
+                    {
+                        this.pnlDnnThumb.Visible = true;
+                        this.pnlEngageThumb.Visible = false;
+                    }
+                    else
+                    {
+                        this.pnlEngageThumb.Visible = true;
+                        this.pnlDnnThumb.Visible = false;
+                        this.InitializeThumbnailControl();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
         protected void btnUploadThumbnail_Click(object sender, EventArgs e)
         {
-            if (IsUploadValid())
+            if (this.IsUploadValid())
             {
-                string path = Utility.GetThumbnailLibraryMapPath(PortalId).LocalPath;
-                string filename = Path.GetFileNameWithoutExtension(fileThumbnail.PostedFile.FileName);
-                string extension = Path.GetExtension(fileThumbnail.PostedFile.FileName);
+                string path = Utility.GetThumbnailLibraryMapPath(this.PortalId).LocalPath;
+                string filename = Path.GetFileNameWithoutExtension(this.fileThumbnail.PostedFile.FileName);
+                string extension = Path.GetExtension(this.fileThumbnail.PostedFile.FileName);
 
                 if (File.Exists(Path.Combine(path, filename + extension)))
                 {
@@ -146,30 +127,111 @@ namespace Engage.Dnn.Publish.Controls
                     {
                         i++;
                     }
+
                     filename = String.Format(CultureInfo.InvariantCulture, "{0}[{1}]", filename, i);
                 }
 
-                fileThumbnail.PostedFile.SaveAs(Path.Combine(path, filename + extension));
+                this.fileThumbnail.PostedFile.SaveAs(Path.Combine(path, filename + extension));
 
-                _thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), filename + extension);
+                this._thumbnailUrl = Path.Combine(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), filename + extension);
 
-                InitializeThumbnailControl();
+                this.InitializeThumbnailControl();
             }
             else
             {
-                txtMessage.Visible = true;
+                this.txtMessage.Visible = true;
+            }
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
+        protected void rblThumbnailImage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            View activeView; // = null;
+            if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
+            {
+                activeView = this.vwInternal;
+            }
+            else if (this.rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
+            {
+                activeView = this.vwExternal;
+            }
+            else
+            {
+                // ThumbnailImageType.Upload.ToString(CultureInfo.InvariantCulture)
+                activeView = this.vwUpload;
+            }
+
+            this.mvThumbnailImage.SetActiveView(activeView);
+        }
+
+        private void InitializeComponent()
+        {
+            this.Load += this.Page_Load;
+        }
+
+        private void InitializeThumbnailControl()
+        {
+            this.rblThumbnailImage.Items.Clear();
+            this.rblThumbnailImage.Items.Add(
+                new ListItem(
+                    Localization.GetString(ThumbnailImageType.Upload.ToString(), this.LocalResourceFile), ThumbnailImageType.Upload.ToString()));
+            this.rblThumbnailImage.Items.Add(
+                new ListItem(
+                    Localization.GetString(ThumbnailImageType.Internal.ToString(), this.LocalResourceFile), ThumbnailImageType.Internal.ToString()));
+            this.rblThumbnailImage.Items.Add(
+                new ListItem(
+                    Localization.GetString(ThumbnailImageType.External.ToString(), this.LocalResourceFile), ThumbnailImageType.External.ToString()));
+
+            var files = new StringCollection();
+            foreach (string file in Directory.GetFiles(Utility.GetThumbnailLibraryMapPath(this.PortalId).LocalPath))
+            {
+                files.Add(Path.GetFileName(file));
+            }
+
+            this.ddlThumbnailLibrary.Items.Clear();
+            this.ddlThumbnailLibrary.DataSource = files;
+            this.ddlThumbnailLibrary.DataBind();
+            this.ddlThumbnailLibrary.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
+
+            if (!Utility.HasValue(this._thumbnailUrl))
+            {
+                this.rblThumbnailImage.SelectedValue = ThumbnailImageType.Upload.ToString();
+            }
+                
+                // HACK: replace with a System.Uri comparison or Path.GetFullPath to prevent against canonicalization attacks.  BD
+            else if (Utility.HasValue(this.ThumbnailSubdirectory) &&
+                     this._thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                this.rblThumbnailImage.SelectedValue = ThumbnailImageType.Internal.ToString();
+
+                if (this.ddlThumbnailLibrary.Items.Contains(new ListItem(Path.GetFileName(this._thumbnailUrl))))
+                {
+                    this.ddlThumbnailLibrary.SelectedValue = Path.GetFileName(this._thumbnailUrl);
+                    this.mvThumbnailImage.SetActiveView(this.vwInternal);
+                }
+                else
+                {
+                    this.mvThumbnailImage.SetActiveView(this.vwUpload);
+                }
+            }
+            else
+            {
+                this.rblThumbnailImage.SelectedValue = ThumbnailImageType.External.ToString();
+                this.txtThumbnailUrl.Text = this._thumbnailUrl;
+                this.mvThumbnailImage.SetActiveView(this.vwExternal);
             }
         }
 
         private bool IsUploadValid()
         {
-            if (!fileThumbnail.HasFile)
+            if (!this.fileThumbnail.HasFile)
             {
-                txtMessage.Text = Localization.GetString("FileRequired", LocalResourceFile);
+                this.txtMessage.Text = Localization.GetString("FileRequired", this.LocalResourceFile);
             }
             else
             {
-                string extension = Path.GetExtension(fileThumbnail.PostedFile.FileName);
+                string extension = Path.GetExtension(this.fileThumbnail.PostedFile.FileName);
                 if (Utility.HasValue(extension))
                 {
                     extension = extension.Substring(1);
@@ -184,59 +246,11 @@ namespace Engage.Dnn.Publish.Controls
                     }
                 }
 
-                txtMessage.Text = String.Format(CultureInfo.CurrentCulture, Localization.GetString("FileExtension", LocalResourceFile), Utility.MediaFileTypes);
+                this.txtMessage.Text = String.Format(
+                    CultureInfo.CurrentCulture, Localization.GetString("FileExtension", this.LocalResourceFile), Utility.MediaFileTypes);
             }
+
             return false;
         }
-		#endregion
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _thumbnailUrl;
-        public string ThumbnailUrl
-        {
-            get
-            {
-                //Check which tool
-
-                if (ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
-                {
-                    return ctlMediaFile.Url;
-                }
-                if (rblThumbnailImage.SelectedValue == ThumbnailImageType.Internal.ToString())
-                {
-                    return Path.Combine(Utility.GetThumbnailLibraryPath(PortalId).ToString(), ddlThumbnailLibrary.SelectedValue);
-                }
-                if (rblThumbnailImage.SelectedValue == ThumbnailImageType.External.ToString())
-                {
-                    return txtThumbnailUrl.Text;
-                }
-                return null;
-            }
-            [DebuggerStepThrough]
-            set
-            {
-                //check option
-                if (ThumbnailSelectionOption == ThumbnailDisplayOption.DotNetNuke.ToString())
-                {
-                    ctlMediaFile.Url = value;
-                    ctlMediaFile.UrlType = "F";
-                    ctlMediaFile.FileFilter = Utility.MediaFileTypes;
-                }
-                else
-                {
-                    _thumbnailUrl = value;
-                }
-                
-            }
-        }
-
-        private enum ThumbnailImageType
-        {
-            Upload,
-            External,
-            Internal
-        }
-
     }
 }
-

@@ -8,79 +8,68 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Services.Exceptions;
-    using Util;
+    using DotNetNuke.Services.Search;
 
-	public partial class SearchRedirector :  ModuleBase, IActionable, ISearchable
-	{
+    using Engage.Dnn.Publish.Util;
 
-		#region Web Form Designer generated code
-		override protected void OnInit(EventArgs e)
-		{
-			//
-			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-			//
-			InitializeComponent();
-			base.OnInit(e);
+    public partial class SearchRedirector : ModuleBase, IActionable, ISearchable
+    {
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                var actions = new ModuleActionCollection();
+                return actions;
+            }
+        }
 
-		}
-		
-		/// <summary>
-		///		Required method for Designer support - do not modify
-		///		the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.Load += new System.EventHandler(this.Page_Load);
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation")
+        ]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
+        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
+        {
+            // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
+            return null;
+        }
 
-		}
-		#endregion
+        protected override void OnInit(EventArgs e)
+        {
+            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
+            InitializeComponent();
+            base.OnInit(e);
+        }
 
-		#region Event Handlers
+        /// <summary>
+        ///		Required method for Designer support - do not modify
+        ///		the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.Load += new EventHandler(this.Page_Load);
+        }
 
-		private void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-				if (ItemId > -1)
-				{
-					Response.Redirect(Utility.GetItemLinkUrl(ItemId, PortalId), true);
-				}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-
-		#endregion
-
-		#region Optional Interfaces
-
-		public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
-		{
-			get 
-			{
-				var actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-				return actions;
-			}
-		}
-
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
-		public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
-		{
-			// included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
-			return null;
-		}
-
-		#endregion
-
-	}
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.ItemId > -1)
+                {
+                    this.Response.Redirect(Utility.GetItemLinkUrl(this.ItemId, this.PortalId), true);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+    }
 }
-

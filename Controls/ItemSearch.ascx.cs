@@ -8,55 +8,50 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Controls
 {
-    using DotNetNuke.Entities.Modules;
+    public partial class ItemSearch : ModuleBase
+    {
+        // , IActionable
+        // TODO: this class will be implemented in a future release.
 
-    public partial class ItemSearch : ModuleBase //, IActionable
-	{
+        // #region Event Handlers
+        // override protected void OnInit(EventArgs e)
+        // {
+        // InitializeComponent();
+        // base.OnInit(e);
+        // }
 
+        // private void InitializeComponent()
+        // {
+        // this.Load += new System.EventHandler(this.Page_Load);
+        // }
 
-        //TODO: this class will be implemented in a future release.
+        // private void Page_Load(object sender, System.EventArgs e)
+        // {
+        // try 
+        // {
 
-        //#region Event Handlers
-        //override protected void OnInit(EventArgs e)
-        //{
-        //    InitializeComponent();
-        //    base.OnInit(e);
-        //}
-		
-        //private void InitializeComponent()
-        //{
-        //    this.Load += new System.EventHandler(this.Page_Load);
-        //}
+        // } 
+        // catch (Exception exc) 
+        // {
+        // Exceptions.ProcessModuleLoadException(this, exc);
+        // }
+        // }
+        // #endregion
 
-        //private void Page_Load(object sender, System.EventArgs e)
-        //{
-        //    try 
-        //    {
+        // #region Optional Interfaces
 
-        //    } 
-        //    catch (Exception exc) 
-        //    {
-        //        Exceptions.ProcessModuleLoadException(this, exc);
-        //    }
-        //}
-        //#endregion
+        // public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
+        // {
+        // get 
+        // {
+        // var actionCollection = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+        // //Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+        // return actionCollection;
+        // }
+        // }
 
-        //#region Optional Interfaces
-
-        //public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
-        //{
-        //    get 
-        //    {
-        //        var actionCollection = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-        //        //Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-        //        return actionCollection;
-        //    }
-        //}
-
-        //#endregion
-	}
+        // #endregion
+    }
 }
-

@@ -8,59 +8,24 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.TextHtml
 {
     using System;
+
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
 
     public partial class Settings : ModuleSettingsBase
     {
-        override protected void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            Load += ItemDisplayOptionsLoad;
-            if (DotNetNuke.Framework.AJAX.IsInstalled())
-            {
-                DotNetNuke.Framework.AJAX.RegisterScriptManager();
-            }
-        }
-
-        protected void ItemDisplayOptionsLoad(object sender, EventArgs e)
-        {
-            try
-            {
-                //by now ViewState has been restored so we can set the Settings control.
-                LoadSettings();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-        
-        public override void UpdateSettings()
-        {
-            try
-            {
-                var modules = new ModuleController();
-                    modules.UpdateTabModuleSetting(TabModuleId, "Template", txtTemplate.Text.Trim());
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
         public override void LoadSettings()
         {
             base.LoadSettings();
             try
             {
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    SetOptions();
+                    this.SetOptions();
                 }
             }
             catch (Exception exc)
@@ -69,14 +34,49 @@ namespace Engage.Dnn.Publish.TextHtml
             }
         }
 
+        public override void UpdateSettings()
+        {
+            try
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "Template", this.txtTemplate.Text.Trim());
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void ItemDisplayOptionsLoad(object sender, EventArgs e)
+        {
+            try
+            {
+                // by now ViewState has been restored so we can set the Settings control.
+                this.LoadSettings();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.Load += this.ItemDisplayOptionsLoad;
+            if (AJAX.IsInstalled())
+            {
+                AJAX.RegisterScriptManager();
+            }
+        }
+
         private void SetOptions()
         {
-            object o = Settings["Template"];
+            object o = this.Settings["Template"];
             if (o != null && !String.IsNullOrEmpty(o.ToString()))
             {
-                txtTemplate.Text = o.ToString();                
+                this.txtTemplate.Text = o.ToString();
             }
         }
     }
 }
-

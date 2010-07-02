@@ -8,11 +8,11 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.CategoryControls
 {
     using System;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -24,61 +24,61 @@ namespace Engage.Dnn.Publish.CategoryControls
             base.LoadSettings();
             try
             {
-                object o = Settings["csMaxResults"];
+                object o = this.Settings["csMaxResults"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    txtResults.Text = o.ToString();
+                    this.txtResults.Text = o.ToString();
                 }
 
-                o = Settings["csPerPage"];
+                o = this.Settings["csPerPage"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    txtPage.Text = o.ToString();
+                    this.txtPage.Text = o.ToString();
                 }
 
-                o = Settings["csTitleLength"];
+                o = this.Settings["csTitleLength"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    txtTitle.Text = o.ToString();
+                    this.txtTitle.Text = o.ToString();
                 }
 
-                o = Settings["csDescriptionLength"];
+                o = this.Settings["csDescriptionLength"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    txtDescription.Text = o.ToString();
+                    this.txtDescription.Text = o.ToString();
                 }
 
-                o = Settings["csSearchEmptyRedirectUrl"];
+                o = this.Settings["csSearchEmptyRedirectUrl"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    txtSearchUrl.Text = o.ToString();
+                    this.txtSearchUrl.Text = o.ToString();
                 }
 
-                ItemRelationship.DisplayCategoryHierarchy(ddlCategorySearchList, -1, PortalId, false);
-                ddlCategorySearchList.Items.Insert(0, new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "-1"));
+                ItemRelationship.DisplayCategoryHierarchy(this.ddlCategorySearchList, -1, this.PortalId, false);
+                this.ddlCategorySearchList.Items.Insert(0, new ListItem(Localization.GetString("AllCategories", this.LocalResourceFile), "-1"));
 
-                o = Settings["csCategoryId"];
+                o = this.Settings["csCategoryId"];
                 if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
-                    ListItem li = ddlCategorySearchList.Items.FindByValue(o.ToString());
+                    ListItem li = this.ddlCategorySearchList.Items.FindByValue(o.ToString());
                     if (li != null)
                     {
                         li.Selected = true;
                     }
                 }
 
-                chkDescription.Checked = false;
-                o = Settings["csShowDescription"];
+                this.chkDescription.Checked = false;
+                o = this.Settings["csShowDescription"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    chkDescription.Checked = o.ToString().Equals("Y");
+                    this.chkDescription.Checked = o.ToString().Equals("Y");
                 }
 
-                chkAllowCategorySelection.Checked = true;
-                o = Settings["csAllowCategorySelection"];
+                this.chkAllowCategorySelection.Checked = true;
+                o = this.Settings["csAllowCategorySelection"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
-                    chkAllowCategorySelection.Checked = o.ToString().Equals("Y");
+                    this.chkAllowCategorySelection.Checked = o.ToString().Equals("Y");
                 }
             }
             catch (Exception exc)
@@ -89,34 +89,30 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public override void UpdateSettings()
         {
-            //save the new setting
+            // save the new setting
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(TabModuleId, "csMaxResults", txtResults.Text);
-            modules.UpdateTabModuleSetting(TabModuleId, "csPerPage", txtPage.Text);
-            modules.UpdateTabModuleSetting(TabModuleId, "csTitleLength", txtTitle.Text);
-            modules.UpdateTabModuleSetting(TabModuleId, "csDescriptionLength", txtDescription.Text);
-            modules.UpdateTabModuleSetting(TabModuleId, "csCategoryId", ddlCategorySearchList.SelectedValue);
-            modules.UpdateTabModuleSetting(TabModuleId, "csSearchEmptyRedirectUrl", txtSearchUrl.Text.Trim());
-            modules.UpdateTabModuleSetting(TabModuleId, "csShowDescription", (chkDescription.Checked ? "Y" : "N"));
-            modules.UpdateTabModuleSetting(TabModuleId, "csAllowCategorySelection", (chkAllowCategorySelection.Checked ? "Y" : "N"));
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csMaxResults", this.txtResults.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csPerPage", this.txtPage.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csTitleLength", this.txtTitle.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csDescriptionLength", this.txtDescription.Text);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csCategoryId", this.ddlCategorySearchList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csSearchEmptyRedirectUrl", this.txtSearchUrl.Text.Trim());
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csShowDescription", this.chkDescription.Checked ? "Y" : "N");
+            modules.UpdateTabModuleSetting(this.TabModuleId, "csAllowCategorySelection", this.chkAllowCategorySelection.Checked ? "Y" : "N");
         }
 
-        //#region Optional Interfaces
+        // #region Optional Interfaces
 
-        //public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
-        //{
-        //    get
-        //    {
-        //        DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-        //        Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-        //        return Actions;
-        //    }
-        //}
+        // public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        // {
+        // get
+        // {
+        // DotNetNuke.Entities.Modules.Actions.ModuleActionCollection Actions = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
+        // Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+        // return Actions;
+        // }
+        // }
 
-       
-        //#endregion
-
-
+        // #endregion
     }
 }
-

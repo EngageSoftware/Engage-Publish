@@ -14,7 +14,6 @@ namespace Engage.Dnn.Publish.Data
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
@@ -23,13 +22,16 @@ namespace Engage.Dnn.Publish.Data
     using System.Text;
     using System.Web;
     using System.Xml;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security.Roles;
+
+    using Engage.Dnn.Publish.Security;
+    using Engage.Dnn.Publish.Util;
+
     using Microsoft.ApplicationBlocks.Data;
-    using Security;
-    using Util;
 
     public class SqlDataProvider : DataProvider
     {
@@ -82,42 +84,27 @@ namespace Engage.Dnn.Publish.Data
 
         public string ConnectionString
         {
-            get
-            {
-                return this._connectionString;
-            }
+            get { return this._connectionString; }
         }
 
         public string DatabaseOwner
         {
-            get
-            {
-                return this._databaseOwner;
-            }
+            get { return this._databaseOwner; }
         }
 
         public string NamePrefix
         {
-            get
-            {
-                return this._databaseOwner + this._objectQualifier + ModuleQualifier;
-            }
+            get { return this._databaseOwner + this._objectQualifier + ModuleQualifier; }
         }
 
         public string ObjectQualifier
         {
-            get
-            {
-                return this._objectQualifier;
-            }
+            get { return this._objectQualifier; }
         }
 
         public string ProviderPath
         {
-            get
-            {
-                return this._providerPath;
-            }
+            get { return this._providerPath; }
         }
 
         public static object ConvertTagsToXml(ArrayList tagIds)
@@ -141,119 +128,118 @@ namespace Engage.Dnn.Publish.Data
         }
 
         public override void AddArticleVersion(
-                int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
+            int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber)
         {
             // TODO: covert these to parameters
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    this.NamePrefix + "spInsertArticleVersion",
-                    itemVersionId,
-                    itemId,
-                    versionNumber,
-                    versionDescription,
-                    articleText,
-                    referenceNumber);
+                this.ConnectionString, 
+                this.NamePrefix + "spInsertArticleVersion", 
+                itemVersionId, 
+                itemId, 
+                versionNumber, 
+                versionDescription, 
+                articleText, 
+                referenceNumber);
         }
 
         public override void AddArticleVersion(
-                IDbTransaction trans,
-                int itemVersionId,
-                int itemId,
-                string versionNumber,
-                string versionDescription,
-                string articleText,
-                string referenceNumber)
+            IDbTransaction trans, 
+            int itemVersionId, 
+            int itemId, 
+            string versionNumber, 
+            string versionDescription, 
+            string articleText, 
+            string referenceNumber)
         {
             // TODO: covert these to parameters
             SqlHelper.ExecuteNonQuery(
-                    (SqlTransaction)trans,
-                    this.NamePrefix + "spInsertArticleVersion",
-                    itemVersionId,
-                    itemId,
-                    versionNumber,
-                    versionDescription,
-                    articleText,
-                    referenceNumber);
+                (SqlTransaction)trans, 
+                this.NamePrefix + "spInsertArticleVersion", 
+                itemVersionId, 
+                itemId, 
+                versionNumber, 
+                versionDescription, 
+                articleText, 
+                referenceNumber);
         }
 
         public override void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
         {
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString, this.NamePrefix + "spInsertCategoryVersion", itemVersionId, itemId, sortOrder, childDisplayTabId);
+                this.ConnectionString, this.NamePrefix + "spInsertCategoryVersion", itemVersionId, itemId, sortOrder, childDisplayTabId);
         }
 
         public override void AddCategoryVersion(IDbTransaction trans, int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
         {
             SqlHelper.ExecuteNonQuery(
-                    (SqlTransaction)trans, this.NamePrefix + "spInsertCategoryVersion", itemVersionId, itemId, sortOrder, childDisplayTabId);
+                (SqlTransaction)trans, this.NamePrefix + "spInsertCategoryVersion", itemVersionId, itemId, sortOrder, childDisplayTabId);
         }
 
         public override int AddItem(IDbTransaction trans, int itemTypeId, int portalId, int moduleId, Guid itemIdentifier)
         {
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    (SqlTransaction)trans, this.NamePrefix + "spInsertItem", itemTypeId, portalId, moduleId, itemIdentifier),
-                            CultureInfo.InvariantCulture);
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar((SqlTransaction)trans, this.NamePrefix + "spInsertItem", itemTypeId, portalId, moduleId, itemIdentifier), 
+                    CultureInfo.InvariantCulture);
         }
 
         public override void AddItemRelationship(
-                int childItemId, int childItemVersionId, int parentItemId, int relationshipTypeId, string startDate, string endDate, int sortOrder)
+            int childItemId, int childItemVersionId, int parentItemId, int relationshipTypeId, string startDate, string endDate, int sortOrder)
         {
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    this.NamePrefix + "spInsertItemRelationship",
-                    Utility.CreateIntegerParam("@ChildItemId", childItemId),
-                    Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId),
-                    Utility.CreateIntegerParam("@ParentItemId", parentItemId),
-                    Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId),
-                    Utility.CreateDateTimeParam("@StartDate", startDate),
-                    Utility.CreateDateTimeParam("@EndDate", endDate),
-                    Utility.CreateIntegerParam("@SortOrder", sortOrder));
+                this.ConnectionString, 
+                this.NamePrefix + "spInsertItemRelationship", 
+                Utility.CreateIntegerParam("@ChildItemId", childItemId), 
+                Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId), 
+                Utility.CreateIntegerParam("@ParentItemId", parentItemId), 
+                Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId), 
+                Utility.CreateDateTimeParam("@StartDate", startDate), 
+                Utility.CreateDateTimeParam("@EndDate", endDate), 
+                Utility.CreateIntegerParam("@SortOrder", sortOrder));
         }
 
         public override void AddItemRelationship(
-                IDbTransaction trans,
-                int childItemId,
-                int childItemVersionId,
-                int parentItemId,
-                int relationshipTypeId,
-                string startDate,
-                string endDate,
-                int sortOrder)
+            IDbTransaction trans, 
+            int childItemId, 
+            int childItemVersionId, 
+            int parentItemId, 
+            int relationshipTypeId, 
+            string startDate, 
+            string endDate, 
+            int sortOrder)
         {
             SqlHelper.ExecuteNonQuery(
-                    (SqlTransaction)trans,
-                    this.NamePrefix + "spInsertItemRelationship",
-                    Utility.CreateIntegerParam("@ChildItemId", childItemId),
-                    Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId),
-                    Utility.CreateIntegerParam("@ParentItemId", parentItemId),
-                    Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId),
-                    Utility.CreateDateTimeParam("@StartDate", startDate),
-                    Utility.CreateDateTimeParam("@EndDate", endDate),
-                    Utility.CreateIntegerParam("@SortOrder", sortOrder));
+                (SqlTransaction)trans, 
+                this.NamePrefix + "spInsertItemRelationship", 
+                Utility.CreateIntegerParam("@ChildItemId", childItemId), 
+                Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId), 
+                Utility.CreateIntegerParam("@ParentItemId", parentItemId), 
+                Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId), 
+                Utility.CreateDateTimeParam("@StartDate", startDate), 
+                Utility.CreateDateTimeParam("@EndDate", endDate), 
+                Utility.CreateIntegerParam("@SortOrder", sortOrder));
         }
 
         public override void AddItemRelationshipWithOriginalSortOrder(
-                IDbTransaction trans,
-                int childItemId,
-                int childItemVersionId,
-                int parentItemId,
-                int relationshipTypeId,
-                string startDate,
-                string endDate,
-                int originalItemVersionId)
+            IDbTransaction trans, 
+            int childItemId, 
+            int childItemVersionId, 
+            int parentItemId, 
+            int relationshipTypeId, 
+            string startDate, 
+            string endDate, 
+            int originalItemVersionId)
         {
             SqlHelper.ExecuteNonQuery(
-                    (SqlTransaction)trans,
-                    this.NamePrefix + "spInsertItemRelationshipWithPreviousSortOrder",
-                    Utility.CreateIntegerParam("@ChildItemId", childItemId),
-                    Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId),
-                    Utility.CreateIntegerParam("@ParentItemId", parentItemId),
-                    Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId),
-                    Utility.CreateDateTimeParam("@StartDate", startDate),
-                    Utility.CreateDateTimeParam("@EndDate", endDate),
-                    Utility.CreateIntegerParam("@OriginalItemVersionId", originalItemVersionId));
+                (SqlTransaction)trans, 
+                this.NamePrefix + "spInsertItemRelationshipWithPreviousSortOrder", 
+                Utility.CreateIntegerParam("@ChildItemId", childItemId), 
+                Utility.CreateIntegerParam("@ChildItemVersionId", childItemVersionId), 
+                Utility.CreateIntegerParam("@ParentItemId", parentItemId), 
+                Utility.CreateIntegerParam("@relationshipTypeId", relationshipTypeId), 
+                Utility.CreateDateTimeParam("@StartDate", startDate), 
+                Utility.CreateDateTimeParam("@EndDate", endDate), 
+                Utility.CreateIntegerParam("@OriginalItemVersionId", originalItemVersionId));
         }
 
         public override void AddItemTag(int itemVersionId, int tagId)
@@ -283,172 +269,173 @@ namespace Engage.Dnn.Publish.Data
         }
 
         public override int AddItemVersion(
-                int itemId,
-                int originalItemVersionId,
-                string name,
-                string description,
-                string startDate,
-                string endDate,
-                int languageId,
-                int authorUserId,
-                string metaKeywords,
-                string metaDescription,
-                string metaTitle,
-                int displayTabId,
-                bool disabled,
-                string thumbnail,
-                Guid itemVersionIdentifier,
-                string url,
-                bool newWindow,
-                int revisingUserId)
+            int itemId, 
+            int originalItemVersionId, 
+            string name, 
+            string description, 
+            string startDate, 
+            string endDate, 
+            int languageId, 
+            int authorUserId, 
+            string metaKeywords, 
+            string metaDescription, 
+            string metaTitle, 
+            int displayTabId, 
+            bool disabled, 
+            string thumbnail, 
+            Guid itemVersionIdentifier, 
+            string url, 
+            bool newWindow, 
+            int revisingUserId)
         {
             // return the new versionId
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    this.ConnectionString,
-                                    this.NamePrefix + "spInsertItemVersion",
-                                    Utility.CreateIntegerParam("@ItemId", itemId),
-                                    Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId),
-                                    Utility.CreateNvarcharParam("@Name", name, 255),
-                                    description,
-                                    Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
-                                    Utility.CreateDateTimeParam("@StartDate", startDate),
-                                    Utility.CreateDateTimeParam("@EndDate", endDate),
-                                    Utility.CreateIntegerParam("@LanguageId", languageId),
-                                    Utility.CreateIntegerParam("@AuthorUserId", authorUserId),
-                                    Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255),
-                                    Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400),
-                                    Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255),
-                                    Utility.CreateIntegerParam("@DisplayTabId", displayTabId),
-                                    Utility.CreateBitParam("@Disabled", disabled),
-                                    Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300),
-                                    Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier),
-                                    Utility.CreateNvarcharParam("@url", url, 255),
-                                    Utility.CreateBitParam("@newWindow", newWindow),
-                                    Utility.CreateIntegerParam("@RevisingUserId", revisingUserId)),
-                            CultureInfo.InvariantCulture);
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(
+                        this.ConnectionString, 
+                        this.NamePrefix + "spInsertItemVersion", 
+                        Utility.CreateIntegerParam("@ItemId", itemId), 
+                        Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), 
+                        Utility.CreateNvarcharParam("@Name", name, 255), 
+                        description, 
+                        Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), 
+                        Utility.CreateDateTimeParam("@StartDate", startDate), 
+                        Utility.CreateDateTimeParam("@EndDate", endDate), 
+                        Utility.CreateIntegerParam("@LanguageId", languageId), 
+                        Utility.CreateIntegerParam("@AuthorUserId", authorUserId), 
+                        Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), 
+                        Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), 
+                        Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), 
+                        Utility.CreateIntegerParam("@DisplayTabId", displayTabId), 
+                        Utility.CreateBitParam("@Disabled", disabled), 
+                        Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), 
+                        Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), 
+                        Utility.CreateNvarcharParam("@url", url, 255), 
+                        Utility.CreateBitParam("@newWindow", newWindow), 
+                        Utility.CreateIntegerParam("@RevisingUserId", revisingUserId)), 
+                    CultureInfo.InvariantCulture);
         }
 
         public override int AddItemVersion(
-                IDbTransaction trans,
-                int itemId,
-                int originalItemVersionId,
-                string name,
-                string description,
-                string startDate,
-                string endDate,
-                int languageId,
-                int authorUserId,
-                string metaKeywords,
-                string metaDescription,
-                string metaTitle,
-                int displayTabId,
-                bool disabled,
-                string thumbnail,
-                Guid itemVersionIdentifier,
-                string url,
-                bool newWindow,
-                int revisingUserId)
+            IDbTransaction trans, 
+            int itemId, 
+            int originalItemVersionId, 
+            string name, 
+            string description, 
+            string startDate, 
+            string endDate, 
+            int languageId, 
+            int authorUserId, 
+            string metaKeywords, 
+            string metaDescription, 
+            string metaTitle, 
+            int displayTabId, 
+            bool disabled, 
+            string thumbnail, 
+            Guid itemVersionIdentifier, 
+            string url, 
+            bool newWindow, 
+            int revisingUserId)
         {
             // return the new versionId
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    (SqlTransaction)trans,
-                                    this.NamePrefix + "spInsertItemVersion",
-                                    Utility.CreateIntegerParam("@ItemId", itemId),
-                                    Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId),
-                                    Utility.CreateNvarcharParam("@Name", name, 255),
-                                    Utility.CreateNtextParam("@Description", description),
-                                    Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
-                                    Utility.CreateDateTimeParam("@StartDate", startDate),
-                                    Utility.CreateDateTimeParam("@EndDate", endDate),
-                                    Utility.CreateIntegerParam("@LanguageId", languageId),
-                                    Utility.CreateIntegerParam("@AuthorUserId", authorUserId),
-                                    Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255),
-                                    Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400),
-                                    Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255),
-                                    Utility.CreateIntegerParam("@DisplayTabId", displayTabId),
-                                    Utility.CreateBitParam("@Disabled", disabled),
-                                    Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300),
-                                    Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier),
-                                    Utility.CreateNvarcharParam("@url", url, 255),
-                                    Utility.CreateBitParam("@newWindow", newWindow),
-                                    Utility.CreateIntegerParam("@RevisingUserId", revisingUserId)),
-                            CultureInfo.InvariantCulture);
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(
+                        (SqlTransaction)trans, 
+                        this.NamePrefix + "spInsertItemVersion", 
+                        Utility.CreateIntegerParam("@ItemId", itemId), 
+                        Utility.CreateIntegerParam("@OriginalitemVersionId", originalItemVersionId), 
+                        Utility.CreateNvarcharParam("@Name", name, 255), 
+                        Utility.CreateNtextParam("@Description", description), 
+                        Utility.CreateDateTimeParam("@ItemVersionDate", DateTime.Now.ToString(CultureInfo.InvariantCulture)), 
+                        Utility.CreateDateTimeParam("@StartDate", startDate), 
+                        Utility.CreateDateTimeParam("@EndDate", endDate), 
+                        Utility.CreateIntegerParam("@LanguageId", languageId), 
+                        Utility.CreateIntegerParam("@AuthorUserId", authorUserId), 
+                        Utility.CreateNvarcharParam("@MetaKeywords", metaKeywords, 255), 
+                        Utility.CreateNvarcharParam("@MetaDescription", metaDescription, 400), 
+                        Utility.CreateNvarcharParam("@MetaTitle", metaTitle, 255), 
+                        Utility.CreateIntegerParam("@DisplayTabId", displayTabId), 
+                        Utility.CreateBitParam("@Disabled", disabled), 
+                        Utility.CreateVarcharParam("@Thumbnail", thumbnail, 300), 
+                        Utility.CreateGuidParam("@itemVersionIdentifier", itemVersionIdentifier), 
+                        Utility.CreateNvarcharParam("@url", url, 255), 
+                        Utility.CreateBitParam("@newWindow", newWindow), 
+                        Utility.CreateIntegerParam("@RevisingUserId", revisingUserId)), 
+                    CultureInfo.InvariantCulture);
         }
 
         public override void AddItemVersionSetting(int itemVersionId, string controlName, string propertyName, string propertyValue)
         {
             SqlHelper.ExecuteScalar(
-                    this.ConnectionString,
-                    this.NamePrefix + "spInsertItemVersionSettings",
-                    Utility.CreateIntegerParam("@ItemVersionId", itemVersionId),
-                    Utility.CreateNvarcharParam("@ControlName", controlName, 200),
-                    Utility.CreateNvarcharParam("@PropertyName", propertyName, 200),
-                    Utility.CreateNvarcharParam("@PropertyValue", propertyValue, 200));
+                this.ConnectionString, 
+                this.NamePrefix + "spInsertItemVersionSettings", 
+                Utility.CreateIntegerParam("@ItemVersionId", itemVersionId), 
+                Utility.CreateNvarcharParam("@ControlName", controlName, 200), 
+                Utility.CreateNvarcharParam("@PropertyName", propertyName, 200), 
+                Utility.CreateNvarcharParam("@PropertyValue", propertyValue, 200));
         }
 
         public override void AddItemVersionSetting(
-                IDbTransaction trans, int itemVersionId, string controlName, string propertyName, string propertyValue)
+            IDbTransaction trans, int itemVersionId, string controlName, string propertyName, string propertyValue)
         {
             // return the new versionId
             SqlHelper.ExecuteScalar(
-                    (SqlTransaction)trans,
-                    this.NamePrefix + "spInsertItemVersionSettings",
-                    Utility.CreateIntegerParam("@ItemVersionId", itemVersionId),
-                    Utility.CreateNvarcharParam("@ControlName", controlName, 200),
-                    Utility.CreateNvarcharParam("@PropertyName", propertyName, 200),
-                    Utility.CreateNvarcharParam("@PropertyValue", propertyValue, 200));
+                (SqlTransaction)trans, 
+                this.NamePrefix + "spInsertItemVersionSettings", 
+                Utility.CreateIntegerParam("@ItemVersionId", itemVersionId), 
+                Utility.CreateNvarcharParam("@ControlName", controlName, 200), 
+                Utility.CreateNvarcharParam("@PropertyName", propertyName, 200), 
+                Utility.CreateNvarcharParam("@PropertyValue", propertyValue, 200));
         }
 
-        [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "IP Address is not hungarian notation")]
+        [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", 
+            Justification = "IP Address is not hungarian notation")]
         public override void AddItemView(
-                int itemId, int itemVersionId, int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
+            int itemId, int itemVersionId, int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl)
         {
             // TODO: covert these to parameters
             SqlHelper.ExecuteScalar(
-                    this.ConnectionString,
-                    this.NamePrefix + "spInsertItemView",
-                    itemId,
-                    itemVersionId,
-                    userId,
-                    tabId,
-                    ipAddress,
-                    userAgent,
-                    httpReferrer,
-                    siteUrl);
+                this.ConnectionString, 
+                this.NamePrefix + "spInsertItemView", 
+                itemId, 
+                itemVersionId, 
+                userId, 
+                tabId, 
+                ipAddress, 
+                userAgent, 
+                httpReferrer, 
+                siteUrl);
         }
 
         public override int AddTag(Tag tag)
         {
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    this.ConnectionString,
-                                    this.NamePrefix + "spInsertTag",
-                                    tag.Name,
-                                    tag.Description,
-                                    tag.TotalItems,
-                                    tag.LanguageId,
-                                    tag.PortalId),
-                            CultureInfo.InvariantCulture);
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(
+                        this.ConnectionString, 
+                        this.NamePrefix + "spInsertTag", 
+                        tag.Name, 
+                        tag.Description, 
+                        tag.TotalItems, 
+                        tag.LanguageId, 
+                        tag.PortalId), 
+                    CultureInfo.InvariantCulture);
         }
 
         public override int AddTag(IDbTransaction trans, Tag tag)
         {
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    (SqlTransaction)trans,
-                                    this.NamePrefix + "spInsertTag",
-                                    tag.Name,
-                                    tag.Description,
-                                    tag.TotalItems,
-                                    tag.LanguageId,
-                                    tag.PortalId),
-                            CultureInfo.InvariantCulture);
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(
+                        (SqlTransaction)trans, 
+                        this.NamePrefix + "spInsertTag", 
+                        tag.Name, 
+                        tag.Description, 
+                        tag.TotalItems, 
+                        tag.LanguageId, 
+                        tag.PortalId), 
+                    CultureInfo.InvariantCulture);
 
             // return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "spInsertTag", tag.Name, tag.Description, tag.TotalItems, tag.LanguageId, tag.PortalId), CultureInfo.InvariantCulture);
         }
@@ -486,36 +473,34 @@ namespace Engage.Dnn.Publish.Data
         public override void ClearItemsCommentCount(int portalId)
         {
             string sql = String.Format(
-                    CultureInfo.InvariantCulture,
-                    "update {0}item set commentcount=0 where portalId = @portalId",
-                    this.ObjectQualifier + ModuleQualifier);
+                CultureInfo.InvariantCulture, "update {0}item set commentcount=0 where portalId = @portalId", this.ObjectQualifier + ModuleQualifier);
             SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
         }
 
         public override void ClearItemsViewCount(int portalId)
         {
             string sql = String.Format(
-                    CultureInfo.InvariantCulture, "update {0}item set viewcount=0 where portalId = @portalId", this.ObjectQualifier + ModuleQualifier);
+                CultureInfo.InvariantCulture, "update {0}item set viewcount=0 where portalId = @portalId", this.ObjectQualifier + ModuleQualifier);
             SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
         }
 
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
             string sql = String.Format(
-                    CultureInfo.InvariantCulture,
-                    "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}",
-                    this.ObjectQualifier + ModuleQualifier,
-                    ApprovalStatus.Waiting.GetId());
+                CultureInfo.InvariantCulture, 
+                "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", 
+                this.ObjectQualifier + ModuleQualifier, 
+                ApprovalStatus.Waiting.GetId());
 
             // select count(*) from dnn_publish_comment pc join dnn_publish_vwitems vi on (vi.itemversionId = pc.itemversionid) where pc.approvalstatusid != 3 and portalId =0 and vi.authoruserid = 1
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(
-                                    this.ConnectionString,
-                                    CommandType.Text,
-                                    sql,
-                                    Utility.CreateIntegerParam("@portalId", portalId),
-                                    Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(
+                        this.ConnectionString, 
+                        CommandType.Text, 
+                        sql, 
+                        Utility.CreateIntegerParam("@portalId", portalId), 
+                        Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));
         }
 
         public override void DeleteItem(int itemId)
@@ -671,67 +656,61 @@ namespace Engage.Dnn.Publish.Data
         }
 
         public override DataSet GetAdminItemListing(
-                int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId)
+            int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId)
         {
             return this.GetAdminItemListing(parentItemId, itemTypeId, relationshipTypeId, -1, approvalStatusId, orderBy, portalId);
         }
 
         public override DataSet GetAdminItemListing(
-                int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId)
+            int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId)
         {
             return this.GetAdminItemListing(
-                    parentItemId, itemTypeId, relationshipTypeId, otherRelationshipTypeId, approvalStatusId, " vi.[Name] asc ", portalId);
+                parentItemId, itemTypeId, relationshipTypeId, otherRelationshipTypeId, approvalStatusId, " vi.[Name] asc ", portalId);
         }
 
         public override DataSet GetAdminItemListing(
-                int parentItemId,
-                int itemTypeId,
-                int relationshipTypeId,
-                int otherRelationshipTypeId,
-                int approvalStatusId,
-                string orderBy,
-                int portalId)
+            int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, string orderBy, int portalId)
         {
             return SqlHelper.ExecuteDataset(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetAdminItemListing",
-                    Utility.CreateIntegerParam("@ParentItemId", parentItemId),
-                    Utility.CreateIntegerParam("@ItemTypeId", itemTypeId),
-                    Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId),
-                    Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId),
-                    Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId),
-                    Utility.CreateIntegerParam("@PortalId", portalId),
-                    Utility.CreateNvarcharParam("@OrderBy", orderBy, 100));
+                this.ConnectionString, 
+                this.NamePrefix + "spGetAdminItemListing", 
+                Utility.CreateIntegerParam("@ParentItemId", parentItemId), 
+                Utility.CreateIntegerParam("@ItemTypeId", itemTypeId), 
+                Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId), 
+                Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId), 
+                Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId), 
+                Utility.CreateIntegerParam("@PortalId", portalId), 
+                Utility.CreateNvarcharParam("@OrderBy", orderBy, 100));
         }
 
         public override DataSet GetAdminItemListingSearchKey(
-                int parentItemId,
-                int itemTypeId,
-                int relationshipTypeId,
-                int otherRelationshipTypeId,
-                int approvalStatusId,
-                string orderBy,
-                string searchKey,
-                int portalId)
+            int parentItemId, 
+            int itemTypeId, 
+            int relationshipTypeId, 
+            int otherRelationshipTypeId, 
+            int approvalStatusId, 
+            string orderBy, 
+            string searchKey, 
+            int portalId)
         {
             return SqlHelper.ExecuteDataset(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetAdminItemListingSearchKey",
-                    Utility.CreateIntegerParam("@ParentItemId", parentItemId),
-                    Utility.CreateIntegerParam("@ItemTypeId", itemTypeId),
-                    Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId),
-                    Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId),
-                    Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId),
-                    Utility.CreateIntegerParam("@PortalId", portalId),
-                    Utility.CreateNvarcharParam("@OrderBy", orderBy, 100),
-                    Utility.CreateNvarcharParam("@SearchKey", searchKey, 250));
+                this.ConnectionString, 
+                this.NamePrefix + "spGetAdminItemListingSearchKey", 
+                Utility.CreateIntegerParam("@ParentItemId", parentItemId), 
+                Utility.CreateIntegerParam("@ItemTypeId", itemTypeId), 
+                Utility.CreateIntegerParam("@RelationshipTypeid", relationshipTypeId), 
+                Utility.CreateIntegerParam("@OtherRelationshipTypeId", otherRelationshipTypeId), 
+                Utility.CreateIntegerParam("@ApprovalStatusId", approvalStatusId), 
+                Utility.CreateIntegerParam("@PortalId", portalId), 
+                Utility.CreateNvarcharParam("@OrderBy", orderBy, 100), 
+                Utility.CreateNvarcharParam("@SearchKey", searchKey, 250));
         }
 
         public override DataSet GetAdminKeywordSearch(string searchString, int itemTypeId, int approvalStatusId, int portalId)
         {
             var sql = new StringBuilder(256);
             sql.Append(
-                    " select i.itemId, i.itemVersionId, i.DisplayTabId,  i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
+                " select i.itemId, i.itemVersionId, i.DisplayTabId,  i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
             sql.Append(" from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItems i ");
@@ -761,7 +740,7 @@ namespace Engage.Dnn.Publish.Data
         {
             var sql = new StringBuilder(256);
             sql.Append(
-                    " select i.itemId, i.itemVersionId, i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
+                " select i.itemId, i.itemVersionId, i.ItemVersionDate, it.[Name] 'itemType', Ltrim(str(i.itemId)) + '-' + i.[name] as 'Name', Ltrim(str(i.itemId)) + '-' + i.[name] as 'ListName' ");
             sql.Append(" from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItems i ");
@@ -825,47 +804,47 @@ namespace Engage.Dnn.Publish.Data
         public override DataSet GetAllChildren(int itemTypeId, int parentId, int relationshipTypeId, int portalId)
         {
             return SqlHelper.ExecuteDataset(
-                    this.ConnectionString, this.NamePrefix + "spGetAllChildrenByType", itemTypeId, parentId, relationshipTypeId, portalId);
+                this.ConnectionString, this.NamePrefix + "spGetAllChildrenByType", itemTypeId, parentId, relationshipTypeId, portalId);
         }
 
         public override DataSet GetAllChildren(int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId)
         {
             return SqlHelper.ExecuteDataset(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetAllChildrenByTypeWithTwoRelationshipTypes",
-                    itemTypeId,
-                    parentId,
-                    relationshipTypeId,
-                    otherRelationshipTypeId,
-                    portalId);
+                this.ConnectionString, 
+                this.NamePrefix + "spGetAllChildrenByTypeWithTwoRelationshipTypes", 
+                itemTypeId, 
+                parentId, 
+                relationshipTypeId, 
+                otherRelationshipTypeId, 
+                portalId);
         }
 
         public override IDataReader GetAllChildrenAsDataReader(
-                int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId)
+            int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId)
         {
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetAllChildrenByTypeWithTwoRelationshipTypes",
-                    itemTypeId,
-                    parentId,
-                    relationshipTypeId,
-                    otherRelationshipTypeId,
-                    portalId);
+                this.ConnectionString, 
+                this.NamePrefix + "spGetAllChildrenByTypeWithTwoRelationshipTypes", 
+                itemTypeId, 
+                parentId, 
+                relationshipTypeId, 
+                otherRelationshipTypeId, 
+                portalId);
         }
 
         [Obsolete("This method is not used.")]
         public override DataSet GetAllChildrenFromTwoParents(
-                int itemTypeId, int parentId, int relationshipTypeId, int otherParentId, int otherRelationshipTypeId, int portalId)
+            int itemTypeId, int parentId, int relationshipTypeId, int otherParentId, int otherRelationshipTypeId, int portalId)
         {
             return SqlHelper.ExecuteDataset(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetAllChildrenFromTwoParents",
-                    itemTypeId,
-                    parentId,
-                    relationshipTypeId,
-                    otherParentId,
-                    otherRelationshipTypeId,
-                    portalId);
+                this.ConnectionString, 
+                this.NamePrefix + "spGetAllChildrenFromTwoParents", 
+                itemTypeId, 
+                parentId, 
+                relationshipTypeId, 
+                otherParentId, 
+                otherRelationshipTypeId, 
+                portalId);
         }
 
         public override DataTable GetAllChildrenNLevels(int parentCategoryId, int nLevels, int mItems, int portalId)
@@ -889,7 +868,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" join ");
             sql.Append(this.NamePrefix);
             sql.Append(
-                    "vwrelationships vr on (vi.itemVersionId = vr.ChildItemVersionId and vr.ParentItemId = vpar.ItemId  and vr.relationshiptypeid=gcil.RelationshipTypeId)");
+                "vwrelationships vr on (vi.itemVersionId = vr.ChildItemVersionId and vr.ParentItemId = vpar.ItemId  and vr.relationshiptypeid=gcil.RelationshipTypeId)");
 
             sql.Append(" where vpar.IsCurrentVersion = 1 AND vi.PortalId = ");
             sql.Append(portalId);
@@ -997,7 +976,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
+                "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1015,7 +994,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow  ");
+                "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovedItemVersionId, ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow  ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1025,12 +1004,29 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
         }
 
+        public override IDataReader GetArticleVersion(int itemVersionId, int portalId)
+        {
+            var sql = new StringBuilder(256);
+
+            sql.Append(
+                "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
+            sql.Append("from ");
+            sql.Append(this.NamePrefix);
+            sql.Append("vwArticles ");
+            sql.Append("where PortalID = ");
+            sql.Append(portalId);
+            sql.Append(" and itemVersionId = ");
+            sql.Append(itemVersionId);
+
+            return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
+        }
+
         public override DataTable GetArticles(int portalId)
         {
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier ");
+                "select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1076,7 +1072,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
+                "select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1093,7 +1089,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
+                "select name, itemId, ArticleText, DisplayTabID, PortalId, IsCurrentVersion, Disabled, Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, ModuleId, ItemIdentifier, ItemIdentifier, ItemVersionId ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1110,7 +1106,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, ItemIdentifier, ItemIdentifier, ItemVersionId, PortalId ");
+                "select name, itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, Description, ItemIdentifier, ItemIdentifier, ItemVersionId, PortalId ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles ");
@@ -1128,7 +1124,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select 	name, va.itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, va.Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, va.PortalId ");
+                "select 	name, va.itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, va.Description, MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, RevisingUserId, LastUpdated, va.PortalId ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwArticles va ");
@@ -1164,23 +1160,6 @@ namespace Engage.Dnn.Publish.Data
 
             DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
             return ds.Tables[0];
-        }
-
-        public override IDataReader GetArticleVersion(int itemVersionId, int portalId)
-        {
-            var sql = new StringBuilder(256);
-
-            sql.Append(
-                    "select ArticleText, VersionNumber, VersionDescription, ReferenceNumber, AverageRating, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
-            sql.Append("from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("vwArticles ");
-            sql.Append("where PortalID = ");
-            sql.Append(portalId);
-            sql.Append(" and itemVersionId = ");
-            sql.Append(itemVersionId);
-
-            return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
         }
 
         public override DataTable GetAssignedRoles(int categoryId)
@@ -1328,7 +1307,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
+                "select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId  ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwCategories ");
@@ -1346,7 +1325,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select  SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
+                "select  SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovedItemVersionId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ModuleId, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwCategories ");
@@ -1387,7 +1366,7 @@ namespace Engage.Dnn.Publish.Data
 
             sql.Append("select ");
             sql.Append(
-                    "childItemId ItemId, ChildItemVersionId ItemVersionId, iv.DisplayTabId, iv.[Name] 'Name', ItemVersionDate, it.[Name] 'ItemType' ");
+                "childItemId ItemId, ChildItemVersionId ItemVersionId, iv.DisplayTabId, iv.[Name] 'Name', ItemVersionDate, it.[Name] 'ItemType' ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("fnGetChildItemsAdminSearch(");
@@ -1438,7 +1417,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId   ");
+                "select SortOrder, ChildDisplayTabId, ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ItemIdentifier, ItemVersionIdentifier, Url, NewWindow, ModuleId   ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwCategories ");
@@ -1459,7 +1438,7 @@ namespace Engage.Dnn.Publish.Data
 
             sql.Append("select ");
             sql.Append(
-                    "c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
+                "c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
             sql.Append(", (select count(ParentItemId) from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwChilditems vi where ParentItemId = c.ItemId and RelationShipTypeId = ");
@@ -1501,7 +1480,7 @@ namespace Engage.Dnn.Publish.Data
 
             sql.Append("select ");
             sql.Append(
-                    "c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
+                "c.Name, c.Description, c.ItemId, c.ItemVersionId, c.DisplayTabId, c.CreatedDate, c.LastUpdated, cv.SortOrder, cv.ChildDisplayTabId, c.ParentItemId ");
 
             sql.Append(", (select count(ParentItemId) from ");
             sql.Append(this.NamePrefix);
@@ -1579,7 +1558,7 @@ namespace Engage.Dnn.Publish.Data
             }
 
             sql.Append(
-                    "il.ChildItemId, il.Thumbnail, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemTypeId, il.StartDate, il.LastUpdated, il.CreatedDate, il.AuthorUserId, u.DisplayName, il.Author, il.RevisingUserId ");
+                "il.ChildItemId, il.Thumbnail, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemTypeId, il.StartDate, il.LastUpdated, il.CreatedDate, il.AuthorUserId, u.DisplayName, il.Author, il.RevisingUserId ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItemListing il ");
@@ -1628,28 +1607,28 @@ namespace Engage.Dnn.Publish.Data
         }
 
         public override DataTable GetChildrenInCategoryPaging(
-                int categoryId,
-                int childTypeId,
-                int maxItems,
-                int portalId,
-                bool customSort,
-                bool customSortDirection,
-                string sortOrder,
-                int index,
-                int pageSize)
+            int categoryId, 
+            int childTypeId, 
+            int maxItems, 
+            int portalId, 
+            bool customSort, 
+            bool customSortDirection, 
+            string sortOrder, 
+            int index, 
+            int pageSize)
         {
             DataTable dt =
-                    SqlHelper.ExecuteDataset(
-                            this.ConnectionString,
-                            this.NamePrefix + "spGetChildrenInCategoryPaging",
-                            childTypeId,
-                            categoryId,
-                            index,
-                            pageSize,
-                            customSort,
-                            customSortDirection,
-                            sortOrder,
-                            portalId).Tables[0];
+                SqlHelper.ExecuteDataset(
+                    this.ConnectionString, 
+                    this.NamePrefix + "spGetChildrenInCategoryPaging", 
+                    childTypeId, 
+                    categoryId, 
+                    index, 
+                    pageSize, 
+                    customSort, 
+                    customSortDirection, 
+                    sortOrder, 
+                    portalId).Tables[0];
 
             SecurityFilter sf = SecurityFilter.Instance;
             sf.FilterCategories(dt);
@@ -1666,7 +1645,10 @@ namespace Engage.Dnn.Publish.Data
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
         public override IDbConnection GetConnection()
         {
-            var newConnection = new SqlConnection { ConnectionString = this.ConnectionString };
+            var newConnection = new SqlConnection
+                {
+                    ConnectionString = this.ConnectionString
+                };
             newConnection.Open();
             return newConnection;
         }
@@ -1687,7 +1669,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    "select ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ApprovedItemVersionID, Author ");
+                "select ItemId, ItemVersionId, OriginalItemVersionId, Name, Description, ItemVersionDate, CreatedDate, StartDate, EndDate, LanguageId, AuthorUserId, RevisingUserId, ApprovalStatusId,  ApprovalDate, ApprovalUserId, ApprovalComments, MetaKeywords, MetaDescription, MetaTitle, DisplayTabId, LastUpdated, ItemTypeId, PortalId, Disabled, Thumbnail, ApprovedItemVersionID, Author ");
             sql.Append("from  ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItems ");
@@ -1756,11 +1738,11 @@ namespace Engage.Dnn.Publish.Data
         public override IDataReader GetItemRelationshipByIdentifiers(Guid parentItemIdentifier, Guid childItemVersionIdentifier, int currentPortalId)
         {
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    this.NamePrefix + "spGetItemRelationshipDataByIdentifiers",
-                    parentItemIdentifier,
-                    childItemVersionIdentifier,
-                    currentPortalId);
+                this.ConnectionString, 
+                this.NamePrefix + "spGetItemRelationshipDataByIdentifiers", 
+                parentItemIdentifier, 
+                childItemVersionIdentifier, 
+                currentPortalId);
         }
 
         public override DataSet GetItemRelationshipByItemRelationshipId(int itemRelationshipId)
@@ -1768,7 +1750,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(521);
 
             sql.Append(
-                    "select r.itemrelationshipid, r.parentitemid, r.childitemid as 'itemid', r.relationshiptypeid, r.startdate, r.enddate, r.sortorder, child.Name  ");
+                "select r.itemrelationshipid, r.parentitemid, r.childitemid as 'itemid', r.relationshiptypeid, r.startdate, r.enddate, r.sortorder, child.Name  ");
             sql.Append(" from ");
             sql.Append(this.NamePrefix);
             sql.Append("ItemRelationship r ");
@@ -1796,7 +1778,7 @@ namespace Engage.Dnn.Publish.Data
 
             sql.Append("select ");
             sql.Append(
-                    " r.ChildItemId, r.ChildItemVersionId, r.ParentItemId, r.StartDate, r.EndDate, r.RelationshipTypeId, r.SortOrder, rt.RelationshipName ");
+                " r.ChildItemId, r.ChildItemVersionId, r.ParentItemId, r.StartDate, r.EndDate, r.RelationshipTypeId, r.SortOrder, rt.RelationshipName ");
             sql.Append(" from ");
             sql.Append(this.NamePrefix);
             sql.Append("ItemRelationship r ");
@@ -1835,131 +1817,6 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" order by r.SortOrder ");
 
             return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
-        }
-
-        public override IDataReader GetItems(int itemTypeId, int portalId)
-        {
-            var sql = new StringBuilder(256);
-            sql.Append(
-                    "select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, Author, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("vwItems vi join ");
-            sql.Append(this._databaseOwner);
-            sql.Append(this._objectQualifier);
-            sql.Append("users u on (u.UserId = vi.AuthorUserId) ");
-            sql.Append(" where iscurrentversion = 1 and portalId=");
-            sql.Append(portalId);
-            sql.Append(" and itemTypeID = ");
-            sql.Append(itemTypeId);
-            sql.Append(" order by [name]");
-            return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
-        }
-
-        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId)
-        {
-            return this.GetItems(parentItemId, portalId, relationshipTypeId, -1);
-        }
-
-        // public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId)
-        // {
-        // StringBuilder sql = new StringBuilder(256);
-
-        // sql.Append("select ");
-        // sql.Append(" c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.CreatedDate, c.LastUpdated ");
-        // sql.Append(" from ");
-        // sql.Append(NamePrefix);
-        // sql.Append("vwChildItems c ");
-        // sql.Append(" where ");
-        // sql.Append(" c.StartDate <= getdate() ");
-        // sql.Append(" and (c.EndDate > getdate() or c.EndDate is null) ");
-        // sql.Append(" and c.IsCurrentVersion = 1 ");
-        // sql.Append(" and (c.RelationshipTypeId  = ");
-        // sql.Append(relationshipTypeId);
-        // if (otherRelationshipTypeId != -1)
-        // {
-        // sql.Append("or c.RelationshipTypeId = ");
-        // sql.Append(otherRelationshipTypeId);
-        // }
-        // sql.Append(")");
-        // sql.Append(" and c.PortalID = ");
-        // sql.Append(portalId);
-        // sql.Append(" and c.ParentItemID = ");
-        // sql.Append(parentItemId);
-        // sql.Append(" order by ");
-        // sql.Append("c.[Name]");
-
-        // return SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
-        // }
-        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int itemTypeId)
-        {
-            return this.GetItems(parentItemId, portalId, relationshipTypeId, -1, itemTypeId);
-        }
-
-        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId)
-        {
-            var sql = new StringBuilder(256);
-
-            sql.Append(" select ");
-            sql.Append(
-                    " c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.ItemTypeId, c.CreatedDate, c.LastUpdated, c.Thumbnail, c.StartDate, c.AuthorUserId, u.DisplayName, c.Author, c.RevisingUserId, c.ApprovedItemVersionID ");
-            sql.Append(" from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("vwChildItems c  join ");
-            sql.Append(this._databaseOwner);
-            sql.Append(this._objectQualifier);
-            sql.Append("users u on (u.UserId = c.AuthorUserId) ");
-            sql.Append(" where ");
-            sql.Append(" c.StartDate <= getdate() ");
-            sql.Append(" and (c.EndDate > getdate() or c.EndDate is null) ");
-            sql.Append(" and c.IsCurrentVersion = 1 ");
-            if (itemTypeId != -1)
-            {
-                sql.Append(" and c.ItemTypeId = ");
-                sql.Append(itemTypeId);
-            }
-
-            sql.Append(" and (c.RelationshipTypeId  = ");
-            sql.Append(relationshipTypeId);
-
-            if (otherRelationshipTypeId != -1)
-            {
-                sql.Append(" or c.relationshipTypeId = ");
-                sql.Append(otherRelationshipTypeId);
-            }
-
-            sql.Append(")");
-            sql.Append(" and c.PortalID = ");
-            sql.Append(portalId);
-            sql.Append(" and c.ParentItemID = ");
-            sql.Append(parentItemId);
-            sql.Append(" order by ");
-            sql.Append(" c.[Name] ");
-
-            return SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
-        }
-
-        public override DataTable GetItemsFromTags(int portalId, ArrayList tagList)
-        {
-            DataSet ds = SqlHelper.ExecuteDataset(
-                    this._connectionString,
-                    this.NamePrefix + "spGetItemsForTags",
-                    portalId,
-                    tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000));
-            return ds.Tables[0];
-        }
-
-        // implement paging for GetItemsFromTags
-        public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
-        {
-            DataSet ds = SqlHelper.ExecuteDataset(
-                    this._connectionString,
-                    this.NamePrefix + "spGetItemsForTagsPaging",
-                    portalId,
-                    tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000),
-                    Utility.CreateIntegerParam("@PageIndex", pageId),
-                    Utility.CreateIntegerParam("@PageSize", maxItems),
-                    Utility.CreateNvarcharParam("@sortParameters", sortOrder, 400));
-            return ds.Tables[0];
         }
 
         //// private string GetMultiTagItems(int portalId, ArrayList tagId, int itemTypeId)
@@ -2005,7 +1862,6 @@ namespace Engage.Dnn.Publish.Data
         public override IDataReader GetItemTags(int itemVersionId)
         {
             var sql = new StringBuilder(128);
-
             sql.Append("select ");
             sql.Append(" t.tagId, t.name, t.description, t.totalItems, t.mostRecentDate, t.languageid, t.datecreated ");
             sql.Append("from ");
@@ -2033,7 +1889,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("Name = @itemName");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@itemName", itemName, 50));
+                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@itemName", itemName, 50));
         }
 
         public override string GetItemType(int itemId)
@@ -2156,11 +2012,11 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("And PortalId = @PortalId");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Utility.CreateGuidParam("@ItemVersionIdentifier", guid),
-                    Utility.CreateIntegerParam("@PortalId", portalId));
+                this.ConnectionString, 
+                CommandType.Text, 
+                sql.ToString(), 
+                Utility.CreateGuidParam("@ItemVersionIdentifier", guid), 
+                Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override IDataReader GetItemVersionInfo(int itemVersionId)
@@ -2178,26 +2034,8 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
         }
 
-        public override DataSet GetItemVersions(int itemId, int portalId)
-        {
-            var sql = new StringBuilder(256);
-
-            sql.Append(
-                    "select ItemVersionId, DisplayTabId, Name, Description, AuthorUserId, RevisingUserId, approvalStatusId, StartDate, EndDate, adminType, VersionNumber, ItemVersionDate, ModuleId ");
-            sql.Append("from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("vwItemVersions v ");
-            sql.Append("where PortalID = ");
-            sql.Append(portalId);
-            sql.Append(" and ItemID = ");
-            sql.Append(itemId);
-            sql.Append(" order by itemversionId desc ");
-
-            return SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
-                Justification = "Code Analysis doesn't see HasValue as validation")]
+        [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", 
+            Justification = "Code Analysis doesn't see HasValue as validation")]
         public override IDataReader GetItemVersionSetting(int itemVersionId, string controlName, string propertyName)
         {
             if (!Utility.HasValue(controlName))
@@ -2285,27 +2123,170 @@ namespace Engage.Dnn.Publish.Data
             return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
         }
 
+        public override DataSet GetItemVersions(int itemId, int portalId)
+        {
+            var sql = new StringBuilder(256);
+
+            sql.Append(
+                "select ItemVersionId, DisplayTabId, Name, Description, AuthorUserId, RevisingUserId, approvalStatusId, StartDate, EndDate, adminType, VersionNumber, ItemVersionDate, ModuleId ");
+            sql.Append("from ");
+            sql.Append(this.NamePrefix);
+            sql.Append("vwItemVersions v ");
+            sql.Append("where PortalID = ");
+            sql.Append(portalId);
+            sql.Append(" and ItemID = ");
+            sql.Append(itemId);
+            sql.Append(" order by itemversionId desc ");
+
+            return SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
+        }
+
         public override DataTable GetItemViewPaging(
-                int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId)
+            int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId)
         {
             DataTable dt =
-                    SqlHelper.ExecuteDataset(
-                            this.ConnectionString,
-                            this.NamePrefix + "spGetItemViewReport",
-                            itemTypeId,
-                            categoryId,
-                            pageIndex,
-                            pageSize,
-                            startDate,
-                            endDate,
-                            sortOrder,
-                            portalId).Tables[0];
+                SqlHelper.ExecuteDataset(
+                    this.ConnectionString, 
+                    this.NamePrefix + "spGetItemViewReport", 
+                    itemTypeId, 
+                    categoryId, 
+                    pageIndex, 
+                    pageSize, 
+                    startDate, 
+                    endDate, 
+                    sortOrder, 
+                    portalId).Tables[0];
 
             SecurityFilter sf = SecurityFilter.Instance;
             sf.FilterCategories(dt);
 
             // LimitRows(maxItems, dt);
             return dt;
+        }
+
+        public override IDataReader GetItems(int itemTypeId, int portalId)
+        {
+            var sql = new StringBuilder(256);
+            sql.Append(
+                "select [name], itemId, CreatedDate, AuthorUserId, u.DisplayName, Author, RevisingUserId, LastUpdated, Ltrim(str(itemId)) + '-' + [name] as 'listName' from ");
+            sql.Append(this.NamePrefix);
+            sql.Append("vwItems vi join ");
+            sql.Append(this._databaseOwner);
+            sql.Append(this._objectQualifier);
+            sql.Append("users u on (u.UserId = vi.AuthorUserId) ");
+            sql.Append(" where iscurrentversion = 1 and portalId=");
+            sql.Append(portalId);
+            sql.Append(" and itemTypeID = ");
+            sql.Append(itemTypeId);
+            sql.Append(" order by [name]");
+            return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql.ToString());
+        }
+
+        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId)
+        {
+            return this.GetItems(parentItemId, portalId, relationshipTypeId, -1);
+        }
+
+        // public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId)
+        // {
+        // StringBuilder sql = new StringBuilder(256);
+
+        // sql.Append("select ");
+        // sql.Append(" c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.CreatedDate, c.LastUpdated ");
+        // sql.Append(" from ");
+        // sql.Append(NamePrefix);
+        // sql.Append("vwChildItems c ");
+        // sql.Append(" where ");
+        // sql.Append(" c.StartDate <= getdate() ");
+        // sql.Append(" and (c.EndDate > getdate() or c.EndDate is null) ");
+        // sql.Append(" and c.IsCurrentVersion = 1 ");
+        // sql.Append(" and (c.RelationshipTypeId  = ");
+        // sql.Append(relationshipTypeId);
+        // if (otherRelationshipTypeId != -1)
+        // {
+        // sql.Append("or c.RelationshipTypeId = ");
+        // sql.Append(otherRelationshipTypeId);
+        // }
+        // sql.Append(")");
+        // sql.Append(" and c.PortalID = ");
+        // sql.Append(portalId);
+        // sql.Append(" and c.ParentItemID = ");
+        // sql.Append(parentItemId);
+        // sql.Append(" order by ");
+        // sql.Append("c.[Name]");
+
+        // return SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
+        // }
+        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int itemTypeId)
+        {
+            return this.GetItems(parentItemId, portalId, relationshipTypeId, -1, itemTypeId);
+        }
+
+        public override DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId)
+        {
+            var sql = new StringBuilder(256);
+
+            sql.Append(" select ");
+            sql.Append(
+                " c.[Name], c.[Description], c.ItemId, c.ItemVersionId, c.ItemTypeId, c.CreatedDate, c.LastUpdated, c.Thumbnail, c.StartDate, c.AuthorUserId, u.DisplayName, c.Author, c.RevisingUserId, c.ApprovedItemVersionID ");
+            sql.Append(" from ");
+            sql.Append(this.NamePrefix);
+            sql.Append("vwChildItems c  join ");
+            sql.Append(this._databaseOwner);
+            sql.Append(this._objectQualifier);
+            sql.Append("users u on (u.UserId = c.AuthorUserId) ");
+            sql.Append(" where ");
+            sql.Append(" c.StartDate <= getdate() ");
+            sql.Append(" and (c.EndDate > getdate() or c.EndDate is null) ");
+            sql.Append(" and c.IsCurrentVersion = 1 ");
+            if (itemTypeId != -1)
+            {
+                sql.Append(" and c.ItemTypeId = ");
+                sql.Append(itemTypeId);
+            }
+
+            sql.Append(" and (c.RelationshipTypeId  = ");
+            sql.Append(relationshipTypeId);
+
+            if (otherRelationshipTypeId != -1)
+            {
+                sql.Append(" or c.relationshipTypeId = ");
+                sql.Append(otherRelationshipTypeId);
+            }
+
+            sql.Append(")");
+            sql.Append(" and c.PortalID = ");
+            sql.Append(portalId);
+            sql.Append(" and c.ParentItemID = ");
+            sql.Append(parentItemId);
+            sql.Append(" order by ");
+            sql.Append(" c.[Name] ");
+
+            return SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
+        }
+
+        public override DataTable GetItemsFromTags(int portalId, ArrayList tagList)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(
+                this._connectionString, 
+                this.NamePrefix + "spGetItemsForTags", 
+                portalId, 
+                tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000));
+            return ds.Tables[0];
+        }
+
+        // implement paging for GetItemsFromTags
+        public override DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(
+                this._connectionString, 
+                this.NamePrefix + "spGetItemsForTagsPaging", 
+                portalId, 
+                tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000), 
+                Utility.CreateIntegerParam("@PageIndex", pageId), 
+                Utility.CreateIntegerParam("@PageSize", maxItems), 
+                Utility.CreateNvarcharParam("@sortParameters", sortOrder, 400));
+            return ds.Tables[0];
         }
 
         public override IDataReader GetModuleInfo(int moduleId)
@@ -2338,7 +2319,8 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("(select count(*) TimesViewed from ");
             sql.Append(this.NamePrefix);
             sql.Append("itemview where itemid = il.childitemid ) TotalRows, ");
-            sql.Append(" il.ItemId, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, ");
+            sql.Append(
+                " il.ItemId, il.CategoryName, il.ChildName, il.ChildDescription, il.ChildItemId, il.ChildItemTypeId, il.Thumbnail, il.StartDate, il.AuthorUserId, il.RevisingUserId, ");
             sql.Append(" u.DisplayName, i.ViewCount, i.CommentCount, i.Author ");
             sql.Append("from ");
             sql.Append(this.NamePrefix);
@@ -2455,7 +2437,8 @@ namespace Engage.Dnn.Publish.Data
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
 
-            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId, child.Author ");
+            sql.Append(
+                " il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId, child.Author ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "from {0}vwItemListing il ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems child on (il.ChilditemId = child.itemId) ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems parent on (il.itemId = parent.itemId) ", this.NamePrefix);
@@ -2477,13 +2460,13 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("order by child.StartDate desc ");
 
             DataTable dt =
-                    SqlHelper.ExecuteDataset(
-                            this.ConnectionString,
-                            CommandType.Text,
-                            sql.ToString(),
-                            Utility.CreateIntegerParam("@portalId", portalId),
-                            Utility.CreateIntegerParam("@categoryId", categoryId),
-                            Utility.CreateIntegerParam("@itemTypeId", childTypeId)).Tables[0];
+                SqlHelper.ExecuteDataset(
+                    this.ConnectionString, 
+                    CommandType.Text, 
+                    sql.ToString(), 
+                    Utility.CreateIntegerParam("@portalId", portalId), 
+                    Utility.CreateIntegerParam("@categoryId", categoryId), 
+                    Utility.CreateIntegerParam("@itemTypeId", childTypeId)).Tables[0];
 
             SecurityFilter sf = SecurityFilter.Instance;
             sf.FilterCategories(dt);
@@ -2581,7 +2564,7 @@ namespace Engage.Dnn.Publish.Data
             var sql = new StringBuilder(256);
 
             sql.Append(
-                    " select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid, i.author ");
+                " select i.Name, i.Description, i.itemId, i.LastUpdated, i.Thumbnail, i.itemVersionId, i.StartDate, i.ItemVersionIdentifier, i.authoruserid, i.author ");
             sql.Append("from  ");
             sql.Append(this.NamePrefix);
             sql.Append("vwItems i ");
@@ -2623,28 +2606,28 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("PermissionName = @permissionName");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@permissionName", permissionName, 50));
+                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@permissionName", permissionName, 50));
         }
 
         public override DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
             DataSet ds = SqlHelper.ExecuteDataset(
-                    this._connectionString,
-                    this.NamePrefix + "spGetpopulartags",
-                    portalId,
-                    tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000),
-                    selectTop);
+                this._connectionString, 
+                this.NamePrefix + "spGetpopulartags", 
+                portalId, 
+                tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000), 
+                selectTop);
             return ds.Tables[0];
         }
 
         public override int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
             object count = SqlHelper.ExecuteScalar(
-                    this._connectionString,
-                    this.NamePrefix + "spgetpopulartagscount",
-                    portalId,
-                    tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000),
-                    selectTop);
+                this._connectionString, 
+                this.NamePrefix + "spgetpopulartagscount", 
+                portalId, 
+                tagList == null ? null : Utility.CreateNvarcharParam("@TagList", ConvertTagsToXml(tagList).ToString(), 4000), 
+                selectTop);
             return !string.IsNullOrEmpty(count.ToString()) ? Convert.ToInt32(count, CultureInfo.InvariantCulture) : 0;
         }
 
@@ -2660,11 +2643,11 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and PortalId = @PortalId ");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Utility.CreateNvarcharParam("@ModuleTitle", moduleTitle, 100),
-                    Utility.CreateIntegerParam("@PortalId", portalId));
+                this.ConnectionString, 
+                CommandType.Text, 
+                sql.ToString(), 
+                Utility.CreateNvarcharParam("@ModuleTitle", moduleTitle, 100), 
+                Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override IDataReader GetPublishTabId(string tabName, int portalId)
@@ -2679,11 +2662,11 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and PortalId = @PortalId ");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Utility.CreateNvarcharParam("@tabName", tabName, 100),
-                    Utility.CreateIntegerParam("@PortalId", portalId));
+                this.ConnectionString, 
+                CommandType.Text, 
+                sql.ToString(), 
+                Utility.CreateNvarcharParam("@tabName", tabName, 100), 
+                Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override IDataReader GetPublishTabName(int tabId, int portalId)
@@ -2700,11 +2683,11 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and PortalId = @PortalId ");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString,
-                    CommandType.Text,
-                    sql.ToString(),
-                    Utility.CreateNvarcharParam("@FriendlyName", Utility.DnnFriendlyModuleName, 100),
-                    Utility.CreateIntegerParam("@PortalId", portalId));
+                this.ConnectionString, 
+                CommandType.Text, 
+                sql.ToString(), 
+                Utility.CreateNvarcharParam("@FriendlyName", Utility.DnnFriendlyModuleName, 100), 
+                Utility.CreateIntegerParam("@PortalId", portalId));
         }
 
         public override IDataReader GetRelationshipType(string relationshipName)
@@ -2719,7 +2702,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("RelationshipName = @relationshipName");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@relationshipName", relationshipName, 50));
+                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@relationshipName", relationshipName, 50));
         }
 
         /// <exception cref="InvalidOperationException">Could not retrieve the module's version to determine which stored procedure to use</exception>
@@ -2728,7 +2711,12 @@ namespace Engage.Dnn.Publish.Data
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(this.GetSimpleGalleryVersion().Split(new[] { '.' }));
+                version = Utility.ParseIntegerList(
+                    this.GetSimpleGalleryVersion().Split(
+                        new[]
+                            {
+                                '.'
+                            }));
             }
             catch (FormatException)
             {
@@ -2742,7 +2730,13 @@ namespace Engage.Dnn.Publish.Data
                 const bool ShowPublicOnly = false;
 
                 object[] parameters;
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 3, 8 })))
+                if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                2, 3, 8
+                            })))
                 {
                     // 0 = Ventrian.SimpleGallery.Common.AlbumSortType.Caption, 1 = CreateDate, 2 = Custom, 3 = Random
                     const int SortBy = 0;
@@ -2750,21 +2744,36 @@ namespace Engage.Dnn.Publish.Data
                     // 0 = Ventrian.SimpleGallery.Common.SortDirection.DESC, 1 = ASC
                     const int SortOrder = 1;
 
-                    parameters = new object[] { moduleId, parentAlbumId, ShowPublicOnly, ShowChildren, SortBy, SortOrder };
+                    parameters = new object[]
+                        {
+                            moduleId, parentAlbumId, ShowPublicOnly, ShowChildren, SortBy, SortOrder
+                        };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 3, 3 })))
+                else if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                2, 3, 3
+                            })))
                 {
-                    parameters = new object[] { moduleId, parentAlbumId, ShowPublicOnly, ShowChildren };
+                    parameters = new object[]
+                        {
+                            moduleId, parentAlbumId, ShowPublicOnly, ShowChildren
+                        };
                 }
                 else
                 {
                     // Version 1.5
                     int showCurrent = Null.NullInteger;
-                    parameters = new object[] { moduleId, showCurrent, ShowPublicOnly };
+                    parameters = new object[]
+                        {
+                            moduleId, showCurrent, ShowPublicOnly
+                        };
                 }
 
                 return SqlHelper.ExecuteReader(
-                        this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_AlbumListAll", parameters);
+                    this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_AlbumListAll", parameters);
             }
 
             throw new InvalidOperationException("Could not retrieve the module's version to determine which stored procedure to use");
@@ -2791,7 +2800,12 @@ namespace Engage.Dnn.Publish.Data
             List<int> version = null;
             try
             {
-                version = Utility.ParseIntegerList(this.GetSimpleGalleryVersion().Split(new[] { '.' }));
+                version = Utility.ParseIntegerList(
+                    this.GetSimpleGalleryVersion().Split(
+                        new[]
+                            {
+                                '.'
+                            }));
             }
             catch (FormatException)
             {
@@ -2801,40 +2815,87 @@ namespace Engage.Dnn.Publish.Data
             if (version != null)
             {
                 object[] parameters;
-                if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 2, 2, 0 })))
+                if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                2, 2, 0
+                            })))
                 {
                     int? tagId = null;
                     const string BatchId = null;
                     const int SortBy = 0; // 0=name, 3=fileName, 1=dateCreated, 2=dateApproved
                     const int SortOrder = 1; // 0=desc, 1=asc
-                    parameters = new object[] { moduleId, albumId, isApproved, maxCount, showAll, tagId, BatchId, SortBy, SortOrder };
+                    parameters = new object[]
+                        {
+                            moduleId, albumId, isApproved, maxCount, showAll, tagId, BatchId, SortBy, SortOrder
+                        };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 2 })))
+                else if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                1, 8, 2
+                            })))
                 {
-                    parameters = new object[] { moduleId, albumId, isApproved, maxCount, showAll };
+                    parameters = new object[]
+                        {
+                            moduleId, albumId, isApproved, maxCount, showAll
+                        };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 1 })))
+                else if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                1, 8, 1
+                            })))
                 {
-                    parameters = new object[] { moduleId, albumId, isApproved, maxCount };
+                    parameters = new object[]
+                        {
+                            moduleId, albumId, isApproved, maxCount
+                        };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 8, 0 })))
+                else if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                1, 8, 0
+                            })))
                 {
-                    parameters = new object[] { albumId, isApproved };
+                    parameters = new object[]
+                        {
+                            albumId, isApproved
+                        };
                 }
-                else if (Utility.IsVersionGreaterOrEqual(version, new List<int>(new[] { 1, 2, 0 })))
+                else if (Utility.IsVersionGreaterOrEqual(
+                    version, 
+                    new List<int>(
+                        new[]
+                            {
+                                1, 2, 0
+                            })))
                 {
-                    parameters = new object[] { albumId };
+                    parameters = new object[]
+                        {
+                            albumId
+                        };
                 }
                 else
                 {
                     // 1.0.0
-                    parameters = new object[] { moduleId };
+                    parameters = new object[]
+                        {
+                            moduleId
+                        };
                 }
 
                 return
-                        SqlHelper.ExecuteDataset(
-                                this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_PhotoList", parameters).
-                                Tables[0];
+                    SqlHelper.ExecuteDataset(
+                        this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_PhotoList", parameters).Tables[0];
             }
 
             throw new InvalidOperationException("Could not retrieve the module's version to determine which stored procedure to use");
@@ -2843,7 +2904,7 @@ namespace Engage.Dnn.Publish.Data
         public override DataTable GetTag(string tag, int portalId)
         {
             DataSet ds = SqlHelper.ExecuteDataset(
-                    this._connectionString, this.NamePrefix + "spGetTag", portalId, Utility.CreateNvarcharParam("@TagName", tag, 256));
+                this._connectionString, this.NamePrefix + "spGetTag", portalId, Utility.CreateNvarcharParam("@TagName", tag, 256));
             return ds.Tables[0];
         }
 
@@ -2857,7 +2918,7 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("tags ");
             sql.Append("where TagId = @tagId");
             DataSet ds = SqlHelper.ExecuteDataset(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateIntegerParam("@tagId", tagId));
+                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateIntegerParam("@tagId", tagId));
             return ds.Tables[0];
         }
 
@@ -2937,13 +2998,13 @@ namespace Engage.Dnn.Publish.Data
             sql.Append("itemtype where [name] = 'TopLevelCategory') ");
 
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@itemName", itemName, 510));
+                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateVarcharParam("@itemName", itemName, 510));
         }
 
         public override IDataReader GetUltraMediaGalleryAlbums(int moduleId)
         {
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "BizModules_UPG_AlbumList", moduleId, -1);
+                this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "BizModules_UPG_AlbumList", moduleId, -1);
         }
 
         public override DataTable GetUltraMediaGalleryPhotos(int albumId, int? maxCount)
@@ -2953,9 +3014,8 @@ namespace Engage.Dnn.Publish.Data
                 if (dr.Read())
                 {
                     DataTable photos =
-                            SqlHelper.ExecuteDataset(
-                                    this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "BizModules_UPG_PhotoList", albumId, true).
-                                    Tables[0];
+                        SqlHelper.ExecuteDataset(
+                            this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "BizModules_UPG_PhotoList", albumId, true).Tables[0];
 
                     EnforceMaxCount(maxCount, photos);
 
@@ -3108,17 +3168,17 @@ namespace Engage.Dnn.Publish.Data
         public override void UpdateItemRelationship(int itemRelationshipId, int sortOrder)
         {
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    this.NamePrefix + "spUpdateItemRelationship",
-                    Utility.CreateIntegerParam("@ItemRelationshipId", itemRelationshipId),
-                    Utility.CreateIntegerParam("@SortOrder", sortOrder));
+                this.ConnectionString, 
+                this.NamePrefix + "spUpdateItemRelationship", 
+                Utility.CreateIntegerParam("@ItemRelationshipId", itemRelationshipId), 
+                Utility.CreateIntegerParam("@SortOrder", sortOrder));
         }
 
         public override void UpdateItemVersion(
-                IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
+            IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments)
         {
             SqlHelper.ExecuteNonQuery(
-                    (SqlTransaction)trans, this.NamePrefix + "spUpdateItemVersion", itemId, itemVersionId, approvalStatusId, userId, approvalComments);
+                (SqlTransaction)trans, this.NamePrefix + "spUpdateItemVersion", itemId, itemVersionId, approvalStatusId, userId, approvalComments);
         }
 
         public override void UpdateTag(Tag tag)
@@ -3132,38 +3192,38 @@ namespace Engage.Dnn.Publish.Data
         }
 
         public override void UpdateVenexusBraindump(
-                int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl)
+            int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl)
         {
             SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString,
-                    this.NamePrefix + "spUpdateVenexusBrainDump",
-                    itemId,
-                    indexTitle,
-                    indexContent,
-                    indexWashedContent,
-                    portalId,
-                    indexUrl);
+                this.ConnectionString, 
+                this.NamePrefix + "spUpdateVenexusBrainDump", 
+                itemId, 
+                indexTitle, 
+                indexContent, 
+                indexWashedContent, 
+                portalId, 
+                indexUrl);
         }
 
         public override int WaitingForApprovalCount(int portalId)
         {
             string sql = String.Format(
-                    CultureInfo.InvariantCulture,
-                    "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}",
-                    this.ObjectQualifier + ModuleQualifier,
-                    ApprovalStatus.Waiting.GetId());
+                CultureInfo.InvariantCulture, 
+                "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", 
+                this.ObjectQualifier + ModuleQualifier, 
+                ApprovalStatus.Waiting.GetId());
             return
-                    Convert.ToInt32(
-                            SqlHelper.ExecuteScalar(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
+                Convert.ToInt32(
+                    SqlHelper.ExecuteScalar(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
         }
 
         internal override IDataReader GetModulesByModuleId(int moduleId)
         {
             string sql = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "select * from {0}{1}Modules m join {0}{1}TabModules tm on (m.ModuleId = tm.ModuleId) where m.ModuleId = @moduleId",
-                    this.DatabaseOwner,
-                    this.ObjectQualifier);
+                CultureInfo.InvariantCulture, 
+                "select * from {0}{1}Modules m join {0}{1}TabModules tm on (m.ModuleId = tm.ModuleId) where m.ModuleId = @moduleId", 
+                this.DatabaseOwner, 
+                this.ObjectQualifier);
 
             return SqlHelper.ExecuteReader(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@moduleId", moduleId));
         }
@@ -3171,17 +3231,17 @@ namespace Engage.Dnn.Publish.Data
         internal override string GetSimpleGalleryVersion()
         {
             var commandText = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "select Version from {0}{1}DesktopModules where ModuleName = @moduleName",
-                    this.DatabaseOwner,
-                    this.ObjectQualifier);
+                CultureInfo.InvariantCulture, 
+                "select Version from {0}{1}DesktopModules where ModuleName = @moduleName", 
+                this.DatabaseOwner, 
+                this.ObjectQualifier);
 
             return
-                    SqlHelper.ExecuteScalar(
-                            this.ConnectionString,
-                            CommandType.Text,
-                            commandText,
-                            Utility.CreateVarcharParam("@moduleName", Utility.SimpleGalleryDefinitionModuleName, 256)) as string;
+                SqlHelper.ExecuteScalar(
+                    this.ConnectionString, 
+                    CommandType.Text, 
+                    commandText, 
+                    Utility.CreateVarcharParam("@moduleName", Utility.SimpleGalleryDefinitionModuleName, 256)) as string;
         }
 
         private static void EnforceMaxCount(int? maxCount, DataTable photos)
@@ -3259,7 +3319,7 @@ namespace Engage.Dnn.Publish.Data
         private IDataReader GetSimpleGalleryAlbum(int albumId)
         {
             return SqlHelper.ExecuteReader(
-                    this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_AlbumGet", albumId);
+                this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "DnnForge_SimpleGallery_AlbumGet", albumId);
         }
 
         private IDataReader GetUltraMediaGalleryAlbum(int albumId)

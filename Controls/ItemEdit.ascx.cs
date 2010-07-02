@@ -8,378 +8,383 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Collections;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    using Util;
 
-	public partial class ItemEdit :  ModuleBase, IActionable
-	{
-		#region Event Handlers
-		override protected void OnInit(EventArgs e)
-		{
-			InitializeComponent();
-            //LoadControlType();
-			base.OnInit(e);
+    using Engage.Dnn.Publish.Util;
 
-            //System.InvalidOperationException: The EnableScriptGlobalization property cannot be changed during async postbacks or after the Init event.
-            if (!IsPostBack && DotNetNuke.Framework.AJAX.IsInstalled())
-            {
-                DotNetNuke.Framework.AJAX.RegisterScriptManager();
-                DotNetNuke.Framework.AJAX.SetScriptManagerProperty(Page, "EnableScriptGlobalization", new object[] { true });
-                DotNetNuke.Framework.AJAX.SetScriptManagerProperty(Page, "EnableScriptLocalization", new object[] { true });
-            }
+    public partial class ItemEdit : ModuleBase, IActionable
+    {
+        private string _authorName = string.Empty;
 
-            teDescription.Width = ItemEditDescriptionWidth;
-            teDescription.Height = ItemEditDescriptionHeight;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string _errorMessage = string.Empty;
 
-            if (Utility.HasValue(VersionInfoObject.Url))
-            {
-                ctlUrlSelection.Url = VersionInfoObject.Url;
-                chkNewWindow.Checked    = VersionInfoObject.NewWindow;
-                pnlUrlSelection.Visible = true;
-                chkUrlSelection.Checked = true;
-                UseUrls = true;
-            }
-
-            //TODO: should we allow NewWindow to work even if the URL option isn't chosen
-		}
-
-        private void InitializeComponent()
-		{
-			Load += Page_Load;
-		}
-
-        private void LocalizeCollapsePanels()
+        public string AuthorName
         {
-            clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", LocalResourceFile);
-            clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", LocalResourceFile);
-            clpAdvanced.ExpandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
-            clpAdvanced.CollapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", LocalSharedResourceFile).Replace("[L]", "");
+            [DebuggerStepThrough]
+            get { return this._authorName; }
+            [DebuggerStepThrough]
+            set { this._authorName = value; }
         }
- 
-		private void Page_Load(object sender, EventArgs e)
-		{
- 			try 
-			{
 
-                LocalizeCollapsePanels();
+        public string DescriptionText
+        {
+            get { return this.txtDescription.Visible ? this.txtDescription.Text : this.teDescription.Text; }
+        }
 
-				//check VI for null then set information
-				if (!Page.IsPostBack)
-				{
+        public string ErrorMessage
+        {
+            [DebuggerStepThrough]
+            get { return this._errorMessage; }
+            [DebuggerStepThrough]
+            set { this._errorMessage = value; }
+        }
 
-                    LoadAuthorsList();
-                    //set author
-				    ddlAuthor.SelectedValue = VersionInfoObject.AuthorUserId > 0
-				                                           ? VersionInfoObject.AuthorUserId.ToString()
-				                                           : UserId.ToString();
+        public bool IsValid
+        {
+            get
+            {
+                bool returnVal = true;
 
-				    //configure the author name (Text) if defined
-                    //chkShowAuthor
-                    ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "lblAuthorName", "Text", PortalId);
-                    txtAuthorName.Text = auNameSetting != null ? auNameSetting.PropertyValue : ddlAuthor.SelectedItem.Text.Trim();
-                    
-
-                    if (AllowRichTextDescriptions)
-                    {
-
-                        if (DefaultRichTextDescriptions)
-                        {
-                            teDescription.ChooseMode = true;
-                            btnChangeDescriptionEditorMode.Visible = false;
-                            teDescription.Visible = true;
-                            txtDescription.Visible = false;
-
-                        }
-                        else
-                        {
-                            //if their profile is set to basic text mode, we need to show the radio buttons so they can get to rich text mode.
-                            teDescription.ChooseMode = (string)Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") == "BASIC";
-                            btnChangeDescriptionEditorMode.Text = Localization.GetString("btnChangeDescriptionEditorMode_" + txtDescription.Visible, LocalResourceFile);
-                        }
-                    }
-                    else
-                    {
-                        btnChangeDescriptionEditorMode.Visible = false;
-                    }
-
-                    if (Utility.HasValue(VersionInfoObject.MetaTitle) || Utility.HasValue(VersionInfoObject.MetaDescription) || Utility.HasValue(VersionInfoObject.MetaKeywords))
-                    {
-                        chkSearchEngine.Checked = true;
-                        pnlSearchEngine.Visible = true;
-                    }
-
-                    txtDescription.Text = VersionInfoObject.Description;
-                    teDescription.Text = VersionInfoObject.Description;
-
-					txtMetaKeywords.Text = VersionInfoObject.MetaKeywords;
-					txtMetaDescription.Text = VersionInfoObject.MetaDescription;
-					txtMetaTitle.Text = VersionInfoObject.MetaTitle;
-
-                    if (EnableDisplayNameAsHyperlink)
-                    {
-                        chkDisplayAsHyperlink.Checked = !VersionInfoObject.Disabled;
-                    }
-                    else
-                    {
-                        lblDisplayAsHyperlink.Visible = false;
-                        chkDisplayAsHyperlink.Visible = false;
-                        chkDisplayAsHyperlink.Checked = true;
-                    }
-                    if (Utility.HasValue(VersionInfoObject.StartDate))
-                    {
-                        txtStartDate.Text = Utility.GetCurrentCultureDateTime(VersionInfoObject.StartDate);
-                    }
-                    if (Utility.HasValue(VersionInfoObject.EndDate))
-                    {
-                        txtEndDate.Text = Utility.GetCurrentCultureDateTime(VersionInfoObject.EndDate);
-                    }
-					txtName.Text = VersionInfoObject.Name;
-
-                    
-                    thumbnailSelector.ThumbnailUrl = VersionInfoObject.Thumbnail;
-				}
-				else
+                DateTime start;
+                DateTime end;
+                if (DateTime.TryParse(this.txtStartDate.Text, out start) && DateTime.TryParse(this.txtEndDate.Text, out end))
                 {
-
-                    VersionInfoObject.Name = txtName.Text;
-                    VersionInfoObject.Description = DescriptionText;
-                    VersionInfoObject.Thumbnail = thumbnailSelector.ThumbnailUrl;//ctlMediaFile.Url;
-
-                    //define author's name to display
-                    _authorName = txtAuthorName.Text.Trim();
-
-                    VersionInfoObject.MetaKeywords = txtMetaKeywords.Text;
-                    VersionInfoObject.MetaDescription = txtMetaDescription.Text;
-                    VersionInfoObject.MetaTitle = txtMetaTitle.Text;
-                    VersionInfoObject.Disabled = !chkDisplayAsHyperlink.Checked;
-
-                    VersionInfoObject.Url = ctlUrlSelection.Url;
-
-
-                    VersionInfoObject.NewWindow = chkNewWindow.Checked;
-                    DateTime dt;
-                    if (Utility.HasValue(txtStartDate.Text) && DateTime.TryParse(txtStartDate.Text, out dt))
-                    {
-                        if (!dt.Equals(DateTime.MinValue))
-                            VersionInfoObject.StartDate = dt.ToString(CultureInfo.InvariantCulture);
-                    }
-
-                    if (Utility.HasValue(txtEndDate.Text) && DateTime.TryParse(txtEndDate.Text, out dt))
-                    {
-                        if (!dt.Equals(DateTime.MinValue))
-                            VersionInfoObject.EndDate = dt.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        VersionInfoObject.EndDate = "";
-                    }
-
-
-                    VersionInfoObject.AuthorUserId = Convert.ToInt32(ddlAuthor.SelectedValue);
-                    VersionInfoObject.RevisingUserId = UserId;
+                    returnVal = end > start;
+                    this.ErrorMessage = Localization.GetString("DateError", this.LocalResourceFile);
                 }
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
+                else if (start == DateTime.MinValue && Utility.HasValue(this.txtEndDate.Text))
+                {
+                    returnVal = false;
+                    this.ErrorMessage = Localization.GetString("DateError", this.LocalResourceFile);
+                }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void btnChangeDescriptionEditorMode_Click(object sender, EventArgs e)
-        {
-            if (txtDescription.Visible)
-            {
-                teDescription.Visible = true;
-                
-                txtDescription.Visible = false;
-                teDescription.Text = txtDescription.Text;
-            }
-            else
-            {
-                teDescription.Visible = false;
-                txtDescription.Visible = true;
-                txtDescription.Text = teDescription.Text;
-            }
-            btnChangeDescriptionEditorMode.Text = Localization.GetString("btnChangeDescriptionEditorMode_" + txtDescription.Visible, LocalResourceFile);
-        }
+                if (this.txtName.Text.Trim().Length < 1)
+                {
+                    returnVal = false;
+                    this.ErrorMessage += Localization.GetString("NameError", this.LocalResourceFile);
+                }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        protected void chkSearchEngine_CheckedChanged(object sender, EventArgs e)
-        {
-            pnlSearchEngine.Visible = chkSearchEngine.Checked;
-
-            if (!chkSearchEngine.Checked)
-            {
-                //Remove SEO Optimization when they check to not Optimize for Search Engines.  BD
-                txtMetaDescription.Text = string.Empty;
-                txtMetaKeywords.Text = string.Empty;
-                txtMetaTitle.Text = string.Empty;
+                return returnVal;
             }
         }
-        protected void chkUrlSelection_CheckedChanged(object sender, EventArgs e)
+
+        public ModuleActionCollection ModuleActions
         {
-            pnlUrlSelection.Visible = chkUrlSelection.Checked;
-            ChangeParentPage();
+            get
+            {
+                return new ModuleActionCollection
+                    {
+                        {
+                            this.GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile), 
+                            ModuleActionType.AddContent, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Edit, true, false
+                            }
+                    };
+            }
         }
 
         protected void ChangeParentPage()
         {
-            //TODO: what should we do here?
-            //switch(typeof(this.Page))
-            //{
-            //    case ArticleControls.ArticleEdit:
-            //        ((ArticleControls.ArticleEdit)this.Page).UseUrls = chkUrlSelection.Checked;
-            //        break;
-            //    case CategoryControls.CategoryEdit:
-            //        ((CategoryControls.CategoryEdit)this.Page).UseUrls = chkUrlSelection.Checked;
-            //        break;
-            //}
+            // TODO: what should we do here?
+            // switch(typeof(this.Page))
+            // {
+            // case ArticleControls.ArticleEdit:
+            // ((ArticleControls.ArticleEdit)this.Page).UseUrls = chkUrlSelection.Checked;
+            // break;
+            // case CategoryControls.CategoryEdit:
+            // ((CategoryControls.CategoryEdit)this.Page).UseUrls = chkUrlSelection.Checked;
+            // break;
+            // }
         }
-        
-		#endregion
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.InitializeComponent();
+
+            // LoadControlType();
+            base.OnInit(e);
+
+            // System.InvalidOperationException: The EnableScriptGlobalization property cannot be changed during async postbacks or after the Init event.
+            if (!this.IsPostBack && AJAX.IsInstalled())
+            {
+                AJAX.RegisterScriptManager();
+                AJAX.SetScriptManagerProperty(
+                    this.Page, 
+                    "EnableScriptGlobalization", 
+                    new object[]
+                        {
+                            true
+                        });
+                AJAX.SetScriptManagerProperty(
+                    this.Page, 
+                    "EnableScriptLocalization", 
+                    new object[]
+                        {
+                            true
+                        });
+            }
+
+            this.teDescription.Width = this.ItemEditDescriptionWidth;
+            this.teDescription.Height = this.ItemEditDescriptionHeight;
+
+            if (Utility.HasValue(this.VersionInfoObject.Url))
+            {
+                this.ctlUrlSelection.Url = this.VersionInfoObject.Url;
+                this.chkNewWindow.Checked = this.VersionInfoObject.NewWindow;
+                this.pnlUrlSelection.Visible = true;
+                this.chkUrlSelection.Checked = true;
+                this.UseUrls = true;
+            }
+
+            // TODO: should we allow NewWindow to work even if the URL option isn't chosen
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
+        protected void btnChangeDescriptionEditorMode_Click(object sender, EventArgs e)
+        {
+            if (this.txtDescription.Visible)
+            {
+                this.teDescription.Visible = true;
+
+                this.txtDescription.Visible = false;
+                this.teDescription.Text = this.txtDescription.Text;
+            }
+            else
+            {
+                this.teDescription.Visible = false;
+                this.txtDescription.Visible = true;
+                this.txtDescription.Text = this.teDescription.Text;
+            }
+
+            this.btnChangeDescriptionEditorMode.Text = Localization.GetString(
+                "btnChangeDescriptionEditorMode_" + this.txtDescription.Visible, this.LocalResourceFile);
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
+            Justification = "Controls use lower case prefix")]
+        protected void chkSearchEngine_CheckedChanged(object sender, EventArgs e)
+        {
+            this.pnlSearchEngine.Visible = this.chkSearchEngine.Checked;
+
+            if (!this.chkSearchEngine.Checked)
+            {
+                // Remove SEO Optimization when they check to not Optimize for Search Engines.  BD
+                this.txtMetaDescription.Text = string.Empty;
+                this.txtMetaKeywords.Text = string.Empty;
+                this.txtMetaTitle.Text = string.Empty;
+            }
+        }
+
+        protected void chkUrlSelection_CheckedChanged(object sender, EventArgs e)
+        {
+            this.pnlUrlSelection.Visible = this.chkUrlSelection.Checked;
+            this.ChangeParentPage();
+        }
+
+        protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.txtAuthorName.Text = this.ddlAuthor.SelectedItem.Text;
+        }
+
+        private void InitializeComponent()
+        {
+            this.Load += this.Page_Load;
+        }
 
         private void LoadAuthorsList()
         {
-            //load authors role
-            //load admins role
-            var rc = new DotNetNuke.Security.Roles.RoleController();
-            ArrayList al = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId));
-            ArrayList alAdmin = rc.GetUserRolesByRoleName(PortalId, DotNetNuke.Entities.Host.HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId));
+            // load authors role
+            // load admins role
+            var rc = new RoleController();
+            ArrayList al = rc.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId));
+            ArrayList alAdmin = rc.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId));
 
-            //check to make sure we only add authors who aren't already in the list.
+            // check to make sure we only add authors who aren't already in the list.
             foreach (UserRoleInfo uri in alAdmin)
             {
                 bool located = false;
                 foreach (UserRoleInfo ur in al)
                 {
                     if (uri.UserRoleID == ur.UserRoleID)
+                    {
                         located = true;
-                        break;
+                    }
+
+                    break;
                 }
+
                 if (!located)
                 {
                     al.Add(uri);
                 }
             }
 
-            //sort the author list alphabetically 
+            // sort the author list alphabetically 
             al.Sort(new UserRoleInfoComparer(true));
-            ddlAuthor.DataTextField = "FullName";
-            ddlAuthor.DataValueField = "UserId";
-            ddlAuthor.DataSource = al;
-            ddlAuthor.DataBind();
+            this.ddlAuthor.DataTextField = "FullName";
+            this.ddlAuthor.DataValueField = "UserId";
+            this.ddlAuthor.DataSource = al;
+            this.ddlAuthor.DataBind();
         }
 
-        #region Public Properties
-        public bool IsValid
+        private void LocalizeCollapsePanels()
         {
-            get
+            this.clpAdvanced.CollapsedText = Localization.GetString("clpAdvanced.CollapsedText", this.LocalResourceFile);
+            this.clpAdvanced.ExpandedText = Localization.GetString("clpAdvanced.ExpandedText", this.LocalResourceFile);
+            this.clpAdvanced.ExpandedImage = ApplicationUrl +
+                                             Localization.GetString("ExpandedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
+            this.clpAdvanced.CollapsedImage = ApplicationUrl +
+                                              Localization.GetString("CollapsedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
+        }
+
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
             {
-                bool returnVal = true;
-                
-                DateTime start;
-                DateTime end;
-                if (DateTime.TryParse(txtStartDate.Text, out start) && DateTime.TryParse(txtEndDate.Text, out end))
+                this.LocalizeCollapsePanels();
+
+                // check VI for null then set information
+                if (!this.Page.IsPostBack)
                 {
-                    returnVal = end > start;
-                    ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
+                    this.LoadAuthorsList();
+
+                    // set author
+                    this.ddlAuthor.SelectedValue = this.VersionInfoObject.AuthorUserId > 0
+                                                       ? this.VersionInfoObject.AuthorUserId.ToString()
+                                                       : this.UserId.ToString();
+
+                    // configure the author name (Text) if defined
+                    // chkShowAuthor
+                    ItemVersionSetting auNameSetting = ItemVersionSetting.GetItemVersionSetting(
+                        this.VersionInfoObject.ItemVersionId, "lblAuthorName", "Text", this.PortalId);
+                    this.txtAuthorName.Text = auNameSetting != null ? auNameSetting.PropertyValue : this.ddlAuthor.SelectedItem.Text.Trim();
+
+                    if (this.AllowRichTextDescriptions)
+                    {
+                        if (this.DefaultRichTextDescriptions)
+                        {
+                            this.teDescription.ChooseMode = true;
+                            this.btnChangeDescriptionEditorMode.Visible = false;
+                            this.teDescription.Visible = true;
+                            this.txtDescription.Visible = false;
+                        }
+                        else
+                        {
+                            // if their profile is set to basic text mode, we need to show the radio buttons so they can get to rich text mode.
+                            this.teDescription.ChooseMode = (string)Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") ==
+                                                            "BASIC";
+                            this.btnChangeDescriptionEditorMode.Text =
+                                Localization.GetString("btnChangeDescriptionEditorMode_" + this.txtDescription.Visible, this.LocalResourceFile);
+                        }
+                    }
+                    else
+                    {
+                        this.btnChangeDescriptionEditorMode.Visible = false;
+                    }
+
+                    if (Utility.HasValue(this.VersionInfoObject.MetaTitle) || Utility.HasValue(this.VersionInfoObject.MetaDescription) ||
+                        Utility.HasValue(this.VersionInfoObject.MetaKeywords))
+                    {
+                        this.chkSearchEngine.Checked = true;
+                        this.pnlSearchEngine.Visible = true;
+                    }
+
+                    this.txtDescription.Text = this.VersionInfoObject.Description;
+                    this.teDescription.Text = this.VersionInfoObject.Description;
+
+                    this.txtMetaKeywords.Text = this.VersionInfoObject.MetaKeywords;
+                    this.txtMetaDescription.Text = this.VersionInfoObject.MetaDescription;
+                    this.txtMetaTitle.Text = this.VersionInfoObject.MetaTitle;
+
+                    if (this.EnableDisplayNameAsHyperlink)
+                    {
+                        this.chkDisplayAsHyperlink.Checked = !this.VersionInfoObject.Disabled;
+                    }
+                    else
+                    {
+                        this.lblDisplayAsHyperlink.Visible = false;
+                        this.chkDisplayAsHyperlink.Visible = false;
+                        this.chkDisplayAsHyperlink.Checked = true;
+                    }
+
+                    if (Utility.HasValue(this.VersionInfoObject.StartDate))
+                    {
+                        this.txtStartDate.Text = Utility.GetCurrentCultureDateTime(this.VersionInfoObject.StartDate);
+                    }
+
+                    if (Utility.HasValue(this.VersionInfoObject.EndDate))
+                    {
+                        this.txtEndDate.Text = Utility.GetCurrentCultureDateTime(this.VersionInfoObject.EndDate);
+                    }
+
+                    this.txtName.Text = this.VersionInfoObject.Name;
+
+                    this.thumbnailSelector.ThumbnailUrl = this.VersionInfoObject.Thumbnail;
                 }
-                else if (start == DateTime.MinValue && Utility.HasValue(txtEndDate.Text))
+                else
                 {
-                    returnVal = false;
-                    ErrorMessage = Localization.GetString("DateError", LocalResourceFile);
+                    this.VersionInfoObject.Name = this.txtName.Text;
+                    this.VersionInfoObject.Description = this.DescriptionText;
+                    this.VersionInfoObject.Thumbnail = this.thumbnailSelector.ThumbnailUrl; // ctlMediaFile.Url;
+
+                    // define author's name to display
+                    this._authorName = this.txtAuthorName.Text.Trim();
+
+                    this.VersionInfoObject.MetaKeywords = this.txtMetaKeywords.Text;
+                    this.VersionInfoObject.MetaDescription = this.txtMetaDescription.Text;
+                    this.VersionInfoObject.MetaTitle = this.txtMetaTitle.Text;
+                    this.VersionInfoObject.Disabled = !this.chkDisplayAsHyperlink.Checked;
+
+                    this.VersionInfoObject.Url = this.ctlUrlSelection.Url;
+
+                    this.VersionInfoObject.NewWindow = this.chkNewWindow.Checked;
+                    DateTime dt;
+                    if (Utility.HasValue(this.txtStartDate.Text) && DateTime.TryParse(this.txtStartDate.Text, out dt))
+                    {
+                        if (!dt.Equals(DateTime.MinValue))
+                        {
+                            this.VersionInfoObject.StartDate = dt.ToString(CultureInfo.InvariantCulture);
+                        }
+                    }
+
+                    if (Utility.HasValue(this.txtEndDate.Text) && DateTime.TryParse(this.txtEndDate.Text, out dt))
+                    {
+                        if (!dt.Equals(DateTime.MinValue))
+                        {
+                            this.VersionInfoObject.EndDate = dt.ToString(CultureInfo.InvariantCulture);
+                        }
+                    }
+                    else
+                    {
+                        this.VersionInfoObject.EndDate = string.Empty;
+                    }
+
+                    this.VersionInfoObject.AuthorUserId = Convert.ToInt32(this.ddlAuthor.SelectedValue);
+                    this.VersionInfoObject.RevisingUserId = this.UserId;
                 }
-
-                if (txtName.Text.Trim().Length < 1)
-                {
-                    returnVal = false;
-                    ErrorMessage += Localization.GetString("NameError", LocalResourceFile);
-                }                
-
-                return returnVal;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _errorMessage;
-            }
-            [DebuggerStepThrough]
-            set
-            {
-                _errorMessage = value;
-            }
-        }
-
-        public string DescriptionText
-        {
-            get
-            {
-                return txtDescription.Visible ? txtDescription.Text : teDescription.Text;
-            }
-        }
-
-
-        private string _authorName = string.Empty;
-        public string AuthorName
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _authorName;
-            }
-            [DebuggerStepThrough]
-            set
-            {
-                _authorName = value;
-            }
-        }
-
-
-
-        #endregion
-
-        #region Optional Interfaces
-        public ModuleActionCollection ModuleActions 
-		{
-			get 
-			{
-			    return new ModuleActionCollection
-			               {
-			                       {
-			                               GetNextActionID(),
-			                               Localization.GetString(
-			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-			                               LocalResourceFile),
-			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
-			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
-			                               }
-			               };
-			}
-		}
-		#endregion
-
-        protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtAuthorName.Text = ddlAuthor.SelectedItem.Text;
-        }
-	}
+    }
 }
-

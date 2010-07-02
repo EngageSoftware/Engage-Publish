@@ -10,10 +10,6 @@ namespace Engage.Dnn.Publish
         /// <value>
         /// <c>true</c> if this control should set the fields to their initial values (i.e. the values stored in the database); otherwise, <c>false</c>.
         /// </value>
-        public bool ForceSetInitialValues
-        {
-            get;
-            set;
-        }
+        public bool ForceSetInitialValues { get; set; }
     }
 }

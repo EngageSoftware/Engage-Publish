@@ -10,29 +10,58 @@
 
 namespace Engage.Dnn.Publish.Controls
 {
-
     using System;
     using System.Text;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
 
     public partial class Breadcrumb : ModuleBase, IActionable
     {
-        //		protected System.Web.UI.WebControls.Label lblBreadcrumb;
-        //		protected System.Web.UI.WebControls.Label lblYouAreHere;
+        // 		protected System.Web.UI.WebControls.Label lblBreadcrumb;
+        // 		protected System.Web.UI.WebControls.Label lblYouAreHere;
+        private readonly BreadcrumbCollection bci = new BreadcrumbCollection();
 
-        #region Web Form Designer generated code
-        override protected void OnInit(EventArgs e)
+        private bool _includeCurrent = true;
+
+        private int _levels;
+
+        public string IncludeCurrent
         {
-            //
+            get { return this._includeCurrent.ToString(); }
+            set { this._includeCurrent = Convert.ToBoolean(value); }
+        }
+
+        public string Levels
+        {
+            get { return this._levels.ToString(); }
+            set { this._levels = Convert.ToInt32(value); }
+        }
+
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                return new ModuleActionCollection
+                    {
+                        {
+                            this.GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile), 
+                            ModuleActionType.AddContent, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Edit, true, false
+                            }
+                    };
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            //
             InitializeComponent();
             base.OnInit(e);
-
         }
 
         /// <summary>
@@ -42,92 +71,43 @@ namespace Engage.Dnn.Publish.Controls
         private void InitializeComponent()
         {
             Load += Page_Load;
-
         }
-        #endregion
-
-        private BreadcrumbCollection bci = new BreadcrumbCollection();
-
-        private int _levels;
-        private bool _includeCurrent = true;
-
-        public string Levels
-        {
-            get { return _levels.ToString(); }
-            set { _levels = Convert.ToInt32(value); }
-        }
-
-        public string IncludeCurrent
-        {
-            get { return _includeCurrent.ToString(); }
-            set { _includeCurrent = Convert.ToBoolean(value); }
-        }
-
-        #region Event Handlers
-
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //check VI for null then set information
-                //if itemid<=5 then we're dealing with a toplevelitemtype, ignore for breadcrumb
-                if (!Page.IsPostBack && ItemId>5)
-                {
-                    var sb = new StringBuilder(100);
-                    LoadParents(ItemId);
-                    LoadSelf(ItemId);
-
-                    sb.Append(LoadBreadcrumb());
-
-                    lblBreadcrumb.Text = sb.ToString();
-                    if (lblBreadcrumb.Text.Length == 0)
-                    {
-                        lblYouAreHere.Visible = false;
-                    }
-                    else
-                    {
-                        lblYouAreHere.Text = Localization.GetString("lblYouAreHere", LocalSharedResourceFile);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-
-        #endregion
 
         private string LoadBreadcrumb()
         {
-            if (bci.Count > 0)
+            if (this.bci.Count > 0)
             {
                 var sb = new StringBuilder(20);
-                string separator = Localization.GetString("BreadCrumbSeparator", LocalSharedResourceFile);
-                //we use _levels+1 because the name of the current item is here, we handle that separately
-                if ((bci.Count > _levels + 1) && (_levels>0))
+                string separator = Localization.GetString("BreadCrumbSeparator", this.LocalSharedResourceFile);
+
+                // we use _levels+1 because the name of the current item is here, we handle that separately
+                if ((this.bci.Count > this._levels + 1) && (this._levels > 0))
                 {
-                    int removeNumber = bci.Count - (_levels + 1);
+                    int removeNumber = this.bci.Count - (this._levels + 1);
                     for (int i = 0; i < removeNumber; i++)
-                        bci.RemoveAt(0);
-                }
-                if (!_includeCurrent)
-                {
-                    bci.RemoveAt(bci.Count - 1);
+                    {
+                        this.bci.RemoveAt(0);
+                    }
                 }
 
-                foreach (BreadcrumbItem bi in bci)
+                if (!this._includeCurrent)
                 {
-                    sb.AppendFormat(Localization.GetString("BreadCrumbLink", LocalSharedResourceFile), bi.PageUrl, bi.PageName);
+                    this.bci.RemoveAt(this.bci.Count - 1);
+                }
+
+                foreach (BreadcrumbItem bi in this.bci)
+                {
+                    sb.AppendFormat(Localization.GetString("BreadCrumbLink", this.LocalSharedResourceFile), bi.PageUrl, bi.PageName);
                     sb.Append(separator);
                 }
-                //remove the last separator
+
+                // remove the last separator
                 string returnString = sb.ToString();
                 int lastSeparator = returnString.LastIndexOf(separator);
                 returnString = returnString.Remove(lastSeparator, separator.Length);
                 return returnString;
             }
+
             return string.Empty;
         }
 
@@ -135,14 +115,14 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (itemId > -1)
             {
-                int parentId = Category.GetParentCategory(itemId, PortalId);
-                
+                int parentId = Category.GetParentCategory(itemId, this.PortalId);
+
                 if (parentId > 0)
                 {
-                    Item i = Item.GetItem(parentId, PortalId, ItemType.Category.GetId(), true);
+                    Item i = Item.GetItem(parentId, this.PortalId, ItemType.Category.GetId(), true);
                     string categoryUrl = Utility.GetItemLinkUrl(i);
-                    bci.InsertBeginning(i.Name, categoryUrl);
-                    LoadParents(i.ItemId);
+                    this.bci.InsertBeginning(i.Name, categoryUrl);
+                    this.LoadParents(i.ItemId);
                 }
             }
         }
@@ -151,42 +131,44 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (itemId > -1)
             {
-                Item i = Item.GetItem(itemId, PortalId, Item.GetItemTypeId(itemId), true);
+                Item i = Item.GetItem(itemId, this.PortalId, Item.GetItemTypeId(itemId), true);
                 if (i != null)
                 {
                     string linkUrl = Utility.GetItemLinkUrl(i);
-                    bci.Add(i.Name, linkUrl);
+                    this.bci.Add(i.Name, linkUrl);
                 }
             }
-
         }
 
-
-
-        #region Optional Interfaces
-
-        public ModuleActionCollection ModuleActions
+        private void Page_Load(object sender, EventArgs e)
         {
-            get
+            try
             {
-                return new ModuleActionCollection
-                           {
-                                   {
-                                           GetNextActionID(),
-                                           Localization.GetString(
-                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent,
-                                           LocalResourceFile),
-                                           DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "",
-                                           "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true,
-                                           false
-                                           }
-                           };
+                // check VI for null then set information
+                // if itemid<=5 then we're dealing with a toplevelitemtype, ignore for breadcrumb
+                if (!this.Page.IsPostBack && this.ItemId > 5)
+                {
+                    var sb = new StringBuilder(100);
+                    this.LoadParents(this.ItemId);
+                    this.LoadSelf(this.ItemId);
+
+                    sb.Append(this.LoadBreadcrumb());
+
+                    this.lblBreadcrumb.Text = sb.ToString();
+                    if (this.lblBreadcrumb.Text.Length == 0)
+                    {
+                        this.lblYouAreHere.Visible = false;
+                    }
+                    else
+                    {
+                        this.lblYouAreHere.Text = Localization.GetString("lblYouAreHere", this.LocalSharedResourceFile);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-
-        #endregion
-
     }
 }
-

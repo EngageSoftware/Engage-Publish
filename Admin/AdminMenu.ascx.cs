@@ -8,60 +8,307 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Admin
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.IO;
     using System.Web;
     using System.Web.UI;
-    using System;
-    using System.Globalization;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using Data;
-    using Util;
 
+    using Engage.Dnn.Publish.Data;
+    using Engage.Dnn.Publish.Util;
 
     public partial class AdminMenu : ModuleBase
     {
-        #region Event Handlers
-        override protected void OnInit(EventArgs e)
+        public string BuildAddArticleUrl()
         {
-            InitializeComponent();
+            if (this.ItemId <= -1)
+            {
+                return string.Empty;
+            }
+
+            int parentCategoryId = -1;
+
+            if (!this.VersionInfoObject.IsNew)
+            {
+                parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId()
+                                       ? this.VersionInfoObject.ItemId
+                                       : this.VersionInfoObject.GetParentCategoryId();
+            }
+
+            return Globals.NavigateURL(
+                this.TabId, 
+                string.Empty, 
+                "ctl=" + Utility.AdminContainer, 
+                "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), 
+                "adminType=articleedit", 
+                "parentId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture), 
+                "returnUrl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
+        }
+
+        public string BuildCategoryListUrl()
+        {
+            // find the location of the ams admin module on the site.
+            // DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
+            if (this.ItemId > -1)
+            {
+                int parentCategoryId = -1;
+
+                if (!this.VersionInfoObject.IsNew)
+                {
+                    parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId()
+                                           ? this.VersionInfoObject.ItemId
+                                           : Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
+                }
+
+                // string currentItemType = Item.GetItemType(ItemId,PortalId);
+                return Globals.NavigateURL(
+                    this.TabId, 
+                    string.Empty, 
+                    "ctl=" + Utility.AdminContainer, 
+                    "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), 
+                    "adminType=articlelist", 
+                    "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
+            }
+
+            return string.Empty;
+        }
+
+        public string BuildEditUrl(string currentItemType)
+        {
+            string url = string.Empty;
+            try
+            {
+                // find the location of the ams admin module on the site.
+                // DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
+
+                if (this.ItemId > -1)
+                {
+                    int versionId = -1;
+                    if (!this.VersionInfoObject.IsNew)
+                    {
+                        versionId = this.VersionInfoObject.ItemVersionId;
+                    }
+
+                    url = Globals.NavigateURL(
+                        this.TabId, 
+                        string.Empty, 
+                        "ctl=" + Utility.AdminContainer, 
+                        "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), 
+                        "adminType=" + currentItemType + "Edit", 
+                        "versionId=" + versionId.ToString(CultureInfo.InvariantCulture), 
+                        "returnUrl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+
+            return url;
+        }
+
+        // [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
+        // protected void ddlApprovalStatus_SelectedIndexChanged(object sender, EventArgs e)
+        // {
+        // CallUpdateApprovalStatus();
+        // }
+
+        protected void CallUpdateApprovalStatus()
+        {
+            if (!this.VersionInfoObject.IsNew)
+            {
+                this.VersionInfoObject.ApprovalStatusId = Convert.ToInt32(this.ApprovalStatusDropDownList.SelectedValue, CultureInfo.InvariantCulture);
+                this.VersionInfoObject.ApprovalComments = this.txtApprovalComments.Text.Trim().Length > 0
+                                                              ? this.txtApprovalComments.Text.Trim()
+                                                              : Localization.GetString("DefaultApprovalComment", this.LocalResourceFile);
+                this.VersionInfoObject.UpdateApprovalStatus();
+
+                // Utility.ClearPublishCache(PortalId);
+                this.Response.Redirect(this.BuildVersionsUrl(), false);
+                // redirect to the versions list for this item.
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.InitializeComponent();
             base.OnInit(e);
 
-            BindItemData();
-            ConfigureMenus();
+            this.BindItemData();
+            this.ConfigureMenus();
+        }
+
+        protected void lnkSaveApprovalStatusCancel_Click(object sender, EventArgs e)
+        {
+            this.divApprovalStatus.Visible = false;
+        }
+
+        protected void lnkSaveApprovalStatus_Click(object sender, EventArgs e)
+        {
+            this.CallUpdateApprovalStatus();
+        }
+
+        protected void lnkUpdateStatus_Click(object sender, EventArgs e)
+        {
+            if (this.divApprovalStatus != null)
+            {
+                this.divApprovalStatus.Visible = true;
+            }
+
+            // check if we're editing an article, if so show version comments
+            if (Item.GetItemType(this.ItemId, this.PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+            {
+                if (this.ItemVersionId == -1)
+                {
+                    Article a = Article.GetArticle(this.ItemId, this.PortalId, true, true, true);
+                    this.lblCurrentVersionComments.Text = a.VersionDescription;
+                }
+                else
+                {
+                    Article a = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
+                    this.lblCurrentVersionComments.Text = a.VersionDescription;
+                }
+
+                this.divVersionComments.Visible = true;
+            }
+            else
+            {
+                this.divVersionComments.Visible = false;
+            }
+
+            this.txtApprovalComments.Text = this.VersionInfoObject.ApprovalComments;
+        }
+
+        private void AddMenuLink(string text, string navigateUrl)
+        {
+            this.phLink.Controls.Add(new LiteralControl("<li>"));
+
+            var menuLink = new HyperLink
+                {
+                    NavigateUrl = navigateUrl, 
+                    Text = text
+                };
+            this.phLink.Controls.Add(menuLink);
+
+            this.phLink.Controls.Add(new LiteralControl("</li>"));
+        }
+
+        private void BuildAdminMenu(int itemId, bool isAuthorOnly)
+        {
+            string currentItemType = Item.GetItemType(itemId, this.PortalId);
+            string localizedItemTypeName = Localization.GetString(currentItemType, this.LocalResourceFile);
+
+            // the following dynamicly builds the Admin Menu for an item when viewing the item display control.
+            this.AddMenuLink(
+                Localization.GetString("AddNew", this.LocalResourceFile) + " " + Localization.GetString("Article", this.LocalResourceFile), 
+                this.BuildAddArticleUrl());
+
+            // Article List and Add New should load even if there isn't a valid item.
+            this.AddMenuLink(Localization.GetString("ArticleList", this.LocalResourceFile), this.BuildCategoryListUrl());
+
+            if (!currentItemType.Equals("TOPLEVELCATEGORY", StringComparison.OrdinalIgnoreCase))
+            {
+                if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase) || !isAuthorOnly || AllowAuthorEditCategory(this.PortalId))
+                {
+                    this.AddMenuLink(
+                        Localization.GetString("Edit", this.LocalResourceFile) + " " + localizedItemTypeName, this.BuildEditUrl(currentItemType));
+                }
+
+                if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
+                {
+                    this.lnkUpdateStatus.Visible = false;
+                }
+
+                this.AddMenuLink(
+                    localizedItemTypeName + " " + Localization.GetString("Versions", this.LocalSharedResourceFile), this.BuildVersionsUrl());
+            }
+        }
+
+        [SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", 
+            MessageId = "System.Web.UI.ITextControl.set_Text(System.String)", Justification = "Literal, '-', does not change by locale")]
+        private void ConfigureMenus()
+        {
+            int itemId = this.ItemId;
+            bool isAuthorOnly = this.IsAuthor && !this.IsAdmin;
+
+            this.divAdminMenu.Visible = true;
+            this.lnkUpdateStatus.Visible = !isAuthorOnly && this.UseApprovals;
+
+            // Load stats
+            // TODO: hide this if necessary
+            this.phStats.Visible = true;
+            const string pathToStatsControl = "QuickStats.ascx";
+            var statsControl = (ModuleBase)this.LoadControl(pathToStatsControl);
+            statsControl.ModuleConfiguration = this.ModuleConfiguration;
+            statsControl.ID = Path.GetFileNameWithoutExtension(pathToStatsControl);
+            this.phStats.Controls.Add(statsControl);
+
+            this.phLink.Visible = true;
+
+            // TODO: IsNew is itemId != -1, do we need to check both?
+            if (itemId != -1 && !this.VersionInfoObject.IsNew)
+            {
+                this.BuildAdminMenu(itemId, isAuthorOnly);
+            }
+            else
+            {
+                // Hide the phAdminControl placeholder for the admin controls.
+                var container = (PlaceHolder)this.Parent;
+                container.Visible = false;
+            }
+        }
+
+        private void FillDropDownList()
+        {
+            this.ApprovalStatusDropDownList.DataSource = DataProvider.Instance().GetApprovalStatusTypes(this.PortalId);
+            this.ApprovalStatusDropDownList.DataValueField = "ApprovalStatusID";
+            this.ApprovalStatusDropDownList.DataTextField = "ApprovalStatusName";
+            this.ApprovalStatusDropDownList.DataBind();
+
+            // set the current approval status
+            ListItem li =
+                this.ApprovalStatusDropDownList.Items.FindByValue(this.VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
+            if (li != null)
+            {
+                li.Selected = true;
+            }
         }
 
         private void InitializeComponent()
         {
-            Load += Page_Load;
+            this.Load += this.Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)
         {
-            int itemId = ItemId;
-            if (itemId != -1 && !VersionInfoObject.IsNew)
+            int itemId = this.ItemId;
+            if (itemId != -1 && !this.VersionInfoObject.IsNew)
             {
             }
 
             try
             {
-                //check VI for null then set information
-                if (!Page.IsPostBack)
+                // check VI for null then set information
+                if (!this.Page.IsPostBack)
                 {
-                    //check if the user is logged in and an admin. If so let them approve items
-                    if (IsAdmin && !VersionInfoObject.IsNew)
+                    // check if the user is logged in and an admin. If so let them approve items
+                    if (this.IsAdmin && !this.VersionInfoObject.IsNew)
                     {
-                        if (UseApprovals && Item.GetItemType(itemId,PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
+                        if (this.UseApprovals && Item.GetItemType(itemId, this.PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
                         {
-                            //ApprovalStatusDropDownList.Attributes.Clear();
-                            //ApprovalStatusDropDownList.Attributes.Add("onchange", "javascript:if (!confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteConfirmation", LocalResourceFile)) + "')) resetDDLIndex(); else ");
+                            // ApprovalStatusDropDownList.Attributes.Clear();
+                            // ApprovalStatusDropDownList.Attributes.Add("onchange", "javascript:if (!confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteConfirmation", LocalResourceFile)) + "')) resetDDLIndex(); else ");
 
-                            //ClientAPI.AddButtonConfirm(ApprovalStatusDropDownList, Localization.GetString("DeleteConfirmation", LocalResourceFile));
-                            FillDropDownList();
+                            // ClientAPI.AddButtonConfirm(ApprovalStatusDropDownList, Localization.GetString("DeleteConfirmation", LocalResourceFile));
+                            this.FillDropDownList();
                         }
                         else
                         {
@@ -75,298 +322,5 @@ namespace Engage.Dnn.Publish.Admin
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        //private void LoadToolBar()
-        //{
-        //    //Register the code for the DNNToolBar being used.
-        //    //toolBarActionHandler is a javascript handler, look at the ASCX file for what it currently consists of.
-
-        //    //DNNLabelEdit dle = new DNNLabelEdit();
-
-        //    //if (!ClientAPI.IsClientScriptBlockRegistered(this.Page, "dnn.controls.dnnlabeledit.js"))
-        //    //{
-        //    //    ClientAPI.RegisterClientScriptBlock(this.Page, "dnn.controls.dnnlabeledit.js", "<script src=\"" + dle.LabelEditScriptPath + "dnn.controls.dnnlabeledit.js\"></script>");
-        //    //}
-        //    //this.tbEPAdmin.RegisterToolBar(AdminMenuToolBarWrapper, "onmouseover", "onmouseout", "toolBarActionHandler");
-
-        //    if (!Page.IsPostBack)
-        //    {
-        //        if (ItemId > -1)
-        //        {
-        //            string currentItemType = Item.GetItemType(ItemId,PortalId);
-
-        //            //Load the Add new Article Link
-        //            DNNToolBarButton dtbAddArticle = new DNNToolBarButton();
-        //            dtbAddArticle.ControlAction = "navigate";
-        //            dtbAddArticle.ID = "dtbAddArticle";
-        //            dtbAddArticle.CssClass = "tbButton";
-        //            dtbAddArticle.CssClassHover = "tbButtonHover";
-        //            dtbAddArticle.NavigateUrl = BuildAddArticleUrl();
-        //            dtbAddArticle.Text = Localization.GetString("AddNew", LocalResourceFile) + " " + Localization.GetString("Article", LocalResourceFile);
-        //            tbEPAdmin.Buttons.Add(dtbAddArticle);
-
-                    
-
-
-        //            DNNToolBarButton dtbCategoryList = new DNNToolBarButton();
-        //            dtbCategoryList.ControlAction = "navigate";
-        //            dtbCategoryList.ID = "dtbCategoryList";
-        //            dtbCategoryList.CssClass = "tbButton";
-        //            dtbCategoryList.CssClassHover = "tbButtonHover";
-        //            dtbCategoryList.NavigateUrl = BuildCategoryListUrl();
-        //            dtbCategoryList.Text = Localization.GetString("ArticleList", LocalResourceFile);
-        //            tbEPAdmin.Buttons.Add(dtbCategoryList);
-
-
-        //            //Load toolbar button for Edit Item
-        //            DNNToolBarButton dtbEditItem = new DNNToolBarButton();
-        //            dtbEditItem.ControlAction = "navigate";
-        //            dtbEditItem.ID = "dtbEditItem";
-        //            dtbEditItem.CssClass = "tbButton";
-        //            dtbEditItem.CssClassHover = "tbButtonHover";
-        //            dtbEditItem.NavigateUrl = BuildEditUrl();
-        //            dtbEditItem.Text = Localization.GetString("Edit", LocalResourceFile) + " " + Localization.GetString(currentItemType, LocalResourceFile);
-        //            tbEPAdmin.Buttons.Add(dtbEditItem);
-
-        //            DNNToolBarButton dtbItemVersions = new DNNToolBarButton();
-        //            dtbItemVersions.ControlAction = "navigate";
-        //            dtbItemVersions.ID = "dtbItemVersions";
-        //            dtbItemVersions.CssClass = "tbButton";
-        //            dtbItemVersions.CssClassHover = "tbButtonHover";
-        //            dtbItemVersions.NavigateUrl = BuildVersionsUrl();
-        //            dtbItemVersions.Text = Localization.GetString(currentItemType, LocalResourceFile) + " " + Localization.GetString("Versions", LocalResourceFile);
-        //            tbEPAdmin.Buttons.Add(dtbItemVersions);
-
-        //        }
-        //    }
-        //}
-
-        private void FillDropDownList()
-        {
-            
-            this.ApprovalStatusDropDownList.DataSource = DataProvider.Instance().GetApprovalStatusTypes(PortalId);
-            this.ApprovalStatusDropDownList.DataValueField = "ApprovalStatusID";
-            this.ApprovalStatusDropDownList.DataTextField = "ApprovalStatusName";
-            this.ApprovalStatusDropDownList.DataBind();
-            //set the current approval status
-            ListItem li = this.ApprovalStatusDropDownList.Items.FindByValue(VersionInfoObject.ApprovalStatusId.ToString(CultureInfo.InvariantCulture));
-            if (li != null)
-            {
-                li.Selected = true;
-            }
-        }
-
-        public string BuildEditUrl(string currentItemType)
-        {
-            string url = string.Empty;
-            try
-            {
-                //find the location of the ams admin module on the site.
-                //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
-
-                if (this.ItemId > -1)
-                {
-                    int versionId = -1;
-                    if (!this.VersionInfoObject.IsNew)
-                    {
-                        versionId = this.VersionInfoObject.ItemVersionId;
-                    }
-
-                    url = DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "ctl=" + Utility.AdminContainer,
-                        "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), "adminType=" + currentItemType + "Edit",
-                        "versionId=" + versionId.ToString(CultureInfo.InvariantCulture), "returnUrl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessModuleLoadException(this, ex);
-            }
-
-            return url;
-        }
-
-        public string BuildAddArticleUrl()
-        {
-            if (this.ItemId <= -1)
-            {
-                return string.Empty;
-            }
-            int parentCategoryId = -1;
-
-            if (!this.VersionInfoObject.IsNew)
-            {
-                parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId()
-                                           ? this.VersionInfoObject.ItemId
-                                           : this.VersionInfoObject.GetParentCategoryId();
-            }
-
-            return DotNetNuke.Common.Globals.NavigateURL(
-                    this.TabId,
-                    string.Empty,
-                    "ctl=" + Utility.AdminContainer,
-                    "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture),
-                    "adminType=articleedit",
-                    "parentId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture),
-                    "returnUrl=" + HttpUtility.UrlEncode(this.Request.RawUrl));
-        }
-
-
-        public string BuildCategoryListUrl()
-        {
-            //find the location of the ams admin module on the site.
-            //DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
-            if (ItemId > -1)
-            {
-                int parentCategoryId = -1;
-
-                if (!VersionInfoObject.IsNew)
-                {
-                    parentCategoryId = this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ? this.VersionInfoObject.ItemId : Category.GetParentCategory(this.VersionInfoObject.ItemId, this.PortalId);
-                }
-
-                //string currentItemType = Item.GetItemType(ItemId,PortalId);
-                return DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "ctl=" + Utility.AdminContainer,
-                    "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), "adminType=articlelist",
-                    "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
-            }
-            return string.Empty;
-        }
-
-        #endregion
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
-        //protected void ddlApprovalStatus_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    CallUpdateApprovalStatus();
-        //}
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", MessageId = "System.Web.UI.ITextControl.set_Text(System.String)", Justification = "Literal, '-', does not change by locale")]
-        private void ConfigureMenus()
-        {
-            int itemId = ItemId;
-            bool isAuthorOnly = this.IsAuthor && !this.IsAdmin;
-
-            divAdminMenu.Visible = true;
-            this.lnkUpdateStatus.Visible = !isAuthorOnly && this.UseApprovals;
-
-            // Load stats
-            // TODO: hide this if necessary
-            phStats.Visible = true;
-            const string pathToStatsControl = "QuickStats.ascx";
-            var statsControl = (ModuleBase)LoadControl(pathToStatsControl);
-            statsControl.ModuleConfiguration = ModuleConfiguration;
-            statsControl.ID = System.IO.Path.GetFileNameWithoutExtension(pathToStatsControl);
-            phStats.Controls.Add(statsControl);
-
-            phLink.Visible = true;
-
-            // TODO: IsNew is itemId != -1, do we need to check both?
-            if (itemId != -1 && !VersionInfoObject.IsNew)
-            {
-                this.BuildAdminMenu(itemId, isAuthorOnly);
-            }
-            else
-            {
-                //Hide the phAdminControl placeholder for the admin controls.
-                var container = (PlaceHolder)this.Parent;
-                container.Visible = false;
-            }
-        }
-
-        private void BuildAdminMenu(int itemId, bool isAuthorOnly)
-        {
-            string currentItemType = Item.GetItemType(itemId, this.PortalId);
-            string localizedItemTypeName = Localization.GetString(currentItemType, this.LocalResourceFile);
-
-            // the following dynamicly builds the Admin Menu for an item when viewing the item display control.
-            this.AddMenuLink(Localization.GetString("AddNew", this.LocalResourceFile) + " " + Localization.GetString("Article", this.LocalResourceFile), this.BuildAddArticleUrl());
-
-            //Article List and Add New should load even if there isn't a valid item.
-            this.AddMenuLink(Localization.GetString("ArticleList", this.LocalResourceFile), this.BuildCategoryListUrl());
-
-            if (!currentItemType.Equals("TOPLEVELCATEGORY", StringComparison.OrdinalIgnoreCase))
-            {
-                if (currentItemType.Equals("ARTICLE", StringComparison.OrdinalIgnoreCase) || !isAuthorOnly || AllowAuthorEditCategory(this.PortalId))
-                {
-                    this.AddMenuLink(Localization.GetString("Edit", this.LocalResourceFile) + " " + localizedItemTypeName, this.BuildEditUrl(currentItemType));
-                }
-
-                if (currentItemType.Equals("CATEGORY", StringComparison.OrdinalIgnoreCase))
-                {
-                    this.lnkUpdateStatus.Visible = false;
-                }
-
-                this.AddMenuLink(localizedItemTypeName + " " + Localization.GetString("Versions", LocalSharedResourceFile), this.BuildVersionsUrl());
-            }
-        }
-
-        private void AddMenuLink(string text, string navigateUrl)
-        {
-            this.phLink.Controls.Add(new LiteralControl("<li>"));
-
-            var menuLink = new HyperLink {NavigateUrl = navigateUrl, Text = text};
-            this.phLink.Controls.Add(menuLink);
-
-            this.phLink.Controls.Add(new LiteralControl("</li>"));
-        }
-
-        protected void lnkSaveApprovalStatus_Click(object sender, EventArgs e)
-        {
-            CallUpdateApprovalStatus();
-        }
-
-        protected void CallUpdateApprovalStatus()
-        {
-            if (!VersionInfoObject.IsNew)
-            {
-                VersionInfoObject.ApprovalStatusId = Convert.ToInt32(this.ApprovalStatusDropDownList.SelectedValue, CultureInfo.InvariantCulture);
-                this.VersionInfoObject.ApprovalComments = this.txtApprovalComments.Text.Trim().Length > 0 ? this.txtApprovalComments.Text.Trim() : Localization.GetString("DefaultApprovalComment", this.LocalResourceFile);
-                VersionInfoObject.UpdateApprovalStatus();
-
-                //Utility.ClearPublishCache(PortalId);
-
-                Response.Redirect(BuildVersionsUrl(), false);
-
-                //redirect to the versions list for this item.
-            }
-        }
-
-        protected void lnkUpdateStatus_Click(object sender, EventArgs e)
-        {
-            if (this.divApprovalStatus != null)
-            {
-                this.divApprovalStatus.Visible = true;
-            }
-
-            //check if we're editing an article, if so show version comments
-            if (Item.GetItemType(ItemId, PortalId).Equals("ARTICLE", StringComparison.OrdinalIgnoreCase))
-            {
-                if (ItemVersionId == -1)
-                {
-                    Article a = Article.GetArticle(ItemId, PortalId, true, true, true);
-                    lblCurrentVersionComments.Text = a.VersionDescription;
-                }
-                else
-                {
-                    Article a = Article.GetArticleVersion(ItemVersionId, PortalId);
-                    lblCurrentVersionComments.Text = a.VersionDescription;
-                }
-                
-
-                divVersionComments.Visible = true;
-            }
-            else
-            {
-                divVersionComments.Visible = false;
-            }
-
-            txtApprovalComments.Text = this.VersionInfoObject.ApprovalComments;
-        }
-
-        protected void lnkSaveApprovalStatusCancel_Click(object sender, EventArgs e)
-        {
-            divApprovalStatus.Visible = false;
-        }
     }
 }
-

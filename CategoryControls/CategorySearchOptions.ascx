@@ -1,8 +1,9 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategorySearchOptions" Codebehind="CategorySearchOptions.ascx.cs" %>
+<%@ Import Namespace="Engage.Dnn.Publish" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <style type="text/css">
-    @import url(<%=Engage.Dnn.Publish.ModuleBase.ApplicationUrl %><%=Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName %>Module.css);
+    @import url(<%=ModuleBase.ApplicationUrl%><%=ModuleBase.DesktopModuleFolderName%>Module.css);
 </style>
 
 <table cellspacing="0" cellpadding="2" summary="Edit Search Design Table" border="0" class="SettingsTable">

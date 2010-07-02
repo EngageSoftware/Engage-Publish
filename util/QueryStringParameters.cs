@@ -8,7 +8,6 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Util
 {
     using System;
@@ -17,60 +16,68 @@ namespace Engage.Dnn.Publish.Util
     using System.Globalization;
     using System.Text;
 
+    /// <summary>
+    /// Summary description for QueryStringParameters.
+    /// </summary>
+    public class QueryStringParameters
+    {
+        private const string ValueDelimiter = "&";
 
-	/// <summary>
-	/// Summary description for QueryStringParameters.
-	/// </summary>
-	public class QueryStringParameters
-	{
-		private readonly StringDictionary _values;
-		private const string ValueDelimiter = "&";
+        private readonly StringDictionary _values;
 
+        public QueryStringParameters()
+        {
+            this._values = new StringDictionary();
+        }
 
-		public QueryStringParameters()
-		{
-			_values = new StringDictionary();
-		}
+        public void Add(string name, object value)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
 
-		public void Add(string name, object value)
-		{
-			if (name == null) throw new ArgumentNullException("name");
-			if (value == null) throw new ArgumentNullException("value");
-		
-			_values.Add(name, Convert.ToString(value, CultureInfo.InvariantCulture));
-		}
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
 
-		public void ClearKeys()
-		{
-			_values.Clear();
-		}
+            this._values.Add(name, Convert.ToString(value, CultureInfo.InvariantCulture));
+        }
 
-		public override string ToString()
-		{
-			if (_values.Count < 1) return string.Empty;
+        public void ClearKeys()
+        {
+            this._values.Clear();
+        }
 
-			//create full query string
-			//pagename?param1=value1&param2=value2,etc...
-			var sb = new StringBuilder(256);
+        public override string ToString()
+        {
+            if (this._values.Count < 1)
+            {
+                return string.Empty;
+            }
 
-			//add all the name/value pairs
-			IEnumerator ie = _values.Keys.GetEnumerator();
-			while (ie.MoveNext())
-			{
-				string key = ie.Current.ToString();
-				sb.Append(key);
-				sb.Append("=");
-		            
-				//look up the value
-				sb.Append(_values[key]);
-				sb.Append(ValueDelimiter);
-			}
-        
-			//trim the trailing '&'
-			sb.Length = (sb.Length - 1);
+            // create full query string
+            // pagename?param1=value1&param2=value2,etc...
+            var sb = new StringBuilder(256);
 
-			return sb.ToString();
-		}
-	}
+            // add all the name/value pairs
+            IEnumerator ie = this._values.Keys.GetEnumerator();
+            while (ie.MoveNext())
+            {
+                string key = ie.Current.ToString();
+                sb.Append(key);
+                sb.Append("=");
+
+                // look up the value
+                sb.Append(this._values[key]);
+                sb.Append(ValueDelimiter);
+            }
+
+            // trim the trailing '&'
+            sb.Length = sb.Length - 1;
+
+            return sb.ToString();
+        }
+    }
 }
-

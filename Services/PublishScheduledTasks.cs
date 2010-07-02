@@ -1,35 +1,36 @@
-﻿using Engage.Dnn.Publish.Data;
-
-namespace Engage.Dnn.Publish.Services
+﻿namespace Engage.Dnn.Publish.Services
 {
     using System;
 
+    using DotNetNuke.Services.Scheduling;
 
-    public class PublishScheduledTasks : DotNetNuke.Services.Scheduling.SchedulerClient
+    using Engage.Dnn.Publish.Data;
+
+    public class PublishScheduledTasks : SchedulerClient
     {
-        public PublishScheduledTasks(DotNetNuke.Services.Scheduling.ScheduleHistoryItem shi)
+        public PublishScheduledTasks(ScheduleHistoryItem shi)
         {
-            ScheduleHistoryItem = shi;
+            this.ScheduleHistoryItem = shi;
         }
 
-    public override void DoWork()
+        public override void DoWork()
         {
             try
             {
-                Progressing();
-                //DO THE WORK
-                DataProvider.Instance().RunPublishStats();
-                string returnMessage = "";
-                returnMessage += " <br /> Stats Parsed Successfully";
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote(returnMessage);
+                this.Progressing();
 
+                // DO THE WORK
+                DataProvider.Instance().RunPublishStats();
+                string returnMessage = string.Empty;
+                returnMessage += " <br /> Stats Parsed Successfully";
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.AddLogNote(returnMessage);
             }
             catch (Exception exc)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("Stats Failed, did you configure the settings?");
-                Errored(ref exc);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("Stats Failed, did you configure the settings?");
+                this.Errored(ref exc);
             }
         }
     }

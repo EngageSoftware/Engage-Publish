@@ -8,54 +8,49 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Tags
 {
     using System;
     using System.Globalization;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
 
     public partial class TagCloudOptions : ModuleSettingsBase
     {
-        #region Event Handlers
+        private bool PopularTagCount
+        {
+            get
+            {
+                object o = this.Settings["tcPopularTagBool"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.TabModuleId, "tcPopularTagBool", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
 
         public override void LoadSettings()
         {
             try
             {
-                chkLimitTagCount.Checked = PopularTagCount;
+                this.chkLimitTagCount.Checked = this.PopularTagCount;
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-       
-        #endregion
 
         public override void UpdateSettings()
         {
-            if (Page.IsValid)
+            if (this.Page.IsValid)
             {
-                    PopularTagCount = chkLimitTagCount.Checked;
-            }
-        }
-
-        private bool PopularTagCount
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(TabModuleId, "tcPopularTagBool", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = Settings["tcPopularTagBool"];
-                return (o == null ? true  : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                this.PopularTagCount = this.chkLimitTagCount.Checked;
             }
         }
     }
 }
-

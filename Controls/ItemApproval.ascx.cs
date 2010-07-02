@@ -8,139 +8,125 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Globalization;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using Data;
 
-	public partial class ItemApproval :  ModuleBase, IActionable
-	{
-		#region Event Handlers
-		override protected void OnInit(EventArgs e)
-		{
-			InitializeComponent();
-			base.OnInit(e);
-		}
-		
-		private void InitializeComponent()
-		{
-			Load += Page_Load;
-		}
+    using Engage.Dnn.Publish.Data;
+    using Engage.Dnn.Publish.Util;
 
-		private void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-				//check VI for null then set information
-				if (!IsPostBack)
-				{
-                    if (IsAdmin)
-                    {
-                        LoadApprovalTypes();
-                        divApprovalStatus.Visible = true;
-                        divSubmitForApproval.Visible = false;
-                    }
-                    else
-                    {
-                        divApprovalStatus.Visible = false;
-                        divSubmitForApproval.Visible = true;
-                    }
-                    LocalizeText();
-				}
-                //else
-                //{
-                //    if (VersionInfoObject != null)
-                //    {
-                //        VersionInfoObject.ApprovalStatusId = GetApprovalId();
-                //    }
-                //}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-		#endregion
-
-        private void LocalizeText()
-        {
-            chkSubmitForApproval.Text = Localization.GetString("chkSubmitForApproval", LocalSharedResourceFile);
-        }
-
-		private int GetApprovalId()
-		{
-            int approvalId;
-            if (IsAdmin)
-            {
-                approvalId = Convert.ToInt32(radApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                approvalId = chkSubmitForApproval.Checked ? Util.ApprovalStatus.Waiting.GetId() : Util.ApprovalStatus.Edit.GetId();
-            }
-            return approvalId;
-		}
-
-		private void LoadApprovalTypes()
-		{
-			if (IsAdmin)
-			{
-				radApprovalStatus.DataSource= DataProvider.Instance().GetApprovalStatusTypes(PortalId);
-			}
-							
-			radApprovalStatus.DataValueField = "ApprovalStatusID";
-			radApprovalStatus.DataTextField = "ApprovalStatusName";
-			radApprovalStatus.DataBind();
-			radApprovalStatus.Items[0].Selected=true;
-		}
-
+    public partial class ItemApproval : ModuleBase, IActionable
+    {
         public int ApprovalStatusId
         {
-            get
-            {
-                return GetApprovalId();
-            }
-            set
-            {
-                radApprovalStatus.SelectedValue = value.ToString(CultureInfo.InvariantCulture);
-            }
+            get { return this.GetApprovalId(); }
+            set { this.radApprovalStatus.SelectedValue = value.ToString(CultureInfo.InvariantCulture); }
         }
 
         public bool IsValid
         {
+            get { return this.chkSubmitForApproval.Visible || this.radApprovalStatus.SelectedIndex > -1; }
+        }
+
+        public ModuleActionCollection ModuleActions
+        {
             get
             {
-                return chkSubmitForApproval.Visible || radApprovalStatus.SelectedIndex > -1;
+                return new ModuleActionCollection
+                    {
+                        {
+                            this.GetNextActionID(), Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile), 
+                            ModuleActionType.AddContent, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Edit, true, false
+                            }
+                    };
             }
         }
 
-		#region Optional Interfaces
+        protected override void OnInit(EventArgs e)
+        {
+            this.InitializeComponent();
+            base.OnInit(e);
+        }
 
-		public ModuleActionCollection ModuleActions 
-		{
-			get 
-			{
-			    return new ModuleActionCollection
-			               {
-			                       {
-			                               GetNextActionID(),
-			                               Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
-			                               DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false
-			                               , DotNetNuke.Security.SecurityAccessLevel.Edit, true, false
-			                               }
-			               };
-			}
-		}
+        private int GetApprovalId()
+        {
+            int approvalId;
+            if (this.IsAdmin)
+            {
+                approvalId = Convert.ToInt32(this.radApprovalStatus.SelectedValue, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                approvalId = this.chkSubmitForApproval.Checked ? ApprovalStatus.Waiting.GetId() : ApprovalStatus.Edit.GetId();
+            }
 
+            return approvalId;
+        }
 
-		#endregion
-	}
+        private void InitializeComponent()
+        {
+            this.Load += this.Page_Load;
+        }
+
+        private void LoadApprovalTypes()
+        {
+            if (this.IsAdmin)
+            {
+                this.radApprovalStatus.DataSource = DataProvider.Instance().GetApprovalStatusTypes(this.PortalId);
+            }
+
+            this.radApprovalStatus.DataValueField = "ApprovalStatusID";
+            this.radApprovalStatus.DataTextField = "ApprovalStatusName";
+            this.radApprovalStatus.DataBind();
+            this.radApprovalStatus.Items[0].Selected = true;
+        }
+
+        private void LocalizeText()
+        {
+            this.chkSubmitForApproval.Text = Localization.GetString("chkSubmitForApproval", this.LocalSharedResourceFile);
+        }
+
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // check VI for null then set information
+                if (!this.IsPostBack)
+                {
+                    if (this.IsAdmin)
+                    {
+                        this.LoadApprovalTypes();
+                        this.divApprovalStatus.Visible = true;
+                        this.divSubmitForApproval.Visible = false;
+                    }
+                    else
+                    {
+                        this.divApprovalStatus.Visible = false;
+                        this.divSubmitForApproval.Visible = true;
+                    }
+
+                    this.LocalizeText();
+                }
+
+                // else
+                // {
+                // if (VersionInfoObject != null)
+                // {
+                // VersionInfoObject.ApprovalStatusId = GetApprovalId();
+                // }
+                // }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+    }
 }
-

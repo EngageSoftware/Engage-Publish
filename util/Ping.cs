@@ -8,8 +8,6 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Util
 {
     using System;
@@ -19,8 +17,10 @@ namespace Engage.Dnn.Publish.Util
     using System.Net;
     using System.Text;
     using System.Xml;
+
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Exceptions;
+
     public static class Ping
     {
         public static void SendPing(string name, string url, string changesUrl, int portalId)
@@ -34,9 +34,10 @@ namespace Engage.Dnn.Publish.Util
                     foreach (string sr in s.Split('\n'))
                     {
                         if (Utility.HasValue(sr))
-                            listToPing.Add(sr.Replace("\r", ""));
+                        {
+                            listToPing.Add(sr.Replace("\r", string.Empty));
+                        }
                     }
-
                 }
                 else
                 {
@@ -58,14 +59,20 @@ namespace Engage.Dnn.Publish.Util
                         xml.WriteStartDocument();
                         xml.WriteStartElement("methodCall");
                         if (request.ServicePoint.Address.ToString() == "http://blogsearch.google.com/ping/RPC2")
+                        {
                             xml.WriteElementString("methodName", "weblogUpdates.extendedPing");
+                        }
                         else
+                        {
                             xml.WriteElementString("methodName", "weblogUpdates.ping");
+                        }
+
                         xml.WriteStartElement("params");
                         xml.WriteStartElement("param");
                         xml.WriteElementString("value", name);
                         xml.WriteEndElement();
-                        //changed page
+
+                        // changed page
                         xml.WriteStartElement("param");
                         xml.WriteElementString("value", changesUrl);
                         xml.WriteEndElement();
@@ -82,22 +89,20 @@ namespace Engage.Dnn.Publish.Util
                     {
                         using (var sr = new StreamReader(response.GetResponseStream()))
                         {
-                            //string result = sr.ReadToEnd();
+                            // string result = sr.ReadToEnd();
                             sr.ReadToEnd();
                             sr.Close();
                         }
+
                         response.Close();
                     }
                 }
             }
-
             catch (Exception exc)
             {
-                //do what with the exception?
+                // do what with the exception?
                 Exceptions.LogException(exc);
             }
         }
-
     }
 }
-

@@ -8,40 +8,37 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish
 {
     using System.Collections.ObjectModel;
 
-	/// <summary>
-	/// Summary description for ItemRelationshipCollection.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ItemRelationshipCollection.
+    /// </summary>
     public class ItemVersionSettingCollection : Collection<ItemVersionSetting>
-	{
-        //public void Add(ItemVersionSetting r)
-        //{
-        //    Debug.Assert(r != null, "r cannot be null");
-        //    base.InnerList.Add(r);
-        //}
+    {
+        // public void Add(ItemVersionSetting r)
+        // {
+        // Debug.Assert(r != null, "r cannot be null");
+        // base.InnerList.Add(r);
+        // }
 
-        //public void Remove(ItemVersionSetting r)
-        //{
-        //    base.InnerList.Remove(r);
-        //}
+        // public void Remove(ItemVersionSetting r)
+        // {
+        // base.InnerList.Remove(r);
+        // }
 
-        //public ItemVersionSetting this[int index]
-        //{
-        //    get { return (ItemVersionSetting)base.InnerList[index]; }
-        //}
-
+        // public ItemVersionSetting this[int index]
+        // {
+        // get { return (ItemVersionSetting)base.InnerList[index]; }
+        // }
         public ItemVersionSetting this[ItemVersionSetting index]
         {
             get
             {
-                int settingIndex = IndexOf(index);
+                int settingIndex = this.IndexOf(index);
                 return this[settingIndex];
             }
         }
-	}
+    }
 }
-

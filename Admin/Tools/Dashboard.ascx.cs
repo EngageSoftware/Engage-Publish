@@ -14,6 +14,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
     using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -26,33 +27,10 @@ namespace Engage.Dnn.Publish.Admin.Tools
         /// Raises the <see cref="E:Init"/> event.
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            Load += Page_Load;
+            this.Load += this.Page_Load;
             base.OnInit(e);
-        }
-
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //TODO: uncomment below when reporting works
-                ////this.AddDashboardLink("ItemViewReport", "ItemViewReport");
-                this.AddDashboardLink("DescriptionReplace", "DescriptionReplace");
-                this.AddDashboardLink("ResetDisplayPage", "ResetDisplayPage");
-
-                //TODO: build a way to clear Publish cache
-                //TODO: create a report for items that are approved but not longer have a valid parent category id
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         /// <summary>
@@ -63,7 +41,8 @@ namespace Engage.Dnn.Publish.Admin.Tools
         private void AddDashboardLink(string resourceKey, string toolValue)
         {
             this.phAdminTools.Controls.Add(this.GetDashboardLink(Localization.GetString(resourceKey, this.LocalResourceFile), toolValue));
-            this.phAdminTools.Controls.Add(this.GetDashboardLinkDescription(Localization.GetString(resourceKey + ".Help", this.LocalResourceFile), toolValue));
+            this.phAdminTools.Controls.Add(
+                this.GetDashboardLinkDescription(Localization.GetString(resourceKey + ".Help", this.LocalResourceFile), toolValue));
             this.phAdminTools.Controls.Add(new LiteralControl(" <br /> "));
         }
 
@@ -80,6 +59,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
             hl.Text = linkText;
             return hl;
         }
+
         /// <summary>
         /// Creates a link pointing to a tool visible in the dashboard.
         /// </summary>
@@ -92,6 +72,28 @@ namespace Engage.Dnn.Publish.Admin.Tools
             lit.Text = descriptionText;
             return lit;
         }
+
+        /// <summary>
+        /// Handles the Load event of the Page control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // TODO: uncomment below when reporting works
+                ////this.AddDashboardLink("ItemViewReport", "ItemViewReport");
+                this.AddDashboardLink("DescriptionReplace", "DescriptionReplace");
+                this.AddDashboardLink("ResetDisplayPage", "ResetDisplayPage");
+
+                // TODO: build a way to clear Publish cache
+                // TODO: create a report for items that are approved but not longer have a valid parent category id
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
     }
 }
-

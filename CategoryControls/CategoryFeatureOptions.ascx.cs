@@ -8,15 +8,16 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.CategoryControls
 {
     using System;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Exceptions;
-    using Util;
+    using DotNetNuke.Services.Localization;
+
+    using Engage.Dnn.Publish.Util;
 
     public partial class CategoryFeatureOptions : ModuleSettingsBase
     {
@@ -24,45 +25,54 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             try
             {
-                ddlViewOptions.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Title.ToString(), LocalResourceFile), ArticleViewOption.Title.ToString()));
-                ddlViewOptions.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Abstract.ToString(), LocalResourceFile), ArticleViewOption.Abstract.ToString()));
-                ddlViewOptions.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.TitleAndThumbnail.ToString(), LocalResourceFile), ArticleViewOption.TitleAndThumbnail.ToString()));
-                ddlViewOptions.Items.Add(new ListItem(Localization.GetString(ArticleViewOption.Thumbnail.ToString(), LocalResourceFile), ArticleViewOption.Thumbnail.ToString()));
+                this.ddlViewOptions.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Title.ToString(), this.LocalResourceFile), ArticleViewOption.Title.ToString()));
+                this.ddlViewOptions.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Abstract.ToString(), this.LocalResourceFile), ArticleViewOption.Abstract.ToString()));
+                this.ddlViewOptions.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.TitleAndThumbnail.ToString(), this.LocalResourceFile), 
+                        ArticleViewOption.TitleAndThumbnail.ToString()));
+                this.ddlViewOptions.Items.Add(
+                    new ListItem(
+                        Localization.GetString(ArticleViewOption.Thumbnail.ToString(), this.LocalResourceFile), ArticleViewOption.Thumbnail.ToString()));
 
-                ItemRelationship.DisplayCategoryHierarchy(ddlCategoryList, -1, PortalId, false);
+                ItemRelationship.DisplayCategoryHierarchy(this.ddlCategoryList, -1, this.PortalId, false);
 
-                object o = Settings["cfCategoryId"];
+                object o = this.Settings["cfCategoryId"];
                 if (o != null && Utility.HasValue(o.ToString()))
                 {
-                    ListItem li = ddlCategoryList.Items.FindByValue(o.ToString());
+                    ListItem li = this.ddlCategoryList.Items.FindByValue(o.ToString());
                     if (li != null)
                     {
                         li.Selected = true;
                     }
                 }
 
-                o = Settings["cfDisplayOption"];
+                o = this.Settings["cfDisplayOption"];
                 if (o != null && Utility.HasValue(o.ToString()))
                 {
-                    ListItem li = ddlViewOptions.Items.FindByValue(o.ToString());
+                    ListItem li = this.ddlViewOptions.Items.FindByValue(o.ToString());
                     if (li != null)
                     {
                         li.Selected = true;
                     }
                 }
 
-                o = Settings["cfEnableRss"];
+                o = this.Settings["cfEnableRss"];
                 bool enableRss;
-                if (o != null &&  bool.TryParse(o.ToString(), out enableRss))
+                if (o != null && bool.TryParse(o.ToString(), out enableRss))
                 {
-                   chkEnableRss.Checked = enableRss;
+                    this.chkEnableRss.Checked = enableRss;
                 }
 
-                o = Settings["cfRandomize"];
+                o = this.Settings["cfRandomize"];
                 bool randomize;
                 if (o != null && bool.TryParse(o.ToString(), out randomize))
                 {
-                    chkRandomize.Checked = randomize;
+                    this.chkRandomize.Checked = randomize;
                 }
             }
             catch (Exception exc)
@@ -73,13 +83,12 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public override void UpdateSettings()
         {
-            //save the new setting
+            // save the new setting
             var modules = new ModuleController();
-            modules.UpdateTabModuleSetting(TabModuleId, "cfCategoryId", ddlCategoryList.SelectedValue);
-            modules.UpdateTabModuleSetting(TabModuleId, "cfDisplayOption", ddlViewOptions.SelectedValue);
-            modules.UpdateTabModuleSetting(TabModuleId, "cfEnableRss", chkEnableRss.Checked.ToString());
-            modules.UpdateTabModuleSetting(TabModuleId, "cfRandomize", chkRandomize.Checked.ToString());
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfCategoryId", this.ddlCategoryList.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfDisplayOption", this.ddlViewOptions.SelectedValue);
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfEnableRss", this.chkEnableRss.Checked.ToString());
+            modules.UpdateTabModuleSetting(this.TabModuleId, "cfRandomize", this.chkRandomize.Checked.ToString());
         }
     }
 }
-

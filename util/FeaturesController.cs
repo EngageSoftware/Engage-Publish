@@ -8,8 +8,6 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Util
 {
     using System;
@@ -19,11 +17,14 @@ namespace Engage.Dnn.Publish.Util
     using System.Text;
     using System.Web;
     using System.Xml.XPath;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search;
-    using Portability;
+
+    using Engage.Dnn.Publish.Data;
+    using Engage.Dnn.Publish.Portability;
 
     /// <summary>
     /// Features Controller Class supports IPortable currently.
@@ -31,11 +32,13 @@ namespace Engage.Dnn.Publish.Util
     public class FeaturesController : IPortable, ISearchable
     {
 #if TRIAL
-        /// <summary>
-        /// The license key for this module
-        /// </summary>
+
+    /// <summary>
+    /// The license key for this module
+    /// </summary>
         public static readonly Guid ModuleLicenseKey = new Guid("3520E5F9-EDBB-46EA-A377-107306B828C4");
 #endif
+
         #region IPortable Members
 
         /// <summary>
@@ -47,7 +50,6 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="userId"></param>
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
-
             var validator = new TransportableXmlValidator();
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
 
@@ -58,7 +60,7 @@ namespace Engage.Dnn.Publish.Util
                 throw invalidXml;
             }
 
-            //The DNN ValidatorBase closes the stream? Must re-create. hk
+            // The DNN ValidatorBase closes the stream? Must re-create. hk
             stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
             var doc = new XPathDocument(stream);
             var builder = new XmlTransporter(moduleId);
@@ -74,7 +76,6 @@ namespace Engage.Dnn.Publish.Util
             }
         }
 
-
         /// <summary>
         /// Method is invoked when portal template is created or user selects Export Content from menu.
         /// </summary>
@@ -84,11 +85,12 @@ namespace Engage.Dnn.Publish.Util
         {
             bool exportAll = false;
 
-            //check query string for a "All" param to signal all rows, not just for a moduleId
+            // check query string for a "All" param to signal all rows, not just for a moduleId
             if (HttpContext.Current != null && HttpContext.Current.Request.QueryString["all"] != null)
             {
                 exportAll = true;
             }
+
             XmlTransporter builder;
             try
             {
@@ -119,13 +121,12 @@ namespace Engage.Dnn.Publish.Util
 
         private static void AddArticleSearchItems(SearchItemInfoCollection items, ModuleInfo modInfo)
         {
-            //get all the updated items
-            //DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
+            // get all the updated items
+            // DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
 
-            //TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
+            // TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
             DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID, true);
             SearchArticleIndex(dt, items, modInfo);
-
         }
 
         private static void SearchArticleIndex(DataTable dt, SearchItemInfoCollection items, ModuleInfo modInfo)
@@ -134,9 +135,9 @@ namespace Engage.Dnn.Publish.Util
             {
                 DataRow row = dt.Rows[i];
 
-
                 var searchedContent = new StringBuilder(8192);
-                //article name
+
+                // article name
                 string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
                 if (Utility.HasValue(name))
                 {
@@ -144,39 +145,39 @@ namespace Engage.Dnn.Publish.Util
                 }
                 else
                 {
-                    //do we bother with the rest?
+                    // do we bother with the rest?
                     continue;
                 }
 
-                //article text
+                // article text
                 string articleText = row["ArticleText"].ToString().Trim();
                 if (Utility.HasValue(articleText))
                 {
                     searchedContent.AppendFormat("{0}{1}", articleText, " ");
                 }
 
-                //article description
+                // article description
                 string description = row["Description"].ToString().Trim();
                 if (Utility.HasValue(description))
                 {
                     searchedContent.AppendFormat("{0}{1}", description, " ");
                 }
 
-                //article metakeyword
+                // article metakeyword
                 string keyword = row["MetaKeywords"].ToString().Trim();
                 if (Utility.HasValue(keyword))
                 {
                     searchedContent.AppendFormat("{0}{1}", keyword, " ");
                 }
 
-                //article metadescription
+                // article metadescription
                 string metaDescription = row["MetaDescription"].ToString().Trim();
                 if (Utility.HasValue(metaDescription))
                 {
                     searchedContent.AppendFormat("{0}{1}", metaDescription, " ");
                 }
 
-                //article metatitle
+                // article metatitle
                 string metaTitle = row["MetaTitle"].ToString().Trim();
                 if (Utility.HasValue(metaTitle))
                 {
@@ -185,34 +186,37 @@ namespace Engage.Dnn.Publish.Util
 
                 string itemId = row["ItemId"].ToString();
                 var item = new SearchItemInfo
-                               {
-                                   Title = name,
-                                   Description = HtmlUtils.Clean(description, false),
-                                   Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture),
-                                   PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
-                                   ModuleId = modInfo.ModuleID,
-                                   SearchKey = "Article-" + itemId,
-                                   Content =
-                                           HtmlUtils.StripWhiteSpace(
-                                           HtmlUtils.Clean(searchedContent.ToString(), false), true),
-                                   GUID = "itemid=" + itemId
-                               };
+                    {
+                        Title = name, 
+                        Description = HtmlUtils.Clean(description, false), 
+                        Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture), 
+                        PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture), 
+                        ModuleId = modInfo.ModuleID, 
+                        SearchKey = "Article-" + itemId, 
+                        Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true), 
+                        GUID = "itemid=" + itemId
+                    };
 
                 items.Add(item);
 
-                //Check if the Portal is setup to enable venexus indexing
+                // Check if the Portal is setup to enable venexus indexing
                 if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
                 {
-                    string indexUrl = Utility.GetItemLinkUrl(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
+                    string indexUrl = Utility.GetItemLinkUrl(
+                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
 
-                    //UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
-                    Data.DataProvider.Instance().UpdateVenexusBraindump(Convert.ToInt32(itemId, CultureInfo.InvariantCulture), name, articleText, HtmlUtils.Clean(articleText, false), modInfo.PortalID, indexUrl);
+                    // UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
+                    DataProvider.Instance().UpdateVenexusBraindump(
+                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), 
+                        name, 
+                        articleText, 
+                        HtmlUtils.Clean(articleText, false), 
+                        modInfo.PortalID, 
+                        indexUrl);
                 }
 
-
-                //}
+                // }
             }
         }
-
     }
 }

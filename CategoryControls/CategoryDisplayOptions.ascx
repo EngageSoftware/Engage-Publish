@@ -1,8 +1,9 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryDisplayOptions" Codebehind="CategoryDisplayOptions.ascx.cs" %>
+<%@ Import Namespace="Engage.Dnn.Publish" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 
 <style type="text/css">
-    @import url(<%=Engage.Dnn.Publish.ModuleBase.ApplicationUrl %><%=Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName %>Module.css);
+    @import url(<%=ModuleBase.ApplicationUrl%><%=ModuleBase.DesktopModuleFolderName%>Module.css);
 </style>
 
 <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">

@@ -63,17 +63,9 @@ namespace Engage.Dnn.Publish.CategoryControls
                 return new ModuleActionCollection
                     {
                         {
-                            this.GetNextActionID(), 
-                            Localization.GetString("Settings", this.LocalResourceFile), 
-                            ModuleActionType.AddContent, 
-                            string.Empty, 
-                            string.Empty, 
-                            this.EditUrl("Settings"), 
-                            false, 
-                            SecurityAccessLevel.Edit, 
-                            true, 
-                            false
-                        }
+                            this.GetNextActionID(), Localization.GetString("Settings", this.LocalResourceFile), ModuleActionType.AddContent, 
+                            string.Empty, string.Empty, this.EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false
+                            }
                     };
             }
         }
@@ -87,7 +79,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         public bool ShowAll { get; set; }
 
         /// <summary>
-        /// Raises the <see cref="Control.Init"/> event.
+        /// Raises the <see cref="System.Web.UI.Control.Init"/> event.
         /// </summary>
         /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
@@ -118,7 +110,10 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (parentItem != null)
                 {
-                    var parentItemNode = new TreeNode(parentItem.Name) { Tag = parentItem.ItemId };
+                    var parentItemNode = new TreeNode(parentItem.Name)
+                        {
+                            Tag = parentItem.ItemId
+                        };
                     foreach (TreeNode node in root.Nodes)
                     {
                         parentItemNode.Nodes.Add(node);
@@ -188,6 +183,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 {
                     ////ph.Controls.Add(new LiteralControl("<ul class=\"EP_N_UL\">"));
                     this.FillNLevelList(child, ph);
+
                     ////ph.Controls.Add(new LiteralControl("</ul>"));
                 }
             }

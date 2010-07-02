@@ -10,11 +10,10 @@
 
 namespace Engage.Dnn.Publish
 {
-    using Data;
+    using Engage.Dnn.Publish.Data;
 
     public class Rating : UserFeedback.Rating
     {
-        #region .ctor
         /// <summary>
         /// Initializes a new instance of the <see cref="Rating"/> class.
         /// </summary>
@@ -33,9 +32,6 @@ namespace Engage.Dnn.Publish
         {
         }
 
-        #endregion
-
-        #region Static Data Methods
         /// <summary>
         /// Gets a user's rating for a specific item.
         /// </summary>
@@ -61,6 +57,5 @@ namespace Engage.Dnn.Publish
         {
             UpdateRating(Item.GetItem(itemId, portalId, itemTypeId, true).ItemVersionId, userId, rating, DataProvider.ModuleQualifier);
         }
-	#endregion    
     }
 }

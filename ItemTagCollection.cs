@@ -8,27 +8,25 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish
 {
     using System.Collections;
     using System.Diagnostics;
-	/// <summary>
+
+    /// <summary>
     /// Summary description for ItemTagCollection.
-	/// </summary>
+    /// </summary>
     public class ItemTagCollection : CollectionBase
-	{
-		public void Add(ItemTag r)
-		{
-			Debug.Assert(r != null, "r cannot be null");
-			InnerList.Add(r);
-		}
-
+    {
         public ItemTag this[int index]
-		{
-			get {return (ItemTag) InnerList[index];}
-		}
-	}
-}
+        {
+            get { return (ItemTag)this.InnerList[index]; }
+        }
 
+        public void Add(ItemTag r)
+        {
+            Debug.Assert(r != null, "r cannot be null");
+            this.InnerList.Add(r);
+        }
+    }
+}

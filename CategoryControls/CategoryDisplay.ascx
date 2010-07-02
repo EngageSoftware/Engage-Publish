@@ -8,7 +8,7 @@
 			    <div class="categoryThumbnail">
 				    <asp:HyperLink ID="lnkThumbnail" Runat="server" CssClass="thumbnail" /></div>
 			    <div class="categoryName">
-				    <asp:HyperLink ID="lnkName" Runat="server" CssClass="link" /><%#Eval("Name") %></div>
+				    <asp:HyperLink ID="lnkName" Runat="server" CssClass="link" /><%#Eval("Name")%></div>
 			    <div class="categoryItem">
 			    <asp:DataList ID="dlChildItems" runat="server">
 			        <ItemTemplate>
@@ -18,7 +18,7 @@
                             </div>
                             <div class="itemTitle">
                                 <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl="">
-                                    <%#Eval("Name") %>
+                                    <%#Eval("Name")%>
                                 </asp:HyperLink>
                             </div>
                             <div class="itemDescription">
@@ -39,7 +39,7 @@
     	                </div>
 		                <div class="itemTitle">
 		                    <asp:HyperLink runat="server" ID="lnkTitle" NavigateUrl="">
-		                        <%#Eval("Name") %>
+		                        <%#Eval("Name")%>
 		                    </asp:HyperLink>
 		                </div>
 		                <div class="itemDescription">

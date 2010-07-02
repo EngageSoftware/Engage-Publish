@@ -8,43 +8,41 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Security
 {
     using System.Data;
     using System.Diagnostics;
+
     using DotNetNuke.Services.Search;
 
-	/// <summary>
-	/// Summary description for NullSecurityFilter.
-	/// </summary>
-	sealed class NullSecurityFilter : SecurityFilter
-	{
-		private static SecurityFilter instance = new NullSecurityFilter();
+    /// <summary>
+    /// Summary description for NullSecurityFilter.
+    /// </summary>
+    internal sealed class NullSecurityFilter : SecurityFilter
+    {
+        private static readonly SecurityFilter instance = new NullSecurityFilter();
 
+        private NullSecurityFilter()
+        {
+        }
 
-		private NullSecurityFilter()
-		{
-		}
+        public new static SecurityFilter Instance
+        {
+            get { return instance; }
+        }
 
-		public new static SecurityFilter Instance
-		{
-			get {return instance;}
-		}
+        public override void FilterArticles(SearchResultsInfoCollection data)
+        {
+            Debug.Assert(data != null, "data must not be null");
 
-		public override void FilterCategories(DataTable data)
-		{
-			Debug.Assert(data != null, "data must not be null");
+            // does nothing
+        }
 
-			//does nothing
-		}
+        public override void FilterCategories(DataTable data)
+        {
+            Debug.Assert(data != null, "data must not be null");
 
-		public override void FilterArticles(SearchResultsInfoCollection data)
-		{
-			Debug.Assert(data != null, "data must not be null");
-
-			//does nothing
-		}
-	}
+            // does nothing
+        }
+    }
 }
-

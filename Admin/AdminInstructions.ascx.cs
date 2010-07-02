@@ -10,34 +10,33 @@
 
 namespace Engage.Dnn.Publish.Admin
 {
-	public partial class AdminInstructions : ModuleBase
-	{
-        //#region Event Handlers
+    public partial class AdminInstructions : ModuleBase
+    {
+        // #region Event Handlers
 
-        //override protected void OnInit(EventArgs e)
-        //{
-        //    InitializeComponent();
-        //    base.OnInit(e);
-        //}
-		
-        //private void InitializeComponent()
-        //{
-        //    this.Load += new System.EventHandler(this.Page_Load);
+        // override protected void OnInit(EventArgs e)
+        // {
+        // InitializeComponent();
+        // base.OnInit(e);
+        // }
 
-        //}
+        // private void InitializeComponent()
+        // {
+        // this.Load += new System.EventHandler(this.Page_Load);
 
-        //private void Page_Load(object sender, System.EventArgs e)
-        //{
-        //    try 
-        //    {
-        //    } 
-        //    catch (Exception exc) 
-        //    {
-        //        Exceptions.ProcessModuleLoadException(this, exc);
-        //    }
-        //}
+        // }
 
-        //#endregion
+        // private void Page_Load(object sender, System.EventArgs e)
+        // {
+        // try 
+        // {
+        // } 
+        // catch (Exception exc) 
+        // {
+        // Exceptions.ProcessModuleLoadException(this, exc);
+        // }
+        // }
+
+        // #endregion
     }
 }
-

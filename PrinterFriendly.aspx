@@ -1,8 +1,9 @@
 <%@ Page Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.PrinterFriendly" Codebehind="PrinterFriendly.aspx.cs" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>	    
 	    <title><asp:Literal id="pageTitle" runat="server" /></title>
-		<link rel="stylesheet" type="text/css" href="<%= GetCssStyle() %>" />
+		<link rel="stylesheet" type="text/css" href="<%=this.GetCssStyle()%>" />
 		<style type="text/css">
 		    @media print
 		    {
@@ -15,7 +16,7 @@
 	</head>
 	<body id="printerFriendlyBody">
 	    <div id="articlePrint">
-	        <input type="button" onclick="javascript:print();return false;" value='<%=DotNetNuke.Services.Localization.Localization.GetString("Print", LocalResourceFile) %>' />
+	        <input type="button" onclick="javascript:print();return false;" value='<%=Localization.GetString("Print", this.LocalResourceFile)%>' />
 	    </div>
 	    <div id="ArticleDisplay">
 		    <div id="divPortalLogo">

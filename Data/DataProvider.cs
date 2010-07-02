@@ -13,13 +13,12 @@ namespace Engage.Dnn.Publish.Data
 {
     using System;
     using System.Collections;
-    using System.Configuration;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework.Providers;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
 
     public abstract class DataProvider
     {
@@ -41,20 +40,17 @@ namespace Engage.Dnn.Publish.Data
             return _provider;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
-        public abstract IDbConnection GetConnection();
+        public abstract void AddArticleVersion(
+            int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber);
 
         public abstract void AddArticleVersion(
-                int itemVersionId, int itemId, string versionNumber, string versionDescription, string articleText, string referenceNumber);
-
-        public abstract void AddArticleVersion(
-                IDbTransaction trans, 
-                int itemVersionId, 
-                int itemId, 
-                string versionNumber, 
-                string versionDescription, 
-                string articleText, 
-                string referenceNumber);
+            IDbTransaction trans, 
+            int itemVersionId, 
+            int itemId, 
+            string versionNumber, 
+            string versionDescription, 
+            string articleText, 
+            string referenceNumber);
 
         public abstract void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId);
 
@@ -63,80 +59,80 @@ namespace Engage.Dnn.Publish.Data
         public abstract int AddItem(IDbTransaction trans, int itemTypeId, int portalId, int moduleId, Guid itemIdentifier);
 
         public abstract void AddItemRelationship(
-                int childItemId, int childItemVersionId, int parentItemId, int relationshipTypeId, string startDate, string endDate, int sortOrder);
+            int childItemId, int childItemVersionId, int parentItemId, int relationshipTypeId, string startDate, string endDate, int sortOrder);
 
         public abstract void AddItemRelationship(
-                IDbTransaction trans, 
-                int childItemId, 
-                int childItemVersionId, 
-                int parentItemId, 
-                int relationshipTypeId, 
-                string startDate, 
-                string endDate, 
-                int sortOrder);
+            IDbTransaction trans, 
+            int childItemId, 
+            int childItemVersionId, 
+            int parentItemId, 
+            int relationshipTypeId, 
+            string startDate, 
+            string endDate, 
+            int sortOrder);
 
         public abstract void AddItemRelationshipWithOriginalSortOrder(
-                IDbTransaction trans, 
-                int childItemId, 
-                int childItemVersionId, 
-                int parentItemId, 
-                int relationshipTypeId, 
-                string startDate, 
-                string endDate, 
-                int originalItemVersionId);
+            IDbTransaction trans, 
+            int childItemId, 
+            int childItemVersionId, 
+            int parentItemId, 
+            int relationshipTypeId, 
+            string startDate, 
+            string endDate, 
+            int originalItemVersionId);
 
         public abstract void AddItemTag(int itemVersionId, int tagId);
 
         public abstract void AddItemTag(IDbTransaction trans, int itemVersionId, int tagId);
 
         public abstract int AddItemVersion(
-                int itemId, 
-                int originalItemVersionId, 
-                string name, 
-                string description, 
-                string startDate, 
-                string endDate, 
-                int languageId, 
-                int authorUserId, 
-                string metaKeywords, 
-                string metaDescription, 
-                string metaTitle, 
-                int displayTabId, 
-                bool disabled, 
-                string thumbnail, 
-                Guid itemVersionIdentifier, 
-                string url, 
-                bool newWindow, 
-                int revisingUserId);
+            int itemId, 
+            int originalItemVersionId, 
+            string name, 
+            string description, 
+            string startDate, 
+            string endDate, 
+            int languageId, 
+            int authorUserId, 
+            string metaKeywords, 
+            string metaDescription, 
+            string metaTitle, 
+            int displayTabId, 
+            bool disabled, 
+            string thumbnail, 
+            Guid itemVersionIdentifier, 
+            string url, 
+            bool newWindow, 
+            int revisingUserId);
 
         public abstract int AddItemVersion(
-                IDbTransaction trans, 
-                int itemId, 
-                int originalItemVersionId, 
-                string name, 
-                string description, 
-                string startDate, 
-                string endDate, 
-                int languageId, 
-                int authorUserId, 
-                string metaKeywords, 
-                string metaDescription, 
-                string metaTitle, 
-                int displayTabId, 
-                bool disabled, 
-                string thumbnail, 
-                Guid itemVersionIdentifier, 
-                string url, 
-                bool newWindow, 
-                int revisingUserId);
+            IDbTransaction trans, 
+            int itemId, 
+            int originalItemVersionId, 
+            string name, 
+            string description, 
+            string startDate, 
+            string endDate, 
+            int languageId, 
+            int authorUserId, 
+            string metaKeywords, 
+            string metaDescription, 
+            string metaTitle, 
+            int displayTabId, 
+            bool disabled, 
+            string thumbnail, 
+            Guid itemVersionIdentifier, 
+            string url, 
+            bool newWindow, 
+            int revisingUserId);
 
         public abstract void AddItemVersionSetting(int itemVersionId, string controlName, string propertyName, string propertyValue);
 
         public abstract void AddItemVersionSetting(
-                IDbTransaction trans, int itemVersionId, string controlName, string propertyName, string propertyValue);
+            IDbTransaction trans, int itemVersionId, string controlName, string propertyName, string propertyValue);
 
         public abstract void AddItemView(
-                int itemId, int itemVersionId, int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl);
+            int itemId, int itemVersionId, int userId, int tabId, string ipAddress, string userAgent, string httpReferrer, string siteUrl);
 
         public abstract int AddTag(Tag tag);
 
@@ -167,29 +163,23 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataSet GetAdminItemListing(int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, int portalId);
 
         public abstract DataSet GetAdminItemListing(
-                int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId);
+            int parentItemId, int itemTypeId, int relationshipTypeId, int approvalStatusId, string orderBy, int portalId);
 
         public abstract DataSet GetAdminItemListing(
-                int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId);
+            int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, int portalId);
 
         public abstract DataSet GetAdminItemListing(
-                int parentItemId, 
-                int itemTypeId, 
-                int relationshipTypeId, 
-                int otherRelationshipTypeId, 
-                int approvalStatusId, 
-                string orderBy, 
-                int portalId);
+            int parentItemId, int itemTypeId, int relationshipTypeId, int otherRelationshipTypeId, int approvalStatusId, string orderBy, int portalId);
 
         public abstract DataSet GetAdminItemListingSearchKey(
-                int parentItemId, 
-                int itemTypeId, 
-                int relationshipTypeId, 
-                int otherRelationshipTypeId, 
-                int approvalStatusId, 
-                string orderBy, 
-                string searchKey, 
-                int portalId);
+            int parentItemId, 
+            int itemTypeId, 
+            int relationshipTypeId, 
+            int otherRelationshipTypeId, 
+            int approvalStatusId, 
+            string orderBy, 
+            string searchKey, 
+            int portalId);
 
         public abstract DataSet GetAdminKeywordSearch(string searchString, int itemTypeId, int approvalStatusId, int portalId);
 
@@ -204,11 +194,11 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataSet GetAllChildren(int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId);
 
         public abstract IDataReader GetAllChildrenAsDataReader(
-                int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId);
+            int itemTypeId, int parentId, int relationshipTypeId, int otherRelationshipTypeId, int portalId);
 
         [Obsolete("This method is not used.")]
         public abstract DataSet GetAllChildrenFromTwoParents(
-                int itemTypeId, int parentId, int relationshipTypeId, int otherParentId, int otherRelationshipTypeId, int portalId);
+            int itemTypeId, int parentId, int relationshipTypeId, int otherParentId, int otherRelationshipTypeId, int portalId);
 
         public abstract DataTable GetAllChildrenNLevels(int parentCategoryId, int nLevels, int mItems, int portalId);
 
@@ -228,6 +218,8 @@ namespace Engage.Dnn.Publish.Data
 
         public abstract IDataReader GetArticle(int itemId);
 
+        public abstract IDataReader GetArticleVersion(int itemVersionId, int portalId);
+
         public abstract DataTable GetArticles(int portalId);
 
         public abstract DataTable GetArticles(int parentItemId, int portalId);
@@ -241,8 +233,6 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataTable GetArticlesSearchIndexingNew(int portalId, int displayTabId);
 
         public abstract DataTable GetArticlesSearchIndexingUpdated(int portalId, int moduleDefId, int displayTabId);
-
-        public abstract IDataReader GetArticleVersion(int itemVersionId, int portalId);
 
         public abstract DataTable GetAssignedRoles(int categoryId);
 
@@ -285,17 +275,20 @@ namespace Engage.Dnn.Publish.Data
         public abstract DataTable GetChildrenInCategory(int categoryId, int childTypeId, int maxItems, int portalId, string sortOrder);
 
         public abstract DataTable GetChildrenInCategoryPaging(
-                int categoryId, 
-                int childTypeId, 
-                int maxItems, 
-                int portalId, 
-                bool customSort, 
-                bool customSortDirection, 
-                string sortOrder, 
-                int index, 
-                int pageSize);
+            int categoryId, 
+            int childTypeId, 
+            int maxItems, 
+            int portalId, 
+            bool customSort, 
+            bool customSortDirection, 
+            string sortOrder, 
+            int index, 
+            int pageSize);
 
         public abstract IDataReader GetComments(int itemId, int approvalStatusId);
+
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not returning class state information")]
+        public abstract IDbConnection GetConnection();
 
         public abstract DataTable GetDataTable(string sql, int portalId);
 
@@ -316,18 +309,6 @@ namespace Engage.Dnn.Publish.Data
         public abstract IDataReader GetItemRelationships(int childItemId, int childItemVersionId, bool isActive);
 
         public abstract IDataReader GetItemRelationships(int childItemId, int childItemVersionId, int relationshipTypeId, bool isActive);
-
-        public abstract IDataReader GetItems(int itemTypeId, int portalId);
-
-        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId);
-
-        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int itemTypeId);
-
-        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId);
-
-        public abstract DataTable GetItemsFromTags(int portalId, ArrayList tagList);
-
-        public abstract DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder);
 
         public abstract IDataReader GetItemTags(int itemVersionId);
 
@@ -350,8 +331,6 @@ namespace Engage.Dnn.Publish.Data
 
         public abstract IDataReader GetItemVersionInfo(int itemVersionId);
 
-        public abstract DataSet GetItemVersions(int itemId, int portalId);
-
         public abstract IDataReader GetItemVersionSetting(int itemVersionId, string controlName, string propertyName);
 
         public abstract IDataReader GetItemVersionSettings(int itemVersionId, string controlName);
@@ -362,8 +341,22 @@ namespace Engage.Dnn.Publish.Data
 
         public abstract IDataReader GetItemVersionSettingsByPortalId(int portalId);
 
+        public abstract DataSet GetItemVersions(int itemId, int portalId);
+
         public abstract DataTable GetItemViewPaging(
-                int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId);
+            int itemTypeId, int categoryId, int pageIndex, int pageSize, string sortOrder, string startDate, string endDate, int portalId);
+
+        public abstract IDataReader GetItems(int itemTypeId, int portalId);
+
+        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId);
+
+        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int itemTypeId);
+
+        public abstract DataSet GetItems(int parentItemId, int portalId, int relationshipTypeId, int otherRelationshipTypeId, int itemTypeId);
+
+        public abstract DataTable GetItemsFromTags(int portalId, ArrayList tagList);
+
+        public abstract DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder);
 
         public abstract IDataReader GetModuleInfo(int moduleId);
 
@@ -433,14 +426,14 @@ namespace Engage.Dnn.Publish.Data
         public abstract void UpdateItemRelationship(int itemRelationshipId, int sortOrder);
 
         public abstract void UpdateItemVersion(
-                IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments);
+            IDbTransaction trans, int itemId, int itemVersionId, int approvalStatusId, int userId, string approvalComments);
 
         public abstract void UpdateTag(IDbTransaction trans, Tag tag);
 
         public abstract void UpdateTag(Tag tag);
 
         public abstract void UpdateVenexusBraindump(
-                int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl);
+            int itemId, string indexTitle, string indexContent, string indexWashedContent, int portalId, string indexUrl);
 
         public abstract int WaitingForApprovalCount(int portalId);
 

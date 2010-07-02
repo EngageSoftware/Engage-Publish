@@ -12,8 +12,7 @@
 namespace Engage.Dnn.Publish.Admin.Tools
 {
     using System;
-    using System.Diagnostics;
-    using System.Globalization;
+
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -22,7 +21,6 @@ namespace Engage.Dnn.Publish.Admin.Tools
     /// </summary>
     public partial class ResetItemStatistics : ModuleBase
     {
-
         /// <summary>
         /// Raises the <see cref="E:Init"/> event.
         /// </summary>
@@ -30,7 +28,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Load += Page_Load;
+            this.Load += this.Page_Load;
             this.ResetButton.Click += this.ResetButton_Click;
         }
 
@@ -52,7 +50,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         /// <summary>
         /// Handles the Click event of the ResetButton control.
         /// </summary>
@@ -60,20 +58,19 @@ namespace Engage.Dnn.Publish.Admin.Tools
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            //configure the clearing of the view data
-            //check for item view and comment count selection            
-            if (chkResetItemCommentCount.Checked)
+            // configure the clearing of the view data
+            // check for item view and comment count selection            
+            if (this.chkResetItemCommentCount.Checked)
             {
-                Item.ClearItemsViewCount(PortalId);
+                Item.ClearItemsViewCount(this.PortalId);
             }
 
-            if (chkResetItemCommentCount.Checked)
+            if (this.chkResetItemCommentCount.Checked)
             {
-                Item.ClearItemsCommentCount(PortalId);
+                Item.ClearItemsCommentCount(this.PortalId);
             }
-                this.SuccessMessage.Text = Localization.GetString("SuccessMessage.Text", this.LocalResourceFile);
+
+            this.SuccessMessage.Text = Localization.GetString("SuccessMessage.Text", this.LocalResourceFile);
         }
-
     }
 }
-

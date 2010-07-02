@@ -14,6 +14,7 @@ namespace Engage.Dnn.Publish.Admin.Tools
     using System;
     using System.Diagnostics;
     using System.Globalization;
+
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -39,7 +40,8 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 if (this.parentCategory == null)
                 {
                     int parentCategoryId;
-                    if (int.TryParse(this.ParentCategoryDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out parentCategoryId))
+                    if (int.TryParse(
+                        this.ParentCategoryDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out parentCategoryId))
                     {
                         this.parentCategory = Category.GetCategory(parentCategoryId);
                     }
@@ -56,9 +58,28 @@ namespace Engage.Dnn.Publish.Admin.Tools
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            Load += Page_Load;
+            this.Load += this.Page_Load;
             this.ParentCategoryDropDownList.SelectedIndexChanged += this.ParentCategoryDropDownList_SelectedIndexChanged;
             this.ResetButton.Click += this.ResetButton_Click;
+        }
+
+        /// <summary>
+        /// Fills the DisplayPageLabel control with the ChildDisplayTabName of the current <see cref="ParentCategory"/>.
+        /// </summary>
+        private void FillDisplayPageLabel()
+        {
+            if (this.ParentCategory != null)
+            {
+                this.DisplayPageLabel.Text = this.ParentCategory.ChildDisplayTabName;
+            }
+        }
+
+        /// <summary>
+        /// Fills the ParentCategoryDropDownList control.
+        /// </summary>
+        private void FillParentCategoryDropDown()
+        {
+            ItemRelationship.DisplayCategoryHierarchy(this.ParentCategoryDropDownList, -1, this.PortalId, false);
         }
 
         /// <summary>
@@ -106,29 +127,9 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 this.SuccessMessage.Text = string.Format(
                     CultureInfo.CurrentCulture, 
                     Localization.GetString("SuccessMessage.Text", this.LocalResourceFile), 
-                    affectedCount,
+                    affectedCount, 
                     this.ParentCategory.Name);
-            }
-        }
-
-        /// <summary>
-        /// Fills the ParentCategoryDropDownList control.
-        /// </summary>
-        private void FillParentCategoryDropDown()
-        {
-            ItemRelationship.DisplayCategoryHierarchy(this.ParentCategoryDropDownList, -1, this.PortalId, false);
-        }
-
-        /// <summary>
-        /// Fills the DisplayPageLabel control with the ChildDisplayTabName of the current <see cref="ParentCategory"/>.
-        /// </summary>
-        private void FillDisplayPageLabel()
-        {
-            if (this.ParentCategory != null)
-            {
-                this.DisplayPageLabel.Text = this.ParentCategory.ChildDisplayTabName;
             }
         }
     }
 }
-

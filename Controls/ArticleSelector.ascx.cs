@@ -16,8 +16,10 @@ namespace Engage.Dnn.Publish.Controls
     using System.IO;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Services.Localization;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
 
     /// <summary>
     /// A control for selecting an article (with the ability to filter by category)
@@ -35,8 +37,8 @@ namespace Engage.Dnn.Publish.Controls
         /// <value>The ID of the selected article.</value>
         public int? ArticleId
         {
-            get { return _articleId; }
-            set { _articleId = value; }
+            get { return this._articleId; }
+            set { this._articleId = value; }
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace Engage.Dnn.Publish.Controls
             get
             {
                 int categoryId;
-                if (int.TryParse(CategoriesDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out categoryId))
+                if (int.TryParse(this.CategoriesDropDownList.SelectedValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out categoryId))
                 {
                     return categoryId;
                 }
@@ -63,37 +65,16 @@ namespace Engage.Dnn.Publish.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            if (IsPostBack)
+            if (this.IsPostBack)
             {
-                ArticleId = GetArticleId();
+                this.ArticleId = this.GetArticleId();
             }
 
-            Load += Page_Load;
-            CategoriesDropDownList.SelectedIndexChanged += CategoriesDropDownListSelectedIndexChanged;
-            LocalResourceFile = AppRelativeTemplateSourceDirectory + Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(TemplateControl.AppRelativeVirtualPath);
+            this.Load += this.Page_Load;
+            this.CategoriesDropDownList.SelectedIndexChanged += this.CategoriesDropDownListSelectedIndexChanged;
+            this.LocalResourceFile = this.AppRelativeTemplateSourceDirectory + Localization.LocalResourceDirectory + "/" +
+                                     Path.GetFileNameWithoutExtension(this.TemplateControl.AppRelativeVirtualPath);
             base.OnInit(e);
-        }
-
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Page_Load(object sender, EventArgs e)
-        {
-            FillCategoryDropDown();
-            if (!IsPostBack)
-            {
-                SelectCategory();
-            }
-
-            FillArticlesDropDown();
-            if (!IsPostBack)
-            {
-                SelectArticle();
-            }
-
-            RegisterScripts();
         }
 
         /// <summary>
@@ -103,8 +84,37 @@ namespace Engage.Dnn.Publish.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void CategoriesDropDownListSelectedIndexChanged(object sender, EventArgs e)
         {
-            FillArticlesDropDown();
-            SelectArticle();
+            this.FillArticlesDropDown();
+            this.SelectArticle();
+        }
+
+        /// <summary>
+        /// Fills <see cref="ArticlesDropDownList"/> with the list of articles in the category selected in <see cref="CategoriesDropDownList"/>. Only called on pageload, all other requests use the webservice.
+        /// </summary>
+        private void FillArticlesDropDown()
+        {
+            if (this.CategoryId.HasValue)
+            {
+                // ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
+                this.ArticlesDropDownList.DataSource = Item.GetAllChildren(
+                    ItemType.Article.GetId(), 
+                    this.CategoryId.Value, 
+                    RelationshipType.ItemToParentCategory.GetId(), 
+                    RelationshipType.ItemToRelatedCategory.GetId(), 
+                    this.PortalId);
+                this.ArticlesDropDownList.DataBind();
+            }
+        }
+
+        /// <summary>
+        /// Fills <see cref="CategoriesDropDownList"/> with the list of categories.
+        /// </summary>
+        private void FillCategoryDropDown()
+        {
+            this.CategoriesDropDownList.Items.Clear();
+            ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, this.PortalId, false);
+            this.CategoriesDropDownList.Items.Insert(0, 
+                new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), string.Empty));
         }
 
         /// <summary>
@@ -114,7 +124,8 @@ namespace Engage.Dnn.Publish.Controls
         private int? GetArticleId()
         {
             int newArticleId;
-            if (int.TryParse(Request.Params[ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
+            if (int.TryParse(
+                this.Request.Params[this.ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
             {
                 return newArticleId;
             }
@@ -123,25 +134,54 @@ namespace Engage.Dnn.Publish.Controls
         }
 
         /// <summary>
-        /// Fills <see cref="CategoriesDropDownList"/> with the list of categories.
+        /// Handles the Load event of the Page control.
         /// </summary>
-        private void FillCategoryDropDown()
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
         {
-            CategoriesDropDownList.Items.Clear();
-            ItemRelationship.DisplayCategoryHierarchy(CategoriesDropDownList, -1, PortalId, false);
-            CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), ""));
+            this.FillCategoryDropDown();
+            if (!this.IsPostBack)
+            {
+                this.SelectCategory();
+            }
+
+            this.FillArticlesDropDown();
+            if (!this.IsPostBack)
+            {
+                this.SelectArticle();
+            }
+
+            this.RegisterScripts();
         }
 
         /// <summary>
-        /// Fills <see cref="ArticlesDropDownList"/> with the list of articles in the category selected in <see cref="CategoriesDropDownList"/>. Only called on pageload, all other requests use the webservice.
+        /// Registers the scripts used on this page, for the cascading dropdown behavior.
         /// </summary>
-        private void FillArticlesDropDown()
+        private void RegisterScripts()
         {
-            if (CategoryId.HasValue)
+            string articleSelectorScriptControlIdsScript = string.Format(
+                CultureInfo.InvariantCulture, 
+                "var CategoriesDropDownListId = '{0}'; var ArticlesDropDownListId = '{1}';", 
+                this.CategoriesDropDownList.ClientID, 
+                this.ArticlesDropDownList.ClientID);
+            ScriptManager.RegisterStartupScript(
+                this, typeof(ArticleSelector), "ArticleSelectorScriptControlIds", articleSelectorScriptControlIdsScript, true);
+            ScriptManager.RegisterClientScriptResource(this, typeof(ArticleSelector), "Engage.Dnn.Publish.Scripts.ArticleSelector.js");
+        }
+
+        /// <summary>
+        /// Selects the current article in the <see cref="ArticlesDropDownList"/>, if this is the first time loading the page and there is an article to select
+        /// </summary>
+        private void SelectArticle()
+        {
+            if (this._articleId.HasValue)
             {
-                //ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
-                ArticlesDropDownList.DataSource = Item.GetAllChildren(ItemType.Article.GetId(), CategoryId.Value, RelationshipType.ItemToParentCategory.GetId(), RelationshipType.ItemToRelatedCategory.GetId(), PortalId);
-                ArticlesDropDownList.DataBind();
+                ListItem li = this.ArticlesDropDownList.Items.FindByValue(this._articleId.Value.ToString(CultureInfo.InvariantCulture));
+                if (li != null)
+                {
+                    this.ArticlesDropDownList.SelectedValue = this._articleId.Value.ToString(CultureInfo.InvariantCulture);
+                }
             }
         }
 
@@ -150,38 +190,14 @@ namespace Engage.Dnn.Publish.Controls
         /// </summary>
         private void SelectCategory()
         {
-            if (_articleId.HasValue)
+            if (this._articleId.HasValue)
             {
-                Article article = Article.GetArticle(_articleId.Value, PortalId);
+                Article article = Article.GetArticle(this._articleId.Value, this.PortalId);
                 if (article != null)
                 {
-                    CategoriesDropDownList.SelectedValue = article.GetParentCategoryId().ToString(CultureInfo.InvariantCulture);
+                    this.CategoriesDropDownList.SelectedValue = article.GetParentCategoryId().ToString(CultureInfo.InvariantCulture);
                 }
             }
         }
-
-        /// <summary>
-        /// Selects the current article in the <see cref="ArticlesDropDownList"/>, if this is the first time loading the page and there is an article to select
-        /// </summary>
-        private void SelectArticle()
-        {
-            if (_articleId.HasValue)
-            {
-                ListItem li = ArticlesDropDownList.Items.FindByValue(_articleId.Value.ToString(CultureInfo.InvariantCulture));
-                if(li!=null)
-                    ArticlesDropDownList.SelectedValue = _articleId.Value.ToString(CultureInfo.InvariantCulture);
-            }
-        }
-
-        /// <summary>
-        /// Registers the scripts used on this page, for the cascading dropdown behavior.
-        /// </summary>
-        private void RegisterScripts()
-        {
-            string articleSelectorScriptControlIdsScript = string.Format(CultureInfo.InvariantCulture, "var CategoriesDropDownListId = '{0}'; var ArticlesDropDownListId = '{1}';", CategoriesDropDownList.ClientID, ArticlesDropDownList.ClientID);
-            ScriptManager.RegisterStartupScript(this, typeof(ArticleSelector), "ArticleSelectorScriptControlIds", articleSelectorScriptControlIdsScript, true);
-            ScriptManager.RegisterClientScriptResource(this, typeof(ArticleSelector), "Engage.Dnn.Publish.Scripts.ArticleSelector.js");
-        }
     }
 }
-

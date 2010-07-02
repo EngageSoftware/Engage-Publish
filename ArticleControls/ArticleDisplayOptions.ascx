@@ -1,8 +1,9 @@
 <%@ Control Language="c#" AutoEventWireup="False" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplayOptions" Codebehind="ArticleDisplayOptions.ascx.cs" %>
+<%@ Import Namespace="Engage.Dnn.Publish" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="engage" TagName="ArticleSelector" Src="../controls/ArticleSelector.ascx" %>
 <style type="text/css">
-    @import url(<%=Engage.Dnn.Publish.ModuleBase.ApplicationUrl %><%=Engage.Dnn.Publish.ModuleBase.DesktopModuleFolderName %>Module.css);
+    @import url(<%=ModuleBase.ApplicationUrl%><%=ModuleBase.DesktopModuleFolderName%>Module.css);
 </style>
 
 <Engage:ArticleSelector ID="ArticleSelectorControl" runat="server" />

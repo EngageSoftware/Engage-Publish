@@ -8,33 +8,29 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish
 {
     using System.Collections;
     using System.Diagnostics;
 
-	/// <summary>
-	/// Summary description for ItemRelationshipCollection.
-	/// </summary>
-	public class ItemRelationshipCollection : CollectionBase
-	{
-		public void Add(ItemRelationship r)
-		{
-			Debug.Assert(r != null, "r cannot be null");
-			InnerList.Add(r);
-		}
+    /// <summary>
+    /// Summary description for ItemRelationshipCollection.
+    /// </summary>
+    public class ItemRelationshipCollection : CollectionBase
+    {
+        // public void Remove(ItemRelationship r)
+        // {
+        // base.InnerList.Remove(r);
+        // }
+        public ItemRelationship this[int index]
+        {
+            get { return (ItemRelationship)this.InnerList[index]; }
+        }
 
-        //public void Remove(ItemRelationship r)
-        //{
-        //    base.InnerList.Remove(r);
-        //}
-
-		public ItemRelationship this[int index]
-		{
-			get {return (ItemRelationship) InnerList[index];}
-		}
-	}
+        public void Add(ItemRelationship r)
+        {
+            Debug.Assert(r != null, "r cannot be null");
+            this.InnerList.Add(r);
+        }
+    }
 }
-

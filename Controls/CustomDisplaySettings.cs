@@ -1,10 +1,9 @@
-
-
 namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Collections;
     using System.Globalization;
+
     using DotNetNuke.Entities.Modules;
 
     /// <summary>
@@ -15,14 +14,19 @@ namespace Engage.Dnn.Publish.Controls
     /// </summary>
     public class CustomDisplaySettings
     {
-        public const string TitleSort = "Title";
         public const string DateSort = "Date Created";
+
         public const string LastUpdatedSort = "Last Updated";
-        public const string StartDateSort = "Start Date Created";
+
         public const string MostPopularSort = "Most Popular";
 
-        readonly IDictionary settings;
-        readonly int tabModuleId = -1;
+        public const string StartDateSort = "Start Date Created";
+
+        public const string TitleSort = "Title";
+
+        private readonly IDictionary settings;
+
+        private readonly int tabModuleId = -1;
 
         public CustomDisplaySettings(IDictionary settings, int tabModuleId)
         {
@@ -30,176 +34,42 @@ namespace Engage.Dnn.Publish.Controls
             this.tabModuleId = tabModuleId;
         }
 
-        #region Settings
-
-        internal int ItemTypeId
+        internal bool AllowPaging
         {
+            get
+            {
+                object o = this.settings["AllowPaging"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "ItemTypeId", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["ItemTypeId"];
-                return (o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
+                modules.UpdateTabModuleSetting(this.tabModuleId, "AllowPaging", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         internal int CategoryId
         {
+            get
+            {
+                object o = this.settings["CategoryId"];
+                return o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "CategoryId", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["CategoryId"];
-                return (o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
+                modules.UpdateTabModuleSetting(this.tabModuleId, "CategoryId", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-
-        internal bool ShowParent
+        internal string DateFormat
         {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "ShowParent", value.ToString(CultureInfo.InvariantCulture));
-            }
-
             get
             {
-                object o = settings["ShowParent"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool ShowParentDescription
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "ShowParentDescription", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["ShowParentDescription"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-
-
-        internal bool AllowPaging
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "AllowPaging", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["AllowPaging"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool UseCustomSort
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "UseCustomSort", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["UseCustomSort"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        //chkRelatedItem
-
-        internal bool GetParentFromQueryString
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "GetParentFromQueryString", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["GetParentFromQueryString"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool GetRelatedChildren
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "GetRelatedChildren", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["GetRelatedChildren"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-
-        internal bool EnableRss
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "EnableRss", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["EnableRss"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        
-        }
-        
-        internal int MaxDisplayItems
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "MaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["MaxDisplayItems"];
-                return (o == null ? 10 : Convert.ToInt32(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal string SortOption
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "SortOption", value);
-            }
-            get
-            {
-                string setting = StartDateSort;
-                object o = settings["SortOption"];
+                string setting = "MM.dd.yy";
+                object o = this.settings["DateFormat"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     setting = o.ToString();
@@ -207,146 +77,232 @@ namespace Engage.Dnn.Publish.Controls
 
                 return setting;
             }
-        }
 
-        internal string SortDirection
-        {
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "SortDirection", value);
-            }
-            get
-            {
-                string setting = "1";//by default sort descending
-                object o = settings["SortDirection"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
-                {
-                    setting = o.ToString();
-                }
-
-                return setting;
-            }
-        }
-
-        internal bool DisplayOptionTitle
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionTitle", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionTitle"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DateFormat", value);
             }
         }
 
         internal bool DisplayOptionAbstract
         {
+            get
+            {
+                object o = this.settings["DisplayOptionAbstract"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionAbstract", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionAbstract"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool DisplayOptionThumbnail
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionThumbnail", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionThumbnail"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool DisplayOptionDate
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionDate", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionDate"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool DisplayOptionStats
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionStats", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionStats"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal bool DisplayOptionReadMore
-        {
-            set
-            {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionReadMore", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionReadMore"];
-                return (o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionAbstract", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         internal bool DisplayOptionAuthor
         {
+            get
+            {
+                object o = this.settings["DisplayOptionAuthor"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DisplayOptionAuthor", value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            get
-            {
-                object o = settings["DisplayOptionAuthor"];
-                return (o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture));
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionAuthor", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-
-        internal string DateFormat
+        internal bool DisplayOptionDate
         {
+            get
+            {
+                object o = this.settings["DisplayOptionDate"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
             set
             {
                 var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(tabModuleId, "DateFormat", value);
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionDate", value.ToString(CultureInfo.InvariantCulture));
             }
+        }
 
+        internal bool DisplayOptionReadMore
+        {
             get
             {
-                string setting = "MM.dd.yy";
-                object o = settings["DateFormat"];
+                object o = this.settings["DisplayOptionReadMore"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionReadMore", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool DisplayOptionStats
+        {
+            get
+            {
+                object o = this.settings["DisplayOptionStats"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionStats", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool DisplayOptionThumbnail
+        {
+            get
+            {
+                object o = this.settings["DisplayOptionThumbnail"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionThumbnail", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool DisplayOptionTitle
+        {
+            get
+            {
+                object o = this.settings["DisplayOptionTitle"];
+                return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "DisplayOptionTitle", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool EnableRss
+        {
+            get
+            {
+                object o = this.settings["EnableRss"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "EnableRss", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        // chkRelatedItem
+
+        internal bool GetParentFromQueryString
+        {
+            get
+            {
+                object o = this.settings["GetParentFromQueryString"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "GetParentFromQueryString", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool GetRelatedChildren
+        {
+            get
+            {
+                object o = this.settings["GetRelatedChildren"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "GetRelatedChildren", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal int ItemTypeId
+        {
+            get
+            {
+                object o = this.settings["ItemTypeId"];
+                return o == null ? -1 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "ItemTypeId", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal int MaxDisplayItems
+        {
+            get
+            {
+                object o = this.settings["MaxDisplayItems"];
+                return o == null ? 10 : Convert.ToInt32(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "MaxDisplayItems", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool ShowParent
+        {
+            get
+            {
+                object o = this.settings["ShowParent"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "ShowParent", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal bool ShowParentDescription
+        {
+            get
+            {
+                object o = this.settings["ShowParentDescription"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "ShowParentDescription", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal string SortDirection
+        {
+            get
+            {
+                string setting = "1"; // by default sort descending
+                object o = this.settings["SortDirection"];
                 if (o != null && !String.IsNullOrEmpty(o.ToString()))
                 {
                     setting = o.ToString();
@@ -354,9 +310,48 @@ namespace Engage.Dnn.Publish.Controls
 
                 return setting;
             }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "SortDirection", value);
+            }
         }
 
-        #endregion
+        internal string SortOption
+        {
+            get
+            {
+                string setting = StartDateSort;
+                object o = this.settings["SortOption"];
+                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                {
+                    setting = o.ToString();
+                }
 
+                return setting;
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "SortOption", value);
+            }
+        }
+
+        internal bool UseCustomSort
+        {
+            get
+            {
+                object o = this.settings["UseCustomSort"];
+                return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+            }
+
+            set
+            {
+                var modules = new ModuleController();
+                modules.UpdateTabModuleSetting(this.tabModuleId, "UseCustomSort", value.ToString(CultureInfo.InvariantCulture));
+            }
+        }
     }
 }

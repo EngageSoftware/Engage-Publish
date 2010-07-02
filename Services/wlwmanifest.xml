@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns="http://schemas.microsoft.com/wlw/manifest/weblog">
 
   <options>
@@ -7,6 +8,6 @@
     <supportsTrackbacks>No</supportsTrackbacks>
     <supportsEmbeds>No</supportsEmbeds>
     <supportsKeywords>Yes</supportsKeywords>
-    <supportsExcerpt>Yes</supportsExcerpt>   
+    <supportsExcerpt>Yes</supportsExcerpt>
   </options>
 </manifest>

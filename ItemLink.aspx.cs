@@ -8,138 +8,84 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish
 {
-    //Need to determine whether or not ItemLink.aspx should/can handle versions of an item. This
-    //would help from the admin controls where we're previewing an old version of an article and that version
-    //didn't have a display page set and we can't display it. ItemPreview.ascx can handle previewing it
-    //if this page handled it correctly and passed the versionId along to the control. hk
+    // Need to determine whether or not ItemLink.aspx should/can handle versions of an item. This
+    // would help from the admin controls where we're previewing an old version of an article and that version
+    // didn't have a display page set and we can't display it. ItemPreview.ascx can handle previewing it
+    // if this page handled it correctly and passed the versionId along to the control. hk
+
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
-    using Util;
+    using DotNetNuke.Services.Exceptions;
+
+    using Engage.Dnn.Publish.Util;
 
     public partial class ItemLink : PageBase
     {
         private int _itemId;
+
         private string _itemType;
 
-        int _tabid = -1;
-        int _modid = -1;
-        int _pageid = 1;
-        string _language = "";
+        private string _language = string.Empty;
 
-        #region Web Form Designer generated code
+        private int _modid = -1;
 
-        override protected void OnInit(EventArgs e)
+        private int _pageid = 1;
+
+        private int _tabid = -1;
+
+        protected override void OnInit(EventArgs e)
         {
-            //
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            //
             InitializeComponent();
             base.OnInit(e);
 
             InitializeLocalVariables();
-
         }
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        private void DisplayBrokenLinkMessage(Item item)
         {
-            Load += Page_Load;
+            if (this.Request.UrlReferrer != null)
+            {
+                if (this.Request.UrlReferrer.Authority == this.Request.Url.Authority)
+                {
+                    // The caller is another page on this site so we can use the internal error message
+                    // to the user (InvalidLink.ascx).
+                    this.NavigateInvalidLinkInternal(item);
+                }
+                else
+                {
+                    this.DisplayInvalidLinkMessage();
+                }
+            }
         }
 
-        #endregion
-
-        [Obsolete("This method should somehow call ModuleBase.ItemId but because ModuleSettings for the module are needed not sure how to.", false)]
-        private void InitializeLocalVariables()
+        private void DisplayInvalidLinkMessage()
         {
-            string i = Request.QueryString["itemId"];
-            string pi = Request.QueryString["pageid"];
-            string lang = Request.QueryString["language"];
-            string a = Request.QueryString["articleId"];
-            string olda = Request.QueryString["aid"];
-            string c = Request.QueryString["categoryId"];
-            string o = Request.QueryString["tabid"];
-            string m = Request.QueryString["modid"];
-
-            if (m != null)
+            if (this.Request.UrlReferrer != null)
             {
-                if (Utility.HasValue(m))
-                {
-                    _modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
-                }
-            }
-
-            if (pi != null)
-            {
-                if (Utility.HasValue(pi))
-                {
-                    _pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
-                }
-            }
-
-            if (o != null)
-            {
-                if (Utility.HasValue(o))
-                {
-                    _tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
-                }
-            }
-
-            if (lang != null)
-            {
-                if (Utility.HasValue(lang))
-                {
-                    _language = lang;
-                }
-            }
-
-            if (i != null)
-            {
-                // look up the _itemType if ItemId passed in.
-                _itemId = Convert.ToInt32(i, CultureInfo.InvariantCulture);
-                _itemType = Item.GetItemType(_itemId).ToUpperInvariant();
-            }
-            else if (a != null)
-            {
-                _itemType = ItemType.Article.Name.ToUpperInvariant();
-                _itemId = Convert.ToInt32(a, CultureInfo.InvariantCulture);
-            }
-            else if (olda != null)
-            {
-                _itemType = "OLDARTICLE";
-                _itemId = Convert.ToInt32(olda, CultureInfo.InvariantCulture);
-            }
-            else if (c != null)
-            {
-                _itemType = ItemType.Category.Name.ToUpperInvariant();
-                _itemId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                _itemId = -1;
+                string href = this.Request.UrlReferrer.OriginalString;
+                this.metaRefresh.Attributes["content"] = Utility.RedirectInSeconds.ToString(CultureInfo.InvariantCulture) + ";url=" + href;
             }
         }
-
-        
 
         private void DisplayItem(Item item)
         {
-            //check if item.URL is populated, if so figure out where to redirect.
+            // check if item.URL is populated, if so figure out where to redirect.
             if (Utility.HasValue(item.Url))
             {
-                //do our redirect now
-                Response.Status = "301 Moved Permanently";
-                Response.RedirectLocation = item.GetItemExternalUrl;
+                // do our redirect now
+                this.Response.Status = "301 Moved Permanently";
+                this.Response.RedirectLocation = item.GetItemExternalUrl;
             }
             else
             {
@@ -150,13 +96,13 @@ namespace Engage.Dnn.Publish
                     defaultTabId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
 
-                //build language parameter
+                // build language parameter
                 string friendlyLanguageValue = string.Empty;
                 string languageValue = string.Empty;
-                if (!string.IsNullOrEmpty(_language))
+                if (!string.IsNullOrEmpty(this._language))
                 {
-                    languageValue = "&language=" + _language;
-                    friendlyLanguageValue = "/language/" + _language + "/";
+                    languageValue = "&language=" + this._language;
+                    friendlyLanguageValue = "/language/" + this._language + "/";
                 }
 
                 if (item != null)
@@ -170,21 +116,24 @@ namespace Engage.Dnn.Publish
                             {
                                 pageName = item.Name.Substring(0, 50);
                             }
+
                             pageName = Utility.OnlyAlphanumericCharacters(pageName);
-                            //Global.asax Application_BeginRequest checks for these values and will try to redirect to the non-existent page
-                            if (pageName.EndsWith("install", StringComparison.CurrentCultureIgnoreCase) || pageName.EndsWith("installwizard", StringComparison.CurrentCultureIgnoreCase))
+
+                            // Global.asax Application_BeginRequest checks for these values and will try to redirect to the non-existent page
+                            if (pageName.EndsWith("install", StringComparison.CurrentCultureIgnoreCase) ||
+                                pageName.EndsWith("installwizard", StringComparison.CurrentCultureIgnoreCase))
                             {
                                 pageName = pageName.Substring(0, pageName.Length - 1);
                             }
+
                             pageName = pageName + ".aspx";
 
-                            DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
-
+                            PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
 
                             var tc = new TabController();
                             TabInfo ti;
 
-                            //if the setting to "force display on this page" is set, be sure to send them there.
+                            // if the setting to "force display on this page" is set, be sure to send them there.
                             if (item.ForceDisplayOnPage())
                             {
                                 ti = tc.GetTab(item.DisplayTabId, item.PortalId, false);
@@ -195,31 +144,44 @@ namespace Engage.Dnn.Publish
                                         ti = tc.GetTab(defaultTabId, item.PortalId, false);
                                     }
                                 }
-                                Response.Status = "301 Moved Permanently";
-                                Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti,
-                                     "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/"
-                                     + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true), pageName, ps);
 
+                                this.Response.Status = "301 Moved Permanently";
+                                this.Response.RedirectLocation = Globals.FriendlyUrl(
+                                    ti, 
+                                    "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" +
+                                    item.ItemId.ToString(CultureInfo.InvariantCulture) + this.UsePageId(true), 
+                                    pageName, 
+                                    ps);
                             }
-                            else if (_tabid > 0 && item.DisplayOnCurrentPage())
+                            else if (this._tabid > 0 && item.DisplayOnCurrentPage())
                             {
-
-                                ti = tc.GetTab(_tabid, item.PortalId, false);
+                                ti = tc.GetTab(this._tabid, item.PortalId, false);
                                 if (ti.IsDeleted)
                                 {
                                     ti = tc.GetTab(defaultTabId, item.PortalId, false);
                                 }
-                                //check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                                if (_modid > 0)
-                                {
 
-                                    Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" + _modid.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
+                                // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
+                                if (this._modid > 0)
+                                {
+                                    this.Response.Status = "301 Moved Permanently";
+                                    this.Response.RedirectLocation = Globals.FriendlyUrl(
+                                        ti, 
+                                        "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" +
+                                        item.ItemId.ToString(CultureInfo.InvariantCulture) + "/modid/" +
+                                        this._modid.ToString(CultureInfo.InvariantCulture) + this.UsePageId(true) + friendlyLanguageValue, 
+                                        pageName, 
+                                        ps);
                                 }
                                 else
                                 {
-                                    Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
+                                    this.Response.Status = "301 Moved Permanently";
+                                    this.Response.RedirectLocation = Globals.FriendlyUrl(
+                                        ti, 
+                                        "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" +
+                                        item.ItemId.ToString(CultureInfo.InvariantCulture) + this.UsePageId(true) + friendlyLanguageValue, 
+                                        pageName, 
+                                        ps);
                                 }
                             }
                             else
@@ -229,168 +191,189 @@ namespace Engage.Dnn.Publish
                                 {
                                     ti = tc.GetTab(defaultTabId, item.PortalId, false);
                                 }
-                                Response.Status = "301 Moved Permanently";
-                                Response.RedirectLocation = DotNetNuke.Common.Globals.FriendlyUrl(ti, "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(true) + friendlyLanguageValue, pageName, ps);
+
+                                this.Response.Status = "301 Moved Permanently";
+                                this.Response.RedirectLocation = Globals.FriendlyUrl(
+                                    ti, 
+                                    "/tabid/" + ti.TabID.ToString(CultureInfo.InvariantCulture) + "/itemid/" +
+                                    item.ItemId.ToString(CultureInfo.InvariantCulture) + this.UsePageId(true) + friendlyLanguageValue, 
+                                    pageName, 
+                                    ps);
                             }
                         }
                         else
                         {
-                            //we need to check for ForceOnCurrentPage
+                            // we need to check for ForceOnCurrentPage
                             var tc = new TabController();
                             TabInfo ti;
-                            DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
-                            //if we are passing in a TabId use it
+                            PortalSettings ps = Utility.GetPortalSettings(item.PortalId);
 
+                            // if we are passing in a TabId use it
                             if (item.ForceDisplayOnPage())
                             {
                                 ti = tc.GetTab(item.DisplayTabId, item.PortalId, false);
-                                Response.Status = "301 Moved Permanently";
-                                Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(ti.TabID, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(false) + languageValue);
-
+                                this.Response.Status = "301 Moved Permanently";
+                                this.Response.RedirectLocation = Globals.NavigateURL(
+                                    ti.TabID, 
+                                    ps, 
+                                    string.Empty, 
+                                    "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + this.UsePageId(false) + languageValue);
                             }
 
-                            if (_tabid > 0)
+                            if (this._tabid > 0)
                             {
-
-                                if (_modid > 0)
+                                if (this._modid > 0)
                                 {
-                                    Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(_tabid, ps, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "&modid=" + _modid.ToString(CultureInfo.InvariantCulture) + UsePageId(false) + languageValue);
-
+                                    this.Response.Status = "301 Moved Permanently";
+                                    this.Response.RedirectLocation = Globals.NavigateURL(
+                                        this._tabid, 
+                                        ps, 
+                                        string.Empty, 
+                                        "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + "&modid=" +
+                                        this._modid.ToString(CultureInfo.InvariantCulture) + this.UsePageId(false) + languageValue);
                                 }
                                 else
                                 {
-                                    Response.Status = "301 Moved Permanently";
-                                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(_tabid, ps, "", "itemid=" + item.ItemId + UsePageId(false) + languageValue);
+                                    this.Response.Status = "301 Moved Permanently";
+                                    this.Response.RedirectLocation = Globals.NavigateURL(
+                                        this._tabid, ps, string.Empty, "itemid=" + item.ItemId + this.UsePageId(false) + languageValue);
                                 }
                             }
 
-
-                            Response.Status = "301 Moved Permanently";
-                            Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(item.DisplayTabId, ps, "", "itemid=" + item.ItemId + UsePageId(false) + languageValue);
+                            this.Response.Status = "301 Moved Permanently";
+                            this.Response.RedirectLocation = Globals.NavigateURL(
+                                item.DisplayTabId, ps, string.Empty, "itemid=" + item.ItemId + this.UsePageId(false) + languageValue);
                         }
                     }
                     else
                     {
-                        //display on the current page or send them elsewhere.
-                        //display broken link information
-                        //DisplayBrokenLinkMessage(item);
-
+                        // display on the current page or send them elsewhere.
+                        // display broken link information
+                        // DisplayBrokenLinkMessage(item);
                         if (defaultTabId > -1)
                         {
-                            //send them to the Default Display Page
-                            Response.Status = "301 Moved Permanently";
-                            Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL(defaultTabId, PortalSettings, "", "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + UsePageId(false) + languageValue);
+                            // send them to the Default Display Page
+                            this.Response.Status = "301 Moved Permanently";
+                            this.Response.RedirectLocation = Globals.NavigateURL(
+                                defaultTabId, 
+                                this.PortalSettings, 
+                                string.Empty, 
+                                "itemid=" + item.ItemId.ToString(CultureInfo.InvariantCulture) + this.UsePageId(false) + languageValue);
                         }
                         else
                         {
-                            DisplayBrokenLinkMessage(item);
+                            this.DisplayBrokenLinkMessage(item);
                         }
                     }
                 }
                 else
                 {
-                    Response.Status = "301 Moved Permanently";
-                    Response.RedirectLocation = DotNetNuke.Common.Globals.NavigateURL();
+                    this.Response.Status = "301 Moved Permanently";
+                    this.Response.RedirectLocation = Globals.NavigateURL();
                 }
             }
         }
 
-        private string UsePageId(bool friendly)
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
         {
-            //we don't want to put Pageid in the URL if we're going for Page1
-            if (_pageid > 1)
-            {
-                if (friendly)
-                {
-                    return "/pageid/" + _pageid.ToString(CultureInfo.InvariantCulture);
-                }
-                
-                return "&pageid=" + _pageid.ToString(CultureInfo.InvariantCulture);
-            }
-            return string.Empty;
+            Load += Page_Load;
         }
 
-        private void Page_Load(object sender, EventArgs e)
+        [Obsolete("This method should somehow call ModuleBase.ItemId but because ModuleSettings for the module are needed not sure how to.", false)]
+        private void InitializeLocalVariables()
         {
-            try
+            string i = this.Request.QueryString["itemId"];
+            string pi = this.Request.QueryString["pageid"];
+            string lang = this.Request.QueryString["language"];
+            string a = this.Request.QueryString["articleId"];
+            string olda = this.Request.QueryString["aid"];
+            string c = this.Request.QueryString["categoryId"];
+            string o = this.Request.QueryString["tabid"];
+            string m = this.Request.QueryString["modid"];
+
+            if (m != null)
             {
-                LocalizeControls();
-                if (_itemType != null)
+                if (Utility.HasValue(m))
                 {
-                    //TODO: we need to figure out PortalID so we can get the folloing items from Cache
-                    if (_itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        //TODO: where can we get portalid from? NEED NEW METHOD - HK
-                        Category category = Category.GetCategory(_itemId);
-                        DisplayItem(category);
-                    }
-                    else if (_itemType.Equals(ItemType.Article.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Article article = Article.GetArticle(_itemId);
-                        DisplayItem(article);
-                    }
-                    else if (_itemType.Equals("OLDARTICLE", StringComparison.OrdinalIgnoreCase))
-                    {
-                        int newId = Article.GetOldArticleId(_itemId);
-                        Article article = Article.GetArticle(newId);
-                        DisplayItem(article);
-                    }
+                    this._modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
                 }
             }
-            catch (Exception ec)
+
+            if (pi != null)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.ProcessPageLoadException(ec);
+                if (Utility.HasValue(pi))
+                {
+                    this._pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
+                }
+            }
+
+            if (o != null)
+            {
+                if (Utility.HasValue(o))
+                {
+                    this._tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
+                }
+            }
+
+            if (lang != null)
+            {
+                if (Utility.HasValue(lang))
+                {
+                    this._language = lang;
+                }
+            }
+
+            if (i != null)
+            {
+                // look up the _itemType if ItemId passed in.
+                this._itemId = Convert.ToInt32(i, CultureInfo.InvariantCulture);
+                this._itemType = Item.GetItemType(this._itemId).ToUpperInvariant();
+            }
+            else if (a != null)
+            {
+                this._itemType = ItemType.Article.Name.ToUpperInvariant();
+                this._itemId = Convert.ToInt32(a, CultureInfo.InvariantCulture);
+            }
+            else if (olda != null)
+            {
+                this._itemType = "OLDARTICLE";
+                this._itemId = Convert.ToInt32(olda, CultureInfo.InvariantCulture);
+            }
+            else if (c != null)
+            {
+                this._itemType = ItemType.Category.Name.ToUpperInvariant();
+                this._itemId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                this._itemId = -1;
             }
         }
 
         private void LocalizeControls()
         {
-            //todo: why are these not working properly in DNN5.1?
-            //lblFooter.Text = Localization.GetString("lblFooter", "app_localResources/ItemLink.aspx.resx");
-            //lblMessage.Text = Localization.GetString("lblMessage", "app_localResources/ItemLink.aspx.resx");
-            //lblPossible.Text = Localization.GetString("lblPossible", "app_localResources/ItemLink.aspx.resx");
-            //lblPossibleA.Text = Localization.GetString("lblPossibleA", "app_localResources/ItemLink.aspx.resx");
-            //lblPossibleB.Text = Localization.GetString("lblPossibleB", "app_localResources/ItemLink.aspx.resx");
-            //lblTitle.Text = Localization.GetString("lblTitle", "app_localResources/ItemLink.aspx.resx");
-        }
-
-        private void DisplayBrokenLinkMessage(Item item)
-        {
-            if (Request.UrlReferrer != null)
-            {
-                if (Request.UrlReferrer.Authority == Request.Url.Authority)
-                {
-                    //The caller is another page on this site so we can use the internal error message
-                    //to the user (InvalidLink.ascx).
-                    NavigateInvalidLinkInternal(item);
-                }
-                else
-                {
-                    DisplayInvalidLinkMessage();
-                }
-
-            }
-        }
-
-        private void DisplayInvalidLinkMessage()
-        {
-            if (Request.UrlReferrer != null)
-            {
-                string href = Request.UrlReferrer.OriginalString;
-                metaRefresh.Attributes["content"] = Utility.RedirectInSeconds.ToString(CultureInfo.InvariantCulture) + ";url=" + href;
-            }
+            // todo: why are these not working properly in DNN5.1?
+            // lblFooter.Text = Localization.GetString("lblFooter", "app_localResources/ItemLink.aspx.resx");
+            // lblMessage.Text = Localization.GetString("lblMessage", "app_localResources/ItemLink.aspx.resx");
+            // lblPossible.Text = Localization.GetString("lblPossible", "app_localResources/ItemLink.aspx.resx");
+            // lblPossibleA.Text = Localization.GetString("lblPossibleA", "app_localResources/ItemLink.aspx.resx");
+            // lblPossibleB.Text = Localization.GetString("lblPossibleB", "app_localResources/ItemLink.aspx.resx");
+            // lblTitle.Text = Localization.GetString("lblTitle", "app_localResources/ItemLink.aspx.resx");
         }
 
         private void NavigateInvalidLinkInternal(Item item)
         {
-            //Need tab ID from referrer URL NOT the one associated with the item, that's why we're here because that
-            //page/tab doesn't have an Engage Publish module on it. HK
-            int start = Request.UrlReferrer.PathAndQuery.IndexOf("tabid/", StringComparison.OrdinalIgnoreCase) + 6;
-            int end = Request.UrlReferrer.PathAndQuery.IndexOf("/", start, StringComparison.OrdinalIgnoreCase);
-            string tabId = Request.UrlReferrer.PathAndQuery.Substring(start, (end - start)).ToUpperInvariant();
+            // Need tab ID from referrer URL NOT the one associated with the item, that's why we're here because that
+            // page/tab doesn't have an Engage Publish module on it. HK
+            int start = this.Request.UrlReferrer.PathAndQuery.IndexOf("tabid/", StringComparison.OrdinalIgnoreCase) + 6;
+            int end = this.Request.UrlReferrer.PathAndQuery.IndexOf("/", start, StringComparison.OrdinalIgnoreCase);
+            string tabId = this.Request.UrlReferrer.PathAndQuery.Substring(start, end - start).ToUpperInvariant();
 
-            //DotNetNuke.Entities.Portals.PortalSettings ps = Util.Utility.GetPortalSettings(item.PortalId);
+            // DotNetNuke.Entities.Portals.PortalSettings ps = Util.Utility.GetPortalSettings(item.PortalId);
             var tc = new TabController();
             TabInfo ti = tc.GetTab(Convert.ToInt32(tabId, CultureInfo.InvariantCulture), item.PortalId, false);
             var mc = new ModuleController();
@@ -405,14 +388,63 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string path = "/tabid/" + tabId + "/ctl/ItemPreview/itemid/" + _itemId.ToString(CultureInfo.InvariantCulture) + "/";
+            string path = "/tabid/" + tabId + "/ctl/ItemPreview/itemid/" + this._itemId.ToString(CultureInfo.InvariantCulture) + "/";
             if (mi != null)
             {
-                path += "mid/" + mi.ModuleID ;
+                path += "mid/" + mi.ModuleID;
             }
-            string href = DotNetNuke.Common.Globals.FriendlyUrl(ti, path);
-            Response.Redirect(href, true);
-        }                         
+
+            string href = Globals.FriendlyUrl(ti, path);
+            this.Response.Redirect(href, true);
+        }
+
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                this.LocalizeControls();
+                if (this._itemType != null)
+                {
+                    // TODO: we need to figure out PortalID so we can get the folloing items from Cache
+                    if (this._itemType.Equals(ItemType.Category.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // TODO: where can we get portalid from? NEED NEW METHOD - HK
+                        Category category = Category.GetCategory(this._itemId);
+                        this.DisplayItem(category);
+                    }
+                    else if (this._itemType.Equals(ItemType.Article.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Article article = Article.GetArticle(this._itemId);
+                        this.DisplayItem(article);
+                    }
+                    else if (this._itemType.Equals("OLDARTICLE", StringComparison.OrdinalIgnoreCase))
+                    {
+                        int newId = Article.GetOldArticleId(this._itemId);
+                        Article article = Article.GetArticle(newId);
+                        this.DisplayItem(article);
+                    }
+                }
+            }
+            catch (Exception ec)
+            {
+                Exceptions.ProcessPageLoadException(ec);
+            }
+        }
+
+        private string UsePageId(bool friendly)
+        {
+            // we don't want to put Pageid in the URL if we're going for Page1
+            if (this._pageid > 1)
+            {
+                if (friendly)
+                {
+                    return "/pageid/" + this._pageid.ToString(CultureInfo.InvariantCulture);
+                }
+
+                return "&pageid=" + this._pageid.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return string.Empty;
+        }
     }
 }
-

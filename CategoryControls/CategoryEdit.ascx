@@ -203,7 +203,7 @@
             <div class="progressWrap">
                 <div class="progressUpdateMessage">
                     <asp:Label ID="lblProgressUpdate" runat="server" resourcekey="lblProgressUpdate"></asp:Label>
-                    <img src="<%=ApplicationUrl%><%=DesktopModuleFolderName %>images/progressbar_green.gif" alt="Updating" id="imgProgressUpdate" />
+                    <img src="<%=ApplicationUrl%><%=DesktopModuleFolderName%>images/progressbar_green.gif" alt="Updating" id="imgProgressUpdate" />
                 </div>
             </div>
             <div class="progressUpdate">

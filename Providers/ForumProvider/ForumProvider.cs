@@ -8,11 +8,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish.Forum
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+
     using DotNetNuke.Framework;
 
     /// <summary>
@@ -21,9 +23,19 @@ namespace Engage.Dnn.Publish.Forum
     /// </summary>
     public abstract class ForumProvider
     {
-        #region  Static Members
-
         private static readonly Dictionary<int, ForumProvider> Providers = new Dictionary<int, ForumProvider>();
+
+        private readonly int _portalId;
+
+        protected ForumProvider(int portalId)
+        {
+            this._portalId = portalId;
+        }
+
+        protected int PortalId
+        {
+            get { return this._portalId; }
+        }
 
         /// <summary>
         /// Gets the <see cref="ForumProvider"/> instance for this <paramref name="portalId"/>.
@@ -35,35 +47,24 @@ namespace Engage.Dnn.Publish.Forum
             if (!Providers.ContainsKey(portalId))
             {
                 Type concreteType = Reflection.CreateType(ModuleBase.ForumProviderTypeForPortal(portalId));
-                    Providers.Add(portalId, concreteType != null ?
-                        (ForumProvider)concreteType.InvokeMember("", System.Reflection.BindingFlags.CreateInstance, null, null, new object[] {portalId}, null) :
-                        null);
+                Providers.Add(
+                    portalId, 
+                    concreteType != null
+                        ? (ForumProvider)concreteType.InvokeMember(
+                            string.Empty, 
+                            BindingFlags.CreateInstance, 
+                            null, 
+                            null, 
+                            new object[]
+                                {
+                                    portalId
+                                }, 
+                            null)
+                        : null);
             }
+
             return Providers[portalId];
         }
-
-        #endregion
-
-        #region Instance Data
-
-        private readonly int _portalId;
-        protected int PortalId
-        {
-            get { return _portalId; }
-        }
-
-        #endregion
-
-        #region Constructors
-
-        protected ForumProvider(int portalId)
-        {
-            _portalId = portalId;
-        }
-
-        #endregion
-
-        #region Abstract Methods
 
         /// <summary>
         /// Adds a comment to the given forum as a new thread with the article description being the first post, and the comment being a reply.
@@ -77,7 +78,22 @@ namespace Engage.Dnn.Publish.Forum
         /// <param name="commentUserId">The user ID of the person creating the comment.</param>
         /// <param name="commentUserIpAddress">The IP address of the user posting a comment.</param>
         /// <returns>The ID of the created forum thread</returns>
-        public abstract int AddComment(int forumId, int authorUserId, string title, string description, string linkUrl, string commentText, int commentUserId, string commentUserIpAddress);
+        public abstract int AddComment(
+            int forumId, 
+            int authorUserId, 
+            string title, 
+            string description, 
+            string linkUrl, 
+            string commentText, 
+            int commentUserId, 
+            string commentUserIpAddress);
+
+        /// <summary>
+        /// Gets a list of the forums for this <see cref="ForumProvider"/>'s portal in a dictionary where the key is the forum ID and the value is the forum name.
+        /// </summary>
+        /// <returns>A Dictionary with each forum for this portal, relating the forum's ID to its name.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        public abstract Dictionary<int, string> GetForums();
 
         /// <summary>
         /// Gets a URL to the forum thread which holds discussions for an article.
@@ -85,14 +101,5 @@ namespace Engage.Dnn.Publish.Forum
         /// <param name="threadId">The ID of the requested forum thread.</param>
         /// <returns>A URL pointing to the forum thread with ID <paramref name="threadId"/>.</returns>
         public abstract string GetThreadUrl(int threadId);
-
-        /// <summary>
-        /// Gets a list of the forums for this <see cref="ForumProvider"/>'s portal in a dictionary where the key is the forum ID and the value is the forum name.
-        /// </summary>
-        /// <returns>A Dictionary with each forum for this portal, relating the forum's ID to its name.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public abstract Dictionary<int, string> GetForums();
-
-        #endregion
     }
 }

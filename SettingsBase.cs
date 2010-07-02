@@ -11,7 +11,8 @@
 namespace Engage.Dnn.Publish
 {
     using DotNetNuke.Entities.Modules;
-    using Util;
+
+    using Engage.Dnn.Publish.Util;
 
     /// <summary>
     /// 

@@ -11,73 +11,72 @@
 namespace Engage.Dnn.Publish.Admin
 {
     using System;
+
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using Data;
-    using Util;
 
+    using Engage.Dnn.Publish.Data;
+    using Engage.Dnn.Publish.Util;
 
     public partial class QuickStats : ModuleBase
-	{
+    {
+        protected override void OnInit(EventArgs e)
+        {
+            this.Load += this.Page_Load;
+            base.OnInit(e);
+        }
 
-        #region Event Handlers
-		override protected void OnInit(EventArgs e)
-		{
-		    Load += Page_Load;
-		    base.OnInit(e);
-
-		}
-
-		private void Page_Load(object sender, EventArgs e)
-		{
-			try 
-			{
-    			//check VI for null then set information
-				if (!Page.IsPostBack)
-				{
-                    //check if the admin settings for AMS have been set, if not load the settings page.
-					if(IsAdmin)
-					{
-                        //Admin specific stats
-                        if (UseApprovals)
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // check VI for null then set information
+                if (!this.Page.IsPostBack)
+                {
+                    // check if the admin settings for AMS have been set, if not load the settings page.
+                    if (this.IsAdmin)
+                    {
+                        // Admin specific stats
+                        if (this.UseApprovals)
                         {
-                            lnkWaitingForApproval.Text = String.Format(Localization.GetString("lnkWaitingForApproval", LocalResourceFile), DataProvider.Instance().WaitingForApprovalCount(this.PortalId));
-                            lnkWaitingForApproval.Visible = true;
-                            lnkWaitingForApproval.NavigateUrl = EditUrl(Utility.AdminContainer);
+                            this.lnkWaitingForApproval.Text = String.Format(
+                                Localization.GetString("lnkWaitingForApproval", this.LocalResourceFile), 
+                                DataProvider.Instance().WaitingForApprovalCount(this.PortalId));
+                            this.lnkWaitingForApproval.Visible = true;
+                            this.lnkWaitingForApproval.NavigateUrl = this.EditUrl(Utility.AdminContainer);
                         }
                         else
                         {
-                            lnkWaitingForApproval.Visible = false;
+                            this.lnkWaitingForApproval.Visible = false;
                         }
-                        //Comments always require approval
-                        if (IsCommentsEnabled && IsPublishCommentTypeForPortal(PortalId))
+
+                        // Comments always require approval
+                        if (this.IsCommentsEnabled && IsPublishCommentTypeForPortal(this.PortalId))
                         {
-                            lnkCommentsForApproval.Text = String.Format(Localization.GetString("lnkCommentsForApproval", LocalResourceFile), Comment.CommentsWaitingForApprovalCount(this.PortalId, this.UserId));
-                            lnkCommentsForApproval.Visible = true;
-                            lnkCommentsForApproval.NavigateUrl = EditUrl("","",Utility.AdminContainer, "&adminType=commentList");
+                            this.lnkCommentsForApproval.Text = String.Format(
+                                Localization.GetString("lnkCommentsForApproval", this.LocalResourceFile), 
+                                Comment.CommentsWaitingForApprovalCount(this.PortalId, this.UserId));
+                            this.lnkCommentsForApproval.Visible = true;
+                            this.lnkCommentsForApproval.NavigateUrl = this.EditUrl(
+                                string.Empty, string.Empty, Utility.AdminContainer, "&adminType=commentList");
                         }
                         else
                         {
-                            lnkCommentsForApproval.Visible = false;
+                            this.lnkCommentsForApproval.Visible = false;
                         }
                     }
-					else
-					{
-                        //Generate author stats
-                        lnkWaitingForApproval.Visible = false;
-                        lnkCommentsForApproval.Visible = false;
-    				}
-				}
-			} 
-			catch (Exception exc) 
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-
-		#endregion
-
-		
-	}
+                    else
+                    {
+                        // Generate author stats
+                        this.lnkWaitingForApproval.Visible = false;
+                        this.lnkCommentsForApproval.Visible = false;
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+    }
 }
-

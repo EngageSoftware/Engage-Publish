@@ -215,8 +215,7 @@ namespace Engage.Dnn.Publish
                 // {
                 // return string.Empty;
                 // }
-                var authorNameSetting = ItemVersionSetting.GetItemVersionSetting(
-                    this.ItemVersionId, "lblAuthorName", "Text", this.PortalId);
+                var authorNameSetting = ItemVersionSetting.GetItemVersionSetting(this.ItemVersionId, "lblAuthorName", "Text", this.PortalId);
 
                 if (authorNameSetting != null && authorNameSetting.ToString().Trim().Length > 0)
                 {
@@ -235,10 +234,7 @@ namespace Engage.Dnn.Publish
                 return this.originalAuthor;
             }
 
-            set
-            {
-                this.originalAuthor = value;
-            }
+            set { this.originalAuthor = value; }
         }
 
         [XmlElement(Order = 19)]
@@ -298,10 +294,7 @@ namespace Engage.Dnn.Publish
                 return this.displayTabName;
             }
 
-            set
-            {
-                this.displayTabName = value;
-            }
+            set { this.displayTabName = value; }
         }
 
         public abstract string EmailApprovalBody { get; }
@@ -674,8 +667,8 @@ namespace Engage.Dnn.Publish
         }
 
         [Obsolete(
-            "This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly. DeleteItem(int _itemId, int _portalId).", 
-            false)]
+            "This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly. DeleteItem(int _itemId, int _portalId)."
+            , false)]
         public static void DeleteItem(int itemId)
         {
             DataProvider.Instance().DeleteItem(itemId);
@@ -1018,7 +1011,8 @@ namespace Engage.Dnn.Publish
 
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", 
             Justification =
-                "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value.")]
+                "The method performs a time-consuming operation. The method is perceivably slower than the time it takes to set or get a field's value."
+            )]
         public string GetApprovalStatusTypeName()
         {
             return DataProvider.Instance().GetApprovalStatusTypeName(this.ApprovalStatusId);
@@ -1392,7 +1386,27 @@ namespace Engage.Dnn.Publish
                 return url;
             }
 
-            throw new InvalidOperationException(string.Format("Cannot make URL ({0}) absolute because there is no current request to base it on", url));
+            throw new InvalidOperationException(
+                string.Format("Cannot make URL ({0}) absolute because there is no current request to base it on", url));
+        }
+
+        /// <summary>
+        /// Gets an instance of Engage: Publish within this item's portal.
+        /// </summary>
+        /// <returns>A <see cref="ModuleInfo"/> instance, or <c>null</c> if no Publish module exists in this portal</returns>
+        private ModuleInfo GetAnyPublishModule()
+        {
+            foreach (ModuleInfo mi in new ModuleController().GetModulesByDefinition(this.PortalId, Util.Utility.DnnFriendlyModuleName))
+            {
+                if (mi.IsDeleted || mi.TabID == -1 || new TabController().GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
+                {
+                    continue;
+                }
+
+                return mi;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1404,7 +1418,7 @@ namespace Engage.Dnn.Publish
             if (revisingUser.Username != null)
             {
                 ArrayList users = new RoleController().GetUsersByRoleName(
-                    revisingUser.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + this.PortalId));
+                    revisingUser.PortalID, HostSettings.GetHostSetting(Util.Utility.PublishEmailNotificationRole + this.PortalId));
 
                 this.SendTemplatedEmail(revisingUser, (UserInfo[])users.ToArray(typeof(UserInfo)), this.EmailApprovalBody, this.EmailApprovalSubject);
             }
@@ -1423,7 +1437,14 @@ namespace Engage.Dnn.Publish
                 // if this is the same user, don't email them notification.
                 if (versionAuthor != null && versionAuthor.Email != revisingUser.Email)
                 {
-                    this.SendTemplatedEmail(revisingUser, new[] { versionAuthor }, this.EmailStatusChangeBody, this.EmailStatusChangeSubject);
+                    this.SendTemplatedEmail(
+                        revisingUser, 
+                        new[]
+                            {
+                                versionAuthor
+                            }, 
+                        this.EmailStatusChangeBody, 
+                        this.EmailStatusChangeSubject);
                 }
             }
         }
@@ -1447,61 +1468,36 @@ namespace Engage.Dnn.Publish
             }
 
             string linkUrl = Globals.NavigateURL(
-                this.DisplayTabId, 
-                string.Empty, 
-                "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture),
-                "modid=" + this.ModuleId);
+                this.DisplayTabId, string.Empty, "VersionId=" + this.ItemVersionId.ToString(CultureInfo.InvariantCulture), "modid=" + this.ModuleId);
 
             string linksUrl = Globals.NavigateURL(
-                editTabId,
-                string.Empty,
-                "ctl=" + Utility.AdminContainer,
-                "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture),
-                "adminType=VersionsList",
+                editTabId, 
+                string.Empty, 
+                "ctl=" + Util.Utility.AdminContainer, 
+                "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture), 
+                "adminType=VersionsList", 
                 "_itemId=" + this.ItemId);
 
-            var emailBodyBuilder = new StringBuilder(emailBodyTemplate)
-                .Replace("[ENGAGEITEMNAME]", this.name)
-                .Replace("[ENGAGEITEMLINK]", MakeUrlAbsolute(linkUrl))
-                .Replace("[ENGAGEITEMSLINK]", MakeUrlAbsolute(linksUrl))
-                .Replace("[ADMINNAME]", revisingUser.DisplayName)
-                .Replace("[ENGAGEITEMCOMMENTS]", this.approvalComments)
-                .Replace("[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
+            var emailBodyBuilder = new StringBuilder(emailBodyTemplate).Replace("[ENGAGEITEMNAME]", this.name).Replace("[ENGAGEITEMLINK]", MakeUrlAbsolute(linkUrl)).
+                    Replace("[ENGAGEITEMSLINK]", MakeUrlAbsolute(linksUrl)).Replace("[ADMINNAME]", revisingUser.DisplayName).Replace(
+                        "[ENGAGEITEMCOMMENTS]", this.approvalComments).Replace(
+                            "[ENGAGESTATUS]", ApprovalStatus.GetFromId(this.ApprovalStatusId, typeof(ApprovalStatus)).Name);
 
             foreach (var recipient in emailRecipients)
             {
                 Mail.SendMail(
-                    PortalController.GetCurrentPortalSettings().Email,
-                    recipient.Email,
-                    string.Empty,
-                    emailSubject,
-                    emailBodyBuilder.ToString(),
-                    string.Empty,
-                    "HTML",
-                    string.Empty,
-                    string.Empty,
-                    string.Empty,
+                    PortalController.GetCurrentPortalSettings().Email, 
+                    recipient.Email, 
+                    string.Empty, 
+                    emailSubject, 
+                    emailBodyBuilder.ToString(), 
+                    string.Empty, 
+                    "HTML", 
+                    string.Empty, 
+                    string.Empty, 
+                    string.Empty, 
                     string.Empty);
-             }
-       }
-
-        /// <summary>
-        /// Gets an instance of Engage: Publish within this item's portal.
-        /// </summary>
-        /// <returns>A <see cref="ModuleInfo"/> instance, or <c>null</c> if no Publish module exists in this portal</returns>
-        private ModuleInfo GetAnyPublishModule()
-        {
-            foreach (ModuleInfo mi in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.DnnFriendlyModuleName))
-            {
-                if (mi.IsDeleted || mi.TabID == -1 || new TabController().GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
-                {
-                    continue;
-                }
-
-                return mi;
             }
-
-            return null;
         }
     }
 }

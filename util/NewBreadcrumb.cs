@@ -8,32 +8,38 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Util
 {
     using System.Collections;
-    /// <summary>
-	/// Summary description for Breadcrumb.
-	/// </summary>
-    public class BreadcrumbCollection : CollectionBase
-	{
-		public void InsertBeginning(string pageName, string pageUrl)
-		{            
-			var bci = new BreadcrumbItem {PageName = pageName, PageUrl = pageUrl};
-		    InnerList.Insert(0,bci);
-		}
-        public void Add(string pageName, string pageUrl)
-        {
-            var bci = new BreadcrumbItem {PageName = pageName, PageUrl = pageUrl};
-            InnerList.Add(bci);
-        }
 
+    /// <summary>
+    /// Summary description for Breadcrumb.
+    /// </summary>
+    public class BreadcrumbCollection : CollectionBase
+    {
         public BreadcrumbItem this[int index]
         {
-            get { return (BreadcrumbItem)InnerList[index]; }
+            get { return (BreadcrumbItem)this.InnerList[index]; }
         }
 
-	}
-}
+        public void Add(string pageName, string pageUrl)
+        {
+            var bci = new BreadcrumbItem
+                {
+                    PageName = pageName, 
+                    PageUrl = pageUrl
+                };
+            this.InnerList.Add(bci);
+        }
 
+        public void InsertBeginning(string pageName, string pageUrl)
+        {
+            var bci = new BreadcrumbItem
+                {
+                    PageName = pageName, 
+                    PageUrl = pageUrl
+                };
+            this.InnerList.Insert(0, bci);
+        }
+    }
+}

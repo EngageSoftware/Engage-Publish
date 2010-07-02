@@ -12,11 +12,13 @@ namespace Engage.Dnn.Publish.Portability
 {
     using System;
     using System.IO;
+
     using DotNetNuke.Common;
+
+    using Engage.Dnn.Publish.Util;
 
     public class TransportableXmlValidator : XmlValidatorBase
     {
-
         public override bool Validate(Stream xmlStream)
         {
             bool valid = false;
@@ -24,14 +26,14 @@ namespace Engage.Dnn.Publish.Portability
             try
             {
                 string path = Globals.ApplicationMapPath;
-                string desktopFolder = Util.Utility.DesktopModuleFolderName.Replace("/", @"\");
-                string fullPath  = path + desktopFolder + "Content.Publish.xsd";         
-                SchemaSet.Add("", fullPath);
+                string desktopFolder = Utility.DesktopModuleFolderName.Replace("/", @"\");
+                string fullPath = path + desktopFolder + "Content.Publish.xsd";
+                this.SchemaSet.Add(string.Empty, fullPath);
                 valid = base.Validate(xmlStream);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Errors.Add(ex.ToString());
+                this.Errors.Add(ex.ToString());
             }
 
             return valid;
@@ -39,7 +41,7 @@ namespace Engage.Dnn.Publish.Portability
 
         public bool Validate(Stream xmlStream, string schemaFile)
         {
-            SchemaSet.Add("", schemaFile);
+            this.SchemaSet.Add(string.Empty, schemaFile);
             return base.Validate(xmlStream);
         }
     }

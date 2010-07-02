@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="publish">
     <xs:complexType>
@@ -13,8 +14,8 @@
                     </xs:element>
                     <xs:element name="Name" type="xs:string" />
                     <xs:element name="Description" type="xs:string" />
-                    <xs:element name="IsTopLevel" type="xs:boolean" default="0"/>
-                    <xs:element name="IsActive" type="xs:boolean" default="0"/>
+                    <xs:element name="IsTopLevel" type="xs:boolean" default="0" />
+                    <xs:element name="IsActive" type="xs:boolean" default="0" />
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
@@ -54,14 +55,18 @@
         </xs:element>
         <xs:element name="categories" nillable="true" minOccurs="0">
           <xs:annotation>
-            <xs:documentation>A container to define categories. A category can be both child or parent depending on usage in the item relationship table.</xs:documentation>
+            <xs:documentation>
+              A container to define categories. A category can be both child or parent depending on usage in the item relationship table.
+            </xs:documentation>
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
               <xs:element name="category" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:annotation>
-                    <xs:documentation>A category is a way to group articles. ItemIdentifier and ItemVersionIdentifier are UniqueIdentifier data types (GUIDS) to uniquely identify this category.</xs:documentation>
+                    <xs:documentation>
+                      A category is a way to group articles. ItemIdentifier and ItemVersionIdentifier are UniqueIdentifier data types (GUIDS) to uniquely identify this category.
+                    </xs:documentation>
                   </xs:annotation>
                   <xs:sequence>
                     <xs:element name="ModuleId" type="xs:int" />
@@ -69,7 +74,7 @@
                     <xs:element name="PortalId" type="xs:int" />
                     <xs:element name="ItemIdentifier" type="xs:string" />
                     <xs:element name="ItemVersionIdentifier" type="xs:string" />
-                    <xs:element name="ApprovedItemVersionId" type="xs:int" nillable="1"  />
+                    <xs:element name="ApprovedItemVersionId" type="xs:int" nillable="1" />
                     <xs:element name="ApprovedItemVersionIdentifier" type="xs:string" nillable="1" />
                     <xs:element name="CreatedDate" type="xs:string" />
                     <xs:element name="ItemVersionId" type="xs:int" />
@@ -80,13 +85,13 @@
                     <xs:element name="Description" type="xs:string" />
                     <xs:element name="ItemVersionDate" type="xs:string" />
                     <xs:element name="StartDate" type="xs:string" />
-                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0"/>
+                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0" />
                     <xs:element name="LanguageId" type="xs:int" />
                     <xs:element name="AuthorUserId" type="xs:int" />
                     <xs:element name="Author" type="xs:string" />
                     <xs:element name="ApprovalStatusId" type="xs:int" />
                     <xs:element name="ApprovalStatusName" type="xs:string" />
-                    <xs:element name="ApprovalDate" type="xs:string"/>
+                    <xs:element name="ApprovalDate" type="xs:string" />
                     <xs:element name="ApprovalUserId" type="xs:int" />
                     <xs:element name="ApprovalUser" type="xs:string" />
                     <xs:element name="ApprovalComments" type="xs:string" />
@@ -115,7 +120,9 @@
           <xs:complexType>
             <xs:sequence>
               <xs:annotation>
-                <xs:documentation>A article with relationships.ItemIdentifier and ItemVersionIdentifier are UniqueIdentifier data types (GUIDS) to uniquely identify this category.</xs:documentation>
+                <xs:documentation>
+                  A article with relationships.ItemIdentifier and ItemVersionIdentifier are UniqueIdentifier data types (GUIDS) to uniquely identify this category.
+                </xs:documentation>
               </xs:annotation>
               <xs:element name="article" maxOccurs="unbounded" nillable="true" minOccurs="0">
                 <xs:complexType>
@@ -134,9 +141,9 @@
                     <xs:element name="OriginalItemVersionIdentifier" type="xs:string" />
                     <xs:element name="Name" type="xs:string" />
                     <xs:element name="Description" type="xs:string" />
-                    <xs:element name="ItemVersionDate" type="xs:string"/>
-                    <xs:element name="StartDate" type="xs:string"/>
-                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0"/>
+                    <xs:element name="ItemVersionDate" type="xs:string" />
+                    <xs:element name="StartDate" type="xs:string" />
+                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0" />
                     <xs:element name="LanguageId" type="xs:int" />
                     <xs:element name="AuthorUserId" type="xs:int" />
                     <xs:element name="Author" type="xs:string" />
@@ -151,8 +158,8 @@
                     <xs:element name="MetaTitle" type="xs:string" />
                     <xs:element name="DisplayTabId" type="xs:int" />
                     <xs:element name="DisplayTabName" type="xs:string" />
-                    <xs:element name="LastUpdated" type="xs:string"/>
-                    <xs:element name="Disabled" type="xs:boolean" default="0"/>
+                    <xs:element name="LastUpdated" type="xs:string" />
+                    <xs:element name="Disabled" type="xs:boolean" default="0" />
                     <xs:element name="Thumbnail" type="xs:string" />
                     <xs:element name="Url" type="xs:string" />
                     <xs:element name="NewWindow" type="xs:string" />
@@ -162,7 +169,6 @@
                     <xs:element name="VersionNumber" type="xs:string" />
                     <xs:element name="VersionDescription" type="xs:string" />
                     <xs:element name="ReferenceNumber" type="xs:string" />
-
 
                   </xs:sequence>
                 </xs:complexType>
@@ -180,14 +186,14 @@
                     <xs:element name="ChildItemId" type="xs:int" />
                     <xs:element name="ChildItemIdentifier" type="xs:string" />
                     <xs:element name="ChildItemVersionId" type="xs:int" />
-                    <xs:element name="ChildItemVersionIdentifier" type="xs:string" nillable="false" minOccurs="1"  />
+                    <xs:element name="ChildItemVersionIdentifier" type="xs:string" nillable="false" minOccurs="1" />
                     <xs:element name="ParentItemId" type="xs:int" />
                     <xs:element name="ParentItemIdentifier" type="xs:string" />
                     <xs:element name="RelationshipTypeId" type="xs:int" />
                     <xs:element name="RelationshipTypeName" type="xs:string" />
                     <xs:element name="StartDate" type="xs:string" />
-                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0"/>
-                    <xs:element name="SortOrder" type="xs:int" default="0"/>
+                    <xs:element name="EndDate" type="xs:string" nillable="true" minOccurs="0" />
+                    <xs:element name="SortOrder" type="xs:int" default="0" />
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
@@ -204,8 +210,8 @@
                     <xs:element name="ItemVersionId" type="xs:int" />
                     <xs:element name="UserId" type="xs:int" />
                     <xs:element name="Rating" type="xs:int" />
-                    <xs:element name="CreateDate" type="xs:dateTime" default="0001-01-01T00:00:00"/>
-                    <xs:element name="LastUpdated" type="xs:dateTime" default="0001-01-01T00:00:00"/>
+                    <xs:element name="CreateDate" type="xs:dateTime" default="0001-01-01T00:00:00" />
+                    <xs:element name="LastUpdated" type="xs:dateTime" default="0001-01-01T00:00:00" />
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
@@ -220,11 +226,11 @@
                   <xs:sequence>
                     <xs:element name="TagId" type="xs:int" />
                     <xs:element name="ItemVersionId" type="xs:int" />
-                    <xs:element name="DateCreated" type="xs:dateTime" default="0001-01-01T00:00:00"/>
+                    <xs:element name="DateCreated" type="xs:dateTime" default="0001-01-01T00:00:00" />
                     <xs:element name="Name" type="xs:string" />
                     <xs:element name="Description" type="xs:string" />
                     <xs:element name="TotalItems" type="xs:int" />
-                    <xs:element name="MostRecentDate" type="xs:dateTime" default="0001-01-01T00:00:00"/>
+                    <xs:element name="MostRecentDate" type="xs:dateTime" default="0001-01-01T00:00:00" />
                     <xs:element name="LanguageId" type="xs:int" />
                     <xs:element name="PortalId" type="xs:int" />
                   </xs:sequence>
@@ -244,8 +250,8 @@
                     <xs:element name="UserId" type="xs:int" />
                     <xs:element name="RatingId" type="xs:int" />
                     <xs:element name="CommentText" type="xs:string" />
-                    <xs:element name="CreatedDate" type="xs:dateTime" default="0001-01-01T00:00:00"/>
-                    <xs:element name="LastUpdated" type="xs:dateTime" default="0001-01-01T00:00:00"/>
+                    <xs:element name="CreatedDate" type="xs:dateTime" default="0001-01-01T00:00:00" />
+                    <xs:element name="LastUpdated" type="xs:dateTime" default="0001-01-01T00:00:00" />
                     <xs:element name="ApprovalStatusId" type="xs:int" />
                     <xs:element name="FirstName" type="xs:string" />
                     <xs:element name="LastName" type="xs:string" />
@@ -265,7 +271,7 @@
                   <xs:sequence>
                     <xs:element name="SettingsId" type="xs:int" />
                     <xs:element name="ItemVersionId" type="xs:int" />
-                    <xs:element name="ItemVersionIdentifier" type="xs:string" />                    
+                    <xs:element name="ItemVersionIdentifier" type="xs:string" />
                     <xs:element name="ControlName" type="xs:string" />
                     <xs:element name="PropertyName" type="xs:string" />
                     <xs:element name="PropertyValue" type="xs:string" />

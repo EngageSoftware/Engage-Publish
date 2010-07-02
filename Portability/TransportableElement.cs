@@ -15,9 +15,11 @@ namespace Engage.Dnn.Publish.Portability
     using System.IO;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Services.Exceptions;
 
     public abstract class TransportableElement
     {
+        public abstract void Import(int currentModuleId, int portalId);
 
         /// <summary>
         /// Method to convert a custom Object to XML string
@@ -27,7 +29,7 @@ namespace Engage.Dnn.Publish.Portability
         {
             try
             {
-                var xs = new XmlSerializer(GetType());
+                var xs = new XmlSerializer(this.GetType());
                 var writer = new StringWriter(CultureInfo.InvariantCulture);
                 xs.Serialize(writer, this);
 
@@ -35,12 +37,9 @@ namespace Engage.Dnn.Publish.Portability
             }
             catch (Exception e)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
+                Exceptions.LogException(e);
                 throw;
             }
         }
-        
-        public abstract void Import(int currentModuleId, int portalId);
-
     }
 }

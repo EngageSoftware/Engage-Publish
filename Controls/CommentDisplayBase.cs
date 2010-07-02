@@ -8,8 +8,6 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.Controls
 {
     /// <summary>
@@ -18,7 +16,8 @@ namespace Engage.Dnn.Publish.Controls
     public abstract class CommentDisplayBase : ModuleBase
     {
         public abstract int ArticleId { get; set; }
-        //public abstract CommentDisplayOptions CommentDisplayOption { get; set; }
-        //public abstract int CommentsPerPage { get; set; }
+
+        // public abstract CommentDisplayOptions CommentDisplayOption { get; set; }
+        // public abstract int CommentsPerPage { get; set; }
     }
 }

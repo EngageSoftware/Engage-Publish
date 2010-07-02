@@ -8,45 +8,35 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-
-
 namespace Engage.Dnn.Publish.ArticleControls
 {
     using System;
+
     using DotNetNuke.Entities.Users;
 
     public partial class AuthorToken : ModuleBase
-	{
-		#region Event Handlers
+    {
         protected override void OnInit(EventArgs e)
         {
-            Load += Page_Load;
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
-        void Page_Load(object sender, EventArgs e)
-        {
-            LoadAuthorInfo();
-        }
-
-#endregion
         private void LoadAuthorInfo()
         {
             var uc = new UserController();
-            UserInfo ui = uc.GetUser(PortalId, VersionInfoObject.AuthorUserId);
+            UserInfo ui = uc.GetUser(this.PortalId, this.VersionInfoObject.AuthorUserId);
 
-            //configure author link
-            lblAuthorLink.NavigateUrl = ui.Profile.Website;
-            lblAuthorLink.Text = ui.DisplayName;
-            
-            
-            lblAuthorInfo.Text = ui.Profile.GetPropertyValue("Bio");        
+            // configure author link
+            this.lblAuthorLink.NavigateUrl = ui.Profile.Website;
+            this.lblAuthorLink.Text = ui.DisplayName;
 
+            this.lblAuthorInfo.Text = ui.Profile.GetPropertyValue("Bio");
         }
 
-      
-        
-      
-	}
+        private void Page_Load(object sender, EventArgs e)
+        {
+            this.LoadAuthorInfo();
+        }
+    }
 }
-
