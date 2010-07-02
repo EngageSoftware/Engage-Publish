@@ -17,7 +17,6 @@ namespace Engage.Dnn.Publish.CategoryControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Security;
@@ -104,20 +103,13 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void BindData()
         {
             // TODO: NLevels number of items is not currently used
+            // TODO: figure out how to get the treeview to use the sorted datatable
 
-            // ToDO: figure out how to get the treeview to use the sorted datatable
-            string cacheKey = Utility.CacheKeyPublishCategoryNLevels + this.ItemId; // +"PageId";
-            var root = DataCache.GetCache(cacheKey) as TreeNode;
+            // Removed caching because heirarchy lost great-grandchildren and lower after coming back out of the cache
+            var root = ItemRelationship.GetAllChildrenNLevels(this.ItemId, this.numberOfLevels, -1, this.PortalId);
 
-            if (root == null)
-            {
-                root = ItemRelationship.GetAllChildrenNLevels(this.ItemId, this.numberOfLevels, -1, this.PortalId);
-                if (root != null)
-                {
-                    DataCache.SetCache(cacheKey, root, DateTime.Now.AddMinutes(this.CacheTime));
-                    Utility.AddCacheKey(cacheKey, this.PortalId);
-                }
-            }
+            // GetAllChildrenNLevels gives back a tree with two root nodes, we only need one
+            root = root.FirstNode;
 
             // add the parent category to the list first.
             if (this.showParentItem)
@@ -126,50 +118,24 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (parentItem != null)
                 {
-                    this.phNLevels.Controls.Add(new LiteralControl("<ul>"));
-                    this.phNLevels.Controls.Add(new LiteralControl("<li>"));
-
-                    var parentLink = new HyperLink();
-
-                    if (parentItem.Disabled == false)
+                    var parentItemNode = new TreeNode(parentItem.Name) { Tag = parentItem.ItemId };
+                    foreach (TreeNode node in root.Nodes)
                     {
-                        parentLink.NavigateUrl = this.GetItemLinkUrl(parentItem.ItemId);
+                        parentItemNode.Nodes.Add(node);
                     }
 
-                    parentLink.Text = parentItem.Name;
-
-                    if (this.highlightCurrentItem)
-                    {
-                        int itemId; // =0;
-                        object o = this.Request.QueryString["ItemId"];
-                        if (o != null && int.TryParse(o.ToString(), out itemId))
-                        {
-                            if (itemId == parentItem.ItemId)
-                            {
-                                parentLink.CssClass = HighlightCssClass;
-                            }
-                        }
-                    }
-
-                    this.phNLevels.Controls.Add(parentLink);
-                    this.phNLevels.Controls.Add(new LiteralControl("</li>"));
-
-                    this.FillNLevelList(root, this.phNLevels);
-                    this.phNLevels.Controls.Add(new LiteralControl("</ul>"));
-                }
-                else
-                {
-                    this.FillNLevelList(root, this.phNLevels);
+                    root = new TreeNode();
+                    root.Nodes.Add(parentItemNode);
                 }
             }
-            else
-            {
-                this.FillNLevelList(root, this.phNLevels);
-            }
+
+            this.FillNLevelList(root, this.phNLevels);
         }
 
         private void FillNLevelList(TreeNode root, PlaceHolder ph)
         {
+            ph.Controls.Add(new LiteralControl("<ul>"));
+
             for (int i = 0; i < root.Nodes.Count; i++)
             {
                 TreeNode child = root.Nodes[i];
@@ -179,7 +145,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     int itemId = Convert.ToInt32(child.Tag, CultureInfo.InvariantCulture);
                     var it = Item.GetItemType(itemId);
 
-                    if (!Utility.IsDisabled(itemId, this.PortalId))
+                    if (it != ItemType.TopLevelCategory.Name && !Utility.IsDisabled(itemId, this.PortalId))
                     {
                         Item curItem = BindItemData(itemId);
                         hl.NavigateUrl = this.GetItemLinkUrl(itemId);
@@ -211,9 +177,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     if (child.Nodes.Count > 0)
                     {
-                        ph.Controls.Add(new LiteralControl("<ul>"));
                         this.FillNLevelList(child, ph);
-                        ph.Controls.Add(new LiteralControl("</ul>"));
                         child.Nodes.Clear();
                     }
 
@@ -222,11 +186,13 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 if (child.Nodes.Count > 0)
                 {
-                    ph.Controls.Add(new LiteralControl("<ul class=\"EP_N_UL\">"));
+                    ////ph.Controls.Add(new LiteralControl("<ul class=\"EP_N_UL\">"));
                     this.FillNLevelList(child, ph);
-                    ph.Controls.Add(new LiteralControl("</ul>"));
+                    ////ph.Controls.Add(new LiteralControl("</ul>"));
                 }
             }
+
+            ph.Controls.Add(new LiteralControl("</ul>"));
         }
 
         /// <summary>

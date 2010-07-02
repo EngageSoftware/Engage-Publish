@@ -359,7 +359,7 @@ namespace Engage.Dnn.Publish
         {
             DataTable dt = DataProvider.Instance().GetAllChildrenNLevels(parentCategoryId, nLevels, mItems, portalId);
 
-            return (BuildHierarchy(dt));
+            return BuildHierarchy(dt);
         }
 
 	    public static DataTable GetAllChildrenNLevelsInDataTable(int parentCategoryId, int nLevels, int mItems, int portalId)
@@ -398,7 +398,7 @@ namespace Engage.Dnn.Publish
         {
             if (dt != null)
             {
-                IDictionary nodes = new Hashtable();
+                var nodes = new Dictionary<object, TreeNode>(dt.Rows.Count + 1);
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     DataRow r = dt.Rows[i];
@@ -408,57 +408,41 @@ namespace Engage.Dnn.Publish
                     string text = r["Name"].ToString();
 
                     TreeNode parent;
-                    if (nodes.Contains(parentId))
+                    if (!nodes.TryGetValue(parentId, out parent))
                     {
-                        parent = (TreeNode)nodes[parentId];
-                    }
-                    else
-                    {
-                        parent = new TreeNode {Tag = parentId};
-                        //parent.Tag = parentId;
+                        parent = new TreeNode { Tag = parentId };
                         nodes.Add(parentId, parent);
                     }
 
                     TreeNode child;
-                    if (nodes.Contains(childId))
+                    if (!nodes.TryGetValue(childId, out child))
                     {
-                        child = (TreeNode)nodes[childId];
-                        child.Text = text;
-                    }
-                    else
-                    {
-                        child = new TreeNode(text) {Tag = childId};
-                        //child.Tag = childId;
+                        child = new TreeNode { Tag = childId };
                         nodes.Add(childId, child);
                     }
 
+                    child.Text = text;
                     parent.Nodes.Add(child);
                 }
 
                 var root = new TreeNode("Root");
-
-                IEnumerator ie = nodes.Keys.GetEnumerator();
-                while (ie.MoveNext())
+                foreach (var node in nodes.Values)
                 {
-                    var n = (TreeNode)nodes[ie.Current];
-                    if (n.Parent == null)
+                    if (node.Parent == null || (string.IsNullOrEmpty(node.Parent.Text) && node.Parent.Tag == null))
                     {
-                        root.Nodes.Add(n);
-                    }
-                    else if (String.IsNullOrEmpty(n.Parent.Text) && n.Parent.Tag == null)
-                    {
-                        root.Nodes.Add(n);
+                        root.Nodes.Add(node);
                     }
                 }
 
-                using (var tv = new TreeView())
+                // Full path can only be retrieved when a TreeNode has been added to a TreeView
+                using (var treeView = new TreeView())
                 {
-                    //tv.Sorted = true;
-                    tv.Nodes.Add(root);
+                    treeView.Nodes.Add(root);
                 }
 
                 return root;
             }
+
             return null;
         }
 
