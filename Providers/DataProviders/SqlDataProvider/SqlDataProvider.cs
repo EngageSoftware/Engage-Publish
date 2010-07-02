@@ -2381,6 +2381,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetMostRecent(int childTypeId, int maxItems, int portalId)
         {
+            var allTypes = Null.IsNull(childTypeId);
             var sql = new StringBuilder();
 
             sql.Append("select ");
@@ -2417,15 +2418,20 @@ namespace Engage.Dnn.Publish.Data
             sql.Append(" and (ci.EndDate > GetDate() OR ci.EndDate is null) ");
             sql.Append(" and (ci.relationshipTypeId = ");
             sql.Append(RelationshipType.ItemToParentCategory.GetId());
-            if (childTypeId == ItemType.Category.GetId())
+            if (allTypes || childTypeId == ItemType.Category.GetId())
             {
                 sql.Append(" or ci.relationshipTypeId = ");
                 sql.Append(RelationshipType.CategoryToTopLevelCategory.GetId());
             }
 
             sql.Append(")");
-            sql.Append(" and ci.itemTypeID = ");
-            sql.Append(childTypeId);
+
+            if (!allTypes)
+            {
+                sql.Append(" and ci.itemTypeID = ");
+                sql.Append(childTypeId);
+            }
+
             sql.Append(" order by ");
             sql.Append("ci.StartDate desc");
 
@@ -2441,6 +2447,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetMostRecentByCategoryId(int categoryId, int childTypeId, int maxItems, int portalId)
         {
+            var allTypes = Null.IsNull(childTypeId);
             var sql = new StringBuilder(741);
             sql.Append("select ");
             if (maxItems > -1)
@@ -2448,13 +2455,17 @@ namespace Engage.Dnn.Publish.Data
                 sql.AppendFormat(CultureInfo.InvariantCulture, "top {0} ", maxItems);
             }
 
-            sql.Append(
-                    " il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId, child.Author ");
+            sql.Append(" il.ChildName, il.ChildDescription, il.itemId, il.ChilditemId, il.LastUpdated, child.StartDate, il.Thumbnail, il.CategoryName, child.itemVersionId, child.ItemVersionIdentifier, child.AuthorUserId, child.Author ");
             sql.AppendFormat(CultureInfo.InvariantCulture, "from {0}vwItemListing il ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems child on (il.ChilditemId = child.itemId) ", this.NamePrefix);
             sql.AppendFormat(CultureInfo.InvariantCulture, " join {0}vwItems parent on (il.itemId = parent.itemId) ", this.NamePrefix);
             sql.Append("where il.PortalId = @portalId ");
-            sql.Append(" and il.ChildItemTypeId = @itemTypeId ");
+
+            if (!allTypes)
+            {
+                sql.Append(" and il.ChildItemTypeId = @itemTypeId ");
+            }
+
             sql.Append(" and il.itemId = @categoryId ");
             sql.Append(" and child.iscurrentversion = 1 ");
             sql.Append(" and child.StartDate < GetDate() ");

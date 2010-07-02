@@ -15,6 +15,8 @@ namespace Engage.Dnn.Publish.Services
     using System;
     using System.Data;
     using System.Web;
+
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
 
     using CookComputing.XmlRpc;
@@ -273,7 +275,7 @@ namespace Engage.Dnn.Publish.Services
                                          Utility.GetItemLinkUrl((int) dr["ItemId"], PortalId, (int) dr["DisplayTabId"],
                                                                 (int) dr["ModuleId"]),
                                      rssUrl =
-                                         ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, ItemType.Article.GetId(),
+                                         ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, Null.NullInteger,
                                                                   PortalId, string.Empty)
                                  };
                     categoryInfos.Add(ci);

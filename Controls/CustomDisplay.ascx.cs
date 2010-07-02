@@ -141,10 +141,9 @@ namespace Engage.Dnn.Publish.Controls
 
                 imgRss.Src= ApplicationUrl + rssImage; //"/images/xml.gif";
                 imgRss.Alt = Localization.GetString("rssAlt", LocalResourceFile);
+                lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
                 
                 lnkRss.Attributes.Add("type", "application/rss+xml");
-                lnkRss.ToolTip = Localization.GetString("rssAlt", LocalResourceFile);
-               
 
                 if (AllowTags && _tagQuery != null && _tagQuery.Count > 0)
                 {
@@ -155,7 +154,7 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     //check for a setting of an external URL
                     ItemVersionSetting rssSetting = ItemVersionSetting.GetItemVersionSetting(VersionInfoObject.ItemVersionId, "CategorySettings", "RssUrl", PortalId);
-                    if (rssSetting != null && rssSetting.PropertyValue!=string.Empty)
+                    if (rssSetting != null && !string.IsNullOrEmpty(rssSetting.PropertyValue))
                     {
                         lnkRss.NavigateUrl = rssSetting.PropertyValue;
                         SetExternalRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
@@ -163,13 +162,11 @@ namespace Engage.Dnn.Publish.Controls
                     }
                     else
                     {
-                        //TODO: configure the # of items for an RSS feed
-                        lnkRss.NavigateUrl = GetRssLinkUrl(_categoryId, 25, ItemType.Article.GetId(), PortalId, "ItemListing");
+                        // TODO: configure the # of items for an RSS feed
+                        lnkRss.NavigateUrl = GetRssLinkUrl(_categoryId, 25, _customDisplaySettings.ItemTypeId, PortalId, "ItemListing");
                         SetRssUrl(lnkRss.NavigateUrl, Localization.GetString("rssAlt", LocalResourceFile));
                     }
-
                 }
-                
             }
 
             //store the URL into session for the return to list options
