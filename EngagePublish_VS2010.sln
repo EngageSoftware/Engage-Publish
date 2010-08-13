@@ -13,7 +13,7 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 2
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs2008.etg-inc.net:8080/
+		SccTeamFoundationServer = http://tfs2010.etg-inc.net:8080/tfs/engage%20tfs%202010
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = EngagePublish.csproj
 		SccLocalPath1 = .

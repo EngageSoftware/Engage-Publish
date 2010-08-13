@@ -37,7 +37,12 @@ namespace Engage.Dnn.Publish
             get
             {
                 int settingIndex = this.IndexOf(index);
-                return this[settingIndex];
+                if (settingIndex > -1)
+                {
+                    return this[settingIndex];
+                }
+
+                return null;
             }
         }
     }

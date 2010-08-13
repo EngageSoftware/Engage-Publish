@@ -666,9 +666,7 @@ namespace Engage.Dnn.Publish
             DataProvider.Instance().ClearItemsViewCount(portalId);
         }
 
-        [Obsolete(
-            "This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly. DeleteItem(int _itemId, int _portalId)."
-            , false)]
+        [Obsolete("This method signature should not be used, please use the signature that accepts PortalId as a parameter so that the cache is cleared properly. DeleteItem(int _itemId, int _portalId).", false)]
         public static void DeleteItem(int itemId)
         {
             DataProvider.Instance().DeleteItem(itemId);
@@ -1396,7 +1394,7 @@ namespace Engage.Dnn.Publish
         /// <returns>A <see cref="ModuleInfo"/> instance, or <c>null</c> if no Publish module exists in this portal</returns>
         private ModuleInfo GetAnyPublishModule()
         {
-            foreach (ModuleInfo mi in new ModuleController().GetModulesByDefinition(this.PortalId, Util.Utility.DnnFriendlyModuleName))
+            foreach (ModuleInfo mi in new ModuleController().GetModulesByDefinition(this.PortalId, Utility.DnnFriendlyModuleName))
             {
                 if (mi.IsDeleted || mi.TabID == -1 || new TabController().GetTab(mi.TabID, mi.PortalID, false).IsDeleted)
                 {
@@ -1418,7 +1416,7 @@ namespace Engage.Dnn.Publish
             if (revisingUser.Username != null)
             {
                 ArrayList users = new RoleController().GetUsersByRoleName(
-                    revisingUser.PortalID, HostSettings.GetHostSetting(Util.Utility.PublishEmailNotificationRole + this.PortalId));
+                    revisingUser.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + this.PortalId));
 
                 this.SendTemplatedEmail(revisingUser, (UserInfo[])users.ToArray(typeof(UserInfo)), this.EmailApprovalBody, this.EmailApprovalSubject);
             }
@@ -1473,7 +1471,7 @@ namespace Engage.Dnn.Publish
             string linksUrl = Globals.NavigateURL(
                 editTabId, 
                 string.Empty, 
-                "ctl=" + Util.Utility.AdminContainer, 
+                "ctl=" + Utility.AdminContainer, 
                 "mid=" + editModuleId.ToString(CultureInfo.InvariantCulture), 
                 "adminType=VersionsList", 
                 "_itemId=" + this.ItemId);

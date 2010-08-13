@@ -937,6 +937,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Migrated rules for EngagePublish.ruleset" />
+    <None Include="Providers\DataProviders\SqlDataProvider\05.07.00.SqlDataProvider" />
     <None Include="Resources\default.css" />
     <Content Include="Tags\App_LocalResources\TagCloud.ascx.resx">
       <SubType>Designer</SubType>
