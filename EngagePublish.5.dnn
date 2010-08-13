@@ -2,27 +2,19 @@
   <packages>
     <package name="Engage: Publish" type="Module" version="5.6.1">
       <friendlyName>Engage: Publish</friendlyName>
-      <description>
-        The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)
-      </description>
+      <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
-        <url>
-          http://www.engagesoftware.com/
-        </url>
-        <email>
-          support@engagemodules.com
-        </email>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
       <releaseNotes src="ReleaseNotes_5.6.1.htm" />
       <components>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>
-              DesktopModules/EngagePublish
-            </basePath>
+            <basePath>DesktopModules/EngagePublish</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
@@ -30,457 +22,305 @@
         </component>
         <component type="Script">
           <scripts>
-            <basePath>
-              DesktopModules\EngagePublish
-            </basePath>
+            <basePath>DesktopModules\EngagePublish</basePath>
             <script type="Install">
-              <name>
-                03.00.01.SqlDataProvider
-              </name>
+              <name>03.00.01.SqlDataProvider</name>
               <version>03.00.01</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.02.SqlDataProvider
-              </name>
+              <name>03.00.02.SqlDataProvider</name>
               <version>03.00.02</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.04.SqlDataProvider
-              </name>
+              <name>03.00.04.SqlDataProvider</name>
               <version>03.00.04</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.05.SqlDataProvider
-              </name>
+              <name>03.00.05.SqlDataProvider</name>
               <version>03.00.05</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.06.SqlDataProvider
-              </name>
+              <name>03.00.06.SqlDataProvider</name>
               <version>03.00.06</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.07.SqlDataProvider
-              </name>
+              <name>03.00.07.SqlDataProvider</name>
               <version>03.00.07</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.08.SqlDataProvider
-              </name>
+              <name>03.00.08.SqlDataProvider</name>
               <version>03.00.08</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.09.SqlDataProvider
-              </name>
+              <name>03.00.09.SqlDataProvider</name>
               <version>03.00.09</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.10.SqlDataProvider
-              </name>
+              <name>03.00.10.SqlDataProvider</name>
               <version>03.00.10</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.12.SqlDataProvider
-              </name>
+              <name>03.00.12.SqlDataProvider</name>
               <version>03.00.12</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.13.SqlDataProvider
-              </name>
+              <name>03.00.13.SqlDataProvider</name>
               <version>03.00.13</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.14.SqlDataProvider
-              </name>
+              <name>03.00.14.SqlDataProvider</name>
               <version>03.00.14</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.15.SqlDataProvider
-              </name>
+              <name>03.00.15.SqlDataProvider</name>
               <version>03.00.15</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.16.SqlDataProvider
-              </name>
+              <name>03.00.16.SqlDataProvider</name>
               <version>03.00.16</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.17.SqlDataProvider
-              </name>
+              <name>03.00.17.SqlDataProvider</name>
               <version>03.00.17</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.19.SqlDataProvider
-              </name>
+              <name>03.00.19.SqlDataProvider</name>
               <version>03.00.19</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.21.SqlDataProvider
-              </name>
+              <name>03.00.21.SqlDataProvider</name>
               <version>03.00.21</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.23.SqlDataProvider
-              </name>
+              <name>03.00.23.SqlDataProvider</name>
               <version>03.00.23</version>
             </script>
             <script type="Install">
-              <name>
-                03.00.24.SqlDataProvider
-              </name>
+              <name>03.00.24.SqlDataProvider</name>
               <version>03.00.24</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.00.SqlDataProvider
-              </name>
+              <name>04.00.00.SqlDataProvider</name>
               <version>04.00.00</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.01.SqlDataProvider
-              </name>
+              <name>04.00.01.SqlDataProvider</name>
               <version>04.00.01</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.02.SqlDataProvider
-              </name>
+              <name>04.00.02.SqlDataProvider</name>
               <version>04.00.02</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.03.SqlDataProvider
-              </name>
+              <name>04.00.03.SqlDataProvider</name>
               <version>04.00.03</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.04.SqlDataProvider
-              </name>
+              <name>04.00.04.SqlDataProvider</name>
               <version>04.00.04</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.05.SqlDataProvider
-              </name>
+              <name>04.00.05.SqlDataProvider</name>
               <version>04.00.05</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.06.SqlDataProvider
-              </name>
+              <name>04.00.06.SqlDataProvider</name>
               <version>04.00.06</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.07.SqlDataProvider
-              </name>
+              <name>04.00.07.SqlDataProvider</name>
               <version>04.00.07</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.08.SqlDataProvider
-              </name>
+              <name>04.00.08.SqlDataProvider</name>
               <version>04.00.08</version>
             </script>
             <script type="Install">
-              <name>
-                04.00.09.SqlDataProvider
-              </name>
+              <name>04.00.09.SqlDataProvider</name>
               <version>04.00.09</version>
             </script>
             <script type="Install">
-              <name>
-                04.01.00.SqlDataProvider
-              </name>
+              <name>04.01.00.SqlDataProvider</name>
               <version>04.01.00</version>
             </script>
             <script type="Install">
-              <name>
-                04.01.01.SqlDataProvider
-              </name>
+              <name>04.01.01.SqlDataProvider</name>
               <version>04.01.01</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.00.SqlDataProvider
-              </name>
+              <name>04.02.00.SqlDataProvider</name>
               <version>04.02.00</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.01.SqlDataProvider
-              </name>
+              <name>04.02.01.SqlDataProvider</name>
               <version>04.02.01</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.03.SqlDataProvider
-              </name>
+              <name>04.02.03.SqlDataProvider</name>
               <version>04.02.03</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.05.SqlDataProvider
-              </name>
+              <name>04.02.05.SqlDataProvider</name>
               <version>04.02.05</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.06.SqlDataProvider
-              </name>
+              <name>04.02.06.SqlDataProvider</name>
               <version>04.02.06</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.07.SqlDataProvider
-              </name>
+              <name>04.02.07.SqlDataProvider</name>
               <version>04.02.07</version>
             </script>
             <script type="Install">
-              <name>
-                04.02.09.SqlDataProvider
-              </name>
+              <name>04.02.09.SqlDataProvider</name>
               <version>04.02.09</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.00.SqlDataProvider
-              </name>
+              <name>04.03.00.SqlDataProvider</name>
               <version>04.03.00</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.01.SqlDataProvider
-              </name>
+              <name>04.03.01.SqlDataProvider</name>
               <version>04.03.01</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.02.SqlDataProvider
-              </name>
+              <name>04.03.02.SqlDataProvider</name>
               <version>04.03.02</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.03.SqlDataProvider
-              </name>
+              <name>04.03.03.SqlDataProvider</name>
               <version>04.03.03</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.04.SqlDataProvider
-              </name>
+              <name>04.03.04.SqlDataProvider</name>
               <version>04.03.04</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.08.SqlDataProvider
-              </name>
+              <name>04.03.08.SqlDataProvider</name>
               <version>04.03.08</version>
             </script>
             <script type="Install">
-              <name>
-                04.03.09.SqlDataProvider
-              </name>
+              <name>04.03.09.SqlDataProvider</name>
               <version>04.03.09</version>
             </script>
             <script type="Install">
-              <name>
-                04.04.04.SqlDataProvider
-              </name>
+              <name>04.04.04.SqlDataProvider</name>
               <version>04.04.04</version>
             </script>
             <script type="Install">
-              <name>
-                04.04.05.SqlDataProvider
-              </name>
+              <name>04.04.05.SqlDataProvider</name>
               <version>04.04.05</version>
             </script>
             <script type="Install">
-              <name>
-                04.04.06.SqlDataProvider
-              </name>
+              <name>04.04.06.SqlDataProvider</name>
               <version>04.04.06</version>
             </script>
             <script type="Install">
-              <name>
-                04.05.01.SqlDataProvider
-              </name>
+              <name>04.05.01.SqlDataProvider</name>
               <version>04.05.01</version>
             </script>
             <script type="Install">
-              <name>
-                04.05.02.SqlDataProvider
-              </name>
+              <name>04.05.02.SqlDataProvider</name>
               <version>04.05.02</version>
             </script>
             <script type="Install">
-              <name>
-                04.05.03.SqlDataProvider
-              </name>
+              <name>04.05.03.SqlDataProvider</name>
               <version>04.05.03</version>
             </script>
             <script type="Install">
-              <name>
-                04.05.05.SqlDataProvider
-              </name>
+              <name>04.05.05.SqlDataProvider</name>
               <version>04.05.05</version>
             </script>
             <script type="Install">
-              <name>
-                05.00.01.SqlDataProvider
-              </name>
+              <name>05.00.01.SqlDataProvider</name>
               <version>05.00.01</version>
             </script>
             <script type="Install">
-              <name>
-                05.00.02.SqlDataProvider
-              </name>
+              <name>05.00.02.SqlDataProvider</name>
               <version>05.00.02</version>
             </script>
             <script type="Install">
-              <name>
-                05.00.03.SqlDataProvider
-              </name>
+              <name>05.00.03.SqlDataProvider</name>
               <version>05.00.03</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.00.SqlDataProvider
-              </name>
+              <name>05.01.00.SqlDataProvider</name>
               <version>05.01.00</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.02.SqlDataProvider
-              </name>
+              <name>05.01.02.SqlDataProvider</name>
               <version>05.01.02</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.04.SqlDataProvider
-              </name>
+              <name>05.01.04.SqlDataProvider</name>
               <version>05.01.04</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.05.SqlDataProvider
-              </name>
+              <name>05.01.05.SqlDataProvider</name>
               <version>05.01.05</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.06.SqlDataProvider
-              </name>
+              <name>05.01.06.SqlDataProvider</name>
               <version>05.01.06</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.08.SqlDataProvider
-              </name>
+              <name>05.01.08.SqlDataProvider</name>
               <version>05.01.08</version>
             </script>
             <script type="Install">
-              <name>
-                05.01.09.SqlDataProvider
-              </name>
+              <name>05.01.09.SqlDataProvider</name>
               <version>05.01.09</version>
             </script>
             <script type="Install">
-              <name>
-                05.02.01.SqlDataProvider
-              </name>
+              <name>05.02.01.SqlDataProvider</name>
               <version>05.02.01</version>
             </script>
             <script type="Install">
-              <name>
-                05.02.03.SqlDataProvider
-              </name>
+              <name>05.02.03.SqlDataProvider</name>
               <version>05.02.03</version>
             </script>
             <script type="Install">
-              <name>
-                05.02.05.SqlDataProvider
-              </name>
+              <name>05.02.05.SqlDataProvider</name>
               <version>05.02.05</version>
             </script>
             <script type="Install">
-              <name>
-                05.02.09.SqlDataProvider
-              </name>
+              <name>05.02.09.SqlDataProvider</name>
               <version>05.02.09</version>
             </script>
             <script type="Install">
-              <name>
-                05.03.00.SqlDataProvider
-              </name>
+              <name>05.03.00.SqlDataProvider</name>
               <version>05.03.00</version>
             </script>
             <script type="Install">
-              <name>
-                05.03.03.SqlDataProvider
-              </name>
+              <name>05.03.03.SqlDataProvider</name>
               <version>05.03.03</version>
             </script>
             <script type="Install">
-              <name>
-                05.03.07.SqlDataProvider
-              </name>
+              <name>05.03.07.SqlDataProvider</name>
               <version>05.03.07</version>
             </script>
             <script type="Install">
-              <name>
-                05.03.08.SqlDataProvider
-              </name>
+              <name>05.03.08.SqlDataProvider</name>
               <version>05.03.08</version>
             </script>
             <script type="Install">
-              <name>
-                05.03.09.SqlDataProvider
-              </name>
+              <name>05.03.09.SqlDataProvider</name>
               <version>05.03.09</version>
             </script>
             <script type="Install">
-              <name>
-                05.05.00.SqlDataProvider
-              </name>
+              <name>05.05.00.SqlDataProvider</name>
               <version>05.05.00</version>
             </script>
             <script type="Install">
-              <name>
-                05.05.02.SqlDataProvider
-              </name>
+              <name>05.05.02.SqlDataProvider</name>
               <version>05.05.02</version>
             </script>
             <script type="Install">
-              <name>
-                05.05.04.SqlDataProvider
-              </name>
+              <name>05.05.04.SqlDataProvider</name>
               <version>05.05.04</version>
             </script>
             <script type="UnInstall">
-              <name>
-                Uninstall.SqlDataProvider
-              </name>
+              <name>Uninstall.SqlDataProvider</name>
               <version latestVersion="latestVersion">5.6.1</version>
             </script>
           </scripts>
@@ -489,9 +329,7 @@
           <desktopModule>
             <moduleName>Engage: Publish</moduleName>
             <foldername>EngagePublish</foldername>
-            <businessControllerClass>
-              Engage.Dnn.Publish.Util.FeaturesController
-            </businessControllerClass>
+            <businessControllerClass>Engage.Dnn.Publish.Util.FeaturesController</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
@@ -503,43 +341,27 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey></controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/ItemDisplay.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/ItemDisplay.ascx</controlSrc>
                     <controlType>View</controlType>
-                    <helpUrl>
-                      http://www.EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>AdminContainer</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/AdminLoader.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/AdminLoader.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://www.EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Settings</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/ItemDisplayOptions.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/ItemDisplayOptions.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://www.EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>ItemPreview</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/ItemPreview.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/ItemPreview.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://www.EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://www.EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -553,27 +375,19 @@
               <version latestVersion="latestVersion">5.6.1</version>
             </assembly>
             <assembly>
-              <name>
-                CookComputing.XmlRpcV2.dll
-              </name>
+              <name>CookComputing.XmlRpcV2.dll</name>
               <version>0.0.0</version>
             </assembly>
             <assembly>
-              <name>
-                Engage.Dnn.UserFeedback.dll
-              </name>
+              <name>Engage.Dnn.UserFeedback.dll</name>
               <version>1.0.1</version>
             </assembly>
             <assembly>
-              <name>
-                AjaxControlToolkit.dll
-              </name>
+              <name>AjaxControlToolkit.dll</name>
               <version>1.0.20229</version>
             </assembly>
             <assembly>
-              <name>
-                Engage.Dnn.Framework.dll
-              </name>
+              <name>Engage.Dnn.Framework.dll</name>
               <version>3.1.5</version>
             </assembly>
             <assembly>
@@ -586,64 +400,42 @@
       </components>
     </package>
     <package name="Engage: Publish Tag Cloud" type="Module" version="5.6.1">
-      <friendlyName>
-        Engage: Publish Tag Cloud
-      </friendlyName>
-      <description>
-        The tag cloud for the Engage: Publish module.
-      </description>
+      <friendlyName>Engage: Publish Tag Cloud</friendlyName>
+      <description>The tag cloud for the Engage: Publish module.</description>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
-        <url>
-          http://www.engagesoftware.com/
-        </url>
-        <email>
-          support@engagemodules.com
-        </email>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
       <releaseNotes src="ReleaseNotes_5.6.1.htm" />
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>
-              Engage: Publish Tag Cloud
-            </moduleName>
+            <moduleName>Engage: Publish Tag Cloud</moduleName>
             <foldername>EngagePublish/Tags</foldername>
-            <businessControllerClass>
-              Engage.Dnn.Publish.Util.FeaturesController
-            </businessControllerClass>
+            <businessControllerClass>Engage.Dnn.Publish.Util.FeaturesController</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>
-                  Engage: Publish Tag Cloud
-                </friendlyName>
+                <friendlyName>Engage: Publish Tag Cloud</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
                     <controlKey></controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/Tags/TagCloud.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/Tags/TagCloud.ascx</controlSrc>
                     <controlType>View</controlType>
-                    <helpUrl>
-                      http://EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Settings</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/Tags/TagCloudOptions.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/Tags/TagCloudOptions.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -654,73 +446,47 @@
     </package>
     <package name="Engage: Publish Text/HTML" type="Module" version="5.6.1">
       <friendlyName>Engage: Text/HTML</friendlyName>
-      <description>
-        A Text/HTML replacement module for the Engage: Publish workflow system.
-      </description>
+      <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
-        <url>
-          http://www.engagesoftware.com/
-        </url>
-        <email>
-          support@engagemodules.com
-        </email>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
       <releaseNotes src="ReleaseNotes_5.6.1.htm" />
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>
-              Engage: Publish Text/HTML
-            </moduleName>
-            <foldername>
-              EngagePublish/TextHTML
-            </foldername>
-            <businessControllerClass>
-              Engage.Dnn.Publish.TextHTML.FeaturesController
-            </businessControllerClass>
+            <moduleName>Engage: Publish Text/HTML</moduleName>
+            <foldername>EngagePublish/TextHTML</foldername>
+            <businessControllerClass>Engage.Dnn.Publish.TextHTML.FeaturesController</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>
-                  Engage: Publish Text/HTML
-                </friendlyName>
+                <friendlyName>Engage: Publish Text/HTML</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
                     <controlKey></controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/TextHTML/View.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/TextHTML/View.ascx</controlSrc>
                     <controlType>View</controlType>
-                    <helpUrl>
-                      http://EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/TextHTML/Edit.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/TextHTML/Edit.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>AdminContainer</controlKey>
-                    <controlSrc>
-                      DesktopModules/EngagePublish/TextHTML/AdminLoader.ascx
-                    </controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/TextHTML/AdminLoader.ascx</controlSrc>
                     <controlType>Edit</controlType>
-                    <helpUrl>
-                      http://EngageSoftware.com/Support.aspx
-                    </helpUrl>
+                    <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
