@@ -12,7 +12,7 @@
       <license src="Licenses\EULA-Standard.htm" />
       <releaseNotes src="ReleaseNotes_5.6.1.htm" />
       <components>
-        <component type="ResourceFile">
+        <component type="ResourceFile" installOrder="0">
           <resourceFiles>
             <basePath>DesktopModules/EngagePublish</basePath>
             <resourceFile>
@@ -20,7 +20,9 @@
             </resourceFile>
           </resourceFiles>
         </component>
-        <component type="Script">
+        <component type="Script" installOrder="1">
+          <!-- use installOrder to guarantee that scripts run before assembly installs -->
+          <!-- so that 5.7.0 script can fix incorrect assembly version numbers -->
           <scripts>
             <basePath>DesktopModules\EngagePublish</basePath>
             <script type="Install">
@@ -329,7 +331,7 @@
             </script>
           </scripts>
         </component>
-        <component type="Module">
+        <component type="Module" installOrder="2">
           <desktopModule>
             <moduleName>Engage: Publish</moduleName>
             <foldername>EngagePublish</foldername>
@@ -372,7 +374,7 @@
             </moduleDefinitions>
           </desktopModule>
         </component>
-        <component type="Assembly">
+        <component type="Assembly" installOrder="3">
           <assemblies>
             <assembly>
               <name>EngagePublish.dll</name>
@@ -400,7 +402,7 @@
             </assembly>
           </assemblies>
         </component>
-        <component type="Cleanup" version="05.05.04" fileName="05.05.04.txt" />
+        <component type="Cleanup" installOrder="4" version="05.05.04" fileName="05.05.04.txt" />
       </components>
     </package>
     <package name="Engage: Publish Tag Cloud" type="Module" version="5.6.1">

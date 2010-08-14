@@ -1,22 +1,22 @@
 ﻿IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Item]') AND name = N'{objectQualifier}IX_Item_ItemIdentifier')
 BEGIN
-	DROP INDEX  {databaseOwner}[{objectQualifier}Publish_Item].[{objectQualifier}IX_Item_ItemIdentifier]
-	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
-	(
-		[ItemIdentifier] ASC,
-		[PortalId] ASC
-	) ON [PRIMARY]
+    DROP INDEX  {databaseOwner}[{objectQualifier}Publish_Item].[{objectQualifier}IX_Item_ItemIdentifier]
+    CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_Item_ItemIdentifier] ON {databaseOwner}[{objectQualifier}Publish_Item] 
+    (
+        [ItemIdentifier] ASC,
+        [PortalId] ASC
+    ) ON [PRIMARY]
 END
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersion]') AND name = N'{objectQualifier}IX_ItemVersion_ItemVersionIdentifier')
 BEGIN
-	DROP INDEX  {databaseOwner}[{objectQualifier}Publish_ItemVersion].[{objectQualifier}IX_ItemVersion_ItemVersionIdentifier]
-	CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
-	(
-		[ItemVersionIdentifier] ASC,
-		[ItemId] ASC
-	) ON [PRIMARY]
+    DROP INDEX  {databaseOwner}[{objectQualifier}Publish_ItemVersion].[{objectQualifier}IX_ItemVersion_ItemVersionIdentifier]
+    CREATE UNIQUE NONCLUSTERED INDEX [{objectQualifier}IX_ItemVersion_ItemVersionIdentifier] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion] 
+    (
+        [ItemVersionIdentifier] ASC,
+        [ItemId] ASC
+    ) ON [PRIMARY]
 END
 GO
 
@@ -25,89 +25,100 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDat
 GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetItemRelationshipDataByIdentifiers]
 (
-	@ParentItemIdentifier uniqueidentifier,
-	@ChildItemVersionIdentifier uniqueidentifier,
-	@PortalId int
+    @ParentItemIdentifier uniqueidentifier,
+    @ChildItemVersionIdentifier uniqueidentifier,
+    @PortalId int
 )
 AS
-	
-	DECLARE @results table
-	(
-		ChildItemId int,
-		ChildItemVersionId int,
-		ParentItemId int
-	)
+    
+    DECLARE @results table
+    (
+        ChildItemId int,
+        ChildItemVersionId int,
+        ParentItemId int
+    )
 
-	--first insert the childitem id and then gather the rest
-	INSERT INTO @results (ChildItemId, ChildItemVersionId)
-	SELECT ItemId, ItemVersionId
-	FROM {databaseOwner}[{objectQualifier}Publish_vwItems]
-	WHERE ItemVersionIdentifier = @ChildItemVersionIdentifier
-	  AND PortalId = @PortalId
+    --first insert the childitem id and then gather the rest
+    INSERT INTO @results (ChildItemId, ChildItemVersionId)
+    SELECT ItemId, ItemVersionId
+    FROM {databaseOwner}[{objectQualifier}Publish_vwItems]
+    WHERE ItemVersionIdentifier = @ChildItemVersionIdentifier
+      AND PortalId = @PortalId
 
-	DECLARE @parentId int
-	SELECT @parentId = ItemId 
-	FROM {databaseOwner}[{objectQualifier}publish_vwItems] 
-	WHERE ItemIdentifier = @ParentItemIdentifier
-	  AND PortalId = @PortalId
-	
-	IF (@parentId IS NULL)
-	BEGIN
-		-- So there is only one set of "Top Level Categories" across all Portals
-		SELECT @parentId = ItemId 
-		FROM {databaseOwner}[{objectQualifier}publish_vwItems] 
-		WHERE ItemIdentifier = @ParentItemIdentifier
-		  AND ItemType = 'TopLevelCategory'
-	END
+    DECLARE @parentId int
+    SELECT @parentId = ItemId 
+    FROM {databaseOwner}[{objectQualifier}publish_vwItems] 
+    WHERE ItemIdentifier = @ParentItemIdentifier
+      AND PortalId = @PortalId
+    
+    IF (@parentId IS NULL)
+    BEGIN
+        -- So there is only one set of "Top Level Categories" across all Portals
+        SELECT @parentId = ItemId 
+        FROM {databaseOwner}[{objectQualifier}publish_vwItems] 
+        WHERE ItemIdentifier = @ParentItemIdentifier
+          AND ItemType = 'TopLevelCategory'
+    END
 
-	--now the parent
-	UPDATE @results
-	SET ParentItemId = @parentId
-	
-	SELECT * FROM @results
+    --now the parent
+    UPDATE @results
+    SET ParentItemId = @parentId
+    
+    SELECT * FROM @results
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spInsertItem]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
 GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
-		@ItemTypeId int,
-		@PortalId int,
-		@moduleId int,
-		@ItemIdentifier uniqueidentifier
-	AS
+        @ItemTypeId int,
+        @PortalId int,
+        @moduleId int,
+        @ItemIdentifier uniqueidentifier
+    AS
 
-	--So, there are rare cases where a user is working with a ItemVersion (first seen in IPortable import)
-	--where the ItemIdentifier existed in the database but the version did not. This proc used to fail 
-	--due to the fact that the ItemIdentifier already existing. Now, we've added a test to verify it doesn't 
-	--and simply return it back. This way, the subsequent call to save a new version will use this id. hk
-	DECLARE @id int 
-	SELECT @id = ItemId 
-	FROM {databaseOwner}[{objectQualifier}Publish_Item] 
-	WHERE ItemIdentifier = @ItemIdentifier
-	AND PortalId = @PortalId
+    --So, there are rare cases where a user is working with a ItemVersion (first seen in IPortable import)
+    --where the ItemIdentifier existed in the database but the version did not. This proc used to fail 
+    --due to the fact that the ItemIdentifier already existing. Now, we've added a test to verify it doesn't 
+    --and simply return it back. This way, the subsequent call to save a new version will use this id. hk
+    DECLARE @id int 
+    SELECT @id = ItemId 
+    FROM {databaseOwner}[{objectQualifier}Publish_Item] 
+    WHERE ItemIdentifier = @ItemIdentifier
+    AND PortalId = @PortalId
 
-	IF (@id > 0)
-	BEGIN
-		SELECT @id
-	END
-	ELSE
-	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Publish_Item]
-		(
-			ItemTypeId, 
-			PortalId, 
-			ModuleId, 
-			ItemIdentifier
-		)
-		values(
-			@ItemTypeId,
-			@PortalId, 
-			@moduleId, 
-			@ItemIdentifier
-		)
+    IF (@id > 0)
+    BEGIN
+        SELECT @id
+    END
+    ELSE
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}Publish_Item]
+        (
+            ItemTypeId, 
+            PortalId, 
+            ModuleId, 
+            ItemIdentifier
+        )
+        values(
+            @ItemTypeId,
+            @PortalId, 
+            @moduleId, 
+            @ItemIdentifier
+        )
 
-		SELECT SCOPE_IDENTITY()
-		RETURN SCOPE_IDENTITY()
-	END
+        SELECT SCOPE_IDENTITY()
+        RETURN SCOPE_IDENTITY()
+    END
 GO
+
+-- fix incorrect assembly version numbers coming from DNN 4 module being installed in DNN 5
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Assemblies]', N'U') IS NOT NULL
+BEGIN
+    DELETE {databaseOwner}[{objectQualifier}Assemblies]
+    WHERE PackageID IN (SELECT PackageID
+                        FROM {databaseOwner}[{objectQualifier}Packages]
+                        WHERE Name LIKE 'Engage: Publish%')
+END
+GO
+
