@@ -130,6 +130,6 @@
     <value>Before you an edit the content of this module you must configure the default Text/HTML category in the &lt;a href="{0}"&gt;Engage: Publish admin settings&lt;/a&gt;.</value>
   </data>
   <data name="NothingSaved.Text" xml:space="preserve">
-    <value>Add your content for this module by choose Edit from the module actions menu.</value>
+    <value>Add your content for this module by choosing Edit from the module actions menu.</value>
   </data>
 </root>
