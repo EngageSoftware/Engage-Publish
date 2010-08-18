@@ -601,14 +601,11 @@ GO
 
 CREATE view {databaseOwner}[{objectQualifier}Publish_vwModuleInfo] as
 
-select t.Tabname, tm.ModuleId, dm.DesktopModuleId,  Version, FolderName, md.FriendlyName, 
-ModuleName, md.ModuleDefId, m.ModuleTitle, t.PortalId, t.TabId
-From {databaseOwner}[{objectQualifier}desktopmodules] dm
-join {databaseOwner}[{objectQualifier}moduleDefinitions] md on (md.DesktopmoduleId =  dm.DesktopmoduleId)
-join {databaseOwner}[{objectQualifier}modules] m on (m.ModuleDefId = md.ModuledefId)
-join {databaseOwner}[{objectQualifier}tabModules] tm on (tm.ModuleId = m.ModuleId)
-join {databaseOwner}[{objectQualifier}tabs] t on (t.tabId = tm.Tabid)
-
+SELECT t.TabName, m.ModuleID, m.DesktopModuleID, dm.Version, dm.FolderName, md.FriendlyName, dm.ModuleName, m.ModuleDefID, m.ModuleTitle, t.PortalID, t.TabID
+FROM {databaseOwner}[{objectQualifier}DesktopModules] dm
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md ON (dm.DesktopModuleID = md.DesktopModuleID)
+JOIN {databaseOwner}[{objectQualifier}vw_Modules] m ON (md.ModuleDefID = m.ModuleDefID)
+JOIN {databaseOwner}[{objectQualifier}vw_Tabs] t ON (m.TabID = t.TabID)
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwRelationships]') and OBJECTPROPERTY(id, N'IsView') = 1)

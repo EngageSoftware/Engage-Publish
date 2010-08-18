@@ -112,6 +112,19 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spInsertItem]
     END
 GO
 
+-- DNN 5.5 doesn't have ModuleTitle on the Modules table anymore, it's on ModuleLocalization
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwModuleInfo]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwModuleInfo]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}Publish_vwModuleInfo] AS
+
+SELECT t.TabName, m.ModuleID, m.DesktopModuleID, dm.Version, dm.FolderName, md.FriendlyName, dm.ModuleName, m.ModuleDefID, m.ModuleTitle, t.PortalID, t.TabID
+FROM {databaseOwner}[{objectQualifier}DesktopModules] dm
+JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md ON (dm.DesktopModuleID = md.DesktopModuleID)
+JOIN {databaseOwner}[{objectQualifier}vw_Modules] m ON (md.ModuleDefID = m.ModuleDefID)
+JOIN {databaseOwner}[{objectQualifier}vw_Tabs] t ON (m.TabID = t.TabID)
+GO
+
 -- fix incorrect assembly version numbers coming from DNN 4 module being installed in DNN 5
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Assemblies]', N'U') IS NOT NULL
 BEGIN
