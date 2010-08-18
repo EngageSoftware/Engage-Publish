@@ -490,7 +490,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>AdminContainer</controlKey>
-                    <controlSrc>DesktopModules/EngagePublish/TextHTML/AdminLoader.ascx</controlSrc>
+                    <controlSrc>DesktopModules/EngagePublish/AdminLoader.ascx</controlSrc>
                     <controlType>Edit</controlType>
                     <helpUrl>http://EngageSoftware.com/Support.aspx</helpUrl>
                   </moduleControl>
