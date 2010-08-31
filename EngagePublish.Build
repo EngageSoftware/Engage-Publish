@@ -130,7 +130,7 @@
       <fileset>
         <patternset refid="projectAssemblies" unless="${buildTrial}"/>
         <patternset refid="trialProjectAssemblies" if="${buildTrial}"/>
-        <include name="${referencesDirectory}/*.dll"/>
+        <include name="${referencesDirectory}/**/*.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.WebUtility.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.WebControls.dll"/>
