@@ -227,24 +227,27 @@
   </target>
   <target name="get-dependency-source" description="Gets the latest source packages for the Engage Framework dependencies for this module">
     <property name="buildDirectory" value="_0.0"/>
-    <foreach item="Folder" in="\\etg19\qa\Engage\Engage 3.0\Builds\" property="foldername">
+    <property name="buildPath" value="\\etg19\qa\Engage\Engage 3.0\Builds\"/>
+    <foreach item="Folder" in="${buildPath}" property="foldername" failonerror="false">
       <property name="buildDirectory" value="${foldername}" if="${build-directory::is-greater-than(foldername, buildDirectory) and file::exists(path::combine(foldername, 'Release\Engage.Framework_Source.zip'))}"/>
     </foreach>
 
-    <property name="dependencyPackageDirectory" value="${packageDirectory}/temp/dependencies"/>
-    <copy todir="${dependencyPackageDirectory}">
-      <fileset basedir="${path::combine(buildDirectory, 'Release\')}">
-        <patternset refid="dependencySourcePackages"/>
-      </fileset>
-    </copy>
-    
-    <call target="get-project-specific-dependencies"/>
+    <if test="${buildDirectory != '_0.0'}">
+      <property name="dependencyPackageDirectory" value="${packageDirectory}/temp/dependencies"/>
+      <copy todir="${dependencyPackageDirectory}">
+        <fileset basedir="${path::combine(buildDirectory, 'Release\')}">
+          <patternset refid="dependencySourcePackages"/>
+        </fileset>
+      </copy>
 
-    <zip zipfile="${packageDirectory}/${dependencySourcePackageFileNameTemplate}.zip" ziplevel="${zipLevel}">
-      <fileset basedir="${packageDirectory}/temp/dependencies">
-        <include name="**/*"/>
-      </fileset>
-    </zip>
+      <call target="get-project-specific-dependencies"/>
+
+      <zip zipfile="${packageDirectory}/${dependencySourcePackageFileNameTemplate}.zip" ziplevel="${zipLevel}">
+        <fileset basedir="${packageDirectory}/temp/dependencies">
+          <include name="**/*"/>
+        </fileset>
+      </zip>
+    </if>
   </target>
   <target name="combine-source" description="Combines the Install and Source packages with the same license into one .zip file">
     <property name="packageType" value="Install"/>
@@ -295,7 +298,15 @@
 
                   public BuildDirectory(string directoryName)
                   {
-                      this.buildNumber = new Version(buildDirectoryRegex.Match(directoryName).Groups[1].Value);
+                      Match match = buildDirectoryRegex.Match(directoryName);
+					            if (match.Success)
+                      {
+					                this.buildNumber = new Version(match.Groups[1].Value);
+					            }
+                      else 
+                      {
+                          this.buildNumber = new Version(0,0);
+                      }
                   }
 
 			            public Version BuildNumber
