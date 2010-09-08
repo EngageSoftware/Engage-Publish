@@ -712,30 +712,24 @@ namespace Engage.Dnn.Publish.CategoryControls
             Setting setting = Setting.UseApprovals;
             setting.PropertyValue = this.chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture);
             var itemVersionSetting = new ItemVersionSetting(setting);
+            this.VersionInfoObject.VersionSettings.Add(itemVersionSetting);
 
-            // useApprovalSetting.ControlName = "chkUseApprovals";
-            // useApprovalSetting.PropertyName = "Checked";
-            // useApprovalSetting.PropertyValue = chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture);
+            // AuthorName setting
+            setting = Setting.AuthorName;
+            setting.PropertyValue = this.itemEditControl.AuthorName;
+            itemVersionSetting = new ItemVersionSetting(setting);
             this.VersionInfoObject.VersionSettings.Add(itemVersionSetting);
 
             // display on current page option
             setting = Setting.CategorySettingsCurrentDisplay;
             setting.PropertyValue = this.rblDisplayOnCurrentPage.SelectedValue;
             itemVersionSetting = new ItemVersionSetting(setting);
-
-            // cpSetting.ControlName = "CategorySettings";
-            // cpSetting.PropertyName = "DisplayOnCurrentPage";
-            // cpSetting.PropertyValue = rblDisplayOnCurrentPage.SelectedValue;
             this.VersionInfoObject.VersionSettings.Add(itemVersionSetting);
 
             // force display on specific page
             setting = Setting.CategorySettingsForceDisplay;
             setting.PropertyValue = this.chkForceDisplayTab.Checked.ToString(CultureInfo.InvariantCulture);
             itemVersionSetting = new ItemVersionSetting(setting);
-
-            // fpSetting.ControlName = "CategorySettings";
-            // fpSetting.PropertyName = "ForceDisplayOnPage";
-            // fpSetting.PropertyValue = chkForceDisplayTab.Checked.ToString(CultureInfo.InvariantCulture);
             this.VersionInfoObject.VersionSettings.Add(itemVersionSetting);
 
             // external RSS Url for category
