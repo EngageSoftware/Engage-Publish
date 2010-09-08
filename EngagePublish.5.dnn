@@ -1,6 +1,6 @@
 <dotnetnuke version="5.0" type="Package">
   <packages>
-    <package name="Engage: Publish" type="Module" version="5.6.1">
+    <package name="Engage: Publish" type="Module" version="5.7.0">
       <friendlyName>Engage: Publish</friendlyName>
       <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
       <owner>
@@ -10,7 +10,7 @@
         <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
-      <releaseNotes src="ReleaseNotes_5.6.1.htm" />
+      <releaseNotes src="ReleaseNotes_5.7.0.htm" />
       <components>
         <component type="ResourceFile" installOrder="0">
           <resourceFiles>
@@ -327,7 +327,7 @@
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
-              <version latestVersion="latestVersion">5.6.1</version>
+              <version latestVersion="latestVersion">5.7.0</version>
             </script>
           </scripts>
         </component>
@@ -378,7 +378,7 @@
           <assemblies>
             <assembly>
               <name>EngagePublish.dll</name>
-              <version latestVersion="latestVersion">5.6.1</version>
+              <version latestVersion="latestVersion">5.7.0</version>
             </assembly>
             <assembly>
               <name>CookComputing.XmlRpcV2.dll</name>
@@ -405,7 +405,7 @@
         <component type="Cleanup" installOrder="4" version="05.05.04" fileName="05.05.04.txt" />
       </components>
     </package>
-    <package name="Engage: Publish Tag Cloud" type="Module" version="5.6.1">
+    <package name="Engage: Publish Tag Cloud" type="Module" version="5.7.0">
       <friendlyName>Engage: Publish Tag Cloud</friendlyName>
       <description>The tag cloud for the Engage: Publish module.</description>
       <owner>
@@ -415,7 +415,7 @@
         <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
-      <releaseNotes src="ReleaseNotes_5.6.1.htm" />
+      <releaseNotes src="ReleaseNotes_5.7.0.htm" />
       <components>
         <component type="Module">
           <desktopModule>
@@ -450,7 +450,7 @@
         </component>
       </components>
     </package>
-    <package name="Engage: Publish Text/HTML" type="Module" version="5.6.1">
+    <package name="Engage: Publish Text/HTML" type="Module" version="5.7.0">
       <friendlyName>Engage: Text/HTML</friendlyName>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
       <owner>
@@ -460,7 +460,7 @@
         <email>support@engagemodules.com</email>
       </owner>
       <license src="Licenses\EULA-Standard.htm" />
-      <releaseNotes src="ReleaseNotes_5.6.1.htm" />
+      <releaseNotes src="ReleaseNotes_5.7.0.htm" />
       <components>
         <component type="Module">
           <desktopModule>
