@@ -20,8 +20,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,17 +88,17 @@
       <Private>False</Private>
       <HintPath>..\..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="Engage.Dnn.Framework, Version=3.1.6.26594, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Engage.Dnn.Framework, Version=3.1.5.16425, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\Framework\Engage.Dnn.Framework.dll</HintPath>
+      <HintPath>References\Engage.Dnn.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Engage.Dnn.UserFeedback, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Engage.Framework, Version=3.1.4.26592, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Engage.Framework, Version=3.1.3.16411, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\Framework\Engage.Framework.dll</HintPath>
+      <HintPath>References\Engage.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <Private>True</Private>
@@ -107,11 +106,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="system.web.extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -119,7 +116,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLoader.ascx.cs">
@@ -716,9 +712,6 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
-    <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
-    <Content Include="References\Framework\Engage.Events.dll" />
-    <Content Include="References\Framework\Engage.Framework.dll" />
     <Content Include="ReleaseNotes_5.7.0.htm" />
     <Content Include="docs\images\article-general.gif" />
     <Content Include="docs\images\article-name-desc.gif" />
@@ -763,6 +756,10 @@
     <Content Include="Module.css" />
     <Content Include="PrinterFriendly.aspx" />
     <Content Include="ReadMe.txt" />
+    <Content Include="References\Engage.Dnn.Framework.dll" />
+    <Content Include="References\Engage.Dnn.Framework.XML" />
+    <Content Include="References\Engage.Framework.dll" />
+    <Content Include="References\Engage.Framework.XML" />
     <Content Include="References\System.Web.Extensions.Design.dll" />
     <Content Include="References\System.Web.Extensions.dll" />
     <Content Include="ReleaseNotes_5.6.2.htm" />
