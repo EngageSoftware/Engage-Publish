@@ -211,37 +211,34 @@ namespace Engage.Dnn.Publish.Controls
 
         private void LoadAuthorsList()
         {
-            // load authors role
-            // load admins role
-            var rc = new RoleController();
-            ArrayList al = rc.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId));
-            ArrayList alAdmin = rc.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId));
+            var roleController = new RoleController();
+            ArrayList authorsList = roleController.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId));
+            ArrayList adminsList = roleController.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId));
 
             // check to make sure we only add authors who aren't already in the list.
-            foreach (UserRoleInfo uri in alAdmin)
+            foreach (UserRoleInfo adminUserRole in adminsList)
             {
                 bool located = false;
-                foreach (UserRoleInfo ur in al)
+                foreach (UserRoleInfo authorUserRole in authorsList)
                 {
-                    if (uri.UserRoleID == ur.UserRoleID)
+                    if (adminUserRole.UserID == authorUserRole.UserID)
                     {
                         located = true;
+                        break;
                     }
-
-                    break;
                 }
 
                 if (!located)
                 {
-                    al.Add(uri);
+                    authorsList.Add(adminUserRole);
                 }
             }
 
             // sort the author list alphabetically 
-            al.Sort(new UserRoleInfoComparer(true));
+            authorsList.Sort(new UserRoleInfoComparer(true));
             this.ddlAuthor.DataTextField = "FullName";
             this.ddlAuthor.DataValueField = "UserId";
-            this.ddlAuthor.DataSource = al;
+            this.ddlAuthor.DataSource = authorsList;
             this.ddlAuthor.DataBind();
         }
 
