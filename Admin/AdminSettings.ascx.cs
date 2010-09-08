@@ -18,6 +18,7 @@ namespace Engage.Dnn.Publish.Admin
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -283,6 +284,10 @@ namespace Engage.Dnn.Publish.Admin
                 // objHostSettings.UpdateHostSetting(Utility.PublishCommentApproval + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentApproval.Checked.ToString(CultureInfo.InvariantCulture));
                 // objHostSettings.UpdateHostSetting(Utility.PublishCommentAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousComment.Checked.ToString(CultureInfo.InvariantCulture));
                 // objHostSettings.UpdateHostSetting(Utility.PublishCommentAutoApprove + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentAutoApprove.Checked.ToString(CultureInfo.InvariantCulture));
+
+                // TODO: Remove after DNN 5.5.x fixes DNN-13633 (not clearing all the cache after updates)
+                DataCache.ClearHostCache(true);
+
                 string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
                 if (!Utility.HasValue(returnUrl))
                 {
