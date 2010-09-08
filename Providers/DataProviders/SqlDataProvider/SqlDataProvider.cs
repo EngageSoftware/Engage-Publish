@@ -487,20 +487,19 @@ namespace Engage.Dnn.Publish.Data
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
             string sql = String.Format(
-                CultureInfo.InvariantCulture, 
-                "select count(commentId) from {0}comment pc join {0}vwItems vi on (vi.itemversionId = pc.itemversionid)  where vi.portalId = @portalId and vi.authorUserId = @AuthorUserId and pc.ApprovalStatusId = {1}", 
-                this.ObjectQualifier + ModuleQualifier, 
-                ApprovalStatus.Waiting.GetId());
+                CultureInfo.InvariantCulture,
+                "SELECT COUNT(commentId) FROM {0}comment pc JOIN {0}vwItems vi ON (vi.itemversionId = pc.itemversionid) WHERE vi.portalId = @portalId AND (@AuthorUserId = -1 OR vi.authorUserId = @AuthorUserId) AND pc.ApprovalStatusId = @ApprovalStatusId",
+                this.ObjectQualifier + ModuleQualifier);
 
-            // select count(*) from dnn_publish_comment pc join dnn_publish_vwitems vi on (vi.itemversionId = pc.itemversionid) where pc.approvalstatusid != 3 and portalId =0 and vi.authoruserid = 1
             return
                 Convert.ToInt32(
                     SqlHelper.ExecuteScalar(
-                        this.ConnectionString, 
-                        CommandType.Text, 
-                        sql, 
-                        Utility.CreateIntegerParam("@portalId", portalId), 
-                        Utility.CreateIntegerParam("@AuthorUserId", authorUserId)));
+                        this.ConnectionString,
+                        CommandType.Text,
+                        sql,
+                        Utility.CreateIntegerParam("@portalId", portalId),
+                        Utility.CreateIntegerParam("@AuthorUserId", authorUserId),
+                        Utility.CreateIntegerParam("@ApprovalStatusId", ApprovalStatus.Waiting.GetId())));
         }
 
         public override void DeleteItem(int itemId)

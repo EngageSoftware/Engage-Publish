@@ -53,9 +53,15 @@ namespace Engage.Dnn.Publish.Admin
                         // Comments always require approval
                         if (this.IsCommentsEnabled && IsPublishCommentTypeForPortal(this.PortalId))
                         {
+                            var authorUserId = -1;
+                            if (!this.IsAdmin)
+                            {
+                                authorUserId = this.UserId;
+                            }
+
                             this.lnkCommentsForApproval.Text = String.Format(
                                 Localization.GetString("lnkCommentsForApproval", this.LocalResourceFile), 
-                                Comment.CommentsWaitingForApprovalCount(this.PortalId, this.UserId));
+                                Comment.CommentsWaitingForApprovalCount(this.PortalId, authorUserId));
                             this.lnkCommentsForApproval.Visible = true;
                             this.lnkCommentsForApproval.NavigateUrl = this.EditUrl(
                                 string.Empty, string.Empty, Utility.AdminContainer, "&adminType=commentList");
