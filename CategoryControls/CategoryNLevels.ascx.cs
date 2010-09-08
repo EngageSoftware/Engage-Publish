@@ -142,7 +142,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                     if (it != ItemType.TopLevelCategory.Name && !Utility.IsDisabled(itemId, this.PortalId))
                     {
-                        Item curItem = BindItemData(itemId);
+                        Item curItem = this.BindItemData(itemId, false);
                         hl.NavigateUrl = this.GetItemLinkUrl(itemId);
                         if (curItem.NewWindow)
                         {

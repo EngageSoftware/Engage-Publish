@@ -1062,7 +1062,7 @@ namespace Engage.Dnn.Publish
             Int32.TryParse(itemId.ToString(), out curItemId);
             if (curItemId > 0)
             {
-                Item i = BindItemData(curItemId);
+                Item i = this.BindItemData(curItemId, false);
                 if (i.NewWindow)
                 {
                     return "_blank";
@@ -1255,7 +1255,7 @@ namespace Engage.Dnn.Publish
             Breadcrumb.Add(pageName, this.GetItemLinkUrl(this.ItemId));
         }
 
-        protected Item BindItemData(int itemId)
+        protected Item BindItemData(int itemId, bool ignoreCache)
         {
             Item i = null;
             string currentItemType = Item.GetItemType(itemId, this.PortalId);
@@ -1268,11 +1268,11 @@ namespace Engage.Dnn.Publish
                     // todo: should we check if allow tags is true?
                     if (this.ItemVersionId > 0)
                     {
-                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
+                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId, ignoreCache);
                     }
                     else
                     {
-                        i = Article.GetArticle(itemId, this.PortalId, true, true, true);
+                        i = Article.GetArticle(itemId, this.PortalId, true, true, true, ignoreCache);
                     }
 
                     if (i != null)
@@ -1296,11 +1296,11 @@ namespace Engage.Dnn.Publish
                 {
                     if (this.ItemVersionId > 0)
                     {
-                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId);
+                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId, ignoreCache);
                     }
                     else
                     {
-                        i = Category.GetCategory(itemId, this.PortalId, true, true, true);
+                        i = Category.GetCategory(itemId, this.PortalId, true, true, true, ignoreCache);
                     }
 
                     // If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
@@ -1311,10 +1311,10 @@ namespace Engage.Dnn.Publish
                 }
                 else if (currentItemType.Equals("TOPLEVELCATEGORY", StringComparison.OrdinalIgnoreCase))
                 {
-                    i = Category.GetCategory(itemId, this.PortalId);
+                    i = Category.GetCategory(itemId, this.PortalId, ignoreCache);
                     if (this.ItemVersionId > 0)
                     {
-                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId);
+                        i = Category.GetCategoryVersion(this.ItemVersionId, this.PortalId, ignoreCache);
                     }
 
                     // If a Category can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
@@ -1325,10 +1325,10 @@ namespace Engage.Dnn.Publish
                 }
                 else
                 {
-                    i = Article.GetArticle(itemId, this.PortalId, true, true, true);
+                    i = Article.GetArticle(itemId, this.PortalId, true, true, true, ignoreCache);
                     if (this.ItemVersionId > 0)
                     {
-                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId);
+                        i = Article.GetArticleVersion(this.ItemVersionId, this.PortalId, ignoreCache);
                     }
 
                     // If an Article can't be created based on the ItemID or the ItemVersionId then we'll create a new one.
@@ -1475,7 +1475,7 @@ namespace Engage.Dnn.Publish
 
             // check for version id
             int itemId = this.ItemId;
-            this.versionInfoObject = BindItemData(itemId);
+            this.versionInfoObject = this.BindItemData(itemId, editControl != null);
             if (this.versionInfoObject.EndDate != null &&
                 Convert.ToDateTime(this.versionInfoObject.EndDate, CultureInfo.InvariantCulture) < DateTime.Now && editControl == null)
             {

@@ -244,10 +244,15 @@ namespace Engage.Dnn.Publish
 
         public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
         {
+            return GetArticle(itemId, portalId, loadRelationships, loadTags, loadItemVersionSettings, false);
+        }
+
+        public static Article GetArticle(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings, bool ignoreCache)
+        {
             string cacheKey = Utility.CacheKeyPublishArticle + itemId.ToString(CultureInfo.InvariantCulture) + "loadRelationships" + loadRelationships +
                               "loadTags" + loadTags + "loadItemVersionSettings" + loadItemVersionSettings;
             Article a;
-            if (ModuleBase.UseCachePortal(portalId))
+            if (!ignoreCache && ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)
@@ -316,9 +321,14 @@ namespace Engage.Dnn.Publish
 
         public static Article GetArticleVersion(int articleVersionId, int portalId)
         {
+            return GetArticleVersion(articleVersionId, portalId, false);
+        }
+
+        public static Article GetArticleVersion(int articleVersionId, int portalId, bool ignoreCache)
+        {
             string cacheKey = Utility.CacheKeyPublishArticleVersion + articleVersionId.ToString(CultureInfo.InvariantCulture);
             Article a;
-            if (ModuleBase.UseCachePortal(portalId))
+            if (!ignoreCache && ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)

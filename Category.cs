@@ -295,6 +295,11 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings)
         {
+            return GetCategory(itemId, portalId, loadRelationships, loadTags, loadItemVersionSettings, false);
+        }
+
+        public static Category GetCategory(int itemId, int portalId, bool loadRelationships, bool loadTags, bool loadItemVersionSettings, bool ignoreCache)
+        {
             // cache?
             // var c = (Category)CBO.FillObject(DataProvider.Instance().GetCategory(itemId), typeof(Category));
             // if (c != null)
@@ -318,7 +323,7 @@ namespace Engage.Dnn.Publish
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture) + "loadRelationships" +
                               loadRelationships + "loadTags" + loadTags + "loadItemVersionSettings" + loadItemVersionSettings;
             Category c;
-            if (ModuleBase.UseCachePortal(portalId))
+            if (!ignoreCache && ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)
@@ -380,9 +385,14 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategory(int itemId, int portalId)
         {
+            return GetCategory(itemId, portalId, false);
+        }
+
+        public static Category GetCategory(int itemId, int portalId, bool ignoreCache)
+        {
             string cacheKey = Utility.CacheKeyPublishCategory + itemId.ToString(CultureInfo.InvariantCulture);
             Category c;
-            if (ModuleBase.UseCachePortal(portalId))
+            if (!ignoreCache && ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)
@@ -443,9 +453,14 @@ namespace Engage.Dnn.Publish
 
         public static Category GetCategoryVersion(int itemVersionId, int portalId)
         {
+            return GetCategoryVersion(itemVersionId, portalId, false);
+        }
+
+        public static Category GetCategoryVersion(int itemVersionId, int portalId, bool ignoreCache)
+        {
             string cacheKey = Utility.CacheKeyPublishCategoryVersion + itemVersionId.ToString(CultureInfo.InvariantCulture);
             Category c;
-            if (ModuleBase.UseCachePortal(portalId))
+            if (!ignoreCache && ModuleBase.UseCachePortal(portalId))
             {
                 object o = DataCache.GetCache(cacheKey);
                 if (o != null)
