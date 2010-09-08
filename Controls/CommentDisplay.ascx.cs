@@ -158,17 +158,11 @@ namespace Engage.Dnn.Publish.Controls
         private void DisplayComment()
         {
             // get cache
-            string cacheKey = Utility.CacheKeyPublishArticleComments + this.ItemId.ToString(CultureInfo.InvariantCulture);
-            var comments = DataCache.GetCache(cacheKey) as List<UserFeedback.Comment>;
-            if (comments == null)
-            {
-                comments = Comment.GetCommentsByItemId(this.ArticleId, ApprovalStatus.Approved.GetId());
-                if (comments != null)
-                {
-                    DataCache.SetCache(cacheKey, comments, DateTime.Now.AddMinutes(this.CacheTime));
-                    Utility.AddCacheKey(cacheKey, this.PortalId);
-                }
-            }
+            var cacheKey = Utility.CacheKeyPublishArticleComments + this.ItemId.ToString(CultureInfo.InvariantCulture);
+            var comments = Utility.GetValueFromCache(
+                this.PortalId, 
+                cacheKey, 
+                () => Comment.GetCommentsByItemId(this.ArticleId, ApprovalStatus.Approved.GetId()));
 
             if (comments != null && comments.Count > 0)
             {

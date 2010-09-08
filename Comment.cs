@@ -17,8 +17,6 @@ namespace Engage.Dnn.Publish
     using System.Globalization;
     using System.Xml.Serialization;
 
-    using DotNetNuke.Common.Utilities;
-
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
 
@@ -108,30 +106,11 @@ namespace Engage.Dnn.Publish
 
         public static int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
-            // cache this
-            int commentCount;
             string cacheKey = Utility.CacheKeyPublishAuthorCommentCount + authorUserId.ToString(CultureInfo.InvariantCulture) + "_" + portalId;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    commentCount = (int)o;
-                }
-                else
-                {
-                    commentCount = DataProvider.Instance().CommentsWaitingForApprovalCount(portalId, authorUserId);
-                }
-
-                DataCache.SetCache(cacheKey, commentCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
-            }
-            else
-            {
-                commentCount = DataProvider.Instance().CommentsWaitingForApprovalCount(portalId, authorUserId);
-            }
-
-            return commentCount;
+            return Utility.GetValueFromCache(
+                portalId, 
+                cacheKey, 
+                () => DataProvider.Instance().CommentsWaitingForApprovalCount(portalId, authorUserId));
         }
 
         /// <summary>
