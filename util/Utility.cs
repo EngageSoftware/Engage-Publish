@@ -1087,14 +1087,9 @@ namespace Engage.Dnn.Publish.Util
                     tabId = ModuleBase.DefaultDisplayTabIdForPortal(portalId);
                 }
 
-                if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" && ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId))
-                {
-                    returnUrl = GetFriendlyItemLinkUrl(item, tabId, moduleId, pageId, portalId, cultureName);
-                }
-                else
-                {
-                    returnUrl = GetNonFriendlyLinkUrl(item, tabId, moduleId, pageId, portalId);
-                }
+                var isFriendlyUrl = HostSettings.GetHostSetting("UseFriendlyUrls") == "Y" &&
+                                  ModuleBase.EnablePublishFriendlyUrlsForPortal(item.PortalId);
+                returnUrl = GetItemLinkUrl(item, tabId, moduleId, pageId, portalId, cultureName, isFriendlyUrl);
             }
 
             return returnUrl;
@@ -1157,7 +1152,7 @@ namespace Engage.Dnn.Publish.Util
             PortalAliasInfo pai = GetPortalAliasInfo(portalId);
             if (pai != null)
             {
-                return "http://" + pai.HTTPAlias;
+                return Globals.AddHTTP(pai.HTTPAlias);
             }
 
             return ApplicationUrl;
@@ -1330,7 +1325,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static bool HasValue(string value)
         {
-            return !String.IsNullOrEmpty(value) && value.Trim().Length > 0;
+            return Engage.Utility.HasValue(value);
         }
 
         public static bool IsDisabled(int itemId, int portalId)
@@ -1770,53 +1765,6 @@ namespace Engage.Dnn.Publish.Util
         }
 
         /// <summary>
-        /// Converts the given <c>QueryString</c> parameters to the friendly ("/key/value/") format.
-        /// </summary>
-        /// <param name="queryStringParameters">The query string parameters.</param>
-        /// <returns></returns>
-        private static string ConvertParametersToFriendly(NameValueCollection queryStringParameters)
-        {
-            var friendlyParameters = new StringBuilder();
-
-            for (int i = 0; i < queryStringParameters.Count; i++)
-            {
-                // Friendly URLs start reading parameters with tabId, it must be first
-                string key = queryStringParameters.Keys[i];
-                if (key.Equals("TABID", StringComparison.OrdinalIgnoreCase))
-                {
-                    friendlyParameters.Insert(0, "/" + key + "/" + queryStringParameters[i]);
-                }
-                else
-                {
-                    friendlyParameters.Append("/");
-                    friendlyParameters.Append(key);
-                    friendlyParameters.Append("/");
-                    friendlyParameters.Append(queryStringParameters[i]);
-                }
-            }
-
-            return friendlyParameters.ToString();
-        }
-
-        /// <summary>
-        /// Converts the given <c>QueryString</c> parameters to the non-friendly (<see cref="Globals.NavigateURL"/>) format.
-        /// </summary>
-        /// <param name="queryStringParameters">The query string parameters.</param>
-        /// <returns></returns>
-        private static string[] ConvertParametersToNonFriendly(NameValueCollection queryStringParameters)
-        {
-            string[] results = queryStringParameters.AllKeys;
-
-            for (int i = 0; i < results.Length; i++)
-            {
-                // add value to key
-                results[i] += "=" + queryStringParameters[results[i]];
-            }
-
-            return results;
-        }
-
-        /// <summary>
         /// Creates a collection of the possible parameters to be added to the <c>QueryString</c> of a URL linking to an item.
         /// </summary>
         /// <param name="itemId">The item id.</param>
@@ -1828,33 +1776,35 @@ namespace Engage.Dnn.Publish.Util
         /// <returns>
         /// A collection of the possible <c>QueryString</c> parameters to use when linking to an item
         /// </returns>
-        private static NameValueCollection CreateParametersForQueryString(
+        private static string CreateParametersForQueryString(
             int itemId, int? tabId, int? moduleId, int pageId, int portalId, string cultureName)
         {
-            NameValueCollection queryStringParameters = new NameValueCollection(5);
-            queryStringParameters.Add("itemId", itemId.ToString(CultureInfo.InvariantCulture));
+            var queryStringParameters = new StringBuilder(60);
 
+            // tabId has to be first for friendly URL provider
             if (tabId.HasValue)
             {
-                queryStringParameters.Add("tabId", tabId.Value.ToString(CultureInfo.InvariantCulture));
+                queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&tabId={0}", tabId.Value);
             }
+
+            queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&itemId={0}", itemId);
 
             if (moduleId.HasValue)
             {
-                queryStringParameters.Add("moduleId", moduleId.Value.ToString(CultureInfo.InvariantCulture));
+                queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&moduleId={0}", moduleId.Value);
             }
 
             if (UsePageId(pageId, portalId))
             {
-                queryStringParameters.Add("pageId", pageId.ToString(CultureInfo.InvariantCulture));
+                queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&pageId={0}", pageId);
             }
 
             if (HasValue(cultureName))
             {
-                queryStringParameters.Add("language", cultureName);
+                queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&language={0}", cultureName);
             }
 
-            return queryStringParameters;
+            return queryStringParameters.ToString();
         }
 
         /// <summary>
@@ -1866,14 +1816,15 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="pageId">The page id.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
+        /// <param name="isFriendlyUrl">Whether to generate a friendly URL where the page name is the name of the item</param>
         /// <returns>A URL linking to the given item</returns>
-        private static string GetFriendlyItemLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId, string cultureName)
+        private static string GetItemLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId, string cultureName, bool isFriendlyUrl)
         {
             TabInfo tabInfo;
             var tabController = new TabController();
             int? queryStringModuleId = null;
             int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
-            string pageName = GetFriendlyPageName(item.Name);
+            string pageName = isFriendlyUrl ? GetFriendlyPageName(item.Name) : null;
 
             // if the setting to "force display on this page" is set, be sure to send them there.
             if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
@@ -1910,12 +1861,11 @@ namespace Engage.Dnn.Publish.Util
                 return Globals.NavigateURL(tabInfo.TabID);
             }
 
-            return Globals.FriendlyUrl(
-                tabInfo, 
-                ConvertParametersToFriendly(
-                    CreateParametersForQueryString(item.ItemId, tabInfo.TabID, queryStringModuleId, pageId, portalId, cultureName)), 
-                pageName, 
-                GetPortalSettings(item.PortalId));
+            var portalSettings = GetPortalSettings(item.PortalId);
+            var parameters = CreateParametersForQueryString(item.ItemId, isFriendlyUrl ? tabInfo.TabID : (int?)null, queryStringModuleId, pageId, portalId, isFriendlyUrl ? cultureName : null);
+            return isFriendlyUrl
+                       ? Globals.FriendlyUrl(tabInfo, "~/Default.aspx?" + parameters, pageName, portalSettings)
+                       : Globals.NavigateURL(tabInfo.TabID, portalSettings, string.Empty, parameters);
         }
 
         /// <summary>
@@ -1941,82 +1891,6 @@ namespace Engage.Dnn.Publish.Util
             }
 
             return pageName + ".aspx";
-        }
-
-        /// <summary>
-        /// Gets a URL linking to the given item when friendly URLs are not turned on.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="moduleId">The module id.</param>
-        /// <param name="pageId">The page id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>A URL linking to the given item</returns>
-        private static string GetNonFriendlyLinkUrl(Item item, int tabId, int moduleId, int pageId, int portalId)
-        {
-            PortalSettings portalSettings = GetPortalSettings(item.PortalId);
-
-            // check to see if the Page has an overrideable module on it, if not do a normal DNN link to the page.
-            TabInfo tabInfo;
-            var tabController = new TabController();
-            int? queryStringModuleId = null;
-            int defaultTabId = ModuleBase.DefaultDisplayTabIdForPortal(item.PortalId);
-
-            // string pageName = GetFriendlyPageName(item.Name);
-
-            // if the setting to "force display on this page" is set, be sure to send them there.
-            if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
-            {
-                if (!IsPageOverrideable(item.PortalId, tabId))
-                {
-                    // not overrideable, send them to default tab id
-                    tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
-                }
-                else
-                {
-                    tabInfo = tabController.GetTab(tabId, item.PortalId, false);
-
-                    // check if there is a ModuleID passed in the querystring, if so then send it in the querystring as well
-                    if (moduleId > 0)
-                    {
-                        queryStringModuleId = moduleId;
-                    }
-                }
-            }
-            else
-            {
-                tabInfo = tabController.GetTab(item.DisplayTabId, item.PortalId, false);
-            }
-
-            if (tabInfo == null || tabInfo.IsDeleted)
-            {
-                tabInfo = tabController.GetTab(defaultTabId, item.PortalId, false);
-            }
-
-            // if the tab doesn't have an overrideable module on it redirect them to the page without Publish querystring parameters, assuming it is force display on page
-            if (item.ForceDisplayOnPage() && !IsPageOverrideable(item.PortalId, tabInfo.TabID))
-            {
-                return Globals.NavigateURL(tabInfo.TabID);
-            }
-
-            string[] queryStringParameters =
-                ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
-            return Globals.NavigateURL(tabInfo.TabID, portalSettings, String.Empty, queryStringParameters);
-
-            ////below is the original version of this
-            ////int displayTabId = item.DisplayTabId;
-            ////int? queryStringModuleId = null;
-            ////if (!item.ForceDisplayOnPage() && tabId > 0 && item.DisplayOnCurrentPage())
-            ////{
-            ////    displayTabId = tabId;
-            ////    if (moduleId > 0)
-            ////    {
-            ////        queryStringModuleId = moduleId;
-            ////    }
-            ////}
-
-            ////string[] queryStringParameters = ConvertParametersToNonFriendly(CreateParametersForQueryString(item.ItemId, null, queryStringModuleId, pageId, portalId, String.Empty));
-            ////return Globals.NavigateURL(displayTabId, portalSettings, String.Empty, queryStringParameters);
         }
 
         private static PortalAliasInfo GetPortalAliasInfo(int portalId)
