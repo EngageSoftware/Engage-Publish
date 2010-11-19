@@ -123,7 +123,7 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThrough]
             get { return this._endDate; }
             [DebuggerStepThrough]
-            set { this._endDate = Utility.HasValue(value) ? value : null; }
+            set { this._endDate = Engage.Utility.HasValue(value) ? value : null; }
         }
 
         [XmlIgnore]
@@ -201,7 +201,7 @@ namespace Engage.Dnn.Publish
             [DebuggerStepThrough]
             get { return this._startDate; }
             [DebuggerStepThrough]
-            set { this._startDate = Utility.HasValue(value) ? value : null; }
+            set { this._startDate = Engage.Utility.HasValue(value) ? value : null; }
         }
 
         public static void AddItemRelationship(

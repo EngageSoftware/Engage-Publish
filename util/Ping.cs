@@ -29,11 +29,11 @@ namespace Engage.Dnn.Publish.Util
             {
                 var listToPing = new ArrayList();
                 string s = HostSettings.GetHostSetting(Utility.PublishPingServers + portalId.ToString(CultureInfo.InvariantCulture));
-                if (Utility.HasValue(s))
+                if (Engage.Utility.HasValue(s))
                 {
                     foreach (string sr in s.Split('\n'))
                     {
-                        if (Utility.HasValue(sr))
+                        if (Engage.Utility.HasValue(sr))
                         {
                             listToPing.Add(sr.Replace("\r", string.Empty));
                         }

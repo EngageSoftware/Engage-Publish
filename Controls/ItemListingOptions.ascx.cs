@@ -248,7 +248,7 @@ namespace Engage.Dnn.Publish.Controls
                 this.ItemTypeId = Convert.ToInt32(this.ddlItemTypeList.SelectedValue, CultureInfo.InvariantCulture);
                 this.CategoryId = Convert.ToInt32(this.ddlCategory.SelectedValue, CultureInfo.InvariantCulture);
                 this.MaxDisplayItems = 0;
-                if (Utility.HasValue(this.txtMaxItems.Text))
+                if (Engage.Utility.HasValue(this.txtMaxItems.Text))
                 {
                     this.MaxDisplayItems = Convert.ToInt32(this.txtMaxItems.Text, CultureInfo.InvariantCulture);
                 }

@@ -106,25 +106,25 @@ namespace Engage.Dnn.Publish.Admin
             // rbPublisher.Checked = false;
             // }
             string s = HostSettings.GetHostSetting(Utility.PublishAutoArchiveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 this.chkArchiveContent.Checked = Convert.ToBoolean(s, CultureInfo.InvariantCulture);
             }
 
             s = HostSettings.GetHostSetting(Utility.PublishAutoApproveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 this.chkApproveContent.Checked = Convert.ToBoolean(s, CultureInfo.InvariantCulture);
             }
 
             s = HostSettings.GetHostSetting(Utility.PublishSubscriberKey + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 this.txtAuthorizationKey.Text = s.ToString(CultureInfo.InvariantCulture);
             }
 
             s = HostSettings.GetHostSetting(Utility.PublishSubscriberUrl + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 this.txtSubscriberServiceUrl.Text = s.ToString(CultureInfo.InvariantCulture);
             }

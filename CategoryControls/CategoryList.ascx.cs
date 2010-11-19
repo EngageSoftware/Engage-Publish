@@ -334,7 +334,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             if (this.TopLevelId == -1)
             {
                 string s = this.cboItemType.SelectedValue;
-                int id = Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1;
+                int id = Engage.Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1;
                 this.lnkAddNewCategory.NavigateUrl = id == -1
                                                          ? this.BuildLinkUrl(
                                                              "&ctl=" + Utility.AdminContainer + "&mid=" +

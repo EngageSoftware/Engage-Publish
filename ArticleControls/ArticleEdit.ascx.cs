@@ -232,7 +232,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void CmdCancelClick(object sender, EventArgs e)
         {
             string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-            if (!Utility.HasValue(returnUrl))
+            if (!Engage.Utility.HasValue(returnUrl))
             {
                 this.Response.Redirect(this.BuildCategoryListUrl(ItemType.Article), true);
             }
@@ -379,10 +379,10 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (av.Description == string.Empty)
                 {
                     // trim article text to populate description
-                    if (!Utility.HasValue(av.Description) || !Utility.HasValue(av.MetaDescription))
+                    if (!Engage.Utility.HasValue(av.Description) || !Engage.Utility.HasValue(av.MetaDescription))
                     {
                         string description = HtmlUtils.StripTags(av.ArticleText, false);
-                        if (!Utility.HasValue(av.Description))
+                        if (!Engage.Utility.HasValue(av.Description))
                         {
                             av.Description = Utility.TrimDescription(3997, description) + "..."; // description + "...";
                         }
@@ -390,7 +390,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
 
                 // auto populate the meta description if it's not populated already
-                if (!Utility.HasValue(av.MetaDescription))
+                if (!Engage.Utility.HasValue(av.MetaDescription))
                 {
                     string description = HtmlUtils.StripTags(av.Description, false);
                     av.MetaDescription = Utility.TrimDescription(399, description);
@@ -407,7 +407,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 this.VersionInfoObject.Save(this.UserId);
 
                 string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-                if (!Utility.HasValue(returnUrl))
+                if (!Engage.Utility.HasValue(returnUrl))
                 {
                     this.Response.Redirect(
                         Globals.NavigateURL(
@@ -739,7 +739,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     ItemVersionSetting simpleGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(
                         av.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue", this.PortalId);
-                    if (simpleGalleryAlbum != null && Utility.HasValue(simpleGalleryAlbum.PropertyValue))
+                    if (simpleGalleryAlbum != null && Engage.Utility.HasValue(simpleGalleryAlbum.PropertyValue))
                     {
                         this.ddlPhotoGalleryAlbum.ClearSelection();
                         this.ddlPhotoGalleryAlbum.SelectedValue = "s" + simpleGalleryAlbum.PropertyValue;
@@ -748,7 +748,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         ItemVersionSetting ultraMediaGalleryAlbum = ItemVersionSetting.GetItemVersionSetting(
                             av.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue", this.PortalId);
-                        if (ultraMediaGalleryAlbum != null && Utility.HasValue(ultraMediaGalleryAlbum.PropertyValue))
+                        if (ultraMediaGalleryAlbum != null && Engage.Utility.HasValue(ultraMediaGalleryAlbum.PropertyValue))
                         {
                             this.ddlPhotoGalleryAlbum.ClearSelection();
                             this.ddlPhotoGalleryAlbum.SelectedValue = "u" + ultraMediaGalleryAlbum.PropertyValue;
@@ -824,7 +824,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         string hostPrinterFriendlySetting =
                             HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        this.chkPrinterFriendly.Checked = !Utility.HasValue(hostPrinterFriendlySetting) ||
+                        this.chkPrinterFriendly.Checked = !Engage.Utility.HasValue(hostPrinterFriendlySetting) ||
                                                           Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture);
                     }
 
@@ -839,7 +839,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         string hostEmailFriendSetting =
                             HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        this.chkEmailAFriend.Checked = !Utility.HasValue(hostEmailFriendSetting) ||
+                        this.chkEmailAFriend.Checked = !Engage.Utility.HasValue(hostEmailFriendSetting) ||
                                                        Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture);
                     }
 
@@ -857,7 +857,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         {
                             string hostRatingSetting =
                                 HostSettings.GetHostSetting(Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                            this.chkRatings.Checked = !Utility.HasValue(hostRatingSetting) ||
+                            this.chkRatings.Checked = !Engage.Utility.HasValue(hostRatingSetting) ||
                                                       Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture);
                         }
                     }
@@ -880,7 +880,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         {
                             string hostCommentSetting =
                                 HostSettings.GetHostSetting(Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                            this.chkComments.Checked = !Utility.HasValue(hostCommentSetting) ||
+                            this.chkComments.Checked = !Engage.Utility.HasValue(hostCommentSetting) ||
                                                        Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture);
                         }
 
@@ -918,7 +918,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         string hostAuthorSetting =
                             HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        this.chkShowAuthor.Checked = Utility.HasValue(hostAuthorSetting) &&
+                        this.chkShowAuthor.Checked = Engage.Utility.HasValue(hostAuthorSetting) &&
                                                      Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture);
                     }
 
@@ -932,7 +932,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         string hostTagsSetting =
                             HostSettings.GetHostSetting(Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        this.chkTags.Checked = Utility.HasValue(hostTagsSetting) && Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture);
+                        this.chkTags.Checked = Engage.Utility.HasValue(hostTagsSetting) && Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture);
                     }
 
                     // chkDisplayOnCurrentPage
@@ -983,7 +983,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     {
                         string hostReturnToListSetting =
                             HostSettings.GetHostSetting(Utility.PublishDefaultReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        this.chkReturnList.Checked = Utility.HasValue(hostReturnToListSetting) &&
+                        this.chkReturnList.Checked = Engage.Utility.HasValue(hostReturnToListSetting) &&
                                                      Convert.ToBoolean(hostReturnToListSetting, CultureInfo.InvariantCulture);
                     }
 

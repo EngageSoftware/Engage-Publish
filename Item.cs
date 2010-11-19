@@ -309,7 +309,7 @@ namespace Engage.Dnn.Publish
         public string EndDate
         {
             get { return this.endDate; }
-            set { this.endDate = Utility.HasValue(value) ? value : null; }
+            set { this.endDate = Engage.Utility.HasValue(value) ? value : null; }
         }
 
         [XmlIgnore]
@@ -525,7 +525,7 @@ namespace Engage.Dnn.Publish
         public string StartDate
         {
             get { return this.startDate; }
-            set { this.startDate = Utility.HasValue(value) ? value : null; }
+            set { this.startDate = Engage.Utility.HasValue(value) ? value : null; }
         }
 
         [XmlIgnore]

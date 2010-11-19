@@ -1390,7 +1390,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (article.DisplayReturnToList())
             {
                 // check if there's a "list" in session, if so go back to that URL
-                if (this.Session["PublishListLink"] != null && Utility.HasValue(this.Session["PublishListLink"].ToString()))
+                if (this.Session["PublishListLink"] != null && Engage.Utility.HasValue(this.Session["PublishListLink"].ToString()))
                 {
                     this.lnkReturnToList.NavigateUrl = this.Session["PublishListLink"].ToString().Trim();
                     this.lnkReturnToList.Text = String.Format(
@@ -1446,7 +1446,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             ItemVersionSetting simpleGallerySettings = ItemVersionSetting.GetItemVersionSetting(
                 this.VersionInfoObject.ItemVersionId, "ddlSimpleGalleryAlbum", "SelectedValue", this.PortalId);
-            if (simpleGallerySettings != null && Utility.HasValue(simpleGallerySettings.PropertyValue))
+            if (simpleGallerySettings != null && Engage.Utility.HasValue(simpleGallerySettings.PropertyValue))
             {
                 int albumId;
                 if (int.TryParse(simpleGallerySettings.PropertyValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out albumId))
@@ -1462,7 +1462,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         {
             ItemVersionSetting ultraMediaGallerySettings = ItemVersionSetting.GetItemVersionSetting(
                 this.VersionInfoObject.ItemVersionId, "ddlUltraMediaGalleryAlbum", "SelectedValue", this.PortalId);
-            if (ultraMediaGallerySettings != null && Utility.HasValue(ultraMediaGallerySettings.PropertyValue))
+            if (ultraMediaGallerySettings != null && Engage.Utility.HasValue(ultraMediaGallerySettings.PropertyValue))
             {
                 int albumId;
                 if (int.TryParse(ultraMediaGallerySettings.PropertyValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out albumId))

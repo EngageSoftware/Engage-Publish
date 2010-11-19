@@ -657,7 +657,7 @@ namespace Engage.Dnn.Publish.Util
         public static SqlParameter CreateDateTimeParam(string parameterName, string value)
         {
             var param = new SqlParameter(parameterName, SqlDbType.DateTime);
-            if (!HasValue(value))
+            if (!Engage.Utility.HasValue(value))
             {
                 param.Value = DBNull.Value;
             }
@@ -1230,7 +1230,7 @@ namespace Engage.Dnn.Publish.Util
         public static string GetStringPortalSetting(string settingName, int portalId, string defaultValue)
         {
             string setting = HostSettings.GetHostSetting(settingName + portalId.ToString(CultureInfo.InvariantCulture));
-            return HasValue(setting) ? setting : defaultValue;
+            return Engage.Utility.HasValue(setting) ? setting : defaultValue;
         }
 
         public static int GetTabModuleSettingAsInt(int moduleId, string settingName, int defaultValue)
@@ -1323,11 +1323,6 @@ namespace Engage.Dnn.Publish.Util
             return value;
         }
 
-        public static bool HasValue(string value)
-        {
-            return Engage.Utility.HasValue(value);
-        }
-
         public static bool IsDisabled(int itemId, int portalId)
         {
             // check if an item is disabled
@@ -1386,7 +1381,7 @@ namespace Engage.Dnn.Publish.Util
         public static bool IsPingEnabledForPortal(int portalId)
         {
             string s = HostSettings.GetHostSetting(PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
-            return HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
+            return Engage.Utility.HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -1595,7 +1590,7 @@ namespace Engage.Dnn.Publish.Util
             var integers = new List<int>(splitIntegers.Length);
             foreach (string integer in splitIntegers)
             {
-                if (HasValue(integer))
+                if (Engage.Utility.HasValue(integer))
                 {
                     integers.Add(int.Parse(integer, CultureInfo.InvariantCulture));
                 }
@@ -1799,7 +1794,7 @@ namespace Engage.Dnn.Publish.Util
                 queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&pageId={0}", pageId);
             }
 
-            if (HasValue(cultureName))
+            if (Engage.Utility.HasValue(cultureName))
             {
                 queryStringParameters.AppendFormat(CultureInfo.InvariantCulture, "&language={0}", cultureName);
             }

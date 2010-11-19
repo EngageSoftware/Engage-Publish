@@ -189,7 +189,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void CmdCancelClick(object sender, EventArgs e)
         {
             string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-            if (!Utility.HasValue(returnUrl))
+            if (!Engage.Utility.HasValue(returnUrl))
             {
                 this.Response.Redirect(this.BuildCategoryListUrl(ItemType.Category), true);
             }
@@ -268,7 +268,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 this.VersionInfoObject.Description = this.itemEditControl.DescriptionText;
 
                 // auto populate the meta description if it's not populated already
-                if (!Utility.HasValue(this.VersionInfoObject.MetaDescription))
+                if (!Engage.Utility.HasValue(this.VersionInfoObject.MetaDescription))
                 {
                     string description = HtmlUtils.StripTags(this.VersionInfoObject.Description, false);
                     this.VersionInfoObject.MetaDescription = Utility.TrimDescription(399, description);
@@ -290,14 +290,13 @@ namespace Engage.Dnn.Publish.CategoryControls
                         };
 
                     if (
-                        Utility.HasValue(
-                            this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture))))
+                        Engage.Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("startDate", i.ToString(CultureInfo.InvariantCulture))))
                     {
                         irArticleso.StartDate = this.featuredArticlesRelationships.GetAdditionalSetting(
                             "startDate", i.ToString(CultureInfo.InvariantCulture));
                     }
 
-                    if (Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture))))
+                    if (Engage.Utility.HasValue(this.featuredArticlesRelationships.GetAdditionalSetting("endDate", i.ToString(CultureInfo.InvariantCulture))))
                     {
                         irArticleso.EndDate = this.featuredArticlesRelationships.GetAdditionalSetting(
                             "endDate", i.ToString(CultureInfo.InvariantCulture));
@@ -335,7 +334,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-                if (!Utility.HasValue(returnUrl))
+                if (!Engage.Utility.HasValue(returnUrl))
                 {
                     this.Response.Redirect(
                         Globals.NavigateURL(

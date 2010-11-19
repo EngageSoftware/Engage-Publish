@@ -1586,7 +1586,7 @@ namespace Engage.Dnn.Publish.Data
             }
 
             sql.Append(" order by ");
-            if (Utility.HasValue(sortOrder))
+            if (Engage.Utility.HasValue(sortOrder))
             {
                 sql.Append("il.");
                 sql.Append(sortOrder);
@@ -2037,12 +2037,12 @@ namespace Engage.Dnn.Publish.Data
             Justification = "Code Analysis doesn't see HasValue as validation")]
         public override IDataReader GetItemVersionSetting(int itemVersionId, string controlName, string propertyName)
         {
-            if (!Utility.HasValue(controlName))
+            if (!Engage.Utility.HasValue(controlName))
             {
                 controlName = string.Empty;
             }
 
-            if (!Utility.HasValue(propertyName))
+            if (!Engage.Utility.HasValue(propertyName))
             {
                 propertyName = string.Empty;
             }
@@ -2074,7 +2074,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override IDataReader GetItemVersionSettings(int itemVersionId, string controlName)
         {
-            if (!Utility.HasValue(controlName))
+            if (!Engage.Utility.HasValue(controlName))
             {
                 controlName = string.Empty;
             }

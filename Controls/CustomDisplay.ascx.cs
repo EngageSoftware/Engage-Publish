@@ -277,7 +277,7 @@ namespace Engage.Dnn.Publish.Controls
                         lnkTitle.Visible = true;
                     }
 
-                    if (pnlThumbnail != null && (dr["Thumbnail"] == null || !Utility.HasValue(dr["Thumbnail"].ToString())))
+                    if (pnlThumbnail != null && (dr["Thumbnail"] == null || !Engage.Utility.HasValue(dr["Thumbnail"].ToString())))
                     {
                         pnlThumbnail.CssClass += " item_listing_nothumbnail";
                     }

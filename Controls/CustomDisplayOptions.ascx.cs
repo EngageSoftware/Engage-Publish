@@ -196,7 +196,7 @@ namespace Engage.Dnn.Publish.Controls
                 {
                     this._customDisplaySettings.MaxDisplayItems = -1;
                 }
-                else if (Utility.HasValue(this.txtMaxItems.Text))
+                else if (Engage.Utility.HasValue(this.txtMaxItems.Text))
                 {
                     this._customDisplaySettings.MaxDisplayItems = Convert.ToInt32(this.txtMaxItems.Text, CultureInfo.InvariantCulture);
                 }

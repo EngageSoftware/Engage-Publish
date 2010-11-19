@@ -78,7 +78,7 @@ namespace Engage.Dnn.Publish.Security
 
             // Hashtable ht = PortalSettings.GetSiteSettings(portalId);
             // string s = Convert.ToString(ht[SecuritySettingName]);
-            return Utility.HasValue(s) ? Convert.ToBoolean(s, CultureInfo.InvariantCulture) : false;
+            return Engage.Utility.HasValue(s) ? Convert.ToBoolean(s, CultureInfo.InvariantCulture) : false;
         }
 
         public abstract void FilterArticles(SearchResultsInfoCollection data);
@@ -101,7 +101,7 @@ namespace Engage.Dnn.Publish.Security
             // check the portal setting
             int portalId = PortalController.GetCurrentPortalSettings().PortalId;
             string s = HostSettings.GetHostSetting(SecuritySettingName + portalId);
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 // if security is off.....it's off
                 bool enable = Convert.ToBoolean(s, CultureInfo.InvariantCulture);

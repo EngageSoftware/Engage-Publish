@@ -489,7 +489,7 @@ namespace Engage.Dnn.Publish
             Utility.ClearPublishCache(this.PortalId);
 
             string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Utility.HasValue(s))
+            if (Engage.Utility.HasValue(s))
             {
                 if (Convert.ToBoolean(s, CultureInfo.InvariantCulture))
                 {
@@ -507,7 +507,7 @@ namespace Engage.Dnn.Publish
                     {
                         string surl = HostSettings.GetHostSetting(
                             Utility.PublishPingChangedUrl + this.PortalId.ToString(CultureInfo.InvariantCulture));
-                        string changedUrl = Utility.HasValue(surl) ? surl : Globals.NavigateURL(this.DisplayTabId);
+                        string changedUrl = Engage.Utility.HasValue(surl) ? surl : Globals.NavigateURL(this.DisplayTabId);
                         PortalSettings ps = Utility.GetPortalSettings(this.PortalId);
 
                         // ping

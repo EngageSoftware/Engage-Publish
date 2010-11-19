@@ -297,7 +297,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (this.TopLevelId == -1)
             {
                 string s = this.cboCategories.SelectedValue;
-                int categoryId = Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1;
+                int categoryId = Engage.Utility.HasValue(s) ? Convert.ToInt32(s, CultureInfo.InvariantCulture) : -1;
                 if (categoryId == -1)
                 {
                     if (this.CategoryId > -1)

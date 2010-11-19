@@ -120,7 +120,7 @@ namespace Engage.Dnn.Publish
             if (this.VersionInfoObject != null)
             {
                 // check to see if this Item should be redirected to a different URL
-                if (Utility.HasValue(this.VersionInfoObject.Url) && (this.VersionInfoObject.Url != this.Request.Url.ToString()))
+                if (Engage.Utility.HasValue(this.VersionInfoObject.Url) && (this.VersionInfoObject.Url != this.Request.Url.ToString()))
                 {
                     // do our redirect now
                     this.Response.Status = "301 Moved Permanently";

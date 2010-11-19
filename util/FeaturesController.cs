@@ -139,7 +139,7 @@ namespace Engage.Dnn.Publish.Util
 
                 // article name
                 string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
-                if (Utility.HasValue(name))
+                if (Engage.Utility.HasValue(name))
                 {
                     searchedContent.AppendFormat("{0}{1}", name, " ");
                 }
@@ -151,35 +151,35 @@ namespace Engage.Dnn.Publish.Util
 
                 // article text
                 string articleText = row["ArticleText"].ToString().Trim();
-                if (Utility.HasValue(articleText))
+                if (Engage.Utility.HasValue(articleText))
                 {
                     searchedContent.AppendFormat("{0}{1}", articleText, " ");
                 }
 
                 // article description
                 string description = row["Description"].ToString().Trim();
-                if (Utility.HasValue(description))
+                if (Engage.Utility.HasValue(description))
                 {
                     searchedContent.AppendFormat("{0}{1}", description, " ");
                 }
 
                 // article metakeyword
                 string keyword = row["MetaKeywords"].ToString().Trim();
-                if (Utility.HasValue(keyword))
+                if (Engage.Utility.HasValue(keyword))
                 {
                     searchedContent.AppendFormat("{0}{1}", keyword, " ");
                 }
 
                 // article metadescription
                 string metaDescription = row["MetaDescription"].ToString().Trim();
-                if (Utility.HasValue(metaDescription))
+                if (Engage.Utility.HasValue(metaDescription))
                 {
                     searchedContent.AppendFormat("{0}{1}", metaDescription, " ");
                 }
 
                 // article metatitle
                 string metaTitle = row["MetaTitle"].ToString().Trim();
-                if (Utility.HasValue(metaTitle))
+                if (Engage.Utility.HasValue(metaTitle))
                 {
                     searchedContent.AppendFormat("{0}{1}", metaTitle, " ");
                 }

@@ -42,7 +42,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 ItemRelationship.DisplayCategoryHierarchy(this.ddlCategoryList, -1, this.PortalId, false);
 
                 object o = this.Settings["cfCategoryId"];
-                if (o != null && Utility.HasValue(o.ToString()))
+                if (o != null && Engage.Utility.HasValue(o.ToString()))
                 {
                     ListItem li = this.ddlCategoryList.Items.FindByValue(o.ToString());
                     if (li != null)
@@ -52,7 +52,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 o = this.Settings["cfDisplayOption"];
-                if (o != null && Utility.HasValue(o.ToString()))
+                if (o != null && Engage.Utility.HasValue(o.ToString()))
                 {
                     ListItem li = this.ddlViewOptions.Items.FindByValue(o.ToString());
                     if (li != null)

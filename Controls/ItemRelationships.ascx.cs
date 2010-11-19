@@ -305,7 +305,7 @@ namespace Engage.Dnn.Publish.Controls
         private void BtnStoreRelationshipDateClick(object sender, EventArgs e)
         {
             // store the dates for the current item
-            if (Utility.HasValue(this.txtStartDate.Text))
+            if (Engage.Utility.HasValue(this.txtStartDate.Text))
             {
                 this.SetAdditionalSetting(
                     "startDate", 
@@ -317,7 +317,7 @@ namespace Engage.Dnn.Publish.Controls
                 this.SetAdditionalSetting("startDate", DateTime.Now.Date.ToString(CultureInfo.InvariantCulture), this.lstSelectedItems.SelectedValue);
             }
 
-            if (Utility.HasValue(this.txtEndDate.Text))
+            if (Engage.Utility.HasValue(this.txtEndDate.Text))
             {
                 this.SetAdditionalSetting(
                     "endDate", 
@@ -467,14 +467,14 @@ namespace Engage.Dnn.Publish.Controls
             // load the start date/end date controls	
             if (this.EnableDates)
             {
-                if (Utility.HasValue(this.GetAdditionalSetting("startDate", this.lstSelectedItems.SelectedValue)))
+                if (Engage.Utility.HasValue(this.GetAdditionalSetting("startDate", this.lstSelectedItems.SelectedValue)))
                 {
                     this.txtStartDate.Text =
                         Convert.ToDateTime(this.GetAdditionalSetting("startDate", this.lstSelectedItems.SelectedValue), CultureInfo.InvariantCulture).
                             ToString(CultureInfo.CurrentCulture);
                 }
 
-                this.txtEndDate.Text = Utility.HasValue(this.GetAdditionalSetting("endDate", this.lstSelectedItems.SelectedValue))
+                this.txtEndDate.Text = Engage.Utility.HasValue(this.GetAdditionalSetting("endDate", this.lstSelectedItems.SelectedValue))
                                            ? Convert.ToDateTime(
                                                this.GetAdditionalSetting("endDate", this.lstSelectedItems.SelectedValue), CultureInfo.InvariantCulture)
                                                  .ToString(CultureInfo.CurrentCulture)

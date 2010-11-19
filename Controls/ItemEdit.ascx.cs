@@ -70,7 +70,7 @@ namespace Engage.Dnn.Publish.Controls
                     returnVal = end > start;
                     this.ErrorMessage = Localization.GetString("DateError", this.LocalResourceFile);
                 }
-                else if (start == DateTime.MinValue && Utility.HasValue(this.txtEndDate.Text))
+                else if (start == DateTime.MinValue && Engage.Utility.HasValue(this.txtEndDate.Text))
                 {
                     returnVal = false;
                     this.ErrorMessage = Localization.GetString("DateError", this.LocalResourceFile);
@@ -144,7 +144,7 @@ namespace Engage.Dnn.Publish.Controls
             this.teDescription.Width = this.ItemEditDescriptionWidth;
             this.teDescription.Height = this.ItemEditDescriptionHeight;
 
-            if (Utility.HasValue(this.VersionInfoObject.Url))
+            if (Engage.Utility.HasValue(this.VersionInfoObject.Url))
             {
                 this.ctlUrlSelection.Url = this.VersionInfoObject.Url;
                 this.chkNewWindow.Checked = this.VersionInfoObject.NewWindow;
@@ -297,8 +297,8 @@ namespace Engage.Dnn.Publish.Controls
                         this.btnChangeDescriptionEditorMode.Visible = false;
                     }
 
-                    if (Utility.HasValue(this.VersionInfoObject.MetaTitle) || Utility.HasValue(this.VersionInfoObject.MetaDescription) ||
-                        Utility.HasValue(this.VersionInfoObject.MetaKeywords))
+                    if (Engage.Utility.HasValue(this.VersionInfoObject.MetaTitle) || Engage.Utility.HasValue(this.VersionInfoObject.MetaDescription) ||
+                        Engage.Utility.HasValue(this.VersionInfoObject.MetaKeywords))
                     {
                         this.chkSearchEngine.Checked = true;
                         this.pnlSearchEngine.Visible = true;
@@ -322,12 +322,12 @@ namespace Engage.Dnn.Publish.Controls
                         this.chkDisplayAsHyperlink.Checked = true;
                     }
 
-                    if (Utility.HasValue(this.VersionInfoObject.StartDate))
+                    if (Engage.Utility.HasValue(this.VersionInfoObject.StartDate))
                     {
                         this.txtStartDate.Text = Utility.GetCurrentCultureDateTime(this.VersionInfoObject.StartDate);
                     }
 
-                    if (Utility.HasValue(this.VersionInfoObject.EndDate))
+                    if (Engage.Utility.HasValue(this.VersionInfoObject.EndDate))
                     {
                         this.txtEndDate.Text = Utility.GetCurrentCultureDateTime(this.VersionInfoObject.EndDate);
                     }
@@ -354,7 +354,7 @@ namespace Engage.Dnn.Publish.Controls
 
                     this.VersionInfoObject.NewWindow = this.chkNewWindow.Checked;
                     DateTime dt;
-                    if (Utility.HasValue(this.txtStartDate.Text) && DateTime.TryParse(this.txtStartDate.Text, out dt))
+                    if (Engage.Utility.HasValue(this.txtStartDate.Text) && DateTime.TryParse(this.txtStartDate.Text, out dt))
                     {
                         if (!dt.Equals(DateTime.MinValue))
                         {
@@ -362,7 +362,7 @@ namespace Engage.Dnn.Publish.Controls
                         }
                     }
 
-                    if (Utility.HasValue(this.txtEndDate.Text) && DateTime.TryParse(this.txtEndDate.Text, out dt))
+                    if (Engage.Utility.HasValue(this.txtEndDate.Text) && DateTime.TryParse(this.txtEndDate.Text, out dt))
                     {
                         if (!dt.Equals(DateTime.MinValue))
                         {

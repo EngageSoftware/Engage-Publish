@@ -289,7 +289,7 @@ namespace Engage.Dnn.Publish.Admin
                 DataCache.ClearHostCache(true);
 
                 string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-                if (!Utility.HasValue(returnUrl))
+                if (!Engage.Utility.HasValue(returnUrl))
                 {
                     this.Response.Redirect(
                         Globals.NavigateURL(this.TabId, Utility.AdminContainer, "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture)));

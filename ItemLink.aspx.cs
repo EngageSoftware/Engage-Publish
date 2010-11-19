@@ -81,7 +81,7 @@ namespace Engage.Dnn.Publish
         private void DisplayItem(Item item)
         {
             // check if item.URL is populated, if so figure out where to redirect.
-            if (Utility.HasValue(item.Url))
+            if (Engage.Utility.HasValue(item.Url))
             {
                 // do our redirect now
                 this.Response.Status = "301 Moved Permanently";
@@ -91,7 +91,7 @@ namespace Engage.Dnn.Publish
             {
                 int defaultTabId = -1;
                 object o = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + item.PortalId);
-                if (o != null && Utility.HasValue(o.ToString()))
+                if (o != null && Engage.Utility.HasValue(o.ToString()))
                 {
                     defaultTabId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -297,7 +297,7 @@ namespace Engage.Dnn.Publish
 
             if (m != null)
             {
-                if (Utility.HasValue(m))
+                if (Engage.Utility.HasValue(m))
                 {
                     this._modid = Convert.ToInt32(m, CultureInfo.InvariantCulture);
                 }
@@ -305,7 +305,7 @@ namespace Engage.Dnn.Publish
 
             if (pi != null)
             {
-                if (Utility.HasValue(pi))
+                if (Engage.Utility.HasValue(pi))
                 {
                     this._pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
                 }
@@ -313,7 +313,7 @@ namespace Engage.Dnn.Publish
 
             if (o != null)
             {
-                if (Utility.HasValue(o))
+                if (Engage.Utility.HasValue(o))
                 {
                     this._tabid = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -321,7 +321,7 @@ namespace Engage.Dnn.Publish
 
             if (lang != null)
             {
-                if (Utility.HasValue(lang))
+                if (Engage.Utility.HasValue(lang))
                 {
                     this._language = lang;
                 }

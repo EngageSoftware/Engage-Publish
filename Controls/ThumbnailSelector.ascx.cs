@@ -194,13 +194,13 @@ namespace Engage.Dnn.Publish.Controls
             this.ddlThumbnailLibrary.DataBind();
             this.ddlThumbnailLibrary.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", this.LocalResourceFile), string.Empty));
 
-            if (!Utility.HasValue(this._thumbnailUrl))
+            if (!Engage.Utility.HasValue(this._thumbnailUrl))
             {
                 this.rblThumbnailImage.SelectedValue = ThumbnailImageType.Upload.ToString();
             }
                 
                 // HACK: replace with a System.Uri comparison or Path.GetFullPath to prevent against canonicalization attacks.  BD
-            else if (Utility.HasValue(this.ThumbnailSubdirectory) &&
+            else if (Engage.Utility.HasValue(this.ThumbnailSubdirectory) &&
                      this._thumbnailUrl.StartsWith(Utility.GetThumbnailLibraryPath(this.PortalId).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 this.rblThumbnailImage.SelectedValue = ThumbnailImageType.Internal.ToString();
@@ -232,7 +232,7 @@ namespace Engage.Dnn.Publish.Controls
             else
             {
                 string extension = Path.GetExtension(this.fileThumbnail.PostedFile.FileName);
-                if (Utility.HasValue(extension))
+                if (Engage.Utility.HasValue(extension))
                 {
                     extension = extension.Substring(1);
                     string[] validExtensions = Utility.MediaFileTypes.Split(',');

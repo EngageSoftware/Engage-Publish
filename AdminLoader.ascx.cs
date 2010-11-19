@@ -134,7 +134,7 @@ namespace Engage.Dnn.Publish
             StringDictionary returnDict = GetAdminControlKeys();
             string adminTypeParam = this.Request.Params["adminType"];
 
-            if (Utility.HasValue(adminTypeParam))
+            if (Engage.Utility.HasValue(adminTypeParam))
             {
                 this._controlToLoad = returnDict[adminTypeParam.ToUpperInvariant()];
             }

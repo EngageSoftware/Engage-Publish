@@ -56,16 +56,16 @@ namespace Engage.Dnn.Publish.Admin.Tools
                 if (a != null)
                 {
                     // if our article is over 8k characters be sure to trim it
-                    if (!Utility.HasValue(a.Description) || !Utility.HasValue(a.MetaDescription))
+                    if (!Engage.Utility.HasValue(a.Description) || !Engage.Utility.HasValue(a.MetaDescription))
                     {
                         string description = HtmlUtils.StripTags(a.ArticleText, false);
 
-                        if (!Utility.HasValue(a.MetaDescription))
+                        if (!Engage.Utility.HasValue(a.MetaDescription))
                         {
                             a.MetaDescription = Utility.TrimDescription(399, description);
                         }
 
-                        if (!Utility.HasValue(a.Description))
+                        if (!Engage.Utility.HasValue(a.Description))
                         {
                             // TODO: localize the end of the description 
                             a.Description = Utility.TrimDescription(3997, description) + "..."; // description + "...";
