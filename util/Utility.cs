@@ -1924,18 +1924,4 @@ namespace Engage.Dnn.Publish.Util
             return defaultValue;
         }
     }
-
-    /// <summary>
-    /// Encapsulates a method that has no parameters and returns a value of the type specified by the <typeparamref name="TResult"/> parameter.  
-    /// </summary>
-    /// <typeparam name="TResult">
-    /// The type of the return value of the method that this delegate encapsulates. 
-    /// </typeparam>
-    /// <remarks>
-    /// This is a copy of the type introduced in .NET 3.5 (http://msdn.microsoft.com/en-us/library/bb534960.aspx), and should be replaced by that type once possible.
-    /// </remarks>
-    /// <returns>
-    /// The return value of the method that this delegate encapsulates. 
-    /// </returns>
-    public delegate TResult Func<TResult>();
 }
