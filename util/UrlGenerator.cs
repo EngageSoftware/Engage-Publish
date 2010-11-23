@@ -15,7 +15,6 @@ namespace Engage.Dnn.Publish.Util
     using System.Globalization;
     using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
 
@@ -193,31 +192,6 @@ namespace Engage.Dnn.Publish.Util
                 item.DisplayTabId, String.Empty, "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
 
             return returnUrl;
-        }
-
-        public static string OnlyAlphanumericCharacters(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-            {
-                return input;
-            }
-
-            input = input.Trim();
-            int length = input.Length;
-            var returnString = new StringBuilder();
-
-            for (int i = 0; i < length; i++)
-            {
-                string currentLetter = input.Substring(i, 1);
-                if (IsAlphaNumeric(currentLetter))
-                {
-                    returnString.Append(currentLetter);
-                }
-            }
-
-            returnString.Replace(" ", "-"); // Replace(sAns, " ", "-")
-
-            return returnString.ToString();
         }
 
         /// <summary>
@@ -431,13 +405,6 @@ namespace Engage.Dnn.Publish.Util
             }
 
             return Globals.ResolveUrl(url);
-        }
-
-        private static bool IsAlphaNumeric(string testString)
-        {
-            var objAlphaPattern = new Regex("[^0-9a-zA-Z ]");
-
-            return !objAlphaPattern.IsMatch(testString);
         }
 
         /// <summary>
