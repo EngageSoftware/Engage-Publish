@@ -1,19 +1,19 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2010
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="Utility.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2010
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.Util
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Data;
     using System.Data.SqlClient;
     using System.Diagnostics.CodeAnalysis;
@@ -23,7 +23,6 @@ namespace Engage.Dnn.Publish.Util
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Web;
     using System.Web.UI.WebControls;
 
@@ -434,9 +433,10 @@ namespace Engage.Dnn.Publish.Util
         // cache keys for Categories
         private static readonly object CacheLock = new object();
 
-        private static readonly char[] TagSeparators = {
-                                                           ';', ','
-                                                       };
+        private static readonly char[] TagSeparators = 
+            {
+                ';', ','
+            };
 
         public static string ApplicationUrl
         {
@@ -920,10 +920,15 @@ namespace Engage.Dnn.Publish.Util
             return dt;
         }
 
-        // This will take a datetime string and convert it to the InvariantCulture datetime string.
+        /// <summary>
+        /// Converts the given <see cref="CultureInfo.CurrentCulture"/> <see cref="string"/> representation of a <see cref="DateTime"/>
+        /// to the <see cref="CultureInfo.InvariantCulture"/> <see cref="string"/> representation of that same date/time.
+        /// </summary>
+        /// <param name="value">A <see cref="CultureInfo.CurrentCulture"/> <see cref="string"/> representation of a <see cref="DateTime"/>.</param>
+        /// <returns>An <see cref="CultureInfo.InvariantCulture"/> <see cref="string"/> representation of the <see cref="DateTime"/> represented by <paramref name="value"/></returns>
         public static string GetInvariantDateTime(string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return String.Empty;
             }
@@ -937,8 +942,6 @@ namespace Engage.Dnn.Publish.Util
                 return value;
             }
         }
-
-        // This will take a datetime string and convert it to the InvariantCulture datetime string.
 
         public static IDataReader GetModuleByModuleId(int moduleId)
         {
@@ -963,10 +966,10 @@ namespace Engage.Dnn.Publish.Util
                     {
                         if (Convert.ToBoolean(o, CultureInfo.InvariantCulture))
                         {
+                            // get out there is a module on the page that is configured overrideable.
                             modid = mi.ModuleID;
                             return modid;
                         }
- // get out there is a module on the page that is configured overrideable.
                     }
 
                     // set the moduleid to the last one, in case we get to the end and haven't found a match
@@ -1194,9 +1197,9 @@ namespace Engage.Dnn.Publish.Util
                         {
                             if (Convert.ToBoolean(o, CultureInfo.InvariantCulture))
                             {
+                                 // get out there is a module on the page that is configured overrideable.
                                 return true;
                             }
- // get out there is a module on the page that is configured overrideable.
                         }
                         else
                         {
@@ -1227,7 +1230,7 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="leftHandSide">The left hand side version.</param>
         /// <param name="rightHandSide">The right hand side version.</param>
         /// <returns>
-        /// 	<c>true</c> if the <paramref name="leftHandSide"/> if greater or equal to the <paramref name="rightHandSide"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the <paramref name="leftHandSide"/> if greater or equal to the <paramref name="rightHandSide"/>; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref cref="leftHandSide"/> or <paramref cref="rightHandSide"/> is null.</exception>
         public static bool IsVersionGreaterOrEqual(List<int> leftHandSide, List<int> rightHandSide)
@@ -1512,7 +1515,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static void SortDataTableSingleParam(DataTable dt, string sort)
         {
-            DataTable newDT = dt.Clone();
+            DataTable newDataTable = dt.Clone();
             int rowCount = dt.Rows.Count;
 
             DataRow[] foundRows = dt.Select(null, sort); // Sort with Column name 
@@ -1524,20 +1527,20 @@ namespace Engage.Dnn.Publish.Util
                     arr[j] = foundRows[i][j];
                 }
 
-                DataRow dataRow = newDT.NewRow();
+                DataRow dataRow = newDataTable.NewRow();
                 dataRow.ItemArray = arr;
-                newDT.Rows.Add(dataRow);
+                newDataTable.Rows.Add(dataRow);
             }
 
             // clear the incoming dt 
             dt.Rows.Clear();
 
-            for (int i = 0; i < newDT.Rows.Count; i++)
+            for (int i = 0; i < newDataTable.Rows.Count; i++)
             {
                 var arr = new object[dt.Columns.Count];
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
-                    arr[j] = newDT.Rows[i][j];
+                    arr[j] = newDataTable.Rows[i][j];
                 }
 
                 DataRow dataRow = dt.NewRow();

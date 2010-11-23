@@ -9,7 +9,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-
 namespace Engage.Dnn.Publish
 {
     using System;
@@ -39,8 +38,6 @@ namespace Engage.Dnn.Publish
         private int itemId;
 
         private string itemType;
-
-        private int pageid = 1;
 
         protected override void OnInit(EventArgs e)
         {
@@ -113,7 +110,7 @@ namespace Engage.Dnn.Publish
             {
                 if (Engage.Utility.HasValue(pi))
                 {
-                    this.pageid = Convert.ToInt32(pi, CultureInfo.InvariantCulture);
+                    Convert.ToInt32(pi, CultureInfo.InvariantCulture);
                 }
             }
 
