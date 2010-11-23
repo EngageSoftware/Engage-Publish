@@ -202,7 +202,7 @@ namespace Engage.Dnn.Publish.Util
                 // Check if the Portal is setup to enable venexus indexing
                 if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
                 {
-                    string indexUrl = Utility.GetItemLinkUrl(
+                    string indexUrl = UrlGenerator.GetItemLinkUrl(
                         Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
 
                     // UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)

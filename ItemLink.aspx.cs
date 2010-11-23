@@ -117,7 +117,7 @@ namespace Engage.Dnn.Publish
                                 pageName = item.Name.Substring(0, 50);
                             }
 
-                            pageName = Utility.OnlyAlphanumericCharacters(pageName);
+                            pageName = UrlGenerator.OnlyAlphanumericCharacters(pageName);
 
                             // Global.asax Application_BeginRequest checks for these values and will try to redirect to the non-existent page
                             if (pageName.EndsWith("install", StringComparison.CurrentCultureIgnoreCase) ||

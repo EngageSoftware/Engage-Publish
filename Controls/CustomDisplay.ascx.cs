@@ -86,7 +86,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected static string BuildEditUrl(int itemId, int tabId, int moduleId, int portalId)
         {
-            return Utility.BuildEditUrl(itemId, tabId, moduleId, portalId);
+            return UrlGenerator.BuildEditUrl(itemId, tabId, moduleId, portalId);
         }
 
         /// <summary>

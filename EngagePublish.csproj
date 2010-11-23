@@ -634,6 +634,7 @@
     <Compile Include="util\ApprovalStatus.cs" />
     <Compile Include="util\Breadcrumb.cs" />
     <Compile Include="util\CommunityController.cs" />
+    <Compile Include="util\UrlGenerator.cs" />
     <Compile Include="util\UserRoleInfoComparer.cs" />
     <Compile Include="util\NewBreadcrumb.cs" />
     <Compile Include="util\Ping.cs" />

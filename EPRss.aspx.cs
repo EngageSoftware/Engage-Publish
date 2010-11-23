@@ -315,7 +315,7 @@ namespace Engage.Dnn.Publish
                     // if the item isn't disabled add the link
                     if (!Utility.IsDisabled(Convert.ToInt32(childItemId, CultureInfo.InvariantCulture), this.PortalId))
                     {
-                        wr.WriteElementString("link", Utility.GetItemLinkUrl(childItemId, this.PortalId));
+                        wr.WriteElementString("link", UrlGenerator.GetItemLinkUrl(childItemId, this.PortalId));
                     }
 
                     // wr.WriteElementString("description", Utility.StripTags(this.Server.HtmlDecode(description)));

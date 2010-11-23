@@ -182,7 +182,7 @@ namespace Engage.Dnn.Publish.Services
                             title = dr["Name"].ToString(), 
                             categoryid = dr["ItemId"].ToString(), 
                             description = dr["Description"].ToString(), 
-                            htmlUrl = Utility.GetItemLinkUrl((int)dr["ItemId"], PortalId, (int)dr["DisplayTabId"], (int)dr["ModuleId"]), 
+                            htmlUrl = UrlGenerator.GetItemLinkUrl((int)dr["ItemId"], PortalId, (int)dr["DisplayTabId"], (int)dr["ModuleId"]), 
                             rssUrl = ModuleBase.GetRssLinkUrl(dr["ItemId"].ToString(), 25, Null.NullInteger, PortalId, string.Empty)
                         };
                     categoryInfos.Add(ci);
