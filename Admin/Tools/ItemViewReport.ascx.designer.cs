@@ -112,6 +112,15 @@ namespace Engage.Dnn.Publish.Admin.Tools {
         protected global::System.Web.UI.WebControls.Image imgStartCalendarIcon;
         
         /// <summary>
+        /// ceStartDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ceStartDate;
+        
+        /// <summary>
         /// lblEndDate control.
         /// </summary>
         /// <remarks>
@@ -137,6 +146,15 @@ namespace Engage.Dnn.Publish.Admin.Tools {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgEndCalendarIcon;
+        
+        /// <summary>
+        /// ceEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ceEndDate;
         
         /// <summary>
         /// lnkGenerate control.
