@@ -1,12 +1,13 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="Category.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish
 {
@@ -26,18 +27,18 @@ namespace Engage.Dnn.Publish
     using Localize = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
-    /// Summary description for Category.
+    /// A grouping of <see cref="Item"/>s (i.e. Articles and other Categories)
     /// </summary>
     [XmlRoot(ElementName = "category", IsNullable = false)]
     public class Category : Item
     {
         // [XmlAttribute(AttributeName="noNamespaceSchemaLocation", Namespace="http://www.w3.org/2001/XMLSchema-instance")]
         // public string noNamespaceSchemaLocation = "Content.Publish.xsd";
-        private int _childDisplayTabId = -1;
+        private int childDisplayTabId = -1;
 
-        private string _childDisplayTabName = string.Empty;
+        private string childDisplayTabName = string.Empty;
 
-        private int _sortOrder = 5;
+        private int sortOrder = 5;
 
         public Category()
         {
@@ -48,8 +49,8 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 40)]
         public int ChildDisplayTabId
         {
-            get { return this._childDisplayTabId; }
-            set { this._childDisplayTabId = value; }
+            get { return this.childDisplayTabId; }
+            set { this.childDisplayTabId = value; }
         }
 
         [XmlElement(Order = 41)]
@@ -57,21 +58,24 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                if (this._childDisplayTabName.Length == 0)
+                if (this.childDisplayTabName.Length == 0)
                 {
-                    using (IDataReader dr = DataProvider.Instance().GetPublishTabName(this._childDisplayTabId, this.PortalId))
+                    using (IDataReader dr = DataProvider.Instance().GetPublishTabName(this.childDisplayTabId, this.PortalId))
                     {
                         if (dr.Read())
                         {
-                            this._childDisplayTabName = dr["TabName"].ToString();
+                            this.childDisplayTabName = dr["TabName"].ToString();
                         }
                     }
                 }
 
-                return this._childDisplayTabName;
+                return this.childDisplayTabName;
             }
 
-            set { this._childDisplayTabName = value; }
+            set
+            {
+                this.childDisplayTabName = value;
+            }
         }
 
         public override string EmailApprovalBody
@@ -113,8 +117,8 @@ namespace Engage.Dnn.Publish
         [XmlElement(Order = 39)]
         public int SortOrder
         {
-            get { return this._sortOrder; }
-            set { this._sortOrder = value; }
+            get { return this.sortOrder; }
+            set { this.sortOrder = value; }
         }
 
         public static void AddCategoryVersion(int itemVersionId, int itemId, int sortOrder, int childDisplayTabId)
@@ -188,13 +192,10 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal ID of the portal this category belongs to.</param>
         /// <param name="displayTabId">The Tab ID of the page this Category should be displayed on.</param>
         /// <returns>A <see cref="Category" /> with the assigned values.</returns>
-        [Obsolete(
-            "This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)."
-            , false)]
+        [Obsolete("This method should not be used, please use Category.Create. Example: Create(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId).", false)]
         public static Category CreateCategory(string name, string description, int authorUserId, int moduleId, int portalId, int displayTabId)
         {
-            Category c = Create(name, description, authorUserId, moduleId, portalId, displayTabId);
-            return c;
+            return Create(name, description, authorUserId, moduleId, portalId, displayTabId);
         }
 
         public static DataTable GetAllChildCategories(int parentItemId, int portalId)
@@ -442,10 +443,6 @@ namespace Engage.Dnn.Publish
             return articles;
         }
 
-        // 		public static IDataReader GetCategories(int portalId)
-        // 		{
-        // 			return DataProvider.Instance().GetCategories(portalId);
-        // 		}
         public static IDataReader GetCategoryListing(int parentItemId, int portalId)
         {
             return DataProvider.Instance().GetCategoryListing(parentItemId, portalId);
@@ -760,14 +757,14 @@ namespace Engage.Dnn.Publish
             {
                 if (dr.Read())
                 {
-                    this._childDisplayTabId = (int)dr["TabId"];
+                    this.childDisplayTabId = (int)dr["TabId"];
                 }
                 else
                 {
                     // Default to setting for module
                     string settingName = Utility.PublishDefaultDisplayPage + this.PortalId.ToString(CultureInfo.InvariantCulture);
                     string setting = HostSettings.GetHostSetting(settingName);
-                    if (!int.TryParse(setting, NumberStyles.Integer, CultureInfo.InvariantCulture, out this._childDisplayTabId))
+                    if (!int.TryParse(setting, NumberStyles.Integer, CultureInfo.InvariantCulture, out this.childDisplayTabId))
                     {
                         throw new InvalidOperationException("Default Display Page setting must be set in order to import items");
                     }
