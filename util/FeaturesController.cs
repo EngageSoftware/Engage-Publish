@@ -1,12 +1,13 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="FeaturesController.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.Util
 {
@@ -27,7 +28,8 @@ namespace Engage.Dnn.Publish.Util
     using Engage.Dnn.Publish.Portability;
 
     /// <summary>
-    /// Features Controller Class supports IPortable currently.
+    /// Features Controller implements <see cref="IPortable"/> and <see cref="ISearchable"/> 
+    /// as the business controller class for the Engage: Publish and Tag Cloud desktop modules.
     /// </summary>
     public class FeaturesController : IPortable, ISearchable
     {
@@ -50,28 +52,27 @@ namespace Engage.Dnn.Publish.Util
         /// <param name="userId"></param>
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
-            var validator = new TransportableXmlValidator();
-            var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
-
-            if (validator.Validate(stream) == false)
-            {
-                var invalidXml = new Exception("Unable to import publish content due to incompatible XML file. Error: " + validator.Errors[0]);
-                Exceptions.LogException(invalidXml);
-                throw invalidXml;
-            }
-
-            // The DNN ValidatorBase closes the stream? Must re-create. hk
-            stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
-            var doc = new XPathDocument(stream);
-            var builder = new XmlTransporter(moduleId);
-
             try
             {
+                var validator = new TransportableXmlValidator();
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+
+                if (validator.Validate(stream) == false)
+                {
+                    var invalidXml = new Exception("Unable to import publish content due to incompatible XML file. Error: " + validator.Errors[0]);
+                    Exceptions.LogException(invalidXml);
+                    throw invalidXml;
+                }
+
+                // The DNN ValidatorBase closes the stream? Must re-create. hk
+                stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+                var doc = new XPathDocument(stream);
+                var builder = new XmlTransporter(moduleId);
                 XmlDirector.Deconstruct(builder, doc);
             }
             catch (Exception e)
             {
-                Exceptions.LogException(new Exception(e.ToString()));
+                Exceptions.LogException(e);
                 throw;
             }
         }
