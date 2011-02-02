@@ -253,7 +253,7 @@ namespace Engage.Dnn.Publish.Util
                 Utility.GetPortalSettings(item.PortalId),
                 String.Empty,
                 cultureName,
-                createFriendlyUrl ? MakeUrlSafe(item.Name) : null,
+                createFriendlyUrl ? MakeUrlSafe(item.Name) + ".aspx" : null,
                 "itemId=" + item.ItemId.ToString(CultureInfo.InvariantCulture),
                 UsePageId(pageId, portalId) ? "pageId=" + pageId.ToString(CultureInfo.InvariantCulture) : null,
                 queryStringModuleId.HasValue ? "moduleId=" + queryStringModuleId.Value.ToString(CultureInfo.InvariantCulture) : null);
