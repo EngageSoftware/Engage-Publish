@@ -197,11 +197,11 @@ namespace Engage.Dnn.Publish.Util
         /// <summary>
         /// Gets a URL linking to the given item when friendly URLs are turned on
         /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="moduleId">The module id.</param>
-        /// <param name="pageId">The page id.</param>
-        /// <param name="portalId">The portal id.</param>
+        /// <param name="item">The item to link to.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="moduleId">The module ID.</param>
+        /// <param name="pageId">The page ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="cultureName">The name of the current culture of the page, or <see cref="string.Empty"/></param>
         /// <param name="createFriendlyUrl">Whether to generate a friendly URL where the page name is the name of the item</param>
         /// <returns>A URL linking to the given item</returns>
@@ -263,20 +263,10 @@ namespace Engage.Dnn.Publish.Util
         /// Cleans up a string to make a legal url part
         /// </summary>
         /// <param name="urlName">The URL part text.</param>
-        /// <returns>The cleaned URL part name</returns>
-        private static string MakeUrlSafe(string urlName)
-        {
-            return MakeUrlSafe(urlName, "-", 50);
-        }
-
-        /// <summary>
-        /// Cleans up a string to make a legal url part
-        /// </summary>
-        /// <param name="urlName">The URL part text.</param>
         /// <param name="punctuationReplacement">The text with which to replace invalid characters</param>
         /// <param name="maxLength">The maximum length of the URL part</param>
         /// <returns>The cleaned URL part name</returns>
-        private static string MakeUrlSafe(string urlName, string punctuationReplacement, int maxLength)
+        private static string MakeUrlSafe(string urlName, string punctuationReplacement = "-", int maxLength = 50)
         {
             const string IllegalCharacters = "#%&*{}\\:<>?/+'.";
             const string UnwantedCharacters = ";,\"+!'{}[]()^$*";
@@ -343,18 +333,18 @@ namespace Engage.Dnn.Publish.Util
         /// </summary>
         /// <param name="tabId">The tab id linking to</param>
         /// <param name="isSuperTab">Is the destination tab a host tab?</param>
-        /// <param name="settings">the Portalsettings</param>
+        /// <param name="portalSettings">the Portalsettings</param>
         /// <param name="controlKey">an optional controlkey. If no controlkey is needed, pass "" </param>
         /// <param name="language">an optional language. If language is an empty string, the current active culture will be added in the url.</param>
         /// <param name="aspxPageName">an optional custom .aspx page name.  If aspxPageName is an empty string, the page name will be 'default.aspx', otherwise the returned url will contain the custom pagename in the place of default.aspx.  Only applies when 'FriendlyUrls' are switched on at the host level.</param>
         /// <param name="additionalParameters">Any aditional querystring parameters. Use this format: "param1=value1", "param2=value2", ... , "paramN=valueN"</param>
-        /// <returns>Returns a full internal url</returns>
-        /// <remarks> from http://support.dotnetnuke.com/issue/ViewIssue.aspx?ID=7400&PROJID=2 </remarks>
+        /// <returns>A full internal url</returns>
+        /// <remarks> from http://support.dotnetnuke.com/issue/ViewIssue.aspx?ID=7400&amp;PROJID=2 </remarks>
         /// <history>
         /// [bchapman] 18/04/08  Add new NavigateUrl overload to allow custom page names
         /// [bdukes]   23/11/10  Converted to C#
         /// </history>
-        private static string NavigateURL(int tabId, bool isSuperTab, PortalSettings settings, string controlKey, string language, string aspxPageName, params string[] additionalParameters)
+        private static string NavigateURL(int tabId, bool isSuperTab, PortalSettings portalSettings, string controlKey, string language, string aspxPageName, params string[] additionalParameters)
         {
             string url = tabId == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabId);
 
@@ -372,7 +362,7 @@ namespace Engage.Dnn.Publish.Util
 
             if (isSuperTab)
             {
-                url += "&portalid=" + settings.PortalId.ToString(CultureInfo.InvariantCulture);
+                url += "&portalid=" + portalSettings.PortalId.ToString(CultureInfo.InvariantCulture);
             }
 
             // only add language to url if more than one locale is enabled, and if admin did not turn it off
@@ -395,13 +385,13 @@ namespace Engage.Dnn.Publish.Util
                     aspxPageName = Globals.glbDefaultPage;
                 }
 
-                var tab = settings.DesktopTabs.Cast<TabInfo>().FirstOrDefault(t => t.TabID == tabId);
+                var tab = portalSettings.DesktopTabs.Cast<TabInfo>().FirstOrDefault(t => t.TabID == tabId);
                 if (tab != null)
                 {
-                    return Globals.FriendlyUrl(tab, url, aspxPageName, settings);
+                    return Globals.FriendlyUrl(tab, url, aspxPageName, portalSettings);
                 }
 
-                return Globals.FriendlyUrl(null, url, settings);
+                return Globals.FriendlyUrl(null, url, portalSettings);
             }
 
             return Globals.ResolveUrl(url);
