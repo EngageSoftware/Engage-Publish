@@ -228,4 +228,48 @@ Body: {5}</value>
   <data name="CommentNotificationEmailSubject.Text" xml:space="preserve">
     <value>New Comment: {0}</value>
   </data>
+  <data name="SimpleGalleryImageLink.Format" xml:space="preserve">
+    <value>window.open('{0}','smallscreen','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width={1},height={2}')</value>
+    <comment>{0} is result of SimpleGalleryPopupUrl.Format
+{1} is popup width, 
+{2} is popup height</comment>
+  </data>
+  <data name="SimpleGalleryPopupUrl.Format" xml:space="preserve">
+    <value>~/DesktopModules/SimpleGallery/SlideShowPopup.aspx?PortalID={0}&amp;TagID={1}&amp;ItemID={2}&amp;Border={3}&amp;sb={4}&amp;sd={5}&amp;tt={6}</value>
+    <comment>{0} is portal ID
+{1} is -1
+{2} is photo ID
+{3} is border style
+{4} is sort type
+{5} is sort direction
+{6} is tooltip</comment>
+  </data>
+  <data name="UltraMediaGalleryImageLink.Format" xml:space="preserve">
+    <value>window.open('{0}','UPG_POPUP','location=no,status=no,scrollbars=no,toolbar=no,menubar=no,directories=no,resizable=yes,width={1},height={2}')</value>
+    <comment>{0} is result of UltraMediaGalleryPopupUrl.Format
+{1} is popup width, 
+{2} is popup height</comment>
+  </data>
+  <data name="UltraMediaGalleryPath.Format" xml:space="preserve">
+    <value>{0}UltraPhotoGallery/{1}/{2}/{3}</value>
+    <comment>{0} is portals directory
+{1} is module ID
+{2} is album ID
+{3} is image file name
+UMG 5 should be {0}UltraPhotoGallery/{1}/{2}/large/{3}</comment>
+  </data>
+  <data name="UltraMediaGalleryPopupUrl.Format" xml:space="preserve">
+    <value>~/DesktopModules/BizModules - UltraPhotoGallery/Popup.aspx?ModuleId={0}&amp;portalId={1}&amp;AlbumId={2}</value>
+    <comment>{0} is module ID
+{1} is portal ID
+{2} is album ID</comment>
+  </data>
+  <data name="UltraMediaGalleryThumbPath.Format" xml:space="preserve">
+    <value>{0}UltraPhotoGallery/{1}/{2}/thumbs/{3}</value>
+    <comment>{0} is portals directory
+{1} is module ID
+{2} is album ID
+{3} is image file name
+UMG 5 should be {0}UltraPhotoGallery/{1}/{2}/thumbs/{3}</comment>
+  </data>
 </root>
