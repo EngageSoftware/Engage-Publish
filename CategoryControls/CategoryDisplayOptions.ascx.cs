@@ -94,7 +94,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 o = this.Settings["cdCategoryId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     ListItem li = this.ddlCategoryList.Items.FindByValue(o.ToString());
                     if (li != null)
@@ -104,7 +104,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 o = this.Settings["cdDisplayOption"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     ListItem li = this.ddlViewOptions.Items.FindByValue(o.ToString());
                     if (li != null)
@@ -124,7 +124,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 o = this.Settings["cdSortOption"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     ListItem li = this.ddlSortOption.Items.FindByValue(o.ToString());
                     if (li != null)

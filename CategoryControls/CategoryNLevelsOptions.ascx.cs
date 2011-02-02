@@ -61,7 +61,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 }
 
                 o = this.Settings["nCategoryId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     ListItem li = this.ddlCategoryList.Items.FindByValue(o.ToString());
                     if (li != null)
@@ -70,7 +70,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     }
                 }
 
-                // if (String.IsNullOrEmpty(OrderString))
+                // if (string.IsNullOrEmpty(OrderString))
                 // {
                 // o = Settings["nSortOrder"];
                 // if (o != null)

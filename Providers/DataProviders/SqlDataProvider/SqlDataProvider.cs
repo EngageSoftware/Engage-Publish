@@ -69,14 +69,14 @@ namespace Engage.Dnn.Publish.Data
             this._providerPath = provider.Attributes["providerPath"];
 
             this._objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(this._objectQualifier) && this._objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
+            if (!string.IsNullOrEmpty(this._objectQualifier) && this._objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
             {
                 this._objectQualifier += "_";
             }
 
             // this._objectQualifier = "Publish_";
             this._databaseOwner = provider.Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(this._databaseOwner) && this._databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
+            if (!string.IsNullOrEmpty(this._databaseOwner) && this._databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
             {
                 this._databaseOwner += ".";
             }
@@ -1653,7 +1653,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetDataTable(string sql, int portalId)
         {
-            if (String.IsNullOrEmpty(sql))
+            if (string.IsNullOrEmpty(sql))
             {
                 return null;
             }
@@ -3205,7 +3205,7 @@ namespace Engage.Dnn.Publish.Data
 
         public override int WaitingForApprovalCount(int portalId)
         {
-            string sql = String.Format(
+            string sql = string.Format(
                 CultureInfo.InvariantCulture, 
                 "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", 
                 this.NamePrefix, 

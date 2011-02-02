@@ -68,7 +68,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public static string FormatUrl(int tabId, string link)
         {
-            string strURL = String.IsNullOrEmpty(link) ? Globals.NavigateURL(tabId) : Globals.NavigateURL(tabId, string.Empty, link);
+            string strURL = string.IsNullOrEmpty(link) ? Globals.NavigateURL(tabId) : Globals.NavigateURL(tabId, string.Empty, link);
             return strURL;
         }
 
@@ -80,7 +80,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         public bool ShowCategorySelection()
         {
             object o = this.Settings["csAllowCategorySelection"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 return o.ToString() == "Y";
             }
@@ -91,7 +91,7 @@ namespace Engage.Dnn.Publish.CategoryControls
         public bool ShowDescription()
         {
             object o = this.Settings["csShowDescription"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 return o.ToString() == "Y";
             }
@@ -242,7 +242,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             {
                 this.divSearchResults.Visible = true;
                 object o = this.Settings["csSearchEmptyRedirectUrl"];
-                if ((String.IsNullOrEmpty(this.txtCategorySearch.Text) ||
+                if ((string.IsNullOrEmpty(this.txtCategorySearch.Text) ||
                      this.txtCategorySearch.Text.Trim() == Localization.GetString("txtCategorySearch", this.LocalResourceFile)) && o != null)
                 {
                     // redirect if no search string was passed
@@ -311,7 +311,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 this.divSearchCategorySelection.Visible = this.ShowCategorySelection() && this.ddlCategoryList.Items.Count > 1;
 
-                if (String.IsNullOrEmpty(this.txtCategorySearch.Text))
+                if (string.IsNullOrEmpty(this.txtCategorySearch.Text))
                 {
                     this.txtCategorySearch.Text = Localization.GetString("txtCategorySearch", this.LocalResourceFile);
                 }

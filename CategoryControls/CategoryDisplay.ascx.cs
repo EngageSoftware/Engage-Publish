@@ -265,7 +265,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 // N Levels M Items
                 if (this.showAll == false)
                 {
-                    if (!String.IsNullOrEmpty(this.categoryDisplayShowChild))
+                    if (!string.IsNullOrEmpty(this.categoryDisplayShowChild))
                     {
                         if (this.categoryDisplayShowChild != "ShowAll")
                         {
@@ -324,13 +324,13 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void SetupOptions()
         {
             object o = this.Settings["cdSortOption"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.sortOption = o.ToString();
             }
 
             o = this.Settings["cdItemTypeId"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.itemTypeId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
             }
@@ -342,7 +342,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             }
 
             o = this.Settings["cdChildDisplayOption"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.categoryDisplayShowChild = o.ToString();
             }

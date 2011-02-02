@@ -263,11 +263,11 @@ namespace Engage.Dnn.Publish
                     // 				wr.WriteElementString("slash:comments", objArticle.CommentCount.ToString());
                     // wr.WriteElementString("wfw:commentRss", "http://" & Request.Url.Host & Me.ResolveUrl("RssComments.aspx?TabID=" & m_tabID & "&ModuleID=" & m_moduleID & "&ArticleID=" & objArticle.ArticleID.ToString()).Replace(" ", "%20"));
                     // wr.WriteElementString("trackback:ping", "http://" & Request.Url.Host & Me.ResolveUrl("Tracking/Trackback.aspx?ArticleID=" & objArticle.ArticleID.ToString() & "&PortalID=" & _portalSettings.PortalId.ToString() & "&TabID=" & _portalSettings.ActiveTab.TabID.ToString()).Replace(" ", "%20"));
-                    string title = String.Empty, 
-                           description = String.Empty, 
-                           childItemId = String.Empty, 
-                           thumbnail = String.Empty, 
-                           guid = String.Empty, 
+                    string title = string.Empty, 
+                           description = string.Empty, 
+                           childItemId = string.Empty, 
+                           thumbnail = string.Empty, 
+                           guid = string.Empty, 
                            author = string.Empty;
 
                     DateTime startDate = DateTime.MinValue;

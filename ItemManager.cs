@@ -34,7 +34,7 @@ namespace Engage.Dnn.Publish
             {
                 int id = -1;
                 object o = this._module.Settings["adArticleId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -50,7 +50,7 @@ namespace Engage.Dnn.Publish
                 int id = -1;
                 string settingPrefix = GetDisplayTypePrefix(this.DisplayType);
                 object o = this._module.Settings[settingPrefix + "CategoryId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -66,7 +66,7 @@ namespace Engage.Dnn.Publish
                 string displayOption = string.Empty;
                 string settingPrefix = GetDisplayTypePrefix(this.DisplayType);
                 object o = this._module.Settings[settingPrefix + "DisplayOption"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     displayOption = o.ToString();
                 }
@@ -81,7 +81,7 @@ namespace Engage.Dnn.Publish
             {
                 string displayType = string.Empty;
                 object o = this._module.Settings["DisplayType"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     displayType = o.ToString();
                 }
@@ -95,7 +95,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 object o = this._module.Settings["Overrideable"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     bool overrideable;
                     if (bool.TryParse(o.ToString(), out overrideable))
@@ -114,7 +114,7 @@ namespace Engage.Dnn.Publish
             {
                 int id = -1;
                 object o = this._module.Settings["ItemId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -129,7 +129,7 @@ namespace Engage.Dnn.Publish
             {
                 int id = -1;
                 object o = this._module.Settings["OldArticleId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -144,7 +144,7 @@ namespace Engage.Dnn.Publish
             {
                 int id = -1;
                 object o = this._module.Settings["OldCategoryId"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     id = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                 }
@@ -201,7 +201,7 @@ namespace Engage.Dnn.Publish
                     id = this.AdArticleId;
                 }
             }
-            else if (this.AdArticleId != -1 && String.IsNullOrEmpty(this.DisplayType))
+            else if (this.AdArticleId != -1 && string.IsNullOrEmpty(this.DisplayType))
             {
                 id = this.AdArticleId;
             }
@@ -217,7 +217,7 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            if (this.CategoryId != -1 && String.IsNullOrEmpty(this.DisplayType))
+            if (this.CategoryId != -1 && string.IsNullOrEmpty(this.DisplayType))
             {
                 id = this.CategoryId;
             }

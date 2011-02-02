@@ -238,24 +238,24 @@ namespace Engage.Dnn.Publish.CategoryControls
         private void SetupOptions()
         {
             object o = this.Settings["nLevels"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.numberOfLevels = Convert.ToInt32(o, CultureInfo.InvariantCulture);
             }
 
             // object m = Settings["mItems"];
-            // if (m != null && !String.IsNullOrEmpty(m.ToString()))
+            // if (m != null && !string.IsNullOrEmpty(m.ToString()))
             // {
             // mItems = Convert.ToInt32(m, CultureInfo.InvariantCulture);
             // }
             o = this.Settings["HighlightCurrentItem"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.highlightCurrentItem = Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture);
             }
 
             o = this.Settings["ShowParentItem"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.showParentItem = Convert.ToBoolean(o.ToString(), CultureInfo.InvariantCulture);
             }

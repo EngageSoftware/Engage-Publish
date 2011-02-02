@@ -76,7 +76,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 // int itemId = ItemId;
 
                 // object o = Settings["CategoryId"];
-                // if(o != null)//!String.IsNullOrEmpty(o.ToString()))
+                // if(o != null)//!string.IsNullOrEmpty(o.ToString()))
                 // {
                 // int.TryParse(o.ToString(), out itemId);
                 // //REMOVE THIS FROM PUBLIC RELEASE

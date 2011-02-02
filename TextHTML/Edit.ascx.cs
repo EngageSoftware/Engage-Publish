@@ -46,7 +46,7 @@ namespace Engage.Dnn.Publish.TextHtml
                     // there aren't any approved versions of this article, provide a link to the versions page.
                     this.publishTextHTMLEntry.Visible = false;
                     this.divPublishNotifications.Visible = true;
-                    this.lblPublishMessages.Text = String.Format(
+                    this.lblPublishMessages.Text = string.Format(
                         Localization.GetString("notApproved", this.LocalResourceFile), this.BuildVersionsUrl());
                 }
             }
@@ -84,7 +84,7 @@ namespace Engage.Dnn.Publish.TextHtml
                 articleName.Append(this.ModuleId.ToString());
             }
 
-            // string articleDescription = String.Format(Localization.GetString("description", LocalResourceFile), DateTime.Now.ToString(CultureInfo.CurrentCulture));
+            // string articleDescription = string.Format(Localization.GetString("description", LocalResourceFile), DateTime.Now.ToString(CultureInfo.CurrentCulture));
             string articleText = this.teArticleText.Text;
             string description = HtmlUtils.StripTags(articleText, false);
             string articleDescription = Utility.TrimDescription(3997, description) + "..."; // description + "...";

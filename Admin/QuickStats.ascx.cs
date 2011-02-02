@@ -39,7 +39,7 @@ namespace Engage.Dnn.Publish.Admin
                         // Admin specific stats
                         if (this.UseApprovals)
                         {
-                            this.lnkWaitingForApproval.Text = String.Format(
+                            this.lnkWaitingForApproval.Text = string.Format(
                                 Localization.GetString("lnkWaitingForApproval", this.LocalResourceFile), 
                                 DataProvider.Instance().WaitingForApprovalCount(this.PortalId));
                             this.lnkWaitingForApproval.Visible = true;
@@ -59,7 +59,7 @@ namespace Engage.Dnn.Publish.Admin
                                 authorUserId = this.UserId;
                             }
 
-                            this.lnkCommentsForApproval.Text = String.Format(
+                            this.lnkCommentsForApproval.Text = string.Format(
                                 Localization.GetString("lnkCommentsForApproval", this.LocalResourceFile), 
                                 Comment.CommentsWaitingForApprovalCount(this.PortalId, authorUserId));
                             this.lnkCommentsForApproval.Visible = true;

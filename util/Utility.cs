@@ -445,10 +445,10 @@ namespace Engage.Dnn.Publish.Util
                 // todo: should application URL use PortalId?
                 if (HttpContext.Current == null)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
-                return HttpContext.Current.Request.ApplicationPath == "/" ? String.Empty : HttpContext.Current.Request.ApplicationPath;
+                return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
             }
         }
 
@@ -685,7 +685,7 @@ namespace Engage.Dnn.Publish.Util
         }
 
         /// <summary>
-        /// Creates a String (nvarchar) SQL param, setting and checking the bounds of the value within the parameter.
+        /// Creates a string (nvarchar) SQL param, setting and checking the bounds of the value within the parameter.
         /// Sets the value to DBNull if the string is <see cref="Null.NullString"/> or <c>null</c>.
         /// </summary>
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
@@ -713,7 +713,7 @@ namespace Engage.Dnn.Publish.Util
         }
 
         /// <summary>
-        /// Creates a String (varchar) SQL param, setting and checking the bounds of the value within the parameter.
+        /// Creates a string (varchar) SQL param, setting and checking the bounds of the value within the parameter.
         /// Sets the value to DBNull if the string is <see cref="Null.NullString"/> or <c>null</c>.
         /// </summary>
         /// <param name="parameterName">Name of the parameter in the SQL Stored Procedure.</param>
@@ -771,9 +771,9 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetCurrentCultureDateTime(string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             try
@@ -930,7 +930,7 @@ namespace Engage.Dnn.Publish.Util
         {
             if (string.IsNullOrEmpty(value))
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             try
@@ -1289,22 +1289,22 @@ namespace Engage.Dnn.Publish.Util
 
             foreach (DataControlField column in gridView.Columns)
             {
-                if (!String.IsNullOrEmpty(column.HeaderText))
+                if (!string.IsNullOrEmpty(column.HeaderText))
                 {
                     string localizedText = Localization.GetString(column.HeaderText + ".Header", resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         column.HeaderText = localizedText;
                         column.AccessibleHeaderText = localizedText;
                     }
                 }
 
-                if (!String.IsNullOrEmpty(column.FooterText))
+                if (!string.IsNullOrEmpty(column.FooterText))
                 {
                     column.FooterText = Localization.GetString(column.FooterText + ".Header", resourceFile);
                 }
 
-                if (!String.IsNullOrEmpty(column.AccessibleHeaderText))
+                if (!string.IsNullOrEmpty(column.AccessibleHeaderText))
                 {
                     column.AccessibleHeaderText = Localization.GetString(column.AccessibleHeaderText + ".Header", resourceFile);
                 }
@@ -1312,7 +1312,7 @@ namespace Engage.Dnn.Publish.Util
                 var buttonField = column as ButtonField;
                 if (buttonField != null)
                 {
-                    if (String.IsNullOrEmpty(buttonField.Text))
+                    if (string.IsNullOrEmpty(buttonField.Text))
                     {
                         buttonField.Text = Localization.GetString(buttonField.Text, resourceFile);
                     }
@@ -1322,7 +1322,7 @@ namespace Engage.Dnn.Publish.Util
                     var checkboxField = column as CheckBoxField;
                     if (checkboxField != null)
                     {
-                        if (!String.IsNullOrEmpty(checkboxField.Text))
+                        if (!string.IsNullOrEmpty(checkboxField.Text))
                         {
                             checkboxField.Text = Localization.GetString(checkboxField.Text, resourceFile);
                         }
@@ -1332,37 +1332,37 @@ namespace Engage.Dnn.Publish.Util
                         var commands = column as CommandField;
                         if (commands != null)
                         {
-                            if (!String.IsNullOrEmpty(commands.CancelText))
+                            if (!string.IsNullOrEmpty(commands.CancelText))
                             {
                                 commands.CancelText = Localization.GetString(commands.CancelText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.DeleteText))
+                            if (!string.IsNullOrEmpty(commands.DeleteText))
                             {
                                 commands.DeleteText = Localization.GetString(commands.DeleteText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.EditText))
+                            if (!string.IsNullOrEmpty(commands.EditText))
                             {
                                 commands.EditText = Localization.GetString(commands.EditText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.InsertText))
+                            if (!string.IsNullOrEmpty(commands.InsertText))
                             {
                                 commands.InsertText = Localization.GetString(commands.InsertText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.NewText))
+                            if (!string.IsNullOrEmpty(commands.NewText))
                             {
                                 commands.NewText = Localization.GetString(commands.NewText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.SelectText))
+                            if (!string.IsNullOrEmpty(commands.SelectText))
                             {
                                 commands.SelectText = Localization.GetString(commands.SelectText, resourceFile);
                             }
 
-                            if (!String.IsNullOrEmpty(commands.UpdateText))
+                            if (!string.IsNullOrEmpty(commands.UpdateText))
                             {
                                 commands.UpdateText = Localization.GetString(commands.UpdateText, resourceFile);
                             }
@@ -1372,7 +1372,7 @@ namespace Engage.Dnn.Publish.Util
                             var hyperLinkfield = column as HyperLinkField;
                             if (hyperLinkfield != null)
                             {
-                                if (!String.IsNullOrEmpty(hyperLinkfield.Text))
+                                if (!string.IsNullOrEmpty(hyperLinkfield.Text))
                                 {
                                     hyperLinkfield.Text = Localization.GetString(hyperLinkfield.Text, resourceFile);
                                 }
@@ -1382,7 +1382,7 @@ namespace Engage.Dnn.Publish.Util
                                 var imageField = column as ImageField;
                                 if (imageField != null)
                                 {
-                                    if (!String.IsNullOrEmpty(imageField.AlternateText))
+                                    if (!string.IsNullOrEmpty(imageField.AlternateText))
                                     {
                                         imageField.AlternateText = Localization.GetString(imageField.AlternateText, resourceFile);
                                     }
@@ -1482,7 +1482,7 @@ namespace Engage.Dnn.Publish.Util
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Code Analysis doesn't see validation")]
         public static DataTable SortDataTable(DataTable dt, string sortOrder)
         {
-            if (dt != null && !String.IsNullOrEmpty(sortOrder))
+            if (dt != null && !string.IsNullOrEmpty(sortOrder))
             {
                 DataTable dtreturn = dt.Clone();
 
@@ -1551,7 +1551,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string StripTags(string html)
         {
-            return Regex.Replace(html, "<[^>]*>", String.Empty);
+            return Regex.Replace(html, "<[^>]*>", string.Empty);
         }
 
         public static string TrimDescription(int length, string description)

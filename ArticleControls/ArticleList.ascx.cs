@@ -267,12 +267,12 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (this.dgItems.Rows.Count < 1)
             {
                 this.lblMessage.Text = this.UseApprovals
-                                           ? String.Format(
+                                           ? string.Format(
                                                CultureInfo.CurrentCulture, 
                                                Localization.GetString("NoArticlesFound", this.LocalResourceFile), 
                                                this.cboCategories.SelectedItem, 
                                                this.cboWorkflow.SelectedItem)
-                                           : String.Format(
+                                           : string.Format(
                                                CultureInfo.CurrentCulture, 
                                                Localization.GetString("NoArticlesFoundNoApproval", this.LocalResourceFile), 
                                                this.cboCategories.SelectedItem);

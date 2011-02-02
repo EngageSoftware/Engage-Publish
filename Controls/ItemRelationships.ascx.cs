@@ -218,7 +218,7 @@ namespace Engage.Dnn.Publish.Controls
             }
 
             string returnString = Convert.ToString(d[setting], CultureInfo.InvariantCulture);
-            return String.IsNullOrEmpty(returnString) ? null : returnString;
+            return string.IsNullOrEmpty(returnString) ? null : returnString;
         }
 
         public int[] GetSelectedItemIds()

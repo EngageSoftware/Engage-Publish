@@ -315,7 +315,7 @@ namespace Engage.Dnn.Publish
         private void SetOptions()
         {
             object o = this.Settings["DisplayType"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 ListItem li = this.ddlChooseDisplayType.Items.FindByValue(this.Settings["DisplayType"].ToString());
                 if (li != null)
@@ -325,7 +325,7 @@ namespace Engage.Dnn.Publish
             }
 
             o = this.Settings["Overrideable"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 bool overrideable;
                 if (bool.TryParse(this.Settings["Overrideable"].ToString(), out overrideable))
@@ -340,7 +340,7 @@ namespace Engage.Dnn.Publish
             }
 
             o = this.Settings["AllowTitleUpdate"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 bool allowTitleUpdate;
                 if (bool.TryParse(this.Settings["AllowTitleUpdate"].ToString(), out allowTitleUpdate))
@@ -350,7 +350,7 @@ namespace Engage.Dnn.Publish
             }
 
             o = this.Settings["CacheTime"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.txtCacheTime.Text = o.ToString();
             }
@@ -360,13 +360,13 @@ namespace Engage.Dnn.Publish
             }
 
             o = this.Settings["LogBreadCrumb"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.chkLogBreadcrumb.Checked = o.ToString().Equals("true");
             }
 
             o = this.Settings["SupportWLW"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 bool supportWlw;
                 if (bool.TryParse(this.Settings["SupportWLW"].ToString(), out supportWlw))

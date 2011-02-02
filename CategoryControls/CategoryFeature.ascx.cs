@@ -77,7 +77,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         public string GetThumb(string fileName)
         {
-            return String.IsNullOrEmpty(fileName) ? string.Empty : this.GetThumbnailUrl(fileName);
+            return string.IsNullOrEmpty(fileName) ? string.Empty : this.GetThumbnailUrl(fileName);
         }
 
         protected override void OnInit(EventArgs e)

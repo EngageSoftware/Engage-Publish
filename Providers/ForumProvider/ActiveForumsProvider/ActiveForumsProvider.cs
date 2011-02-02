@@ -61,19 +61,19 @@ namespace Engage.Dnn.Publish.Forum
 
             this._connectionString = Config.GetConnectionString();
 
-            if (String.IsNullOrEmpty(this._connectionString))
+            if (string.IsNullOrEmpty(this._connectionString))
             {
                 this._connectionString = provider.Attributes["connectionString"];
             }
 
             this._objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(this._objectQualifier) && this._objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
+            if (!string.IsNullOrEmpty(this._objectQualifier) && this._objectQualifier.EndsWith("_", StringComparison.Ordinal) == false)
             {
                 this._objectQualifier += "_";
             }
 
             this._databaseOwner = provider.Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(this._databaseOwner) && this._databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
+            if (!string.IsNullOrEmpty(this._databaseOwner) && this._databaseOwner.EndsWith(".", StringComparison.Ordinal) == false)
             {
                 this._databaseOwner += ".";
             }

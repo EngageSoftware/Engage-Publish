@@ -123,12 +123,12 @@ namespace Engage.Dnn.Publish.Controls
                 if (File.Exists(Path.Combine(path, filename + extension)))
                 {
                     int i = 0;
-                    while (File.Exists(Path.Combine(path, String.Format(CultureInfo.InvariantCulture, "{0}[{1}]{2}", filename, i, extension))))
+                    while (File.Exists(Path.Combine(path, string.Format(CultureInfo.InvariantCulture, "{0}[{1}]{2}", filename, i, extension))))
                     {
                         i++;
                     }
 
-                    filename = String.Format(CultureInfo.InvariantCulture, "{0}[{1}]", filename, i);
+                    filename = string.Format(CultureInfo.InvariantCulture, "{0}[{1}]", filename, i);
                 }
 
                 this.fileThumbnail.PostedFile.SaveAs(Path.Combine(path, filename + extension));
@@ -246,7 +246,7 @@ namespace Engage.Dnn.Publish.Controls
                     }
                 }
 
-                this.txtMessage.Text = String.Format(
+                this.txtMessage.Text = string.Format(
                     CultureInfo.CurrentCulture, Localization.GetString("FileExtension", this.LocalResourceFile), Utility.MediaFileTypes);
             }
 

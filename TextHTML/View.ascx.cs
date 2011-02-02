@@ -215,7 +215,7 @@ namespace Engage.Dnn.Publish.TextHtml
                         this.BuildLinkUrl(
                             "&amp;mid=" + this.ModuleId + "&amp;ctl=admincontainer&amp;adminType=amsSettings&amp;returnUrl=" +
                             HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl));
-                    this.lblArticleText.Text = String.Format(notConfigured, adminSettingsLink);
+                    this.lblArticleText.Text = string.Format(notConfigured, adminSettingsLink);
 
                     // disable the edit link
                 }

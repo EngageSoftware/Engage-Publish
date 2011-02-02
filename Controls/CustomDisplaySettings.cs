@@ -70,7 +70,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 string setting = "MM.dd.yy";
                 object o = this.settings["DateFormat"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     setting = o.ToString();
                 }
@@ -303,7 +303,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 string setting = "1"; // by default sort descending
                 object o = this.settings["SortDirection"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     setting = o.ToString();
                 }
@@ -324,7 +324,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 string setting = StartDateSort;
                 object o = this.settings["SortOption"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     setting = o.ToString();
                 }

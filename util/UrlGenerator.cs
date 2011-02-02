@@ -48,7 +48,7 @@ namespace Engage.Dnn.Publish.Util
                 i = Category.GetCategory(id);
             }
 
-            string returnUrl = String.Empty;
+            string returnUrl = string.Empty;
             if (HttpContext.Current != null)
             {
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish.Util
 
             return Globals.NavigateURL(
                 tabId, 
-                String.Empty, 
+                string.Empty, 
                 "ctl=" + Utility.AdminContainer, 
                 "mid=" + moduleId.ToString(CultureInfo.InvariantCulture), 
                 "adminType=" + type.Name + "Edit", 
@@ -79,7 +79,7 @@ namespace Engage.Dnn.Publish.Util
                 i = Category.GetCategory(id, portalId);
             }
 
-            string returnUrl = String.Empty;
+            string returnUrl = string.Empty;
             if (HttpContext.Current != null)
             {
                 returnUrl = "returnUrl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl);
@@ -87,7 +87,7 @@ namespace Engage.Dnn.Publish.Util
 
             return Globals.NavigateURL(
                 tabId, 
-                String.Empty, 
+                string.Empty, 
                 "ctl=" + Utility.AdminContainer, 
                 "mid=" + moduleId.ToString(CultureInfo.InvariantCulture), 
                 "adminType=" + type.Name + "Edit", 
@@ -122,7 +122,7 @@ namespace Engage.Dnn.Publish.Util
                 // support versions. hk
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string GetItemLinkUrl(Item item)
@@ -136,15 +136,15 @@ namespace Engage.Dnn.Publish.Util
 
             if (item != null)
             {
-                return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, String.Empty);
+                return GetItemLinkUrl(item, item.PortalId, -1, -1, -1, string.Empty);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId)
         {
-            return GetItemLinkUrl(itemId, portalId, tabId, moduleId, 1, String.Empty);
+            return GetItemLinkUrl(itemId, portalId, tabId, moduleId, 1, string.Empty);
         }
 
         public static string GetItemLinkUrl(int itemId, int portalId, int tabId, int moduleId, int pageId, string cultureName)
@@ -166,12 +166,12 @@ namespace Engage.Dnn.Publish.Util
                 return GetItemLinkUrl(item, portalId, tabId, moduleId, pageId, cultureName);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string GetItemLinkUrl(Item item, int portalId, int tabId, int moduleId, int pageId, string cultureName)
         {
-            string returnUrl = String.Empty;
+            string returnUrl = string.Empty;
 
             if (item != null)
             {
@@ -189,7 +189,7 @@ namespace Engage.Dnn.Publish.Util
         public static string GetItemVersionLinkUrl(Item item)
         {
             string returnUrl = Globals.NavigateURL(
-                item.DisplayTabId, String.Empty, "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
+                item.DisplayTabId, string.Empty, "VersionId=" + item.ItemVersionId.ToString(CultureInfo.InvariantCulture) + "&modid=" + item.ModuleId);
 
             return returnUrl;
         }
@@ -251,7 +251,7 @@ namespace Engage.Dnn.Publish.Util
                 tabInfo.TabID,
                 tabInfo.IsSuperTab,
                 Utility.GetPortalSettings(item.PortalId),
-                String.Empty,
+                string.Empty,
                 cultureName,
                 createFriendlyUrl ? MakeUrlSafe(item.Name) + ".aspx" : null,
                 "itemId=" + item.ItemId.ToString(CultureInfo.InvariantCulture),
@@ -273,7 +273,7 @@ namespace Engage.Dnn.Publish.Util
 
             if (urlName == null)
             {
-                urlName = String.Empty;
+                urlName = string.Empty;
             }
 
             urlName = urlName.Normalize(NormalizationForm.FormD);
@@ -348,7 +348,7 @@ namespace Engage.Dnn.Publish.Util
         {
             string url = tabId == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabId);
 
-            if (!String.IsNullOrEmpty(controlKey))
+            if (!string.IsNullOrEmpty(controlKey))
             {
                 url += "&ctl=" + controlKey;
             }
@@ -356,7 +356,7 @@ namespace Engage.Dnn.Publish.Util
             if (additionalParameters != null)
             {
                 url = additionalParameters
-                    .Where(parameter => !String.IsNullOrEmpty(parameter))
+                    .Where(parameter => !string.IsNullOrEmpty(parameter))
                     .Aggregate(url, (current, parameter) => current + "&" + parameter);
             }
 
@@ -368,7 +368,7 @@ namespace Engage.Dnn.Publish.Util
             // only add language to url if more than one locale is enabled, and if admin did not turn it off
             if (Localization.GetEnabledLocales().Count > 1 && Localization.UseLanguageInUrl())
             {
-                if (String.IsNullOrEmpty(language))
+                if (string.IsNullOrEmpty(language))
                 {
                     url += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                 }
@@ -380,7 +380,7 @@ namespace Engage.Dnn.Publish.Util
 
             if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y")
             {
-                if (String.IsNullOrEmpty(aspxPageName))
+                if (string.IsNullOrEmpty(aspxPageName))
                 {
                     aspxPageName = Globals.glbDefaultPage;
                 }

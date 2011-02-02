@@ -80,7 +80,7 @@ namespace Engage.Dnn.Publish.Admin
 
         protected string BuildName(object firstName, object lastName)
         {
-            return String.Format(CultureInfo.CurrentCulture, Localization.GetString("NameFormat", this.LocalResourceFile), firstName, lastName);
+            return string.Format(CultureInfo.CurrentCulture, Localization.GetString("NameFormat", this.LocalResourceFile), firstName, lastName);
         }
 
         protected string GetCommentEditUrl(object commentId)

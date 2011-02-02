@@ -1168,7 +1168,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             bool b = text.Length > length;
             if (b)
             {
-                this.txtMessage.Text += String.Format(
+                this.txtMessage.Text += string.Format(
                     CultureInfo.CurrentCulture, 
                     Localization.GetString("MaximumLength", this.LocalResourceFile), 
                     controlName, 

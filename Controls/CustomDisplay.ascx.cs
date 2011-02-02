@@ -129,7 +129,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (commentCount != null)
             {
-                return String.Format(Localization.GetString("CommentStats", this.LocalResourceFile), commentCount);
+                return string.Format(Localization.GetString("CommentStats", this.LocalResourceFile), commentCount);
             }
 
             return string.Empty;
@@ -142,7 +142,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (viewCount != null)
             {
-                return String.Format(Localization.GetString("ViewStats", this.LocalResourceFile), viewCount);
+                return string.Format(Localization.GetString("ViewStats", this.LocalResourceFile), viewCount);
             }
 
             return string.Empty;

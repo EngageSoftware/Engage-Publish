@@ -648,7 +648,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         if (ui != null)
                         {
                             string emailBody = Localization.GetString("CommentNotificationEmail.Text", this.LocalResourceFile);
-                            emailBody = String.Format(
+                            emailBody = string.Format(
                                 emailBody, 
                                 this.VersionInfoObject.Name, 
                                 this.GetItemLinkUrlExternal(this.VersionInfoObject.ItemId), 
@@ -658,7 +658,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                                 objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting));
 
                             string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", this.LocalResourceFile);
-                            emailSubject = String.Format(emailSubject, this.VersionInfoObject.Name);
+                            emailSubject = string.Format(emailSubject, this.VersionInfoObject.Name);
 
                             Mail.SendMail(
                                 this.PortalSettings.Email, 
@@ -1393,7 +1393,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (this.Session["PublishListLink"] != null && Engage.Utility.HasValue(this.Session["PublishListLink"].ToString()))
                 {
                     this.lnkReturnToList.NavigateUrl = this.Session["PublishListLink"].ToString().Trim();
-                    this.lnkReturnToList.Text = String.Format(
+                    this.lnkReturnToList.Text = string.Format(
                         CultureInfo.CurrentCulture, Localization.GetString("lnkReturnToList", this.LocalResourceFile), string.Empty);
                 }
                 else
@@ -1408,7 +1408,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         // check of the parent category is set to not display on current page, if it isn't, we need to force it to be so here.
                         Category cparent = Category.GetCategory(parentItemId, this.PortalId);
 
-                        this.lnkReturnToList.Text = String.Format(
+                        this.lnkReturnToList.Text = string.Format(
                             CultureInfo.CurrentCulture, Localization.GetString("lnkReturnToList", this.LocalResourceFile), cparent.Name);
                     }
                     else

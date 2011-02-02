@@ -25,31 +25,31 @@ namespace Engage.Dnn.Publish.CategoryControls
             try
             {
                 object o = this.Settings["csMaxResults"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.txtResults.Text = o.ToString();
                 }
 
                 o = this.Settings["csPerPage"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.txtPage.Text = o.ToString();
                 }
 
                 o = this.Settings["csTitleLength"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.txtTitle.Text = o.ToString();
                 }
 
                 o = this.Settings["csDescriptionLength"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.txtDescription.Text = o.ToString();
                 }
 
                 o = this.Settings["csSearchEmptyRedirectUrl"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.txtSearchUrl.Text = o.ToString();
                 }
@@ -69,14 +69,14 @@ namespace Engage.Dnn.Publish.CategoryControls
 
                 this.chkDescription.Checked = false;
                 o = this.Settings["csShowDescription"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.chkDescription.Checked = o.ToString().Equals("Y");
                 }
 
                 this.chkAllowCategorySelection.Checked = true;
                 o = this.Settings["csAllowCategorySelection"];
-                if (o != null && !String.IsNullOrEmpty(o.ToString()))
+                if (o != null && !string.IsNullOrEmpty(o.ToString()))
                 {
                     this.chkAllowCategorySelection.Checked = o.ToString().Equals("Y");
                 }

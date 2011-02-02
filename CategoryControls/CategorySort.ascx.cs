@@ -403,7 +403,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                     Category c = Category.GetCategory(this.CategoryId, this.PortalId);
                     if (c != null)
                     {
-                        this.lblCategory.Text = String.Format(
+                        this.lblCategory.Text = string.Format(
                             CultureInfo.CurrentCulture, Localization.GetString("lblCategory", this.LocalResourceFile), c.Name);
 
                         this.Session[SortList] = this._sortItems;

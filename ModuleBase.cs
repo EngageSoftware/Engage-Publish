@@ -157,7 +157,7 @@ namespace Engage.Dnn.Publish
             {
                 string s = HostSettings.GetHostSetting(Utility.PublishSetup + this.PortalId);
                 string d = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + this.PortalId);
-                return !String.IsNullOrEmpty(s) && !String.IsNullOrEmpty(d);
+                return !string.IsNullOrEmpty(s) && !string.IsNullOrEmpty(d);
             }
         }
 
@@ -436,10 +436,10 @@ namespace Engage.Dnn.Publish
                     modid = Convert.ToInt32(o.ToString(), CultureInfo.InvariantCulture);
                 }
 
-                // if (!String.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
-                if (!String.IsNullOrEmpty(ctl) && ctl.ToUpperInvariant().Equals(Utility.AdminContainer.ToUpperInvariant()))
+                // if (!string.IsNullOrEmpty(ctl) && ctl.Equals(Utility.AdminContainer))
+                if (!string.IsNullOrEmpty(ctl) && ctl.ToUpperInvariant().Equals(Utility.AdminContainer.ToUpperInvariant()))
                 {
-                    if (!String.IsNullOrEmpty(i))
+                    if (!string.IsNullOrEmpty(i))
                     {
                         return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                     }
@@ -459,7 +459,7 @@ namespace Engage.Dnn.Publish
                     if (Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId || this.Overrideable)
                     {
                         // if we found the moduleid in the querystring we are trying to force the article here.                      
-                        if (!String.IsNullOrEmpty(i))
+                        if (!string.IsNullOrEmpty(i))
                         {
                             return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                         }
@@ -477,7 +477,7 @@ namespace Engage.Dnn.Publish
                     return manager.ResolveId();
                 }
 
-                if (!String.IsNullOrEmpty(i) && manager.IsOverrideable)
+                if (!string.IsNullOrEmpty(i) && manager.IsOverrideable)
                 {
                     return Convert.ToInt32(i, CultureInfo.InvariantCulture);
                 }
@@ -1137,12 +1137,12 @@ namespace Engage.Dnn.Publish
                 }
 
                 // do meta tag settings as well
-                if (!String.IsNullOrEmpty(this.VersionInfoObject.MetaDescription))
+                if (!string.IsNullOrEmpty(this.VersionInfoObject.MetaDescription))
                 {
                     tp.Description = this.VersionInfoObject.MetaDescription;
                 }
 
-                if (!String.IsNullOrEmpty(this.VersionInfoObject.MetaKeywords))
+                if (!string.IsNullOrEmpty(this.VersionInfoObject.MetaKeywords))
                 {
                     tp.KeyWords = this.VersionInfoObject.MetaKeywords;
                 }

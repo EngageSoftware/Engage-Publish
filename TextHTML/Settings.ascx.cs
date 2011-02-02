@@ -73,7 +73,7 @@ namespace Engage.Dnn.Publish.TextHtml
         private void SetOptions()
         {
             object o = this.Settings["Template"];
-            if (o != null && !String.IsNullOrEmpty(o.ToString()))
+            if (o != null && !string.IsNullOrEmpty(o.ToString()))
             {
                 this.txtTemplate.Text = o.ToString();
             }
