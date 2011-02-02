@@ -1,173 +1,449 @@
-﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]
+﻿IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]
+    (@childTypeId INT,
+        @categoryId INT,
+        @index INT,
+        @pagesize INT,
+        @itemSort bit,
+        @itemSortDirection bit,
+        @sortParameters NVARCHAR(400),
+        @portalId INT
+    ) WITH RECOMPILE
+            AS
+DECLARE @sql VARCHAR(8000)
+DECLARE @topCatRel INT
+SET @topCatRel  = (
+    SELECT RelationshipTypeId
+        FROM {databaseOwner}[{objectQualifier}Publish_RelationshipType]
+        WHERE RelationshipName = 'Category To Top Level Category')
+DECLARE @parentCatRel INT
+SET @parentCatRel = (
+    SELECT RelationshipTypeId
+        FROM {databaseOwner}[{objectQualifier}Publish_RelationshipType]
+        WHERE RelationshipName = 'Item To Parent Category')
+DECLARE @relatedCatRel INT
+SET @relatedCatRel = (
+    SELECT RelationshipTypeId
+        FROM {databaseOwner}[{objectQualifier}Publish_RelationshipType]
+        WHERE RelationshipName = 'Item To Related Category')
+
+CREATE TABLE #tmpResults
+    (
+                Id INT NOT NULL IDENTITY(1,1),
+                ChildItemId INT,
+                Thumbnail VARCHAR(500),
+                ChildName NVARCHAR(255),
+                ChildDescription NTEXT,
+                ChildItemTypeId INT,
+                StartDate DATETIME,
+                LastUpdated DATETIME,
+                CreatedDate DATETIME,
+                AuthorUserId INT,
+                DisplayName NVARCHAR(128),
+                Author NVARCHAR(255),
+                ItemRelationshipId INT,
+                SortOrder INT,
+                TotalRows INT,
+                ViewCount INT,
+                CommentCount INT
+    )
+DECLARE @IsCategory INT
+IF (@categoryId = (
+        SELECT itemid
+            FROM {databaseOwner}{objectQualifier}publish_vwItems
+            WHERE name = 'category'
+                AND iscurrentversion=1))
+    SET @IsCategory = 1
+ELSE
+    SET @IsCategory = 0
+
+IF (@itemSort = 1)
+    BEGIN
+    SET @sql = 'INSERT INTO #tmpResults (ChildItemId, Thumbnail, ChildName, ChildDescription, ChildItemTypeId, StartDate, LastUpdated, CreatedDate, AuthorUserId, DisplayName, Author, ItemRelationshipId, SortOrder, ViewCount, CommentCount)'
+    SET @sql = @sql + ' SELECT il.ChildItemId, i.Thumbnail, i.Name AS ''ChildName'', i.Description AS ''ChildDescription'', i.ItemTypeId, i.StartDate, i.LastUpdated, i.CreatedDate, i.AuthorUserId, u.DisplayName, i.Author, il.ItemRelationshipId, il.SortOrder, i.ViewCount, i.CommentCount '
+    IF (@IsCategory = 1)
+        BEGIN
+        SET @sql = @sql + ' FROM {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + CONVERT(VARCHAR(20),@categoryId) + ', ' + CONVERT(VARCHAR(20),@parentCatRel) +',' +  CONVERT(VARCHAR(20),@topCatRel) +') il '
+        END
+    ELSE
+        BEGIN
+        SET @sql = @sql + ' FROM {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + CONVERT(VARCHAR(20),@categoryId) + ', ' + CONVERT(VARCHAR(20),@parentCatRel) +',' +  CONVERT(VARCHAR(20),@relatedCatRel) +') il '
+        END
+    SET @sql = @sql + ' JOIN {databaseOwner}[{objectQualifier}publish_vwItems] i ON (il.ChildItemId = i.ItemId) JOIN {databaseOwner}[{objectQualifier}users] u ON (u.UserId = i.AuthorUserId) '
+    SET @sql = @sql + ' WHERE i.PortalId = ' + CONVERT(VARCHAR(20), @PortalId)
+    IF (@childTypeId < 1)
+        BEGIN
+        SET @sql = @sql + ' AND (i.ItemTypeId = (SELECT itemtypeid FROM {databaseOwner}[{objectQualifier}publish_itemtype] WHERE name =''article'') '
+        SET @sql = @sql + ' OR i.ItemTypeId = (SELECT itemtypeid FROM {databaseOwner}[{objectQualifier}publish_itemtype] WHERE name =''category'')) '
+        END
+    ELSE
+        BEGIN
+        SET @sql = @sql + ' AND i.ItemTypeId = ' +  CONVERT(VARCHAR(20), @childTypeId)
+        END
+    SET @sql = @sql + ' AND i.StartDate < GetDate() '
+    SET @sql = @sql + ' AND (i.EndDate > GetDate() or i.EndDate IS NULL) '
+    SET @sql = @sql + ' AND i.IsCurrentVersion = 1 '
+    SET @sql = @sql + ' AND il.SortOrder > 0 '
+    IF (@categoryId > 0)
+        BEGIN
+        SET @sql = @sql + ' AND il.ParentItemId = ' +  CONVERT(VARCHAR(20), @categoryId)
+        END
+                SET @sql = @sql + ' ORDER BY il.SortOrder '
+    IF (@itemSortDirection = 1)
+        BEGIN
+        SET @sql = @sql + ' ASC '
+        END
+    ELSE
+        BEGIN
+        SET @sql = @sql + ' DESC '
+        END
+
+    EXEC (@sql)
+    END
+
+SET @sql =  'INSERT INTO #tmpResults (ChildItemId, Thumbnail,  ChildName, ChildDescription, ChildItemTypeId, StartDate, LastUpdated, CreatedDate, AuthorUserId, DisplayName, Author, ItemRelationshipId, SortOrder, ViewCount, CommentCount)'
+SET @sql = @sql + ' SELECT  il.ChildItemId, i.Thumbnail, i.Name as ''ChildName'', i.Description as ''ChildDescription'', i.ItemTypeId, i.StartDate, i.LastUpdated, i.CreatedDate, i.AuthorUserId, u.DisplayName, i.Author, il.ItemRelationshipId, il.SortOrder, i.ViewCount, i.CommentCount'
+IF (@IsCategory = 1)
+    BEGIN
+        SET @sql = @sql + ' FROM {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + CONVERT(VARCHAR(20),@categoryId) + ', ' + CONVERT(VARCHAR(20),@parentCatRel) +',' +  CONVERT(VARCHAR(20),@topCatRel) +') il '
+    END
+ELSE
+    BEGIN
+        SET @sql = @sql + ' FROM {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + CONVERT(VARCHAR(20),@categoryId) + ', ' + CONVERT(VARCHAR(20),@parentCatRel) +',' +  CONVERT(VARCHAR(20),@relatedCatRel) +') il '
+    END
+SET @sql = @sql + ' JOIN {databaseOwner}[{objectQualifier}publish_vwItems] i ON (il.ChildItemId = i.ItemId) JOIN {databaseOwner}[{objectQualifier}users] u ON (u.UserId = i.AuthorUserId) '
+SET @sql = @sql + ' WHERE i.PortalId = ' + CONVERT(VARCHAR(20), @PortalId)
+IF (@childTypeId < 1)
+    BEGIN
+        SET @sql = @sql + ' AND (i.ItemTypeId = (SELECT itemtypeid FROM {databaseOwner}[{objectQualifier}publish_itemtype] WHERE name =''article'') '
+        SET @sql = @sql + ' OR i.ItemTypeId = (SELECT itemtypeid FROM {databaseOwner}[{objectQualifier}publish_itemtype] WHERE name =''category'')) '
+    END
+ELSE
+    BEGIN
+        SET @sql = @sql + ' AND i.ItemTypeId = ' +  CONVERT(VARCHAR(20), @childTypeId)
+    END
+SET @sql = @sql + ' AND i.StartDate < GetDate() '
+SET @sql = @sql + ' AND (i.EndDate > GetDate() OR i.EndDate IS NULL) '
+SET @sql = @sql + ' AND i.IsCurrentVersion = 1 '
+IF (@itemSort = 1)
+    BEGIN
+        SET @sql = @sql + ' AND il.SortOrder = 0 '
+    END
+IF (@categoryId > 0)
+    BEGIN
+        SET @sql = @sql + ' AND il.ParentItemId = ' +  CONVERT(VARCHAR(20), @categoryId)
+    END
+SET @sql = @sql + ' ORDER BY ' + @sortParameters
+
+EXEC (@sql)
+
+DECLARE @rows INT
+SELECT @rows = COUNT(*) FROM #tmpResults
+
+UPDATE #tmpResults SET TotalRows = @rows
+
+IF (@PageSize <1)
+    BEGIN
+    SELECT * FROM #tmpResults
+    END
+ELSE
+    BEGIN
+    SELECT *
+        FROM #tmpResults
+        WHERE id >= @index * @PageSize + 1
+          AND id < (@index * @PageSize) + @PageSize + 1
+    END
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetChildrenInCategoryPaging]  
-(@childTypeId int,   
-@categoryId int,   
-@index int,
-@pagesize int,
-@itemSort bit,
-@itemSortDirection bit,
-@sortParameters nvarchar(400),
-@portalId int  
-) WITH RECOMPILE
-as 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListing]
+    @ParentItemId INT,
+    @ItemTypeId INT,
+    @RelationshipTypeId INT,
+    @otherRelationshipTypeId INT,
+    @ApprovalStatusId INT,
+    @PortalId INT,
+    @OrderBy NVARCHAR(100)
+            WITH RECOMPILE
+            AS
+    BEGIN
 
+    SET NOCOUNT ON
+    CREATE TABLE #TempTable
+        (
+                    ItemId INT NOT NULL,
+                    ItemVersionId INT NOT NULL
+        )
 
-	declare @sql varchar(8000)
+    INSERT INTO #TempTable
+        SELECT c.ItemId, MAX(c.ItemVersionId)
+        FROM {databaseOwner}[{objectQualifier}Publish_vwChildItems] c
+        WHERE c.ApprovalStatusId = @ApprovalStatusId
+          AND (c.RelationshipTypeId = @RelationshipTypeId
+              OR c.relationshiptypeId = @otherRelationshipTypeId)
+          AND c.PortalID = @PortalId
+          AND (c.ParentItemID = @ParentItemId
+              OR @ParentItemId = -1)
+          AND c.ItemTypeId = @ItemTypeId
+          AND NOT EXISTS (
+                    SELECT *
+                        FROM #TempTable w
+                        WHERE w.ItemId = c.itemId
+              )
+        GROUP BY c.ItemId
 
-	declare @topCatRel int
-	set @topCatRel  = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
-		where RelationshipName = 'Category To Top Level Category')
+    SET NOCOUNT OFF
+    DECLARE @SQLStatement NVARCHAR(4000)
+    SELECT @SQLStatement = 'SELECT vi.[Name]
+            , vi.[Description]
+            , t.ItemId
+            , t.ItemVersionId
+            , vi.IsCurrentVersion
+            , vi.CreatedDate
+            , vi.LastUpdated
+            , vi.ModuleId
+            , vi.ItemVersionIdentifier
+            , u.DisplayName
+            , vi.Author
+            , (
+                SELECT COUNT(ParentItemId)
+                    FROM {databaseOwner}[{objectQualifier}Publish_vwChilditems] vci
+                    WHERE ParentItemId = t.ItemId
+                      AND RelationshipTypeId =
+                        (
+                            SELECT RelationshipTypeId
+                                FROM {databaseOwner}[{objectQualifier}Publish_relationshiptype]
+                                WHERE relationshipname = ''Item To Parent Category''
+                        )
+                      AND ItemTypeId =
+                        (
+                            SELECT itemtypeid
+                                FROM {databaseOwner}[{objectQualifier}Publish_Itemtype]
+                                WHERE name = ''Category''
+                        )
+                      AND vci.IsCurrentVersion = 1
+               ) ''ChildCount''
+    FROM #TempTable t
+    JOIN {databaseOwner}[{objectQualifier}Publish_vwItems] vi ON (vi.ItemVersionId = t.ItemVersionId)
+    JOIN {databaseOwner}[{objectQualifier}Users] u ON (vi.AuthorUserId = u.UserId)
+    WHERE vi.ApprovalStatusId = ' + CONVERT(VARCHAR(5),@ApprovalStatusId) + 
+    ' ORDER BY ' + @OrderBy -- vi.[Name]
+    
+    EXEC(@SQLStatement)
 
-	declare @parentCatRel int
-	set @parentCatRel = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
-		where RelationshipName = 'Item To Parent Category')
+    DROP TABLE #TempTable
+    END
+GO
 
-	declare @relatedCatRel int
-	set @relatedCatRel = (select RelationshipTypeId from {databaseOwner}[{objectQualifier}Publish_RelationshipType] 
-		where RelationshipName = 'Item To Related Category')
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_spGetAdminItemListingSearchKey]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListingSearchKey]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publish_spGetAdminItemListingSearchKey]
+    @ParentItemId INT,
+    @ItemTypeId INT,
+    @RelationshipTypeId INT,
+    @otherRelationshipTypeId INT,
+    @ApprovalStatusId INT,
+    @PortalId INT,
+    @OrderBy NVARCHAR (100),
+    @SearchKey NVARCHAR(250)
+            WITH RECOMPILE
+            AS
+    BEGIN
 
+    SET NOCOUNT ON
+    CREATE TABLE #TempTable
+        (
+                    ItemId INT NOT NULL, 
+                    ItemVersionId INT NOT NULL
+        )
 
+    INSERT INTO #TempTable
+        SELECT c.ItemId, MAX(c.ItemVersionId)
+        FROM {databaseOwner}[{objectQualifier}Publish_vwChildItems] c
+        WHERE c.ApprovalStatusId = @ApprovalStatusId
+          AND c.Name LIKE '%' + @SearchKey + '%'
+          AND (c.RelationshipTypeId = @RelationshipTypeId
+              OR c.relationshiptypeId = @otherRelationshipTypeId)
+          AND c.PortalID = @PortalId
+          AND (c.ParentItemID = @ParentItemId
+              OR @ParentItemId = -1)
+          AND c.ItemTypeId = @ItemTypeId
+          AND NOT EXISTS (
+                    SELECT *
+                        FROM #TempTable w
+                        WHERE w.ItemId = c.itemId
+              )
+        GROUP BY c.ItemId
 
-	Create table #tmpResults 
-	(
-		Id int not null IDENTITY(1,1),
-		ChildItemId int, 
-		Thumbnail varchar(500), 
-		ChildName nvarchar(255), 
-		ChildDescription ntext,
-		ChildItemTypeId int,
-		StartDate datetime,
-		LastUpdated datetime,
-		CreatedDate datetime,
-		AuthorUserId int,
-		DisplayName nvarchar(128),
-		Author nvarchar(255),
-		ItemRelationshipId int,
-		SortOrder int,
-		TotalRows int,
-		ViewCount int,
-		CommentCount int
-	)
+    SET NOCOUNT OFF
+    DECLARE @SQLStatement NVARCHAR(4000)
 
+    SELECT @SQLStatement = 'SELECT vi.[Name]
+            , vi.[Description]
+            , t.ItemId
+            , t.ItemVersionId
+            , vi.IsCurrentVersion
+            , vi.CreatedDate
+            , vi.LastUpdated
+            , vi.ModuleId
+            , vi.ItemVersionIdentifier
+            , u.DisplayName
+            , vi.Author
+            , (
+                SELECT COUNT(ParentItemId)
+                    FROM {databaseOwner}[{objectQualifier}Publish_vwChilditems] vci
+                    WHERE ParentItemId = t.ItemId
+                      AND RelationshipTypeId =
+                        (
+                            SELECT RelationshipTypeId
+                                FROM {databaseOwner}[{objectQualifier}Publish_relationshiptype]
+                                WHERE relationshipname = ''Item To Parent Category''
+                        )
+                      AND ItemTypeId =
+                        (
+                            SELECT itemtypeid
+                                FROM {databaseOwner}[{objectQualifier}Publish_Itemtype]
+                                WHERE name = ''Category''
+                        )
+                      AND vci.IsCurrentVersion = 1
+               ) ''ChildCount''
+    FROM #TempTable t
+    JOIN {databaseOwner}[{objectQualifier}Publish_vwItems] vi ON (vi.ItemVersionId = t.ItemVersionId)
+    JOIN {databaseOwner}[{objectQualifier}Users] u ON (vi.AuthorUserId = u.UserId)
+    WHERE vi.ApprovalStatusId = ' + CONVERT(VARCHAR(5),@ApprovalStatusId) + 
+    ' ORDER BY ' + @OrderBy -- vi.[Name]
 
-DECLARE @IsCategory int 
-IF (@categoryId = (select itemid from {databaseOwner}{objectQualifier}publish_vwItems where name = 'category' and iscurrentversion=1)) 
-SET @IsCategory = 1 
-ELSE 
-SET @IsCategory = 0
+    EXEC(@SQLStatement)
+    DROP TABLE #TempTable
+    END
+GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}publish_spGetItemsForTagsPaging]
+    @PortalId INT, 
+    @TagList NVARCHAR(4000) = NULL, 
+    @index INT, 
+    @pagesize INT, 
+    @sortParameters NVARCHAR(400)
+            AS
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-if (@itemSort = 1)
-begin
+DECLARE @xmlDoc INT
+EXEC sp_xml_preparedocument @xmlDoc OUTPUT, @TagList
 
-	set @sql =  'insert into #tmpResults (ChildItemId, Thumbnail,  ChildName, ChildDescription, ChildItemTypeId, StartDate, LastUpdated, CreatedDate, AuthorUserId, DisplayName, Author, ItemRelationshipId, SortOrder, ViewCount, CommentCount)'
-		
-	set @sql = @sql + ' select  il.ChildItemId, i.Thumbnail, i.Name as ''ChildName'', i.Description as ''ChildDescription'', i.ItemTypeId, i.StartDate, i.LastUpdated, i.CreatedDate, i.AuthorUserId, u.DisplayName, i.Author, il.ItemRelationshipId, il.SortOrder, i.ViewCount, i.CommentCount '
-	
-	if ( @IsCategory =1 )	
-	begin
-	
-		set @sql = @sql + ' from {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + Convert(varchar(20),@categoryId) + ', ' + Convert(varchar(20),@parentCatRel) +',' +  Convert(varchar(20),@topCatRel) +') il '
-	end 
-	else
-	begin
+CREATE TABLE #Tags
+    (
+                [TagId] NVARCHAR(255)
+    )
 
-		set @sql = @sql + ' from {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + Convert(varchar(20),@categoryId) + ', ' + Convert(varchar(20),@parentCatRel) +',' +  Convert(varchar(20),@relatedCatRel) +') il '
-	end
-	
-	set @sql = @sql + ' join {databaseOwner}[{objectQualifier}publish_vwItems] i on (il.ChildItemId = i.ItemId) join {databaseOwner}[{objectQualifier}users] u on (u.UserId = i.AuthorUserId) '
-	set @sql = @sql + ' where i.PortalId = ' + Convert(varchar(20), @PortalId)
-	if (@childTypeId <1)
-	begin
-		set @sql = @sql + ' and (i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}publish_itemtype] where name =''article'') '
-		set @sql = @sql + ' or i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}publish_itemtype] where name =''category'')) '
-	end
-	else begin
-		set @sql = @sql + ' and i.ItemTypeId = ' +  Convert(varchar(20), @childTypeId)
-	end
-	
-	set @sql = @sql + ' and i.StartDate < GetDate() '
-	set @sql = @sql + ' and (i.EndDate > GetDate() or i.EndDate is null) '
-	set @sql = @sql + ' and i.IsCurrentVersion = 1 '
-	set @sql = @sql + ' and il.SortOrder > 0 '
-	if (@categoryId > 0)
-	begin
-		set @sql = @sql + ' and il.ParentItemId = ' +  Convert(varchar(20), @categoryId)
-	end
+INSERT INTO #Tags ([TagId])
+    SELECT CONVERT(NVARCHAR(255), [text])
+    FROM OPENXML(@xmlDoc, '/Tags/Tag/', 2)
+    WHERE [text] IS NOT NULL
 
-	set @sql = @sql + ' order by  il.SortOrder '
+DECLARE @TagCount INT
+SELECT @TagCount = COUNT(*) FROM #Tags
 
-	if (@itemSortDirection = 1)
-	 begin
+DECLARE @sql VARCHAR(8000)
+CREATE TABLE #tmpResults
+    (
+                Id INT NOT NULL IDENTITY(1,1),
+                ChildItemId INT,
+                Thumbnail VARCHAR(500),
+                ChildName NVARCHAR(255),
+                ChildDescription NTEXT,
+                ChildItemTypeId INT,
+                StartDate DATETIME,
+                LastUpdated DATETIME,
+                CreatedDate DATETIME,
+                AuthorUserId INT,
+                DisplayName NVARCHAR(128),
+                Author NVARCHAR(255),
+                ItemRelationshipId INT,
+                SortOrder INT,
+                TotalRows INT,
+                ViewCount INT,
+                CommentCount INT
+    )
 
-		set @sql = @sql + ' asc ' 
-	end
-	else begin
-		set @sql = @sql + ' desc ' 
-	end
+SET @sql =  'INSERT INTO #tmpResults (
+                ChildItemId, 
+                Thumbnail, 
+                ChildName, 
+                ChildDescription, 
+                ChildItemTypeId, 
+                StartDate, 
+                LastUpdated, 
+                CreatedDate, 
+                AuthorUserId, 
+                DisplayName, 
+                Author, 
+                ViewCount, 
+                CommentCount)
+SELECT itemId AS ''ChildItemId'', 
+       Thumbnail, 
+       [name] AS ''ChildName'', 
+       description AS ''ChildDescription'', 
+       vi.ItemTypeId AS ''ChildItemTypeId'', 
+       StartDate, 
+       LastUpdated, 
+       CreatedDate, 
+       AuthorUserId, 
+       u.DisplayName, 
+       Author, 
+       ViewCount, 
+       CommentCount
+    FROM {databaseOwner}{objectQualifier}publish_vwitems vi
+    JOIN {databaseOwner}{objectQualifier}users u ON (u.UserId = vi.AuthorUserId)
+    WHERE vi.itemversionid IN (
+        SELECT DISTINCT ivt.itemversionid
+            FROM {databaseOwner}{objectQualifier}publish_tags t
+            JOIN {databaseOwner}{objectQualifier}publish_itemversiontags ivt ON t.TagId = ivt.TagId
+            WHERE ivt.ItemVersionId IN (
+                SELECT vi2.ItemVersionId
+                    FROM #Tags X
+                    JOIN {databaseOwner}{objectQualifier}publish_tags t2 ON CONVERT(INT, X.[TagId]) = t2.TagId
+                    JOIN {databaseOwner}{objectQualifier}publish_itemversiontags ivt2 ON ivt2.TagId = t2.TagId
+                    JOIN {databaseOwner}{objectQualifier}publish_vwItems vi2 ON vi2.ItemVersionId = ivt2.ItemVersionId
+                    WHERE vi2.IsCurrentVersion = 1
+                    GROUP BY vi2.ItemVersionId
+                    HAVING COUNT(*) = ' + CONVERT(VARCHAR(20), @TagCount) + '
+                )
+                AND vi.PortalId = ' + CONVERT(VARCHAR(20), @PortalId) + ' 
+            GROUP BY t.TagId, ivt.itemversionid
+            HAVING t.[TagId] IN (
+                SELECT [TagId]
+                    FROM #Tags)
+        )
+    ORDER BY  ' + @sortParameters
 
-	exec (@sql)
-END
+EXEC (@sql)
 
-	set @sql =  'insert into #tmpResults (ChildItemId, Thumbnail,  ChildName, ChildDescription, ChildItemTypeId, StartDate, LastUpdated, CreatedDate, AuthorUserId, DisplayName, Author, ItemRelationshipId, SortOrder, ViewCount, CommentCount)'
-	
-	set @sql = @sql + ' select  il.ChildItemId, i.Thumbnail, i.Name as ''ChildName'', i.Description as ''ChildDescription'', i.ItemTypeId, i.StartDate, i.LastUpdated, i.CreatedDate, i.AuthorUserId, u.DisplayName, i.Author, il.ItemRelationshipId, il.SortOrder, i.ViewCount, i.CommentCount'
-	if ( @IsCategory = 1)
-	begin
-	
-		set @sql = @sql + ' from {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + Convert(varchar(20),@categoryId) + ', ' + Convert(varchar(20),@parentCatRel) +',' +  Convert(varchar(20),@topCatRel) +') il '
-	end 
-	else
-	begin
+DECLARE @rows INT
+SELECT @rows = COUNT(*) FROM #tmpResults
+UPDATE #tmpResults SET TotalRows = @rows
 
-		set @sql = @sql + ' from {databaseOwner}{objectQualifier}Publish_fnGetChildItemsWithTwoTypes(' + Convert(varchar(20),@categoryId) + ', ' + Convert(varchar(20),@parentCatRel) +',' +  Convert(varchar(20),@relatedCatRel) +') il '
-	end
+IF (@PageSize <1)
+    BEGIN
+    SELECT *
+        FROM #tmpResults
+    END
+ELSE
+    BEGIN
+    SELECT *
+        FROM #tmpResults
+        WHERE id >= @index * @PageSize + 1
+          AND id < (@index * @PageSize) + @PageSize + 1
+    END
 
-	set @sql = @sql + ' join {databaseOwner}[{objectQualifier}publish_vwItems] i on (il.ChildItemId = i.ItemId) join {databaseOwner}[{objectQualifier}users] u on (u.UserId = i.AuthorUserId) '
-	set @sql = @sql + ' where i.PortalId = ' + Convert(varchar(20), @PortalId)
-	if (@childTypeId <1)
-	begin
-		set @sql = @sql + ' and (i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}publish_itemtype] where name =''article'') '
-		set @sql = @sql + ' or i.ItemTypeId = (select itemtypeid from {databaseOwner}[{objectQualifier}publish_itemtype] where name =''category'')) '
-	end
-	else begin
-		set @sql = @sql + ' and i.ItemTypeId = ' +  Convert(varchar(20), @childTypeId)
-	end
-	
-	set @sql = @sql + ' and i.StartDate < GetDate() '
-	set @sql = @sql + ' and (i.EndDate > GetDate() or i.EndDate is null) '
-	set @sql = @sql + ' and i.IsCurrentVersion = 1 '
-
-if (@itemSort = 1)
-begin
-	set @sql = @sql + ' and il.SortOrder = 0 '
-end
-	if (@categoryId > 0)
-	begin
-		set @sql = @sql + ' and il.ParentItemId = ' +  Convert(varchar(20), @categoryId)
-	end
-
-	set @sql = @sql + ' order by  ' + @sortParameters
-
-	exec (@sql)
-
-	DECLARE @rows int
-
-	select @rows = count(*) from #tmpResults
-
-	update #tmpResults set TotalRows = @rows
-
-	if (@PageSize <1)
-	 	BEGIN
-	 		select * from #tmpResults
-	 	END
-	ELSE
-	 	BEGIN
-	 		select * from #tmpResults
-	 		where (id >= @index * @PageSize + 1) and id < (@index * @PageSize) + @PageSize + 1
-	 	END
+DROP TABLE #Tags
+EXEC sp_xml_removedocument @xmlDoc
 GO
 

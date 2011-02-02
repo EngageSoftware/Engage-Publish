@@ -472,31 +472,30 @@ namespace Engage.Dnn.Publish.Data
 
         public override void ClearItemsCommentCount(int portalId)
         {
-            string sql = String.Format(
-                CultureInfo.InvariantCulture, "update {0}item set commentcount=0 where portalId = @portalId", this.ObjectQualifier + ModuleQualifier);
+            string sql = string.Format(CultureInfo.InvariantCulture, "update {0}item set commentcount=0 where portalId = @portalId", this.NamePrefix);
             SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
         }
 
         public override void ClearItemsViewCount(int portalId)
         {
-            string sql = String.Format(
-                CultureInfo.InvariantCulture, "update {0}item set viewcount=0 where portalId = @portalId", this.ObjectQualifier + ModuleQualifier);
+            string sql = string.Format(CultureInfo.InvariantCulture, "update {0}item set viewcount=0 where portalId = @portalId", this.NamePrefix);
             SqlHelper.ExecuteNonQuery(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId));
         }
 
         public override int CommentsWaitingForApprovalCount(int portalId, int authorUserId)
         {
-            string sql = String.Format(
-                CultureInfo.InvariantCulture,
-                "SELECT COUNT(commentId) FROM {0}comment pc JOIN {0}vwItems vi ON (vi.itemversionId = pc.itemversionid) WHERE vi.portalId = @portalId AND (@AuthorUserId = -1 OR vi.authorUserId = @AuthorUserId) AND pc.ApprovalStatusId = @ApprovalStatusId",
-                this.ObjectQualifier + ModuleQualifier);
+            const string SqlFormat = @"SELECT COUNT(commentId) FROM {0}comment pc 
+                                       JOIN {0}vwItems vi ON (vi.itemversionId = pc.itemversionid) 
+                                       WHERE vi.portalId = @portalId 
+                                         AND (@AuthorUserId = -1 OR vi.authorUserId = @AuthorUserId) 
+                                         AND pc.ApprovalStatusId = @ApprovalStatusId";
 
             return
                 Convert.ToInt32(
                     SqlHelper.ExecuteScalar(
                         this.ConnectionString,
                         CommandType.Text,
-                        sql,
+                        string.Format(CultureInfo.InvariantCulture, SqlFormat, this.NamePrefix),
                         Utility.CreateIntegerParam("@portalId", portalId),
                         Utility.CreateIntegerParam("@AuthorUserId", authorUserId),
                         Utility.CreateIntegerParam("@ApprovalStatusId", ApprovalStatus.Waiting.GetId())));
@@ -3209,11 +3208,9 @@ namespace Engage.Dnn.Publish.Data
             string sql = String.Format(
                 CultureInfo.InvariantCulture, 
                 "select count(itemversionId) from {0}vwItems vi where portalId = @portalId and vi.ApprovalStatusId = {1}", 
-                this.ObjectQualifier + ModuleQualifier, 
+                this.NamePrefix, 
                 ApprovalStatus.Waiting.GetId());
-            return
-                Convert.ToInt32(
-                    SqlHelper.ExecuteScalar(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, CommandType.Text, sql, Utility.CreateIntegerParam("@portalId", portalId)));
         }
 
         internal override IDataReader GetModulesByModuleId(int moduleId)
