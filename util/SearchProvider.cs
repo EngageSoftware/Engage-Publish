@@ -1,18 +1,21 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
+﻿// <copyright file="SearchProvider.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
-
-namespace Engage.Dnn.Publish.Search
+namespace Engage.Dnn.Publish.Util
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
 
     using DotNetNuke.Common.Utilities;
@@ -20,36 +23,54 @@ namespace Engage.Dnn.Publish.Search
     using DotNetNuke.Services.Search;
 
     using Engage.Dnn.Publish.Data;
-    using Engage.Dnn.Publish.Util;
 
     /// <summary>
-    /// Summary description for SearchProvider.
+    /// Gets the search items for a module
     /// </summary>
     public class SearchProvider
     {
-        // : ISearchable
-        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchProvider"/> class.
+        /// </summary>
+        /// <param name="module">The module for which to get articles.</param>
+        /// <param name="setGuid">if set to <c>true</c> sets <see cref="SearchItemInfo.GUID"/>, otherwise leaves it blank.</param>
+        public SearchProvider(ModuleInfo module, bool setGuid)
         {
-            var items = new SearchItemInfoCollection();
-            AddArticleSearchItems(items, modInfo);
-            return items;
+            this.Module = module;
+            this.SetGuid = setGuid;
         }
 
-        private static void AddArticleSearchItems(SearchItemInfoCollection items, ModuleInfo modInfo)
-        {
-            // get all the updated items
-            // DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
+        /// <summary>
+        /// Gets the module whose articles are to be indexed.
+        /// </summary>
+        public ModuleInfo Module { get; private set; }
 
-            // TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
-            DataTable dt = Article.GetArticles(modInfo.PortalID);
-            SearchArticleIndex(dt, items, modInfo);
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="SearchItemInfo.GUID"/> field should be set (i.e. whether an ItemId parameter should be included on the querystring for the search result).
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if <see cref="SearchItemInfo.GUID"/> is set; otherwise, <c>false</c>.
+        /// </value>
+        public bool SetGuid { get; private set; }
+
+        /// <summary>
+        /// Gets the search items for the module's articles.
+        /// </summary>
+        /// <returns>The collection of search items for the <see cref="Module"/>'s articles</returns>
+        public SearchItemInfoCollection GetSearchItems()
+        {
+            return new SearchItemInfoCollection(this.GetSearchItemsImpl().ToArray());
         }
 
-        private static void SearchArticleIndex(DataTable dt, SearchItemInfoCollection items, ModuleInfo modInfo)
+        /// <summary>
+        /// Gets the search items for the module's articles.
+        /// </summary>
+        /// <returns>The collection of search items for the <see cref="Module"/>'s articles</returns>
+        private IEnumerable<SearchItemInfo> GetSearchItemsImpl()
         {
-            for (int i = 0; i < dt.Rows.Count; i++)
+            var articlesTable = Article.GetArticlesByModuleId(this.Module.ModuleID, true);
+            foreach (DataRow row in articlesTable.Rows)
             {
-                DataRow row = dt.Rows[i];
                 var searchedContent = new StringBuilder(8192);
 
                 // article name
@@ -106,32 +127,33 @@ namespace Engage.Dnn.Publish.Search
                         Title = name, 
                         Description = HtmlUtils.Clean(description, false), 
                         Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture), 
-                        PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture), 
-                        ModuleId = modInfo.ModuleID, 
+                        PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture),
+                        ModuleId = this.Module.ModuleID, 
                         SearchKey = "Article-" + itemId, 
                         Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true), 
-                        GUID = "itemid=" + itemId
                     };
 
-                items.Add(item);
+                if (this.SetGuid)
+                {
+                    item.GUID = "itemid=" + itemId;
+                }
 
-                // Check if the Portal is setup to enable venexus indexing
-                if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
+                if (ModuleBase.AllowVenexusSearchForPortal(this.Module.PortalID))
                 {
                     string indexUrl = UrlGenerator.GetItemLinkUrl(
-                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
+                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.Module.PortalID, this.Module.TabID, this.Module.ModuleID);
 
                     // UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
                     DataProvider.Instance().UpdateVenexusBraindump(
                         Convert.ToInt32(itemId, CultureInfo.InvariantCulture), 
                         name, 
                         articleText, 
-                        HtmlUtils.Clean(articleText, false), 
-                        modInfo.PortalID, 
+                        HtmlUtils.Clean(articleText, false),
+                        this.Module.PortalID, 
                         indexUrl);
                 }
 
-                // }
+                yield return item;
             }
         }
     }

@@ -1,24 +1,31 @@
+// <copyright file="FeaturesController.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+
 namespace Engage.Dnn.Publish.TextHTML
 {
     using System;
-    using System.Data;
-    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web;
     using System.Xml.XPath;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search;
 
-    using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Portability;
     using Engage.Dnn.Publish.Util;
 
     /// <summary>
-    /// Features Controller Class supports IPortable currently.
+    /// Features Controller Class supports <see cref="ISearchable"/> and <see cref="IPortable"/> currently.
     /// </summary>
     public class FeaturesController : ISearchable, IPortable
     {
@@ -91,109 +98,7 @@ namespace Engage.Dnn.Publish.TextHTML
 
         public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
         {
-            var items = new SearchItemInfoCollection();
-            AddArticleSearchItems(items, modInfo);
-            return items;
-        }
-
-        private static void AddArticleSearchItems(SearchItemInfoCollection items, ModuleInfo modInfo)
-        {
-            // get all the updated items
-            // DataTable dt = Article.GetArticlesSearchIndexingUpdated(modInfo.PortalID, modInfo.ModuleDefID, modInfo.TabID);
-
-            // TODO: we should get articles by ModuleID and only perform indexing by ModuleID 
-            DataTable dt = Article.GetArticlesByModuleId(modInfo.ModuleID, true);
-            SearchArticleIndex(dt, items, modInfo);
-        }
-
-        private static void SearchArticleIndex(DataTable dt, SearchItemInfoCollection items, ModuleInfo modInfo)
-        {
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                DataRow row = dt.Rows[i];
-
-                var searchedContent = new StringBuilder(8192);
-
-                // article name
-                string name = HtmlUtils.Clean(row["Name"].ToString().Trim(), false);
-
-                if (Engage.Utility.HasValue(name))
-                {
-                    searchedContent.AppendFormat("{0}{1}", name, " ");
-                }
-                else
-                {
-                    // do we bother with the rest?
-                    continue;
-                }
-
-                // article text
-                string articleText = row["ArticleText"].ToString().Trim();
-                if (Engage.Utility.HasValue(articleText))
-                {
-                    searchedContent.AppendFormat("{0}{1}", articleText, " ");
-                }
-
-                // article description
-                string description = row["Description"].ToString().Trim();
-                if (Engage.Utility.HasValue(description))
-                {
-                    searchedContent.AppendFormat("{0}{1}", description, " ");
-                }
-
-                // article metakeyword
-                string keyword = row["MetaKeywords"].ToString().Trim();
-                if (Engage.Utility.HasValue(keyword))
-                {
-                    searchedContent.AppendFormat("{0}{1}", keyword, " ");
-                }
-
-                // article metadescription
-                string metaDescription = row["MetaDescription"].ToString().Trim();
-                if (Engage.Utility.HasValue(metaDescription))
-                {
-                    searchedContent.AppendFormat("{0}{1}", metaDescription, " ");
-                }
-
-                // article metatitle
-                string metaTitle = row["MetaTitle"].ToString().Trim();
-                if (Engage.Utility.HasValue(metaTitle))
-                {
-                    searchedContent.AppendFormat("{0}{1}", metaTitle, " ");
-                }
-
-                string itemId = row["ItemId"].ToString();
-                var item = new SearchItemInfo
-                    {
-                        Title = name, 
-                        Description = HtmlUtils.Clean(description, false), 
-                        Author = Convert.ToInt32(row["AuthorUserId"], CultureInfo.InvariantCulture), 
-                        PubDate = Convert.ToDateTime(row["LastUpdated"], CultureInfo.InvariantCulture), 
-                        ModuleId = modInfo.ModuleID, 
-                        SearchKey = "Article-" + itemId, 
-                        Content = HtmlUtils.StripWhiteSpace(HtmlUtils.Clean(searchedContent.ToString(), false), true)
-                    };
-
-                // because we're indexing the Text/HTML module we aren't worried about the ItemID querystring parameter
-                // item.GUID = "itemid=" + itemId;
-                items.Add(item);
-
-                // Check if the Portal is setup to enable venexus indexing
-                if (ModuleBase.AllowVenexusSearchForPortal(modInfo.PortalID))
-                {
-                    string indexUrl = UrlGenerator.GetItemLinkUrl(
-                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), modInfo.PortalID, modInfo.TabID, modInfo.ModuleID);
-
-                    // UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
-                    DataProvider.Instance().UpdateVenexusBraindump(
-                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), 
-                        name, 
-                        articleText, 
-                        HtmlUtils.Clean(articleText, false), 
-                        modInfo.PortalID, 
-                        indexUrl);
-                }
-            }
+            return new SearchProvider(modInfo, false).GetSearchItems();
         }
     }
 }

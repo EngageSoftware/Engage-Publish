@@ -1,20 +1,21 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="CategoryDisplay.ascx.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.CategoryControls
 {
     using System;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -23,7 +24,6 @@ namespace Engage.Dnn.Publish.CategoryControls
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Search;
 
     using Engage.Dnn.Publish.Util;
 
@@ -66,24 +66,20 @@ namespace Engage.Dnn.Publish.CategoryControls
             set { this.showAll = value; }
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation")
-        ]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
-        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
-        {
-            // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
-            return null;
-        }
-
+        /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.dlCategories.ItemDataBound += this.dlCategories_ItemDataBound;
+            this.dlItems.ItemDataBound += this.dlItems_ItemDataBound;
+            this.Load += this.Page_Load;
+
             base.OnInit(e);
 
             BindItemData();
-            SetupOptions();
+            this.SetupOptions();
             SetPageTitle();
         }
 
@@ -240,17 +236,6 @@ namespace Engage.Dnn.Publish.CategoryControls
             return sort;
         }
 
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.dlCategories.ItemDataBound += new DataListItemEventHandler(this.dlCategories_ItemDataBound);
-            this.dlItems.ItemDataBound += new DataListItemEventHandler(this.dlItems_ItemDataBound);
-            this.Load += new EventHandler(this.Page_Load);
-        }
-
         private void Page_Load(object sender, EventArgs e)
         {
             try
@@ -304,20 +289,19 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             if (!this.VersionInfoObject.IsNew)
             {
-                string referrer = string.Empty;
+                var referrer = string.Empty;
                 if (HttpContext.Current.Request.UrlReferrer != null)
                 {
                     referrer = HttpContext.Current.Request.UrlReferrer.ToString();
                 }
 
-                string url = string.Empty;
-                if (HttpContext.Current.Request.RawUrl != null)
-                {
-                    url = HttpContext.Current.Request.RawUrl;
-                }
-
                 this.VersionInfoObject.AddView(
-                    this.UserId, this.TabId, HttpContext.Current.Request.UserHostAddress, HttpContext.Current.Request.UserAgent, referrer, url);
+                    this.UserId,
+                    this.TabId,
+                    HttpContext.Current.Request.UserHostAddress,
+                    HttpContext.Current.Request.UserAgent,
+                    referrer,
+                    HttpContext.Current.Request.RawUrl);
             }
         }
 
@@ -423,10 +407,8 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         private void dlItems_ItemDataBound(object sender, DataListItemEventArgs e)
         {
-            /* This function fires when the articles are bound
-			 * it builds a string of the article information within divs so that the divs can be turned off via CSS
-			 * 
-			 */
+            // This function fires when the articles are bound
+            // it builds a string of the article information within divs so that the divs can be turned off via CSS
             DataRow dr = ((DataRowView)e.Item.DataItem).Row;
 
             Item a = Item.GetItem((int)dr["ItemId"], this.PortalId, Item.GetItemTypeId((int)dr["ItemID"], this.PortalId), true);

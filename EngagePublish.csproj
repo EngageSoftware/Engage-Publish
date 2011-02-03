@@ -566,7 +566,6 @@
     <Compile Include="Providers\ForumProvider\ActiveForumsProvider\ActiveForumsProvider.cs" />
     <Compile Include="Providers\ForumProvider\ForumProvider.cs" />
     <Compile Include="Rating.cs" />
-    <Compile Include="Search\SearchProvider.cs" />
     <Compile Include="Security\NullSecurityFilter.cs" />
     <Compile Include="Security\PermissionType.cs" />
     <Compile Include="Security\RoleBasedSecurityFilter.cs" />
@@ -634,6 +633,7 @@
     <Compile Include="util\ApprovalStatus.cs" />
     <Compile Include="util\Breadcrumb.cs" />
     <Compile Include="util\CommunityController.cs" />
+    <Compile Include="util\SearchProvider.cs" />
     <Compile Include="util\UrlGenerator.cs" />
     <Compile Include="util\UserRoleInfoComparer.cs" />
     <Compile Include="util\NewBreadcrumb.cs" />
@@ -1117,6 +1117,9 @@
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Scripts\ArticleSelector.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Search\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />

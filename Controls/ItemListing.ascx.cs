@@ -1,12 +1,13 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="ItemListing.ascx.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.Controls
 {
@@ -21,7 +22,6 @@ namespace Engage.Dnn.Publish.Controls
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Search;
 
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
@@ -109,24 +109,6 @@ namespace Engage.Dnn.Publish.Controls
                 object o = this.Settings["ilShowParent"];
                 return o == null ? false : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
             }
-        }
-
-        // private int MaxDisplaySubItems
-        // {
-        // get
-        // {
-        // object o = Settings["ilMaxDisplaySubItems"];
-        // return (o == null ? -1 : Convert.ToInt32(o));
-        // }
-        // }
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "0#", Justification = "Interface Implementation")
-        ]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Interface Implementation")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "modInfo", Justification = "Interface implementation")]
-        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
-        {
-            // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
-            return null;
         }
 
         protected override void OnInit(EventArgs e)
