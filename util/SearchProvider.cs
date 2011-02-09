@@ -141,7 +141,10 @@ namespace Engage.Dnn.Publish.Util
                 if (ModuleBase.AllowVenexusSearchForPortal(this.Module.PortalID))
                 {
                     string indexUrl = UrlGenerator.GetItemLinkUrl(
-                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture), this.Module.PortalID, this.Module.TabID, this.Module.ModuleID);
+                        Convert.ToInt32(itemId, CultureInfo.InvariantCulture),
+                        Utility.GetPortalSettings(this.Module.PortalID),
+                        this.Module.TabID,
+                        this.Module.ModuleID);
 
                     // UpdateVenexusBraindump(IDbTransaction trans, string indexTitle, string indexContent, string indexWashedContent)
                     DataProvider.Instance().UpdateVenexusBraindump(

@@ -39,7 +39,7 @@ namespace Engage.Dnn.Publish.Controls
             {
                 if (this.ItemId > -1)
                 {
-                    this.Response.Redirect(UrlGenerator.GetItemLinkUrl(this.ItemId, this.PortalId), true);
+                    this.Response.Redirect(UrlGenerator.GetItemLinkUrl(this.ItemId, this.PortalSettings), true);
                 }
             }
             catch (Exception exc)

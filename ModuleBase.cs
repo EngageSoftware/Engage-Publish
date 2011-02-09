@@ -1018,7 +1018,7 @@ namespace Engage.Dnn.Publish
 
                 return UrlGenerator.GetItemLinkUrl(
                     Convert.ToInt32(itemId, CultureInfo.InvariantCulture), 
-                    this.PortalId, 
+                    this.PortalSettings, 
                     this.TabId, 
                     this.ModuleId, 
                     correctPageId, 
@@ -1045,7 +1045,7 @@ namespace Engage.Dnn.Publish
 
             if (itemVersionId != null)
             {
-                return UrlGenerator.GetItemLinkUrl(version);
+                return UrlGenerator.GetItemLinkUrl(version, this.PortalSettings);
             }
 
             return string.Empty;
@@ -1083,7 +1083,7 @@ namespace Engage.Dnn.Publish
 
         public string GetItemLinkUrlExternal(object itemId)
         {
-            return Engage.Utility.MakeUrlAbsolute(this.Page, UrlGenerator.GetItemLinkUrl(itemId, this.PortalId));
+            return Engage.Utility.MakeUrlAbsolute(this.Page, UrlGenerator.GetItemLinkUrl(itemId, this.PortalSettings));
         }
 
         public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)

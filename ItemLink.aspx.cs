@@ -82,7 +82,7 @@ namespace Engage.Dnn.Publish
             else
             {
                 this.Response.Status = "301 Moved Permanently";
-                this.Response.RedirectLocation = item != null ? UrlGenerator.GetItemLinkUrl(item) : Globals.NavigateURL();
+                this.Response.RedirectLocation = item != null ? UrlGenerator.GetItemLinkUrl(item, this.PortalSettings) : Globals.NavigateURL();
             }
         }
 

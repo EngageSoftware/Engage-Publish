@@ -120,7 +120,7 @@ namespace Engage.Dnn.Publish.Controls
                 if (parentId > 0)
                 {
                     Item i = Item.GetItem(parentId, this.PortalId, ItemType.Category.GetId(), true);
-                    string categoryUrl = UrlGenerator.GetItemLinkUrl(i);
+                    string categoryUrl = UrlGenerator.GetItemLinkUrl(i, this.PortalSettings);
                     this.bci.InsertBeginning(i.Name, categoryUrl);
                     this.LoadParents(i.ItemId);
                 }
@@ -134,7 +134,7 @@ namespace Engage.Dnn.Publish.Controls
                 Item i = Item.GetItem(itemId, this.PortalId, Item.GetItemTypeId(itemId), true);
                 if (i != null)
                 {
-                    string linkUrl = UrlGenerator.GetItemLinkUrl(i);
+                    string linkUrl = UrlGenerator.GetItemLinkUrl(i, this.PortalSettings);
                     this.bci.Add(i.Name, linkUrl);
                 }
             }

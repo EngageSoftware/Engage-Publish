@@ -1339,7 +1339,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     this.lnkPreviousPage.Text = Localization.GetString("lnkPreviousPage", this.LocalResourceFile);
                     this.lnkPreviousPage.NavigateUrl = UrlGenerator.GetItemLinkUrl(
-                        article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId - 1, this.GetCultureName());
+                        article.ItemId, this.PortalSettings, this.TabId, this.ModuleId, this.PageId - 1, this.GetCultureName());
                     this.lnkNextPage.Attributes.Add("rel", "prev");
                 }
 
@@ -1347,7 +1347,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     this.lnkNextPage.Text = Localization.GetString("lnkNextPage", this.LocalResourceFile);
                     this.lnkNextPage.NavigateUrl = UrlGenerator.GetItemLinkUrl(
-                        article.ItemId, this.PortalId, this.TabId, this.ModuleId, this.PageId + 1, this.GetCultureName());
+                        article.ItemId, this.PortalSettings, this.TabId, this.ModuleId, this.PageId + 1, this.GetCultureName());
                     this.lnkNextPage.Attributes.Add("rel", "next");
                 }
             }
