@@ -37,7 +37,6 @@
   <property name="referencesDirectory" value="References"/>
   <property name="packageDirectory" value="package"/>
   <property name="packageName" value="Resources.zip"/>
-  <property name="nant.settings.currentframework" value="net-3.5" />
 
   <target name="package" description="Creates packages for this module, one for each value in the licenses and versions properties">
 

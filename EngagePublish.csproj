@@ -715,6 +715,7 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
+    <Content Include="ReleaseNotes_5.8.0.htm" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />
