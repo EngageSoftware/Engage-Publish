@@ -87,8 +87,7 @@
     <call target="cleanup"/>
   </target>
   <target name="set-assemblyVersion" description="Sets the assemblyVersion property to the first three numbers from the version of the assembly specified by the assemblyFile property">
-    <property name="version" value="${fileversioninfo::get-file-version(fileversioninfo::get-version-info(assemblyFile))}" />
-    <property name="assemblyVersion" value="${string::substring(version,0,string::last-index-of(version,'.'))}" />
+    <property name="assemblyVersion" value="${format::version-info(fileversioninfo::get-version-info(assemblyFile))}" />
   </target>
   <target name="build" description="Builds solutionFile">
     <if test="${testBuild or buildTrial}">
@@ -368,6 +367,24 @@
 					            return this.buildNumber.GetHashCode();
 			            }
 	            }
+            ]]>
+    </code>
+  </script>
+  <script language="C#" prefix="format" >
+    <references>
+      <include name="System.dll" />
+    </references>
+    <imports>
+      <import namespace="System.Diagnostics"/>
+      <import namespace="System.Globalization"/>
+    </imports>
+    <code>
+      <![CDATA[
+              [Function("version-info")]
+              public static string FormatVersionInfo(FileVersionInfo fileVersionInfo) {
+                  
+                  return string.Format(CultureInfo.InvariantCulture, "{0:00}.{1:00}.{2:00}", fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart, fileVersionInfo.FileBuildPart);
+              }
             ]]>
     </code>
   </script>
