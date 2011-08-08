@@ -139,7 +139,7 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
             base.OnInit(e);
 
             this.BindItemData();
@@ -280,11 +280,6 @@ namespace Engage.Dnn.Publish.Admin
             {
                 li.Selected = true;
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)

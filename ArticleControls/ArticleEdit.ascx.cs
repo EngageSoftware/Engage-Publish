@@ -76,7 +76,11 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.cmdUpdate.Click += this.CmdUpdateClick;
+            this.cmdCancel.Click += this.CmdCancelClick;
+            this.Load += this.Page_Load;
+            this.PreRender += this.Page_PreRender;
+
             this.LoadControlType();
             base.OnInit(e);
             this.LoadSharedResources();
@@ -501,14 +505,6 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 this.ddlPhotoGalleryAlbum.Items.Add(li);
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.cmdUpdate.Click += this.CmdUpdateClick;
-            this.cmdCancel.Click += this.CmdCancelClick;
-            this.Load += this.Page_Load;
-            this.PreRender += this.Page_PreRender;
         }
 
         private void LoadControlType()

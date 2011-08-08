@@ -51,7 +51,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -68,11 +68,6 @@ namespace Engage.Dnn.Publish.Controls
             }
 
             return approvalId;
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
         }
 
         private void LoadApprovalTypes()

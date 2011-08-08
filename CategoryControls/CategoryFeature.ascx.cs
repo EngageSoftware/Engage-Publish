@@ -82,7 +82,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.Load += this.Page_Load;
             base.OnInit(e);
 
             if (ItemId == -1)
@@ -208,15 +208,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                 // this.dlCategories.Visible = false;
                 // this.dlItems.Visible = false;
             }
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.Load += new EventHandler(this.Page_Load);
         }
 
         private void Page_Load(object sender, EventArgs e)

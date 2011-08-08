@@ -63,7 +63,9 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.cboItemType.SelectedIndexChanged += this.cboItemType_SelectedIndexChanged;
+            this.cboWorkflow.SelectedIndexChanged += this.cboWorkFlow_SelectedIndexChanged;
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -376,17 +378,6 @@ namespace Engage.Dnn.Publish.CategoryControls
                     li.Selected = true;
                 }
             }
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.cboItemType.SelectedIndexChanged += new EventHandler(this.cboItemType_SelectedIndexChanged);
-            this.cboWorkflow.SelectedIndexChanged += new EventHandler(cboWorkFlow_SelectedIndexChanged);
-            this.Load += new EventHandler(this.Page_Load);
         }
 
         private void Page_Load(object sender, EventArgs e)

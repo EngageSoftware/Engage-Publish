@@ -101,7 +101,10 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.btnCategorySearch.Click += this.BtnCategorySearchClick;
+            this.dgResults.PageIndexChanged += this.DgResultsPageIndexChanged;
+            this.dgResults.ItemDataBound += this.DgResultsItemDataBound;
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -286,14 +289,6 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             this.dgResults.CurrentPageIndex = e.NewPageIndex;
             this.BindData();
-        }
-
-        private void InitializeComponent()
-        {
-            this.btnCategorySearch.Click += this.BtnCategorySearchClick;
-            this.dgResults.PageIndexChanged += this.DgResultsPageIndexChanged;
-            this.dgResults.ItemDataBound += this.DgResultsItemDataBound;
-            this.Load += this.Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)

@@ -27,7 +27,16 @@ namespace Engage.Dnn.Publish
         {
             base.OnInit(e);
             base.Load += new EventHandler(ItemPreview_Load);
-            InitializeComponent();
+            this.SetItemId(Convert.ToInt32(this.Request.QueryString["itemid"], CultureInfo.InvariantCulture));
+
+            if (this.TypeOfItem == ItemType.Article)
+            {
+                ModuleConfiguration.ModuleTitle = Localization.GetString("ArticlePreview", LocalResourceFile);
+            }
+            else
+            {
+                ModuleConfiguration.ModuleTitle = Localization.GetString("CategoryPreview", LocalResourceFile);
+            }
         }
 
         [SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters", 
@@ -100,24 +109,6 @@ namespace Engage.Dnn.Publish
         private void DisplayVersion()
         {
             // TODO: See top of this file for comments about why/should we implement this. hk
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            SetItemId(Convert.ToInt32(this.Request.QueryString["itemid"], CultureInfo.InvariantCulture));
-
-            if (TypeOfItem == ItemType.Article)
-            {
-                ModuleConfiguration.ModuleTitle = Localization.GetString("ArticlePreview", LocalResourceFile);
-            }
-            else
-            {
-                ModuleConfiguration.ModuleTitle = Localization.GetString("CategoryPreview", LocalResourceFile);
-            }
         }
 
         private void ItemPreview_Load(object sender, EventArgs e)

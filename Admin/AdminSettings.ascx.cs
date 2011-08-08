@@ -35,7 +35,8 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
+            this.lnkUpdate.Click += this.lnkUpdate_Click;
             base.OnInit(e);
         }
 
@@ -331,12 +332,6 @@ namespace Engage.Dnn.Publish.Admin
 
             this.LoadDefaultTextHtmlCategoryDropDown();
             this.LoadDefaultCategoryDropDown();
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
-            this.lnkUpdate.Click += this.lnkUpdate_Click;
         }
 
         private void LoadAdminRolesDropDown(ArrayList portalRoles)

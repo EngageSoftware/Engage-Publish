@@ -282,7 +282,24 @@ namespace Engage.Dnn.Publish.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.btnItemSearch.Click += this.BtnItemSearchClick;
+            this.imgAdd.Click += this.ImgAddClick;
+            this.imgRemove.Click += this.ImgRemoveClick;
+
+            if (this._enableDates)
+            {
+                this.lstSelectedItems.SelectedIndexChanged += this.LstSelectedItemsSelectedIndexChanged;
+                this.lstSelectedItems.AutoPostBack = true;
+            }
+
+            this.imgUp.Click += this.ImgUpClick;
+            this.imgDown.Click += this.ImgDownClick;
+            this.btnStoreRelationshipDate.Click += this.BtnStoreRelationshipDateClick;
+            this.Load += this.Page_Load;
+
+            ClientAPI.RegisterKeyCapture(this.txtItemSearch, this.btnItemSearch, 13);
+                
+            // fire the search button if they hit enter while in the search box.
             base.OnInit(e);
         }
 
@@ -423,28 +440,6 @@ namespace Engage.Dnn.Publish.Controls
             ListItem li = this.lstSelectedItems.SelectedItem;
             this.lstSelectedItems.Items.Remove(li);
             this.lstSelectedItems.Items.Insert(index - 1, li);
-        }
-
-        private void InitializeComponent()
-        {
-            this.btnItemSearch.Click += this.BtnItemSearchClick;
-            this.imgAdd.Click += this.ImgAddClick;
-            this.imgRemove.Click += this.ImgRemoveClick;
-
-            if (this._enableDates)
-            {
-                this.lstSelectedItems.SelectedIndexChanged += this.LstSelectedItemsSelectedIndexChanged;
-                this.lstSelectedItems.AutoPostBack = true;
-            }
-
-            this.imgUp.Click += this.ImgUpClick;
-            this.imgDown.Click += this.ImgDownClick;
-            this.btnStoreRelationshipDate.Click += this.BtnStoreRelationshipDateClick;
-            this.Load += this.Page_Load;
-
-            ClientAPI.RegisterKeyCapture(this.txtItemSearch, this.btnItemSearch, 13);
-                
-                // fire the search button if they hit enter while in the search box.
         }
 
         private void LocalizeControl()

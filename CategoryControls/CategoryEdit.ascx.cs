@@ -71,8 +71,10 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
-            // int tli = TopLevelId;
+            this.Load += this.Page_Load;
+            this.cmdUpdate.Click += this.CmdUpdateClick;
+            this.cmdCancel.Click += this.CmdCancelClick;
+
             this.LoadControlType();
             base.OnInit(e);
             this.LoadSharedResources();
@@ -356,13 +358,6 @@ namespace Engage.Dnn.Publish.CategoryControls
             {
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
-            this.cmdUpdate.Click += this.CmdUpdateClick;
-            this.cmdCancel.Click += this.CmdCancelClick;
         }
 
         private void LoadCategoryDisplayTabDropDown()

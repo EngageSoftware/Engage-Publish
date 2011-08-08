@@ -57,7 +57,9 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.Load += this.Page_Load;
             this.LoadControls();
             base.OnInit(e);
 
@@ -75,13 +77,6 @@ namespace Engage.Dnn.Publish.Admin
             this.txtMessage.Visible = true;
 
             this.ShowOnlyMessage();
-        }
-
-        private void InitializeComponent()
-        {
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.Load += this.Page_Load;
         }
 
         private void LoadControls()

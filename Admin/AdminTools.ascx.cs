@@ -36,7 +36,8 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            // this.Load += new System.EventHandler(this.Page_Load);
+            this.ModuleConfiguration.ModuleTitle = Localization.GetString("Title", this.LocalResourceFile);
             this.ReadQueryString();
             this.LoadControlType();
 
@@ -62,12 +63,6 @@ namespace Engage.Dnn.Publish.Admin
                 };
 
             Idict = ht;
-        }
-
-        private void InitializeComponent()
-        {
-            // this.Load += new System.EventHandler(this.Page_Load);
-            this.ModuleConfiguration.ModuleTitle = Localization.GetString("Title", this.LocalResourceFile);
         }
 
         private void LoadControlType()

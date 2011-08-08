@@ -42,8 +42,7 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -78,15 +77,6 @@ namespace Engage.Dnn.Publish.Admin
                 this.Response.Redirect(
                     Globals.NavigateURL(this.TabId, Utility.AdminContainer, "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture)));
             }
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.Load += new EventHandler(this.Page_Load);
         }
 
         private void LoadSettings()

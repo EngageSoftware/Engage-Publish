@@ -48,19 +48,9 @@ namespace Engage.Dnn.Publish.Admin
 
         protected override void OnInit(EventArgs e)
         {
-            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.Load += this.Page_Load;
             base.OnInit(e);
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.cmdDelete.Click += new EventHandler(this.cmdDelete_Click);
-            this.Load += new EventHandler(this.Page_Load);
         }
 
         private void Page_Load(object sender, EventArgs e)

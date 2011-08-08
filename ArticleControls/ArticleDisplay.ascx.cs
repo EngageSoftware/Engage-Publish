@@ -543,8 +543,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
             base.OnInit(e);
+            this.Load += this.Page_Load;
+            this.PreRender += this.Page_PreRender;
             this.LoadArticle();
         }
 
@@ -1472,12 +1473,6 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             return null;
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
-            this.PreRender += this.Page_PreRender;
         }
 
         private void LoadArticle()

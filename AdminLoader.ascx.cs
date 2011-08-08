@@ -40,7 +40,7 @@ namespace Engage.Dnn.Publish
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.ModuleConfiguration.ModuleTitle = Localization.GetString("Title", this.LocalResourceFile);
             this.ReadQueryString();
             this.LoadControlType();
 
@@ -105,12 +105,6 @@ namespace Engage.Dnn.Publish
                 };
 
             _adminControlKeys = adminControlKeys;
-        }
-
-        private void InitializeComponent()
-        {
-            // this.Load += new System.EventHandler(this.Page_Load);
-            this.ModuleConfiguration.ModuleTitle = Localization.GetString("Title", this.LocalResourceFile);
         }
 
         private void LoadControlType()

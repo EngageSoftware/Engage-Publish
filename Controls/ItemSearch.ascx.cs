@@ -12,46 +12,6 @@ namespace Engage.Dnn.Publish.Controls
 {
     public partial class ItemSearch : ModuleBase
     {
-        // , IActionable
         // TODO: this class will be implemented in a future release.
-
-        // #region Event Handlers
-        // override protected void OnInit(EventArgs e)
-        // {
-        // InitializeComponent();
-        // base.OnInit(e);
-        // }
-
-        // private void InitializeComponent()
-        // {
-        // this.Load += new System.EventHandler(this.Page_Load);
-        // }
-
-        // private void Page_Load(object sender, System.EventArgs e)
-        // {
-        // try 
-        // {
-
-        // } 
-        // catch (Exception exc) 
-        // {
-        // Exceptions.ProcessModuleLoadException(this, exc);
-        // }
-        // }
-        // #endregion
-
-        // #region Optional Interfaces
-
-        // public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions 
-        // {
-        // get 
-        // {
-        // var actionCollection = new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection();
-        // //Actions.Add(GetNextActionID(), Localization.GetString(DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, LocalResourceFile), DotNetNuke.Entities.Modules.Actions.ModuleActionType.AddContent, "", "", "", false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-        // return actionCollection;
-        // }
-        // }
-
-        // #endregion
     }
 }

@@ -116,7 +116,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
 
             // LoadControlType();
             base.OnInit(e);
@@ -202,11 +202,6 @@ namespace Engage.Dnn.Publish.Controls
         protected void ddlAuthor_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.txtAuthorName.Text = this.ddlAuthor.SelectedItem.Text;
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
         }
 
         private void LoadAuthorsList()

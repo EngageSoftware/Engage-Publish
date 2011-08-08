@@ -49,19 +49,10 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.imgAdd.Click += this.imgAdd_Click;
+            this.imgRemove.Click += this.imgRemove_Click;
+            this.Load += this.Page_Load;
             base.OnInit(e);
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.imgAdd.Click += new ImageClickEventHandler(this.imgAdd_Click);
-            this.imgRemove.Click += new ImageClickEventHandler(this.imgRemove_Click);
-            this.Load += new EventHandler(this.Page_Load);
         }
 
         private void LoadAllRoles()

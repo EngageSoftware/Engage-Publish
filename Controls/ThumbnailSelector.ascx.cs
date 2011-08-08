@@ -77,7 +77,7 @@ namespace Engage.Dnn.Publish.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
 
             // TODO: Once we upgrade to or past 4.5.3, include this statement so that there won't be problems if someone has wrapped Publish with an update panel.
             // DotNetNuke.Framework.AJAX.RegisterPostBackControl(btnUploadThumbnail);
@@ -163,11 +163,6 @@ namespace Engage.Dnn.Publish.Controls
             }
 
             this.mvThumbnailImage.SetActiveView(activeView);
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
         }
 
         private void InitializeThumbnailControl()

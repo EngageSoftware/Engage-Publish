@@ -38,19 +38,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected override void OnInit(EventArgs e)
         {
-            // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.Load += this.Page_Load;
             LoadControlType();
             base.OnInit(e);
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            Load += Page_Load;
         }
 
         // 		private Article av;

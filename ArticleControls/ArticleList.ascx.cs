@@ -112,7 +112,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.cboCategories.SelectedIndexChanged += this.CboCategoriesSelectedIndexChanged;
+            this.cboWorkflow.SelectedIndexChanged += this.CboWorkflowSelectedIndexChanged;
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -426,14 +428,6 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             return this.GridViewSortDirection;
-        }
-
-        private void InitializeComponent()
-        {
-            this.cboCategories.SelectedIndexChanged += this.CboCategoriesSelectedIndexChanged;
-            this.cboWorkflow.SelectedIndexChanged += this.CboWorkflowSelectedIndexChanged;
-
-            this.Load += this.Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)

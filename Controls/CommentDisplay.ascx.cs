@@ -88,14 +88,9 @@ namespace Engage.Dnn.Publish.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            this.InitializeComponent();
+            this.Load += this.Page_Load;
             this.LoadArticle();
             base.OnInit(e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
         }
 
         private void LoadArticle()

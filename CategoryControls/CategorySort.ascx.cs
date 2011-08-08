@@ -146,7 +146,7 @@ namespace Engage.Dnn.Publish.CategoryControls
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.Load += this.Page_Load;
             base.OnInit(e);
         }
 
@@ -377,15 +377,6 @@ namespace Engage.Dnn.Publish.CategoryControls
 
             this.Session[SortList] = this._sortItems;
             return this._sortItems;
-        }
-
-        /// <summary>
-        ///		Required method for Designer support - do not modify
-        ///		the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            Load += Page_Load;
         }
 
         private void Page_Load(object sender, EventArgs e)
