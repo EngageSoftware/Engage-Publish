@@ -17,6 +17,7 @@ namespace Engage.Dnn.Publish.ArticleControls
     using System.Globalization;
     using System.IO;
     using System.Web;
+    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -357,7 +358,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         /// </summary>
         /// <value>
         /// The rating display option.
-        /// Defaults to <see cref="Util.RatingDisplayOption.Enable"/> if no setting is defined.
+        /// Defaults to <see cref="Engage.Dnn.Publish.Util.RatingDisplayOption.Enable"/> if no setting is defined.
         /// </value>
         private RatingDisplayOption RatingDisplayOption
         {
@@ -1167,8 +1168,7 @@ namespace Engage.Dnn.Publish.ArticleControls
         private void ConfigureTags()
         {
             // get the upnlRating setting
-            ItemVersionSetting tgSetting = ItemVersionSetting.GetItemVersionSetting(
-                this.VersionInfoObject.ItemVersionId, "pnlTags", "Visible", this.PortalId);
+            ItemVersionSetting tgSetting = ItemVersionSetting.GetItemVersionSetting(this.VersionInfoObject.ItemVersionId, "pnlTags", "Visible", this.PortalId);
             if (tgSetting != null)
             {
                 this.pnlTags.Visible = Convert.ToBoolean(tgSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -1526,13 +1526,9 @@ namespace Engage.Dnn.Publish.ArticleControls
                 hl.Text = tag.Name;
                 hl.NavigateUrl = Globals.NavigateURL(this.DefaultTagDisplayTabId, string.Empty, "&tags=" + tag.Name);
                 hl.Attributes.Add("rel", "tag");
-                var li = new Literal
-                    {
-                        Text = ", "
-                    };
 
                 this.phTags.Controls.Add(hl);
-                this.phTags.Controls.Add(li);
+                this.phTags.Controls.Add(new LiteralControl(", "));
             }
 
             if (this.phTags.Controls.Count > 1)

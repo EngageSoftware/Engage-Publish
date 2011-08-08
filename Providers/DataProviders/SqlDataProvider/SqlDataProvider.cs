@@ -2901,57 +2901,51 @@ namespace Engage.Dnn.Publish.Data
 
         public override DataTable GetTag(string tag, int portalId)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(
+            var dataset = SqlHelper.ExecuteDataset(
                 this._connectionString, this.NamePrefix + "spGetTag", portalId, Utility.CreateNvarcharParam("@TagName", tag, 256));
-            return ds.Tables[0];
+            return dataset.Tables[0];
         }
 
         public override DataTable GetTag(int tagId)
         {
-            var sql = new StringBuilder(128);
-            sql.Append("select  ");
-            sql.Append(" tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
-            sql.Append("from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tags ");
-            sql.Append("where TagId = @tagId");
-            DataSet ds = SqlHelper.ExecuteDataset(
-                this.ConnectionString, CommandType.Text, sql.ToString(), Utility.CreateIntegerParam("@tagId", tagId));
-            return ds.Tables[0];
+            var dataset = SqlHelper.ExecuteDataset(
+                this.ConnectionString, 
+                CommandType.Text,
+                @"SELECT TagId, Name, Description, TotalItems, MostRecentDate, LanguageId, DateCreated 
+                FROM " + this.NamePrefix + @"Tags 
+                WHERE TagId = @tagId", 
+                Utility.CreateIntegerParam("@tagId", tagId));
+            return dataset.Tables[0];
         }
 
         public override DataTable GetTags(int portalId)
         {
-            var sql = new StringBuilder(128);
-            sql.Append("select tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
-            sql.Append("from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tags ");
-            sql.Append("where PortalId = ");
-            sql.Append(portalId);
-            sql.Append(" order by ");
-            sql.Append(" Name ");
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
-            return ds.Tables[0];
+            var dataset = SqlHelper.ExecuteDataset(
+                this.ConnectionString, 
+                CommandType.Text,
+                @"SELECT TagId, Name, Description, TotalItems, MostRecentDate, LanguageId, DateCreated
+                FROM " + this.NamePrefix + @"Tags 
+                WHERE PortalId = @portalId
+                ORDER BY Name",
+                Utility.CreateIntegerParam("@portalId", portalId));
+
+            return dataset.Tables[0];
         }
 
         public override DataTable GetTagsByString(string partialTag, int portalId)
         {
-            var sql = new StringBuilder(128);
-            sql.Append("select  ");
-            sql.Append(" tagId, name, description, totalItems, mostRecentDate, languageid, datecreated ");
-            sql.Append("from ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tags ");
-            sql.Append("where PortalId = ");
-            sql.Append(portalId);
-            sql.Append(" and name like '");
-            sql.Append(partialTag);
-            sql.Append("%' ");
-            sql.Append(" order by ");
-            sql.Append(" Name ASC ");
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
-            return ds.Tables[0];
+            DataSet dataset = SqlHelper.ExecuteDataset(
+                this.ConnectionString,
+                CommandType.Text,
+                @"SELECT TagId, Name, Description, TotalItems, MostRecentDate, LanguageId, DateCreated 
+                FROM " + this.NamePrefix + @"Tags 
+                WHERE PortalId = @portalId
+                  AND Name LIKE @partialTag 
+                ORDER BY Name",
+                Utility.CreateIntegerParam("@portalId", portalId),
+                Utility.CreateNvarcharParam("@partialTag", partialTag + "%", partialTag.Length + 1));
+            
+            return dataset.Tables[0];
         }
 
         public override DataSet GetTopLevelCategories(int portalId)

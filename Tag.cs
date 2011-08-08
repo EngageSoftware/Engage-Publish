@@ -3,13 +3,10 @@ namespace Engage.Dnn.Publish
     using System;
     using System.Collections;
     using System.Data;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Xml.Serialization;
-
-    using DotNetNuke.Common.Utilities;
 
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
@@ -18,29 +15,6 @@ namespace Engage.Dnn.Publish
     public class Tag
     {
         // attributes hide private members from debugger, so both properties and members aren't shown - BD
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly DateTime _createdDate;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly DateTime _mostRecentDate;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _description;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _languageId;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string _name;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _portalId;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _tagId;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int _totalItems;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tag"/> class.
@@ -57,10 +31,10 @@ namespace Engage.Dnn.Publish
         /// <param name="tagTotalItems">The total items.</param>
         public Tag(string tagName, string tagDescription, int tagTotalItems)
         {
-            this._name = tagName;
-            this._description = tagDescription;
-            this._totalItems = tagTotalItems;
-            this._mostRecentDate = DateTime.Now;
+            this.Name = tagName;
+            this.Description = tagDescription;
+            this.TotalItems = tagTotalItems;
+            this.MostRecentDate = DateTime.Now;
         }
 
         /// <summary>
@@ -70,246 +44,149 @@ namespace Engage.Dnn.Publish
         public Tag(DataTable dt)
         {
             // Make sure that we have at least 1 row returned. If for some reason we have more than one we only use the first one.
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count < 1)
             {
-                this._tagId = Convert.ToInt32(dt.Rows[0]["tagId"], CultureInfo.InvariantCulture);
-                this._name = dt.Rows[0]["name"].ToString();
-                this._description = dt.Rows[0]["description"].ToString();
-                this._totalItems = Convert.ToInt32(dt.Rows[0]["totalItems"], CultureInfo.InvariantCulture);
-                this._mostRecentDate = Convert.ToDateTime(dt.Rows[0]["mostRecentDate"], CultureInfo.InvariantCulture);
-                this._languageId = Convert.ToInt32(dt.Rows[0]["languageid"], CultureInfo.InvariantCulture);
-                this._createdDate = Convert.ToDateTime(dt.Rows[0]["datecreated"], CultureInfo.InvariantCulture);
+                return;
             }
+
+            var row = dt.Rows[0];
+            this.TagId = Convert.ToInt32(row["tagId"], CultureInfo.InvariantCulture);
+            this.Name = row["name"].ToString();
+            this.Description = row["description"].ToString();
+            this.TotalItems = Convert.ToInt32(row["totalItems"], CultureInfo.InvariantCulture);
+            this.MostRecentDate = Convert.ToDateTime(row["mostRecentDate"], CultureInfo.InvariantCulture);
+            this.LanguageId = Convert.ToInt32(row["languageid"], CultureInfo.InvariantCulture);
+            this.CreatedDate = Convert.ToDateTime(row["datecreated"], CultureInfo.InvariantCulture);
         }
 
         /// <summary>
         /// Gets the date this tag was created.
         /// </summary>
         /// <value>The creation date of this rating.</value>
-        public DateTime CreatedDate
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._createdDate; }
-        }
+        public DateTime CreatedDate { get; private set; }
 
         /// <summary>
         /// Gets or sets the tag description for this <see cref="Tag"/> instance.
         /// </summary>
         /// <value>The description of the Tag.</value>
-        public string Description
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._description; }
-            [DebuggerStepThroughAttribute]
-            set { this._description = value; }
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the language id for this <see cref="Tag"/> instance.
         /// </summary>
         /// <value>The Language Id</value>
-        public int LanguageId
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._languageId; }
-            [DebuggerStepThroughAttribute]
-            set { this._languageId = value; }
-        }
+        public int LanguageId { get; set; }
 
         /// <summary>
         /// Gets the date an item was last tagged.
         /// </summary>
         /// <value>The creation date of this rating.</value>
-        public DateTime MostRecentDate
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._mostRecentDate; }
-        }
+        public DateTime MostRecentDate { get; private set; }
 
         /// <summary>
         /// Gets or sets the tag name for this <see cref="Tag"/> instance.
         /// </summary>
         /// <value>The Name of the Tag.</value>
-        public string Name
-        {
-            [DebuggerStepThrough]
-            get { return this._name; }
-            [DebuggerStepThroughAttribute]
-            set { this._name = value; }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the PortalId this <see cref="Tag"/> instance.
         /// </summary>
         /// <value>The Language Id</value>
-        public int PortalId
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._portalId; }
-            [DebuggerStepThroughAttribute]
-            set { this._portalId = value; }
-        }
+        public int PortalId { get; set; }
 
         /// <summary>
         /// Gets the _tagId of the tag
         /// </summary>
         /// <value>The tag id of the tag.</value>
-        public int? TagId
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._tagId; }
-        }
+        public int TagId { get; private set; }
 
         /// <summary>
         /// Gets or sets the total number of items tagged with this <see cref="Tag"/> instance.
         /// </summary>
         /// <value>The Total Items Tag.</value>
-        public int TotalItems
-        {
-            [DebuggerStepThroughAttribute]
-            get { return this._totalItems; }
-            [DebuggerStepThroughAttribute]
-            set { this._totalItems = value; }
-        }
+        public int TotalItems { get; set; }
 
         public static DataTable GetItemsFromTags(int portalId, ArrayList tagList)
         {
-            // return DataProvider.Instance().GetItemsFromTags(_portalId, tagList);
-            var sb = new StringBuilder(50);
+            var tagIds = new StringBuilder(50);
 
-            // if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
             if (tagList != null)
             {
                 foreach (int tag in tagList)
                 {
-                    sb.Append(tag.ToString());
-                    sb.Append("_");
+                    tagIds.Append(tag.ToString());
+                    tagIds.Append("_");
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishItemsFromTags + sb + "_" + portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetItemsFromTags(portalId, tagList);
-                }
+            var cacheKey = string.Format(
+                CultureInfo.InvariantCulture, 
+                "{0}{1}_{2}", 
+                Utility.CacheKeyPublishItemsFromTags, 
+                tagIds, 
+                portalId);
 
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetItemsFromTags(portalId, tagList);
-            }
-
-            return dt;
+            return Utility.GetValueFromCache(portalId, cacheKey, () => DataProvider.Instance().GetItemsFromTags(portalId, tagList));
         }
 
         public static DataTable GetItemsFromTagsPaging(int portalId, ArrayList tagList, int maxItems, int pageId, string sortOrder)
         {
-            // return DataProvider.Instance().GetItemsFromTagsPaging(_portalId, tagList, maxItems, pageId);
-            var sb = new StringBuilder(50);
+            var tagIds = new StringBuilder(50);
 
-            // if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
             if (tagList != null)
             {
                 foreach (int tag in tagList)
                 {
-                    sb.Append(tag.ToString());
-                    sb.Append("_");
+                    tagIds.Append(tag.ToString());
+                    tagIds.Append("_");
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishItemsFromTagsPage + sb + "_" + pageId + "_" + portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId, sortOrder);
-                }
+            var cacheKey = string.Format(
+                CultureInfo.InvariantCulture, 
+                "{0}{1}_{2}_{3}", 
+                Utility.CacheKeyPublishItemsFromTagsPage, 
+                tagIds, 
+                pageId, 
+                portalId);
 
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId, sortOrder);
-            }
-
-            return dt;
+            return Utility.GetValueFromCache(
+                portalId, 
+                cacheKey, 
+                () => DataProvider.Instance().GetItemsFromTagsPaging(portalId, tagList, maxItems, pageId, sortOrder));
         }
 
         public static DataTable GetPopularTags(int portalId, ArrayList tagList, bool selectTop)
         {
             // TODO: change tagList to a <List> of strings
-            // string tags = string.Empty;
-            var sb = new StringBuilder(50);
+            var tagIds = new StringBuilder(50);
 
-            // if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
             if (tagList != null)
             {
                 foreach (int tag in tagList)
                 {
-                    sb.Append(tag.ToString());
-                    sb.Append("_");
+                    tagIds.Append(tag.ToString());
+                    tagIds.Append("_");
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTags + sb + selectTop.ToString(CultureInfo.InvariantCulture) + "_" +
-                              portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
-                }
+            var cacheKey = string.Format(
+                CultureInfo.InvariantCulture, 
+                "{0}{1}_{2}_{3}", 
+                Utility.CacheKeyPublishPopularTags, 
+                tagIds, 
+                selectTop, 
+                portalId);
 
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop);
-            }
-
-            return dt;
+            return Utility.GetValueFromCache(portalId, cacheKey, () => DataProvider.Instance().GetPopularTags(portalId, tagList, selectTop));
         }
 
         public static int GetPopularTagsCount(int portalId, ArrayList tagList, bool selectTop)
         {
             // TODO: change tagList to a <List> of strings
-            // string tags = string.Empty;
             var sb = new StringBuilder(50);
 
-            // if (tagList != null) tags = tagList.ToString().Replace(" ", string.Empty);
             if (tagList != null)
             {
                 foreach (int tag in tagList)
@@ -319,30 +196,16 @@ namespace Engage.Dnn.Publish
                 }
             }
 
-            string cacheKey = Utility.CacheKeyPublishPopularTagsCount + sb + "_" + selectTop.ToString(CultureInfo.InvariantCulture) + "_" +
-                              portalId.ToString(CultureInfo.InvariantCulture);
-            int tagCount;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    tagCount = (int)o;
-                }
-                else
-                {
-                    tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
-                }
+            var cacheKey = string.Format(
+                CultureInfo.InvariantCulture, 
+                "{0}{1}_{2}_{3}", 
+                Utility.CacheKeyPublishPopularTagsCount, 
+                sb, 
+                selectTop, 
+                portalId);
 
-                DataCache.SetCache(cacheKey, tagCount, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                Utility.AddCacheKey(cacheKey, portalId);
-            }
-            else
-            {
-                tagCount = DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop);
-            }
 
-            return tagCount;
+            return Utility.GetValueFromCache(portalId, cacheKey, () => DataProvider.Instance().GetPopularTagsCount(portalId, tagList, selectTop));
         }
 
         /// <summary>
@@ -352,39 +215,14 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static Tag GetTag(string tag, int portalId)
         {
-            // return DataProvider.Instance().GetTag(tag, _portalId);
-            string cacheKey = Utility.CacheKeyPublishTag + tag.ToString(CultureInfo.InvariantCulture) +
-                              portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetTag(tag, portalId);
-                }
-
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetTag(tag, portalId);
-            }
-
-            return new Tag(dt);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, "{0}{1}_{2}", Utility.CacheKeyPublishTag, tag, portalId);
+            return Utility.GetValueFromCache(portalId, cacheKey, () => new Tag(DataProvider.Instance().GetTag(tag, portalId)));
         }
 
         /// <summary>
         /// Gets a specific tag for a specific PortalId
         /// </summary>
+        [Obsolete("Use GetTag(int, int) so that caching can be used")]
         public static Tag GetTag(int tagId)
         {
             return new Tag(DataProvider.Instance().GetTag(tagId));
@@ -392,33 +230,8 @@ namespace Engage.Dnn.Publish
 
         public static Tag GetTag(int tagId, int portalId)
         {
-            string cacheKey = Utility.CacheKeyPublishTagById + tagId.ToString(CultureInfo.InvariantCulture) +
-                              portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetTag(tagId);
-                }
-
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetTag(tagId);
-            }
-
-            return new Tag(dt);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, "{0}{1}_{2}", Utility.CacheKeyPublishTagById, tagId, portalId);
+            return Utility.GetValueFromCache(portalId, cacheKey, () => new Tag(DataProvider.Instance().GetTag(tagId)));
         }
 
         /// <summary>
@@ -427,33 +240,8 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static DataTable GetTags(int portalId)
         {
-            // return DataProvider.Instance().GetTags(_portalId);
-            string cacheKey = Utility.CacheKeyPublishGetTagsByPortal + portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetTags(portalId);
-                }
-
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetTags(portalId);
-            }
-
-            return dt;
+            var cacheKey = Utility.CacheKeyPublishGetTagsByPortal + portalId.ToString(CultureInfo.InvariantCulture);
+            return Utility.GetValueFromCache(portalId, cacheKey, () => DataProvider.Instance().GetTags(portalId));
         }
 
         /// <summary>
@@ -463,36 +251,8 @@ namespace Engage.Dnn.Publish
         /// <param name="portalId">The Portal Id.</param>
         public static DataTable GetTagsByString(string partialTag, int portalId)
         {
-            // parse through the table and create each tag?
-
-            // return DataProvider.Instance().GetTagsByString(partialTag, _portalId);
-            string cacheKey = Utility.CacheKeyPublishGetTagsByString + partialTag.ToString(CultureInfo.InvariantCulture) + "_" +
-                              portalId.ToString(CultureInfo.InvariantCulture);
-            DataTable dt;
-            if (ModuleBase.UseCachePortal(portalId))
-            {
-                object o = DataCache.GetCache(cacheKey);
-                if (o != null)
-                {
-                    dt = (DataTable)o;
-                }
-                else
-                {
-                    dt = DataProvider.Instance().GetTagsByString(partialTag, portalId);
-                }
-
-                if (dt != null)
-                {
-                    DataCache.SetCache(cacheKey, dt, DateTime.Now.AddMinutes(ModuleBase.CacheTimePortal(portalId)));
-                    Utility.AddCacheKey(cacheKey, portalId);
-                }
-            }
-            else
-            {
-                dt = DataProvider.Instance().GetTagsByString(partialTag, portalId);
-            }
-
-            return dt;
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, "{0}{1}_{2}", Utility.CacheKeyPublishGetTagsByString, partialTag, portalId);
+            return Utility.GetValueFromCache(portalId, cacheKey, () => DataProvider.Instance().GetTagsByString(partialTag, portalId));
         }
 
         public static ArrayList ParseTags(string tags, int portalId)
@@ -509,7 +269,7 @@ namespace Engage.Dnn.Publish
                 if (sTag.Trim().Length > 0)
                 {
                     Tag t = GetTag(sTag.Trim(), portalId);
-                    if (t._tagId == 0 && add)
+                    if (t.TagId == 0 && add)
                     {
                         t.Name = HttpUtility.UrlDecode(sTag).Trim();
                         t.PortalId = portalId;
@@ -534,7 +294,7 @@ namespace Engage.Dnn.Publish
         {
             if (this.TagId == 0)
             {
-                this._tagId = DataProvider.Instance().AddTag(this);
+                this.TagId = DataProvider.Instance().AddTag(this);
             }
             else
             {
@@ -546,36 +306,12 @@ namespace Engage.Dnn.Publish
         {
             if (this.TagId == 0)
             {
-                this._tagId = DataProvider.Instance().AddTag(trans, this);
+                this.TagId = DataProvider.Instance().AddTag(trans, this);
             }
             else
             {
                 DataProvider.Instance().UpdateTag(trans, this);
             }
         }
-
-        // #region Static Data Methods
-        // /// <summary>
-        // /// Adds an item to a tag.
-        // /// </summary>
-        // /// <param name="itemVersionId">The item version id.</param>
-        // /// <param name="userId">The user id, or <c>null</c> if the user is unauthenticated.</param>
-        // /// <param name="rating">The rating.</param>
-        // /// <returns></returns>
-        // public static int AddItemTag(int itemVersionId, int? _tagId)
-        // {
-        // return DataProvider.Instance().AddItemTag(itemVersionId, _tagId);
-        // }
-
-        // /// <summary>
-        // /// Deletes all the ratings for a certain item version.
-        // /// </summary>
-        // /// <param name="itemVersionId">The item version id.</param>
-        // public static void DeleteTags(int itemVersionId)
-        // {
-        // DataProvider.Instance().DeleteTags(itemVersionId);
-        // }
-
-        // #endregion    
     }
 }
