@@ -18,6 +18,7 @@ namespace Engage.Dnn.Publish.Controls
     using System.IO;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -79,8 +80,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             this.Load += this.Page_Load;
 
-            // TODO: Once we upgrade to or past 4.5.3, include this statement so that there won't be problems if someone has wrapped Publish with an update panel.
-            // DotNetNuke.Framework.AJAX.RegisterPostBackControl(btnUploadThumbnail);
+            AJAX.RegisterPostBackControl(btnUploadThumbnail);
             base.OnInit(e);
         }
 
