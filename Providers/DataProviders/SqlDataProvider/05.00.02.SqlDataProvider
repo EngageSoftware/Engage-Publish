@@ -1,18 +1,13 @@
-﻿
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_Users]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
-	DROP CONSTRAINT {objectQualifier}FK_Comment_Users
+﻿IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_Users]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT [{objectQualifier}FK_Comment_Users]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
-	DROP CONSTRAINT {objectQualifier}FK_Comment_ApprovalStatusType
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ApprovalStatusType]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT [{objectQualifier}FK_Comment_ApprovalStatusType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}{objectQualifier}Publish_Comment
-	DROP CONSTRAINT {objectQualifier}FK_Comment_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Comment_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_Comment]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_Comment] DROP CONSTRAINT [{objectQualifier}FK_Comment_ItemVersion]
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[Tmp_{objectQualifier}Publish_Comment]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)

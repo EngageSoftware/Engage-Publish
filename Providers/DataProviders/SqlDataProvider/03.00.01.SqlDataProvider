@@ -2,72 +2,72 @@
 /*****              For a clean DB install with Query Analyzer                *****/
 /************************************************************/
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}DF_EngageAMSItem_CreatedDate') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}DF_EngageAMSItem_CreatedDate
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DF_EngageAMSItem_CreatedDate]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItem]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT [{objectQualifier}DF_EngageAMSItem_CreatedDate]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSItemVersion_EngageAMSApprovalStatusType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemText]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSItemText_EngageAMSColumnType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_Item_ItemType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}FK_Item_ItemType
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Item_ItemType]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItem]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT [{objectQualifier}FK_Item_ItemType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ProductVersionPlant_Plant') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT {objectQualifier}FK_ProductVersionPlant_Plant
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ProductVersionPlant_Plant]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT [{objectQualifier}FK_ProductVersionPlant_Plant]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSItemRelationship_EngageAMSRelationshipType]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemRelationship_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemRelationship_Item]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT [{objectQualifier}FK_ItemRelationship_Item]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemRelationship_Item1') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT {objectQualifier}FK_ItemRelationship_Item1
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemRelationship_Item1]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemRelationship]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemRelationship] DROP CONSTRAINT [{objectQualifier}FK_ItemRelationship_Item1]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemVersion_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT {objectQualifier}FK_ItemVersion_Item
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemVersion_Item]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemVersion] DROP CONSTRAINT [{objectQualifier}FK_ItemVersion_Item]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ItemView_Item') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] DROP CONSTRAINT {objectQualifier}FK_ItemView_Item
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ItemView_Item]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemView]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemView] DROP CONSTRAINT [{objectQualifier}FK_ItemView_Item]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ArticleVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ArticleVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSArticleVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] DROP CONSTRAINT [{objectQualifier}FK_ArticleVersion_ItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_CategoryVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] DROP CONSTRAINT {objectQualifier}FK_CategoryVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_CategoryVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSCategoryVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSCategoryVersion] DROP CONSTRAINT [{objectQualifier}FK_CategoryVersion_ItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_DocumentVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] DROP CONSTRAINT {objectQualifier}FK_DocumentVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_DocumentVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSDocumentVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] DROP CONSTRAINT [{objectQualifier}FK_DocumentVersion_ItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT {objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItemText]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItemText] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSItemText_EngageAMSItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_MediaVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] DROP CONSTRAINT {objectQualifier}FK_MediaVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_MediaVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSMediaVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] DROP CONSTRAINT [{objectQualifier}FK_MediaVersion_ItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ProductVersion_ItemVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] DROP CONSTRAINT {objectQualifier}FK_ProductVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ProductVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersion] DROP CONSTRAINT [{objectQualifier}FK_ProductVersion_ItemVersion]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT {objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion]
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_fnGetChildItems]') and xtype in (N'FN', N'IF', N'TF'))
@@ -262,11 +262,11 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 drop table {databaseOwner}[{objectQualifier}EngageAMSItemView]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}DF_EngageAMSItem_CreatedDate') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT {objectQualifier}DF_EngageAMSItem_CreatedDate
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DF_EngageAMSItem_CreatedDate]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSItem]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSItem] DROP CONSTRAINT [{objectQualifier}DF_EngageAMSItem_CreatedDate]
 GO
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]', N'U'))
 ALTER TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] DROP CONSTRAINT [{objectQualifier}FK_EngageAmsCategoryRolePermission_EngageAMSItem]
 GO
 

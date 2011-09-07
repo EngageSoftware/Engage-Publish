@@ -81,12 +81,12 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'FK_ProductVersionPlant_Plant') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT FK_ProductVersionPlant_Plant
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ProductVersionPlant_Plant]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT [{objectQualifier}FK_ProductVersionPlant_Plant]
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'FK_EngageAMSProductVersionPlant_EngageAMSProductVersion') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT FK_EngageAMSProductVersionPlant_EngageAMSProductVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSProductVersionPlant] DROP CONSTRAINT [{objectQualifier}FK_EngageAMSProductVersionPlant_EngageAMSProductVersion]
 GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertPlantVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)

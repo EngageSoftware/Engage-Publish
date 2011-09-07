@@ -1,6 +1,6 @@
 ﻿
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}FK_ProductVersion_ItemVersion]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ProductVersion] DROP CONSTRAINT {objectQualifier}FK_ProductVersion_ItemVersion
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_ProductVersion_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ProductVersion]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ProductVersion] DROP CONSTRAINT [{objectQualifier}FK_ProductVersion_ItemVersion]
 GO
 /****** Object:  User Defined Function dbo.{objectQualifier}Publish_fnGetChildProducts    Script Date: 4/18/2007 11:13:45 AM ******/
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_fnGetChildProducts]') and xtype in (N'FN', N'IF', N'TF'))
