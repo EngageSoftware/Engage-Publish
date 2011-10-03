@@ -1,0 +1,40 @@
+﻿IF NOT EXISTS (SELECT * FROM sysindexes WHERE name = '{objectQualifier}IX_Publish_ItemRelationship_RelationshipTypeId_ParentItemId_ChildItemVersionId')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Publish_ItemRelationship_RelationshipTypeId_ParentItemId_ChildItemVersionId] ON {databaseOwner}[{objectQualifier}Publish_ItemRelationship]
+(
+	[RelationshipTypeId] ASC,
+	[ParentItemId] ASC,
+	[ChildItemVersionId] ASC
+)
+GO
+
+IF NOT EXISTS (SELECT * FROM sysindexes WHERE name = '{objectQualifier}IX_Publish_ItemVersion_ItemId_EndDate_ItemVersionId_Thumbnail_Name_StartDate')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Publish_ItemVersion_ItemId_EndDate_ItemVersionId_Thumbnail_Name_StartDate] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion]
+(
+	[ItemId] ASC,
+	[EndDate] ASC,
+	[ItemVersionId] ASC,
+	[Thumbnail] ASC,
+	[Name] ASC,
+	[StartDate] ASC
+)
+INCLUDE ( 	
+    [AuthorUserId],
+	[LastUpdated],
+	[ItemVersionIdentifier])
+GO
+
+IF NOT EXISTS (SELECT * FROM sysindexes WHERE name = '{objectQualifier}IX_Publish_ItemVersion_ItemId_Thumbnail_ItemVersionId_Name_EndDate_StartDate')
+CREATE NONCLUSTERED INDEX [{objectQualifier}IX_Publish_ItemVersion_ItemId_Thumbnail_ItemVersionId_Name_EndDate_StartDate] ON {databaseOwner}[{objectQualifier}Publish_ItemVersion]
+(
+	[ItemId] ASC,
+	[Thumbnail] ASC,
+	[ItemVersionId] ASC,
+	[Name] ASC,
+	[EndDate] ASC,
+	[StartDate] ASC
+)
+INCLUDE ( 	
+    [AuthorUserId],
+	[LastUpdated],
+	[ItemVersionIdentifier])
+GO
