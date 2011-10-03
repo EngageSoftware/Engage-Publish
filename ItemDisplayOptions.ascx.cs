@@ -17,6 +17,7 @@ namespace Engage.Dnn.Publish
     using System.IO;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
@@ -139,6 +140,9 @@ namespace Engage.Dnn.Publish
             this.Load += this.Page_Load;
             this.btnConfigure.Click += this.BtnConfigureClick;
             this.ddlChooseDisplayType.SelectedIndexChanged += this.DdlChooseDisplayTypeSelectedIndexChanged;
+            
+            var moduleCssUrl = this.ResolveUrl("Module.css");
+            ((CDefault)this.Page).AddStyleSheet(Globals.CreateValidID(moduleCssUrl), moduleCssUrl, true);
 
             if (AJAX.IsInstalled())
             {

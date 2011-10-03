@@ -13,24 +13,6 @@ namespace Engage.Dnn.Publish {
     public partial class ItemDisplayOptions {
         
         /// <summary>
-        /// upnlSettings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlSettings;
-        
-        /// <summary>
-        /// lblChooseDisplayType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblChooseDisplayType;
-        
-        /// <summary>
         /// ddlChooseDisplayType control.
         /// </summary>
         /// <remarks>
@@ -38,15 +20,6 @@ namespace Engage.Dnn.Publish {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlChooseDisplayType;
-        
-        /// <summary>
-        /// shCurrentDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl shCurrentDisplay;
         
         /// <summary>
         /// dvBasic control.
@@ -67,15 +40,6 @@ namespace Engage.Dnn.Publish {
         protected global::System.Web.UI.WebControls.PlaceHolder phControls;
         
         /// <summary>
-        /// shAdvanced control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl shAdvanced;
-        
-        /// <summary>
         /// dvAdvanced control.
         /// </summary>
         /// <remarks>
@@ -83,15 +47,6 @@ namespace Engage.Dnn.Publish {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAdvanced;
-        
-        /// <summary>
-        /// lblOverrideable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblOverrideable;
         
         /// <summary>
         /// chkOverrideable control.
@@ -112,15 +67,6 @@ namespace Engage.Dnn.Publish {
         protected global::System.Web.UI.WebControls.LinkButton btnConfigure;
         
         /// <summary>
-        /// lblAllowTitleUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblAllowTitleUpdate;
-        
-        /// <summary>
         /// chkAllowTitleUpdate control.
         /// </summary>
         /// <remarks>
@@ -130,15 +76,6 @@ namespace Engage.Dnn.Publish {
         protected global::System.Web.UI.WebControls.CheckBox chkAllowTitleUpdate;
         
         /// <summary>
-        /// lblLogBreadcrumb control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblLogBreadcrumb;
-        
-        /// <summary>
         /// chkLogBreadcrumb control.
         /// </summary>
         /// <remarks>
@@ -146,15 +83,6 @@ namespace Engage.Dnn.Publish {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkLogBreadcrumb;
-        
-        /// <summary>
-        /// lblEnableWLWSupport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblEnableWLWSupport;
         
         /// <summary>
         /// chkEnableWLWSupport control.
@@ -182,15 +110,6 @@ namespace Engage.Dnn.Publish {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCacheTime;
-        
-        /// <summary>
-        /// rvCacheTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rvCacheTime;
         
         /// <summary>
         /// pnlConfigureOverrideable control.

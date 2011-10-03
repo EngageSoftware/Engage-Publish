@@ -13,7 +13,9 @@ namespace Engage.Dnn.Publish.Tags
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
 
     public partial class TagCloudOptions : ModuleSettingsBase
@@ -38,6 +40,9 @@ namespace Engage.Dnn.Publish.Tags
             try
             {
                 this.chkLimitTagCount.Checked = this.PopularTagCount;
+                
+                var moduleCssUrl = this.ResolveUrl("Module.css");
+                ((CDefault)this.Page).AddStyleSheet(Globals.CreateValidID(moduleCssUrl), moduleCssUrl, true);
             }
             catch (Exception exc)
             {

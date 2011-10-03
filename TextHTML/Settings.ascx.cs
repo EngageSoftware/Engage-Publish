@@ -12,6 +12,7 @@ namespace Engage.Dnn.Publish.TextHtml
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
@@ -64,6 +65,10 @@ namespace Engage.Dnn.Publish.TextHtml
         {
             base.OnInit(e);
             this.Load += this.ItemDisplayOptionsLoad;
+
+            var moduleCssUrl = this.ResolveUrl("Module.css");
+            ((CDefault)this.Page).AddStyleSheet(Globals.CreateValidID(moduleCssUrl), moduleCssUrl, true);
+
             if (AJAX.IsInstalled())
             {
                 AJAX.RegisterScriptManager();

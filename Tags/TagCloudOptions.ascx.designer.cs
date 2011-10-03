@@ -13,15 +13,6 @@ namespace Engage.Dnn.Publish.Tags {
     public partial class TagCloudOptions {
         
         /// <summary>
-        /// lblPopularTagCount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblPopularTagCount;
-        
-        /// <summary>
         /// chkLimitTagCount control.
         /// </summary>
         /// <remarks>
