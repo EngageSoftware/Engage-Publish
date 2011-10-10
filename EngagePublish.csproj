@@ -715,11 +715,11 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
-    <Content Include="ReleaseNotes_5.8.0.htm" />
+    <Content Include="ReleaseNotes_05.08.00.htm" />
     <Content Include="References\Framework\Engage.Dnn.Framework.dll" />
     <Content Include="References\Framework\Engage.Events.dll" />
     <Content Include="References\Framework\Engage.Framework.dll" />
-    <Content Include="ReleaseNotes_5.7.0.htm" />
+    <Content Include="ReleaseNotes_05.07.00.htm" />
     <Content Include="docs\images\article-general.gif" />
     <Content Include="docs\images\article-name-desc.gif" />
     <Content Include="docs\images\category-settings.gif" />
@@ -763,7 +763,7 @@
     <Content Include="Module.css" />
     <Content Include="PrinterFriendly.aspx" />
     <Content Include="ReadMe.txt" />
-    <Content Include="ReleaseNotes_5.6.2.htm" />
+    <Content Include="ReleaseNotes_05.06.02.htm" />
     <Content Include="Rss.aspx" />
     <Content Include="Services\PublishServices.asmx" />
     <Content Include="Tags\Module.css" />
