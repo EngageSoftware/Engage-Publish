@@ -416,6 +416,7 @@
     <package name="Engage: Publish Tag Cloud" type="Module" version="5.7.0">
       <friendlyName>Engage: Publish Tag Cloud</friendlyName>
       <description>The tag cloud for the Engage: Publish module.</description>
+      <iconFile>DesktopModules/EngagePublish/Images/publish-icon32.png</iconFile>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
@@ -461,6 +462,7 @@
     <package name="Engage: Publish Text/HTML" type="Module" version="5.7.0">
       <friendlyName>Engage: Text/HTML</friendlyName>
       <description>A Text/HTML replacement module for the Engage: Publish workflow system.</description>
+      <iconFile>DesktopModules/EngagePublish/Images/publish-icon32.png</iconFile>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
