@@ -1,12 +1,13 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="ModuleBase.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2011
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish
 {
@@ -22,7 +23,6 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Localization;
 
     using Engage.Dnn.Publish.Util;
 
@@ -31,7 +31,7 @@ namespace Engage.Dnn.Publish
 #endif
 
     /// <summary>
-    /// 
+    /// Base functionality for Publish controls
     /// </summary>
     public class ModuleBase : Framework.ModuleBase
     {
@@ -42,27 +42,42 @@ namespace Engage.Dnn.Publish
         private int externallySetItemId = -1;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool logBreadcrumb = true;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool overrideable = true;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int pageId;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool useCache = true;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool useUrls;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Item versionInfoObject;
-
-        // public const string GlobalResourceFile = "~/DesktopModules/EngagePublish/App_GlobalResources/globalresources.resx";
-        public string LocalSharedResourceFile
+        public ModuleBase()
         {
-            get { return "~" + DesktopModuleFolderName + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile; }
+            this.Overrideable = true;
+            this.LogBreadcrumb = true;
+        }
+
+        public static new string ApplicationUrl
+        {
+            get
+            {
+                if (HttpContext.Current != null)
+                {
+                    return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public static bool IsHostMailConfigured
+        {
+            get
+            {
+                string s = HostSettings.GetHostSetting("SMTPServer");
+                return Engage.Utility.HasValue(s);
+            }
+        }
+
+        public static new string DesktopModuleFolderName
+        {
+            get { return Utility.DesktopModuleFolderName; }
         }
 
         public override string DesktopModuleName
@@ -70,37 +85,13 @@ namespace Engage.Dnn.Publish
             get { return Utility.DnnFriendlyModuleName; }
         }
 
-        public bool UseUrls
-        {
-            [DebuggerStepThrough]
-            get { return this.useUrls; }
-            [DebuggerStepThrough]
-            set { this.useUrls = value; }
-        }
+        public bool UseUrls { get; set; }
 
-        public Item VersionInfoObject
-        {
-            [DebuggerStepThrough]
-            get { return this.versionInfoObject; }
-            [DebuggerStepThrough]
-            set { this.versionInfoObject = value; }
-        }
+        public Item VersionInfoObject { get; set; }
 
-        public bool LogBreadcrumb
-        {
-            [DebuggerStepThrough]
-            get { return this.logBreadcrumb; }
-            [DebuggerStepThrough]
-            set { this.logBreadcrumb = value; }
-        }
+        public bool LogBreadcrumb { get; set; }
 
-        public bool Overrideable
-        {
-            [DebuggerStepThrough]
-            get { return this.overrideable; }
-            [DebuggerStepThrough]
-            set { this.overrideable = value; }
-        }
+        public bool Overrideable { get; set; }
 
         public bool UseCache
         {
@@ -128,19 +119,19 @@ namespace Engage.Dnn.Publish
             get
             {
                 this.pageId = 1;
-                if (this.versionInfoObject != null)
+                if (this.VersionInfoObject != null)
                 {
                     // TODO: this needs changed. We need to know what we're loading in the querystring first, check the ItemID
                     object o = this.Request.QueryString["pageid"];
                     object c = this.Request.QueryString["catpageid"];
 
-                    if (o != null && this.versionInfoObject.ItemTypeId == ItemType.Article.GetId())
+                    if (o != null && this.VersionInfoObject.ItemTypeId == ItemType.Article.GetId())
                     {
                         this.pageId = Convert.ToInt32(o, CultureInfo.InvariantCulture);
                     }
                     else if (c != null &&
-                             (this.versionInfoObject.ItemTypeId == ItemType.Category.GetId() ||
-                              this.versionInfoObject.ItemTypeId == ItemType.TopLevelCategory.GetId()))
+                             (this.VersionInfoObject.ItemTypeId == ItemType.Category.GetId() ||
+                              this.VersionInfoObject.ItemTypeId == ItemType.TopLevelCategory.GetId()))
                     {
                         this.pageId = Convert.ToInt32(c, CultureInfo.InvariantCulture);
                     }
@@ -158,15 +149,6 @@ namespace Engage.Dnn.Publish
                 string s = HostSettings.GetHostSetting(Utility.PublishSetup + this.PortalId);
                 string d = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + this.PortalId);
                 return !string.IsNullOrEmpty(s) && !string.IsNullOrEmpty(d);
-            }
-        }
-
-        public static bool IsHostMailConfigured
-        {
-            get
-            {
-                string s = HostSettings.GetHostSetting("SMTPServer");
-                return Engage.Utility.HasValue(s);
             }
         }
 
@@ -361,7 +343,7 @@ namespace Engage.Dnn.Publish
             get { return MaximumRatingForPortal(this.PortalId); }
         }
 
-        public bool IsAdmin
+        public new bool IsAdmin
         {
             get
             {
@@ -370,7 +352,7 @@ namespace Engage.Dnn.Publish
             }
         }
 
-        public bool IsConfigured
+        public new bool IsConfigured
         {
             get { return this.Settings.Contains("DisplayType"); }
         }
@@ -422,7 +404,7 @@ namespace Engage.Dnn.Publish
 
                 // ItemId has not been set externally now we need to look at settings.
 
-                // if the querystring has the ItemId on it and the settings are to override				
+                // if the querystring has the ItemId on it and the settings are to override
                 string i = this.Request.QueryString["itemId"];
 
                 // we need to look if we're in admin mode, if so forget the reference about IsOverridable, it's always overridable.
@@ -453,7 +435,6 @@ namespace Engage.Dnn.Publish
                 var manager = new ItemManager(this);
 
                 // Check if there's a moduleid
-
                 if (modid > 0)
                 {
                     if (Convert.ToInt32(o, CultureInfo.InvariantCulture) == this.ModuleId || this.Overrideable)
@@ -520,19 +501,6 @@ namespace Engage.Dnn.Publish
             get { return GetAdminDefaultPagingSize(this.PortalId); }
         }
 
-        public static string ApplicationUrl
-        {
-            get
-            {
-                if (HttpContext.Current != null)
-                {
-                    return HttpContext.Current.Request.ApplicationPath == "/" ? string.Empty : HttpContext.Current.Request.ApplicationPath;
-                }
-
-                return string.Empty;
-            }
-        }
-
         public int ItemVersionId
         {
             get
@@ -555,7 +523,7 @@ namespace Engage.Dnn.Publish
                     return -1;
                 }
 
-                return s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture);
+                return Convert.ToInt32(s, CultureInfo.InvariantCulture);
             }
         }
 
@@ -566,11 +534,6 @@ namespace Engage.Dnn.Publish
                 string s = this.Request.QueryString["CommentId"];
                 return s == null ? -1 : Convert.ToInt32(s, CultureInfo.InvariantCulture);
             }
-        }
-
-        public static string DesktopModuleFolderName
-        {
-            get { return Utility.DesktopModuleFolderName; }
         }
 
         public static bool ApprovalEmailsEnabled(int portalId)
@@ -939,17 +902,6 @@ namespace Engage.Dnn.Publish
                 string.IsNullOrEmpty(HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture)));
         }
 
-        public bool GetWlwSupportForPortal(int portalId)
-        {
-            if (this.Settings.Contains("SupportWLW"))
-            {
-                string supportwlw = this.Settings["SupportWLW"].ToString();
-                return Convert.ToBoolean(supportwlw);
-            }
-
-            return false;
-        }
-
         public static string ForumProviderTypeForPortal(int portalId)
         {
             return HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture));
@@ -997,9 +949,57 @@ namespace Engage.Dnn.Publish
             return 25;
         }
 
-        public string BuildLinkUrl(string qsParameters)
+        public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)
         {
-            return Globals.NavigateURL(this.TabId, string.Empty, qsParameters);
+            var url = new StringBuilder(128);
+
+            url.Append(ApplicationUrl);
+            url.Append(DesktopModuleFolderName);
+            url.Append("eprss.aspx?itemId=");
+            url.Append(itemId);
+            url.Append("&numberOfItems=");
+            url.Append(maxDisplayItems);
+            url.Append("&itemtypeid=");
+            url.Append(itemTypeId);
+            url.Append("&portalid=");
+            url.Append(portalId);
+            url.Append("&DisplayType=");
+            url.Append(displayType);
+
+            return url.ToString();
+        }
+
+        public static string GetRssLinkUrl(int portalId, string displayType, string tags)
+        {
+            var url = new StringBuilder(128);
+
+            url.Append(ApplicationUrl);
+            url.Append(DesktopModuleFolderName);
+            url.Append("eprss.aspx?");
+            url.Append("portalid=");
+            url.Append(portalId);
+            url.Append("&DisplayType=");
+            url.Append(displayType);
+            url.Append("&Tags=");
+            url.Append(HttpUtility.UrlEncode(tags));
+
+            return url.ToString();
+        }
+
+        public bool GetWlwSupportForPortal(int portalId)
+        {
+            if (this.Settings.Contains("SupportWLW"))
+            {
+                string supportwlw = this.Settings["SupportWLW"].ToString();
+                return Convert.ToBoolean(supportwlw);
+            }
+
+            return false;
+        }
+
+        public string BuildLinkUrl(string parameters)
+        {
+            return Globals.NavigateURL(this.TabId, string.Empty, parameters);
         }
 
         public string GetItemLinkUrl(object itemId)
@@ -1059,21 +1059,14 @@ namespace Engage.Dnn.Publish
         public string GetItemLinkTarget(object itemId)
         {
             int curItemId;
-            Int32.TryParse(itemId.ToString(), out curItemId);
+            int.TryParse(itemId.ToString(), out curItemId);
             if (curItemId > 0)
             {
                 Item i = this.BindItemData(curItemId, false);
-                if (i.NewWindow)
-                {
-                    return "_blank";
-                }
-
-                return "_self";
+                return i.NewWindow ? "_blank" : "_self";
             }
 
             return "_self";
-
-            // return string.Empty;
         }
 
         public string GetItemLinkUrl(object itemId, int portalId)
@@ -1086,54 +1079,17 @@ namespace Engage.Dnn.Publish
             return Engage.Utility.MakeUrlAbsolute(this.Page, UrlGenerator.GetItemLinkUrl(itemId, this.PortalSettings));
         }
 
-        public static string GetRssLinkUrl(object itemId, int maxDisplayItems, int itemTypeId, int portalId, string displayType)
-        {
-            var url = new StringBuilder(128);
-
-            url.Append(ApplicationUrl);
-            url.Append(DesktopModuleFolderName);
-            url.Append("eprss.aspx?itemId=");
-            url.Append(itemId);
-            url.Append("&numberOfItems=");
-            url.Append(maxDisplayItems);
-            url.Append("&itemtypeid=");
-            url.Append(itemTypeId);
-            url.Append("&portalid=");
-            url.Append(portalId);
-            url.Append("&DisplayType=");
-            url.Append(displayType);
-
-            return url.ToString();
-        }
-
-        public static string GetRssLinkUrl(int portalId, string displayType, string tags)
-        {
-            var url = new StringBuilder(128);
-
-            url.Append(ApplicationUrl);
-            url.Append(DesktopModuleFolderName);
-            url.Append("eprss.aspx?");
-            url.Append("portalid=");
-            url.Append(portalId);
-            url.Append("&DisplayType=");
-            url.Append(displayType);
-            url.Append("&Tags=");
-            url.Append(HttpUtility.UrlEncode(tags));
-
-            return url.ToString();
-        }
-
         public void SetPageTitle()
         {
             // TODO: should we also allow for setting the module title here?
             if (this.AllowTitleUpdate)
             {
                 var tp = (CDefault)this.Page;
-                tp.Title = Engage.Utility.HasValue(this.VersionInfoObject.MetaTitle) ? this.versionInfoObject.MetaTitle : this.versionInfoObject.Name;
+                tp.Title = Engage.Utility.HasValue(this.VersionInfoObject.MetaTitle) ? this.VersionInfoObject.MetaTitle : this.VersionInfoObject.Name;
 
                 if (this.LogBreadcrumb)
                 {
-                    this.AddBreadcrumb(this.versionInfoObject.Name);
+                    this.AddBreadcrumb(this.VersionInfoObject.Name);
                 }
 
                 // do meta tag settings as well
@@ -1248,6 +1204,23 @@ namespace Engage.Dnn.Publish
             }
 
             return fileName;
+        }
+
+        public string BuildVersionsUrl()
+        {
+            // find the location of the ams admin module on the site.
+            if (this.ItemId > -1)
+            {
+                var additionalParameters = "&ctl=" + Utility.AdminContainer + 
+                                           "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) +
+                                           "&adminType=VersionsList&itemId=" + this.ItemId.ToString(CultureInfo.InvariantCulture);
+                return Globals.NavigateURL(
+                    this.TabId, 
+                    string.Empty, 
+                    additionalParameters);
+            }
+
+            return string.Empty;
         }
 
         protected void AddBreadcrumb(string pageName)
@@ -1400,7 +1373,7 @@ namespace Engage.Dnn.Publish
             return Globals.NavigateURL(
                 this.TabId, 
                 string.Empty, 
-                "ctl=" + Util.Utility.AdminContainer, 
+                "ctl=" + Utility.AdminContainer, 
                 "mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture), 
                 "adminType=" + type.Name + "list", 
                 "categoryId=" + parentCategoryId.ToString(CultureInfo.InvariantCulture));
@@ -1450,7 +1423,7 @@ namespace Engage.Dnn.Publish
                 i = Article.Create(this.PortalId);
             }
 
-            this.versionInfoObject = i;
+            this.VersionInfoObject = i;
         }
 
         private void BindNewItemByItemType()
@@ -1466,7 +1439,7 @@ namespace Engage.Dnn.Publish
                 i = Article.Create(this.PortalId);
             }
 
-            this.versionInfoObject = i;
+            this.VersionInfoObject = i;
         }
 
         private void BindCurrentItem()
@@ -1475,9 +1448,9 @@ namespace Engage.Dnn.Publish
 
             // check for version id
             int itemId = this.ItemId;
-            this.versionInfoObject = this.BindItemData(itemId, editControl != null);
-            if (this.versionInfoObject.EndDate != null &&
-                Convert.ToDateTime(this.versionInfoObject.EndDate, CultureInfo.InvariantCulture) < DateTime.Now && editControl == null)
+            this.VersionInfoObject = this.BindItemData(itemId, editControl != null);
+            if (this.VersionInfoObject.EndDate != null &&
+                Convert.ToDateTime(this.VersionInfoObject.EndDate, CultureInfo.InvariantCulture) < DateTime.Now && editControl == null)
             {
                 this.BindNewItem();
             }
@@ -1487,28 +1460,6 @@ namespace Engage.Dnn.Publish
         {
             // DotNetNuke.Entities.Portals.PortalSettings ps = Utility.GetPortalSettings(portalId);
             return this.Request.Url.Scheme + "://" + this.Request.Url.Host + this.PortalSettings.HomeDirectory + fileName;
-        }
-
-        public string BuildVersionsUrl()
-        {
-            // find the location of the ams admin module on the site.
-            // DotNetNuke.Entities.Modules.ModuleController objModules = new ModuleController();
-            if (this.ItemId > -1)
-            {
-                ////string currentItemType = Item.GetItemType(ItemId,PortalId);
-                // int itemId = -1;
-                // if (!this.VersionInfoObject.IsNew)
-                // {
-                // itemId = this.VersionInfoObject.ItemId;
-                // }
-                return Globals.NavigateURL(
-                    this.TabId, 
-                    string.Empty, 
-                    "&ctl=" + Util.Utility.AdminContainer + "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture) +
-                    "&adminType=VersionsList&itemId=" + this.ItemId.ToString(CultureInfo.InvariantCulture));
-            }
-
-            return string.Empty;
         }
     }
 }
