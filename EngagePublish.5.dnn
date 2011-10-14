@@ -3,6 +3,7 @@
     <package name="Engage: Publish" type="Module" version="5.7.0">
       <friendlyName>Engage: Publish</friendlyName>
       <description>The DotNetNuke Publishing module by Engage Software (www.engagesoftware.com)</description>
+      <iconFile>DesktopModules/EngagePublish/Images/publish-icon32.png</iconFile>
       <owner>
         <name>Engage Software</name>
         <organization>Engage Software</organization>
