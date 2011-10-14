@@ -155,6 +155,12 @@
         <call target="set-assemblyVersion"/>
         <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version"/>
       </foreach>
+      
+      <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
+        <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
+        <call target="set-assemblyVersion" />
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']"/>
+      </if>
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.4.dnn')}">
       <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
