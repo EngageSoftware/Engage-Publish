@@ -17,8 +17,16 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 drop table {databaseOwner}[{objectQualifier}Publish_Tags]
 GO
 
-IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]', N'U'))
-ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT [{objectQualifier}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]]
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT [{objectQualifier}FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]
+GO
+
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT [FK_{objectQualifier}Publish_ItemVersionSettings_{objectQualifier}Publish_ItemVersion]
+GO
+
+IF EXISTS (SELECT 1 FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FK_Publish_ItemVersionSettings_Publish_ItemVersion]', N'F') AND parent_obj = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_ItemVersionSettings]', N'U'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] DROP CONSTRAINT [{objectQualifier}FK_Publish_ItemVersionSettings_Publish_ItemVersion]
 GO
 
 /****** Object:  Table {databaseOwner}[{objectQualifier}Publish_Tags]    Script Date: 9/20/2007 10:39:03 AM ******/
