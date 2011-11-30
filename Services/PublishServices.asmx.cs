@@ -22,6 +22,7 @@ namespace Engage.Dnn.Publish.Services
     using System.Web.UI;
 
     using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
 
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
@@ -43,28 +44,36 @@ namespace Engage.Dnn.Publish.Services
         [ScriptMethod]
         public Pair[] GetArticlesByCategory(int categoryId)
         {
-            IEnumerable<Pair> articles;
-            var category = Publish.Category.GetCategory(categoryId);
-            if (category == null)
+            try
             {
-                articles = Enumerable.Empty<Pair>();
+                IEnumerable<Pair> articles;
+                var category = Publish.Category.GetCategory(categoryId);
+                if (category == null)
+                {
+                    articles = Enumerable.Empty<Pair>();
+                }
+                else
+                {
+                    var articlesTable =
+                        DataProvider.Instance().GetAdminItemListing(
+                            category.ItemId,
+                            ItemType.Article.GetId(),
+                            RelationshipType.ItemToParentCategory.GetId(),
+                            RelationshipType.ItemToRelatedCategory.GetId(),
+                            ApprovalStatus.Approved.GetId(),
+                            category.PortalId).Tables[0];
+
+                    articles = from DataRow articleRow in articlesTable.Rows
+                               select new Pair(articleRow["name"].ToString(), (int)articleRow["itemId"]);
+                }
+
+                return articles.ToArray();
             }
-            else
+            catch (Exception exc)
             {
-                var articlesTable =
-                    DataProvider.Instance().GetAdminItemListing(
-                        category.ItemId,
-                        ItemType.Article.GetId(),
-                        RelationshipType.ItemToParentCategory.GetId(),
-                        RelationshipType.ItemToRelatedCategory.GetId(),
-                        ApprovalStatus.Approved.GetId(),
-                        category.PortalId).Tables[0];
-
-                articles = from DataRow articleRow in articlesTable.Rows
-                            select new Pair(articleRow["name"].ToString(), (int)articleRow["itemId"]);
+                Exceptions.LogException(exc);
+                throw;
             }
-
-            return articles.ToArray();
         }
 
         /// <summary>
@@ -78,19 +87,27 @@ namespace Engage.Dnn.Publish.Services
         [ScriptMethod]
         public string[] GetTagsCompletionList(string prefixText, int count, string contextKey)
         {
-            var objSecurity = new PortalSecurity();
-
-            DataTable dt = Tag.GetTagsByString(
-                objSecurity.InputFilter(HttpUtility.UrlDecode(prefixText), PortalSecurity.FilterFlag.NoSQL), 
-                Convert.ToInt32(contextKey, CultureInfo.InvariantCulture));
-
-            var returnTags = new string[dt.Rows.Count];
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                returnTags[0] = dr["name"].ToString();
-            }
+                var objSecurity = new PortalSecurity();
 
-            return returnTags;
+                DataTable dt = Tag.GetTagsByString(
+                    objSecurity.InputFilter(HttpUtility.UrlDecode(prefixText), PortalSecurity.FilterFlag.NoSQL), 
+                    Convert.ToInt32(contextKey, CultureInfo.InvariantCulture));
+
+                var returnTags = new string[dt.Rows.Count];
+                foreach (DataRow dr in dt.Rows)
+                {
+                    returnTags[0] = dr["name"].ToString();
+                }
+
+                return returnTags;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+                throw;
+            }
         }
     }
 }
