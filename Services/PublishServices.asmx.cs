@@ -1,6 +1,6 @@
 // <copyright file="PublishServices.asmx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
+// Copyright (c) 2004-2011
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -15,6 +15,7 @@ namespace Engage.Dnn.Publish.Services
     using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
+    using System.Linq;
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
@@ -22,6 +23,7 @@ namespace Engage.Dnn.Publish.Services
 
     using DotNetNuke.Security;
 
+    using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
 
     /// <summary>
@@ -41,22 +43,25 @@ namespace Engage.Dnn.Publish.Services
         [ScriptMethod]
         public Pair[] GetArticlesByCategory(int categoryId)
         {
-            var articles = new List<Pair>();
-            Publish.Category category = Publish.Category.GetCategory(categoryId);
-            if (category != null)
+            IEnumerable<Pair> articles;
+            var category = Publish.Category.GetCategory(categoryId);
+            if (category == null)
             {
-                foreach (
-                    DataRow articleRow in
-                        Item.GetAllChildren(
-                            ItemType.Article.GetId(), 
-                            category.ItemId, 
-                            RelationshipType.ItemToParentCategory.GetId(), 
-                            RelationshipType.ItemToRelatedCategory.GetId(), 
-                            category.PortalId).Tables[0].Rows)
-                {
-                    // Article.GetArticles(category.ItemId, category.PortalId).Rows)
-                    articles.Add(new Pair(articleRow["name"].ToString(), (int)articleRow["itemId"]));
-                }
+                articles = Enumerable.Empty<Pair>();
+            }
+            else
+            {
+                var articlesTable =
+                    DataProvider.Instance().GetAdminItemListing(
+                        category.ItemId,
+                        ItemType.Article.GetId(),
+                        RelationshipType.ItemToParentCategory.GetId(),
+                        RelationshipType.ItemToRelatedCategory.GetId(),
+                        ApprovalStatus.Approved.GetId(),
+                        category.PortalId).Tables[0];
+
+                articles = from DataRow articleRow in articlesTable.Rows
+                            select new Pair(articleRow["name"].ToString(), (int)articleRow["itemId"]);
             }
 
             return articles.ToArray();
