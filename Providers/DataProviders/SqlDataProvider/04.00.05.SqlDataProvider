@@ -1966,36 +1966,36 @@ where ControlKey = 'AmsAdmin'
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ArticleVersion]') and name = '{objectQualifier}FK_Publish_ArticleVersion_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_ArticleVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ArticleVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ArticleVersion]);
+CREATE INDEX {objectQualifier}FK_Publish_ArticleVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ArticleVersion] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_ArticleVersion]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]') and name = '{objectQualifier}FK_Publish_CategoryRolePermission_CategoryId')
-CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_CategoryId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (CategoryId); dbcc dbreindex ([{objectQualifier}Publish_CategoryRolePermission]);
+CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_CategoryId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (CategoryId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]') and name = '{objectQualifier}FK_Publish_CategoryRolePermission_PermissionId')
-CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_PermissionId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (PermissionId); dbcc dbreindex ([{objectQualifier}Publish_CategoryRolePermission]);
+CREATE INDEX {objectQualifier}FK_Publish_CategoryRolePermission_PermissionId ON {databaseOwner}[{objectQualifier}Publish_CategoryRolePermission] (PermissionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_CategoryRolePermission]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_CategoryVersion]') and name = '{objectQualifier}FK_Publish_CategoryVersion_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_CategoryVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_CategoryVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_CategoryVersion]);
+CREATE INDEX {objectQualifier}FK_Publish_CategoryVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_CategoryVersion] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_CategoryVersion]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_DocumentVersion]') and name = '{objectQualifier}FK_Publish_DocumentVersion_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_DocumentVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_DocumentVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_DocumentVersion]);
+CREATE INDEX {objectQualifier}FK_Publish_DocumentVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_DocumentVersion] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_DocumentVersion]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and name = '{objectQualifier}FK_Publish_ItemText_ColumnTypeId')
-CREATE INDEX {objectQualifier}FK_Publish_ItemText_ColumnTypeId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ColumnTypeId); dbcc dbreindex ([{objectQualifier}Publish_ItemText]);
+CREATE INDEX {objectQualifier}FK_Publish_ItemText_ColumnTypeId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ColumnTypeId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_ItemText]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ItemText]') and name = '{objectQualifier}FK_Publish_ItemText_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_ItemText_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ItemText]);
+CREATE INDEX {objectQualifier}FK_Publish_ItemText_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ItemText] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_ItemText]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_MediaVersion]') and name = '{objectQualifier}FK_Publish_MediaVersion_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_MediaVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_MediaVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_MediaVersion]);
+CREATE INDEX {objectQualifier}FK_Publish_MediaVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_MediaVersion] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_MediaVersion]");
 GO
 
 if not exists (select * from sysindexes where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_ProductVersion]') and name = '{objectQualifier}FK_Publish_ProductVersion_ItemVersionId')
-CREATE INDEX {objectQualifier}FK_Publish_ProductVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ProductVersion] (ItemVersionId); dbcc dbreindex ([{objectQualifier}Publish_ProductVersion]);
+CREATE INDEX {objectQualifier}FK_Publish_ProductVersion_ItemVersionId ON {databaseOwner}[{objectQualifier}Publish_ProductVersion] (ItemVersionId); dbcc dbreindex ("{databaseOwner}[{objectQualifier}Publish_ProductVersion]");

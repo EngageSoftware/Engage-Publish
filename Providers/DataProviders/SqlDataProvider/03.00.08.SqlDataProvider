@@ -75,11 +75,11 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] WITH NOCHECK
 	{objectQualifier}FK_MediaVersion_ItemVersion FOREIGN KEY
 	(
 	ItemVersionId
-	) REFERENCES [{objectQualifier}EngageAMSItemVersion]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion]
 	(
 	ItemVersionId
 	)
-
+GO
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}engageams_insertDocumentVersion]
@@ -88,7 +88,6 @@ GO
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}engageams_insertMediaVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}engageams_insertMediaVersion]
 GO
-
 
 SET QUOTED_IDENTIFIER ON 
 GO

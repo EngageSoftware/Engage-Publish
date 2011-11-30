@@ -1,6 +1,4 @@
-﻿
-
-if exists (select * from dbo.sysobjects where id = object_id(N'DF_{objectQualifier}Publish_Tags_DateCreated'))
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}DF_{objectQualifier}Publish_Tags_DateCreated'))
 ALTER TABLE {databaseOwner}{objectQualifier}Publish_Tags
 	DROP CONSTRAINT DF_{objectQualifier}Publish_Tags_DateCreated
 GO
@@ -36,7 +34,7 @@ GO
 SET IDENTITY_INSERT {databaseOwner}Tmp_{objectQualifier}Publish_Tags OFF
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags') AND type = 'F')
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags') AND type = 'F')
 ALTER TABLE {databaseOwner}{objectQualifier}Publish_ItemVersionTags
 	DROP CONSTRAINT FK_{objectQualifier}Publish_ItemVersionTags_{objectQualifier}Publish_Tags
 GO
@@ -68,7 +66,7 @@ GO
 
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}FK_ArticleVersion_ItemVersion'))
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}FK_ArticleVersion_ItemVersion'))
 ALTER TABLE {databaseOwner}{objectQualifier}Publish_ArticleVersion
 	DROP CONSTRAINT {objectQualifier}FK_ArticleVersion_ItemVersion
 GO
@@ -142,10 +140,10 @@ GO
 
 CREATE view {databaseOwner}[{objectQualifier}Publish_vwArticles] as
 select
-	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*, (select avg(convert(FLOAT, Rating)) from [{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from [{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
+	 av.ArticleText, av.VersionNumber, av.VersionDescription, av.ReferenceNumber, i.*, (select avg(convert(FLOAT, Rating)) from {databaseOwner}[{objectQualifier}Publish_Rating] where itemVersionId in (select itemVersionId from {databaseOwner}[{objectQualifier}Publish_vwItems] where itemId = i.ItemId)) as AverageRating
 from 
-	 [{objectQualifier}Publish_vwItems] i 
-	join [{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
+	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
+	join {databaseOwner}[{objectQualifier}Publish_ArticleVersion] av on (i.ItemVersionID = av.ItemVersionID)
 
 GO
 SET QUOTED_IDENTIFIER OFF 

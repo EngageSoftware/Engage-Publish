@@ -34,7 +34,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EngageAMSArticleVersion] WITH NOCHE
 	{objectQualifier}FK_ArticleVersion_ItemVersion FOREIGN KEY
 	(
 	ItemVersionId
-	) REFERENCES [{objectQualifier}EngageAMSItemVersion]
+	) REFERENCES {databaseOwner}[{objectQualifier}EngageAMSItemVersion]
 	(
 	ItemVersionId
 	)

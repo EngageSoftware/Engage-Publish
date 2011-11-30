@@ -74,7 +74,7 @@ CREATE TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission]
 ON [PRIMARY]
 GO
 
-ALTER TABLE [{objectQualifier}EngageAmsCategoryRolePermission] WITH NOCHECK ADD 
+ALTER TABLE {databaseOwner}[{objectQualifier}EngageAmsCategoryRolePermission] WITH NOCHECK ADD 
 	CONSTRAINT [{objectQualifier}PK_EngageAmsCategoryRolePermission] PRIMARY KEY  CLUSTERED 
 	(
 		[CategoryId],
