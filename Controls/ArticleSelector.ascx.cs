@@ -1,6 +1,6 @@
 // <copyright file="ArticleSelector.ascx.cs" company="Engage Software">
 // Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
+// Copyright (c) 2004-2012
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -95,7 +95,8 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (this.CategoryId.HasValue)
             {
-                // ArticlesDropDownList.DataSource = Article.GetArticles(CategoryId.Value, PortalId);
+                this.ArticlesDropDownList.DataTextField = "Name";
+                this.ArticlesDropDownList.DataValueField = "ItemId";
                 this.ArticlesDropDownList.DataSource = Item.GetAllChildren(
                     ItemType.Article.GetId(), 
                     this.CategoryId.Value, 
@@ -113,8 +114,7 @@ namespace Engage.Dnn.Publish.Controls
         {
             this.CategoriesDropDownList.Items.Clear();
             ItemRelationship.DisplayCategoryHierarchy(this.CategoriesDropDownList, -1, this.PortalId, false);
-            this.CategoriesDropDownList.Items.Insert(0, 
-                new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), string.Empty));
+            this.CategoriesDropDownList.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", Utility.LocalSharedResourceFile), string.Empty));
         }
 
         /// <summary>
@@ -124,8 +124,7 @@ namespace Engage.Dnn.Publish.Controls
         private int? GetArticleId()
         {
             int newArticleId;
-            if (int.TryParse(
-                this.Request.Params[this.ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
+            if (int.TryParse(this.Request.Params[this.ArticlesDropDownList.UniqueID], NumberStyles.Integer, CultureInfo.InvariantCulture, out newArticleId))
             {
                 return newArticleId;
             }
@@ -177,10 +176,10 @@ namespace Engage.Dnn.Publish.Controls
         {
             if (this._articleId.HasValue)
             {
-                ListItem li = this.ArticlesDropDownList.Items.FindByValue(this._articleId.Value.ToString(CultureInfo.InvariantCulture));
+                var li = this.ArticlesDropDownList.Items.FindByValue(this._articleId.Value.ToString(CultureInfo.InvariantCulture));
                 if (li != null)
                 {
-                    this.ArticlesDropDownList.SelectedValue = this._articleId.Value.ToString(CultureInfo.InvariantCulture);
+                    this.ArticlesDropDownList.Value = this._articleId.Value.ToString(CultureInfo.InvariantCulture);
                 }
             }
         }
