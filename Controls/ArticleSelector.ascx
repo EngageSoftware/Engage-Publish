@@ -8,11 +8,11 @@
 
 <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable articleOptionDropDown">
     <tr valign="top">
-        <td class="subhead"><dnn:Label ResourceKey="CategoriesLabel" Runat="server" ControlName="CategoriesDropDownList" /></td>
-        <td><asp:DropDownList ID="CategoriesDropDownList" Runat="server" CssClass="NormalTextBox" onchange="PopulateArticlesList()" /></td>
+        <td class="SubHead"><dnn:Label ResourceKey="CategoriesLabel" runat="server" ControlName="CategoriesDropDownList" /></td>
+        <td><asp:DropDownList ID="CategoriesDropDownList" runat="server" CssClass="NormalTextBox" onchange="PopulateArticlesList()" /></td>
     </tr>
     <tr>
-        <td class="subhead"><dnn:label resourcekey="lblArticleList" runat="server" ControlName="ArticlesDropDownList" /></td>
+        <td class="SubHead"><dnn:label resourcekey="lblArticleList" runat="server" ControlName="ArticlesDropDownList" /></td>
 	    <td>
 	        <%-- Use select instead of asp:DropDownList to opt-out of event validation, since this is dynamically filled --%>
 	        <select id="ArticlesDropDownList" runat="server" class="NormalTextBox chooseArticleListDropDown" />
