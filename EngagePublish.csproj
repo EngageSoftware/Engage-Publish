@@ -715,6 +715,7 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
+    <Content Include="ReleaseNotes_05.08.03.htm" />
     <Content Include="ReleaseNotes_05.08.02.htm" />
     <Content Include="Images\publish-icon32.png" />
     <Content Include="ReleaseNotes_05.08.01.htm" />
