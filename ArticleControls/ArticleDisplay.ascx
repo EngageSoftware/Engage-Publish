@@ -7,7 +7,7 @@
 	</div>
 
     <div id="divLastUpdated" class="divLastUpdated" runat="server" visible="false" align="right">
-		<asp:Literal ID="lblLastUpdated" runat="server"></asp:Literal>
+        <asp:Literal ID="lblLastUpdated" runat="server" />
 	</div>
 	<asp:Panel ID="pnlPrinterFriendly" runat="server">
 	    <asp:PlaceHolder ID="phPrinterFriendly" runat="server" />
@@ -113,21 +113,19 @@
                     </div>
                 </asp:Panel>
                 <div id="divCommentLink">
-                    <asp:LinkButton ID="btnComment" runat="server" resourcekey="btnComment" Visible="false"/>
+                    <asp:HyperLink ID="CommentPopupTriggerLink" runat="server" resourcekey="btnComment" Visible="false" CssClass="engagePublishModalLink" NavigateUrl="#" />
                 </div>
             </asp:View>
             <asp:View ID="vwForumComments" runat="server">
                 <div id="divCommentLink">
-                    <asp:LinkButton ID="btnForumComment" runat="server" resourcekey="btnForumComment" Visible="false"/>
+                    <asp:HyperLink ID="ForumCommentPopupTriggerLink" runat="server" resourcekey="btnForumComment" Visible="false" CssClass="engagePublishModalLink" NavigateUrl="#" />
                     <asp:HyperLink ID="lnkGoToForum" runat="server" resourcekey="lnkGoToForum" Visible="false" />
                 </div>
             </asp:View>
         </asp:MultiView>
-        <ajaxToolkit:ModalPopupExtender ID="mpeComment" runat="server" BackgroundCssClass="commentBackground" PopupControlID="pnlComment" TargetControlID="btnComment" BehaviorID="mpeComment" />
-        <ajaxToolkit:ModalPopupExtender ID="mpeForumComment" runat="server" BackgroundCssClass="commentBackground" PopupControlID="pnlComment" TargetControlID="btnForumComment" />
         <asp:Panel ID="pnlComment" runat="server" CssClass="commentPopup" style="display:none">
 	        <asp:UpdatePanel ID="upnlComments" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>   
+                <ContentTemplate>
                     <asp:Panel ID="pnlCommentEntry" runat="server" CssClass="commentEntry">
                         <div id="commentEntryWrapper">
                             <div id="commentInstructions"><asp:Label ID="lblInstructions" runat="server" ResourceKey="lblInstructions" /></div>
@@ -168,7 +166,7 @@
                                 <asp:LinkButton ID="btnSubmitComment" runat="server" resourcekey="btnSubmitComment" OnClick="btnSubmitComment_Click" CssClass="commentSubmitButton" ValidationGroup="commentVal" />
                             </div>
                             <div id="commentCancel">
-                                <asp:LinkButton ID="btnCancelComment" runat="server" resourcekey="btnCancelComment" OnClick="btnCancelComment_Click" CssClass="commentCancelButton" CausesValidation="false" ValidationGroup="commentVal" />
+                                <asp:LinkButton ID="btnCancelComment" runat="server" resourcekey="btnCancelComment" OnClick="btnCancelComment_Click" CssClass="commentCancelButton simplemodal-close" CausesValidation="false" ValidationGroup="commentVal" />
                             </div>
                             <asp:ValidationSummary ID="valCommentSummary" runat="server" ShowMessageBox="true" ShowSummary="false" DisplayMode="List" ValidationGroup="commentVal" />
                         </div>
@@ -176,7 +174,7 @@
                     <asp:Panel ID="pnlCommentConfirmation" runat="server" Visible="false">
                         <div id="commentConfirmationWrapper">
                             <div id="commentConfirmationClose">
-                                <asp:LinkButton ID="btnConfirmationClose" CausesValidation="false" runat="server" resourcekey="btnConfirmationClose" OnClick="btnConfirmationClose_Click" CssClass="commentConfirmCloseButton" />
+                                <asp:LinkButton ID="btnConfirmationClose" CausesValidation="false" runat="server" resourcekey="btnConfirmationClose" OnClick="btnConfirmationClose_Click" CssClass="commentConfirmCloseButton simplemodal-close" />
                             </div>
                         </div>
                     </asp:Panel>

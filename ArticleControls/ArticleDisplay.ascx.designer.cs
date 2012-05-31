@@ -310,13 +310,13 @@ namespace Engage.Dnn.Publish.ArticleControls {
         protected global::System.Web.UI.WebControls.PlaceHolder phCommentsDisplay;
         
         /// <summary>
-        /// btnComment control.
+        /// CommentPopupTriggerLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnComment;
+        protected global::System.Web.UI.WebControls.HyperLink CommentPopupTriggerLink;
         
         /// <summary>
         /// vwForumComments control.
@@ -328,13 +328,13 @@ namespace Engage.Dnn.Publish.ArticleControls {
         protected global::System.Web.UI.WebControls.View vwForumComments;
         
         /// <summary>
-        /// btnForumComment control.
+        /// ForumCommentPopupTriggerLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnForumComment;
+        protected global::System.Web.UI.WebControls.HyperLink ForumCommentPopupTriggerLink;
         
         /// <summary>
         /// lnkGoToForum control.
@@ -344,24 +344,6 @@ namespace Engage.Dnn.Publish.ArticleControls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkGoToForum;
-        
-        /// <summary>
-        /// mpeComment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender mpeComment;
-        
-        /// <summary>
-        /// mpeForumComment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender mpeForumComment;
         
         /// <summary>
         /// pnlComment control.

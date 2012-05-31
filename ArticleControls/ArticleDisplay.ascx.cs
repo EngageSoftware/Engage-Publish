@@ -1,12 +1,13 @@
-//Engage: Publish - http://www.engagesoftware.com
-//Copyright (c) 2004-2011
-//by Engage Software ( http://www.engagesoftware.com )
-
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//DEALINGS IN THE SOFTWARE.
+// <copyright file="ArticleDisplay.ascx.cs" company="Engage Software">
+// Engage: Publish
+// Copyright (c) 2004-2012
+// by Engage Software ( http://www.engagesoftware.com )
+// </copyright>
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 namespace Engage.Dnn.Publish.ArticleControls
 {
@@ -97,9 +98,17 @@ namespace Engage.Dnn.Publish.ArticleControls
                 return new ModuleActionCollection
                     {
                         {
-                            this.GetNextActionID(), Localization.GetString("Settings", this.LocalResourceFile), ModuleActionType.AddContent, 
-                            string.Empty, string.Empty, this.EditUrl("Settings"), false, SecurityAccessLevel.Edit, true, false
-                            }
+                            this.GetNextActionID(), 
+                            this.Localize("Settings"), 
+                            ModuleActionType.AddContent, 
+                            string.Empty, 
+                            string.Empty, 
+                            this.EditUrl("Settings"), 
+                            false, 
+                            SecurityAccessLevel.Edit, 
+                            true, 
+                            false
+                        },
                     };
             }
         }
@@ -170,7 +179,7 @@ namespace Engage.Dnn.Publish.ArticleControls
 
         protected string PhotoMouseOverText
         {
-            get { return Localization.GetString("PhotoMouseover", this.LocalResourceFile); }
+            get { return this.Localize("PhotoMouseover"); }
         }
 
         /// <summary>
@@ -231,7 +240,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (this.IsCommentsEnabled)
                 {
                     object o = this.Settings["adCommentsLink"];
-                    return o == null ? true : Convert.ToBoolean(o, CultureInfo.InvariantCulture);
+                    return o == null || Convert.ToBoolean(o, CultureInfo.InvariantCulture);
                 }
 
                 return false;
@@ -549,130 +558,115 @@ namespace Engage.Dnn.Publish.ArticleControls
             this.ajaxRating.ReadOnly = true;
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
-            Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnCancelComment_Click(object sender, EventArgs e)
         {
             this.ClearCommentInput();
-            this.mpeComment.Hide();
-            this.mpeForumComment.Hide();
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
-            Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnConfirmationClose_Click(object sender, EventArgs e)
         {
             this.pnlCommentEntry.Visible = true;
             this.pnlCommentConfirmation.Visible = false;
-            this.mpeComment.Hide();
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
-            Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnSubmitComment_Click(object sender, EventArgs e)
         {
-            if (this.Page.IsValid)
+            if (!this.Page.IsValid)
             {
-                // TODO: we're allowing anonymous comments, we should have a setting for this.
-                var objSecurity = new PortalSecurity();
-                if (this.UseForumComments)
-                {
-                    int? categoryForumId = this.GetCategoryForumId();
-                    if (categoryForumId.HasValue)
-                    {
-                        int threadId = ForumProvider.GetInstance(this.PortalId).AddComment(
-                            categoryForumId.Value, 
-                            this.VersionInfoObject.AuthorUserId, 
-                            this.VersionInfoObject.Name, 
-                            this.VersionInfoObject.Description, 
-                            this.GetItemLinkUrl(this.VersionInfoObject.ItemId, this.PortalId), 
-                            objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                            this.UserId, 
-                            this.Request.UserHostAddress);
-
-                        var threadIdSetting = new ItemVersionSetting(Setting.CommentForumThreadId)
-                            {
-                                PropertyValue = threadId.ToString(CultureInfo.InvariantCulture), 
-                                ItemVersionId = this.VersionInfoObject.ItemVersionId
-                            };
-                        threadIdSetting.Save();
-
-                        // VersionInfoObject.VersionSettings.Add(threadIdSetting);
-                        // VersionInfoObject.Save(VersionInfoObject.AuthorUserId);
-                        this.Response.Redirect(ForumProvider.GetInstance(this.PortalId).GetThreadUrl(threadId), true);
-                    }
-                }
-                else
-                {
-                    string urlText = this.txtUrlComment.Text;
-                    if (urlText.Trim().Length > 0 && !urlText.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
-                        !urlText.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                    {
-                        urlText = "http://" + urlText;
-                    }
-
-                    int approvalStatusId = ApprovalStatus.Waiting.GetId();
-                    if (this.IsAdmin)
-                    {
-                        // automatically approve admin comments
-                        approvalStatusId = ApprovalStatus.Approved.GetId();
-                    }
-
-                    Comment.AddComment(
-                        this.VersionInfoObject.ItemVersionId, 
-                        this.UserId == -1 ? null : (int?)this.UserId, 
-                        objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                        approvalStatusId, 
-                        null, 
-                        objSecurity.InputFilter(this.txtFirstNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                        objSecurity.InputFilter(this.txtLastNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                        objSecurity.InputFilter(this.txtEmailAddressComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                        objSecurity.InputFilter(urlText, PortalSecurity.FilterFlag.NoScripting), 
-                        DataProvider.ModuleQualifier);
-
-                    // see if comment notification is turned on. Notify the ItemVersion.Author
-                    if (this.IsCommentAuthorNotificationEnabled)
-                    {
-                        var uc = new UserController();
-
-                        UserInfo ui = uc.GetUser(this.PortalId, this.VersionInfoObject.AuthorUserId);
-
-                        if (ui != null)
-                        {
-                            string emailBody = Localization.GetString("CommentNotificationEmail.Text", this.LocalResourceFile);
-                            emailBody = string.Format(
-                                emailBody, 
-                                this.VersionInfoObject.Name, 
-                                this.GetItemLinkUrlExternal(this.VersionInfoObject.ItemId), 
-                                objSecurity.InputFilter(this.txtFirstNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                                objSecurity.InputFilter(this.txtLastNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                                objSecurity.InputFilter(this.txtEmailAddressComment.Text, PortalSecurity.FilterFlag.NoScripting), 
-                                objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting));
-
-                            string emailSubject = Localization.GetString("CommentNotificationEmailSubject.Text", this.LocalResourceFile);
-                            emailSubject = string.Format(emailSubject, this.VersionInfoObject.Name);
-
-                            Mail.SendMail(
-                                this.PortalSettings.Email, 
-                                ui.Email, 
-                                string.Empty, 
-                                emailSubject, 
-                                emailBody, 
-                                string.Empty, 
-                                "HTML", 
-                                string.Empty, 
-                                string.Empty, 
-                                string.Empty, 
-                                string.Empty);
-                        }
-                    }
-                }
-
-                this.ConfigureComments();
-
-                this.pnlCommentEntry.Visible = false;
-                this.pnlCommentConfirmation.Visible = true;
+                return;
             }
+
+            // TODO: we're allowing anonymous comments, we should have a setting for this.
+            var objSecurity = new PortalSecurity();
+            if (this.UseForumComments)
+            {
+                var categoryForumId = this.GetCategoryForumId();
+                if (categoryForumId.HasValue)
+                {
+                    int threadId = ForumProvider.GetInstance(this.PortalId).AddComment(
+                        categoryForumId.Value, 
+                        this.VersionInfoObject.AuthorUserId, 
+                        this.VersionInfoObject.Name, 
+                        this.VersionInfoObject.Description, 
+                        this.GetItemLinkUrl(this.VersionInfoObject.ItemId, this.PortalId), 
+                        objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                        this.UserId, 
+                        this.Request.UserHostAddress);
+
+                    var threadIdSetting = new ItemVersionSetting(Setting.CommentForumThreadId)
+                        {
+                            PropertyValue = threadId.ToString(CultureInfo.InvariantCulture), 
+                            ItemVersionId = this.VersionInfoObject.ItemVersionId
+                        };
+                    threadIdSetting.Save();
+
+                    this.Response.Redirect(ForumProvider.GetInstance(this.PortalId).GetThreadUrl(threadId), true);
+                }
+            }
+            else
+            {
+                var urlText = this.txtUrlComment.Text;
+                if (urlText.Trim().Length > 0 
+                    && !urlText.StartsWith("http://", StringComparison.OrdinalIgnoreCase) 
+                    && !urlText.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                {
+                    urlText = "http://" + urlText;
+                }
+
+                Comment.AddComment(
+                    this.VersionInfoObject.ItemVersionId, 
+                    this.UserId == -1 ? null : (int?)this.UserId, 
+                    objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                    this.IsAdmin ? ApprovalStatus.Approved.GetId() : ApprovalStatus.Waiting.GetId(), 
+                    null, 
+                    objSecurity.InputFilter(this.txtFirstNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                    objSecurity.InputFilter(this.txtLastNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                    objSecurity.InputFilter(this.txtEmailAddressComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                    objSecurity.InputFilter(urlText, PortalSecurity.FilterFlag.NoScripting), 
+                    DataProvider.ModuleQualifier);
+
+                // see if comment notification is turned on. Notify the ItemVersion.Author
+                if (this.IsCommentAuthorNotificationEnabled)
+                {
+                    var user = new UserController().GetUser(this.PortalId, this.VersionInfoObject.AuthorUserId);
+                    if (user != null)
+                    {
+                        var emailBody = this.Localize("CommentNotificationEmail.Text");
+                        emailBody = string.Format(
+                            emailBody, 
+                            this.VersionInfoObject.Name, 
+                            this.GetItemLinkUrlExternal(this.VersionInfoObject.ItemId), 
+                            objSecurity.InputFilter(this.txtFirstNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                            objSecurity.InputFilter(this.txtLastNameComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                            objSecurity.InputFilter(this.txtEmailAddressComment.Text, PortalSecurity.FilterFlag.NoScripting), 
+                            objSecurity.InputFilter(this.txtComment.Text, PortalSecurity.FilterFlag.NoScripting));
+
+                        var emailSubject = this.Localize("CommentNotificationEmailSubject.Text");
+                        emailSubject = string.Format(emailSubject, this.VersionInfoObject.Name);
+
+                        Mail.SendMail(
+                            this.PortalSettings.Email, 
+                            user.Email, 
+                            string.Empty, 
+                            emailSubject, 
+                            emailBody, 
+                            string.Empty, 
+                            "HTML", 
+                            string.Empty, 
+                            string.Empty, 
+                            string.Empty, 
+                            string.Empty);
+                    }
+                }
+            }
+
+            this.ConfigureComments();
+
+            this.pnlCommentEntry.Visible = false;
+            this.pnlCommentConfirmation.Visible = true;
         }
 
         [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", Justification = "Compiler doesn't see validation")]
@@ -1012,9 +1006,13 @@ namespace Engage.Dnn.Publish.ArticleControls
                 }
             }
 
-            this.btnComment.Visible = this.DisplayCommentsLink;
             if (this.IsCommentsEnabled)
             {
+                this.CommentPopupTriggerLink.Visible = this.DisplayCommentsLink;
+                this.CommentPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlComment.ClientID;
+                this.AddJQueryReference();
+                this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
+
                 if (!this.UseForumComments || (this.DisplayPublishComments && !this.VersionInfoObject.IsNew))
                 {
                     this.pnlComments.Visible = this.pnlCommentDisplay.Visible = true;
@@ -1035,7 +1033,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                     }
                     else
                     {
-                        this.btnForumComment.Visible = true;
+                        this.ForumCommentPopupTriggerLink.Visible = true;
+                        this.ForumCommentPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlComment.ClientID;
                     }
                 }
             }
@@ -1071,7 +1070,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1)
                                                             ? this.UserInfo.FirstName.Substring(0, 1)
                                                             : string.Empty;
-                        this.lblFirstNameComment.Text = Localization.GetString("FirstInitial", this.LocalResourceFile);
+                        this.lblFirstNameComment.Text = this.Localize("FirstInitial");
                         showNamePanel = true;
                         break;
                     case NameDisplayOption.None:
@@ -1085,7 +1084,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         // case NameDisplayOption.Full:
                     default:
                         this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.FirstName : string.Empty;
-                        this.lblFirstNameComment.Text = Localization.GetString("FirstName", this.LocalResourceFile);
+                        this.lblFirstNameComment.Text = this.Localize("FirstName");
                         showNamePanel = true;
                         break;
                 }
@@ -1097,7 +1096,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1)
                                                            ? this.UserInfo.LastName.Substring(0, 1)
                                                            : string.Empty;
-                        this.lblLastNameComment.Text = Localization.GetString("LastInitial", this.LocalResourceFile);
+                        this.lblLastNameComment.Text = this.Localize("LastInitial");
                         showNamePanel = true;
                         break;
                     case NameDisplayOption.None:
@@ -1111,7 +1110,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         // case NameDisplayOption.Full:
                     default:
                         this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.LastName : string.Empty;
-                        this.lblLastNameComment.Text = Localization.GetString("LastName", this.LocalResourceFile);
+                        this.lblLastNameComment.Text = this.Localize("LastName");
                         showNamePanel = true;
                         break;
                 }

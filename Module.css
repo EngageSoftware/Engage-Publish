@@ -749,15 +749,8 @@ Module CSS
     background-image: url(Images/SavedStar.png);
 }
 
-.divRatingBefore
-{
-}
-.divRatingAfter
-{
-}
-
 /*Modal Popup*/
-.commentBackground 
+.simplemodal-overlay 
 {
 	background-color:Gray;
 	filter:alpha(opacity=70);
@@ -774,57 +767,7 @@ Module CSS
 	padding:3px;
 	width:300px;
 }
-.modalBackground 
-{
-	background-color:Gray;
-	filter:alpha(opacity=70);
-	opacity:0.7;
-	height:100%;
-	width:100%;
-}
 
-.modalPopup {
-	background-color:#ffffdd;
-	border-width:3px;
-	border-style:solid;
-	border-color:Gray;
-	padding:3px;
-	width:550px;
-}
-
-
-
-#commentEntryWrapper
-{
-	
-}
-
-#commentInstructions
-{
-}
-
-#commentText
-{
-}
-
-#commentFirstName
-{
-}
-
-#commentLastName
-{
-}
-
-#commentEmail
-{
-}
-
-#commentSubmit
-{
-}
-#commentCancel
-{
-}
 .CommentValue
 {
 	margin:1px;
@@ -836,10 +779,6 @@ Module CSS
 	float:left;
 }
 
-.CommentNameDate
-{
-	
-}
 #CommentCreatedDate
 {
 	float:left;
@@ -873,17 +812,6 @@ Module CSS
 {
 	height:100px;
 	width:250px;
-}
-
-/* this class controls the comment entry window */
-.commentEntry
-{
-	
-}
-
-/* this class controls the comment confirmation window */
-.commentConfirmation
-{
 }
 
 #divCommentsDisplay
@@ -930,27 +858,11 @@ Module CSS
 	margin-left:-150px;
 }
 
-
-/* the following classes are used for the nLevels Category Display */
-.divNLevelsListing
-{
-	
-}
-
-/* this class controls how the items for nLevels are displayed */
-.divNLevelsListing li
-{
-}
-
 /* this class is used if you enable highlighting the current item in the module settings */
 .NLevelCurrentItem
 {
 	font-weight:bold;
 }
-
-
-/* END the following classes are used for the nLevels Category Display */
-
 
 .tbButton
 {
@@ -976,17 +888,6 @@ Module CSS
 	padding:5px;
 	
 }	
-
-
-.PublishAdminLink
-{
-	
-}
-
-.Publish_ReturnToList
-{	
-	
-}
 
 /**************************************/
 /*Gallery Intergration Thumbnail Popup*/
