@@ -43,16 +43,6 @@ namespace Engage.Dnn.Publish.ArticleControls
 
     public partial class ArticleDisplay : ModuleBase, IActionable
     {
-        private const string ArticleControlToLoad = "articleDisplay.ascx";
-
-        private const string CommentsControlToLoad = "../Controls/CommentDisplay.ascx";
-
-        private const string EmailControlToLoad = "../Controls/EmailAFriend.ascx";
-
-        private const string PrinterControlToLoad = "../Controls/PrinterFriendlyButton.ascx";
-
-        private const string RelatedArticlesControlToLoad = "../Controls/RelatedArticleLinks.ascx";
-
         private ArticleDisplay ad;
 
         private CommentDisplayBase commentDisplay;
@@ -965,36 +955,25 @@ namespace Engage.Dnn.Publish.ArticleControls
             // check if items are enabled.
             if (this.DisplayEmailAFriend && this.VersionInfoObject.IsNew == false)
             {
-                this.ea = (EmailAFriend)this.LoadControl(EmailControlToLoad);
-                this.ea.ModuleConfiguration = this.ModuleConfiguration;
-                this.ea.ID = Path.GetFileNameWithoutExtension(EmailControlToLoad);
-                this.phEmailAFriend.Controls.Add(this.ea);
+                this.ea = this.CreateChildControl<EmailAFriend>("../Controls/EmailAFriend.ascx", this.phEmailAFriend);
             }
 
             if (this.DisplayPrinterFriendly && this.VersionInfoObject.IsNew == false)
             {
-                this.pf = (PrinterFriendlyButton)this.LoadControl(PrinterControlToLoad);
-                this.pf.ModuleConfiguration = this.ModuleConfiguration;
-                this.pf.ID = Path.GetFileNameWithoutExtension(PrinterControlToLoad);
-                this.phPrinterFriendly.Controls.Add(this.pf);
+                this.pf = this.CreateChildControl<PrinterFriendlyButton>("../Controls/PrinterFriendlyButton.ascx", this.phPrinterFriendly);
             }
 
             if (this.DisplayRelatedLinks)
             {
-                this.ral = (RelatedArticleLinksBase)this.LoadControl(RelatedArticlesControlToLoad);
-                this.ral.ModuleConfiguration = this.ModuleConfiguration;
-                this.ral.ID = Path.GetFileNameWithoutExtension(RelatedArticlesControlToLoad);
-                this.phRelatedArticles.Controls.Add(this.ral);
+                this.ral = this.CreateChildControl<RelatedArticleLinksBase>("../Controls/RelatedArticleLinks.ascx", this.phRelatedArticles);
             }
 
             if (this.DisplayRelatedArticle)
             {
-                Article a = this.VersionInfoObject.GetRelatedArticle(this.PortalId);
-                if (a != null)
+                var relatedArticle = this.VersionInfoObject.GetRelatedArticle(this.PortalId);
+                if (relatedArticle != null)
                 {
-                    this.ad = (ArticleDisplay)this.LoadControl(ArticleControlToLoad);
-                    this.ad.ModuleConfiguration = this.ModuleConfiguration;
-                    this.ad.ID = Path.GetFileNameWithoutExtension(ArticleControlToLoad);
+                    this.ad = this.CreateChildControl<ArticleDisplay>("articleDisplay.ascx", this.phRelatedArticle);
                     this.ad.Overrideable = false;
                     this.ad.UseCache = true;
                     this.ad.DisplayPrinterFriendly = false;
@@ -1002,9 +981,8 @@ namespace Engage.Dnn.Publish.ArticleControls
                     this.ad.DisplayRelatedLinks = false;
                     this.ad.DisplayEmailAFriend = false;
 
-                    this.ad.SetItemId(a.ItemId);
+                    this.ad.SetItemId(relatedArticle.ItemId);
                     this.ad.DisplayTitle = false;
-                    this.phRelatedArticle.Controls.Add(this.ad);
                     this.divRelatedArticle.Visible = true;
                 }
                 else
@@ -1016,11 +994,10 @@ namespace Engage.Dnn.Publish.ArticleControls
             if (this.RatingDisplayOption.Equals(RatingDisplayOption.Enable) || this.RatingDisplayOption.Equals(RatingDisplayOption.ReadOnly))
             {
                 // get the upnlRating setting
-                ItemVersionSetting rtSetting = ItemVersionSetting.GetItemVersionSetting(
-                    this.VersionInfoObject.ItemVersionId, "upnlRating", "Visible", this.PortalId);
-                if (rtSetting != null)
+                var ratingSetting = ItemVersionSetting.GetItemVersionSetting(this.VersionInfoObject.ItemVersionId, "upnlRating", "Visible", this.PortalId);
+                if (ratingSetting != null)
                 {
-                    this.upnlRating.Visible = Convert.ToBoolean(rtSetting.PropertyValue, CultureInfo.InvariantCulture);
+                    this.upnlRating.Visible = Convert.ToBoolean(ratingSetting.PropertyValue, CultureInfo.InvariantCulture);
                 }
 
                 if (this.upnlRating.Visible)
@@ -1041,25 +1018,20 @@ namespace Engage.Dnn.Publish.ArticleControls
                 if (!this.UseForumComments || (this.DisplayPublishComments && !this.VersionInfoObject.IsNew))
                 {
                     this.pnlComments.Visible = this.pnlCommentDisplay.Visible = true;
-                    this.commentDisplay = (CommentDisplayBase)this.LoadControl(CommentsControlToLoad);
-                    this.commentDisplay.ModuleConfiguration = this.ModuleConfiguration;
-                    this.commentDisplay.ID = Path.GetFileNameWithoutExtension(CommentsControlToLoad);
+                    this.commentDisplay = this.CreateChildControl<CommentDisplayBase>("../Controls/CommentDisplay.ascx", this.phCommentsDisplay);
                     this.commentDisplay.ArticleId = this.VersionInfoObject.ItemId;
-                    this.phCommentsDisplay.Controls.Add(this.commentDisplay);
                 }
 
                 if (this.UseForumComments)
                 {
                     this.pnlComments.Visible = true;
                     this.mvCommentDisplay.SetActiveView(this.vwForumComments);
-                    ItemVersionSetting forumThreadIdSetting = ItemVersionSetting.GetItemVersionSetting(
-                        this.VersionInfoObject.ItemVersionId, "ArticleSetting", "CommentForumThreadId", this.PortalId);
+                    var forumThreadIdSetting = ItemVersionSetting.GetItemVersionSetting(this.VersionInfoObject.ItemVersionId, "ArticleSetting", "CommentForumThreadId", this.PortalId);
                     if (forumThreadIdSetting != null)
                     {
+                        var threadId = Convert.ToInt32(forumThreadIdSetting.PropertyValue, CultureInfo.InvariantCulture);
                         this.lnkGoToForum.Visible = true;
-                        this.lnkGoToForum.NavigateUrl =
-                            ForumProvider.GetInstance(this.PortalId).GetThreadUrl(
-                                Convert.ToInt32(forumThreadIdSetting.PropertyValue, CultureInfo.InvariantCulture));
+                        this.lnkGoToForum.NavigateUrl = ForumProvider.GetInstance(this.PortalId).GetThreadUrl(threadId);
                     }
                     else
                     {
@@ -1069,6 +1041,21 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
 
             this.ConfigureTags();
+        }
+
+        /// <summary>Creates a control from the given path, sets up its context, and adds it to the given placeholder.</summary>
+        /// <typeparam name="T">The type of the control</typeparam>
+        /// <param name="pathToControl">The path to the control.</param>
+        /// <param name="placeHolder">The place-holder to which it will be added.</param>
+        /// <returns>The created control</returns>
+        private T CreateChildControl<T>(string pathToControl, Control placeHolder) where T : PortalModuleBase
+        {
+            var control = (T)this.LoadControl(pathToControl);
+            control.ModuleConfiguration = this.ModuleConfiguration;
+            control.ID = Path.GetFileNameWithoutExtension(pathToControl);
+            placeHolder.Controls.Add(control);
+
+            return control;
         }
 
         private void ConfigureComments()
