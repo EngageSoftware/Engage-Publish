@@ -14,7 +14,6 @@ namespace Engage.Dnn.Publish.Controls
     using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
     public partial class EmailAFriend : ModuleBase
@@ -25,32 +24,28 @@ namespace Engage.Dnn.Publish.Controls
             base.OnInit(e);
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
-            Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnCancel_Click1(object sender, EventArgs e)
         {
             this.ClearCommentInput();
-            this.mpeEmailAFriend.Hide();
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", 
-            Justification = "Controls use lower case prefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnSend_Click(object sender, EventArgs e)
         {
             try
             {
-                string message = Localization.GetString("EmailAFriend", this.LocalResourceFile);
+                string message = this.Localize("EmailAFriend");
                 message = message.Replace("[Engage:Recipient]", this.txtTo.Text.Trim());
                 message = message.Replace("[Engage:Url]", this.GetItemLinkUrlExternal(this.ItemId));
                 message = message.Replace("[Engage:From]", this.txtFrom.Text.Trim());
                 message = message.Replace("[Engage:Message]", this.txtMessage.Text.Trim());
 
-                string subject = Localization.GetString("EmailAFriendSubject", this.LocalResourceFile);
+                string subject = this.Localize("EmailAFriendSubject");
                 subject = subject.Replace("[Engage:Portal]", this.PortalSettings.PortalName);
 
                 Mail.SendMail(this.PortalSettings.Email, this.txtTo.Text.Trim(), string.Empty, subject, message, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
                 this.ClearCommentInput();
-                this.mpeEmailAFriend.Hide();
             }
             catch (Exception ex)
             {
@@ -69,6 +64,10 @@ namespace Engage.Dnn.Publish.Controls
 
         private void Page_Load(object sender, EventArgs e)
         {
+            this.AddJQueryReference();
+            this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
+            this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
+
             this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
         }
     }

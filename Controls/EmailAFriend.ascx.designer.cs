@@ -13,22 +13,13 @@ namespace Engage.Dnn.Publish.Controls {
     public partial class EmailAFriend {
         
         /// <summary>
-        /// btnEmailAFriend control.
+        /// EmailAFriendPopupTriggerLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnEmailAFriend;
-        
-        /// <summary>
-        /// mpeEmailAFriend control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender mpeEmailAFriend;
+        protected global::System.Web.UI.WebControls.HyperLink EmailAFriendPopupTriggerLink;
         
         /// <summary>
         /// pnlEmailAFriend control.

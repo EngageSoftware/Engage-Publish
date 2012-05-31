@@ -1171,7 +1171,7 @@ using System.Diagnostics.CodeAnalysis;
         Target = "Engage.Dnn.Publish.Controls.EmailAFriend.#btnCancel_Click1(System.Object,System.EventArgs)")]
 [assembly:
     SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "btn", Scope = "member", 
-        Target = "Engage.Dnn.Publish.Controls.EmailAFriend.#btnEmailAFriend")]
+        Target = "Engage.Dnn.Publish.Controls.EmailAFriend.#EmailAFriendPopupTriggerLink")]
 [assembly:
     SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "btn", Scope = "member", 
         Target = "Engage.Dnn.Publish.Controls.EmailAFriend.#btnSend")]
