@@ -9,13 +9,14 @@
     <div id="divLastUpdated" class="divLastUpdated" runat="server" visible="false" align="right">
         <asp:Literal ID="lblLastUpdated" runat="server" />
 	</div>
-	<asp:Panel ID="pnlPrinterFriendly" runat="server">
-	    <asp:PlaceHolder ID="phPrinterFriendly" runat="server" />
-	</asp:Panel>
-	<asp:Panel ID="pnlEmailAFriend" runat="server">
-	    <asp:PlaceHolder ID="phEmailAFriend" runat="server" />
-	</asp:Panel>
-
+    <div class="ArticleUtilities">
+		<asp:Panel ID="pnlPrinterFriendly" runat="server">
+	        <asp:PlaceHolder ID="phPrinterFriendly" runat="server" />
+	    </asp:Panel>
+	    <asp:Panel ID="pnlEmailAFriend" runat="server">
+	        <asp:PlaceHolder ID="phEmailAFriend" runat="server" />
+	    </asp:Panel>
+    </div>
 	<asp:Panel ID="pnlAuthor" runat="server" Visible="false">
 	    <asp:label ID="lblAuthorInfo" runat="server" resourcekey="lblAuthorInfo" />
 	    <asp:literal ID="lblAuthor" runat="server" />
