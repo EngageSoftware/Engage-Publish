@@ -43,7 +43,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                             false,
                             SecurityAccessLevel.Edit,
                             true,
-                            false,
+                            false
                         },
                     };
             }
@@ -203,6 +203,9 @@ namespace Engage.Dnn.Publish.CategoryControls
         {
             try
             {
+                this.AddJQueryReference();
+                this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_CategoryFeature_ClassSwap", this.ResolveUrl("Engage_Publish_CategoryFeature_ClassSwap.js"));
+
                 this.BindItemData();
                 this.BindData();
             }

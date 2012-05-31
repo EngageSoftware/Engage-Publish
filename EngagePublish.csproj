@@ -698,7 +698,7 @@
     <Content Include="CategoryControls\CategorySearch.ascx" />
     <Content Include="CategoryControls\CategorySearchOptions.ascx" />
     <Content Include="CategoryControls\CategorySort.ascx" />
-    <Content Include="CategoryControls\main.js" />
+    <Content Include="CategoryControls\Engage_Publish_CategoryFeature_ClassSwap.js" />
     <Content Include="Controls\Breadcrumb.ascx" />
     <Content Include="Controls\CommentDisplay.ascx" />
     <Content Include="Controls\CustomDisplay.ascx" />
