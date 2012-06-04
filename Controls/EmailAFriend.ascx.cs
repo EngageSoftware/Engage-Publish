@@ -44,7 +44,18 @@ namespace Engage.Dnn.Publish.Controls
                 string subject = this.Localize("EmailAFriendSubject");
                 subject = subject.Replace("[Engage:Portal]", this.PortalSettings.PortalName);
 
-                Mail.SendMail(this.PortalSettings.Email, this.txtTo.Text.Trim(), string.Empty, subject, message, string.Empty, "HTML", string.Empty, string.Empty, string.Empty, string.Empty);
+                Mail.SendMail(
+                    this.PortalSettings.Email,
+                    this.txtTo.Text.Trim(),
+                    string.Empty,
+                    subject,
+                    message,
+                    string.Empty,
+                    "HTML",
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty);
                 this.ClearCommentInput();
             }
             catch (Exception ex)
@@ -68,7 +79,10 @@ namespace Engage.Dnn.Publish.Controls
             this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
             this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
 
-            this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
+            if (!this.IsPostBack)
+            {
+                this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
+            }
         }
     }
 }
