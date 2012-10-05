@@ -33,7 +33,7 @@ this.display)):(this.d.data.hide().remove(),a.replaceWith(this.d.orig))}else thi
         var targetId = $(this).attr('data-modal-target-id'),
             $target = $('#' + targetId);
         $target.modal({
-            appendTo: 'form',
+            appendTo: '#Form',
             overlayId: 'commentBackground'
         });
 
