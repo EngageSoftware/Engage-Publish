@@ -58,13 +58,13 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::System.Web.UI.WebControls.TextBox txtTo;
         
         /// <summary>
-        /// fvRecipients control.
+        /// ToRequiredValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator fvRecipients;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator ToRequiredValidator;
         
         /// <summary>
         /// lblMultiple control.
@@ -94,13 +94,22 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::System.Web.UI.WebControls.TextBox txtFrom;
         
         /// <summary>
-        /// fvSender control.
+        /// FromRequiredValidator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator fvSender;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator FromRequiredValidator;
+        
+        /// <summary>
+        /// lblPrivacy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPrivacy;
         
         /// <summary>
         /// lblMessage control.
@@ -121,30 +130,12 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::System.Web.UI.WebControls.TextBox txtMessage;
         
         /// <summary>
-        /// lblPrivacy control.
+        /// SendButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrivacy;
-        
-        /// <summary>
-        /// btnSend control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSend;
-        
-        /// <summary>
-        /// btnCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCancel;
+        protected global::System.Web.UI.WebControls.LinkButton SendButton;
     }
 }

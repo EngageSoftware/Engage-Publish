@@ -147,4 +147,10 @@
   <data name="EmailAFriendSubject.Text" xml:space="preserve">
     <value>[Engage:Portal] - A Friend has sent you a link to an Article</value>
   </data>
+  <data name="Please enter one or more recipients.Text" xml:space="preserve">
+    <value>Please enter one or more recipients</value>
+  </data>
+  <data name="Please enter your email address.Text" xml:space="preserve">
+    <value>Please enter your email address</value>
+  </data>
 </root>
