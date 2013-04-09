@@ -1,13 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngagePublish", "EngagePublish.csproj", "{D7FCB9E3-4554-4B99-8E5B-15209F53151F}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E80DDD8A-37FE-436C-B58D-283DE4D24444}"
 	ProjectSection(SolutionItems) = preProject
 		EngagePublish.sln = EngagePublish.sln
 		EngagePublish_VS2008.sln = EngagePublish_VS2008.sln
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngagePublish", "EngagePublish.csproj", "{D7FCB9E3-4554-4B99-8E5B-15209F53151F}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
