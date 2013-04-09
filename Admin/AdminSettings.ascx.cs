@@ -19,6 +19,7 @@ namespace Engage.Dnn.Publish.Admin
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -116,175 +117,174 @@ namespace Engage.Dnn.Publish.Admin
         {
             if (this.Page.IsValid)
             {
-                var objHostSettings = new HostSettingsController();
-
-                objHostSettings.UpdateHostSetting(Utility.PublishSetup + this.PortalId.ToString(CultureInfo.InvariantCulture), "true");
-                objHostSettings.UpdateHostSetting(
+                var hostController = HostController.Instance;
+                hostController.Update(Utility.PublishSetup + this.PortalId.ToString(CultureInfo.InvariantCulture), "true");
+                hostController.Update(
                     Utility.PublishEmail + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEmailNotification.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEmailNotificationRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlEmailRoles.SelectedValue);
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishAdminRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlRoles.SelectedValue);
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishAuthorRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlAuthor.SelectedValue);
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishAuthorCategoryEdit + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkAuthorCategoryEdit.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableArticlePaging + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnablePaging.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableTags + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableTags.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableSimpleGalleryIntegration + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableSimpleGallery.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableUltraMediaGalleryIntegration + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableUltraMediaGallery.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableVenexusSearch + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableVenexus.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableViewTracking + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableViewTracking.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnableDisplayNameAsHyperlink + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableDisplayNameAsHyperlink.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishAllowRichTextDescriptions + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkAllowRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultRichTextDescriptions + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishUseApprovals + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishUseEmbeddedArticles + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkUseEmbeddedArticles.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishShowItemId + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkShowItemId.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishCacheTime + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtDefaultCacheTime.Text.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultAdminPagingSize + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtAdminPagingSize.Text.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDescriptionEditHeight + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtItemDescriptionHeight.Text.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishArticleEditHeight + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtArticleTextHeight.Text.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDescriptionEditWidth + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtItemDescriptionWidth.Text.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishArticleEditWidth + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtArticleTextWidth.Text.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnablePublishFriendlyUrls + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnablePublishFriendlyUrls.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishThumbnailSubdirectory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtThumbnailSubdirectory.Text.EndsWith("/", StringComparison.Ordinal)
                         ? this.txtThumbnailSubdirectory.Text
                         : this.txtThumbnailSubdirectory.Text + "/");
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishThumbnailDisplayOption + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.radThumbnailSelection.SelectedValue.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultDisplayPage + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.ddlDefaultDisplay.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
                 if (this.ddlDefaultTextHtmlCategory.SelectedIndex > 0)
                 {
-                    objHostSettings.UpdateHostSetting(
+                    hostController.Update(
                         Utility.PublishDefaultTextHtmlCategory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                         this.ddlDefaultTextHtmlCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (this.ddlDefaultCategory.SelectedIndex > 0)
                 {
-                    objHostSettings.UpdateHostSetting(
+                    hostController.Update(
                         Utility.PublishDefaultCategory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                         this.ddlDefaultCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
                 }
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultTagPage + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.ddlTagList.SelectedValue.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultReturnToList.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultArticleRatings.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultArticleComments.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishCommentEmailAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkCommentNotification.Checked.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultEmailAFriend.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishSessionReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkReturnToListSession.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultShowAuthor.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkDefaultShowTags.Checked.ToString(CultureInfo.InvariantCulture));
 
                 /*ratings*/
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishRating + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableRatings.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishRatingMaximum + this.PortalId.ToString(CultureInfo.InvariantCulture), this.txtMaximumRating.Text);
 
-                // objHostSettings.UpdateHostSetting(Utility.PublishRatingAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousRatings.Checked.ToString(CultureInfo.InvariantCulture));
+                // hostController.Update(Utility.PublishRatingAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousRatings.Checked.ToString(CultureInfo.InvariantCulture));
                 /*comments*/
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishComment + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnableComments.Checked.ToString(CultureInfo.InvariantCulture));
 
                 /*Ping Settings*/
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishEnablePing + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkEnablePing.Checked.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishPingServers + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtPingServers.Text.ToString(CultureInfo.InvariantCulture));
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishPingChangedUrl + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtPingChangedUrl.Text.ToString(CultureInfo.InvariantCulture));
 
-                objHostSettings.UpdateHostSetting(
+                hostController.Update(
                     Utility.PublishForumProviderType + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlCommentsType.SelectedValue);
 
-                // objHostSettings.UpdateHostSetting(Utility.PublishCommentApproval + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentApproval.Checked.ToString(CultureInfo.InvariantCulture));
-                // objHostSettings.UpdateHostSetting(Utility.PublishCommentAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousComment.Checked.ToString(CultureInfo.InvariantCulture));
-                // objHostSettings.UpdateHostSetting(Utility.PublishCommentAutoApprove + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentAutoApprove.Checked.ToString(CultureInfo.InvariantCulture));
+                // hostController.Update(Utility.PublishCommentApproval + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentApproval.Checked.ToString(CultureInfo.InvariantCulture));
+                // hostController.Update(Utility.PublishCommentAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousComment.Checked.ToString(CultureInfo.InvariantCulture));
+                // hostController.Update(Utility.PublishCommentAutoApprove + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentAutoApprove.Checked.ToString(CultureInfo.InvariantCulture));
 
                 // TODO: Remove after DNN 5.5.x fixes DNN-13633 (not clearing all the cache after updates)
                 DataCache.ClearHostCache(true);
@@ -481,7 +481,7 @@ namespace Engage.Dnn.Publish.Admin
             }
 
             // default to using Publish URLs, unless FriendlyUrls aren't on, then disable the option and show a message.
-            if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y")
+            if (Host.UseFriendlyUrls)
             {
                 this.chkEnablePublishFriendlyUrls.Checked = Utility.GetBooleanPortalSetting(
                     Utility.PublishEnablePublishFriendlyUrls, this.PortalId, true);

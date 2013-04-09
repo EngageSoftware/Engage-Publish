@@ -20,6 +20,7 @@ namespace Engage.Dnn.Publish
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -137,14 +138,14 @@ namespace Engage.Dnn.Publish
 
             foreach (ModuleInfo module in tabModules.Values)
             {
-                if (module.FriendlyName.Equals(Utility.DnnFriendlyModuleName))
+                if (module.DesktopModule.FriendlyName.Equals(Utility.DnnFriendlyModuleName))
                 {
                     bool overrideable;
                     object overrideableObj = modules.GetTabModuleSettings(module.TabModuleID)["Overrideable"];
                     if (overrideableObj != null && bool.TryParse(overrideableObj.ToString(), out overrideable) && overrideable)
                     {
                         // keep checking until there is an overrideable module that the user is authorized to see.  BD
-                        if (PortalSecurity.HasNecessaryPermission(SecurityAccessLevel.View, this.PortalSettings, module))
+                        if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.View, string.Empty, module))
                         {
                             return true;
                         }

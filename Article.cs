@@ -17,7 +17,7 @@ namespace Engage.Dnn.Publish
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
 
@@ -488,15 +488,10 @@ namespace Engage.Dnn.Publish
 
             Utility.ClearPublishCache(this.PortalId);
 
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
-            if (Engage.Utility.HasValue(s))
+            if (HostController.Instance.GetBoolean(Utility.PublishEnableTags + this.PortalId.ToString(CultureInfo.InvariantCulture), false))
             {
-                if (Convert.ToBoolean(s, CultureInfo.InvariantCulture))
-                {
-                    // Save Tags
-                    // SaveTags(trans);
-                    this.SaveTags();
-                }
+                // Save Tags
+                this.SaveTags();
             }
 
             try
@@ -505,7 +500,7 @@ namespace Engage.Dnn.Publish
                 {
                     if (this.ApprovalStatusId == ApprovalStatus.Approved.GetId())
                     {
-                        string surl = HostSettings.GetHostSetting(
+                        string surl = HostController.Instance.GetString(
                             Utility.PublishPingChangedUrl + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         string changedUrl = Engage.Utility.HasValue(surl) ? surl : Globals.NavigateURL(this.DisplayTabId);
                         PortalSettings ps = Utility.GetPortalSettings(this.PortalId);
@@ -517,11 +512,10 @@ namespace Engage.Dnn.Publish
             }
             catch (Exception exc)
             {
-                /// WHAT IS THIS? Why try/catch and gooble up errors???
-                /// this was added because some exceptions occur for ping servers that we don't need to let the users know about.
-                /// 
+                // WHAT IS THIS? Why try/catch and gooble up errors???
+                // this was added because some exceptions occur for ping servers that we don't need to let the users know about.
                 // catch the ping exception but let everything else proceed.
-                /// localize this error
+                // TODO: localize this error
 
                 Exceptions.LogException(exc);
 
@@ -581,9 +575,11 @@ namespace Engage.Dnn.Publish
         /// </summary>
         private void SetDefaultItemVersionSettings()
         {
+            var hostController = HostController.Instance;
+
             // Printer Friendly
             string hostPrinterFriendlySetting =
-                HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture));
             Setting setting = Setting.PrinterFriendly;
             setting.PropertyValue = Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture).ToString();
             var itemVersionSetting = new ItemVersionSetting(setting);
@@ -591,7 +587,7 @@ namespace Engage.Dnn.Publish
 
             // Email A Friend
             string hostEmailFriendSetting =
-                HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.EmailAFriend;
             setting.PropertyValue = Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
@@ -599,7 +595,7 @@ namespace Engage.Dnn.Publish
 
             // ratings
             string hostRatingSetting =
-                HostSettings.GetHostSetting(Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Rating;
             setting.PropertyValue = Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
@@ -607,7 +603,7 @@ namespace Engage.Dnn.Publish
 
             // comments
             string hostCommentSetting =
-                HostSettings.GetHostSetting(Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Comments;
             setting.PropertyValue = Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
@@ -648,14 +644,14 @@ namespace Engage.Dnn.Publish
 
             // show author
             string hostAuthorSetting =
-                HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.Author;
             setting.PropertyValue = Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);
             this.VersionSettings.Add(itemVersionSetting);
 
             // show tags
-            string hostTagsSetting = HostSettings.GetHostSetting(
+            string hostTagsSetting = hostController.GetString(
                 Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.ShowTags;
             setting.PropertyValue = Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture).ToString();
@@ -664,7 +660,7 @@ namespace Engage.Dnn.Publish
 
             // use approvals
             string hostUseApprovalsSetting =
-                HostSettings.GetHostSetting(Utility.PublishUseApprovals + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                hostController.GetString(Utility.PublishUseApprovals + this.PortalId.ToString(CultureInfo.InvariantCulture));
             setting = Setting.UseApprovals;
             setting.PropertyValue = Convert.ToBoolean(hostUseApprovalsSetting, CultureInfo.InvariantCulture).ToString();
             itemVersionSetting = new ItemVersionSetting(setting);

@@ -73,22 +73,25 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=6.0.0.2982, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DotNetNuke.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Search.DataStore, Version=3.2.2.40031, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Search.DataStore, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Bin\DotNetNuke.Search.DataStore.dll</HintPath>
+      <HintPath>References\DotNetNuke.Search.DataStore.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=1.5.3.20116, Culture=neutral">
+    <Reference Include="DotNetNuke.WebControls, Version=2.2.2.428, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
-      <HintPath>..\..\..\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.0.185, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
-      <HintPath>..\..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Engage.Dnn.Framework, Version=3.1.6.26594, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -102,9 +105,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Framework\Engage.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
-      <Private>True</Private>
-      <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -935,7 +939,7 @@
     <Content Include="Controls\App_LocalResources\ThumbnailSelector.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="EngagePublish.5.dnn">
+    <None Include="EngagePublish.6.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="Migrated rules for EngagePublish.ruleset" />
@@ -966,7 +970,6 @@
     <None Include="EngagePublish.Build">
       <SubType>Designer</SubType>
     </None>
-    <None Include="EngagePublish.4.dnn" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.04.SqlDataProvider" />

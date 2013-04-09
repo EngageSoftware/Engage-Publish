@@ -98,8 +98,9 @@ namespace Engage.Dnn.Publish.Forum
 
             int threadId = -1;
             bool topicAlreadyCreated = false;
-            UserInfo authorInfo = UserController.GetUser(this.PortalId, authorUserId, false);
-            UserInfo commenterInfo = UserController.GetUser(this.PortalId, commentUserId, false);
+            var userController = new UserController();
+            UserInfo authorInfo = userController.GetUser(this.PortalId, authorUserId);
+            UserInfo commenterInfo = userController.GetUser(this.PortalId, commentUserId);
             string authorDisplayName = authorInfo != null ? authorInfo.DisplayName : string.Empty;
             string commenterDisplayName = commenterInfo != null ? commenterInfo.DisplayName : string.Empty;
             bool commenterIsSuperUser = commenterInfo != null ? commenterInfo.IsSuperUser : false;

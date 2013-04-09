@@ -21,6 +21,7 @@ namespace Engage.Dnn.Publish.CategoryControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
@@ -380,7 +381,7 @@ namespace Engage.Dnn.Publish.CategoryControls
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
             // this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(this.PortalSettings.DesktopTabs, false, true);
+            this.ddlDisplayTabId.DataSource = TabController.GetPortalTabs(this.PortalId, Null.NullInteger, false, true);
             this.ddlDisplayTabId.DataBind();
 
             foreach (DataRow dr in dt.Rows)
@@ -445,7 +446,7 @@ namespace Engage.Dnn.Publish.CategoryControls
                 };
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
-            this.ddlChildDisplayTabId.DataSource = Globals.GetPortalTabs(this.PortalSettings.DesktopTabs, false, true);
+            this.ddlChildDisplayTabId.DataSource = TabController.GetPortalTabs(this.PortalId, Null.NullInteger, false, true);
             this.ddlChildDisplayTabId.DataBind();
 
             foreach (DataRow dr in dt.Rows)

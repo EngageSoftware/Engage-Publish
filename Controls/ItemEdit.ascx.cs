@@ -16,7 +16,7 @@ namespace Engage.Dnn.Publish.Controls
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Users;
@@ -125,20 +125,9 @@ namespace Engage.Dnn.Publish.Controls
             if (!this.IsPostBack && AJAX.IsInstalled())
             {
                 AJAX.RegisterScriptManager();
-                AJAX.SetScriptManagerProperty(
-                    this.Page, 
-                    "EnableScriptGlobalization", 
-                    new object[]
-                        {
-                            true
-                        });
-                AJAX.SetScriptManagerProperty(
-                    this.Page, 
-                    "EnableScriptLocalization", 
-                    new object[]
-                        {
-                            true
-                        });
+                var scriptManager = AJAX.GetScriptManager(this.Page);
+                scriptManager.EnableScriptGlobalization = true;
+                scriptManager.EnableScriptLocalization = true;
             }
 
             this.teDescription.Width = this.ItemEditDescriptionWidth;
@@ -207,8 +196,9 @@ namespace Engage.Dnn.Publish.Controls
         private void LoadAuthorsList()
         {
             var roleController = new RoleController();
-            ArrayList authorsList = roleController.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId));
-            ArrayList adminsList = roleController.GetUserRolesByRoleName(this.PortalId, HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId));
+            var hostController = HostController.Instance;
+            ArrayList authorsList = roleController.GetUserRolesByRoleName(this.PortalId, hostController.GetString(Utility.PublishAuthorRole + this.PortalId));
+            ArrayList adminsList = roleController.GetUserRolesByRoleName(this.PortalId, hostController.GetString(Utility.PublishAdminRole + this.PortalId));
 
             // check to make sure we only add authors who aren't already in the list.
             foreach (UserRoleInfo adminUserRole in adminsList)

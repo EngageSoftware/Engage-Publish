@@ -26,6 +26,8 @@ namespace Engage.Dnn.Publish.Util
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
+    using Engage.Util;
+
     /// <summary>
     /// Responsible for generating URLs to items
     /// </summary>
@@ -366,7 +368,7 @@ namespace Engage.Dnn.Publish.Util
             }
 
             // only add language to url if more than one locale is enabled, and if admin did not turn it off
-            if (Localization.GetEnabledLocales().Count > 1 && Localization.UseLanguageInUrl())
+            if (LocaleController.Instance.GetLocales(portalSettings.PortalId).IsMany() && portalSettings.EnableUrlLanguage)
             {
                 if (string.IsNullOrEmpty(language))
                 {
@@ -378,14 +380,14 @@ namespace Engage.Dnn.Publish.Util
                 }
             }
 
-            if (HostSettings.GetHostSetting("UseFriendlyUrls") == "Y")
+            if (Host.UseFriendlyUrls)
             {
                 if (string.IsNullOrEmpty(aspxPageName))
                 {
                     aspxPageName = Globals.glbDefaultPage;
                 }
 
-                var tab = portalSettings.DesktopTabs.Cast<TabInfo>().FirstOrDefault(t => t.TabID == tabId);
+                var tab = new TabController().GetTab(tabId, portalSettings.PortalId, false);
                 if (tab != null)
                 {
                     return Globals.FriendlyUrl(tab, url, aspxPageName, portalSettings);

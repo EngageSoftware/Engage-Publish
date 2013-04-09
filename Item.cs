@@ -23,7 +23,7 @@ namespace Engage.Dnn.Publish
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -1168,7 +1168,7 @@ namespace Engage.Dnn.Publish
                     {
                         // Default to setting for module
                         string settingName = Utility.PublishDefaultDisplayPage + this.PortalId.ToString(CultureInfo.InvariantCulture);
-                        string setting = HostSettings.GetHostSetting(settingName);
+                        string setting = HostController.Instance.GetString(settingName);
                         this.displayTabId = Convert.ToInt32(setting, CultureInfo.InvariantCulture);
                     }
                 }
@@ -1416,7 +1416,7 @@ namespace Engage.Dnn.Publish
             if (revisingUser.Username != null)
             {
                 ArrayList users = new RoleController().GetUsersByRoleName(
-                    revisingUser.PortalID, HostSettings.GetHostSetting(Utility.PublishEmailNotificationRole + this.PortalId));
+                    revisingUser.PortalID, HostController.Instance.GetString(Utility.PublishEmailNotificationRole + this.PortalId));
 
                 this.SendTemplatedEmail(revisingUser, (UserInfo[])users.ToArray(typeof(UserInfo)), this.EmailApprovalBody, this.EmailApprovalSubject);
             }
@@ -1430,7 +1430,7 @@ namespace Engage.Dnn.Publish
             UserInfo revisingUser = UserController.GetCurrentUserInfo();
             if (revisingUser.Username != null)
             {
-                UserInfo versionAuthor = UserController.GetUser(this.PortalId, this.authorUserId, false);
+                UserInfo versionAuthor = new UserController().GetUser(this.PortalId, this.authorUserId);
 
                 // if this is the same user, don't email them notification.
                 if (versionAuthor != null && versionAuthor.Email != revisingUser.Email)

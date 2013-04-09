@@ -13,7 +13,6 @@ namespace Engage.Dnn.Publish.Tags
     using System;
     using System.Globalization;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
@@ -42,7 +41,7 @@ namespace Engage.Dnn.Publish.Tags
                 this.chkLimitTagCount.Checked = this.PopularTagCount;
                 
                 var moduleCssUrl = this.ResolveUrl("Module.css");
-                ((CDefault)this.Page).AddStyleSheet(Globals.CreateValidID(moduleCssUrl), moduleCssUrl, true);
+                PageBase.RegisterStyleSheet(this.Page, moduleCssUrl, true);
             }
             catch (Exception exc)
             {

@@ -28,7 +28,7 @@ namespace Engage.Dnn.Publish.Util
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -458,7 +458,7 @@ namespace Engage.Dnn.Publish.Util
             {
                 var sb = new StringBuilder(128);
                 sb.Append("/DesktopModules/");
-                sb.Append(Globals.GetDesktopModuleByName(DnnFriendlyModuleName).FolderName);
+                sb.Append(DesktopModuleController.GetDesktopModuleByFriendlyName(DnnFriendlyModuleName).FolderName);
                 sb.Append("/");
                 return sb.ToString();
             }
@@ -468,10 +468,8 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                var desktopModules = new DesktopModuleController();
-
                 // return desktopModules.GetDesktopModuleByFriendlyName(SimpleGalleryFriendlyName) != null;
-                return desktopModules.GetDesktopModuleByModuleName(SimpleGalleryDefinitionModuleName) != null;
+                return DesktopModuleController.GetDesktopModuleByModuleName(SimpleGalleryDefinitionModuleName, Null.NullInteger) != null;
             }
         }
 
@@ -479,10 +477,8 @@ namespace Engage.Dnn.Publish.Util
         {
             get
             {
-                var desktopModules = new DesktopModuleController();
-
                 // return desktopModules.GetDesktopModuleByFriendlyName(UltraMediaGalleryDefinitionFriendlyName) != null;
-                return desktopModules.GetDesktopModuleByModuleName(UltraMediaGalleryDefinitionModuleName) != null;
+                return DesktopModuleController.GetDesktopModuleByModuleName(UltraMediaGalleryDefinitionModuleName, Null.NullInteger) != null;
             }
         }
 
@@ -813,7 +809,7 @@ namespace Engage.Dnn.Publish.Util
                                 // check if the Tab has an Overrideable instance of Publish
 
                                 // ModuleSettingsBase msb = new ModuleSettingsBase();
-                                IDictionary modSettings = PortalSettings.GetTabModuleSettings(mi.TabModuleID);
+                                IDictionary modSettings = mc.GetTabModuleSettings(mi.TabModuleID);
 
                                 if (modSettings.Contains("Overrideable"))
                                 {
@@ -1069,7 +1065,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static string GetStringPortalSetting(string settingName, int portalId, string defaultValue)
         {
-            string setting = HostSettings.GetHostSetting(settingName + portalId.ToString(CultureInfo.InvariantCulture));
+            string setting = HostController.Instance.GetString(settingName + portalId.ToString(CultureInfo.InvariantCulture));
             return Engage.Utility.HasValue(setting) ? setting : defaultValue;
         }
 
@@ -1188,7 +1184,7 @@ namespace Engage.Dnn.Publish.Util
                 Dictionary<int, ModuleInfo> modules = mc.GetTabModules(displayTabId);
                 foreach (ModuleInfo mi in modules.Values)
                 {
-                    if (mi.FriendlyName == DnnFriendlyModuleName)
+                    if (mi.DesktopModule.FriendlyName == DnnFriendlyModuleName)
                     {
                         // found one
                         object o = mc.GetTabModuleSettings(mi.TabModuleID)["Overrideable"];
@@ -1220,7 +1216,7 @@ namespace Engage.Dnn.Publish.Util
 
         public static bool IsPingEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(PublishEnablePing + portalId.ToString(CultureInfo.InvariantCulture));
             return Engage.Utility.HasValue(s) && Convert.ToBoolean(s, CultureInfo.InvariantCulture);
         }
 
@@ -1583,7 +1579,7 @@ namespace Engage.Dnn.Publish.Util
         private static bool? _GetBooleanPortalSetting(string settingName, int portalId, bool? defaultValue)
         {
             bool settingValue;
-            string value = HostSettings.GetHostSetting(settingName + portalId.ToString(CultureInfo.InvariantCulture));
+            string value = HostController.Instance.GetString(settingName + portalId.ToString(CultureInfo.InvariantCulture));
             if (bool.TryParse(value, out settingValue))
             {
                 return settingValue;

@@ -109,7 +109,7 @@ namespace Engage.Dnn.Publish.Portability
 
             DataTable dt;
 
-            if (mi.FriendlyName == Utility.DnnFriendlyModuleNameTextHTML)
+            if (mi.DesktopModule.FriendlyName == Utility.DnnFriendlyModuleNameTextHTML)
             {
                 // if we're dealing with the text/html module we need to get all categories always
                 // TODO: in the future configure it so we can only get one category.

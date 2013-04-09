@@ -53,8 +53,7 @@ namespace Engage.Dnn.Publish.Util
         public static Version GetCurrentVersion(int moduleId)
         {
             ModuleInfo info = Utility.GetPublishModuleInfo(moduleId);
-            Version version = ConvertToVersion(info.Version, CultureInfo.InvariantCulture);
-            return version;
+            return ConvertToVersion(info.DesktopModule.Version, CultureInfo.InvariantCulture);
         }
 
         [Obsolete("Not implemented")]
