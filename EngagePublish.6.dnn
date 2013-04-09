@@ -337,6 +337,10 @@
               <name>05.08.01.SqlDataProvider</name>
               <version>05.08.01</version>
             </script>
+            <script type="Install">
+              <name>05.08.06.SqlDataProvider</name>
+              <version>05.08.06</version>
+            </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
               <version latestVersion="latestVersion">5.7.0</version>
