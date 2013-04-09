@@ -31,15 +31,6 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::System.Web.UI.WebControls.Panel pnlEmailAFriend;
         
         /// <summary>
-        /// divEmailAFriendForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEmailAFriendForm;
-        
-        /// <summary>
         /// lblTo control.
         /// </summary>
         /// <remarks>
@@ -128,6 +119,24 @@ namespace Engage.Dnn.Publish.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMessage;
+        
+        /// <summary>
+        /// InvisibleCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha InvisibleCaptcha;
+        
+        /// <summary>
+        /// TimeoutCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha TimeoutCaptcha;
         
         /// <summary>
         /// SendButton control.

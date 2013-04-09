@@ -1,4 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.EmailAFriend" Codebehind="EmailAFriend.ascx.cs" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
 <div id="divEmailAFriend">
     <asp:HyperLink ID="EmailAFriendPopupTriggerLink" runat="server" ResourceKey="btnEmailAFriend" CssClass="btnEmailAFriend engagePublishModalLink" NavigateUrl="#" CausesValidation="false" />	
@@ -6,7 +7,7 @@
 <br />
 <br />
 <asp:Panel ID="pnlEmailAFriend" runat="server" CssClass="commentPopup dnnForm" style="display:none;">
-    <div id="divEmailAFriendForm" class="divEmailAFriendForm" runat="server">
+    <div class="divEmailAFriendForm">
         <div class="dnnFormItem">
             <asp:Label ID="lblTo" runat="server" ResourceKey="lblTo" AssociatedControlID="txtTo" />
             <asp:TextBox ID="txtTo" runat="server" type="email" />
@@ -23,6 +24,9 @@
             <asp:Label ID="lblMessage" runat="server" ResourceKey="lblMessage" AssociatedControlID="txtMessage" />
             <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Columns="30" Rows="5" />            
         </div>
+        
+        <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="Dynamic" CssClass="NormalRed" />
+        <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="Dynamic" CssClass="NormalRed" />
 
         <ul class="dnnActions dnnClear">
             <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" OnClick="btnSend_Click" /></li>
