@@ -95,9 +95,6 @@
         <include name="ReadMe.txt" />
         <include name="**/*.SqlDataProvider"/>
         <include name="**/*.6.dnn"/>
-        <include name="**/View.ascx"/>
-        <include name="**/SearchRedirector.ascx"/>
-        <include name="**/TagCloud.ascx"/>
       </fileset>
     </copy>
     <copy todir="${packageDirectory}/temp/package/bin" flatten="true">
