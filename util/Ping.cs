@@ -18,7 +18,7 @@ namespace Engage.Dnn.Publish.Util
     using System.Text;
     using System.Xml;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Exceptions;
 
     public static class Ping
@@ -28,7 +28,7 @@ namespace Engage.Dnn.Publish.Util
             try
             {
                 var listToPing = new ArrayList();
-                string s = HostSettings.GetHostSetting(Utility.PublishPingServers + portalId.ToString(CultureInfo.InvariantCulture));
+                string s = HostController.Instance.GetString(Utility.PublishPingServers + portalId.ToString(CultureInfo.InvariantCulture));
                 if (Engage.Utility.HasValue(s))
                 {
                     foreach (string sr in s.Split('\n'))

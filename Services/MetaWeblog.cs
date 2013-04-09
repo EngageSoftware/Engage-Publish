@@ -23,7 +23,7 @@ namespace Engage.Dnn.Publish.Services
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
@@ -137,11 +137,12 @@ namespace Engage.Dnn.Publish.Services
                         // handle approval process
                         if (ModuleBase.UseApprovalsForPortal(_portalId))
                         {
-                            if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
+                            var hostController = HostController.Instance;
+                            if (ui.IsInRole(hostController.GetString(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
                             {
                                 a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                             }
-                            else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + _portalId)))
+                            else if (ui.IsInRole(hostController.GetString(Utility.PublishAuthorRole + _portalId)))
                             {
                                 a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
                             }
@@ -447,11 +448,12 @@ namespace Engage.Dnn.Publish.Services
                     // handle approval process
                     if (ModuleBase.UseApprovalsForPortal(_portalId))
                     {
-                        if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
+                        var hostController = HostController.Instance;
+                        if (ui.IsInRole(hostController.GetString(Utility.PublishAdminRole + _portalId)) || ui.IsSuperUser)
                         {
                             a.ApprovalStatusId = ApprovalStatus.Approved.GetId();
                         }
-                        else if (ui.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + _portalId)))
+                        else if (ui.IsInRole(hostController.GetString(Utility.PublishAuthorRole + _portalId)))
                         {
                             a.ApprovalStatusId = ApprovalStatus.Waiting.GetId();
                         }
@@ -512,8 +514,9 @@ namespace Engage.Dnn.Publish.Services
             }
 
             // Check for the author/admin roles in Publish
-            if (!objUser.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + PortalId)) &&
-                !objUser.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + PortalId)))
+            var hostController = HostController.Instance;
+            if (!objUser.IsInRole(hostController.GetString(Utility.PublishAuthorRole + PortalId)) &&
+                !objUser.IsInRole(hostController.GetString(Utility.PublishAdminRole + PortalId)))
             {
                 throw new InvalidCredentialException(Localization.GetString("FailedAuthentication.Text", this.LocalResourceFile));
             }
@@ -529,7 +532,7 @@ namespace Engage.Dnn.Publish.Services
         {
             string domainName = Globals.GetDomainName(request, true);
             string portalAlias = domainName;
-            PortalAliasInfo pai = PortalSettings.GetPortalAliasInfo(portalAlias);
+            PortalAliasInfo pai = PortalAliasController.GetPortalAliasInfo(portalAlias);
             if (pai != null)
             {
                 PortalId = pai.PortalID;

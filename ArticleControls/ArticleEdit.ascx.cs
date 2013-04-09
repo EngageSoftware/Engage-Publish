@@ -22,9 +22,11 @@ namespace Engage.Dnn.Publish.ArticleControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.UserControls;
@@ -444,7 +446,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (ModuleInfo module in modules.GetModulesByDefinition(this.PortalId, Utility.SimpleGalleryFriendlyName))
                 {
-                    if (PortalSecurity.IsInRoles(module.AuthorizedEditRoles))
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, string.Empty, module))
                     {
                         IDataReader dr = DataProvider.Instance().GetSimpleGalleryAlbums(module.ModuleID);
                         while (dr.Read())
@@ -466,7 +468,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             {
                 foreach (ModuleInfo module in modules.GetModulesByDefinition(this.PortalId, Utility.UltraMediaGalleryFriendlyName))
                 {
-                    if (PortalSecurity.IsInRoles(module.AuthorizedEditRoles))
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, string.Empty, module))
                     {
                         IDataReader dr = DataProvider.Instance().GetUltraMediaGalleryAlbums(module.ModuleID);
                         while (dr.Read())
@@ -655,7 +657,7 @@ namespace Engage.Dnn.Publish.ArticleControls
             DataTable dt = Utility.GetDisplayTabIds(modules);
 
             // this.ddlDisplayTabId.Items.Insert(0, new ListItem(Localization.GetString("ChooseOne", LocalResourceFile), "-1"));
-            this.ddlDisplayTabId.DataSource = Globals.GetPortalTabs(this.PortalSettings.DesktopTabs, false, true);
+            this.ddlDisplayTabId.DataSource = TabController.GetPortalTabs(this.PortalId, Null.NullInteger, false, true);
             this.ddlDisplayTabId.DataBind();
             foreach (DataRow dr in dt.Rows)
             {
@@ -812,6 +814,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     // get the pnlPrinterFriendly setting
                     ItemVersionSetting pfSetting = ItemVersionSetting.GetItemVersionSetting(
                         av.ItemVersionId, "pnlPrinterFriendly", "Visible", this.PortalId);
+                    var hostController = HostController.Instance;
                     if (pfSetting != null)
                     {
                         this.chkPrinterFriendly.Checked = Convert.ToBoolean(pfSetting.PropertyValue, CultureInfo.InvariantCulture);
@@ -819,7 +822,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     else
                     {
                         string hostPrinterFriendlySetting =
-                            HostSettings.GetHostSetting(Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                            hostController.GetString(Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         this.chkPrinterFriendly.Checked = !Engage.Utility.HasValue(hostPrinterFriendlySetting) ||
                                                           Convert.ToBoolean(hostPrinterFriendlySetting, CultureInfo.InvariantCulture);
                     }
@@ -834,7 +837,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     else
                     {
                         string hostEmailFriendSetting =
-                            HostSettings.GetHostSetting(Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                            hostController.GetString(Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         this.chkEmailAFriend.Checked = !Engage.Utility.HasValue(hostEmailFriendSetting) ||
                                                        Convert.ToBoolean(hostEmailFriendSetting, CultureInfo.InvariantCulture);
                     }
@@ -852,7 +855,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         else
                         {
                             string hostRatingSetting =
-                                HostSettings.GetHostSetting(Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                                hostController.GetString(Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture));
                             this.chkRatings.Checked = !Engage.Utility.HasValue(hostRatingSetting) ||
                                                       Convert.ToBoolean(hostRatingSetting, CultureInfo.InvariantCulture);
                         }
@@ -875,7 +878,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                         else
                         {
                             string hostCommentSetting =
-                                HostSettings.GetHostSetting(Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                                hostController.GetString(Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture));
                             this.chkComments.Checked = !Engage.Utility.HasValue(hostCommentSetting) ||
                                                        Convert.ToBoolean(hostCommentSetting, CultureInfo.InvariantCulture);
                         }
@@ -913,7 +916,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     else
                     {
                         string hostAuthorSetting =
-                            HostSettings.GetHostSetting(Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                            hostController.GetString(Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         this.chkShowAuthor.Checked = Engage.Utility.HasValue(hostAuthorSetting) &&
                                                      Convert.ToBoolean(hostAuthorSetting, CultureInfo.InvariantCulture);
                     }
@@ -927,7 +930,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     else
                     {
                         string hostTagsSetting =
-                            HostSettings.GetHostSetting(Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                            hostController.GetString(Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         this.chkTags.Checked = Engage.Utility.HasValue(hostTagsSetting) && Convert.ToBoolean(hostTagsSetting, CultureInfo.InvariantCulture);
                     }
 
@@ -978,7 +981,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                     else
                     {
                         string hostReturnToListSetting =
-                            HostSettings.GetHostSetting(Utility.PublishDefaultReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture));
+                            hostController.GetString(Utility.PublishDefaultReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture));
                         this.chkReturnList.Checked = Engage.Utility.HasValue(hostReturnToListSetting) &&
                                                      Convert.ToBoolean(hostReturnToListSetting, CultureInfo.InvariantCulture);
                     }

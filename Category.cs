@@ -19,7 +19,7 @@ namespace Engage.Dnn.Publish
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
 
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
@@ -763,7 +763,7 @@ namespace Engage.Dnn.Publish
                 {
                     // Default to setting for module
                     string settingName = Utility.PublishDefaultDisplayPage + this.PortalId.ToString(CultureInfo.InvariantCulture);
-                    string setting = HostSettings.GetHostSetting(settingName);
+                    string setting = HostController.Instance.GetString(settingName);
                     if (!int.TryParse(setting, NumberStyles.Integer, CultureInfo.InvariantCulture, out this.childDisplayTabId))
                     {
                         throw new InvalidOperationException("Default Display Page setting must be set in order to import items");

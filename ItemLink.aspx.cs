@@ -183,7 +183,7 @@ namespace Engage.Dnn.Publish
             ModuleInfo mi = null;
             foreach (ModuleInfo info in list.Values)
             {
-                if (info.FriendlyName == Utility.DnnFriendlyModuleName)
+                if (info.DesktopModule.FriendlyName == Utility.DnnFriendlyModuleName)
                 {
                     mi = info;
                     break;

@@ -28,8 +28,6 @@ namespace Engage.Dnn.Publish
     using Engage.Dnn.Publish.Data;
     using Engage.Dnn.Publish.Util;
 
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
     public partial class EpRss : PageBase
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -336,9 +334,9 @@ namespace Engage.Dnn.Publish
                     {
                         if (attachmentSetting.PropertyValue.Length > 7)
                         {
-                            var fileController = new FileController();
+                            var fileManager = FileManager.Instance;
                             int fileId = Convert.ToInt32(attachmentSetting.PropertyValue.Substring(7));
-                            FileInfo fi = fileController.GetFileById(fileId, this.PortalId);
+                            IFileInfo fi = fileManager.GetFile(fileId);
                             string fileurl = "http://" + this.PortalSettings.PortalAlias.HTTPAlias + this.PortalSettings.HomeDirectory + fi.Folder +
                                              fi.FileName;
                             wr.WriteStartElement("enclosure");

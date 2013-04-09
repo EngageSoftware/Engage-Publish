@@ -15,7 +15,7 @@ namespace Engage.Dnn.Publish.Security
     using System.Globalization;
     using System.Web;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
@@ -66,15 +66,14 @@ namespace Engage.Dnn.Publish.Security
 
         public static void EnableSecurity(bool enabled, int portalId)
         {
-            var c = new HostSettingsController();
-            c.UpdateHostSetting(SecuritySettingName + portalId, enabled.ToString());
+            HostController.Instance.Update(SecuritySettingName + portalId, enabled.ToString());
 
             // PortalSettings.UpdatePortalSetting(portalId, SecuritySettingName, enabled.ToString());
         }
 
         public static bool IsSecurityEnabled(int portalId)
         {
-            string s = HostSettings.GetHostSetting(SecuritySettingName + portalId);
+            string s = HostController.Instance.GetString(SecuritySettingName + portalId);
 
             // Hashtable ht = PortalSettings.GetSiteSettings(portalId);
             // string s = Convert.ToString(ht[SecuritySettingName]);
@@ -100,7 +99,7 @@ namespace Engage.Dnn.Publish.Security
 
             // check the portal setting
             int portalId = PortalController.GetCurrentPortalSettings().PortalId;
-            string s = HostSettings.GetHostSetting(SecuritySettingName + portalId);
+            string s = HostController.Instance.GetString(SecuritySettingName + portalId);
             if (Engage.Utility.HasValue(s))
             {
                 // if security is off.....it's off

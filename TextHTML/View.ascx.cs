@@ -15,7 +15,6 @@ namespace Engage.Dnn.Publish.TextHtml
     using System.Web;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Security;
@@ -150,15 +149,12 @@ namespace Engage.Dnn.Publish.TextHtml
                 else
                 {
                     string articleText = a.ArticleText;
-
-                    // removed until we move forward with a newer version of DNN 4.6.2 or greater.
-                    // for enterprise licenses you can uncomment the following if you put the Dotnetnuke.dll (4.6.2+) in the engagepublish/references folder and recompile
                     articleText = Utility.ReplaceTokens(articleText);
 
                     var tr = new TokenReplace
                         {
                             AccessingUser = this.UserInfo, 
-                            DebugMessages = !Globals.IsTabPreview()
+                            DebugMessages = PortalSettings.UserMode != DotNetNuke.Entities.Portals.PortalSettings.Mode.View
                         };
 
                     articleText = tr.ReplaceEnvironmentTokens(articleText);

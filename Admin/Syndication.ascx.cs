@@ -14,7 +14,7 @@ namespace Engage.Dnn.Publish.Admin
     using System.Globalization;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
@@ -50,21 +50,21 @@ namespace Engage.Dnn.Publish.Admin
         {
             if (this.Page.IsValid)
             {
-                var settingsController = new HostSettingsController();
+                var settingsController = HostController.Instance;
 
                 // subscriber settings
                 // if (rbSubscriber.Checked)
                 // {
-                settingsController.UpdateHostSetting(
+                settingsController.Update(
                     Utility.PublishAutoArchiveContent + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkArchiveContent.Checked.ToString(CultureInfo.InvariantCulture));
-                settingsController.UpdateHostSetting(
+                settingsController.Update(
                     Utility.PublishAutoApproveContent + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.chkApproveContent.Checked.ToString(CultureInfo.InvariantCulture));
-                settingsController.UpdateHostSetting(
+                settingsController.Update(
                     Utility.PublishSubscriberKey + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtAuthorizationKey.Text.ToString(CultureInfo.InvariantCulture));
-                settingsController.UpdateHostSetting(
+                settingsController.Update(
                     Utility.PublishSubscriberUrl + this.PortalId.ToString(CultureInfo.InvariantCulture), 
                     this.txtSubscriberServiceUrl.Text.ToString(CultureInfo.InvariantCulture));
 
@@ -95,25 +95,26 @@ namespace Engage.Dnn.Publish.Admin
             // rbSubscriber.Checked = true;
             // rbPublisher.Checked = false;
             // }
-            string s = HostSettings.GetHostSetting(Utility.PublishAutoArchiveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
+            var hostController = HostController.Instance;
+            string s = hostController.GetString(Utility.PublishAutoArchiveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 this.chkArchiveContent.Checked = Convert.ToBoolean(s, CultureInfo.InvariantCulture);
             }
 
-            s = HostSettings.GetHostSetting(Utility.PublishAutoApproveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
+            s = hostController.GetString(Utility.PublishAutoApproveContent + this.PortalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 this.chkApproveContent.Checked = Convert.ToBoolean(s, CultureInfo.InvariantCulture);
             }
 
-            s = HostSettings.GetHostSetting(Utility.PublishSubscriberKey + this.PortalId.ToString(CultureInfo.InvariantCulture));
+            s = hostController.GetString(Utility.PublishSubscriberKey + this.PortalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 this.txtAuthorizationKey.Text = s.ToString(CultureInfo.InvariantCulture);
             }
 
-            s = HostSettings.GetHostSetting(Utility.PublishSubscriberUrl + this.PortalId.ToString(CultureInfo.InvariantCulture));
+            s = hostController.GetString(Utility.PublishSubscriberUrl + this.PortalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 this.txtSubscriberServiceUrl.Text = s.ToString(CultureInfo.InvariantCulture);

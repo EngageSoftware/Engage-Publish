@@ -20,6 +20,7 @@ namespace Engage.Dnn.Publish
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
@@ -47,6 +48,8 @@ namespace Engage.Dnn.Publish
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool useCache = true;
 
+        private readonly IHostController hostController = HostController.Instance;
+
         public ModuleBase()
         {
             this.Overrideable = true;
@@ -70,8 +73,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting("SMTPServer");
-                return Engage.Utility.HasValue(s);
+                return Engage.Utility.HasValue(Host.SMTPServer);
             }
         }
 
@@ -146,8 +148,8 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishSetup + this.PortalId);
-                string d = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + this.PortalId);
+                string s = this.hostController.GetString(Utility.PublishSetup + this.PortalId);
+                string d = this.hostController.GetString(Utility.PublishDefaultDisplayPage + this.PortalId);
                 return !string.IsNullOrEmpty(s) && !string.IsNullOrEmpty(d);
             }
         }
@@ -156,7 +158,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditWidth + this.PortalId);
+                string s = this.hostController.GetString(Utility.PublishArticleEditWidth + this.PortalId);
                 if (Engage.Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -170,7 +172,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishArticleEditHeight + this.PortalId);
+                string s = this.hostController.GetString(Utility.PublishArticleEditHeight + this.PortalId);
                 if (Engage.Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -184,7 +186,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditHeight + this.PortalId);
+                string s = this.hostController.GetString(Utility.PublishDescriptionEditHeight + this.PortalId);
                 if (Engage.Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -198,7 +200,7 @@ namespace Engage.Dnn.Publish
         {
             get
             {
-                string s = HostSettings.GetHostSetting(Utility.PublishDescriptionEditWidth + this.PortalId);
+                string s = this.hostController.GetString(Utility.PublishDescriptionEditWidth + this.PortalId);
                 if (Engage.Utility.HasValue(s))
                 {
                     return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -348,7 +350,7 @@ namespace Engage.Dnn.Publish
             get
             {
                 return this.Request.IsAuthenticated &&
-                       (PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + this.PortalId)) || this.UserInfo.IsSuperUser);
+                       (PortalSecurity.IsInRole(this.hostController.GetString(Utility.PublishAdminRole + this.PortalId)) || this.UserInfo.IsSuperUser);
             }
         }
 
@@ -359,7 +361,7 @@ namespace Engage.Dnn.Publish
 
         public bool IsAuthor
         {
-            get { return this.Request.IsAuthenticated && PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAuthorRole + this.PortalId)); }
+            get { return this.Request.IsAuthenticated && PortalSecurity.IsInRole(this.hostController.GetString(Utility.PublishAuthorRole + this.PortalId)); }
         }
 
         public bool IsPingEnabled
@@ -538,7 +540,7 @@ namespace Engage.Dnn.Publish
 
         public static bool ApprovalEmailsEnabled(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEmail + portalId);
+            string s = HostController.Instance.GetString(Utility.PublishEmail + portalId);
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s);
@@ -549,7 +551,7 @@ namespace Engage.Dnn.Publish
 
         public static bool IsCommentsEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishComment + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishComment + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -560,7 +562,7 @@ namespace Engage.Dnn.Publish
 
         public static bool IsCommentAuthorNotificationEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishCommentEmailAuthor + portalId);
+            string s = HostController.Instance.GetString(Utility.PublishCommentEmailAuthor + portalId);
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s);
@@ -571,7 +573,7 @@ namespace Engage.Dnn.Publish
 
         public static bool UseSessionForReturnToList(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishSessionReturnToList + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishSessionReturnToList + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -582,7 +584,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowAuthorEditCategory(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishAuthorCategoryEdit + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishAuthorCategoryEdit + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -593,7 +595,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowAnonymousCommentsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishCommentAnonymous + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishCommentAnonymous + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -604,7 +606,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AreCommentsModeratedForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishCommentApproval + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishCommentApproval + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -615,7 +617,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AutoApproveCommentsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishCommentAutoApprove + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishCommentAutoApprove + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -626,7 +628,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AreRatingsEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishRating + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishRating + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -637,7 +639,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowAnonymousRatingsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishRatingAnonymous + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishRatingAnonymous + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -648,7 +650,7 @@ namespace Engage.Dnn.Publish
 
         public static bool IsViewTrackingEnabledForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableViewTracking + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnableViewTracking + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -659,7 +661,7 @@ namespace Engage.Dnn.Publish
 
         public static bool EnablePublishFriendlyUrlsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnablePublishFriendlyUrls + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnablePublishFriendlyUrls + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -670,7 +672,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowVenexusSearchForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableVenexusSearch + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnableVenexusSearch + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -683,7 +685,7 @@ namespace Engage.Dnn.Publish
         {
             if (Utility.IsSimpleGalleryInstalled)
             {
-                string s = HostSettings.GetHostSetting(
+                string s = HostController.Instance.GetString(
                     Utility.PublishEnableSimpleGalleryIntegration + portalId.ToString(CultureInfo.InvariantCulture));
                 if (Engage.Utility.HasValue(s))
                 {
@@ -699,7 +701,7 @@ namespace Engage.Dnn.Publish
             if (Utility.IsUltraMediaGalleryInstalled)
             {
                 string s =
-                    HostSettings.GetHostSetting(Utility.PublishEnableUltraMediaGalleryIntegration + portalId.ToString(CultureInfo.InvariantCulture));
+                    HostController.Instance.GetString(Utility.PublishEnableUltraMediaGalleryIntegration + portalId.ToString(CultureInfo.InvariantCulture));
                 if (Engage.Utility.HasValue(s))
                 {
                     return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -711,7 +713,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowArticlePagingForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableArticlePaging + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnableArticlePaging + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -722,7 +724,7 @@ namespace Engage.Dnn.Publish
 
         public static bool EnableDisplayNameAsHyperlinkForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableDisplayNameAsHyperlink + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnableDisplayNameAsHyperlink + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -733,7 +735,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowTagsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishEnableTags + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishEnableTags + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -744,7 +746,7 @@ namespace Engage.Dnn.Publish
 
         public static int PopularTagCountForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishPopularTagCount + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishPopularTagCount + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -755,7 +757,7 @@ namespace Engage.Dnn.Publish
 
         public static int DefaultDisplayTabIdForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultDisplayPage + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishDefaultDisplayPage + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -766,7 +768,7 @@ namespace Engage.Dnn.Publish
 
         public static int DefaultTagDisplayTabIdForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultTagPage + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishDefaultTagPage + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -777,7 +779,7 @@ namespace Engage.Dnn.Publish
 
         public static int DefaultTextHtmlCategoryForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultTextHtmlCategory + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishDefaultTextHtmlCategory + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -788,7 +790,7 @@ namespace Engage.Dnn.Publish
 
         public static int DefaultCategoryForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultCategory + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishDefaultCategory + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -799,7 +801,7 @@ namespace Engage.Dnn.Publish
 
         public static bool AllowRichTextDescriptionsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishAllowRichTextDescriptions + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishAllowRichTextDescriptions + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -810,7 +812,7 @@ namespace Engage.Dnn.Publish
 
         public static bool DefaultRichTextDescriptionsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultRichTextDescriptions + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishDefaultRichTextDescriptions + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -821,7 +823,7 @@ namespace Engage.Dnn.Publish
 
         public static bool UseApprovalsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishUseApprovals + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishUseApprovals + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -832,7 +834,7 @@ namespace Engage.Dnn.Publish
 
         public static bool UseEmbeddedArticlesForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishUseEmbeddedArticles + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishUseEmbeddedArticles + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -843,7 +845,7 @@ namespace Engage.Dnn.Publish
 
         public static bool ShowItemIdsForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishShowItemId + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishShowItemId + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToBoolean(s, CultureInfo.InvariantCulture);
@@ -854,7 +856,7 @@ namespace Engage.Dnn.Publish
 
         public static string ThumbnailSubdirectoryForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishThumbnailSubdirectory + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishThumbnailSubdirectory + portalId.ToString(CultureInfo.InvariantCulture));
             if (!Engage.Utility.HasValue(s))
             {
                 s = "PublishThumbnails/";
@@ -869,14 +871,14 @@ namespace Engage.Dnn.Publish
 
         public static string ThumbnailSelectionOptionForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishThumbnailDisplayOption + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishThumbnailDisplayOption + portalId.ToString(CultureInfo.InvariantCulture));
 
             return s;
         }
 
         public static int MaximumRatingForPortal(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishRatingMaximum + portalId.ToString(CultureInfo.InvariantCulture));
+            string s = HostController.Instance.GetString(Utility.PublishRatingMaximum + portalId.ToString(CultureInfo.InvariantCulture));
             if (Engage.Utility.HasValue(s))
             {
                 return int.Parse(s, CultureInfo.InvariantCulture);
@@ -890,7 +892,7 @@ namespace Engage.Dnn.Publish
             if (HttpContext.Current != null)
             {
                 return HttpContext.Current.Request.IsAuthenticated &&
-                       PortalSecurity.IsInRole(HostSettings.GetHostSetting(Utility.PublishAdminRole + portalId));
+                       PortalSecurity.IsInRole(HostController.Instance.GetString(Utility.PublishAdminRole + portalId));
             }
 
             return false;
@@ -899,12 +901,12 @@ namespace Engage.Dnn.Publish
         public static bool IsPublishCommentTypeForPortal(int portalId)
         {
             return
-                string.IsNullOrEmpty(HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture)));
+                string.IsNullOrEmpty(HostController.Instance.GetString(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture)));
         }
 
         public static string ForumProviderTypeForPortal(int portalId)
         {
-            return HostSettings.GetHostSetting(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture));
+            return HostController.Instance.GetString(Utility.PublishForumProviderType + portalId.ToString(CultureInfo.InvariantCulture));
         }
 
         public static bool UseCachePortal(int portalId)
@@ -929,7 +931,7 @@ namespace Engage.Dnn.Publish
 
         public static int GetDefaultCacheSetting(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishCacheTime + portalId);
+            string s = HostController.Instance.GetString(Utility.PublishCacheTime + portalId);
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
@@ -940,7 +942,7 @@ namespace Engage.Dnn.Publish
 
         public static int GetAdminDefaultPagingSize(int portalId)
         {
-            string s = HostSettings.GetHostSetting(Utility.PublishDefaultAdminPagingSize + portalId);
+            string s = HostController.Instance.GetString(Utility.PublishDefaultAdminPagingSize + portalId);
             if (Engage.Utility.HasValue(s))
             {
                 return Convert.ToInt32(s, CultureInfo.InvariantCulture);
