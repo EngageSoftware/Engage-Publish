@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project xmlns="http://nant.sf.net/release/0.90/nant.xsd" name="Engage Build Script" basedir="." default="package">
+<project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Publish"/>
-  <property name="createTrialPackage" value="true"/>
-  <property name="trialPackageLicenseName" value="Trial"/>
   <property name="versions" value="4,5"/>
-  <property name="licenses" value="Standard,Professional,Enterprise"/>
-  <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
-  <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
+  <property name="licenses" value="Free"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
+  <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${projectVersion}_DependencySource" dynamic="true"/>
   <property name="createSourcePackage" value="true"/>
-  <property name="sourcePackageLicenseName" value="Enterprise"/>
-  <property name="combineSourceWithInstallPackage" value="true"/>
+  <property name="sourcePackageLicenseName" value="Free"/>
+  <property name="combineSourceWithInstallPackage" value="false"/>
   <patternset id="dependencySourcePackages">
     <include name="Engage.Framework_Source.zip"/>
     <include name="Engage.Dnn.Framework_Source.zip"/>
@@ -17,19 +15,13 @@
   <property name="projectDllName" value="Engage${projectName}.dll" />
   <property name="solutionFile" value="Engage${projectName}_VS2008.sln"/>
   <property name="binDirectory" value="..\..\bin" overwrite="false"/> <!-- binDirectory is readonly if set from the command line (i.e. during Team Build CI) -->
-  <property name="trialBinDirectory" value="${binDirectory}\..\trialBin"/>
   <property name="currentBinDirectory" value="${binDirectory}"/>
   <property name="projectDll" value="${binDirectory}\${projectDllName}"/>
-  <property name="trialProjectDll" value="${trialBinDirectory}\${projectDllName}"/>
   <patternset id="projectAssemblies">
     <include name="${projectDll}"/>
   </patternset>
-  <patternset id="trialProjectAssemblies">
-    <include name="${trialProjectDll}"/>
-  </patternset>
   
   <property name="testBuild" value="true" overwrite="false"/> <!-- testBuild is true if building from Visual Studio, false from Team Build (CI) -->
-  <property name="buildTrial" value="false"/>
   <property name="projectConfig" value="release"/>
   <property name="projectConfig" value="Debug" if="${testBuild}"/>
   <property name="zipLevel" value="9"/>
@@ -70,19 +62,6 @@
       </if>
     </if>
     
-    <if test="${createTrialPackage}">
-      <property name="buildTrial" value="true"/>
-      <property name="includeSource" value="false"/>
-      <property name="projectConfig" value="Trial"/>
-      <property name="currentBinDirectory" value="${trialBinDirectory}"/>
-      <property name="packageLicense" value="${trialPackageLicenseName}"/>
-      <call target="build"/>
-      <call target="clean-package-folder"/>
-      <call target="setup-package-files"/>
-      <call target="create-resources-zip"/>
-      <call target="create-packages"/>
-    </if>
-
     <call target="project-specific-tasks"/>
     <call target="cleanup"/>
   </target>
@@ -90,16 +69,14 @@
     <property name="assemblyVersion" value="${format::version-info(fileversioninfo::get-version-info(assemblyFile))}" />
   </target>
   <target name="build" description="Builds solutionFile">
-    <if test="${testBuild or buildTrial}">
-      <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
-        <arg value="${solutionFile}" />
-        <arg value="/p:Configuration=${projectConfig}" />
-        <arg value="/p:Platform=&quot;Any CPU&quot;" />
-        <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
-        <arg value="/m" /> <!-- multicore -->
-        <arg value="/noconsolelogger" />
-      </exec>
-    </if>
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+      <arg value="${solutionFile}" />
+      <arg value="/p:Configuration=${projectConfig}" />
+      <arg value="/p:Platform=&quot;Any CPU&quot;" />
+      <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
+      <arg value="/m" /> <!-- multicore -->
+      <arg value="/noconsolelogger" />
+    </exec>
   </target>
   <target name="clean-package-folder" description="Deletes all temporary files from package directory, then re-creates the folders to use">
     <mkdir dir="${packageDirectory}" failonerror="false"/>
@@ -126,8 +103,7 @@
     </copy>
     <copy todir="${packageDirectory}/temp/package/bin" flatten="true">
       <fileset>
-        <patternset refid="projectAssemblies" unless="${buildTrial}"/>
-        <patternset refid="trialProjectAssemblies" if="${buildTrial}"/>
+        <patternset refid="projectAssemblies"/>
         <include name="${referencesDirectory}/**/*.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.WebUtility.dll"/>
@@ -147,23 +123,23 @@
     </attrib>
 
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version"/>
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${releaseNotesFile}" xpath="dotnetnuke/packages/package/releaseNotes/@src" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="dotnetnuke/packages/package/@version" failonerror="false" />
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
       
       <foreach item="File" in="${packageDirectory}/temp/package/bin" property="assemblyFile">
         <call target="set-assemblyVersion"/>
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version"/>
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/components/component[@type='Assembly']/assemblies/assembly[name='${path::get-file-name(assemblyFile)}']/version" failonerror="false" />
       </foreach>
       
       <if test="${file::exists(referencesDirectory + '/DotNetNuke.dll')}">
         <property name="assemblyFile" value="${referencesDirectory}/DotNetNuke.dll" />
         <call target="set-assemblyVersion" />
-        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']"/>
+        <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${assemblyVersion}" xpath="dotnetnuke/packages/package/dependencies/dependency[@type='CoreVersion']" failonerror="false" />
       </if>
     </if>
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.4.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.4.dnn" value="${projectVersion}" xpath="//*[@latestVersion='latestVersion']" failonerror="false" />
     </if>
   </target>
   <target name="create-resources-zip" description="Creates the Resources.zip file for content (Install package) files">
@@ -201,7 +177,7 @@
     </copy>
 
     <if test="${file::exists(packageDirectory + '/temp/package/Engage' + projectName + '.5.dnn')}">
-      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src"/>
+      <xmlpoke file="${packageDirectory}/temp/package/Engage${projectName}.5.dnn" value="${licenseFile}.htm" xpath="dotnetnuke/packages/package/license/@src" failonerror="false" />
     </if>
   </target>
   <target name="zip-package" description="Zips up the files in the temp/package directory, getting the correct manifest file and using the correct naming convention">
@@ -258,7 +234,7 @@
     <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
     <property name="packageType" value="Source"/>
     <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
-    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}.zip">
+    <zip zipfile="${packageDirectory}/${projectName}_${projectVersion}.zip">
       <fileset basedir="${packageDirectory}">
         <include name="${installPackageFileName}.zip"/>
         <include name="${sourcePackageFileName}.zip"/>
@@ -274,7 +250,7 @@
   <target name="project-specific-tasks" description="Place tasks specific to the current project in this task">
   </target>
   <target name="cleanup" description="Deletes temporary files">
-    <delete file="${packageDirectory}\${projectName}_${sourcePackageLicenseName}_${projectVersion}_DependencySource.zip" failonerror="false"/>
+    <delete file="${packageDirectory}\${projectName}_${projectVersion}_DependencySource.zip" failonerror="false"/>
     <delete file="${packageDirectory}\${packageName}" failonerror="false"/>
     <delete dir="${packageDirectory}\temp" failonerror="false"/>
   </target>
