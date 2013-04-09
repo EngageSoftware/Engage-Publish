@@ -2,12 +2,12 @@
 <project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Publish"/>
   <property name="versions" value="4,5"/>
-  <property name="licenses" value="Standard,Professional,Enterprise"/>
-  <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
-  <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
+  <property name="licenses" value="Free"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
+  <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${projectVersion}_DependencySource" dynamic="true"/>
   <property name="createSourcePackage" value="true"/>
-  <property name="sourcePackageLicenseName" value="Enterprise"/>
-  <property name="combineSourceWithInstallPackage" value="true"/>
+  <property name="sourcePackageLicenseName" value="Free"/>
+  <property name="combineSourceWithInstallPackage" value="false"/>
   <patternset id="dependencySourcePackages">
     <include name="Engage.Framework_Source.zip"/>
     <include name="Engage.Dnn.Framework_Source.zip"/>
@@ -236,7 +236,7 @@
     <property name="installPackageFileName" value="${packageFileNameTemplate}"/>
     <property name="packageType" value="Source"/>
     <property name="sourcePackageFileName" value="${packageFileNameTemplate}"/>
-    <zip zipfile="${packageDirectory}/${projectName}_${sourcePackageLicenseName}_${projectVersion}.zip">
+    <zip zipfile="${packageDirectory}/${projectName}_${projectVersion}.zip">
       <fileset basedir="${packageDirectory}">
         <include name="${installPackageFileName}.zip"/>
         <include name="${sourcePackageFileName}.zip"/>
@@ -252,7 +252,7 @@
   <target name="project-specific-tasks" description="Place tasks specific to the current project in this task">
   </target>
   <target name="cleanup" description="Deletes temporary files">
-    <delete file="${packageDirectory}\${projectName}_${sourcePackageLicenseName}_${projectVersion}_DependencySource.zip" failonerror="false"/>
+    <delete file="${packageDirectory}\${projectName}_${projectVersion}_DependencySource.zip" failonerror="false"/>
     <delete file="${packageDirectory}\${packageName}" failonerror="false"/>
     <delete dir="${packageDirectory}\temp" failonerror="false"/>
   </target>
