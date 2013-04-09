@@ -12,8 +12,10 @@ namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
 
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
     public partial class EmailAFriend : ModuleBase
@@ -27,7 +29,14 @@ namespace Engage.Dnn.Publish.Controls
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
         protected void btnCancel_Click1(object sender, EventArgs e)
         {
-            this.ClearCommentInput();
+            try
+            {
+                this.ClearCommentInput();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Member", Justification = "Controls use lower case prefix")]
@@ -35,6 +44,11 @@ namespace Engage.Dnn.Publish.Controls
         {
             try
             {
+                if (!this.Page.IsValid)
+                {
+                    return;
+                }
+
                 string message = this.Localize("EmailAFriend");
                 message = message.Replace("[Engage:Recipient]", this.txtTo.Text.Trim());
                 message = message.Replace("[Engage:Url]", this.GetItemLinkUrlExternal(this.ItemId));
@@ -58,10 +72,9 @@ namespace Engage.Dnn.Publish.Controls
                     string.Empty);
                 this.ClearCommentInput();
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                // the email or emails entered are invalid or mail services are not configured
-                Exceptions.LogException(ex);
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -75,14 +88,40 @@ namespace Engage.Dnn.Publish.Controls
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.AddJQueryReference();
-            this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
-            this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
-
-            if (!this.IsPostBack)
+            try
             {
-                this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
+                this.AddJQueryReference();
+                this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
+                this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
+                this.LocalizeCaptchas();
+                this.SetValidationGroup();
+
+                if (!this.IsPostBack)
+                {
+                    this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
+                }
             }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private void LocalizeCaptchas()
+        {
+            this.InvisibleCaptcha.ErrorMessage = Localization.GetString("InvisibleCaptchaFailed", this.LocalResourceFile);
+            this.InvisibleCaptcha.InvisibleTextBoxLabel = Localization.GetString("InvisibleCaptchaLabel", this.LocalResourceFile);
+            this.TimeoutCaptcha.ErrorMessage = Localization.GetString("TimeoutCaptchaFailed", this.LocalResourceFile);
+        }
+
+        private void SetValidationGroup()
+        {
+            var validationGroup = "ValidateGroupSend" + this.ModuleId.ToString(CultureInfo.InvariantCulture);
+            this.ToRequiredValidator.ValidationGroup = validationGroup;
+            this.FromRequiredValidator.ValidationGroup = validationGroup;
+            this.SendButton.ValidationGroup = validationGroup;
+            this.InvisibleCaptcha.ValidationGroup = validationGroup;
+            this.TimeoutCaptcha.ValidationGroup = validationGroup;
         }
     }
 }

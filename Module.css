@@ -1310,3 +1310,7 @@ a.mouseOverImage:hover
 	width:300px;
 	height:150px;
 }
+
+/****** DNN 6 style override/update ************/
+.dnnFormItem input[type="email"] {min-width:35%} /* match type="text" */
+.commentPopup .dnnFormItem label, .commentPopup .dnnFormItem .dnnFormLabel, .commentPopup .dnnFormItem .dnnTooltip {width:35%;} /* comment popup is just small enough at standard 30% to clip first label */

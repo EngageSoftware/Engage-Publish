@@ -147,4 +147,19 @@
   <data name="EmailAFriendSubject.Text" xml:space="preserve">
     <value>[Engage:Portal] - A Friend has sent you a link to an Article</value>
   </data>
+  <data name="Please enter one or more recipients.Text" xml:space="preserve">
+    <value>Please enter one or more recipients</value>
+  </data>
+  <data name="Please enter your email address.Text" xml:space="preserve">
+    <value>Please enter your email address</value>
+  </data>
+  <data name="InvisibleCaptchaFailed.Text" xml:space="preserve">
+    <value>A hidden text box was filled in, indicating that this form was not filled in by hand.  To prevent SPAM being sent through this form, we have to disallow any submissions that aren't entered by hand.</value>
+  </data>
+  <data name="InvisibleCaptchaLabel.Text" xml:space="preserve">
+    <value>Do not fill this textbox.</value>
+  </data>
+  <data name="TimeoutCaptchaFailed.Text" xml:space="preserve">
+    <value>To prevent SPAM, you must wait before submitting the form.</value>
+  </data>
 </root>

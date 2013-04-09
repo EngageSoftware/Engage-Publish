@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Search.DataStore</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Services.Search.SearchCriteria">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Services.Search
+            Project:    DotNetNuke.Search.DataStore
+            Class:      SearchCriteria
+            -----------------------------------------------------------------------------
+            <summary>
+            The SearchCriteria represents a search criterion
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Services.Search.SearchCriteriaCollection">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Services.Search
+            Project:    DotNetNuke.Search.DataStore
+            Class:      SearchCriteria
+            -----------------------------------------------------------------------------
+            <summary>
+            Represents a collection of <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> objects.
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> class.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.#ctor(DotNetNuke.Services.Search.SearchCriteriaCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
+            </summary>
+            <param name="value">A <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> with which to initialize the collection.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.#ctor(DotNetNuke.Services.Search.SearchCriteria[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the specified array of <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> objects.
+            </summary>
+            <param name="value">An array of <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> objects with which to initialize the collection. </param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
+            </summary>
+            <param name="value">A criteria string with which to initialize the collection</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.Add(DotNetNuke.Services.Search.SearchCriteria)">
+            <summary>
+            Add an element of the specified <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> to the end of the collection.
+            </summary>
+            <param name="value">An object of type <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> to add to the collection.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.IndexOf(DotNetNuke.Services.Search.SearchCriteria)">
+            <summary>
+            Gets the index in the collection of the specified <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see>, if it exists in the collection.
+            </summary>
+            <param name="value">The <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> to locate in the collection.</param>
+            <returns>The index in the collection of the specified object, if found; otherwise, -1.</returns>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.Insert(System.Int32,DotNetNuke.Services.Search.SearchCriteria)">
+            <summary>
+            Add an element of the specified <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> to the collection at the designated index.
+            </summary>
+            <param name="index">An <see cref="T:System.Int32">Integer</see> to indicate the location to add the object to the collection.</param>
+            <param name="value">An object of type <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> to add to the collection.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.Remove(DotNetNuke.Services.Search.SearchCriteria)">
+            <summary>
+            Remove the specified object of type <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> from the collection.
+            </summary>
+            <param name="value">An object of type <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> to remove to the collection.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.Contains(DotNetNuke.Services.Search.SearchCriteria)">
+            <summary>
+            Gets a value indicating whether the collection contains the specified <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see>.
+            </summary>
+            <param name="value">The <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> to search for in the collection.</param>
+            <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.AddRange(DotNetNuke.Services.Search.SearchCriteria[])">
+            <summary>
+            Copies the elements of the specified <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> array to the end of the collection.
+            </summary>
+            <param name="value">An array of type <see cref="T:DotNetNuke.Services.Search.SearchCriteria">SearchCriteria</see> containing the objects to add to the collection.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.AddRange(DotNetNuke.Services.Search.SearchCriteriaCollection)">
+            <summary>
+            Adds the contents of another <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> to the end of the collection.
+            </summary>
+            <param name="value">A <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> containing the objects to add to the collection. </param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.CopyTo(DotNetNuke.Services.Search.SearchCriteria[],System.Int32)">
+            <summary>
+            Copies the collection objects to a one-dimensional <see cref="T:System.Array">Array</see> instance beginning at the specified index.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array">Array</see> that is the destination of the values copied from the collection.</param>
+            <param name="index">The index of the array at which to begin inserting.</param>
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchCriteriaCollection.ToArray">
+            <summary>
+            Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
+            </summary>
+            <returns>Array of type SearchCriteria</returns>
+        </member>
+        <member name="P:DotNetNuke.Services.Search.SearchCriteriaCollection.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> at the specified index in the collection.
+            <para>
+            In VB.Net, this property is the indexer for the <see cref="T:DotNetNuke.Services.Search.SearchCriteriaCollection">SearchCriteriaCollection</see> class.
+            </para>
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Services.Search.SearchDataStore">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Services.Search
+            Project:    DotNetNuke.Search.DataStore
+            Class:      SearchDataStore
+            -----------------------------------------------------------------------------
+            <summary>
+            The SearchDataStore is an implementation of the abstract SearchDataStoreProvider
+            class
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.AddIndexWords(System.Int32,DotNetNuke.Services.Search.SearchItemInfo,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            AddIndexWords adds the Index Words to the Data Store
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="indexId">The Id of the SearchItem</param>
+            <param name="searchItem">The SearchItem</param>
+            <param name="language">The Language of the current Item</param>
+            <history>
+            	[cnurse]	11/15/2004	documented
+                [cnurse]    11/16/2004  replaced calls to separate content clean-up
+                                        functions with new call to HtmlUtils.Clean().
+                                        replaced logic to determine whether word should
+                                        be indexed by call to CanIndexWord()
+                [vnguyen]   09/03/2010  added searchitem title to the content and
+                                        also tab title, description, keywords where the
+                                        content resides for indexed searching
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.CanIndexWord(System.String,System.String,DotNetNuke.Services.Search.SearchConfig)">
+            -----------------------------------------------------------------------------
+            <summary>
+            CanIndexWord determines whether the Word should be indexed
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="strWord">The Word to validate</param>
+            <param name="Locale"></param>
+            <param name="settings"></param>
+            <returns>True if indexable, otherwise false</returns>
+            <history>
+            	[cnurse]	11/16/2004	created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.GetCommonWords(System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetCommonWords gets a list of the Common Words for the locale
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="Locale">The locale string</param>
+            <returns>A hashtable of common words</returns>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.GetSearchWords">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchWords gets a list of the current Words in the Database's Index
+            </summary>
+            <remarks>
+            </remarks>
+            <returns>A hashtable of words</returns>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.GetSearchItems(System.Int32,System.Int32,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchItems gets a collection of Search Items for a Module/Tab/Portal
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="PortalID">A Id of the Portal</param>
+            <param name="TabID">A Id of the Tab</param>
+            <param name="ModuleID">A Id of the Module</param>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.GetSearchResults(System.Int32,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchResults gets the search results for a passed in criteria string
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="portalID">A Id of the Portal</param>
+            <param name="criteria">The criteria string</param>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStore.StoreSearchItems(DotNetNuke.Services.Search.SearchItemInfoCollection)">
+            -----------------------------------------------------------------------------
+            <summary>
+            StoreSearchItems adds the Search Item to the Data Store
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="SearchItems">A Collection of SearchItems</param>
+            <history>
+            	[cnurse]	11/15/2004	documented
+                [vnguyen]   09/07/2010  Modified: Added a date comparison for LastModifiedDate on the Tab
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Services.Search.SearchDataStoreController">
+            -----------------------------------------------------------------------------
+            Namespace:  DotNetNuke.Services.Search
+            Project:    DotNetNuke.Search.DataStore
+            Class:      SearchDataStoreController
+            -----------------------------------------------------------------------------
+            <summary>
+            The SearchDataStoreController is the Business Controller class for SearchDataStore
+            </summary>
+            <remarks>
+            </remarks>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStoreController.GetSearchResults(System.Int32,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchResults gets the search results for a single word
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="PortalID">A Id of the Portal</param>
+            <param name="Word">The word</param>
+            <history>
+            	[cnurse]	11/15/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Services.Search.SearchDataStoreController.GetSearchSettings(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchSettings gets the search settings for a single module
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="ModuleId">The Id of the Module</param>
+            <history>
+            	[cnurse]	11/15/2004	created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>

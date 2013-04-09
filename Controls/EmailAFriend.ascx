@@ -1,32 +1,36 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.EmailAFriend" Codebehind="EmailAFriend.ascx.cs" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
 <div id="divEmailAFriend">
-    <asp:HyperLink ID="EmailAFriendPopupTriggerLink" Runat="server" ResourceKey="btnEmailAFriend" cssclass="btnEmailAFriend engagePublishModalLink" NavigateUrl="#" CausesValidation="false" />	
+    <asp:HyperLink ID="EmailAFriendPopupTriggerLink" runat="server" ResourceKey="btnEmailAFriend" CssClass="btnEmailAFriend engagePublishModalLink" NavigateUrl="#" CausesValidation="false" />	
 </div>
 <br />
 <br />
-<asp:Panel ID="pnlEmailAFriend" runat="server" CssClass="commentPopup" style="display:none;">
-    <div id="divEmailAFriendForm" class="divEmailAFriendForm" runat="server">
-        <asp:Label ID="lblTo" ResourceKey="lblTo" Runat="server" />
-        <br />
-        <asp:TextBox id="txtTo" Runat="server" />
-        <asp:RequiredFieldValidator ID="fvRecipients" runat="server" ControlToValidate="txtTo" ErrorMessage="Please enter one or more recipients" ValidationGroup="ValidateGroupSend" />
-        <br />
-        <asp:Label ID="lblMultiple" runat="server" ResourceKey="lblMultiple" />
-        <br /><br />
-        <asp:Label ID="lblFrom" ResourceKey="lblFrom" Runat="server" />
-        <br />
-        <asp:TextBox id="txtFrom" Runat="server" />
-        <asp:RequiredFieldValidator ID="fvSender" runat="server" ControlToValidate="txtFrom" ErrorMessage="Please enter your email address." ValidationGroup="ValidateGroupSend" />
-        <br />
-        <asp:Label ID="lblMessage" ResourceKey="lblMessage" Runat="server" />
-        <br />
-        <asp:TextBox Runat="server" ID="txtMessage" TextMode="MultiLine" Columns="30" Rows="5" />
-	    <br />
-        <asp:Label ID="lblPrivacy" runat="server" ResourceKey="lblPrivacy" />
-	    <br />
-	    <br />
-        <asp:LinkButton id="btnSend" ResourceKey="btnSend" Runat="server" ValidationGroup="ValidateGroupSend" OnClick="btnSend_Click" />&nbsp;
-        <asp:LinkButton id="btnCancel" ResourceKey="btnCancel" Runat="server" OnClick="btnCancel_Click1" CssClass="simplemodal-close" CausesValidation="false" />
+<asp:Panel ID="pnlEmailAFriend" runat="server" CssClass="commentPopup dnnForm" style="display:none;">
+    <div class="divEmailAFriendForm">
+        <div class="dnnFormItem">
+            <asp:Label ID="lblTo" runat="server" ResourceKey="lblTo" AssociatedControlID="txtTo" />
+            <asp:TextBox ID="txtTo" runat="server" type="email" />
+            <asp:RequiredFieldValidator ID="ToRequiredValidator" runat="server" ControlToValidate="txtTo" ResourceKey="Please enter one or more recipients" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
+        </div>
+        <asp:Label ID="lblMultiple" runat="server" ResourceKey="lblMultiple" CssClass="dnnFormItem dnnFormHelp" />
+        <div class="dnnFormItem">
+            <asp:Label ID="lblFrom" runat="server" ResourceKey="lblFrom" AssociatedControlID="txtFrom" />
+            <asp:TextBox ID="txtFrom" runat="server" type="email" />
+            <asp:RequiredFieldValidator ID="FromRequiredValidator" runat="server" ControlToValidate="txtFrom" ResourceKey="Please enter your email address" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
+        </div>
+        <asp:Label ID="lblPrivacy" runat="server" ResourceKey="lblPrivacy" CssClass="dnnFormItem dnnFormHelp" />
+        <div class="dnnFormItem">
+            <asp:Label ID="lblMessage" runat="server" ResourceKey="lblMessage" AssociatedControlID="txtMessage" />
+            <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Columns="30" Rows="5" />            
+        </div>
+        
+        <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="Dynamic" CssClass="NormalRed" />
+        <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="Dynamic" CssClass="NormalRed" />
+
+        <ul class="dnnActions dnnClear">
+            <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" OnClick="btnSend_Click" /></li>
+            <li><asp:LinkButton ResourceKey="btnCancel" runat="server" CssClass="dnnSecondaryAction simplemodal-close" CausesValidation="false" OnClick="btnCancel_Click1" /></li>
+        </ul>
     </div>
 </asp:Panel>
