@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project xmlns="http://nant.sf.net/release/0.92/nant.xsd" name="Engage Build Script" basedir="." default="package">
   <property name="projectName" value="Publish"/>
-  <property name="createTrialPackage" value="true"/>
-  <property name="trialPackageLicenseName" value="Trial"/>
   <property name="versions" value="4,5"/>
   <property name="licenses" value="Standard,Professional,Enterprise"/>
   <property name="packageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
@@ -17,19 +15,13 @@
   <property name="projectDllName" value="Engage${projectName}.dll" />
   <property name="solutionFile" value="Engage${projectName}_VS2008.sln"/>
   <property name="binDirectory" value="..\..\bin" overwrite="false"/> <!-- binDirectory is readonly if set from the command line (i.e. during Team Build CI) -->
-  <property name="trialBinDirectory" value="${binDirectory}\..\trialBin"/>
   <property name="currentBinDirectory" value="${binDirectory}"/>
   <property name="projectDll" value="${binDirectory}\${projectDllName}"/>
-  <property name="trialProjectDll" value="${trialBinDirectory}\${projectDllName}"/>
   <patternset id="projectAssemblies">
     <include name="${projectDll}"/>
   </patternset>
-  <patternset id="trialProjectAssemblies">
-    <include name="${trialProjectDll}"/>
-  </patternset>
   
   <property name="testBuild" value="true" overwrite="false"/> <!-- testBuild is true if building from Visual Studio, false from Team Build (CI) -->
-  <property name="buildTrial" value="false"/>
   <property name="projectConfig" value="release"/>
   <property name="projectConfig" value="Debug" if="${testBuild}"/>
   <property name="zipLevel" value="9"/>
@@ -70,19 +62,6 @@
       </if>
     </if>
     
-    <if test="${createTrialPackage}">
-      <property name="buildTrial" value="true"/>
-      <property name="includeSource" value="false"/>
-      <property name="projectConfig" value="Trial"/>
-      <property name="currentBinDirectory" value="${trialBinDirectory}"/>
-      <property name="packageLicense" value="${trialPackageLicenseName}"/>
-      <call target="build"/>
-      <call target="clean-package-folder"/>
-      <call target="setup-package-files"/>
-      <call target="create-resources-zip"/>
-      <call target="create-packages"/>
-    </if>
-
     <call target="project-specific-tasks"/>
     <call target="cleanup"/>
   </target>
@@ -90,7 +69,7 @@
     <property name="assemblyVersion" value="${format::version-info(fileversioninfo::get-version-info(assemblyFile))}" />
   </target>
   <target name="build" description="Builds solutionFile">
-    <if test="${testBuild or buildTrial}">
+    <if test="${testBuild}">
       <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
         <arg value="${solutionFile}" />
         <arg value="/p:Configuration=${projectConfig}" />
@@ -126,8 +105,7 @@
     </copy>
     <copy todir="${packageDirectory}/temp/package/bin" flatten="true">
       <fileset>
-        <patternset refid="projectAssemblies" unless="${buildTrial}"/>
-        <patternset refid="trialProjectAssemblies" if="${buildTrial}"/>
+        <patternset refid="projectAssemblies"/>
         <include name="${referencesDirectory}/**/*.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.dll"/>
         <exclude name="${referencesDirectory}/DotNetNuke.WebUtility.dll"/>
