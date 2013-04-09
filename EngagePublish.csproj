@@ -730,6 +730,7 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
+    <Content Include="ReleaseNotes_05.08.06.htm" />
     <Content Include="ReleaseNotes_05.08.05.htm" />
     <Content Include="ReleaseNotes_05.08.04.htm" />
     <Content Include="ReleaseNotes_05.08.03.htm" />
@@ -957,6 +958,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.07.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.08.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.08.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.08.06.SqlDataProvider" />
     <None Include="Resources\default.css" />
     <Content Include="Tags\App_LocalResources\TagCloud.ascx.resx">
       <SubType>Designer</SubType>
@@ -1145,6 +1147,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.Targets" Condition="Exists('$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
