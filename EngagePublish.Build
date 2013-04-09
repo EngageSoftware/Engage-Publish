@@ -69,16 +69,14 @@
     <property name="assemblyVersion" value="${format::version-info(fileversioninfo::get-version-info(assemblyFile))}" />
   </target>
   <target name="build" description="Builds solutionFile">
-    <if test="${testBuild}">
-      <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
-        <arg value="${solutionFile}" />
-        <arg value="/p:Configuration=${projectConfig}" />
-        <arg value="/p:Platform=&quot;Any CPU&quot;" />
-        <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
-        <arg value="/m" /> <!-- multicore -->
-        <arg value="/noconsolelogger" />
-      </exec>
-    </if>
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" failonerror="true">
+      <arg value="${solutionFile}" />
+      <arg value="/p:Configuration=${projectConfig}" />
+      <arg value="/p:Platform=&quot;Any CPU&quot;" />
+      <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
+      <arg value="/m" /> <!-- multicore -->
+      <arg value="/noconsolelogger" />
+    </exec>
   </target>
   <target name="clean-package-folder" description="Deletes all temporary files from package directory, then re-creates the folders to use">
     <mkdir dir="${packageDirectory}" failonerror="false"/>
