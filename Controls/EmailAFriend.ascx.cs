@@ -12,6 +12,7 @@ namespace Engage.Dnn.Publish.Controls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
 
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Mail;
@@ -79,10 +80,20 @@ namespace Engage.Dnn.Publish.Controls
             this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
             this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
 
+            this.SetValidationGroup();
+
             if (!this.IsPostBack)
             {
                 this.txtFrom.Text = this.UserInfo != null ? this.UserInfo.Email : string.Empty;
             }
+        }
+
+        private void SetValidationGroup()
+        {
+            var validationGroup = "ValidateGroupSend" + this.ModuleId.ToString(CultureInfo.InvariantCulture);
+            this.ToRequiredValidator.ValidationGroup = validationGroup;
+            this.FromRequiredValidator.ValidationGroup = validationGroup;
+            this.SendButton.ValidationGroup = validationGroup;
         }
     }
 }

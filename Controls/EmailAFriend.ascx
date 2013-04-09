@@ -10,13 +10,13 @@
         <div class="dnnFormItem">
             <asp:Label ID="lblTo" runat="server" ResourceKey="lblTo" AssociatedControlID="txtTo" />
             <asp:TextBox ID="txtTo" runat="server" type="email" />
-            <asp:RequiredFieldValidator ID="ToRequiredValidator" runat="server" ControlToValidate="txtTo" ResourceKey="Please enter one or more recipients" ValidationGroup="ValidateGroupSend" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="ToRequiredValidator" runat="server" ControlToValidate="txtTo" ResourceKey="Please enter one or more recipients" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
         </div>
         <asp:Label ID="lblMultiple" runat="server" ResourceKey="lblMultiple" CssClass="dnnFormItem dnnFormHelp" />
         <div class="dnnFormItem">
             <asp:Label ID="lblFrom" runat="server" ResourceKey="lblFrom" AssociatedControlID="txtFrom" />
             <asp:TextBox ID="txtFrom" runat="server" type="email" />
-            <asp:RequiredFieldValidator ID="FromRequiredValidator" runat="server" ControlToValidate="txtFrom" ResourceKey="Please enter your email address" ValidationGroup="ValidateGroupSend" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="FromRequiredValidator" runat="server" ControlToValidate="txtFrom" ResourceKey="Please enter your email address" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
         </div>
         <asp:Label ID="lblPrivacy" runat="server" ResourceKey="lblPrivacy" CssClass="dnnFormItem dnnFormHelp" />
         <div class="dnnFormItem">
@@ -25,7 +25,7 @@
         </div>
 
         <ul class="dnnActions dnnClear">
-            <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" ValidationGroup="ValidateGroupSend" OnClick="btnSend_Click" /></li>
+            <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" OnClick="btnSend_Click" /></li>
             <li><asp:LinkButton ResourceKey="btnCancel" runat="server" CssClass="dnnSecondaryAction simplemodal-close" CausesValidation="false" OnClick="btnCancel_Click1" /></li>
         </ul>
     </div>
