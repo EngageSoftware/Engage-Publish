@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryEdit" CodeBehind="CategoryEdit.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
@@ -13,7 +13,7 @@
     <table class="PublishEditTable Normal">
         <tr id="trCategoryId" runat="server">
             <td class="editTableLabelColumn nowrap">
-                <dnn:label id="lblCategoryId" resourcekey="lblCategoryId" Runat="server" />
+                <dnn:Label id="lblCategoryId" resourcekey="lblCategoryId" Runat="server" />
             </td>
             <td class="fullWidth">
                 <asp:Label ID="txtCategoryId" runat="server" />
@@ -21,7 +21,7 @@
         </tr>
         <tr style="display: none;">
             <td class="editTableLabelColumn nowrap">
-                <dnn:label id="lblSortOrder" resourcekey="lblSortOrder" Runat="server" />
+                <dnn:Label id="lblSortOrder" resourcekey="lblSortOrder" Runat="server" />
             </td>
             <td class="fullWidth">
                 <asp:TextBox ID="txtSortOrder" resourcekey="txtSortOrder" runat="server" />
@@ -34,7 +34,7 @@
     <table class="PublishEditTable Normal">
         <tr id="trCategoryPermissions" runat="server" visible="false">
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblChooseRoles" runat="server" ResourceKey="ChooseRoles" />
+                <dnn:Label ID="lblChooseRoles" runat="server" ResourceKey="ChooseRoles" />
             </td>
             <td class="fullWidth">
                 <asp:UpdatePanel ID="upnlCategoryPermissions" runat="server" UpdateMode="Conditional">
@@ -48,7 +48,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblParentCategory" runat="server" ResourceKey="ParentCategory" />
+                <dnn:Label ID="lblParentCategory" runat="server" ResourceKey="ParentCategory" />
             </td>
             <td class="fullWidth">
                 <asp:UpdatePanel ID="upnlParentCategory" runat="server" UpdateMode="Conditional">
@@ -91,7 +91,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblFeaturedArticles" runat="server" ResourceKey="ChooseFeatured" />
+                <dnn:Label ID="lblFeaturedArticles" runat="server" ResourceKey="ChooseFeatured" />
             </td>
             <td class="fullWidth">
                 <asp:UpdatePanel ID="upnlFeaturedArticles" runat="server" UpdateMode="Conditional">
@@ -151,7 +151,7 @@
                         <asp:AsyncPostBackTrigger ControlID="rblDisplayOnCurrentPage" />
                     </Triggers>
                     <ContentTemplate>
-                        <dnn:label ID="lblForceDisplayTab" runat="server" class="title" Visible="false" />
+                        <dnn:Label ID="lblForceDisplayTab" runat="server" class="title" Visible="false" />
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </td>
@@ -185,7 +185,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
+                <dnn:Label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
             </td>
             <td class="fullWidth">
                 <asp:UpdatePanel ID="upnlApproval" runat="server" UpdateMode="Conditional">

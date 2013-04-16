@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.Syndication"
     Codebehind="Syndication.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <table border="0" class="Normal">
     <tr>
         <td colspan="2" class="Head">
@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td>
-            &nbsp;&nbsp;<dnn:label ID="lblAuthorizationKeyHelp" runat="server" Text="Authorization Key"
+            &nbsp;&nbsp;<dnn:Label ID="lblAuthorizationKeyHelp" runat="server" Text="Authorization Key"
                 ControlName="lblAuthorizationKey" Suffix=":" />
         </td>
         <td>
@@ -30,7 +30,7 @@
     </tr>
     <tr>
         <td>
-            &nbsp;&nbsp;<dnn:label ID="lblServiceUrlHelp" runat="server" ControlName="lblServiceUrl"
+            &nbsp;&nbsp;<dnn:Label ID="lblServiceUrlHelp" runat="server" ControlName="lblServiceUrl"
                 Text="Service Url" Suffix=":" />
         </td>
         <td>
@@ -52,7 +52,7 @@
     <tr>
         <td>
             &nbsp;&nbsp;
-            <dnn:label ID="lblSubscriberAuthorizationKey" runat="server" Text="Authorization Key"
+            <dnn:Label ID="lblSubscriberAuthorizationKey" runat="server" Text="Authorization Key"
                 ControlName="lblSubscriberAuthorizationKey" Suffix=":" />
         </td>
         <td>
@@ -62,7 +62,7 @@
     <tr>
         <td>
             &nbsp;&nbsp;
-            <dnn:label ID="lblSubscriberServiceUrl" runat="server" ControlName="lblSubscriberServiceUrl"
+            <dnn:Label ID="lblSubscriberServiceUrl" runat="server" ControlName="lblSubscriberServiceUrl"
                 Text="Service Url" Suffix=":" />
         </td>
         <td>
@@ -72,7 +72,7 @@
     <tr>
         <td>
             &nbsp;&nbsp;
-            <dnn:label ID="lblArchiveContent" runat="server" ControlName="chkArchiveContent"
+            <dnn:Label ID="lblArchiveContent" runat="server" ControlName="chkArchiveContent"
                 Text="Archive my content locally if not found on publishing site."></dnn:label>
         </td>
         <td>
@@ -82,7 +82,7 @@
     <tr>
         <td>
             &nbsp;&nbsp;
-            <dnn:label ID="lblApproveContent" runat="server" ControlName="chkApproveContent"
+            <dnn:Label ID="lblApproveContent" runat="server" ControlName="chkApproveContent"
                 Text="Disable approval emails when synchronizing content from the publishing site.">
             </dnn:label>
         </td>

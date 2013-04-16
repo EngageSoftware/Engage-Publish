@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.Tools.ItemViewReport" Codebehind="ItemViewReport.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="ajaxToolkit" Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" %>
 
 <div class="Normal">
@@ -9,14 +9,14 @@
 	
 	<asp:Panel ID="pnlReportOptions" runat="server" CssClass="Publish_ItemViewReport">
 	    <div class="Publish_ItemViewReportOptionLabel">
-	        <dnn:label ID="lblItemType" runat="server" />
+	        <dnn:Label ID="lblItemType" runat="server" />
 	        <asp:Label ID="lblPortalId" runat="server" Visible="False"></asp:Label>
 	    </div>
 	    <div class="Publish_ItemViewReportOption">
 	        <asp:DropDownList ID="ddlItemType" runat="server"></asp:DropDownList>
 	    </div>  
 	    <div class="Publish_ItemViewReportOptionLabel">
-	        <dnn:label ID="lblPageSize" runat="server" />
+	        <dnn:Label ID="lblPageSize" runat="server" />
 	    </div>
         <div class="Publish_ItemViewReportOption">
 	        <asp:DropDownList ID="ddlPageNumbers" runat="server">
@@ -29,7 +29,7 @@
 	        </asp:DropDownList>
 	    </div>  
         <div class="Publish_ItemViewReportOptionLabel">
-	        <dnn:label ID="lblStartDate" runat="server" />
+	        <dnn:Label ID="lblStartDate" runat="server" />
 	    </div>
         <div class="Publish_ItemViewReportOption">
 	        <asp:TextBox ID="txtStartDate" runat="server" CssClass="Publish_ItemViewReportCalendar"></asp:TextBox>
@@ -37,7 +37,7 @@
                 <ajaxToolkit:CalendarExtender ID="ceStartDate" runat="server" TargetControlID="txtStartDate" PopupButtonID="imgStartCalendarIcon" />
 	    </div>  
         <div class="Publish_ItemViewReportOptionLabel">
-	        <dnn:label ID="lblEndDate" runat="server" />
+	        <dnn:Label ID="lblEndDate" runat="server" />
 	    </div>
         <div class="Publish_ItemViewReportOption">
 	        <asp:TextBox ID="txtEndDate" runat="server" CssClass="Publish_ItemViewReportCalendar"></asp:TextBox>

@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.ItemRelationships" Codebehind="ItemRelationships.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <div id="divItemRelationships" runat="server">
     <table id="Table1" height="94" cellspacing="1" cellpadding="1" width="480" border="0" class="Normal">
         <tr>
@@ -10,7 +10,7 @@
         <tr valign="bottom">
             <td align="left" colspan="4">
                 <asp:Panel id="pnlItemSearch" runat="server" Visible="false" CssClass="Normal" DefaultButton="btnItemSearch">
-                    <dnn:label ID="lblItemSearch" ResourceKey="lblItemSearch" runat="server"/>
+                    <dnn:Label ID="lblItemSearch" ResourceKey="lblItemSearch" runat="server"/>
                     <asp:TextBox ID="txtItemSearch" runat="server"/>
                     <asp:LinkButton ID="btnItemSearch" resourcekey="btnItemSearch" runat="server"/>
                 </asp:Panel>
@@ -18,7 +18,7 @@
         </tr>
         <tr valign="top">
             <td width="204" align="center">
-                <dnn:label class="title" ID="lblAvailableCategories" ResourceKey="lblAvailableCategories" runat="server"/>
+                <dnn:Label class="title" ID="lblAvailableCategories" ResourceKey="lblAvailableCategories" runat="server"/>
                 <asp:ListBox ID="lstItems" CssClass="Publish_ListItems Available" Rows="6" runat="server" SelectionMode="Multiple" />
             </td>
             <td width="19" colspan="1">
@@ -31,7 +31,7 @@
                 </table>
             </td>
             <td align="center" width="212">
-                <dnn:label class="title" ID="lblSelectedCategories" runat="server" Width="146px"/>
+                <dnn:Label class="title" ID="lblSelectedCategories" runat="server" Width="146px"/>
                 <asp:ListBox ID="lstSelectedItems" CssClass="Publish_ListItems Selected" Rows="6" runat="server" SelectionMode="Multiple"/>
             </td>
             <td >
@@ -58,7 +58,7 @@
                     <table cellpadding="0" border="0" cellspacing="0" class="Normal">
                         <tr>
                             <td class="nowrap">
-                                <dnn:label ID="lblStartDate" runat="server"/>
+                                <dnn:Label ID="lblStartDate" runat="server"/>
                             </td>
                             <td>
                                 <asp:TextBox ID="txtStartDate" runat="server"/>
@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <td class="nowrap">
-                                <dnn:label ID="lblEndDate" runat="server"/>
+                                <dnn:Label ID="lblEndDate" runat="server"/>
                             </td>
                             <td>
                                 <asp:TextBox ID="txtEndDate" runat="server"/>

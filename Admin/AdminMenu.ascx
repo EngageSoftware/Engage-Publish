@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Admin.AdminMenu" Codebehind="AdminMenu.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 
 <div id="divAdminMenuWrapper" class="divAdminMenuWrapper Normal" runat="server">
         <div id="divAdminLinks">
@@ -20,10 +20,10 @@
         <div id="divApprovalStatus" runat="server" visible="false" class="divItemApprovalSection">
             
             <div id="divVersionComments" class="Publish_VersionComments" runat="server">
-            <dnn:label ID="lblVersionComments" runat="server" />
+            <dnn:Label ID="lblVersionComments" runat="server" />
             <asp:Label ID="lblCurrentVersionComments" runat="server"  CssClass="Publish_CurrentVersionComments"/>
             </div>
-            <dnn:label ID="lblApprovalComments" runat="server" />
+            <dnn:Label ID="lblApprovalComments" runat="server" />
             
             <asp:TextBox ID="txtApprovalComments" runat="server" CssClass="Publish_ApprovalComments" ></asp:TextBox><br />
             <asp:DropDownList ID="ApprovalStatusDropDownList" Runat="server" CssClass="Normal" />

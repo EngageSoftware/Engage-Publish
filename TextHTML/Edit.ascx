@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="False" Inherits="Engage.Dnn.Publish.TextHtml.Edit" Codebehind="Edit.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="ep" TagName="approvals" Src="~/desktopmodules/engagepublish/controls/itemapproval.ascx" %>
 <div class="ErrorBody mmText" runat="server" id="divPublishNotifications" visible="false">

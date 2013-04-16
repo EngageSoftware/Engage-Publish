@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="False" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplayOptions" Codebehind="ArticleDisplayOptions.ascx.cs" %>
 <%@ Import Namespace="Engage.Dnn.Publish" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="engage" TagName="ArticleSelector" Src="../controls/ArticleSelector.ascx" %>
 <style type="text/css">
     @import url(<%=ModuleBase.ApplicationUrl%><%=ModuleBase.DesktopModuleFolderName%>Module.css);
@@ -9,7 +9,7 @@
 <Engage:ArticleSelector ID="ArticleSelectorControl" runat="server" />
 <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
     <tr>
-        <td class="subhead"><dnn:label ID="lblLastUpdatedFormat" resourcekey="lblLastUpdatedFormat" runat="server" /></td>
+        <td class="subhead"><dnn:Label ID="lblLastUpdatedFormat" resourcekey="lblLastUpdatedFormat" runat="server" /></td>
 	    <td><asp:TextBox ID="txtLastUpdatedFormat" runat="server" CssClass="NormalTextBox"/></td>
     </tr>
 </table>
@@ -18,25 +18,25 @@
 <asp:Panel ID="pnlPhotoGallerySettings" runat="server">
     <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
         <tr>
-            <td class="subhead"><dnn:label ID="lblDisplayPhotoGallery" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblDisplayPhotoGallery" runat="server" /></td>
             <td><asp:Checkbox ID="chkDisplayPhotoGallery" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblPhotoGalleryMaxCount" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblPhotoGalleryMaxCount" runat="server" /></td>
             <td><asp:Textbox ID="txtPhotoGalleryMaxCount" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblPhotoGalleryThumbnailHeight" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblPhotoGalleryThumbnailHeight" runat="server" /></td>
             <td><asp:Textbox ID="txtPhotoGalleryThumbnailHeight" runat="server" CssClass="NormalTextBox" /></td>
         </tr><tr>
-            <td class="subhead"><dnn:label ID="lblPhotoGalleryThumbnailWidth" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblPhotoGalleryThumbnailWidth" runat="server" /></td>
             <td><asp:Textbox ID="txtPhotoGalleryThumbnailWidth" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblPhotoGalleryHoverThumbnailHeight" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblPhotoGalleryHoverThumbnailHeight" runat="server" /></td>
             <td><asp:Textbox ID="txtPhotoGalleryHoverThumbnailHeight" runat="server" CssClass="NormalTextBox" /></td>
         </tr><tr>
-            <td class="subhead"><dnn:label ID="lblPhotoGalleryHoverThumbnailWidth" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblPhotoGalleryHoverThumbnailWidth" runat="server" /></td>
             <td><asp:Textbox ID="txtPhotoGalleryHoverThumbnailWidth" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@
 <asp:Panel ID="pnlRatingsSettings" runat="server">
     <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
         <tr>
-            <td class="subhead"><dnn:label ID="lblDisplayRatings" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblDisplayRatings" runat="server" /></td>
             <td><asp:DropDownList ID="ddlDisplayRatings" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
     </table>
@@ -64,31 +64,31 @@
 <asp:Panel ID="pnlCommentSettings" runat="server">
     <table cellspacing="0" cellpadding="0" border="0" class="SettingsTable">
         <tr>
-            <td class="subhead"><dnn:label ID="lblCommentSubmit" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblCommentSubmit" runat="server" /></td>
 	        <td><asp:CheckBox ID="chkCommentSubmit" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblFirstNameCollect" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblFirstNameCollect" runat="server" /></td>
             <td><asp:DropDownList ID="ddlFirstNameCollect" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblLastNameCollect" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblLastNameCollect" runat="server" /></td>
             <td><asp:DropDownList ID="ddlLastNameCollect" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblEmailAddressCollect" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblEmailAddressCollect" runat="server" /></td>
             <td><asp:CheckBox ID="chkEmailAddressCollect" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblUrlCollect" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblUrlCollect" runat="server" /></td>
             <td><asp:CheckBox ID="chkUrlCollect" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblCommentDisplay" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblCommentDisplay" runat="server" /></td>
 	        <td><asp:CheckBox ID="chkCommentDisplay" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         <tr>
-            <td class="subhead"><dnn:label ID="lblDisplayComments" runat="server" /></td>
+            <td class="subhead"><dnn:Label ID="lblDisplayComments" runat="server" /></td>
 	        <td><asp:DropDownList ID="ddlDisplayComments" runat="server" CssClass="NormalTextBox" /></td>
         </tr>
         

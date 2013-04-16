@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.ItemEdit" Codebehind="ItemEdit.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="engage" TagName="Thumbnail" Src="~/DesktopModules/EngagePublish/Controls/ThumbnailSelector.ascx" %>
@@ -10,12 +10,12 @@
 <table class="PublishEditTable Normal">
     <tr>
         <td class="editTableLabelColumn nowrap">
-            <dnn:label ID="lblName" ResourceKey="lblName" runat="server" cssclass="title"/>
+            <dnn:Label ID="lblName" ResourceKey="lblName" runat="server" cssclass="title"/>
         </td><td class="fullWidth">
             <asp:TextBox ID="txtName" runat="server" CssClass="txtName" />
             <asp:CheckBox ID="chkDisplayAsHyperlink" runat="server" />
             
-            <dnn:label ID="lblDisplayAsHyperlink" ResourceKey="lblDisplayAsHyperlink" runat="server" cssclass="title" />
+            <dnn:Label ID="lblDisplayAsHyperlink" ResourceKey="lblDisplayAsHyperlink" runat="server" cssclass="title" />
             
         </td>
     </tr>
@@ -23,7 +23,7 @@
 <table class="PublishEditTable Normal">
     <tr>
         <td class="editTableLabelColumn nowrap">
-            <dnn:label ID="lblDescription" ResourceKey="lblDescription" runat="server" cssclass="title" />
+            <dnn:Label ID="lblDescription" ResourceKey="lblDescription" runat="server" cssclass="title" />
         </td><td class="publishDescriptionEditor fullWidth">
             <div  class="rightAlign">
                 <asp:LinkButton ID="btnChangeDescriptionEditorMode" runat="server" OnClick="btnChangeDescriptionEditorMode_Click" />
@@ -65,7 +65,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" />
+                <dnn:Label ID="lblAuthor" runat="server" ResourceKey="lblAuthor" />
             </td><td class="fullWidth">
                 <asp:DropDownList ID="ddlAuthor" runat="server" 
                     onselectedindexchanged="ddlAuthor_SelectedIndexChanged" AutoPostBack="true" />
@@ -74,7 +74,7 @@
         </tr>
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblAuthorName" runat="server" ResourceKey="lblAuthorName" />
+                <dnn:Label ID="lblAuthorName" runat="server" ResourceKey="lblAuthorName" />
             </td><td class="fullWidth">
                 <asp:TextBox ID="txtAuthorName" runat="server" CssClass="NormalTextBox"></asp:TextBox>
                 <hr />
@@ -86,7 +86,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblUploadFile" runat="server" ResourceKey="lblUploadFile"/>
+                <dnn:Label ID="lblUploadFile" runat="server" ResourceKey="lblUploadFile"/>
             </td><td class="fullWidth">
                 <engage:Thumbnail ID="thumbnailSelector" runat="server" />
                 <hr />
@@ -96,16 +96,16 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblPostingDates" runat="server" ResourceKey="lblPostingDates" />
+                <dnn:Label ID="lblPostingDates" runat="server" ResourceKey="lblPostingDates" />
             </td><td class="fullWidth">
                 <table class="Normal fullWidth"><tr>
                     <td>
-                        <dnn:label ID="lblStartDate" ResourceKey="lblStartDate" runat="server" CssClass="title"/>
+                        <dnn:Label ID="lblStartDate" ResourceKey="lblStartDate" runat="server" CssClass="title"/>
                         <asp:TextBox ID="txtStartDate" runat="server"/>&nbsp;<asp:Image ID="imgStartCalendarIcon" runat="server" ImageUrl="~/desktopModules/EngagePublish/images/calendar.png" />
                         <ajaxToolkit:CalendarExtender ID="calendarStart" runat="server" TargetControlID="txtStartDate" PopupButtonID="imgStartCalendarIcon" />
 
                     </td><td>
-                        <dnn:label ID="lblEndDate" ResourceKey="lblEndDate" runat="server" cssclass="title"/>
+                        <dnn:Label ID="lblEndDate" ResourceKey="lblEndDate" runat="server" cssclass="title"/>
                         <asp:TextBox ID="txtEndDate" runat="server"/>&nbsp;<asp:Image ID="imgEndCalendarIcon" runat="server" ImageUrl="~/desktopModules/EngagePublish/images/calendar.png" />
                         <ajaxToolkit:CalendarExtender ID="calendarEnd" runat="server" TargetControlID="txtEndDate" PopupButtonID="imgEndCalendarIcon" />
                     </td>
@@ -126,15 +126,15 @@
                 <ContentTemplate>
                     <asp:Panel ID="pnlSearchEngine" runat="server" visible="false">
                         <div id="divSearchEngine"><%-- runat="server"--%>
-                            <dnn:label ID="lblMetaTitle" ResourceKey="lblMetaTitle" runat="server" cssclass="title"/>
+                            <dnn:Label ID="lblMetaTitle" ResourceKey="lblMetaTitle" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaTitle" runat="server" TextMode="SingleLine" Columns="50" Rows="1"/>
                             <br />
                             <br />
-                            <dnn:label ID="lblMetaKeywords" ResourceKey="lblMetaKeywords" runat="server" cssclass="title"/>
+                            <dnn:Label ID="lblMetaKeywords" ResourceKey="lblMetaKeywords" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaKeywords" runat="server" TextMode="MultiLine" Columns="50" Rows="3"/>
                             <br />
                             <br />
-                            <dnn:label ID="lblMetaDescription" ResourceKey="lblMetaDescription" runat="server" cssclass="title"/>
+                            <dnn:Label ID="lblMetaDescription" ResourceKey="lblMetaDescription" runat="server" cssclass="title"/>
                             <asp:TextBox ID="txtMetaDescription" runat="server" TextMode="MultiLine" Columns="50" Rows="3"/>
                         </div>
                     </asp:Panel>
@@ -146,7 +146,7 @@
     <table class="PublishEditTable Normal">
         <tr>
             <td class="editTableLabelColumn nowrap">
-                <dnn:label ID="lblChooseUrl" runat="server" ResourceKey="lblChooseUrl"/>
+                <dnn:Label ID="lblChooseUrl" runat="server" ResourceKey="lblChooseUrl"/>
             </td>
             <td class="fullWidth">
                 <asp:CheckBox ID="chkUrlSelection" runat="server" AutoPostBack="true" OnCheckedChanged="chkUrlSelection_CheckedChanged" />

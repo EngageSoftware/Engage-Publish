@@ -1,5 +1,5 @@
 <%@ Page Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.ItemLink" Codebehind="ItemLink.aspx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 
 <html>
 <head>

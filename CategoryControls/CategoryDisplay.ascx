@@ -1,5 +1,5 @@
 	<%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategoryDisplay" Codebehind="CategoryDisplay.ascx.cs" %>
-	<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+	<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <div class="Normal">
     <asp:Literal ID="lblNoData" runat="server" Visible="false"/>
     <div class="divItemsListing">

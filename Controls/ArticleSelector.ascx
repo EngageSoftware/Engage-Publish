@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="Engage.Dnn.Publish.Controls.ArticleSelector" Codebehind="ArticleSelector.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <asp:ScriptManagerProxy runat="server">
     <Services>
         <asp:ServiceReference path="~/DesktopModules/EngagePublish/Services/PublishServices.asmx" />
@@ -12,7 +12,7 @@
         <td><asp:DropDownList ID="CategoriesDropDownList" runat="server" CssClass="NormalTextBox" onchange="Engage_Publish_ArticleSelector_PopulateArticlesList()" /></td>
     </tr>
     <tr>
-        <td class="SubHead"><dnn:label resourcekey="lblArticleList" runat="server" ControlName="ArticlesDropDownList" /></td>
+        <td class="SubHead"><dnn:Label resourcekey="lblArticleList" runat="server" ControlName="ArticlesDropDownList" /></td>
 	    <td>
 	        <%-- Use select instead of asp:DropDownList to opt-out of event validation, since this is dynamically filled --%>
 	        <select id="ArticlesDropDownList" runat="server" class="NormalTextBox chooseArticleListDropDown" />
