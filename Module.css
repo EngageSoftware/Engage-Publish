@@ -1,4 +1,3 @@
-
 .Publish_ItemDisplay
 {
 	clear:both;
@@ -39,13 +38,10 @@
     width:20%;
 }
 
-
 .fullWidth
 {
     width:100%;
 }
-
-
 
 /* admin styles */
 .SettingsTable
@@ -77,7 +73,6 @@
     display:none;
 }
 
-
 .admin_toolbar
 {
 	clear:both;
@@ -105,24 +100,21 @@
 	background:url(admin/images/articles.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_articles_sel
 {
 	background:url(admin/images/articles_sel.gif);
 	background-repeat:no-repeat;
-	
 }
+
 .admin_item_categories
 {
 	background:url(admin/images/categories.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_categories_sel
 {
 	background:url(admin/images/categories_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_settings
@@ -130,12 +122,10 @@
 	background:url(admin/images/settings.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_settings_sel
 {
 	background:url(admin/images/settings_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_comments
@@ -143,7 +133,6 @@
 	background:url(admin/images/comments.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_comments_sel
 {
 	background:url(admin/images/comments_sel.gif);
@@ -155,12 +144,10 @@
 	background:url(admin/images/help.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_help_sel
 {
 	background:url(admin/images/help_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 
@@ -169,12 +156,10 @@
 	background:url(admin/images/delete.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_delete_sel
 {
 	background:url(admin/images/delete_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_syndication
@@ -182,55 +167,42 @@
 	background:url(admin/images/syndication.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_syndication_sel
 {
 	background:url(admin/images/syndication_sel.gif);
 	background-repeat:no-repeat;	
 }
 
-
 .admin_item_admintools
 {
 	background:url(admin/images/admintools.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_admintools_sel
 {
 	background:url(admin/images/admintools_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 
 
 .divAdminItemSearch
 {
-	padding-left:5px;
-	padding-top:5px;
-	padding-right:5px;
-	padding-bottom:0px;
+    padding:5px 5px 0 5px;
 	width:100%;
-	background-color:#ffffff;
-	border:solid 1px #000000;
+	background-color:#fff;
+	border:solid 1px #000;
 }
 
 .adminItemSearchDarkRow
 {
-	/*background-color:#FFCC66;
-	margin-bottom:5px;
-	padding:3px;*/
 	background-color: #f1f1f1;
 	width:100%;	
 }
 
 .adminItemSearchLightRow
 {
-	/*background-color:#FFF2D8;
-	margin-bottom:5px;
-	padding:3px;*/
-	background-color: #ffffff;
+	background-color: #fff;
 	width:100%;
 }
 
@@ -268,10 +240,10 @@
 .adminSearchResultsHeader
 {
 	background-color:#f56b0c;
-	border-left:solid 1px #000000;
-	border-top:solid 1px #000000;
-	border-right:solid 1px #000000;
-	border-bottom:solid 1px #000000;
+	border-left:solid 1px #000;
+	border-top:solid 1px #000;
+	border-right:solid 1px #000;
+	border-bottom:solid 1px #000;
 	color:#fcd1b3;
 	font-weight:bold;
 }
@@ -313,12 +285,10 @@
 /*articles for admin item search, not used anymore */
 #articleDiv .divAdminItemSearch
 {
-	padding-left:5px;
-	padding-top:5px;
-	padding-right:5px;
-	padding-bottom:0px;
+    padding:5px;
+	padding-bottom:0;
 	width:100%;
-	background-color:#ffffff;
+	background-color:#fff;
 	border:solid 1px #FFCC66;
 }
 
@@ -372,7 +342,7 @@
 #articleDiv .adminSearchResultsHeader
 {
 	background-color:#f56b0c;
-	color:#ffffff;
+	color:#fff;
 }
 
 #articleDiv .adminItemSearchDrop
@@ -416,7 +386,7 @@ Module CSS
 {
 	margin-top: 10px;
 	margin-right: 5px;
-	border: solid 1px #000000;
+	border: solid 1px #000;
 }
 	
 .divRelatedItems .noimage
@@ -427,7 +397,7 @@ Module CSS
 	
 .divRelatedItems .text
 {
-	color: #FFFFFF;
+	color: #fff;
 	font-size:12px;
 }
 
@@ -435,7 +405,7 @@ Module CSS
 .divRelatedItems a.text:hover,
 .divRelatedItems a.text:visited
 {
-	color: #FFFFFF;
+	color: #fff;
 	font-weight:bold;
 	text-decoration:underline;
 }
@@ -444,10 +414,6 @@ Module CSS
 .divNavigationMenu
 {
 	width:137px;
-}
-
-#divArticleContent
-{
 }
 
 #articleThumbnails
@@ -460,19 +426,11 @@ Module CSS
     display: block;
 }
 
-.divNavigationMenu
-{
-}
-
 /*Breadcrumb*/
 .divBreadcrumb
 {
 	font-size: 10pt;
 	margin-bottom: 5px;
-}
-
-.divBreadcrumb .seperator
-{
 }
 
 .divBreadcrumb a.navlink,
@@ -485,25 +443,7 @@ Module CSS
 	text-decoration: underline;
 }
 
-/*Quick Search*/
-.quickSearchDropDown
-{
-	width:145px;
-	overflow:hidden;
-}
-
-.qsHeader
-{
-	background:url(images/quicksearch/quick-search-head.gif);
-	height:47px;
-	background-repeat:no-repeat;
-}
-
-
-
 /* Search Results */
-.divSearchResults {}
-
 .divSearchResults .title 
 {
 	font-weight: bold;
@@ -517,18 +457,10 @@ Module CSS
 	margin-bottom: 10px;
 }
 
-.divSearchResults .step {}
-
-.divSearchResults .results {}
-
 .divSearchResults .results .label
 {
 	font-weight: bold;
 }
-
-.divSearchResults .name {}
-
-.divSearchResults .downloadlink {}
 
 .divSearchResults .header 
 { 
@@ -536,24 +468,9 @@ Module CSS
 	font-size: 9pt;
 }
 
-.divQuickSearch 
-{
-	FONT-SIZE: 8pt; 
-	COLOR: #000000; 
-}
-.divQuickSearch .DropDown { COLOR: #000000 }
-.divQuickSearch .RadioButtonList { FONT-SIZE: 8pt; COLOR: #000000 }
-.divQuickSearch .quickSearchDropDown { COLOR: #000000 }
-
-
 .divRelatedItemsText
 {
 	font-size:8pt;
-}
-
-#divArticleTitle
-{
-		
 }
 
 .txtName
@@ -590,7 +507,7 @@ Module CSS
 	margin-right: 10px;
 	width:85px;
 	height:85px;
-	background-image:url(../images/thumbnail.gif);
+	background-image:url(images/thumbnail.gif);
 	background-repeat:no-repeat;
 }
 .item_listing_nothumbnail
@@ -654,8 +571,8 @@ Module CSS
 
 #divAdminLinks ul
 {
-	margin-left:0px;
-	text-indent:0px;	
+	margin-left:0;
+	text-indent:0;	
 	display:inline;
 	
 }
@@ -688,8 +605,8 @@ Module CSS
 
 .divRelatedArticle
 {
-	width:300;
-	border:solid 1px #000000;
+	width:300px;
+	border:solid 1px #000;
 	float:right;
 }
 
@@ -713,16 +630,16 @@ Module CSS
 
 .AdminContainerImagesHeight
 {
-	height:45;
+	height:45px;
 }
 
 /*Rating Control*/
 .ratingStar {
-    font-size: 0pt;
+    font-size: 0;
     width: 13px;
     height: 12px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     cursor: pointer;
     display: block;
     background-repeat: no-repeat;
@@ -753,9 +670,7 @@ Module CSS
 
 .commentPopup {
 	background-color:#ffffdd;
-	border-width:3px;
-	border-style:solid;
-	border-color:Gray;
+	border:3px solid Gray;
 	padding:3px;
 	width:300px;
 }
@@ -814,8 +729,8 @@ Module CSS
 .progressUpdate
 {
 	position:fixed;
-	top:0px;
-	left:0px;
+	top:0;
+	left:0;
 	background-color:Gray;
 	filter:alpha(opacity=70);
 	opacity:0.7;
@@ -827,8 +742,8 @@ Module CSS
 .progressWrap
 {
 	position:fixed;
-	top:0px;
-	left:0px;
+	top:0;
+	left:0;
 	height:100%;
 	width:100%;
 	z-index:14;
@@ -838,7 +753,7 @@ Module CSS
 {
 	position:relative;
 	top:50%;
-	background-color:#ffffff;
+	background-color:#fff;
 	width:300px;
 	height:100px;
 	border:solid 2px Gray;
@@ -865,7 +780,7 @@ Module CSS
 {
 	padding-left:5px;
 	text-decoration:underline;
-	cursor:hand;
+	cursor:pointer;
 }
 
 
@@ -873,7 +788,7 @@ Module CSS
 {
 	position:absolute;
 	z-index:13;
-	background-color:#ffffff;
+	background-color:#fff;
 	border:solid 1px #000;
 	width:400px;
 	top:-5px;
@@ -886,7 +801,7 @@ Module CSS
 /**************************************/
 
 .publishArticleThumbnail {
-    border:1px solid #000000;
+    border:1px solid #000;
     margin: 5px;
 }
 
@@ -898,7 +813,7 @@ a.mouseOverImage, a.mouseOverImage:visited
 
 a.mouseOverImage:hover
 {
-    color:#000000;
+    color:#000;
     text-decoration:none;
 }
 
@@ -938,10 +853,6 @@ a.mouseOverImage:hover
 	clear:left;
 }
 
-.categoryItemList .itemAuthorDate
-{
-}
-
 .categoryItemList .itemEditLink
 {
 	float:right;
@@ -972,7 +883,7 @@ a.mouseOverImage:hover
 	clear:both;
 	background-color:#f0efef; /* the background color for the listing */
 	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */
-	padding:0px; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
+	padding:0; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
 	display:inline-block; /*this enables the div to wrap around items in IE7 */
 	border:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
 	width:100%;
@@ -987,17 +898,17 @@ a.mouseOverImage:hover
 .categoryDisplayArticle .categoryItemList
 {
 	background:none;
-	border:0px solid #000;
-	padding:0px;
-	margin:0px;
+	border:0 solid #000;
+	padding:0;
+	margin:0;
 }
 
 .categoryDisplayCategory .categoryItemList
 {
 	background:none;
-	border:0px solid #000;
-	padding:0px;
-	margin:0px;
+	border:0 solid #000;
+	padding:0;
+	margin:0;
 
 }
 
@@ -1143,15 +1054,15 @@ a.mouseOverImage:hover
 
 .Publish_ArticleTags
 {
-	border:dashed 1px #000033;
-	margin:5px 0px 15px 0px;
+	border:dashed 1px #003;
+	margin:5px 0 15px 0;
 	padding:3px 3px 3px 3px;
 }
 
 
 .Publish_CategorySortedList
 {
-	border:solid 1px #000033;
+	border:solid 1px #003;
 }
 
 .Publish_CategorySortedList li
@@ -1169,14 +1080,14 @@ a.mouseOverImage:hover
 .Publish_SortItem
 {
 	white-space:nowrap;
-	color:#000033;
+	color:#003;
 }
 
 
 .Publish_CategorySortItemDrop
 {
 	height:25px;
-	border:dotted 2px #000033;
+	border:dotted 2px #003;
 }
 
 .Publish_ItemViewReport
@@ -1228,7 +1139,7 @@ a.mouseOverImage:hover
 }
 .DataGrid_Item td
 {
-	background-color: #ffffff;
+	background-color: #fff;
 }
 .DataGrid_AlternatingItem
 {
