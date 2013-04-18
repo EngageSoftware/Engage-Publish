@@ -4,7 +4,7 @@
 }
 
 /* form elements */
-.input_dropdown, .input_textbox
+.input_textbox
 {
 	font-size: 11px;
 }
@@ -14,18 +14,8 @@
     text-align: right;
 }
 
-/*nowrap only work when applied to a td directly (either as <td class="nowrap"> or <table class="nowrapTable">)*/
+/*nowrap only work when applied to a td directly (e.g. <td class="nowrap">)*/
 .nowrap
-{
-    white-space: normal;
-}
-
-.nowrapTable td
-{
-    white-space: nowrap;
-}
-
-.Help
 {
     white-space: normal;
 }
@@ -150,7 +140,6 @@
 	background-repeat:no-repeat;
 }
 
-
 .admin_item_delete
 {
 	background:url(admin/images/delete.gif);
@@ -186,78 +175,15 @@
 
 
 
-.divAdminItemSearch
-{
-    padding:5px 5px 0 5px;
-	width:100%;
-	background-color:#fff;
-	border:solid 1px #000;
-}
-
 .adminItemSearchDarkRow
 {
 	background-color: #f1f1f1;
 	width:100%;	
 }
-
 .adminItemSearchLightRow
 {
 	background-color: #fff;
 	width:100%;
-}
-
-.adminSearchResultsLightRow
-{
-	background-color:#FFF2D8;
-	width:100%;
-}
-
-.adminSearchResultsLight2Row
-{
-	background-color:#FFFAF2;
-	padding:15px;
-	width:100%;
-}
-
-.adminSearchResultsLightRow td.adminSearchResultsThumbRow
-{
-	background-color:#DAF2DA;
-	width:85px;
-}
-
-.adminSearchResultsLight2Row td.adminSearchResultsThumbRow
-{
-	background-color:#C2EBC3;
-	width:85px;
-}
-
-
-.adminSearchResultstable,
-.adminSearchResultsTable td
-{
-	padding:3px;
-}
-.adminSearchResultsHeader
-{
-	background-color:#f56b0c;
-	border-left:solid 1px #000;
-	border-top:solid 1px #000;
-	border-right:solid 1px #000;
-	border-bottom:solid 1px #000;
-	color:#fcd1b3;
-	font-weight:bold;
-}
-
-.adminItemSearchDrop
-{
-	float:right;
-	display:inline;
-}
-
-.adminItemSearchLabel
-{
-	float:left;
-	padding-left:25px;
 }
 
 .error
@@ -281,140 +207,6 @@
 	padding:0.675em 0.675em 1em;
 }
 
-
-/*articles for admin item search, not used anymore */
-#articleDiv .divAdminItemSearch
-{
-    padding:5px;
-	padding-bottom:0;
-	width:100%;
-	background-color:#fff;
-	border:solid 1px #FFCC66;
-}
-
-#articleDiv .adminItemSearchDarkRow
-{
-	background-color:#FFCC66;
-	margin-bottom:5px;
-	padding:3px;
-	width:100%;	
-}
-
-#articleDiv .adminItemSearchLightRow
-{
-	background-color:#FFF2D8;
-	margin-bottom:5px;
-	padding:3px;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLightRow
-{
-	background-color:#FFF2D8;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLight2Row
-{
-	background-color:#FFFAF2;
-	padding:15px;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLightRow td.adminSearchResultsThumbRow
-{
-	background-color:#DAF2DA;
-	width:85px;
-}
-
-#articleDiv .adminSearchResultsLight2Row td.adminSearchResultsThumbRow
-{
-	background-color:#C2EBC3;
-	width:85px;
-}
-
-
-#articleDiv .adminSearchResultstable,
-#articleDiv .adminSearchResultsTable td
-{
-	padding:3px;
-}
-#articleDiv .adminSearchResultsHeader
-{
-	background-color:#f56b0c;
-	color:#fff;
-}
-
-#articleDiv .adminItemSearchDrop
-{
-	float:right;
-	display:inline;
-}
-
-#articleDiv .adminItemSearchLabel
-{
-	float:left;
-	padding-left:25px;
-}
-
-
-
-/*
-**********************************************
-Module CSS
-**********************************************
-*/
-
-
-/*Related Item CSS*/
-.divRelatedItems
-{
-	background-color:#737D89;
-	width: 225px;
-	padding: 5px 5px 5px 5px;
-	color:White;
-	margin-bottom: 10px;
-}
-
-.divRelatedItems .title
-{
-	text-align: center;
-	width: 215px;
-}
-
-.divRelatedItems .image
-{
-	margin-top: 10px;
-	margin-right: 5px;
-	border: solid 1px #000;
-}
-	
-.divRelatedItems .noimage
-{
-	margin-top: 10px;
-	margin-right: 5px;
-}
-	
-.divRelatedItems .text
-{
-	color: #fff;
-	font-size:12px;
-}
-
-.divRelatedItems a.text,
-.divRelatedItems a.text:hover,
-.divRelatedItems a.text:visited
-{
-	color: #fff;
-	font-weight:bold;
-	text-decoration:underline;
-}
-	
-
-.divNavigationMenu
-{
-	width:137px;
-}
 
 #articleThumbnails
 {
@@ -443,36 +235,6 @@ Module CSS
 	text-decoration: underline;
 }
 
-/* Search Results */
-.divSearchResults .title 
-{
-	font-weight: bold;
-	font-size: 15pt;
-	color: #666666;
-}
-
-.divSearchResults .description 
-{
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-.divSearchResults .results .label
-{
-	font-weight: bold;
-}
-
-.divSearchResults .header 
-{ 
-	font-weight: bold;
-	font-size: 9pt;
-}
-
-.divRelatedItemsText
-{
-	font-size:8pt;
-}
-
 .txtName
 {
 	width:300px;
@@ -488,12 +250,6 @@ Module CSS
 	float:right;
 }
 	
-#divControls
-{
-	width:100%;
-	clear:both;
-}
-
 .item_listing
 {
 	padding: 5px 5px 5px 5px;
@@ -519,17 +275,6 @@ Module CSS
 {
 	width:85px;
 	height:85px;
-}
-
-.List .item_listing_thumbnail_image, .List .item_listing_thumbnail, .List .item_listing_abstract, .List .item_listing_readmore, .List .item_listing_category
-{
-	display: none;
-}
-
-.List .item_listing
-{
-	padding: 1px 2px 1px 2px;
-	margin-bottom: 2px;
 }
 
 .divItemApprovalSection
@@ -628,11 +373,6 @@ Module CSS
 	 color: White;
 }
 
-.AdminContainerImagesHeight
-{
-	height:45px;
-}
-
 /*Rating Control*/
 .ratingStar {
     font-size: 0;
@@ -644,16 +384,12 @@ Module CSS
     display: block;
     background-repeat: no-repeat;
 }
-
 .filledRatingStar {
     background-image: url(Images/FilledStar.png);
-
 }
-
 .emptyRatingStar {
     background-image: url(Images/EmptyStar.png);
 }
-
 .savedRatingStar {
     background-image: url(Images/SavedStar.png);
 }
@@ -669,7 +405,7 @@ Module CSS
 }
 
 .commentPopup {
-	background-color:#ffffdd;
+	background-color:#ffd;
 	border:3px solid Gray;
 	padding:3px;
 	width:300px;
@@ -681,15 +417,6 @@ Module CSS
 	width:95%;
 }
 
-#CommentName
-{
-	float:left;
-}
-
-#CommentCreatedDate
-{
-	float:left;
-}
 .PublishComment
 {
 	background-color:#f0efef;
@@ -702,7 +429,6 @@ Module CSS
 .PublishCommentWrapper
 {
 	overflow:auto;
-	
 }
 
 .PublishNoComments
@@ -771,35 +497,10 @@ Module CSS
 	font-weight:bold;
 }
 
-.tbButton
-{
-	padding-left:5px;
-}
-
-.tbButtonHover
-{
-	padding-left:5px;
-	text-decoration:underline;
-	cursor:pointer;
-}
-
-
-.toolbar
-{
-	position:absolute;
-	z-index:13;
-	background-color:#fff;
-	border:solid 1px #000;
-	width:400px;
-	top:-5px;
-	padding:5px;
-	
-}	
 
 /**************************************/
-/*Gallery Intergration Thumbnail Popup*/
+/*Gallery Integration Thumbnail Popup*/
 /**************************************/
-
 .publishArticleThumbnail {
     border:1px solid #000;
     margin: 5px;
@@ -865,16 +566,6 @@ a.mouseOverImage:hover
 {
 	float:left;
 	padding-right:5px;
-}
-
-.categoryItemList .divItemContent
-{
-	float:left;	
-}
-
-.categoryItemList .lnkTitle
-{
-	float:left;
 }
 
 .categoryItemList
@@ -982,11 +673,6 @@ a.mouseOverImage:hover
 	width:100%;
 }
 
-.publishTextBoxHeight
-{
-	width:250px;
-}
-
 
 #publishTagCloud ol li span
 {
@@ -1069,12 +755,6 @@ a.mouseOverImage:hover
 {
 	list-style-type:none;
 	margin-left:-30px;
-}
-
-.Publish_CategorySortedItem
-{
-	height:25px;
-	white-space:nowrap;
 }
 
 .Publish_SortItem
