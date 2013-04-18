@@ -454,6 +454,33 @@ namespace Engage.Dnn.Publish.Admin {
         protected global::System.Web.UI.WebControls.TextBox txtPingChangedUrl;
         
         /// <summary>
+        /// chkEnableInvisibleCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableInvisibleCaptcha;
+        
+        /// <summary>
+        /// chkEnableTimedCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableTimedCaptcha;
+        
+        /// <summary>
+        /// chkEnableStandardCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkEnableStandardCaptcha;
+        
+        /// <summary>
         /// chkEnableTags control.
         /// </summary>
         /// <remarks>

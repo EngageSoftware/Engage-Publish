@@ -192,6 +192,10 @@ namespace Engage.Dnn.Publish.Admin
             this.UpdateHostSetting(Utility.PublishPingServers, this.txtPingServers.Text);
             this.UpdateHostSetting(Utility.PublishPingChangedUrl, this.txtPingChangedUrl.Text);
 
+            this.UpdateHostSetting(Utility.PublishEnableInvisibleCaptcha, this.chkEnableInvisibleCaptcha.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableTimedCaptcha, this.chkEnableTimedCaptcha.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableStandardCaptcha, this.chkEnableStandardCaptcha.Checked);
+
             this.UpdateHostSetting(Utility.PublishForumProviderType, this.ddlCommentsType.SelectedValue);
 
             var returnUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnUrl"]);
@@ -361,6 +365,9 @@ namespace Engage.Dnn.Publish.Admin
             this.chkDefaultShowAuthor.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowAuthor, this.PortalId, true);
             this.chkDefaultShowTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowTags, this.PortalId, false);
             this.chkEnablePing.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePing, this.PortalId, false);
+            this.chkEnableInvisibleCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableInvisibleCaptcha, this.PortalId, true);
+            this.chkEnableTimedCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableTimedCaptcha, this.PortalId, true);
+            this.chkEnableStandardCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableStandardCaptcha, this.PortalId, false);
 
             this.chkDefaultEmailAFriend.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultEmailAFriend, this.PortalId, true);
             this.chkDefaultPrinterFriendly.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultPrinterFriendly, this.PortalId, true);

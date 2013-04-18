@@ -569,4 +569,22 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="lblDefaultCategory.Text" xml:space="preserve">
     <value>Default Category</value>
   </data>
+  <data name="Enable Invisible CAPTCHA.Help" xml:space="preserve">
+    <value>Check this box to add an invisible text field to the comments and email a friend forms.  Input on the form will be rejected if the text box is filled in, to reduce SPAM from automated bots.</value>
+  </data>
+  <data name="Enable Invisible CAPTCHA.Text" xml:space="preserve">
+    <value>Enable Invisible CAPTCHA</value>
+  </data>
+  <data name="Enable Standard CAPTCHA.Help" xml:space="preserve">
+    <value>Check this box to require people to decypher some scrambled text before they can use the comments and email a friend forms.</value>
+  </data>
+  <data name="Enable Standard CAPTCHA.Text" xml:space="preserve">
+    <value>Enable Standard CAPTCHA</value>
+  </data>
+  <data name="Enable Timed CAPTCHA.Help" xml:space="preserve">
+    <value>Check this box to reject input on the comments and email a friend forms if they occur too quickly, to reduce SPAM from automated bots.</value>
+  </data>
+  <data name="Enable Timed CAPTCHA.Text" xml:space="preserve">
+    <value>Enable Timed CAPTCHA</value>
+  </data>
 </root>

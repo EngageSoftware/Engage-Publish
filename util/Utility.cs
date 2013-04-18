@@ -369,6 +369,12 @@ namespace Engage.Dnn.Publish.Util
 
         public const string PublishEnablePing = "PublishEnablePing";
 
+        public const string PublishEnableInvisibleCaptcha = "PublishEnableInvisibleCaptcha";
+
+        public const string PublishEnableTimedCaptcha = "PublishEnableTimedCaptcha";
+
+        public const string PublishEnableStandardCaptcha = "PublishEnableStandardCaptcha";
+
         public const string PublishEnablePublishFriendlyUrls = "PublishEnablePublishFriendlyUrls";
 
         public const string PublishEnableSimpleGalleryIntegration = "PublishEnableSimpleGalleryIntegration";

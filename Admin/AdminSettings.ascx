@@ -207,11 +207,23 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ResourceKey="lblPingServers" runat="server" ControlName="txtPingServers" />
-            <asp:TextBox ID="txtPingServers" runat="server" TextMode="MultiLine" Columns="40" Rows="10" />
+            <asp:TextBox ID="txtPingServers" runat="server" TextMode="MultiLine" Columns="40" Rows="4" />
         </div>
         <div class="dnnFormItem">
             <dnn:Label ResourceKey="lblChangedPage" runat="server" ControlName="txtPingChangedUrl" />
             <asp:TextBox ID="txtPingChangedUrl" runat="server" />
+        </div>
+        <div class="dnnFormItem">
+            <dnn:Label ResourceKey="Enable Invisible CAPTCHA" runat="server" ControlName="chkEnableInvisibleCaptcha" />
+            <asp:CheckBox ID="chkEnableInvisibleCaptcha" runat="server" />
+        </div>
+        <div class="dnnFormItem">
+            <dnn:Label ResourceKey="Enable Timed CAPTCHA" runat="server" ControlName="chkEnableTimedCaptcha" />
+            <asp:CheckBox ID="chkEnableTimedCaptcha" runat="server" />
+        </div>
+        <div class="dnnFormItem">
+            <dnn:Label ResourceKey="Enable Standard CAPTCHA" runat="server" ControlName="chkEnableStandardCaptcha" />
+            <asp:CheckBox ID="chkEnableStandardCaptcha" runat="server" />
         </div>
     </fieldset>
     
