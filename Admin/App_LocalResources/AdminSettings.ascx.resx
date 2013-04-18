@@ -145,13 +145,13 @@
     <value>The role that will be emailed when a request for approval is made. This can be different than the Administrators Role, or can be set to the same role as admin.</value>
   </data>
   <data name="FirstTime.Text" xml:space="preserve">
-    <value>You'll need to configure some of the Engage: Publish options below in order to proceed &lt;br /&gt; For more information about Engage: Publish visit &lt;a href="http://www.engagesoftware.com" target=_blank&gt;EngageSoftware.com&lt;/a&gt;.&lt;br /&gt;</value>
+    <value>You'll need to configure some of the Engage: Publish options below in order to proceed</value>
   </data>
   <data name="lnkUpdate.Text" xml:space="preserve">
     <value>Save Settings</value>
   </data>
   <data name="lblMailNotConfigured.Text" xml:space="preserve">
-    <value>SMTP does not appear to be configured. You must configure your SMTP settings in order to enable Email a Friend and Approval Notification functionality. &lt;a href="http://www.engagesoftware.com/Blog/tabid/297/EntryID/119/Default.aspx" target=_blank&gt;For help with this click here&lt;/a&gt;</value>
+    <value>SMTP does not appear to be configured. You must configure your SMTP settings in order to enable Email a Friend and Approval Notification functionality. &lt;a href="http://www.dotnetnuke.com/Resources/Wiki/Page/SMTP.aspx" target=_blank&gt;For help with this click here&lt;/a&gt;</value>
   </data>
   <data name="cvEmailNotification.Text" xml:space="preserve">
     <value>You cannot enable email notifications if SMTP settings are not configured.</value>
@@ -515,29 +515,17 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="lblCommunityServices.Text" xml:space="preserve">
     <value>Community Services</value>
   </data>
-  <data name="clpArticleEditDefaults.CollapsedText" xml:space="preserve">
-    <value>Article Edit Default Settings (click to expand)</value>
+  <data name="Article Edit Default Settings.Text" xml:space="preserve">
+    <value>Article Edit Default Settings</value>
   </data>
-  <data name="clpArticleEditDefaults.ExpandedText" xml:space="preserve">
-    <value>Article Edit Default Settings (click to collapse)</value>
+  <data name="Community Settings.Text" xml:space="preserve">
+    <value>Community Settings</value>
   </data>
-  <data name="clpCommunity.CollapsedText" xml:space="preserve">
-    <value>Community Settings (click to expand)</value>
+  <data name="Tag Settings.Text" xml:space="preserve">
+    <value>Tag Settings</value>
   </data>
-  <data name="clpCommunity.ExpandedText" xml:space="preserve">
-    <value>Community Settings (click to collapse)</value>
-  </data>
-  <data name="clpTagSettings.CollapsedText" xml:space="preserve">
-    <value>Tag Settings (click to expand)</value>
-  </data>
-  <data name="clpTagSettings.ExpandedText" xml:space="preserve">
-    <value>Tag Settings (click to collapse)</value>
-  </data>
-  <data name="clpAdminEdit.CollapsedText" xml:space="preserve">
-    <value>Admin Edit Settings (click to expand)</value>
-  </data>
-  <data name="clpAdminEdit.ExpandedText" xml:space="preserve">
-    <value>Admin Edit Settings (click to collapse)</value>
+  <data name="Admin Edit Settings.Text" xml:space="preserve">
+    <value>Admin Edit Settings</value>
   </data>
   <data name="plCommentNotification.Help" xml:space="preserve">
     <value>If enabled, article authors will receive an email notification when a new comment is posted to an article.</value>
@@ -551,11 +539,8 @@ http://blogsearch.google.com/ping/RPC2</value>
   <data name="plUseShortPublishLinks.Text" xml:space="preserve">
     <value>Enable Publish shortened links (see help):</value>
   </data>
-  <data name="clpAddOns.CollapsedText" xml:space="preserve">
-    <value>Module AddOns (click to expand)</value>
-  </data>
-  <data name="clpAddOns.ExpandedText" xml:space="preserve">
-    <value>Module AddOns (click to collapse)</value>
+  <data name="Module AddOns.Text" xml:space="preserve">
+    <value>Module Add-Ons</value>
   </data>
   <data name="plAdminPagingSize.Help" xml:space="preserve">
     <value>Choose how many items to display per page on the administration lists for Publish, this is the default value.</value>

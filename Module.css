@@ -62,10 +62,6 @@
 {
 	vertical-align:top;
 }
-.AdminSettingsTable
-{
-	width: 100%;
-}
 
 .chooseArticleListDropDown
 {
@@ -693,17 +689,6 @@ Module CSS
 	float:right;
 }
 
-/*these settings are for the Publish Settings table, loaded by the admin controls */
-
-#PublishSettingsTable
-{margin-top:15px;
-}
-#PublishSettingsTable tr
-{
-	vertical-align:top;
-	height:25px;
-}
-
 .listing_table_head_row
 {
 	 background-color: Gray;
@@ -1214,8 +1199,6 @@ a.mouseOverImage:hover
 	width:25px;
 }
 
-.DataGrid_Header
-{}
 .DataGrid_Header th, .DataGrid_Header th a
 {
 	 background-color: Gray;
@@ -1255,23 +1238,10 @@ a.mouseOverImage:hover
 	height:30px;
 }
 
-.CustomList_ParentCategory
-{
-	
-}
-.CustomList_ParentCategoryName
-{
-	
-}
-.CustomList_ParentCategoryDescription
-{
-	
-}
-
 .divItemsListing h1, .divItemsListing h2
 {
-	margin-top:0px;
-	margin-bottom:0px;
+	margin-top:0;
+	margin-bottom:0;
 }
 
 /*Publish Admin edit styles */
@@ -1284,16 +1254,6 @@ a.mouseOverImage:hover
 .PublishEditTable td
 {
 	padding:3px;
-}
-
-.PublishSettingsTable
-{
-	width:100%;
-}
-
-.PublishSettingsTableLabelColumn
-{
-	width:40%;
 }
 
 
@@ -1310,6 +1270,9 @@ a.mouseOverImage:hover
 	width:300px;
 	height:150px;
 }
+
+/***** Admin > AdminSettings  ******/
+.publishAdminSettings {position:relative;}
 
 /****** DNN 6 style override/update ************/
 .dnnFormItem input[type="email"] {min-width:35%} /* match type="text" */

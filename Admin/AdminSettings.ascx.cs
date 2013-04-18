@@ -24,6 +24,7 @@ namespace Engage.Dnn.Publish.Admin
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -38,7 +39,6 @@ namespace Engage.Dnn.Publish.Admin
         protected override void OnInit(EventArgs e)
         {
             this.Load += this.Page_Load;
-            this.lnkUpdate.Click += this.lnkUpdate_Click;
             base.OnInit(e);
         }
 
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish.Admin
         protected void chkEnableRatings_CheckedChanged(object source, EventArgs args)
         {
             // rowAnonymousRatings.Visible = chkEnableRatings.Checked;
-            this.rowMaximumRating.Visible = this.chkEnableRatings.Checked;
+            this.MaximumRatingPanel.Visible = this.chkEnableRatings.Checked;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", 
@@ -305,16 +305,7 @@ namespace Engage.Dnn.Publish.Admin
 
         private new void DefaultRichTextDescriptions()
         {
-            if (this.chkAllowRichTextDescriptions.Checked)
-            {
-                this.chkDefaultRichTextDescriptions.Visible = true;
-                this.plDefaultRichTextDescriptions.Visible = true;
-            }
-            else
-            {
-                this.chkDefaultRichTextDescriptions.Visible = false;
-                this.plDefaultRichTextDescriptions.Visible = false;
-            }
+            this.DefaultRichTextDescriptionsPanel.Visible = this.chkAllowRichTextDescriptions.Checked;
         }
 
         private void FillListControls()
@@ -352,9 +343,9 @@ namespace Engage.Dnn.Publish.Admin
             this.ddlCommentsType.Items.Clear();
             this.ddlCommentsType.Items.Add(new ListItem(Localization.GetString("PublishCommentType", this.LocalResourceFile), string.Empty));
 
-            this.rowCommentsType.Visible = (new ModuleController()).GetModuleByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName) !=
+            this.CommentsTypePanel.Visible = (new ModuleController()).GetModuleByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName) !=
                                            null;
-            if (this.rowCommentsType.Visible)
+            if (this.CommentsTypePanel.Visible)
             {
                 this.ddlCommentsType.Items.Add(
                     new ListItem(
@@ -489,7 +480,7 @@ namespace Engage.Dnn.Publish.Admin
             }
             else
             {
-                this.lblFriendlyUrlsNotOn.Visible = true;
+                this.FriendlyUrlsNotOnPanel.Visible = true;
                 this.chkEnablePublishFriendlyUrls.Checked = false;
                 this.chkEnablePublishFriendlyUrls.Enabled = false;
             }
@@ -525,7 +516,7 @@ namespace Engage.Dnn.Publish.Admin
             // }
 
             // rowAnonymousRatings.Visible = chkEnableRatings.Checked;
-            this.rowMaximumRating.Visible = this.chkEnableRatings.Checked;
+            this.MaximumRatingPanel.Visible = this.chkEnableRatings.Checked;
 
             // rowCommentApproval.Visible = chkEnableComments.Checked;
             // rowCommentAnonymous.Visible = chkEnableComments.Checked;
@@ -570,59 +561,25 @@ namespace Engage.Dnn.Publish.Admin
             this.radThumbnailSelection.SelectedIndex = 0;
         }
 
-        private void LocalizeCollapsePanels()
-        {
-            string expandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
-            string collapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
-
-            this.clpTagSettings.CollapsedText = Localization.GetString("clpTagSettings.CollapsedText", this.LocalResourceFile);
-            this.clpTagSettings.ExpandedText = Localization.GetString("clpTagSettings.ExpandedText", this.LocalResourceFile);
-            this.clpTagSettings.ExpandedImage = expandedImage;
-            this.clpTagSettings.CollapsedImage = collapsedImage;
-
-            this.clpCommunity.CollapsedText = Localization.GetString("clpCommunity.CollapsedText", this.LocalResourceFile);
-            this.clpCommunity.ExpandedText = Localization.GetString("clpCommunity.ExpandedText", this.LocalResourceFile);
-            this.clpCommunity.ExpandedImage = expandedImage;
-            this.clpCommunity.CollapsedImage = collapsedImage;
-
-            this.clpArticleEditDefaults.CollapsedText = Localization.GetString("clpArticleEditDefaults.CollapsedText", this.LocalResourceFile);
-            this.clpArticleEditDefaults.ExpandedText = Localization.GetString("clpArticleEditDefaults.ExpandedText", this.LocalResourceFile);
-            this.clpArticleEditDefaults.ExpandedImage = expandedImage;
-            this.clpArticleEditDefaults.CollapsedImage = collapsedImage;
-
-            this.clpAdminEdit.CollapsedText = Localization.GetString("clpAdminEdit.CollapsedText", this.LocalResourceFile);
-            this.clpAdminEdit.ExpandedText = Localization.GetString("clpAdminEdit.ExpandedText", this.LocalResourceFile);
-            this.clpAdminEdit.ExpandedImage = expandedImage;
-            this.clpAdminEdit.CollapsedImage = collapsedImage;
-
-            this.clpAddOns.CollapsedText = Localization.GetString("clpAddOns.CollapsedText", this.LocalResourceFile);
-            this.clpAddOns.ExpandedText = Localization.GetString("clpAddOns.ExpandedText", this.LocalResourceFile);
-            this.clpAddOns.ExpandedImage = expandedImage;
-            this.clpAddOns.CollapsedImage = collapsedImage;
-        }
-
         private void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                this.LocalizeCollapsePanels();
+                this.FirstTimeMessagePanel.Visible = !this.IsSetup;
 
-                if (!this.IsSetup)
-                {
-                    // if not setup already display a message notifying they must setup the admin side of things before they can procede.
-                    this.lblMessage.Text = Localization.GetString("FirstTime", this.LocalResourceFile);
-                }
-
-                if (this.IsPostBack == false)
+                jQuery.RequestDnnPluginsRegistration();
+                if (!this.IsPostBack)
                 {
                     this.LoadSettings();
                 }
 
-                if (IsHostMailConfigured == false)
+                if (IsHostMailConfigured)
                 {
-                    this.lblMailNotConfigured.Visible = true;
-                    this.lblMailNotConfiguredComment.Visible = true;
+                    return;
                 }
+
+                this.MailNotConfiguredPanel.Visible = true;
+                this.MailNotConfiguredCommentPanel.Visible = true;
             }
             catch (Exception exc)
             {
