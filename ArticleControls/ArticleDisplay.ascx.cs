@@ -1474,10 +1474,29 @@ namespace Engage.Dnn.Publish.ArticleControls
             }
         }
 
+        private void LocalizeValidators()
+        {
+            this.InvisibleCaptcha.ErrorMessage = Localization.GetString("InvisibleCaptchaFailed", this.LocalResourceFile);
+            this.InvisibleCaptcha.InvisibleTextBoxLabel = Localization.GetString("InvisibleCaptchaLabel", this.LocalResourceFile);
+            this.TimeoutCaptcha.ErrorMessage = Localization.GetString("TimeoutCaptchaFailed", this.LocalResourceFile);
+            this.StandardCaptcha.ErrorMessage = Localization.GetString("StandardCaptchaFailed", this.LocalResourceFile);
+            this.StandardCaptcha.CaptchaLinkButtonText = Localization.GetString("StandardCaptchaLink", this.LocalResourceFile);
+            this.StandardCaptcha.CaptchaTextBoxLabel = Localization.GetString("StandardCaptchaLabel", this.LocalResourceFile);
+        }
+
+        private void EnableValidators()
+        {
+            this.InvisibleCaptcha.Visible = this.InvisibleCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableInvisibleCaptcha, this.PortalId, true);
+            this.TimeoutCaptcha.Visible = this.TimeoutCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableTimedCaptcha, this.PortalId, true);
+            this.StandardCaptcha.Visible = this.StandardCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableStandardCaptcha, this.PortalId, false);
+        }
+
         private void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                this.LocalizeValidators();
+                this.EnableValidators();
                 if (!this.IsPostBack)
                 {
                     this.ConfigureSettings();
