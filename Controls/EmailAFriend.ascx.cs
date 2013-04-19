@@ -22,6 +22,8 @@ namespace Engage.Dnn.Publish.Controls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
+    using Engage.Dnn.Publish.Util;
+
     public partial class EmailAFriend : ModuleBase
     {
         protected override void OnInit(EventArgs e)
@@ -88,6 +90,7 @@ namespace Engage.Dnn.Publish.Controls
                 this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
                 this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
                 this.LocalizeValidators();
+                this.EnableValidators();
                 this.SetValidationGroup();
 
                 if (!this.IsPostBack)
@@ -110,6 +113,13 @@ namespace Engage.Dnn.Publish.Controls
             this.StandardCaptcha.ErrorMessage = Localization.GetString("StandardCaptchaFailed", this.LocalResourceFile);
             this.StandardCaptcha.CaptchaLinkButtonText = Localization.GetString("StandardCaptchaLink", this.LocalResourceFile);
             this.StandardCaptcha.CaptchaTextBoxLabel = Localization.GetString("StandardCaptchaLabel", this.LocalResourceFile);
+        }
+
+        private void EnableValidators()
+        {
+            this.InvisibleCaptcha.Visible = this.InvisibleCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableInvisibleCaptcha, this.PortalId, true);
+            this.TimeoutCaptcha.Visible = this.TimeoutCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableTimedCaptcha, this.PortalId, true);
+            this.StandardCaptcha.Visible = this.StandardCaptcha.Enabled = Utility.GetBooleanPortalSetting(Utility.PublishEnableStandardCaptcha, this.PortalId, false);
         }
 
         private void SetValidationGroup()
