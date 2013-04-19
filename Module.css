@@ -1,11 +1,10 @@
-
 .Publish_ItemDisplay
 {
 	clear:both;
 }
 
 /* form elements */
-.input_dropdown, .input_textbox
+.input_textbox
 {
 	font-size: 11px;
 }
@@ -15,18 +14,8 @@
     text-align: right;
 }
 
-/*nowrap only work when applied to a td directly (either as <td class="nowrap"> or <table class="nowrapTable">)*/
+/*nowrap only work when applied to a td directly (e.g. <td class="nowrap">)*/
 .nowrap
-{
-    white-space: normal;
-}
-
-.nowrapTable td
-{
-    white-space: nowrap;
-}
-
-.Help
 {
     white-space: normal;
 }
@@ -39,13 +28,10 @@
     width:20%;
 }
 
-
 .fullWidth
 {
     width:100%;
 }
-
-
 
 /* admin styles */
 .SettingsTable
@@ -72,7 +58,6 @@
 {
     display:none;
 }
-
 
 .admin_toolbar
 {
@@ -101,24 +86,21 @@
 	background:url(admin/images/articles.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_articles_sel
 {
 	background:url(admin/images/articles_sel.gif);
 	background-repeat:no-repeat;
-	
 }
+
 .admin_item_categories
 {
 	background:url(admin/images/categories.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_categories_sel
 {
 	background:url(admin/images/categories_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_settings
@@ -126,12 +108,10 @@
 	background:url(admin/images/settings.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_settings_sel
 {
 	background:url(admin/images/settings_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_comments
@@ -139,7 +119,6 @@
 	background:url(admin/images/comments.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_comments_sel
 {
 	background:url(admin/images/comments_sel.gif);
@@ -151,26 +130,21 @@
 	background:url(admin/images/help.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_help_sel
 {
 	background:url(admin/images/help_sel.gif);
 	background-repeat:no-repeat;
-	
 }
-
 
 .admin_item_delete
 {
 	background:url(admin/images/delete.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_delete_sel
 {
 	background:url(admin/images/delete_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 .admin_item_syndication
@@ -178,110 +152,34 @@
 	background:url(admin/images/syndication.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_syndication_sel
 {
 	background:url(admin/images/syndication_sel.gif);
 	background-repeat:no-repeat;	
 }
 
-
 .admin_item_admintools
 {
 	background:url(admin/images/admintools.gif);
 	background-repeat:no-repeat;
 }
-
 .admin_item_admintools_sel
 {
 	background:url(admin/images/admintools_sel.gif);
 	background-repeat:no-repeat;
-	
 }
 
 
-
-.divAdminItemSearch
-{
-	padding-left:5px;
-	padding-top:5px;
-	padding-right:5px;
-	padding-bottom:0px;
-	width:100%;
-	background-color:#ffffff;
-	border:solid 1px #000000;
-}
 
 .adminItemSearchDarkRow
 {
-	/*background-color:#FFCC66;
-	margin-bottom:5px;
-	padding:3px;*/
 	background-color: #f1f1f1;
 	width:100%;	
 }
-
 .adminItemSearchLightRow
 {
-	/*background-color:#FFF2D8;
-	margin-bottom:5px;
-	padding:3px;*/
-	background-color: #ffffff;
+	background-color: #fff;
 	width:100%;
-}
-
-.adminSearchResultsLightRow
-{
-	background-color:#FFF2D8;
-	width:100%;
-}
-
-.adminSearchResultsLight2Row
-{
-	background-color:#FFFAF2;
-	padding:15px;
-	width:100%;
-}
-
-.adminSearchResultsLightRow td.adminSearchResultsThumbRow
-{
-	background-color:#DAF2DA;
-	width:85px;
-}
-
-.adminSearchResultsLight2Row td.adminSearchResultsThumbRow
-{
-	background-color:#C2EBC3;
-	width:85px;
-}
-
-
-.adminSearchResultstable,
-.adminSearchResultsTable td
-{
-	padding:3px;
-}
-.adminSearchResultsHeader
-{
-	background-color:#f56b0c;
-	border-left:solid 1px #000000;
-	border-top:solid 1px #000000;
-	border-right:solid 1px #000000;
-	border-bottom:solid 1px #000000;
-	color:#fcd1b3;
-	font-weight:bold;
-}
-
-.adminItemSearchDrop
-{
-	float:right;
-	display:inline;
-}
-
-.adminItemSearchLabel
-{
-	float:left;
-	padding-left:25px;
 }
 
 .error
@@ -306,146 +204,6 @@
 }
 
 
-/*articles for admin item search, not used anymore */
-#articleDiv .divAdminItemSearch
-{
-	padding-left:5px;
-	padding-top:5px;
-	padding-right:5px;
-	padding-bottom:0px;
-	width:100%;
-	background-color:#ffffff;
-	border:solid 1px #FFCC66;
-}
-
-#articleDiv .adminItemSearchDarkRow
-{
-	background-color:#FFCC66;
-	margin-bottom:5px;
-	padding:3px;
-	width:100%;	
-}
-
-#articleDiv .adminItemSearchLightRow
-{
-	background-color:#FFF2D8;
-	margin-bottom:5px;
-	padding:3px;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLightRow
-{
-	background-color:#FFF2D8;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLight2Row
-{
-	background-color:#FFFAF2;
-	padding:15px;
-	width:100%;
-}
-
-#articleDiv .adminSearchResultsLightRow td.adminSearchResultsThumbRow
-{
-	background-color:#DAF2DA;
-	width:85px;
-}
-
-#articleDiv .adminSearchResultsLight2Row td.adminSearchResultsThumbRow
-{
-	background-color:#C2EBC3;
-	width:85px;
-}
-
-
-#articleDiv .adminSearchResultstable,
-#articleDiv .adminSearchResultsTable td
-{
-	padding:3px;
-}
-#articleDiv .adminSearchResultsHeader
-{
-	background-color:#f56b0c;
-	color:#ffffff;
-}
-
-#articleDiv .adminItemSearchDrop
-{
-	float:right;
-	display:inline;
-}
-
-#articleDiv .adminItemSearchLabel
-{
-	float:left;
-	padding-left:25px;
-}
-
-
-
-/*
-**********************************************
-Module CSS
-**********************************************
-*/
-
-
-/*Related Item CSS*/
-.divRelatedItems
-{
-	background-color:#737D89;
-	width: 225px;
-	padding: 5px 5px 5px 5px;
-	color:White;
-	margin-bottom: 10px;
-}
-
-.divRelatedItems .title
-{
-	text-align: center;
-	width: 215px;
-}
-
-.divRelatedItems .image
-{
-	margin-top: 10px;
-	margin-right: 5px;
-	border: solid 1px #000000;
-}
-	
-.divRelatedItems .noimage
-{
-	margin-top: 10px;
-	margin-right: 5px;
-}
-	
-.divRelatedItems .text
-{
-	color: #FFFFFF;
-	font-size:12px;
-}
-
-.divRelatedItems a.text,
-.divRelatedItems a.text:hover,
-.divRelatedItems a.text:visited
-{
-	color: #FFFFFF;
-	font-weight:bold;
-	text-decoration:underline;
-}
-	
-
-.divNavigationMenu
-{
-	width:137px;
-}
-
-#divArticleContent
-{
-}
-
 #articleThumbnails
 {
     float:right;   
@@ -456,19 +214,11 @@ Module CSS
     display: block;
 }
 
-.divNavigationMenu
-{
-}
-
 /*Breadcrumb*/
 .divBreadcrumb
 {
 	font-size: 10pt;
 	margin-bottom: 5px;
-}
-
-.divBreadcrumb .seperator
-{
 }
 
 .divBreadcrumb a.navlink,
@@ -479,77 +229,6 @@ Module CSS
 	color: #90593A;
 	font-weight: bold;
 	text-decoration: underline;
-}
-
-/*Quick Search*/
-.quickSearchDropDown
-{
-	width:145px;
-	overflow:hidden;
-}
-
-.qsHeader
-{
-	background:url(images/quicksearch/quick-search-head.gif);
-	height:47px;
-	background-repeat:no-repeat;
-}
-
-
-
-/* Search Results */
-.divSearchResults {}
-
-.divSearchResults .title 
-{
-	font-weight: bold;
-	font-size: 15pt;
-	color: #666666;
-}
-
-.divSearchResults .description 
-{
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-.divSearchResults .step {}
-
-.divSearchResults .results {}
-
-.divSearchResults .results .label
-{
-	font-weight: bold;
-}
-
-.divSearchResults .name {}
-
-.divSearchResults .downloadlink {}
-
-.divSearchResults .header 
-{ 
-	font-weight: bold;
-	font-size: 9pt;
-}
-
-.divQuickSearch 
-{
-	FONT-SIZE: 8pt; 
-	COLOR: #000000; 
-}
-.divQuickSearch .DropDown { COLOR: #000000 }
-.divQuickSearch .RadioButtonList { FONT-SIZE: 8pt; COLOR: #000000 }
-.divQuickSearch .quickSearchDropDown { COLOR: #000000 }
-
-
-.divRelatedItemsText
-{
-	font-size:8pt;
-}
-
-#divArticleTitle
-{
-		
 }
 
 .txtName
@@ -567,12 +246,6 @@ Module CSS
 	float:right;
 }
 	
-#divControls
-{
-	width:100%;
-	clear:both;
-}
-
 .item_listing
 {
 	padding: 5px 5px 5px 5px;
@@ -586,7 +259,7 @@ Module CSS
 	margin-right: 10px;
 	width:85px;
 	height:85px;
-	background-image:url(../images/thumbnail.gif);
+	background-image:url(images/thumbnail.gif);
 	background-repeat:no-repeat;
 }
 .item_listing_nothumbnail
@@ -598,17 +271,6 @@ Module CSS
 {
 	width:85px;
 	height:85px;
-}
-
-.List .item_listing_thumbnail_image, .List .item_listing_thumbnail, .List .item_listing_abstract, .List .item_listing_readmore, .List .item_listing_category
-{
-	display: none;
-}
-
-.List .item_listing
-{
-	padding: 1px 2px 1px 2px;
-	margin-bottom: 2px;
 }
 
 .divItemApprovalSection
@@ -650,8 +312,8 @@ Module CSS
 
 #divAdminLinks ul
 {
-	margin-left:0px;
-	text-indent:0px;	
+	margin-left:0;
+	text-indent:0;	
 	display:inline;
 	
 }
@@ -684,8 +346,8 @@ Module CSS
 
 .divRelatedArticle
 {
-	width:300;
-	border:solid 1px #000000;
+	width:300px;
+	border:solid 1px #000;
 	float:right;
 }
 
@@ -696,32 +358,23 @@ Module CSS
 	 color: White;
 }
 
-.AdminContainerImagesHeight
-{
-	height:45;
-}
-
 /*Rating Control*/
 .ratingStar {
-    font-size: 0pt;
+    font-size: 0;
     width: 13px;
     height: 12px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     cursor: pointer;
     display: block;
     background-repeat: no-repeat;
 }
-
 .filledRatingStar {
     background-image: url(Images/FilledStar.png);
-
 }
-
 .emptyRatingStar {
     background-image: url(Images/EmptyStar.png);
 }
-
 .savedRatingStar {
     background-image: url(Images/SavedStar.png);
 }
@@ -737,10 +390,8 @@ Module CSS
 }
 
 .commentPopup {
-	background-color:#ffffdd;
-	border-width:3px;
-	border-style:solid;
-	border-color:Gray;
+	background-color:#ffd;
+	border:3px solid Gray;
 	padding:3px;
 }
 
@@ -750,15 +401,6 @@ Module CSS
 	width:95%;
 }
 
-#CommentName
-{
-	float:left;
-}
-
-#CommentCreatedDate
-{
-	float:left;
-}
 .PublishComment
 {
 	background-color:#f0efef;
@@ -771,7 +413,6 @@ Module CSS
 .PublishCommentWrapper
 {
 	overflow:auto;
-	
 }
 
 .PublishNoComments
@@ -798,8 +439,8 @@ Module CSS
 .progressUpdate
 {
 	position:fixed;
-	top:0px;
-	left:0px;
+	top:0;
+	left:0;
 	background-color:Gray;
 	filter:alpha(opacity=70);
 	opacity:0.7;
@@ -811,8 +452,8 @@ Module CSS
 .progressWrap
 {
 	position:fixed;
-	top:0px;
-	left:0px;
+	top:0;
+	left:0;
 	height:100%;
 	width:100%;
 	z-index:14;
@@ -822,7 +463,7 @@ Module CSS
 {
 	position:relative;
 	top:50%;
-	background-color:#ffffff;
+	background-color:#fff;
 	width:300px;
 	height:100px;
 	border:solid 2px Gray;
@@ -840,37 +481,12 @@ Module CSS
 	font-weight:bold;
 }
 
-.tbButton
-{
-	padding-left:5px;
-}
-
-.tbButtonHover
-{
-	padding-left:5px;
-	text-decoration:underline;
-	cursor:hand;
-}
-
-
-.toolbar
-{
-	position:absolute;
-	z-index:13;
-	background-color:#ffffff;
-	border:solid 1px #000;
-	width:400px;
-	top:-5px;
-	padding:5px;
-	
-}	
 
 /**************************************/
-/*Gallery Intergration Thumbnail Popup*/
+/*Gallery Integration Thumbnail Popup*/
 /**************************************/
-
 .publishArticleThumbnail {
-    border:1px solid #000000;
+    border:1px solid #000;
     margin: 5px;
 }
 
@@ -882,7 +498,7 @@ a.mouseOverImage, a.mouseOverImage:visited
 
 a.mouseOverImage:hover
 {
-    color:#000000;
+    color:#000;
     text-decoration:none;
 }
 
@@ -922,10 +538,6 @@ a.mouseOverImage:hover
 	clear:left;
 }
 
-.categoryItemList .itemAuthorDate
-{
-}
-
 .categoryItemList .itemEditLink
 {
 	float:right;
@@ -940,23 +552,13 @@ a.mouseOverImage:hover
 	padding-right:5px;
 }
 
-.categoryItemList .divItemContent
-{
-	float:left;	
-}
-
-.categoryItemList .lnkTitle
-{
-	float:left;
-}
-
 .categoryItemList
 {
 	display:block;
 	clear:both;
 	background-color:#f0efef; /* the background color for the listing */
 	margin-bottom:3px; /*this adds spacing below each listing, cleaning up the look */
-	padding:0px; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
+	padding:0; /*this would add some spacing around the inside of the div, but causes issues in IE7 */
 	display:inline-block; /*this enables the div to wrap around items in IE7 */
 	border:solid 1px #b0b0b0; /*adds a border to the bottom of each listing */
 	width:100%;
@@ -971,17 +573,17 @@ a.mouseOverImage:hover
 .categoryDisplayArticle .categoryItemList
 {
 	background:none;
-	border:0px solid #000;
-	padding:0px;
-	margin:0px;
+	border:0 solid #000;
+	padding:0;
+	margin:0;
 }
 
 .categoryDisplayCategory .categoryItemList
 {
 	background:none;
-	border:0px solid #000;
-	padding:0px;
-	margin:0px;
+	border:0 solid #000;
+	padding:0;
+	margin:0;
 
 }
 
@@ -1055,11 +657,6 @@ a.mouseOverImage:hover
 	width:100%;
 }
 
-.publishTextBoxHeight
-{
-	width:250px;
-}
-
 
 #publishTagCloud ol li span
 {
@@ -1127,15 +724,15 @@ a.mouseOverImage:hover
 
 .Publish_ArticleTags
 {
-	border:dashed 1px #000033;
-	margin:5px 0px 15px 0px;
+	border:dashed 1px #003;
+	margin:5px 0 15px 0;
 	padding:3px 3px 3px 3px;
 }
 
 
 .Publish_CategorySortedList
 {
-	border:solid 1px #000033;
+	border:solid 1px #003;
 }
 
 .Publish_CategorySortedList li
@@ -1144,23 +741,17 @@ a.mouseOverImage:hover
 	margin-left:-30px;
 }
 
-.Publish_CategorySortedItem
-{
-	height:25px;
-	white-space:nowrap;
-}
-
 .Publish_SortItem
 {
 	white-space:nowrap;
-	color:#000033;
+	color:#003;
 }
 
 
 .Publish_CategorySortItemDrop
 {
 	height:25px;
-	border:dotted 2px #000033;
+	border:dotted 2px #003;
 }
 
 .Publish_ItemViewReport
@@ -1210,7 +801,7 @@ a.mouseOverImage:hover
 }
 .DataGrid_Item td
 {
-	background-color: #ffffff;
+	background-color: #fff;
 }
 .DataGrid_AlternatingItem
 {
