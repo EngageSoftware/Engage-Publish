@@ -406,7 +406,7 @@ namespace Engage.Dnn.Publish.ArticleControls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlNameComment;
+        protected global::System.Web.UI.WebControls.PlaceHolder pnlNameComment;
         
         /// <summary>
         /// lblFirstNameComment control.
@@ -469,7 +469,7 @@ namespace Engage.Dnn.Publish.ArticleControls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEmailAddressComment;
+        protected global::System.Web.UI.WebControls.PlaceHolder pnlEmailAddressComment;
         
         /// <summary>
         /// lblEmailAddressComment control.
@@ -505,7 +505,7 @@ namespace Engage.Dnn.Publish.ArticleControls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlUrlComment;
+        protected global::System.Web.UI.WebControls.PlaceHolder pnlUrlComment;
         
         /// <summary>
         /// lblUrlComment control.
@@ -526,6 +526,42 @@ namespace Engage.Dnn.Publish.ArticleControls {
         protected global::System.Web.UI.WebControls.TextBox txtUrlComment;
         
         /// <summary>
+        /// InvisibleCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha InvisibleCaptcha;
+        
+        /// <summary>
+        /// TimeoutCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha TimeoutCaptcha;
+        
+        /// <summary>
+        /// StandardCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha StandardCaptcha;
+        
+        /// <summary>
+        /// valCommentSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary valCommentSummary;
+        
+        /// <summary>
         /// btnSubmitComment control.
         /// </summary>
         /// <remarks>
@@ -542,15 +578,6 @@ namespace Engage.Dnn.Publish.ArticleControls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnCancelComment;
-        
-        /// <summary>
-        /// valCommentSummary control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ValidationSummary valCommentSummary;
         
         /// <summary>
         /// pnlCommentConfirmation control.

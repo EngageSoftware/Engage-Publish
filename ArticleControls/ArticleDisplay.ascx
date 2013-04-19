@@ -1,5 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplay" Codebehind="ArticleDisplay.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
 <div id="articleDisplay" class="Normal">
 	<div id="divArticleTitle" runat="server" visible="false">
@@ -128,48 +129,48 @@
 	        <asp:UpdatePanel ID="upnlComments" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:Panel ID="pnlCommentEntry" runat="server" CssClass="commentEntry">
-                        <div id="commentEntryWrapper">
-                            <div id="commentInstructions"><asp:Label ID="lblInstructions" runat="server" ResourceKey="lblInstructions" /></div>
-                            <div id="commentText">
+                        <div id="commentEntryWrapper" class="dnnForm">
+                            <div id="commentText" class="dnnFormItem">
+                                <asp:Label ID="lblInstructions" runat="server" ResourceKey="lblInstructions" AssociatedControlID="txtComment" />
                                 <asp:TextBox TextMode="MultiLine" ID="txtComment" runat="server" EnableViewState="false" CssClass="commentTextbox" />
                                 <asp:RequiredFieldValidator ID="rfvCommentText" resourcekey="rfvCommentText" runat="server" Display="None" ControlToValidate="txtComment" ValidationGroup="commentVal" />
                             </div>
-                            <br />
-                            <asp:Panel ID="pnlNameComment" runat="server">
-                                <div id="commentFirstName">
-                                    <asp:Label ID="lblFirstNameComment" runat="server" />
+                            <asp:Placeholder ID="pnlNameComment" runat="server">
+                                <div id="commentFirstName" class="dnnFormItem">
+                                    <asp:Label ID="lblFirstNameComment" runat="server" AssociatedControlID="txtFirstNameComment" />
                                     <asp:TextBox ID="txtFirstNameComment" runat="server" EnableViewState="false" CssClass="commentFirstNameTextbox" />
                                     <asp:RequiredFieldValidator ID="rfvFirstNameComment" resourcekey="rfvFirstNameComment" runat="server" Display="None" ControlToValidate="txtFirstNameComment" ValidationGroup="commentVal" />
                                 </div>
-                                <div id="commentLastName">
-                                    <asp:Label ID="lblLastNameComment" runat="server" />
+                                <div id="commentLastName" class="dnnFormItem">
+                                    <asp:Label ID="lblLastNameComment" runat="server" AssociatedControlID="txtLastNameComment" />
                                     <asp:TextBox ID="txtLastNameComment" runat="server" EnableViewState="false" CssClass="commentLastNameTextbox" />
                                     <asp:RequiredFieldValidator ID="rfvLastNameComment" resourcekey="rfvLastNameComment" runat="server" Display="None" ControlToValidate="txtLastNameComment" ValidationGroup="commentVal" />
                                 </div>
-                                <br />
-                            </asp:Panel>
-                            <asp:Panel ID="pnlEmailAddressComment" runat="server">
-                                <div id="commentEmail">
-                                    <asp:Label ID="lblEmailAddressComment" runat="server" resourcekey="lblEmailAddressComment" />
+                            </asp:Placeholder>
+                            <asp:Placeholder ID="pnlEmailAddressComment" runat="server">
+                                <div id="commentEmail" class="dnnFormItem">
+                                    <asp:Label ID="lblEmailAddressComment" runat="server" resourcekey="lblEmailAddressComment" AssociatedControlID="txtEmailAddressComment" />
                                     <asp:TextBox ID="txtEmailAddressComment" runat="server" EnableViewState="false" CssClass="commentEmailTextbox" />
                                     <asp:RequiredFieldValidator ID="rfvEmailAddressComment" resourcekey="rfvEmailAddressComment" runat="server" Display="None" ControlToValidate="txtEmailAddressComment" ValidationGroup="commentVal" />
                                 </div>
-                                <br />
-                            </asp:Panel>
-                            <asp:Panel ID="pnlUrlComment" runat="server">
-                                <div id="commentUrl">
-                                    <asp:Label ID="lblUrlComment" runat="server" resourcekey="lblUrlComment" />
+                            </asp:Placeholder>
+                            <asp:Placeholder ID="pnlUrlComment" runat="server">
+                                <div id="commentUrl" class="dnnFormItem">
+                                    <asp:Label ID="lblUrlComment" runat="server" resourcekey="lblUrlComment" AssociatedControlID="txtUrlComment" />
                                     <asp:TextBox ID="txtUrlComment" runat="server" EnableViewState="false" CssClass="commentUrlTextbox" />
                                 </div>
-                                <br />
-                            </asp:Panel>
-                            <div id="commentSubmit">
-                                <asp:LinkButton ID="btnSubmitComment" runat="server" resourcekey="btnSubmitComment" OnClick="btnSubmitComment_Click" CssClass="commentSubmitButton" ValidationGroup="commentVal" />
-                            </div>
-                            <div id="commentCancel">
-                                <asp:LinkButton ID="btnCancelComment" runat="server" resourcekey="btnCancelComment" OnClick="btnCancelComment_Click" CssClass="commentCancelButton simplemodal-close" CausesValidation="false" ValidationGroup="commentVal" />
-                            </div>
-                            <asp:ValidationSummary ID="valCommentSummary" runat="server" ShowMessageBox="true" ShowSummary="false" DisplayMode="List" ValidationGroup="commentVal" />
+                            </asp:Placeholder>
+                            
+                            <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="None" ValidationGroup="commentVal" />
+                            <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="None" ValidationGroup="commentVal" />
+                            <dnn:DnnCaptcha ID="StandardCaptcha" runat="server" ProtectionMode="Captcha" Display="None" EnableRefreshImage="True" ValidationGroup="commentVal" />
+                            
+                            <asp:ValidationSummary ID="valCommentSummary" runat="server" ShowSummary="true" DisplayMode="BulletList" ValidationGroup="commentVal" CssClass="dnnFormMessage dnnFormValidationSummary" />
+
+                            <ul class="dnnActions dnnClear">
+                                <li><asp:LinkButton ID="btnSubmitComment" runat="server" resourcekey="btnSubmitComment" OnClick="btnSubmitComment_Click" CssClass="commentSubmitButton dnnPrimaryAction" ValidationGroup="commentVal" /></li>
+                                <li><asp:LinkButton ID="btnCancelComment" runat="server" resourcekey="btnCancelComment" OnClick="btnCancelComment_Click" CssClass="commentCancelButton dnnSecondayAction simplemodal-close" CausesValidation="false" ValidationGroup="commentVal" /></li>
+                            </ul>
                         </div>
                     </asp:Panel>
                     <asp:Panel ID="pnlCommentConfirmation" runat="server" Visible="false">

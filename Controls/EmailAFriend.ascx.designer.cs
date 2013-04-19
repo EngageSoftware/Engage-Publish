@@ -139,6 +139,24 @@ namespace Engage.Dnn.Publish.Controls {
         protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha TimeoutCaptcha;
         
         /// <summary>
+        /// StandardCaptcha control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha StandardCaptcha;
+        
+        /// <summary>
+        /// ValidationSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary;
+        
+        /// <summary>
         /// SendButton control.
         /// </summary>
         /// <remarks>

@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleEdit" CodeBehind="ArticleEdit.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/URLControl.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
@@ -19,7 +19,7 @@
         <table class="PublishEditTable Normal">
             <tr id="trArticleId" runat="server">
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblArticleId" ResourceKey="lblArticleId" runat="server" />
+                    <dnn:Label ID="lblArticleId" ResourceKey="lblArticleId" runat="server" />
                 </td>
                 <td class="fullWidth">
                     <asp:Label ID="txtArticleId" runat="server" />
@@ -31,7 +31,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblArticleText" ResourceKey="ArticleText" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblArticleText" ResourceKey="ArticleText" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:PlaceHolder ID="phArticleText" runat="server" />
@@ -41,7 +41,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblParentCategory" runat="server" ResourceKey="ParentCategory" />
+                    <dnn:Label ID="lblParentCategory" runat="server" ResourceKey="ParentCategory" />
                 </td>
                 <td class="fullWidth">
                     <asp:UpdatePanel ID="upnlParentCategory" runat="server" UpdateMode="Conditional">
@@ -84,7 +84,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblRelatedCategories" runat="server" ResourceKey="RelatedCategories" />
+                    <dnn:Label ID="lblRelatedCategories" runat="server" ResourceKey="RelatedCategories" />
                 </td>
                 <td class="fullWidth">
                     <asp:UpdatePanel ID="upnlRelatedCategories" runat="server" UpdateMode="Conditional">
@@ -109,11 +109,11 @@
                         </Triggers>
                         <ContentTemplate>
                             <asp:PlaceHolder ID="phRelatedArticles" runat="server" Visible="false">
-                                <dnn:label ID="lblRelatedArticles" runat="server" ResourceKey="RelatedArticles" />
+                                <dnn:Label ID="lblRelatedArticles" runat="server" ResourceKey="RelatedArticles" />
                                 <asp:CheckBox ID="chkIncludeOtherArticlesFromSameList" runat="server" Text="Automatically include other articles from the same Article List(s), and/or" ResourceKey="chkIncludeOtherArticlesFromSameList" /><br />
                             </asp:PlaceHolder>
                             <asp:PlaceHolder ID="phEmbeddedArticle" runat="server" Visible="false">
-                                <dnn:label ID="lblEmbeddedArticle" runat="server" ResourceKey="EmbeddedArticle" />
+                                <dnn:Label ID="lblEmbeddedArticle" runat="server" ResourceKey="EmbeddedArticle" />
                             </asp:PlaceHolder>
                         </ContentTemplate>
                     </asp:UpdatePanel>
@@ -123,7 +123,7 @@
         <table class="PublishEditTable Normal">
             <tr id="rowPhotoGallery" runat="server" visible="false">
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblPhotoGalleryAlbum" runat="server" cssclass="title" ControlName="ddlPhotoGalleryAlbum" />
+                    <dnn:Label ID="lblPhotoGalleryAlbum" runat="server" cssclass="title" ControlName="ddlPhotoGalleryAlbum" />
                 </td>
                 <td class="fullWidth">
                     <asp:DropDownList ID="ddlPhotoGalleryAlbum" runat="server" CssClass="NormalTextBox" />
@@ -134,7 +134,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblDisplayOptions" ResourceKey="lblDisplayOptions" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblDisplayOptions" ResourceKey="lblDisplayOptions" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:CheckBox ID="chkEmailAFriend" runat="server" ResourceKey="chkEmailAFriend" />
@@ -152,7 +152,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblArticleAttachment" ResourceKey="lblArticleAttachment" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblArticleAttachment" ResourceKey="lblArticleAttachment" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <dnn:URL ID="ctlUrlSelection" runat="server" Width="325"
@@ -172,7 +172,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblVersionNumber" ResourceKey="lblVersionNumber" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblVersionNumber" ResourceKey="lblVersionNumber" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:TextBox ID="txtVersionNumber" runat="server" TextMode="SingleLine" />
@@ -182,7 +182,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblPreviousVersionDescription" ResourceKey="lblPreviousVersionDescription" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblPreviousVersionDescription" ResourceKey="lblPreviousVersionDescription" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:TextBox ID="txtPreviousVersionDescription" runat="server" TextMode="MultiLine" Columns="50" Rows="3" ReadOnly="true" />
@@ -192,7 +192,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblVersionDescription" ResourceKey="lblVersionDescription" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblVersionDescription" ResourceKey="lblVersionDescription" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:TextBox ID="txtVersionDescription" runat="server" TextMode="MultiLine" Columns="50" Rows="3" />
@@ -204,7 +204,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblDisplayOnCurrentPage" ResourceKey="lblDisplayOnCurrentPage" runat="server" cssclass="title" />
+                    <dnn:Label ID="lblDisplayOnCurrentPage" ResourceKey="lblDisplayOnCurrentPage" runat="server" cssclass="title" />
                 </td>
                 <td class="fullWidth">
                     <asp:UpdatePanel ID="upnlDisplayLocationOptions" runat="server" UpdateMode="Conditional">
@@ -225,7 +225,7 @@
                             <asp:AsyncPostBackTrigger ControlID="rblDisplayOnCurrentPage" />
                         </Triggers>
                         <ContentTemplate>
-                            <dnn:label ID="lblForceDisplayTab" runat="server" cssclass="title" Visible="false" />
+                            <dnn:Label ID="lblForceDisplayTab" runat="server" cssclass="title" Visible="false" />
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </td>
@@ -245,7 +245,7 @@
         <table class="PublishEditTable Normal">
             <tr>
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
+                    <dnn:Label ID="lblApproval" runat="server" ResourceKey="ApprovalStatus" />
                 </td>
                 <td class="fullWidth">
                     <asp:UpdatePanel ID="upnlApproval" runat="server" UpdateMode="Conditional">
@@ -261,7 +261,7 @@
         <table class="PublishEditTable Normal">
             <tr runat="server" id="rowTagEntry">
                 <td class="editTableLabelColumn nowrap">
-                    <dnn:label ID="lblTagEntry" runat="server" ResourceKey="TagEntry" />
+                    <dnn:Label ID="lblTagEntry" runat="server" ResourceKey="TagEntry" />
                 </td>
                 <td class="fullWidth">
                     <asp:PlaceHolder ID="phTagEntry" runat="server"></asp:PlaceHolder>

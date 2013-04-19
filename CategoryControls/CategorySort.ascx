@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategorySort" CodeBehind="CategorySort.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="sectionhead" Src="~/controls/sectionheadcontrol.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
 
@@ -14,13 +14,13 @@
     <ContentTemplate>
         <asp:Panel ID="pnlSortList" runat="server">
             <div id="Publish_CategorySortInitialListDiv">
-                <dnn:label ID="lblCategoryItems" runat="server" />
+                <dnn:Label ID="lblCategoryItems" runat="server" />
                 <asp:ListBox ID="lbCategoryItems" CssClass="Publish_CategorySortUnsortedList" runat="server" DataTextField="ChildName" DataValueField="ItemRelationshipId" SelectionMode="single"></asp:ListBox>
                 <br />
                 <asp:LinkButton ID="lbMoveToSort" runat="server" resourcekey="lbMoveToSort" OnClick="lbMoveToSort_Click"></asp:LinkButton>
             </div>
             <div id="Publish_CategorySortSortedListDiv">
-                <dnn:label ID="lblSortedItems" runat="server" />
+                <dnn:Label ID="lblSortedItems" runat="server" />
                 <ajaxToolkit:ReorderList ID="rlCategorySort" runat="server" DragHandleAlignment="Left" ItemInsertLocation="End" DataKeyField="ItemRelationshipId" SortOrderField="SortOrder" AllowReorder="true" OnItemReorder="rlCategorySort_Reorder" PostBackOnReorder="true" CssClass="Publish_CategorySortedList" OnDeleteCommand="DeleteItem">
                     <ItemTemplate>
                         <asp:Label ID="lblItemRelationshipId" runat="server" Visible="false" Text='<%# DataBinder.Eval(Container.DataItem,"itemRelationshipId") %>'></asp:Label>

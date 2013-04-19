@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleList" Codebehind="ArticleList.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 
 <asp:UpdateProgress ID="upArticleListProgress" runat="server" AssociatedUpdatePanelID="upnlArticleList">
     <ProgressTemplate>

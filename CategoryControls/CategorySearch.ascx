@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.CategoryControls.CategorySearch" Codebehind="CategorySearch.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/labelControl.ascx" %>
 <div class="Normal"> 
     <div id="divSearchField" runat="server" class="divSearchField">
 	    <div id="divSearchSpacer" ></div>
@@ -8,7 +8,7 @@
 		    <asp:DropDownList ID="ddlCategoryList" Runat="server" cssclass="searchCategorySelect"></asp:DropDownList>
 	    </div>
 	    <div id="divSearchInputs">
-	        <div id="searchInputLabel" class="searchInputLabel"><dnn:label ResourceKey="lblCategorySearch" ID="lblCategorySearch" runat="server" /></div>
+	        <div id="searchInputLabel" class="searchInputLabel"><dnn:Label ResourceKey="lblCategorySearch" ID="lblCategorySearch" runat="server" /></div>
 		    <asp:TextBox ID="txtCategorySearch" resourcekey="txtCategorySearch" Runat="server" OnClick="this.value='';"
 			    CssClass="hi_searchbar_field"></asp:TextBox>
 	    </div>

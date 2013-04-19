@@ -16,14 +16,15 @@ namespace Engage.Dnn.Publish.Admin
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.Web;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -38,7 +39,6 @@ namespace Engage.Dnn.Publish.Admin
         protected override void OnInit(EventArgs e)
         {
             this.Load += this.Page_Load;
-            this.lnkUpdate.Click += this.lnkUpdate_Click;
             base.OnInit(e);
         }
 
@@ -56,7 +56,7 @@ namespace Engage.Dnn.Publish.Admin
         protected void chkEnableRatings_CheckedChanged(object source, EventArgs args)
         {
             // rowAnonymousRatings.Visible = chkEnableRatings.Checked;
-            this.rowMaximumRating.Visible = this.chkEnableRatings.Checked;
+            this.MaximumRatingPanel.Visible = this.chkEnableRatings.Checked;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", 
@@ -116,205 +116,118 @@ namespace Engage.Dnn.Publish.Admin
             Justification = "Controls use lower case prefix")]
         protected void lnkUpdate_Click(object sender, EventArgs e)
         {
-            if (this.Page.IsValid)
+            if (!this.Page.IsValid)
             {
-                var hostController = HostController.Instance;
-                hostController.Update(Utility.PublishSetup + this.PortalId.ToString(CultureInfo.InvariantCulture), "true");
-                hostController.Update(
-                    Utility.PublishEmail + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEmailNotification.Checked.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishEmailNotificationRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlEmailRoles.SelectedValue);
-                hostController.Update(
-                    Utility.PublishAdminRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlRoles.SelectedValue);
-                hostController.Update(
-                    Utility.PublishAuthorRole + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlAuthor.SelectedValue);
-
-                hostController.Update(
-                    Utility.PublishAuthorCategoryEdit + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkAuthorCategoryEdit.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishEnableArticlePaging + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnablePaging.Checked.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishEnableTags + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableTags.Checked.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishEnableSimpleGalleryIntegration + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableSimpleGallery.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishEnableUltraMediaGalleryIntegration + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableUltraMediaGallery.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishEnableVenexusSearch + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableVenexus.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishEnableViewTracking + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableViewTracking.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishEnableDisplayNameAsHyperlink + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableDisplayNameAsHyperlink.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishAllowRichTextDescriptions + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkAllowRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultRichTextDescriptions + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultRichTextDescriptions.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishUseApprovals + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkUseApprovals.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishUseEmbeddedArticles + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkUseEmbeddedArticles.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishShowItemId + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkShowItemId.Checked.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishCacheTime + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtDefaultCacheTime.Text.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultAdminPagingSize + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtAdminPagingSize.Text.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishDescriptionEditHeight + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtItemDescriptionHeight.Text.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishArticleEditHeight + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtArticleTextHeight.Text.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishDescriptionEditWidth + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtItemDescriptionWidth.Text.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishArticleEditWidth + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtArticleTextWidth.Text.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishEnablePublishFriendlyUrls + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnablePublishFriendlyUrls.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishThumbnailSubdirectory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtThumbnailSubdirectory.Text.EndsWith("/", StringComparison.Ordinal)
-                        ? this.txtThumbnailSubdirectory.Text
-                        : this.txtThumbnailSubdirectory.Text + "/");
-                hostController.Update(
-                    Utility.PublishThumbnailDisplayOption + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.radThumbnailSelection.SelectedValue.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultDisplayPage + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.ddlDefaultDisplay.SelectedValue.ToString(CultureInfo.InvariantCulture));
-
-                if (this.ddlDefaultTextHtmlCategory.SelectedIndex > 0)
-                {
-                    hostController.Update(
-                        Utility.PublishDefaultTextHtmlCategory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                        this.ddlDefaultTextHtmlCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
-                }
-
-                if (this.ddlDefaultCategory.SelectedIndex > 0)
-                {
-                    hostController.Update(
-                        Utility.PublishDefaultCategory + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                        this.ddlDefaultCategory.SelectedValue.ToString(CultureInfo.InvariantCulture));
-                }
-
-                hostController.Update(
-                    Utility.PublishDefaultTagPage + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.ddlTagList.SelectedValue.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishDefaultReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultReturnToList.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultRatings + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultArticleRatings.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultComments + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultArticleComments.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishCommentEmailAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkCommentNotification.Checked.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishDefaultEmailAFriend + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultEmailAFriend.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultPrinterFriendly + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultPrinterFriendly.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishSessionReturnToList + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkReturnToListSession.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultShowAuthor + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultShowAuthor.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishDefaultShowTags + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkDefaultShowTags.Checked.ToString(CultureInfo.InvariantCulture));
-
-                /*ratings*/
-                hostController.Update(
-                    Utility.PublishRating + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableRatings.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishRatingMaximum + this.PortalId.ToString(CultureInfo.InvariantCulture), this.txtMaximumRating.Text);
-
-                // hostController.Update(Utility.PublishRatingAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousRatings.Checked.ToString(CultureInfo.InvariantCulture));
-                /*comments*/
-                hostController.Update(
-                    Utility.PublishComment + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnableComments.Checked.ToString(CultureInfo.InvariantCulture));
-
-                /*Ping Settings*/
-                hostController.Update(
-                    Utility.PublishEnablePing + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.chkEnablePing.Checked.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishPingServers + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtPingServers.Text.ToString(CultureInfo.InvariantCulture));
-                hostController.Update(
-                    Utility.PublishPingChangedUrl + this.PortalId.ToString(CultureInfo.InvariantCulture), 
-                    this.txtPingChangedUrl.Text.ToString(CultureInfo.InvariantCulture));
-
-                hostController.Update(
-                    Utility.PublishForumProviderType + this.PortalId.ToString(CultureInfo.InvariantCulture), this.ddlCommentsType.SelectedValue);
-
-                // hostController.Update(Utility.PublishCommentApproval + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentApproval.Checked.ToString(CultureInfo.InvariantCulture));
-                // hostController.Update(Utility.PublishCommentAnonymous + PortalId.ToString(CultureInfo.InvariantCulture), chkAnonymousComment.Checked.ToString(CultureInfo.InvariantCulture));
-                // hostController.Update(Utility.PublishCommentAutoApprove + PortalId.ToString(CultureInfo.InvariantCulture), chkCommentAutoApprove.Checked.ToString(CultureInfo.InvariantCulture));
-
-                // TODO: Remove after DNN 5.5.x fixes DNN-13633 (not clearing all the cache after updates)
-                DataCache.ClearHostCache(true);
-
-                string returnUrl = this.Server.UrlDecode(this.Request.QueryString["returnUrl"]);
-                if (!Engage.Utility.HasValue(returnUrl))
-                {
-                    this.Response.Redirect(
-                        Globals.NavigateURL(this.TabId, Utility.AdminContainer, "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture)));
-                }
-                else
-                {
-                    this.Response.Redirect(returnUrl, true);
-                }
+                return;
             }
+
+            this.UpdateHostSetting(Utility.PublishSetup, true);
+            this.UpdateHostSetting(Utility.PublishEmail, this.chkEmailNotification.Checked);
+
+            this.UpdateHostSetting(Utility.PublishEmailNotificationRole, this.ddlEmailRoles.SelectedValue);
+            this.UpdateHostSetting(Utility.PublishAdminRole, this.ddlRoles.SelectedValue);
+            this.UpdateHostSetting(Utility.PublishAuthorRole, this.ddlAuthor.SelectedValue);
+
+            this.UpdateHostSetting(Utility.PublishAuthorCategoryEdit, this.chkAuthorCategoryEdit.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableArticlePaging, this.chkEnablePaging.Checked);
+
+            this.UpdateHostSetting(Utility.PublishEnableTags, this.chkEnableTags.Checked);
+
+            this.UpdateHostSetting(Utility.PublishEnableSimpleGalleryIntegration, this.chkEnableSimpleGallery.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableUltraMediaGalleryIntegration, this.chkEnableUltraMediaGallery.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableVenexusSearch, this.chkEnableVenexus.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableViewTracking, this.chkEnableViewTracking.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableDisplayNameAsHyperlink, this.chkEnableDisplayNameAsHyperlink.Checked);
+            this.UpdateHostSetting(Utility.PublishAllowRichTextDescriptions, this.chkAllowRichTextDescriptions.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultRichTextDescriptions, this.chkDefaultRichTextDescriptions.Checked);
+            this.UpdateHostSetting(Utility.PublishUseApprovals, this.chkUseApprovals.Checked);
+            this.UpdateHostSetting(Utility.PublishUseEmbeddedArticles, this.chkUseEmbeddedArticles.Checked);
+            this.UpdateHostSetting(Utility.PublishShowItemId, this.chkShowItemId.Checked);
+            this.UpdateHostSetting(Utility.PublishCacheTime, this.txtDefaultCacheTime.Text);
+            this.UpdateHostSetting(Utility.PublishDefaultAdminPagingSize, this.txtAdminPagingSize.Text);
+
+            this.UpdateHostSetting(Utility.PublishDescriptionEditHeight, this.txtItemDescriptionHeight.Text);
+            this.UpdateHostSetting(Utility.PublishArticleEditHeight, this.txtArticleTextHeight.Text);
+
+            this.UpdateHostSetting(Utility.PublishDescriptionEditWidth, this.txtItemDescriptionWidth.Text);
+            this.UpdateHostSetting(Utility.PublishArticleEditWidth, this.txtArticleTextWidth.Text);
+
+            this.UpdateHostSetting(Utility.PublishEnablePublishFriendlyUrls, this.chkEnablePublishFriendlyUrls.Checked);
+            this.UpdateHostSetting(Utility.PublishThumbnailSubdirectory, this.txtThumbnailSubdirectory.Text.EndsWith("/", StringComparison.Ordinal) ? this.txtThumbnailSubdirectory.Text : this.txtThumbnailSubdirectory.Text + "/");
+            this.UpdateHostSetting(Utility.PublishThumbnailDisplayOption, this.radThumbnailSelection.SelectedValue);
+            this.UpdateHostSetting(Utility.PublishDefaultDisplayPage, this.ddlDefaultDisplay.SelectedValue);
+            
+            if (this.ddlDefaultTextHtmlCategory.SelectedIndex > 0)
+            {
+                this.UpdateHostSetting(Utility.PublishDefaultTextHtmlCategory, this.ddlDefaultTextHtmlCategory.SelectedValue);
+            }
+
+            if (this.ddlDefaultCategory.SelectedIndex > 0)
+            {
+                this.UpdateHostSetting(Utility.PublishDefaultCategory, this.ddlDefaultCategory.SelectedValue);
+            }
+
+            this.UpdateHostSetting(Utility.PublishDefaultTagPage, this.ddlTagList.SelectedValue);
+
+            this.UpdateHostSetting(Utility.PublishDefaultReturnToList, this.chkDefaultReturnToList.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultRatings, this.chkDefaultArticleRatings.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultComments, this.chkDefaultArticleComments.Checked);
+            this.UpdateHostSetting(Utility.PublishCommentEmailAuthor, this.chkCommentNotification.Checked);
+            
+            this.UpdateHostSetting(Utility.PublishDefaultEmailAFriend, this.chkDefaultEmailAFriend.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultPrinterFriendly, this.chkDefaultPrinterFriendly.Checked);
+            this.UpdateHostSetting(Utility.PublishSessionReturnToList, this.chkReturnToListSession.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultShowAuthor, this.chkDefaultShowAuthor.Checked);
+            this.UpdateHostSetting(Utility.PublishDefaultShowTags, this.chkDefaultShowTags.Checked);
+
+            /*ratings*/
+            this.UpdateHostSetting(Utility.PublishRating, this.chkEnableRatings.Checked);
+            this.UpdateHostSetting(Utility.PublishRatingMaximum, this.txtMaximumRating.Text);
+
+            /*comments*/
+            this.UpdateHostSetting(Utility.PublishComment, this.chkEnableComments.Checked);
+
+            /*Ping Settings*/
+            this.UpdateHostSetting(Utility.PublishEnablePing, this.chkEnablePing.Checked);
+            this.UpdateHostSetting(Utility.PublishPingServers, this.txtPingServers.Text);
+            this.UpdateHostSetting(Utility.PublishPingChangedUrl, this.txtPingChangedUrl.Text);
+
+            this.UpdateHostSetting(Utility.PublishEnableInvisibleCaptcha, this.chkEnableInvisibleCaptcha.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableTimedCaptcha, this.chkEnableTimedCaptcha.Checked);
+            this.UpdateHostSetting(Utility.PublishEnableStandardCaptcha, this.chkEnableStandardCaptcha.Checked);
+
+            this.UpdateHostSetting(Utility.PublishForumProviderType, this.ddlCommentsType.SelectedValue);
+
+            var returnUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnUrl"]);
+            if (!Engage.Utility.HasValue(returnUrl))
+            {
+                returnUrl = Globals.NavigateURL(this.TabId, Utility.AdminContainer, "&mid=" + this.ModuleId.ToString(CultureInfo.InvariantCulture));
+            }
+
+            this.Response.Redirect(returnUrl);
+        }
+
+        /// <summary>Updates (or creates) the setting with the given name in the Host Settings store (but for the current portal).</summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        private void UpdateHostSetting(string settingName, bool settingValue)
+        {
+            this.UpdateHostSetting(settingName, settingValue.ToString());
+        }
+
+        /// <summary>Updates (or creates) the setting with the given name in the Host Settings store (but for the current portal).</summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        private void UpdateHostSetting(string settingName, string settingValue)
+        {
+            HostController.Instance.Update(
+                settingName + this.PortalId.ToString(CultureInfo.InvariantCulture),
+                settingValue);
         }
 
         private new void DefaultRichTextDescriptions()
         {
-            if (this.chkAllowRichTextDescriptions.Checked)
-            {
-                this.chkDefaultRichTextDescriptions.Visible = true;
-                this.plDefaultRichTextDescriptions.Visible = true;
-            }
-            else
-            {
-                this.chkDefaultRichTextDescriptions.Visible = false;
-                this.plDefaultRichTextDescriptions.Visible = false;
-            }
+            this.DefaultRichTextDescriptionsPanel.Visible = this.chkAllowRichTextDescriptions.Checked;
         }
 
         private void FillListControls()
@@ -352,9 +265,9 @@ namespace Engage.Dnn.Publish.Admin
             this.ddlCommentsType.Items.Clear();
             this.ddlCommentsType.Items.Add(new ListItem(Localization.GetString("PublishCommentType", this.LocalResourceFile), string.Empty));
 
-            this.rowCommentsType.Visible = (new ModuleController()).GetModuleByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName) !=
+            this.CommentsTypePanel.Visible = (new ModuleController()).GetModuleByDefinition(this.PortalId, Utility.ActiveForumsDefinitionModuleName) !=
                                            null;
-            if (this.rowCommentsType.Visible)
+            if (this.CommentsTypePanel.Visible)
             {
                 this.ddlCommentsType.Items.Add(
                     new ListItem(
@@ -452,6 +365,9 @@ namespace Engage.Dnn.Publish.Admin
             this.chkDefaultShowAuthor.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowAuthor, this.PortalId, true);
             this.chkDefaultShowTags.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultShowTags, this.PortalId, false);
             this.chkEnablePing.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnablePing, this.PortalId, false);
+            this.chkEnableInvisibleCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableInvisibleCaptcha, this.PortalId, true);
+            this.chkEnableTimedCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableTimedCaptcha, this.PortalId, true);
+            this.chkEnableStandardCaptcha.Checked = Utility.GetBooleanPortalSetting(Utility.PublishEnableStandardCaptcha, this.PortalId, false);
 
             this.chkDefaultEmailAFriend.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultEmailAFriend, this.PortalId, true);
             this.chkDefaultPrinterFriendly.Checked = Utility.GetBooleanPortalSetting(Utility.PublishDefaultPrinterFriendly, this.PortalId, true);
@@ -489,7 +405,7 @@ namespace Engage.Dnn.Publish.Admin
             }
             else
             {
-                this.lblFriendlyUrlsNotOn.Visible = true;
+                this.FriendlyUrlsNotOnPanel.Visible = true;
                 this.chkEnablePublishFriendlyUrls.Checked = false;
                 this.chkEnablePublishFriendlyUrls.Enabled = false;
             }
@@ -525,7 +441,7 @@ namespace Engage.Dnn.Publish.Admin
             // }
 
             // rowAnonymousRatings.Visible = chkEnableRatings.Checked;
-            this.rowMaximumRating.Visible = this.chkEnableRatings.Checked;
+            this.MaximumRatingPanel.Visible = this.chkEnableRatings.Checked;
 
             // rowCommentApproval.Visible = chkEnableComments.Checked;
             // rowCommentAnonymous.Visible = chkEnableComments.Checked;
@@ -570,59 +486,25 @@ namespace Engage.Dnn.Publish.Admin
             this.radThumbnailSelection.SelectedIndex = 0;
         }
 
-        private void LocalizeCollapsePanels()
-        {
-            string expandedImage = ApplicationUrl + Localization.GetString("ExpandedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
-            string collapsedImage = ApplicationUrl + Localization.GetString("CollapsedImage.Text", this.LocalSharedResourceFile).Replace("[L]", string.Empty);
-
-            this.clpTagSettings.CollapsedText = Localization.GetString("clpTagSettings.CollapsedText", this.LocalResourceFile);
-            this.clpTagSettings.ExpandedText = Localization.GetString("clpTagSettings.ExpandedText", this.LocalResourceFile);
-            this.clpTagSettings.ExpandedImage = expandedImage;
-            this.clpTagSettings.CollapsedImage = collapsedImage;
-
-            this.clpCommunity.CollapsedText = Localization.GetString("clpCommunity.CollapsedText", this.LocalResourceFile);
-            this.clpCommunity.ExpandedText = Localization.GetString("clpCommunity.ExpandedText", this.LocalResourceFile);
-            this.clpCommunity.ExpandedImage = expandedImage;
-            this.clpCommunity.CollapsedImage = collapsedImage;
-
-            this.clpArticleEditDefaults.CollapsedText = Localization.GetString("clpArticleEditDefaults.CollapsedText", this.LocalResourceFile);
-            this.clpArticleEditDefaults.ExpandedText = Localization.GetString("clpArticleEditDefaults.ExpandedText", this.LocalResourceFile);
-            this.clpArticleEditDefaults.ExpandedImage = expandedImage;
-            this.clpArticleEditDefaults.CollapsedImage = collapsedImage;
-
-            this.clpAdminEdit.CollapsedText = Localization.GetString("clpAdminEdit.CollapsedText", this.LocalResourceFile);
-            this.clpAdminEdit.ExpandedText = Localization.GetString("clpAdminEdit.ExpandedText", this.LocalResourceFile);
-            this.clpAdminEdit.ExpandedImage = expandedImage;
-            this.clpAdminEdit.CollapsedImage = collapsedImage;
-
-            this.clpAddOns.CollapsedText = Localization.GetString("clpAddOns.CollapsedText", this.LocalResourceFile);
-            this.clpAddOns.ExpandedText = Localization.GetString("clpAddOns.ExpandedText", this.LocalResourceFile);
-            this.clpAddOns.ExpandedImage = expandedImage;
-            this.clpAddOns.CollapsedImage = collapsedImage;
-        }
-
         private void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                this.LocalizeCollapsePanels();
+                this.FirstTimeMessagePanel.Visible = !this.IsSetup;
 
-                if (!this.IsSetup)
-                {
-                    // if not setup already display a message notifying they must setup the admin side of things before they can procede.
-                    this.lblMessage.Text = Localization.GetString("FirstTime", this.LocalResourceFile);
-                }
-
-                if (this.IsPostBack == false)
+                jQuery.RequestDnnPluginsRegistration();
+                if (!this.IsPostBack)
                 {
                     this.LoadSettings();
                 }
 
-                if (IsHostMailConfigured == false)
+                if (IsHostMailConfigured)
                 {
-                    this.lblMailNotConfigured.Visible = true;
-                    this.lblMailNotConfiguredComment.Visible = true;
+                    return;
                 }
+
+                this.MailNotConfiguredPanel.Visible = true;
+                this.MailNotConfiguredCommentPanel.Visible = true;
             }
             catch (Exception exc)
             {
