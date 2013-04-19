@@ -14,7 +14,10 @@ namespace Engage.Dnn.Publish.Controls
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.Text;
+    using System.Web.UI;
 
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
@@ -50,28 +53,18 @@ namespace Engage.Dnn.Publish.Controls
                     return;
                 }
 
-                string message = this.Localize("EmailAFriend");
-                message = message.Replace("[Engage:Recipient]", this.txtTo.Text.Trim());
-                message = message.Replace("[Engage:Url]", this.GetItemLinkUrlExternal(this.ItemId));
-                message = message.Replace("[Engage:From]", this.txtFrom.Text.Trim());
-                message = message.Replace("[Engage:Message]", this.txtMessage.Text.Trim());
+                var message = new StringBuilder(this.Localize("EmailAFriend"))
+                    .Replace("[Engage:Recipient]", this.txtTo.Text.Trim())
+                    .Replace("[Engage:Url]", this.GetItemLinkUrlExternal(this.ItemId))
+                    .Replace("[Engage:From]", this.txtFrom.Text.Trim())
+                    .Replace("[Engage:Message]", this.txtMessage.Text.Trim())
+                    .ToString();
 
-                string subject = this.Localize("EmailAFriendSubject");
-                subject = subject.Replace("[Engage:Portal]", this.PortalSettings.PortalName);
+                var subject = this.Localize("EmailAFriendSubject").Replace("[Engage:Portal]", this.PortalSettings.PortalName);
 
-                Mail.SendMail(
-                    this.PortalSettings.Email,
-                    this.txtTo.Text.Trim(),
-                    string.Empty,
-                    subject,
-                    message,
-                    string.Empty,
-                    "HTML",
-                    string.Empty,
-                    string.Empty,
-                    string.Empty,
-                    string.Empty);
+                Mail.SendEmail(this.PortalSettings.Email, this.txtTo.Text.Trim(), subject, message);
                 this.ClearCommentInput();
+                ScriptManager.RegisterStartupScript(this.Page, typeof(EmailAFriend), "Close SimpleModal", "jQuery.modal.close()", true);
             }
             catch (Exception exc)
             {
@@ -94,7 +87,7 @@ namespace Engage.Dnn.Publish.Controls
                 this.AddJQueryReference();
                 this.Page.ClientScript.RegisterClientScriptInclude("Engage_Publish_ModalPopup", this.ResolveUrl("../Scripts/ModalPopup.js"));
                 this.EmailAFriendPopupTriggerLink.Attributes["data-modal-target-id"] = this.pnlEmailAFriend.ClientID;
-                this.LocalizeCaptchas();
+                this.LocalizeValidators();
                 this.SetValidationGroup();
 
                 if (!this.IsPostBack)
@@ -108,11 +101,15 @@ namespace Engage.Dnn.Publish.Controls
             }
         }
 
-        private void LocalizeCaptchas()
+        private void LocalizeValidators()
         {
+            this.ValidationSummary.HeaderText = Localization.GetString("ValidationSummary.Header", this.LocalResourceFile);
             this.InvisibleCaptcha.ErrorMessage = Localization.GetString("InvisibleCaptchaFailed", this.LocalResourceFile);
             this.InvisibleCaptcha.InvisibleTextBoxLabel = Localization.GetString("InvisibleCaptchaLabel", this.LocalResourceFile);
             this.TimeoutCaptcha.ErrorMessage = Localization.GetString("TimeoutCaptchaFailed", this.LocalResourceFile);
+            this.StandardCaptcha.ErrorMessage = Localization.GetString("StandardCaptchaFailed", this.LocalResourceFile);
+            this.StandardCaptcha.CaptchaLinkButtonText = Localization.GetString("StandardCaptchaLink", this.LocalResourceFile);
+            this.StandardCaptcha.CaptchaTextBoxLabel = Localization.GetString("StandardCaptchaLabel", this.LocalResourceFile);
         }
 
         private void SetValidationGroup()
@@ -120,9 +117,11 @@ namespace Engage.Dnn.Publish.Controls
             var validationGroup = "ValidateGroupSend" + this.ModuleId.ToString(CultureInfo.InvariantCulture);
             this.ToRequiredValidator.ValidationGroup = validationGroup;
             this.FromRequiredValidator.ValidationGroup = validationGroup;
-            this.SendButton.ValidationGroup = validationGroup;
             this.InvisibleCaptcha.ValidationGroup = validationGroup;
             this.TimeoutCaptcha.ValidationGroup = validationGroup;
+            this.StandardCaptcha.ValidationGroup = validationGroup;
+            this.ValidationSummary.ValidationGroup = validationGroup;
+            this.SendButton.ValidationGroup = validationGroup;
         }
     }
 }

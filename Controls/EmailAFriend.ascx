@@ -7,6 +7,7 @@
 <br />
 <br />
 <asp:Panel ID="pnlEmailAFriend" runat="server" CssClass="commentPopup dnnForm" style="display:none;">
+    <asp:UpdatePanel runat="server" UpdateMode="Conditional"><ContentTemplate>
     <div class="divEmailAFriendForm">
         <div class="dnnFormItem">
             <asp:Label ID="lblTo" runat="server" ResourceKey="lblTo" AssociatedControlID="txtTo" />
@@ -25,12 +26,15 @@
             <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Columns="30" Rows="5" />            
         </div>
         
-        <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="Dynamic" CssClass="NormalRed" />
-        <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="Dynamic" CssClass="NormalRed" />
-
+        <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="None" />
+        <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="None" />
+        <dnn:DnnCaptcha ID="StandardCaptcha" runat="server" ProtectionMode="Captcha" Display="None" EnableRefreshImage="True" />
+        
+        <asp:ValidationSummary ID="ValidationSummary" runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" />
         <ul class="dnnActions dnnClear">
             <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" OnClick="btnSend_Click" /></li>
             <li><asp:LinkButton ResourceKey="btnCancel" runat="server" CssClass="dnnSecondaryAction simplemodal-close" CausesValidation="false" OnClick="btnCancel_Click1" /></li>
         </ul>
     </div>
+    </ContentTemplate></asp:UpdatePanel>
 </asp:Panel>
