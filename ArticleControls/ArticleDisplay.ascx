@@ -128,7 +128,7 @@
         <asp:Panel ID="pnlComment" runat="server" CssClass="commentPopup" style="display:none">
 	        <asp:UpdatePanel ID="upnlComments" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <asp:Panel ID="pnlCommentEntry" runat="server" CssClass="commentEntry">
+                    <asp:Panel ID="pnlCommentEntry" runat="server" CssClass="commentEntry" DefaultButton="btnSubmitComment">
                         <div id="commentEntryWrapper" class="dnnForm">
                             <div id="commentText" class="dnnFormItem">
                                 <asp:Label ID="lblInstructions" runat="server" ResourceKey="lblInstructions" AssociatedControlID="txtComment" />
