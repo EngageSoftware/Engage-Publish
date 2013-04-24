@@ -8,7 +8,7 @@
 <br />
 <asp:Panel ID="pnlEmailAFriend" runat="server" CssClass="commentPopup dnnForm" style="display:none;">
     <asp:UpdatePanel runat="server" UpdateMode="Conditional"><ContentTemplate>
-    <div class="divEmailAFriendForm">
+    <asp:Panel runat="server" CssClass="divEmailAFriendForm" DefaultButton="SendButton">
         <div class="dnnFormItem">
             <asp:Label ID="lblTo" runat="server" ResourceKey="lblTo" AssociatedControlID="txtTo" />
             <asp:TextBox ID="txtTo" runat="server" type="email" />
@@ -35,6 +35,6 @@
             <li><asp:LinkButton ID="SendButton" runat="server" ResourceKey="btnSend" CssClass="dnnPrimaryAction" OnClick="btnSend_Click" /></li>
             <li><asp:LinkButton ResourceKey="btnCancel" runat="server" CssClass="dnnSecondaryAction simplemodal-close" CausesValidation="false" OnClick="btnCancel_Click1" /></li>
         </ul>
-    </div>
+    </asp:Panel>
     </ContentTemplate></asp:UpdatePanel>
 </asp:Panel>
