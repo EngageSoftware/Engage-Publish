@@ -1067,7 +1067,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     case NameDisplayOption.Initial:
                         this.txtFirstNameComment.MaxLength = 1;
-                        this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1)
+                        this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1 && !string.IsNullOrEmpty(this.UserInfo.FirstName))
                                                             ? this.UserInfo.FirstName.Substring(0, 1)
                                                             : string.Empty;
                         this.lblFirstNameComment.Text = this.Localize("FirstInitial");
@@ -1083,7 +1083,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                         // case NameDisplayOption.Full:
                     default:
-                        this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.FirstName : string.Empty;
+                        this.txtFirstNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) 
+                                                            ? this.UserInfo.FirstName 
+                                                            : string.Empty;
                         this.lblFirstNameComment.Text = this.Localize("FirstName");
                         showNamePanel = true;
                         break;
@@ -1093,7 +1095,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     case NameDisplayOption.Initial:
                         this.txtLastNameComment.MaxLength = 1;
-                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1)
+                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1 && !string.IsNullOrEmpty(this.UserInfo.FirstName))
                                                            ? this.UserInfo.LastName.Substring(0, 1)
                                                            : string.Empty;
                         this.lblLastNameComment.Text = this.Localize("LastInitial");
@@ -1109,7 +1111,9 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                         // case NameDisplayOption.Full:
                     default:
-                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.LastName : string.Empty;
+                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) 
+                                                           ? this.UserInfo.LastName 
+                                                           : string.Empty;
                         this.lblLastNameComment.Text = this.Localize("LastName");
                         showNamePanel = true;
                         break;
@@ -1121,12 +1125,16 @@ namespace Engage.Dnn.Publish.ArticleControls
 
                 if (this.pnlEmailAddressComment.Visible)
                 {
-                    this.txtEmailAddressComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.Email : string.Empty;
+                    this.txtEmailAddressComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) 
+                                                           ? this.UserInfo.Email 
+                                                           : string.Empty;
                 }
 
                 if (this.pnlUrlComment.Visible)
                 {
-                    this.txtUrlComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) ? this.UserInfo.Profile.Website : string.Empty;
+                    this.txtUrlComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1) 
+                                                  ? this.UserInfo.Profile.Website 
+                                                  : string.Empty;
                 }
             }
             else
