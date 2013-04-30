@@ -1095,7 +1095,7 @@ namespace Engage.Dnn.Publish.ArticleControls
                 {
                     case NameDisplayOption.Initial:
                         this.txtLastNameComment.MaxLength = 1;
-                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1 && !string.IsNullOrEmpty(this.UserInfo.FirstName))
+                        this.txtLastNameComment.Text = (this.UserInfo != null && this.UserInfo.UserID != -1 && !string.IsNullOrEmpty(this.UserInfo.LastName))
                                                            ? this.UserInfo.LastName.Substring(0, 1)
                                                            : string.Empty;
                         this.lblLastNameComment.Text = this.Localize("LastInitial");
