@@ -297,6 +297,13 @@
     <Compile Include="ArticleControls\AuthorToken.ascx.designer.cs">
       <DependentUpon>AuthorToken.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Captchas.ascx.cs">
+      <DependentUpon>Captchas.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Captchas.ascx.designer.cs">
+      <DependentUpon>Captchas.ascx</DependentUpon>
+    </Compile>
     <Compile Include="OverrideableDisplayOptionsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -716,6 +723,7 @@
     <Content Include="CategoryControls\Engage_Publish_CategoryFeature_ClassSwap.js" />
     <Content Include="Controls\Breadcrumb.ascx" />
     <Content Include="Controls\CommentDisplay.ascx" />
+    <Content Include="Controls\Captchas.ascx" />
     <Content Include="Controls\CustomDisplay.ascx" />
     <Content Include="Controls\CustomDisplayOptions.ascx" />
     <Content Include="Controls\EmailAFriend.ascx" />
@@ -782,6 +790,9 @@
     <Content Include="ReadMe.txt" />
     <Content Include="ReleaseNotes_05.06.02.htm" />
     <Content Include="Rss.aspx" />
+    <Content Include="Controls\App_LocalResources\Captchas.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="Scripts\ModalPopup.js" />
     <Content Include="Services\PublishServices.asmx" />
     <Content Include="Tags\Module.css" />

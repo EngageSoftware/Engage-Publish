@@ -1,6 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="Engage.Dnn.Publish.ArticleControls.ArticleDisplay" Codebehind="ArticleDisplay.ascx.cs" %>
 <%@ Register Assembly="AjaxControlToolkit" TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register Src="../Controls/Captchas.ascx" TagPrefix="engage" TagName="Captchas" %>
 
 <div id="articleDisplay" class="Normal">
 	<div id="divArticleTitle" runat="server" visible="false">
@@ -160,10 +160,8 @@
                                     <asp:TextBox ID="txtUrlComment" runat="server" EnableViewState="false" CssClass="commentUrlTextbox" />
                                 </div>
                             </asp:Placeholder>
-                            
-                            <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="None" ValidationGroup="commentVal" />
-                            <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="None" ValidationGroup="commentVal" />
-                            <dnn:DnnCaptcha ID="StandardCaptcha" runat="server" ProtectionMode="Captcha" Display="None" EnableRefreshImage="True" ValidationGroup="commentVal" />
+
+                            <engage:Captchas runat="server" ID="Captchas" ValidationGroup="commentVal" />
                             
                             <asp:ValidationSummary ID="valCommentSummary" runat="server" ShowSummary="true" DisplayMode="BulletList" ValidationGroup="commentVal" CssClass="dnnFormMessage dnnFormValidationSummary" />
 

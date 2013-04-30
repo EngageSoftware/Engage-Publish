@@ -272,22 +272,4 @@ UMG 5 should be {0}UltraPhotoGallery/{1}/{2}/large/{3}</comment>
 {3} is image file name
 UMG 5 should be {0}UltraPhotoGallery/{1}/{2}/thumbs/{3}</comment>
   </data>
-  <data name="InvisibleCaptchaFailed.Text" xml:space="preserve">
-    <value>A hidden text box was filled in, indicating that this form was not filled in by hand.  To prevent SPAM being sent through this form, we have to disallow any submissions that aren't entered by hand.</value>
-  </data>
-  <data name="InvisibleCaptchaLabel.Text" xml:space="preserve">
-    <value>Do not fill this textbox.</value>
-  </data>
-  <data name="StandardCaptchaFailed.Text" xml:space="preserve">
-    <value>Sorry, your entry didn't match the code; please try again</value>
-  </data>
-  <data name="StandardCaptchaLabel.Text" xml:space="preserve">
-    <value>Type the code from the image</value>
-  </data>
-  <data name="StandardCaptchaLink.Text" xml:space="preserve">
-    <value>Generate New Image</value>
-  </data>
-  <data name="TimeoutCaptchaFailed.Text" xml:space="preserve">
-    <value>To prevent SPAM, you must wait before submitting the form.</value>
-  </data>
 </root>

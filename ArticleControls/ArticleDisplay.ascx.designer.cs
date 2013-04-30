@@ -526,31 +526,13 @@ namespace Engage.Dnn.Publish.ArticleControls {
         protected global::System.Web.UI.WebControls.TextBox txtUrlComment;
         
         /// <summary>
-        /// InvisibleCaptcha control.
+        /// Captchas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha InvisibleCaptcha;
-        
-        /// <summary>
-        /// TimeoutCaptcha control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha TimeoutCaptcha;
-        
-        /// <summary>
-        /// StandardCaptcha control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnCaptcha StandardCaptcha;
+        protected global::Engage.Dnn.Publish.Controls.Captchas Captchas;
         
         /// <summary>
         /// valCommentSummary control.
