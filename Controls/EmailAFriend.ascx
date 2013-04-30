@@ -1,5 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="false" Inherits="Engage.Dnn.Publish.Controls.EmailAFriend" Codebehind="EmailAFriend.ascx.cs" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="engage" TagName="Captchas" Src="Captchas.ascx" %>
+
 
 <div id="divEmailAFriend">
     <asp:HyperLink ID="EmailAFriendPopupTriggerLink" runat="server" ResourceKey="btnEmailAFriend" CssClass="btnEmailAFriend engagePublishModalLink" NavigateUrl="#" CausesValidation="false" />	
@@ -25,10 +26,8 @@
             <asp:Label ID="lblMessage" runat="server" ResourceKey="lblMessage" AssociatedControlID="txtMessage" />
             <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Columns="30" Rows="5" />            
         </div>
-        
-        <dnn:DnnCaptcha ID="InvisibleCaptcha" runat="server" ProtectionMode="InvisibleTextBox" Display="None" />
-        <dnn:DnnCaptcha ID="TimeoutCaptcha" runat="server" ProtectionMode="MinimumTimeout" Display="None" />
-        <dnn:DnnCaptcha ID="StandardCaptcha" runat="server" ProtectionMode="Captcha" Display="None" EnableRefreshImage="True" />
+
+        <engage:Captchas ID="Captchas" runat="server" />
         
         <asp:ValidationSummary ID="ValidationSummary" runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" />
         <ul class="dnnActions dnnClear">
