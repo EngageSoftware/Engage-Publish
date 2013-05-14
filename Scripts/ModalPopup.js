@@ -34,7 +34,17 @@ this.d.container.hide().remove();this.d.overlay.hide();this.d.iframe&&this.d.ifr
             $target = $('#' + targetId);
         $target.modal({
             appendTo: '#Form',
-            overlayId: 'commentBackground'
+            overlayId: 'commentBackground',
+            onShow: function (dialog) {
+                var $refreshLink = dialog.container.find('.rcRefreshImage'),
+                    refreshHref = $refreshLink.attr('href'),
+                    clickScript = refreshHref && /^javascript\:(.*)/.exec(refreshHref);
+                if (clickScript) {
+                    eval(clickScript[1]);
+                } else {
+                    $refreshLink.click();
+                }
+            }
         });
 
         $('.' + $.modal.defaults.closeClass, $target).live('click', function (event) {
