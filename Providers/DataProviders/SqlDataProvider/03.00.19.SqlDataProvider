@@ -58,7 +58,7 @@ FROM
 	 {databaseOwner}[{objectQualifier}EngageAMSItem] i
 	join {databaseOwner}[{objectQualifier}EngageAMSItemType] it on (i.ItemTypeID = it.ItemTypeID)
 	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemID = iv.ItemID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
 
 
 
@@ -196,7 +196,7 @@ from
 	 {databaseOwner}[{objectQualifier}engageams_vItems] i 
 	join {databaseOwner}[{objectQualifier}EngageAMSDocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
 	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
 
 
 
@@ -225,7 +225,7 @@ from
 	{databaseOwner}[{objectQualifier}engageams_vitems] i 
 	join {databaseOwner}[{objectQualifier}EngageAMSMediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
 	join {databaseOwner}[{objectQualifier}EngageAMSItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
 
 
 

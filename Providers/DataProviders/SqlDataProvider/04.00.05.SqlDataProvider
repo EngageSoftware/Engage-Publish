@@ -313,7 +313,7 @@ FROM
 	 {databaseOwner}[{objectQualifier}Publish_Item] i
 	join {databaseOwner}[{objectQualifier}Publish_ItemType] it on (i.ItemTypeID = it.ItemTypeID)
 	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemID = iv.ItemID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
 
 GO
 
@@ -395,7 +395,7 @@ from
 	 {databaseOwner}[{objectQualifier}Publish_vwItems] i 
 	join {databaseOwner}[{objectQualifier}Publish_DocumentVersion] dv on (i.ItemVersionID = dv.ItemVersionID)
 	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on dv.FileName = 'fileid=' + convert(varchar, fl.FileID)
 
 GO
 
@@ -442,7 +442,7 @@ from
 	{databaseOwner}[{objectQualifier}Publish_vwItems] i 
 	join {databaseOwner}[{objectQualifier}Publish_MediaVersion] mv on (i.ItemVersionID = mv.ItemVersionID)
 	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemVersionID = iv.ItemVersionID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on mv.FileName = 'fileid=' + convert(varchar, fl.FileID)
 
 GO
 

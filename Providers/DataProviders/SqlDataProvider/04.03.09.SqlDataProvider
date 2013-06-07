@@ -655,7 +655,7 @@ FROM
 	 {databaseOwner}[{objectQualifier}Publish_Item] i
 	join {databaseOwner}[{objectQualifier}Publish_ItemType] it on (i.ItemTypeID = it.ItemTypeID)
 	join {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv on (i.ItemID = iv.ItemID)
-	left outer join {databaseOwner}[{objectQualifier}Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
+	left outer join {databaseOwner}[{objectQualifier}vw_Files] fl on iv.Thumbnail = 'fileid=' + convert(varchar, fl.FileID)
 
 
 GO
