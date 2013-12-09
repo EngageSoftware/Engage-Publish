@@ -75,7 +75,6 @@
       <arg value="/p:Platform=&quot;Any CPU&quot;" />
       <arg value="/p:OutputPath=&quot;${currentBinDirectory}&quot;" />
       <arg value="/m" /> <!-- multicore -->
-      <arg value="/noconsolelogger" />
     </exec>
   </target>
   <target name="clean-package-folder" description="Deletes all temporary files from package directory, then re-creates the folders to use">

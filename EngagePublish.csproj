@@ -787,7 +787,7 @@
     <Content Include="Licenses\EULA-Free.htm" />
     <Content Include="Module.css" />
     <Content Include="PrinterFriendly.aspx" />
-    <Content Include="ReadMe.txt" />
+    <Content Include="README.md" />
     <Content Include="ReleaseNotes_05.06.02.htm" />
     <Content Include="Rss.aspx" />
     <Content Include="Controls\App_LocalResources\Captchas.ascx.resx">
