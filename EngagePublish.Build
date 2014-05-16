@@ -382,6 +382,7 @@
     <exclude name="_ReSharper.*/**"/>
     <exclude name="**/obj/**"/>
     <exclude name="${referencesDirectory}/**"/>
+    <exclude name="**/bin/**"/>
   </patternset>
   <patternset id="source.fileset">
     <include name="**/*.js"/>
