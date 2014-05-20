@@ -49,35 +49,6 @@ select newitemid, oldcategoryid from {databaseOwner}[{objectQualifier}oldcategor
 
 GO
 
-
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]') and OBJECTPROPERTY(id, N'IsView') = 1)
-drop view {databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated]
-GO
-
-create view {databaseOwner}[{objectQualifier}Publish_vwArticleSearchIndexingUpdated] as 
-select 
-	name, va.itemId, ArticleText, DisplayTabID, IsCurrentVersion, Disabled, va.Description, 
-	MetaKeywords, MetaDescription, MetaTitle, AuthorUserId, LastUpdated, si.ModuleDefId, va.PortalId
-from 
-	{objectQualifier}publish_vwArticles va
-	join 
-	(
-		select 
-			PubDate, Cast(SUBSTRING(guid, 8,8000) as Int) as 'ItemId', dm.ModuleDefId 
-		from 	
-			{objectQualifier}searchitem dsi 
-			join {objectQualifier}modules dm on (dsi.ModuleId = dm.ModuleId) 
-		where 
-			guid like 'ItemId=%'
-	) si on (si.ItemId = va.ItemId)
-where
- 	IsCurrentVersion = 1
-and 	va.LastUpdated > si.PubDate
-
-
-GO
-
-
 IF  EXISTS (SELECT * FROM sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwProducts]') and OBJECTPROPERTY(id, N'IsView') = 1)
 DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwProducts]
 
