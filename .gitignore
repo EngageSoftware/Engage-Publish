@@ -6,3 +6,8 @@ Thumbs.db
 obj/
 bin/
 package/
+*.user
+*.GhostDoc.xml
+*.suo
+*.sln.cache
+StyleCop.Cache
