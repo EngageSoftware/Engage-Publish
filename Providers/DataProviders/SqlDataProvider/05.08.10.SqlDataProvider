@@ -1,0 +1,49 @@
+﻿IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publish_vwItems]') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}Publish_vwItems];
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}Publish_vwItems] AS
+
+SELECT
+	CAST(CASE i.ApprovedItemVersionID WHEN iv.ItemVersionID THEN 1 ELSE 0 END AS bit) AS IsCurrentVersion,
+	iv.ItemId, 
+	iv.OriginalItemVersionId, 
+	iv.ItemVersionDate, 
+	iv.StartDate, 
+	iv.EndDate, 
+	iv.LanguageId, 
+	iv.AuthorUserId, 
+	iv.ApprovalStatusId, 
+	iv.ApprovalDate, 
+	iv.ApprovalUserId, 
+	iv.ApprovalComments, 
+	iv.MetaKeywords, 
+	iv.MetaDescription, 
+	iv.MetaTitle, 
+	iv.DisplayTabId, 
+	iv.LastUpdated,
+	i.PortalID, 
+	i.ItemTypeID, 
+	iv.ItemVersionID, 
+	it.[Name] AS ItemType,
+	iv.[Name], 
+	iv.[Description], 
+	iv.Disabled, 
+	i.CreatedDate, 
+	i.ApprovedItemVersionID,
+	'Thumbnail' = CASE WHEN fl.FileName IS NULL THEN iv.Thumbnail ELSE fl.Folder + fl.FileName END,
+	ModuleId, 
+	i.ItemIdentifier, 
+	iv.ItemVersionIdentifier, 
+	iv.Url, 
+	iv.NewWindow, 
+	iv.RevisingUserId, 
+	i.ViewCount, 
+	i.CommentCount, 
+	ivs.PropertyValue AS 'Author'
+FROM
+	{databaseOwner}[{objectQualifier}Publish_Item] i
+	JOIN {databaseOwner}[{objectQualifier}Publish_ItemType] it ON (i.ItemTypeID = it.ItemTypeID)
+	JOIN {databaseOwner}[{objectQualifier}Publish_ItemVersion] iv ON (i.ItemID = iv.ItemID)
+	LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Publish_ItemVersionSettings] ivs ON (iv.ItemVersionId = ivs.ItemVersionId AND ivs.controlname ='lblAuthorName' AND ivs.PropertyName ='Text')
+	LEFT OUTER JOIN {databaseOwner}[{objectQualifier}vw_Files] fl ON iv.Thumbnail = 'fileid=' + CONVERT(varchar, fl.FileID);
+GO

@@ -738,6 +738,7 @@
     <Content Include="Controls\RelatedArticleLinks.ascx" />
     <Content Include="Controls\SearchRedirector.ascx" />
     <Content Include="Controls\ThumbnailSelector.ascx" />
+    <Content Include="ReleaseNotes_05.08.10.htm" />
     <Content Include="ReleaseNotes_05.08.09.htm" />
     <Content Include="ReleaseNotes_05.08.06.htm" />
     <Content Include="ReleaseNotes_05.08.05.htm" />
@@ -967,6 +968,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Migrated rules for EngagePublish.ruleset" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.08.10.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.07.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.08.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.08.01.SqlDataProvider" />
